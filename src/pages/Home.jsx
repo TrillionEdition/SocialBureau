@@ -6,7 +6,7 @@ import HomeCards from '../components/HomeCards'
 import Hometagline from '../components/Hometagline'
 import HomeFooter from '../components/HomeFooter'
 import Footer from '../components/Footer'
-import CircuitLines from '../components/CircuitLines'
+import CircuitLines from '../components/HomeHeader'
 
 export const Home = () => {
   return (

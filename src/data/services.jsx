@@ -217,6 +217,78 @@ const servicesData = {
       link: "tel:+916238422887",
     },
   },
+"Web Application Development": {
+  meta: {
+    title: "Custom Web Application Development for Modern Brands | Social Bureau",
+    description:
+      "From MVPs to scalable platforms, we design, develop, and deploy web apps that are fast, secure, and user-centric.",
+  },
+  hero: {
+    headline: "Code That Performs, Experiences That Convert.",
+    highlight: "Performs",
+    subtext:
+      "We don’t just build websites — we engineer digital platforms that scale with your business, your users, and your ambition.",
+  },
+  problems: {
+    title: "Challenges",
+    highlight: "We Tackle",
+    items: [
+      {
+        title: "Outdated, clunky platforms losing users",
+        icon: <FaHourglassHalf className="text-[#ff0000] text-3xl mb-4" />,
+      },
+      {
+        title: "Generic templates limiting business potential",
+        icon: <FaCubes className="text-[#ff0000] text-3xl mb-4" />,
+      },
+      {
+        title: "Slow dev cycles and missed launches",
+        icon: <FaRegClock className="text-[#ff0000] text-3xl mb-4" />,
+      },
+    ],
+  },
+  deliveries: {
+    title: "What",
+    highlight: "We Build",
+    items: [
+      {
+        title: "Custom web apps built for scale",
+        description:
+          "Tailored architecture with scalability, performance, and security baked in from day one.",
+        icon: <FaGlobe className="text-white text-lg" />,
+      },
+      {
+        title: "Full-stack engineering from UX to deployment",
+        description:
+          "Design-driven development that covers frontend, backend, databases, and cloud hosting.",
+        icon: <FaProjectDiagram className="text-white text-lg" />,
+      },
+      {
+        title: "Agile sprint cycles for faster go-to-market",
+        description:
+          "Lean development processes to ship MVPs fast and iterate based on real user feedback.",
+        icon: <FaRocket className="text-white text-lg" />,
+      },
+      {
+        title: "Admin dashboards, APIs, and integrations",
+        description:
+          "Powerful backend systems, third-party APIs, and internal tools to support operations and growth.",
+        icon: <FaTools className="text-white text-lg" />,
+      },
+    ],
+  },
+  whyItWorks: {
+    title: "Why",
+    highlight: "It Works",
+    subtext:
+      "We bridge design and engineering to craft performant web apps that delight users and deliver outcomes.",
+  },
+  cta: {
+    headline: "Let’s Build Your Platform.",
+    button: "Start Your Web App",
+    link: "tel:+916238422887",
+  },
+},
 
   "API-Driven Growth & Automated Distribution": {
     meta: {

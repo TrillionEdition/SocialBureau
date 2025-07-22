@@ -59,7 +59,7 @@ export const AboutTagline = () => {
           50% { opacity: 1; }
         }
         .about-text {
-          font-size: 18px;
+          font-size: 15px;
           line-height: 1.6;
           color: #fff;
           margin: 0;
@@ -97,7 +97,7 @@ export const AboutTagline = () => {
         /* Large screens */
         @media (min-width: 1000px) {
           .about-text {
-            font-size: 30px;
+            font-size: 25px;
             max-width: 80%;
           }
         }

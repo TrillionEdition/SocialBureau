@@ -5,6 +5,7 @@ const icons = [
   <i className="fas fa-sitemap text-[#ff0000] text-2xl"></i>,
   <i className="fas fa-bullseye text-[#ff0000] text-2xl"></i>,
   <i className="fas fa-comments text-[#ff0000] text-2xl"></i>,
+  <i className="fas fa-globe text-[#ff0000] text-2xl"></i>,
   <i className="fas fa-cogs text-[#ff0000] text-2xl"></i>,
   <i className="fas fa-crosshairs text-[#ff0000] text-2xl"></i>,
   <i className="fas fa-users text-[#ff0000] text-2xl"></i>,
@@ -28,6 +29,10 @@ const cards = [
   {
     title: "Messaging & Positioning for Niche Brands",
     description: "Generic messaging kills growth. We uncover category-specific codes using ethnographic and linguistic analysis."
+  },
+  {
+    title: "Web Application Development",
+    description: "From MVPs to scalable platforms, we design, develop, and deploy web apps that are fast, secure, and user-centric."
   },
   {
     title: "API-Driven Growth & Automated Distribution",

@@ -1,6 +1,8 @@
 import React from "react";
 import { FaLinkedin, FaTwitter, FaEnvelope, FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 export default function Footer() {
+  const navigate=useNavigate()
   return (
     <footer className="bg-black text-gray-400 py-6 flex flex-col items-center space-y-4 pb-30">
       {/* Social Icons */}
@@ -60,8 +62,8 @@ export default function Footer() {
 
 
       {/* Copyright */}
-      <p className="text-sm text-center">
-         © 2024 SocialBureau. All rights reserved.
+      <p className="text-sm text-center leading-8">
+         © 2024 SocialBureau. All rights reserved.<br/> <a  onClick={() => navigate("/privacy-policy")} className="text-white text-decoration-none hover:font-bold">Our Privacy Policy</a>  |  <a  onClick={() => navigate("/disclaimer")} className="text-white text-decoration-none hover:font-bold">Our Disclaimer</a>
       </p>
     </footer>
   );

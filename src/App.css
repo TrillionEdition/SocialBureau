@@ -5,3 +5,31 @@
   font-weight: normal;
   font-style: normal;
 }
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #ff0000;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #000000; /* red-600 */
+  border-radius: 10px;
+  border: 2px solid #ff0000;
+}
+
+@keyframes spin3d {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+
+.animate-spin3d {
+  animation: spin3d 20s linear infinite;
+}

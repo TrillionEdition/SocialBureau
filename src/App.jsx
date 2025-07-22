@@ -13,6 +13,8 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import { NotFound } from './pages/NotFound'
 import React, { lazy, Suspense } from 'react';
 import Service1 from './pages/Service1'
+import PrivacyPolicy from './components/PrivacyPolicy'
+import Disclaimer from './components/Disclaimer'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
@@ -28,6 +30,8 @@ function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/disclaimer" element={<Disclaimer />} />
         <Route path="/services/:serviceTitle" element={<Service1 />} />
         <Route path="/voice" element={
           <Suspense fallback={<div>Loading...</div>}>

@@ -12,7 +12,7 @@ export default function ContactSection() {
         </h2>
 
         {/* Form */}
-        <form action="https://formsubmit.co/17244b37f46cab7e360118ff6abcced5" method="POST" className="bg-[#110d0d] p-6 rounded-lg shadow-lg space-y-4" >
+        <form action="https://formsubmit.co/info@socialbureau.in" method="POST" className="bg-[#110d0d] p-6 rounded-lg shadow-lg space-y-4" >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Name */}
             <div className="relative">
@@ -130,7 +130,7 @@ export default function ContactSection() {
           </div>
           <button type="submit"
   href="mailto:admin@socialbureau.in?subject=Inquiry&body=I would like to learn more."
-  className="border border-[#ff0000] text-white hover:bg-[#ff0000] transition font-medium py-3 px-5 rounded-md flex items-center justify-center gap-2"
+  className="border border-white hover:border-[#ff0000] text-white hover:bg-[#ff0000] transition font-medium py-3 px-5 rounded-md flex items-center justify-center gap-2"
 >
   <i className="fas fa-envelope"></i>
   Drop Us a Line

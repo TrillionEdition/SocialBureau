@@ -11,13 +11,13 @@ export default function AboutFooter() {
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
         <a
-          href="#meet-the-team"
-          className="bg-black text-white border border-white font-medium px-6 py-3 rounded-sm transition-colors hover:bg-[#ff0000] hover:text-black hover:border-black"
+          href="tel:+916238422887"
+          className="hover:bg-black hover:text-white border hover:border-white font-medium px-6 py-3 rounded-sm transition-colors bg-[#ff0000] text-black border-black"
         >
           Meet the Team
         </a>
         <a
-          href="#schedule-discovery"
+          href="tel:+916238422887"
           className="bg-white text-black font-medium px-6 py-3 rounded-sm border border-gray-300 transition-colors hover:bg-[#ff0000] hover:border-[#ff0000]"
         >
           Schedule a Discovery Call
