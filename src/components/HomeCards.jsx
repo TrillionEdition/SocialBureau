@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
 
 const cards = [
   { title: "Full-Funnel Performance Marketing", color: "#ff0000", textColor: "#fff" },
@@ -11,20 +12,25 @@ const cards = [
 
 export default function GridScrollCards() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
-
+const navigate=useNavigate();
 
   return (
-    <div className="scroll-root bg-black min-h-screen flex items-center justify-center px-4 py-10">
+<div className="grid-layout w-full flex flex-wrap justify-center gap-6 sm:gap-10 p-5 py-10">
       <style>{`
-        .grid-layout {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-areas:
-    "card0 . card1 . card2"
-    ". card3 . card4 .";
-  align-items: center;
-  justify-items: center;
+      @media (max-width: 768px) {
+  svg circle {
+    stroke-width: 0.7;
+  }
 }
+
+        .grid-layout {
+          display: grid;
+          grid-template-areas:
+            "card0 . card1 . card2"
+            ". card3 . card4 .";
+          align-items: center;
+          justify-items: center;
+        }
 
         @media (max-width: 800px) {
           .grid-layout {
@@ -39,34 +45,36 @@ export default function GridScrollCards() {
           }
         }
           @keyframes rotate-center {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
 
-.animate-rotate-center {
-  animation: rotate-center 8s linear infinite;
-  transform-origin: center;
-}
+          .animate-rotate-center {
+            animation: rotate-center 8s linear infinite;
+            transform-origin: center;
+          }
 
       `}</style>
 
       <div className="grid-layout">
+        <Link to={`/services/Full-Funnel Performance Marketing`}>
   <FloatingCard card={cards[0]} index={0} delay={0}
     gridArea="card0"
     isHovered={hoveredIndex === 0}
     dimOthers={hoveredIndex !== null && hoveredIndex !== 0}
     onHover={() => setHoveredIndex(0)}
-    onLeave={() => setHoveredIndex(null)} />
+    onLeave={() => setHoveredIndex(null)} /></Link>
 
   <FloatingCard card={cards[1]} index={1} delay={0.2}
     gridArea="card1"
     isHovered={hoveredIndex === 1}
     dimOthers={hoveredIndex !== null && hoveredIndex !== 1}
     onHover={() => setHoveredIndex(1)}
+    onClick={() => navigate(`/services/API-Driven%20Growth%20%26%20Automated%20Distribution`)}
     onLeave={() => setHoveredIndex(null)} />
 
   <FloatingCard card={cards[2]} index={2} delay={0.4}
@@ -74,18 +82,21 @@ export default function GridScrollCards() {
     isHovered={hoveredIndex === 2}
     dimOthers={hoveredIndex !== null && hoveredIndex !== 2}
     onHover={() => setHoveredIndex(2)}
+    onClick={() => navigate(`/services/Niche%20Market%20Penetration%20Strategy`)}
     onLeave={() => setHoveredIndex(null)} />
 
   <FloatingCard card={cards[3]} index={3} delay={0.6}
     gridArea="card3"
     isHovered={hoveredIndex === 3}
     dimOthers={hoveredIndex !== null && hoveredIndex !== 3}
+    onClick={() => navigate(`/services/Conversion%20Rate%20Optimization%20%26%20Landing%20Systems`)}
     onHover={() => setHoveredIndex(3)}
     onLeave={() => setHoveredIndex(null)} />
 
   <FloatingCard card={cards[4]} index={4} delay={0.8}
     gridArea="card4"
     isHovered={hoveredIndex === 4}
+    onClick={() => navigate(`/services/Lifecycle%20%26%20Email%20Automation%20Strategy`)}
     dimOthers={hoveredIndex !== null && hoveredIndex !== 4}
     onHover={() => setHoveredIndex(4)}
     onLeave={() => setHoveredIndex(null)} />
@@ -104,6 +115,7 @@ function FloatingCard({
   dimOthers,
   onHover,
   onLeave,
+  onClick
 }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
@@ -119,18 +131,18 @@ useEffect(() => {
 }, []);
   const commonStyles = {
     // border: `2px solid ${card.color}`,
-    color: isMobile ? card.textColor : isHovered ? card.textColor :"white",
+    color: isHovered ? card.textColor :"white",
     padding: "2rem",
     textAlign: "center",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    filter: dimOthers ? "blur(2px) brightness(60%)" : "none",
-    transform: isHovered ? "scale(1.2)" : "scale(1)",
+    filter: isMobile ? "none" : dimOthers ? "blur(2px) brightness(60%)" : "none",
+    transform: isHovered && !isMobile ? "scale(1.2)" : "scale(1)",
     zIndex: isHovered ? 10 : 1,
     cursor: "pointer",
     transition: "all 0.3s ease-in-out",
-    background: isMobile ? card.color : isHovered ? card.color : "transparent",
+    background: isMobile ? "transparent" : isHovered ? card.color : "transparent",
   };
 
   const variants = {
@@ -152,8 +164,9 @@ useEffect(() => {
   ref={ref}
   onMouseEnter={onHover}
   onMouseLeave={onLeave}
+  onClick={onClick}
   style={{ gridArea, position: "relative" }}
-  className="relative flex items-center justify-center text-xl lg:text-2xl h-[18vw] w-[80vw] sm:w-[60vw] lg:max-w-[18vw] rounded-full"
+className="relative flex items-center justify-center text-xl lg:text-2xl w-full max-w-[320px] aspect-square rounded-full"
 >
 
   {/* Card content */}

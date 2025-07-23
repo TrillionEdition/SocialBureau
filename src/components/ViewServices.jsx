@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
 import { p } from 'framer-motion/client';
+import { Link } from 'react-router-dom';
 
 const icons = [
   <i className="fas fa-chart-line text-white text-2xl"></i>,
@@ -48,16 +49,20 @@ export default function Ser() {
   )}
           >
             {activeIndex === index ? (
+
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
                 className="text-sm opacity-90 p-0 m-0"
+                
               >
+                <Link to={`/services/${encodeURIComponent(card.title)}`}>
                 <img src={card.image} alt="img" className='min-w-[300px]'/>
                 <p className="text-xl font-bold px-2">{card.title}</p>
                 <p className='px-2 py-2'>{card.content}</p>
-                <a href={`/services/${encodeURIComponent(card.title)}`} className='px-2 font-bold hover:text-[1rem]'>Read More </a>
+                <p className='px-2 font-bold hover:text-[1rem]'>Read More </p>
+                </Link>
               </motion.div>
             ) 
             : (
