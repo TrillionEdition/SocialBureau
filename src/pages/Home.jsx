@@ -7,12 +7,14 @@ import Hometagline from '../components/Hometagline'
 import HomeFooter from '../components/HomeFooter'
 import Footer from '../components/Footer'
 import CircuitLines from '../components/HomeHeader'
+import Animation from '../components/Animation'
 
 export const Home = () => {
   return (
     <div className='bg-black'>      
         <HomeMouse/>
-        <CircuitLines/>
+        <Animation/>
+        {/* <CircuitLines/> */}
         <HomeIntro/>
         <Navbar/>
         <HomeCards/>

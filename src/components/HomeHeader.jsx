@@ -7,13 +7,13 @@ const images = [
   "/assets/service1.jpeg",
   "/assets/service2.jpeg",
   "/assets/service3.jpeg",
-  "/assets/service1.jpeg",
-  "/assets/service2.jpeg",
-  "/assets/service3.jpeg",
-  "/assets/service1.jpeg",
-  "/assets/service2.jpeg",
-  "/assets/service3.jpeg",
-  "/assets/service1.jpeg",
+  "/assets/service4.jpeg",
+  "/assets/service5.jpeg",
+  "/assets/service6.jpeg",
+  "/assets/service7.jpeg",
+  "/assets/service8.jpeg",
+  "/assets/service9.jpeg",
+  "/assets/service10.jpeg",
 ];
 const container = {
   hidden: { opacity: 1 },
@@ -87,7 +87,7 @@ export default function AnimatedTextImageSection() {
           return (
             <div
               key={i}
-              className="absolute w-[40px] h-[400px] overflow-hidden"
+              className="absolute w-[70px] h-[400px] overflow-hidden"
               style={{
                 top: "50%",
                 right: "50%",
