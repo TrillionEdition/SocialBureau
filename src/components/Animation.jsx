@@ -9,7 +9,7 @@ const images = [
   "/assets/6.png",
 //   "/assets/7.png",
   "/assets/8.png",
-  "/assets/9.png",
+//   "/assets/9.png",
   "/assets/10.png",
   "/assets/11.png",
   "/assets/12.png",
@@ -17,7 +17,7 @@ const images = [
   "/assets/14.png",
 //   "/assets/15.png",
   "/assets/16.png",
-  "/assets/17.png",
+//   "/assets/17.png",
   "/assets/18.png",
   "/assets/19.png",
   "/assets/20.png",
@@ -25,7 +25,7 @@ const images = [
   "/assets/22.png",
 //   "/assets/23.png",
   "/assets/24.png",
-  "/assets/25.png",
+//   "/assets/25.png",
 ];
 
 const Animation = () => {
