@@ -19,7 +19,7 @@ export const Home = () => {
         <Navbar/>
         <HomeCards/>
         <div style={{ height: "10vh" }} />
-        {/* <Hometagline/> */}
+        <Hometagline/>
         <HomeFooter/>
         <Footer/>
     </div>

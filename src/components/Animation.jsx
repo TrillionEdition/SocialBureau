@@ -34,13 +34,13 @@ const Animation = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % images.length);
-    }, 700); // 0.5 seconds
+    }, 700); 
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="md:w-screen h-[30vh] lg:h-screen w-full">
+    <div className="h-[30vh] lg:h-screen items-center justify-center flex text-center">
       <AnimatePresence>
         <motion.img
           key={images[current]}
@@ -49,7 +49,7 @@ const Animation = () => {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.4 }}
-          className="sm:max-w-[95vw] w-full lg:h-full object-cover absolute top-0 left-0 text-center items-center justify-center"
+          className="w-[90vw] lg:h-full object-cover absolute text-center "
         />
       </AnimatePresence>
     </div>
