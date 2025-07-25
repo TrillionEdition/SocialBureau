@@ -39,6 +39,7 @@ const navigate=useNavigate();
         <li className="hover:text-[#ff0000] p-1 hover:font-bold"><Link to="/about">About</Link></li>
         {/* <li className="hover:text-[#ff0000] p-1 hover:font-bold"><Link to="/casestudy">Case Studies</Link></li>
         <li className="hover:text-[#ff0000] p-1 hover:font-bold"><Link to="/blog">Blog</Link></li> */}
+        <li className="hover:text-[#ff0000] p-1 hover:font-bold"><Link to="/careers">Careers</Link></li>
         <li className="hover:text-[#ff0000] p-1 hover:font-bold"><Link to="/contact">Contact</Link></li>
         <li className="hover:font-bold bg-[#ff0000] p-1 px-2 rounded rounded-1/2"><Link to="/voice">Let's Talk</Link></li>
       </ul>
@@ -58,6 +59,7 @@ const navigate=useNavigate();
           <li><Link to="/about">About</Link></li>
           {/* <li><Link to="/casestudy">Case Studies</Link></li>
           <li><Link to="/blog">Blog</Link></li> */}
+          <li><Link to="/careers">Careers</Link></li>
           <li><Link to="/contact">Contact</Link></li>
           <li><Link to="/voice">Let's Talk</Link></li>
         </ul>

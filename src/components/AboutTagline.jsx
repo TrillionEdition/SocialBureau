@@ -36,7 +36,7 @@ export const AboutTagline = () => {
         boxShadow: "0 4px 32px rgba(0,0,0,0.07)",
         textAlign:"center",
         fontFamily: "system-ui, sans-serif",
-      }}
+      }} className="text-[1.2rem] md:text-[1.7rem]"
     >
       <p className="about-text">
         We obsess over one thing:{" "}
@@ -59,7 +59,6 @@ export const AboutTagline = () => {
           50% { opacity: 1; }
         }
         .about-text {
-          font-size: 15px;
           line-height: 1.6;
           color: #fff;
           margin: 0;
@@ -89,7 +88,6 @@ export const AboutTagline = () => {
         /* Medium screens */
         @media (min-width: 600px) {
           .about-text {
-            font-size: 22px;
             max-width: 80%;
             margin: 0 auto;
           }
@@ -97,7 +95,6 @@ export const AboutTagline = () => {
         /* Large screens */
         @media (min-width: 1000px) {
           .about-text {
-            font-size: 25px;
             max-width: 80%;
           }
         }
@@ -105,9 +102,6 @@ export const AboutTagline = () => {
         @media (max-width: 400px) {
         padding-left:50px;
         padding-right:50px;
-          .about-text {
-            font-size: 20px;
-          }
         }
         `}
       </style>

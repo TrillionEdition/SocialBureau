@@ -2,27 +2,27 @@ import React, { useEffect } from "react";
 
 const values = [
   {
-    icon: "assets/19.webp",
+    icon: "assets/icon1.webp",
     title: "Performance First",
     desc: "We don't guess; we engineer outcomes.",
   },
   {
-    icon: "assets/20.webp",
+    icon: "assets/icon2.webp",
     title: "Niche-Native Thinking",
     desc: "We master the cultural codes others overlook.",
   },
   {
-    icon: "assets/21.webp",
+    icon: "assets/icon3.webp",
     title: "Speed & Precision",
     desc: "Fast, focused, flawless.",
   },
   {
-    icon: "assets/22.webp",
+    icon: "assets/icon4.webp",
     title: "Brutal Clarity",
     desc: "No jargon. Only sharp, actionable insights.",
   },
   {
-    icon: "assets/23.webp",
+    icon: "assets/icon5.webp",
     title: "Zero Vanity",
     desc: "No busywork. Just compounding ROI.",
   },

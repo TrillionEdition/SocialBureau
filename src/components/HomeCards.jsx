@@ -166,7 +166,7 @@ useEffect(() => {
   onMouseLeave={onLeave}
   onClick={onClick}
   style={{ gridArea, position: "relative" }}
-className="relative flex items-center justify-center text-xl lg:text-2xl w-[70vw] md:w-full max-w-[320px] aspect-square rounded-full"
+className="relative flex items-center justify-center text-xl lg:text-2xl w-[70vw] md:w-full max-w-[100vw] aspect-square rounded-full"
 >
 
   {/* Card content */}
@@ -178,7 +178,7 @@ className="relative flex items-center justify-center text-xl lg:text-2xl w-[70vw
     animate={inView ? "visible" : "hidden"}
   >
     <svg
-  className="absolute md:w-full h-full animate-rotate-center"
+  className="absolute h-full md:h-[18vw] animate-rotate-center md:w-[18vw]"
   viewBox="0 0 100 100"
   xmlns="http://www.w3.org/2000/svg"
 >

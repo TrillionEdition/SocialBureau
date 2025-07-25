@@ -15,7 +15,7 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #000000; /* red-600 */
+  background-color: #000000;
   border-radius: 10px;
   border: 2px solid #ff0000;
 }

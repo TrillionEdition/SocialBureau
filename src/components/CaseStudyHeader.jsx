@@ -5,7 +5,7 @@ export default function CaseStudyHeader() {
     <section className="bg-black flex flex-col md:flex-row items-center justify-center text-center md:text-left py-50 px-10 h-[100vh]">
       <div className="flex-2">
         <h5
-          className="text-red-500 uppercase tracking-widest mb-4 text-md font-semibold"
+          className="text-[#ff0000] uppercase tracking-widest mb-4 text-md font-semibold"
           style={{ fontFamily: "Inter, sans-serif" }}
         >
           Case Studies

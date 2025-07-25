@@ -15,6 +15,7 @@ import React, { lazy, Suspense } from 'react';
 import Service1 from './pages/Service1'
 import PrivacyPolicy from './components/PrivacyPolicy'
 import Disclaimer from './components/Disclaimer'
+import { Careers } from './pages/Careers'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
@@ -32,6 +33,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
+        <Route path="/careers" element={<Careers/>} />
         <Route path="/services/:serviceTitle" element={<Service1 />} />
         <Route path="/voice" element={
           <Suspense fallback={<div>Loading...</div>}>
