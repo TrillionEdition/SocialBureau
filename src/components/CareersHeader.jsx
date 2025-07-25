@@ -3,7 +3,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 export default function CareersHeader() {
   return (
-    <div className="bg-black text-white font-inter">
+    <div className=" text-white font-inter">
       
       <section className="py-30 px-6 text-center">
         <div className="max-w-4xl mx-auto">
