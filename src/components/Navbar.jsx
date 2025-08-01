@@ -35,11 +35,13 @@ const navigate=useNavigate();
       {/* Desktop Menu */}
       <ul className="hidden md:flex gap-8 ">
         <li className="hover:text-[#ff0000] p-1 hover:font-bold"><Link to="/">Home</Link></li>
-        <li className="hover:text-[#ff0000] p-1 hover:font-bold"><Link to="/services">Services</Link></li>
         <li className="hover:text-[#ff0000] p-1 hover:font-bold"><Link to="/about">About</Link></li>
+        <li className="hover:text-[#ff0000] p-1 hover:font-bold"><Link to="/services">Services</Link></li>
         {/* <li className="hover:text-[#ff0000] p-1 hover:font-bold"><Link to="/casestudy">Case Studies</Link></li>
         <li className="hover:text-[#ff0000] p-1 hover:font-bold"><Link to="/blog">Blog</Link></li> */}
         <li className="hover:text-[#ff0000] p-1 hover:font-bold"><Link to="/careers">Careers</Link></li>
+        {/* <li className="hover:text-[#ff0000] p-1 hover:font-bold"><Link to="/our-works">Our Works</Link></li> */}
+        {/* <li className="hover:text-[#ff0000] p-1 hover:font-bold"><Link to="/our-team">Our Team</Link></li> */}
         <li className="hover:text-[#ff0000] p-1 hover:font-bold"><Link to="/contact">Contact</Link></li>
         <li className="hover:font-bold bg-[#ff0000] p-1 px-2 rounded rounded-1/2"><Link to="/voice">Let's Talk</Link></li>
       </ul>
@@ -55,11 +57,13 @@ const navigate=useNavigate();
       {menuOpen && (
         <ul className="absolute bottom-16 left-0 w-full bg-black text-white flex flex-col items-center gap-6 py-6 md:hidden z-50 shadow-lg">
           <li><Link to="/">Home</Link></li>
-          <li><Link to="/services">Services</Link></li>
           <li><Link to="/about">About</Link></li>
+          <li><Link to="/services">Services</Link></li>
+          {/* <li><Link to="/our-team">Our Team</Link></li> */}
           {/* <li><Link to="/casestudy">Case Studies</Link></li>
           <li><Link to="/blog">Blog</Link></li> */}
           <li><Link to="/careers">Careers</Link></li>
+          {/* <li><Link to="/our-works">Our Works</Link></li> */}
           <li><Link to="/contact">Contact</Link></li>
           <li><Link to="/voice">Let's Talk</Link></li>
         </ul>

@@ -89,10 +89,11 @@ const ServicesList = forwardRef(function ServicesList(_, ref) {
             <div className="p-5 py-10" tabIndex={0} key={card.title}>
               <div className="flip-inner">
                 <div className="flip-front flex flex-col gap-4 p-6 sm:p-8 shadow-lg">
-                  <div className="flex items-center justify-between">
+                  <a href={`/services/${encodeURIComponent(card.title)}`}>
+                  <div className="flex items-center justify-between">                    
                     {icons[idx]}
                     <span className="text-neutral-400">
-                      <a href={`/services/${encodeURIComponent(card.title)}`}><svg
+                      <svg
                         className="w-5 h-5"
                         fill="none"
                         stroke="currentColor"
@@ -104,7 +105,7 @@ const ServicesList = forwardRef(function ServicesList(_, ref) {
                           strokeLinejoin="round"
                           d="M9 5l7 7-7 7"
                         />
-                      </svg></a>
+                      </svg>
                     </span>
                   </div>
                   <div>
@@ -115,6 +116,7 @@ const ServicesList = forwardRef(function ServicesList(_, ref) {
                       {card.description}
                     </p>
                   </div>
+                  </a>
                 </div>
                 
               </div>

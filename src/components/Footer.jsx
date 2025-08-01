@@ -63,7 +63,7 @@ export default function Footer() {
 
       {/* Copyright */}
       <p className="text-sm text-center leading-8">
-         © 2024 SocialBureau. All rights reserved.<br/> <a  onClick={() => navigate("/privacy-policy")} className="text-white text-decoration-none hover:font-bold">Our Privacy Policy</a>  |  <a  onClick={() => navigate("/disclaimer")} className="text-white text-decoration-none hover:font-bold">Our Disclaimer</a>
+         © 2025 SocialBureau. All rights reserved.<br/> <a  onClick={() => navigate("/privacy-policy")} className="text-white text-decoration-none hover:font-bold">Our Privacy Policy</a>  |  <a  onClick={() => navigate("/disclaimer")} className="text-white text-decoration-none hover:font-bold">Our Disclaimer</a>
       </p>
     </footer>
   );

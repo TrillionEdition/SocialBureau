@@ -11,7 +11,7 @@ export default function AboutFooter() {
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
         <a
-          href="tel:+916238422887"
+          // href="/our-team"
           className="hover:bg-black hover:text-white border hover:border-white font-medium px-6 py-3 rounded-sm transition-colors bg-[#ff0000] text-black border-black"
         >
           Meet the Team

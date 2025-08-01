@@ -13,10 +13,6 @@ const Disclaimer = () => {
           ← Back
         </button>
       <div className="w-full max-w-5xl border-4 border-[#ff0000] rounded-xl p-6 md:p-10 overflow-y-auto shadow-lg relative">
-        
-        {/* Back Button */}
-        
-
         <h1 className="text-4xl font-bold text-[#ff0000] mb-2">Disclaimer</h1>
         <p className="text-sm text-gray-500 mb-6">Last updated: July 21, 2025</p>
 

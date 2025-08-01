@@ -4,11 +4,13 @@ import Footer from '../components/Footer'
 import CareersHeader from '../components/CareersHeader'
 import CareersPost from '../components/CareersPost'
 import CareersContent from '../components/CareersContent'
+import HomeMouse from '../components/HomeMouse'
 
 export const Careers = () => {
   return (
     <div>
         <Navbar/>
+        <HomeMouse/>
         <CareersHeader/>
         <CareersContent/>
         <CareersPost/>    

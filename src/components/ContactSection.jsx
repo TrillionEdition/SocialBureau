@@ -80,7 +80,7 @@ export default function ContactSection() {
             </div>
           )}
           {submitStatus === 'error' && (
-            <div className="bg-red-600 text-white p-3 rounded-md">
+            <div className="bg-[#ff0000] text-white p-3 rounded-md">
               Please try again.
             </div>
           )}
@@ -215,7 +215,7 @@ export default function ContactSection() {
           <button 
             onClick={handleSubmit}
             disabled={isSubmitting || !formData.name || !formData.email || !formData.company || !formData.role || !formData.message}
-            className="w-full border border-white hover:border-[#ff0000] text-white hover:bg-[#ff0000] transition-all duration-300 font-medium py-3 px-5 rounded-md flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full border border-white hover:border-[#ff0000] text-white hover:bg-[#ff0000] transition-all duration-300 font-medium py-3 px-3 rounded-md flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
           >
             {isSubmitting ? (
               <>
@@ -224,8 +224,8 @@ export default function ContactSection() {
               </>
             ) : (
               <>
-                <i className="fas fa-envelope"></i>
-                Drop Us a Line
+                <i className="fas fa-envelope "></i>
+                Submit
               </>
             )}
           </button>
@@ -296,7 +296,7 @@ export default function ContactSection() {
               </a>
             </div><br/>
             <p className="text-sm text-center text-gray-400">
-              © 2024 SocialBureau. All rights reserved.
+              © 2025 SocialBureau. All rights reserved.
             </p>
           </div>
         </div>
