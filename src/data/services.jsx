@@ -50,8 +50,19 @@ import {
   FaChartBar,
   FaShoppingCart,
   FaBalanceScale,
-  FaChartPie
+  FaChartPie,
+  FaUserCheck,
+  FaExclamationTriangle,
+  FaArrowDown,
+  FaShareAlt,
+  FaRandom,
+  FaSitemap,
+  FaCogs,
+  FaTable,
+  FaBan,
+  FaTrashAlt
 } from "react-icons/fa";
+import { FaArrowUpRightDots } from "react-icons/fa6";
 
 const servicesData = {
   "Full-Funnel Performance Marketing": {
@@ -60,9 +71,9 @@ const servicesData = {
       description: "Maximize ROI with full-funnel performance marketing designed for niche brands. We engineer strategies that turn ad spend into sustainable growth.",
     },
     hero: {
-      headline: "Beyond the Click: Performance Marketing that Actually Performs",
+      headline: "Beyond the Noise: Performance Marketing that Actually Performs",
       highlight: "Performance Marketing",
-      subtext: "Your audience isn’t one-size-fits-all, neither is our approach. We design full-funnel campaigns tailored to your vertical, optimized for outcomes that compound.",
+      subtext: "No generic solutions here. We design bespoke, full-funnel campaigns tailored to your vertical, optimized for enduring, measurable growth.",
     },
     problems: {
       title: "Pain",
@@ -77,10 +88,10 @@ const servicesData = {
       title: "What",
       highlight: "We Deliver",
       items: [
-        { title: "Vertical-specific audience segmentation", description: "Precision targeting based on your industry's unique behavioral patterns", icon: <FaUsers className="text-white text-lg" /> },
-        { title: "14-day creative sprints tied to real business KPIs", description: "Rapid iteration cycles tied to real business KPIs, not vanity metrics", icon: <FaRocket className="text-white text-lg" /> },
-        { title: "Bid strategies mapped to customer LTV, not vanity ROAS", description: "Intelligent bidding based on customer lifetime value, not vanity ROAS", icon: <FaBullseye className="text-white text-lg" /> },
-        { title: "Continuous A/B testing at every funnel stage", description: "Systematic optimization at every funnel stage for maximum efficiency", icon: <FaFlask className="text-white text-lg" /> },
+        { title: "Accurate Audience Profiles", description: "Custom targeting based on your industry distinct consumer behaviors.", icon: <FaUsers className="text-white text-lg" /> },
+        { title: "Every month's innovation", description: "Fast, KPI driven, actionable, and targeted on business impacts not vanity metrics.", icon: <FaRocket className="text-white text-lg" /> },
+        { title: "Smarter Bidding", description: "Optimized around lifetime customer value versus short-term ROAS.", icon: <FaBullseye className="text-white text-lg" /> },
+        { title: "Full Funnel Optimization", description: "Relentless A/B testing for efficiency and conversions.", icon: <FaFlask className="text-white text-lg" /> },
       ],
     },
     whyItWorks: {
@@ -101,33 +112,33 @@ const servicesData = {
       description: "Design customer journeys that convert. We build funnel architectures that map awareness to revenue with P&L-aligned growth pathways.",
     },
     hero: {
-      headline: "Leaky Funnels Kill Growth, We Seal and Scale Yours",
+      headline: "Funnel Leaks Destroy Growth, We Seal and Scale Yours",
       highlight: "Seal and Scale",
-      subtext: "You’re driving traffic, but few convert. There’s no clear path from discovery to revenue. Your funnel isn’t a system, it’s a gamble.",
+      subtext: "You are enough to drive traffic, but very few convert. There is no clear way from discovery to revenue. Your funnel is not a system when it's a gamble.",
     },
     problems: {
       title: "What",
       highlight: "We Fix",
       items: [
-        { title: "Mismatched messaging across funnel stages", icon: <FaExchangeAlt className="text-[#ff0000] text-3xl mb-4" /> },
-        { title: "Weak handoffs between awareness and conversion", icon: <FaShareSquare className="text-[#ff0000] text-3xl mb-4" /> },
-        { title: "Lack of data visibility on user behavior and LTV", icon: <FaEyeSlash className="text-[#ff0000] text-3xl mb-4" /> },
+        { title: "Misaligned messaging throughout the stages of the funnel", icon: <FaRandom className="text-[#ff0000] text-3xl mb-4" /> },
+        { title: "Weak transitions from awareness to conversion", icon: <FaShareSquare className="text-[#ff0000] text-3xl mb-4" /> },
+        { title: "No visibility on user behaviors or data related to LTV", icon: <FaEyeSlash className="text-[#ff0000] text-3xl mb-4" /> },
       ],
     },
     deliveries: {
       title: "Our",
       highlight: "Method",
       items: [
-        { title: "End-to-end funnel blueprinting", description: "Custom funnel strategies designed specifically for the behaviors and needs of your target niche.", icon: <FaDraftingCompass /> },
-        { title: "Conversion and retention architecture", description: "Structured frameworks that drive initial conversions and build long-term customer loyalty.", icon: <FaTools /> },
-        { title: "CRO-informed journey optimization", description: "Every touchpoint is optimized using conversion rate insights to boost performance across the funnel.", icon: <FaChartLine/> },
-        { title: "Funnel-as-P&L-system, not as a marketing theory", description: "We treat your funnel like a business model — focused on profit, not just traffic or impressions.", icon: <FaBriefcase/> },
+        { title: "End-to-End Funnel Blueprinting", description: "We create custom funnel strategies for the behavior and needs of your target niche.", icon: <FaSitemap /> },
+        { title: "Conversion & Retention Architecture", description: "We create structured frameworks for initial conversions and long-term loyalty", icon: <FaCogs /> },
+        { title: "CRO-informed Journey Optimization", description: "We optimize by touchpoint using actual conversion rate data to improve performance through the funnel.", icon: <FaChartLine/> },
+        { title: "Funnel as P&L spreadsheet, not marketing 101", description: "We treat your funnel like a business model – it is about profit, not just traffic or impressions.", icon: <FaTable /> },
       ],
     },
     whyItWorks: {
       title: "Why",
       highlight: "It Works",
-      subtext: "We turn funnels from guesswork into systems aligned with revenue.",
+      subtext: "We take funnels from guesswork to systems based on revenue.",
     },
     cta: {
       headline: "Map Your Growth Journey Now",
@@ -142,17 +153,17 @@ const servicesData = {
       description: "High-converting landing pages and CRO systems based on psychology, friction scoring, and micro-experiments—built for niche markets.",
     },
     hero: {
-      headline: "Stop Losing Customers on the Last Click",
-      highlight: "Last Click",
+      headline: "Stop Losing Customers during the Last Voice",
+      highlight: "Last Voice",
       subtext: "Your ad worked. They clicked. But your page didn’t convert and now they’re gone.",
     },
     problems: {
       title: "Results You ",
       highlight: "Can Expect",
       items: [
-        { title: "Reduced bounce rate", icon: <FaSignOutAlt/> },
-        { title: "Higher add-to-cart or lead form submissions", icon: <FaShoppingCart /> },
-        { title: "Better funnel performance downstream", icon: <FaTachometerAlt /> },
+        { title: "Lower bounce rates", icon: <FaUserCheck /> },
+        { title: "Increased conversions", icon: <FaArrowUpRightDots /> },
+        { title: "Improved funnel efficiency", icon: <FaTachometerAlt /> },
       ],
     },
     deliveries: {
@@ -161,14 +172,14 @@ const servicesData = {
       items: [
         { title: "Rapid friction scoring audits", description: "Quickly identify drop-off points and usability blockers across your funnel with precision scoring.", icon: <FaCalculator/> },
         { title: "Psychology-based copy and CTA design", description: "Craft messaging and calls-to-action rooted in behavioral psychology to boost user response.", icon: <FaBrain/> },
-        { title: "72-hour micro-tests for real-world proof", description: "Launch fast, data-backed experiments to validate ideas and optimize without guesswork.", icon: <FaHourglassHalf/> },
-        { title: "Modular landing systems customized per niche", description: "Deploy flexible landing page components tailored to your audience, offer, and vertical.", icon: <FaCubes/> },
+        { title: "72-hour micro-tests for real-life evidence", description: "Get fast, proof-based experiments in the market, to validate ideas and optimize without guesswork.", icon: <FaHourglassHalf/> },
+        { title: "Modular landing systems specific to niche", description: "Build customizable landing page components for your audience, offer and vertical. ", icon: <FaCubes/> },
       ],
     },
     whyItWorks: {
   title: "Why",
   highlight: "It Works",
-  subtext: "Our landing systems are engineered to test, learn, and maximize user action through behavioral insights, UX precision, and CRO best practices.",
+  subtext: "Our landing systems are engineered to test, learn, and boost user action through behavioral insights, UX precision, and CRO best practices.",
 },
     cta: {
       headline: "Want Pages That Convert? Let’s Test That.",
@@ -183,16 +194,16 @@ const servicesData = {
       description: "Go beyond generic messaging. We uncover linguistic, cultural, and psychological drivers that differentiate your brand in saturated markets.",
     },
     hero: {
-      headline: "Messaging That Resonates, Not Just Fills Space",
-      highlight: "Resonates",
-      subtext: "Generic messages don’t cut it. You need positioning that speaks your audience’s language.",
+      headline: "Messaging With Meaning, Not Just Matter",
+      highlight: "Meaning",
+      subtext: "Generic messages don't cut it. You need positioning that speaks your audience's language.",
     },
     problems: {
       title: "What ",
-      highlight: "We Solve",
+      highlight: "We Resolve",
       items: [
-        { title: "Generic brand voice that lacks market traction", icon: <FaBullhorn/> },
-        { title: "Copy that doesn’t speak your niche’s language", icon: <FaMeh/> },
+        { title: "Generic brand voice that has no market traction", icon: <FaBullhorn/> },
+        { title: "Copy that does not speak your niches language", icon: <FaMeh/> },
         { title: "Weak differentiation in crowded categories", icon: <FaClone/> },
       ],
     },
@@ -200,10 +211,10 @@ const servicesData = {
       title: "How",
       highlight: "We Do It",
       items: [
-        { title: "Linguistic + ethnographic market research", description: "Uncover deep customer insights through language patterns and cultural context analysis.", icon: <FaSearch/> },
-        { title: "Category code identification", description: "Decode the mental shortcuts your audience uses to perceive and position your brand.", icon: <FaTags/> },
-        { title: "Messaging frameworks s based on cognitive triggers", description: "Structure messaging around psychological cues that drive attention, trust, and action.", icon: <FaProjectDiagram/> },
-        { title: "A/B tested narratives for resonance + ROI", description: "Validate storytelling angles through split-testing to find what truly moves the needle.", icon: <FaVials/> },
+        { title: "Linguistic + ethnographic market research", description: "Reveal deeper customer insights leveraging language pattern and cultural context analysis", icon: <FaSearch/> },
+        { title: "Identifying category codes", description: "Decode the mental shortcuts your audience uses to perceive/position your brand.", icon: <FaTags/> },
+        { title: "Messaging frameworks around cognitive triggers", description: "Expend your messaging around psychological cues that drive attention, trust, and action.", icon: <FaProjectDiagram/> },
+        { title: "A/B tested narratives for resonance + ROI", description: "Validate storytelling angles through split-testing to determine what actually moves the needle.", icon: <FaBullhorn/> },
       ],
     },
     whyItWorks: {
@@ -224,55 +235,55 @@ const servicesData = {
       "From MVPs to scalable platforms, we design, develop, and deploy web apps that are fast, secure, and user-centric.",
   },
   hero: {
-    headline: "Code That Performs, Experiences That Convert.",
-    highlight: "Performs",
+    headline: "Code That Works, Experiences That Convert.",
+    highlight: "Works",
     subtext:
-      "We don’t just build websites — we engineer digital platforms that scale with your business, your users, and your ambition.",
+      "We don’t just build websites. We create digital platforms with your business, your users, and your ambitions in mind that can scale with you.",
   },
   problems: {
     title: "Challenges",
-    highlight: "We Tackle",
+    highlight: "We Solve",
     items: [
       {
-        title: "Outdated, clunky platforms losing users",
-        icon: <FaHourglassHalf className="text-[#ff0000] text-3xl mb-4" />,
+        title: "Old, clunky platforms that lose users",
+        icon: <FaTrashAlt className="text-[#ff0000] text-3xl mb-4" />,
       },
       {
-        title: "Generic templates limiting business potential",
-        icon: <FaCubes className="text-[#ff0000] text-3xl mb-4" />,
+        title: "Bland, generic templates that limit business growth",
+        icon: <FaClone className="text-[#ff0000] text-3xl mb-4" />,
       },
       {
-        title: "Slow dev cycles and missed launches",
+        title: "Slow development cycles where launches are missed",
         icon: <FaRegClock className="text-[#ff0000] text-3xl mb-4" />,
       },
     ],
   },
   deliveries: {
     title: "What",
-    highlight: "We Build",
+    highlight: "We Create",
     items: [
       {
-        title: "Custom web apps built for scale",
+        title: "Custom web applications designed for scale",
         description:
-          "Tailored architecture with scalability, performance, and security baked in from day one.",
+          "Custom architecture built to incorporate growth, performance and security from day one.",
         icon: <FaGlobe className="text-white text-lg" />,
       },
       {
-        title: "Full-stack engineering from UX to deployment",
+        title: "Complete stack development from user experience to deployment",
         description:
-          "Design-driven development that covers frontend, backend, databases, and cloud hosting.",
+          "Design-driven development with Frontend, Backend, Databases and Cloud Hosting.",
         icon: <FaProjectDiagram className="text-white text-lg" />,
       },
       {
-        title: "Agile sprint cycles for faster go-to-market",
+        title: "Agile development cycles for speed to market",
         description:
-          "Lean development processes to ship MVPs fast and iterate based on real user feedback.",
+          "Lean development process that allows you to ship MVPs quickly and iterate based on real user feedback.",
         icon: <FaRocket className="text-white text-lg" />,
       },
       {
-        title: "Admin dashboards, APIs, and integrations",
+        title: "Administrative dashboards, APIs, and other integrations",
         description:
-          "Powerful backend systems, third-party APIs, and internal tools to support operations and growth.",
+          "Strong back-end systems, third-party APIs, and internal tools to facilitate operations and growth.",
         icon: <FaTools className="text-white text-lg" />,
       },
     ],
@@ -298,7 +309,7 @@ const servicesData = {
     hero: {
       headline: "Data Moves Faster Than Humans, So Should Your Marketing",
       highlight: "Faster",
-      subtext: "Manual processes stall personalization and waste cycles.",
+      subtext: "Without process automation or knowledge, scale and personalization are challenging.",
     },
     problems: {
       title: "The ",
@@ -314,23 +325,23 @@ const servicesData = {
       highlight: "Solution",
       items: [
         {
-    title: "API integrations across ad, CRM, and analytics platforms",
-    description: "Unify data and automate workflows by syncing all your growth tools through seamless API connections.",
+    title: "API connection between all ad, CRM, and analytics platforms",
+    description: "Connect all your growth tools to blend data and automate workflows through API connections.",
     icon: <FaLink />,
   },
   {
     title: "Event-based audience segmentation",
-    description: "Dynamically group users based on real-time behavior to enable precise targeting and personalization.",
+    description: " Create dynamic audiences from user behavior to get precise targeting and personalized experiences.",
     icon: <FaCalendarAlt />,
   },
   {
-    title: "Growth loops triggered by user behavior",
-    description: "Turn user actions into automated growth triggers that continuously attract and retain new users.",
+    title: "Behavior-driven growth loops",
+    description: "Take user behavior and turn it into growth triggers that can repeat over and over and can continuously attract and retain new users.",
     icon: <FaSyncAlt />,
   },
   {
     title: "Zero-delay personalization engines",
-    description: "Deliver instant, behavior-driven experiences that adapt to users in real time for higher conversions.",
+    description: "Your users will experience how their behavior drives real-time experiences, instantly increasing conversion rates.",
     icon: <FaBolt/>,
   },
       ],
@@ -353,8 +364,8 @@ const servicesData = {
       description: "Drive growth in niche verticals with cultural fluency, ethnographic insights, and performance marketing built to fit your market.",
     },
     hero: {
-      headline: "In Niche Markets, Culture Converts. We Get It.",
-      highlight: "Culture Converts.",
+      headline: "In Niche Markets, Culture Follows. We Get It.",
+      highlight: "Follows",
       subtext: "We don’t guess what works in healthtech, crypto, aesthetics, or fintech. We speak the codes and we write new ones.",
     },
     problems: {
@@ -372,29 +383,29 @@ const servicesData = {
       items: [
        {
     title: "Deep vertical analysis",
-    description: "In-depth research into your specific industry to inform tailored strategy and messaging.",
+    description: "Detailed exploration of your specific industry to create a tailored strategy and messaging.",
     icon: <FaBook />,
   },
   {
     title: "Hyper-targeted creatives and audience strategy",
-    description: "Custom visuals and audience targeting refined for each segment's unique psychology.",
+    description: "Identified custom visuals and audience targeting with a specificity reflecting the distinct psychology of each segment.",
     icon: <FaPaintBrush />,
   },
   {
-    title: "Channel selection that mirrors buying psychology",
-    description: "We choose platforms based on where and how your audience actually makes decisions.",
+    title: "Channel selection based on your audience's buying psychology",
+    description: "We select channels that mirror the decision-making process of your audience.",
     icon: <FaChartLine />,
   },
   {
     title: "Spend allocation based on niche funnel performance",
-    description: "Budgets are distributed based on real-time funnel performance across each niche.",
+    description: "Budgets will be placed based on live performance of the funnel across each niche.",
     icon: <FaBalanceScale />,
   },  ],
     },
     whyItWorks: {
       title: "Why",
       highlight: "It Works",
-      subtext: "We don’t just market to niches, we live in them.",
+      subtext: "We don’t just market to niches, we speak their language.",
     },
     cta: {
       headline: "Crack Your Category",
@@ -451,27 +462,27 @@ const servicesData = {
       description: "Trigger-based email flows and nurture systems that increase repeat purchases and reduce churn. Built for vertical-specific behavior.",
     },
     hero: {
-      headline: "Retention Isn’t Luck, It’s Engineered",
-      highlight: "Engineered",
+      headline: "Customer Loyalty, Crafted With Style",
+      highlight: "Loyalty",
       subtext: "We build automated flows that turn one-time customers into loyal fans.",
     },
     problems: {
       title: "We ",
-      highlight: "Fix",
+      highlight: "Correct",
       items: [
-        { title: "Weak onboarding and post-purchase flows", icon: <FaSuitcase /> },
-  { title: "Low repeat purchase and rising churn", icon: <FaChartBar /> },
-  { title: "Email sequences that feel robotic", icon: <FaRobot /> },
+        { title: "Flimsy onboarding and post purchase flows", icon: <FaExclamationTriangle /> },
+  { title: "Weak repeat purchase and rising churn", icon: <FaArrowDown /> },
+  { title: "Email sequences that are robotic", icon: <FaMeh /> },
       ],
     },
     deliveries: {
       title: "Our",
       highlight: "System",
       items: [
-        { title: "Behavior-based segmentation and triggers", description: "Group users by real-time actions and automate triggers that respond to their behavior.", icon: <FaBullseye /> },
-  { title: "30-day revenue scorecard for flows", description: "Track and optimize every automated flow using a performance scorecard focused on revenue.", icon: <FaCalendarAlt /> },
-  { title: "Multi-channel nurture architecture", description: "Orchestrate email, SMS, ads, and more to guide leads through a unified, conversion-driven journey.", icon: <FaGlobe /> },
-  { title: "Subject line and creative testing at speed", description: "Rapidly experiment with variations to uncover high-performing messages and visuals.", icon: <FaVial /> },
+        { title: "Behavioral segmentation and triggers", description: "Segment users based on actions taken in real-time, and automate triggers to react to their behaviors.", icon: <FaBullseye /> },
+  { title: "30 revenue scorecard for flows", description: "Measure and optimize each automated flow with a performance scorecard based on revenue.", icon: <FaCalendarAlt /> },
+  { title: "Multi-channel nurture system", description: "Arrange email, SMS, ads, and more into a single journey focused on converting leads.", icon: <FaShareAlt /> },
+  { title: "Subject line and creative tested at speed", description: "Quickly test variations of both messages and images to find the highest performing combinations.", icon: <FaBolt /> },
 
       ],
     },

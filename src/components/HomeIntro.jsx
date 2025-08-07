@@ -9,7 +9,9 @@ const HomeIntro = () => {
   });
 
 
-  const paragraph = `SocialBureau isn’t your typical performance agency. We’re the growth engine behind niche, high-velocity brands looking to scale smarter and faster. No fluff, no vanity metrics—just cultural fluency, ROI-obsession, and surgical strategy that moves the needle where it matters.`;
+  const paragraph = `SocialBureau isn’t standard agency! We’re the engine for niche, high-growth brands
+scaling smarter and faster. We deliver cultural fluency, ROI-driven strategy, and precise
+tactics that create undeniable market impact.`;
   const words = paragraph.split(" ");
 
   return (
@@ -34,10 +36,8 @@ const HomeIntro = () => {
           <div className="flex flex-col lg:flex-row items-center mt-20 px-[8vw]">
             <div className="flex-3 text-white">
               <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-10 lg:leading-15 font-sans">
-                We engineer full-funnel growth strategies that{" "}
-                <span className="text-[#ff0000] font-bold" style={{fontFamily:'Arial'}}>outperform</span>,
-                not just perform. Powered by precision, insight, and
-                vertical-native expertise.
+                We craft bespoke luxury campaigns for global discernment. Fueled by analytics,
+storytelling, and sector-native expertise, we transform visions into legendary brands.
               </h2>
             </div>
           </div>

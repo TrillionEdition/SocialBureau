@@ -4,27 +4,27 @@ const values = [
   {
     icon: "assets/icon1.webp",
     title: "Performance First",
-    desc: "We don't guess; we engineer outcomes.",
+    desc: "We don't guess. We design outcomes.",
   },
   {
     icon: "assets/icon2.webp",
     title: "Niche-Native Thinking",
-    desc: "We master the cultural codes others overlook.",
+    desc: "We understand the cultural codes that others ignore",
   },
   {
     icon: "assets/icon3.webp",
     title: "Speed & Precision",
-    desc: "Fast, focused, flawless.",
+    desc: "Fast, focused and flawless.",
   },
   {
     icon: "assets/icon4.webp",
     title: "Brutal Clarity",
-    desc: "No jargon. Only sharp, actionable insights.",
+    desc: "No jargon. Only sharp, clear, actionable insights",
   },
   {
     icon: "assets/icon5.webp",
     title: "Zero Vanity",
-    desc: "No busywork. Just compounding ROI.",
+    desc: "No fake work. Only compounding ROI.",
   },
 ];
 
@@ -83,11 +83,19 @@ export default function AboutCoreValues() {
           transform-style: preserve-3d;
           transition: all 0.5s cubic-bezier(.23,1,.32,1);
         }
-        .card-3d:hover {
-          transform: rotateY(15deg) rotateX(10deg) scale(1.05);
-          scale:1.3;
-          z-index:45;
-        }
+        @media (min-width: 769px) {
+  .card-3d:hover {
+    transform: rotateY(15deg) rotateX(10deg) scale(1.05);
+    z-index: 45;
+  }
+
+  .card-3d:hover .card-inner {
+    background: linear-gradient(135deg, rgba(255, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
+    border-color: rgba(255, 0, 0, 0.6);
+    box-shadow: 0 20px 40px rgba(255, 0, 0, 0.2), inset 0 0 20px rgba(255, 0, 0, 0.1);
+  }
+}
+
         .card-inner {
           background: linear-gradient(135deg, rgba(255, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.9) 100%);
           border: 1px solid rgba(255,0,0,0.3);
@@ -95,11 +103,12 @@ export default function AboutCoreValues() {
           transform-style: preserve-3d;
           transition: all 0.3s cubic-bezier(.23,1,.32,1);
         }
+          @media (max-width: 800px) {
         .card-3d:hover .card-inner {
           background: linear-gradient(135deg, rgba(255, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
           border-color: rgba(255, 0, 0, 0.6);
           box-shadow: 0 20px 40px rgba(255, 0, 0, 0.2), inset 0 0 20px rgba(255, 0, 0, 0.1);
-        }
+      }}
         .neon-text {
           color: #fff;
           text-shadow:
@@ -158,9 +167,6 @@ export default function AboutCoreValues() {
         .fade-in-up.animate {
           opacity: 1;
           transform: translateY(0);
-        }
-        @media (max-width: 768px) {
-          .card-3d:hover { transform: scale(1.02); }
         }
       `}</style>
       <section className="py-40 px-6 bg-black flex flex-col items-center">

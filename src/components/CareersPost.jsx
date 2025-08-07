@@ -18,8 +18,8 @@ export default function CareersPost() {
     <div className=" text-white font-inter w-full min-h-screen flex justify-center items-center text-center">
         <section id="positions" className="py-20 px-6 md:w-[80vw]">
             <div className="max-w-6xl mx-auto text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ fontFamily: "Playfair Display, serif" }}>Open Positions</h2>
-          <p className="text-xl text-gray-300 font-light">Crafted for the distinguished professional</p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ fontFamily: "Playfair Display, serif" }}>Careers</h2>
+          <p className="text-xl text-gray-300 font-light">Designed for professionals of distinction</p>
         </div>
         <div className="grid md:grid-cols-2 gap-8">
           {positions.map((pos, idx) => (

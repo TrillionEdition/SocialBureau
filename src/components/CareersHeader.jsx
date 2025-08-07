@@ -8,10 +8,10 @@ export default function CareersHeader() {
       <section className="py-30 px-6 text-center">
         <div className="max-w-4xl mx-auto">
           <h1 style={{ fontFamily: "Playfair Display, serif" }} className="text-6xl md:text-7xl font-bold mb-8 leading-tight">
-            Excellence <span className="text-[#ff0000]">Awaits</span>
+            Be  <span className="text-[#ff0000]">Inspired</span>
           </h1>
           <p className="text-xl md:text-2xl font-light text-gray-300 mb-12">
-            Join an elite team where exceptional talent meets extraordinary opportunity
+            Join a premium team of exceptional talent with incredible opportunity
           </p>
           <a
             href="#positions"

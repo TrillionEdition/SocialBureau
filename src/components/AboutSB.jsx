@@ -7,9 +7,10 @@ function randBetween(min, max) {
 
 export const AboutSB = () => {
   const text =
-    "At Social Bureau, we don’t just build marketing campaigns, we architect high-performance ecosystems. Operating under the strategic umbrella of Trillion Edition, we fuse analytical muscle with cultural nuance to drive real outcomes for niche, high-growth brands.";
+  "At SocialBureau, we don’t just build marketing campaigns, we architect high-performance ecosystems. Operating under the strategic umbrella of Trillion Edition, we fuse analytical muscle with cultural nuance to drive real outcomes for niche, high-growth brands.";
 
   const words = text.match(/[\w’'-]+|[.,—]/g);
+
   const refs = useRef([]);
 
   useEffect(() => {
@@ -141,23 +142,33 @@ export const AboutSB = () => {
 
         `}</style>
         <p className="aboutsb-responsive-p text-center hover:scale-110 transition-transform duration-300">
-          {words.map((word, idx) => (
-            <span
-              key={idx}
-              ref={(el) => (refs.current[idx] = el)}
-              style={{
-                display: "inline-block",
-                whiteSpace: word.match(/[.,—]/) ? "normal" : "pre",
-                marginRight: word.match(/[.,—]/) ? 0 : 6,
-                marginLeft: word.match(/[.,—]/) ? 0 : 0,
-                opacity: 0,
-                transform: "none",
-              }}
-            >
-              {word}
-              {word.match(/[.,—]/) ? "\u00A0" : " "}
-            </span>
-          ))}
+          {words.map((word, idx) => {
+  const isSocialBureau = word === "SocialBureau";
+  return (
+    <span
+      key={idx}
+      ref={(el) => (refs.current[idx] = el)}
+      style={{
+        display: "inline-block",
+        whiteSpace: word.match(/[.,—]/) ? "normal" : "pre",
+        marginRight: word.match(/[.,—]/) ? 0 : 6,
+        marginLeft: word.match(/[.,—]/) ? 0 : 0,
+        opacity: 0,
+        transform: "none",
+      }}
+    >
+      {isSocialBureau ? (
+        <span style={{ fontFamily: "MyFont, sans-serif" }}>
+          Social<span className="text-[#ff0000]">B</span>ureau
+        </span>
+      ) : (
+        word
+      )}
+      {word.match(/[.,—]/) ? "\u00A0" : " "}
+    </span>
+  );
+})}
+
         </p>
       </div>
     </div>

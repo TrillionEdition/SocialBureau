@@ -34,7 +34,7 @@ const Animation = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % images.length);
-    }, 700); 
+    }, 2000); 
 
     return () => clearInterval(interval);
   }, []);

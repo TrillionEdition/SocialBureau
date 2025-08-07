@@ -95,13 +95,13 @@ export default function ContactSection() {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="peer w-full bg-neutral-800 p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
+                className="peer w-full bg-neutral-900 p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
               />
               <label
                 htmlFor="name"
                 className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200
-                peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-neutral-800 peer-focus:rounded-lg peer-focus:px-1
-                peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-neutral-800 peer-valid:rounded-lg peer-valid:px-1"
+                peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-neutral-900 peer-focus:rounded-lg peer-focus:px-1
+                peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-neutral-900 peer-valid:rounded-lg peer-valid:px-1"
               >
                 Name *
               </label>
@@ -116,13 +116,13 @@ export default function ContactSection() {
                 value={formData.company}
                 onChange={handleChange}
                 required
-                className="peer w-full bg-neutral-800 p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
+                className="peer w-full bg-neutral-900 p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
               />
               <label
                 htmlFor="company"
                 className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200
-                peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-neutral-800 peer-focus:rounded-lg peer-focus:px-1
-                peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-neutral-800 peer-valid:rounded-lg peer-valid:px-1"
+                peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-neutral-900 peer-focus:rounded-lg peer-focus:px-1
+                peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-neutral-900 peer-valid:rounded-lg peer-valid:px-1"
               >
                 Company *
               </label>
@@ -137,13 +137,13 @@ export default function ContactSection() {
                 value={formData.role}
                 onChange={handleChange}
                 required
-                className="peer w-full bg-neutral-800 p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
+                className="peer w-full bg-neutral-900 p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
               />
               <label
                 htmlFor="role"
                 className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200
-                peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-neutral-800 peer-focus:rounded-lg peer-focus:px-1
-                peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-neutral-800 peer-valid:rounded-lg peer-valid:px-1"
+                peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-neutral-900 peer-focus:rounded-lg peer-focus:px-1
+                peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-neutral-900 peer-valid:rounded-lg peer-valid:px-1"
               >
                 Role *
               </label>
@@ -158,13 +158,13 @@ export default function ContactSection() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="peer w-full bg-neutral-800 p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
+                className="peer w-full bg-neutral-900 p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
               />
               <label
                 htmlFor="email"
                 className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200
-                peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-neutral-800 peer-focus:rounded-lg peer-focus:px-1
-                peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-neutral-800 peer-valid:rounded-lg peer-valid:px-1"
+                peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-neutral-900 peer-focus:rounded-lg peer-focus:px-1
+                peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-neutral-900 peer-valid:rounded-lg peer-valid:px-1"
               >
                 Email *
               </label>
@@ -180,13 +180,13 @@ export default function ContactSection() {
               value={formData.website}
               onChange={handleChange}
               placeholder="https://"
-              className="peer w-full bg-neutral-800 p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
+              className="peer w-full bg-neutral-900 p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
             />
             <label
               htmlFor="website"
               className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200
-              peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-neutral-800 peer-focus:rounded-lg peer-focus:px-1
-              peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-neutral-800 peer-valid:rounded-lg peer-valid:px-1"
+              peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-neutral-900 peer-focus:rounded-lg peer-focus:px-1
+              peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-neutral-900 peer-valid:rounded-lg peer-valid:px-1"
             >
               Website
             </label>
@@ -200,13 +200,13 @@ export default function ContactSection() {
               rows={4}
               value={formData.message}
               onChange={handleChange}              
-              className="peer w-full bg-neutral-800 p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000] resize-none"
+              className="peer w-full bg-neutral-900 p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000] resize-none"
             ></textarea>
             <label
               htmlFor="message"
               className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200
-              peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-neutral-800 peer-focus:rounded-lg peer-focus:px-1
-              peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-neutral-800 peer-valid:rounded-lg peer-valid:px-1"
+              peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-neutral-900 peer-focus:rounded-lg peer-focus:px-1
+              peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-neutral-900 peer-valid:rounded-lg peer-valid:px-1"
             >
               What challenge are you solving? 
             </label>
@@ -258,8 +258,8 @@ export default function ContactSection() {
               <i className="fas fa-rocket text-[#ff0000]"></i>
             </div>
             <p className="text-lg mb-6">
-              "Whether you're stuck in an acquisition plateau or scaling to your
-              next revenue ceiling, let's talk."
+              “If acquisition has plateaued or you're ready to break through your next growth ceiling,
+let’s discuss.”
             </p>
             <div className="flex justify-center gap-8 mb-4">
               <div>
