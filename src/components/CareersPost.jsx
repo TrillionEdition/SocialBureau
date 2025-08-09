@@ -3,14 +3,14 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { Link, useNavigate } from "react-router-dom";
 
 const positions = [
-  {
-    title: "Content Writer & Copywriter",
-    icon: "fas fa-pen-nib",
-    description:
-      "The Content Writer & Copywriter will collaborate with the marketing and creative teams to produce compelling content that aligns with our clients' goals and brand messaging.",
-    type: "Kochi • On-site",
-    link:"https://www.linkedin.com/jobs/view/4268348169"
-  }
+  // {
+  //   title: "Content Writer & Copywriter",
+  //   icon: "fas fa-pen-nib",
+  //   description:
+  //     "The Content Writer & Copywriter will collaborate with the marketing and creative teams to produce compelling content that aligns with our clients' goals and brand messaging.",
+  //   type: "Kochi • On-site",
+  //   link:"https://www.linkedin.com/jobs/view/4268348169"
+  // },
 ];
 
 export default function CareersPost() {
@@ -22,7 +22,8 @@ export default function CareersPost() {
           <p className="text-xl text-gray-300 font-light">Designed for professionals of distinction</p>
         </div>
         <div className="grid md:grid-cols-2 gap-8">
-          {positions.map((pos, idx) => (
+          <p>No openings are currently available.</p>
+          {/* {positions.map((pos, idx) => (
             <div key={idx} className="border border-gray-700 hover:border-[#ff0000] p-5 md:p-8 shadow-xl rounded-[1rem]">
                 <Link to={pos.link}>
               <div className="flex justify-between items-start mb-6">
@@ -36,7 +37,7 @@ export default function CareersPost() {
               </div>
               </Link>
             </div>
-          ))}
+          ))} */}
         </div>
       </section>
 
