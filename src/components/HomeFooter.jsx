@@ -11,7 +11,7 @@ const HomeFooter = () => {
             alt="TrillionEdition"
             className="h-14 md:h-20 cursor-pointer"
             onClick={() =>
-              window.open("https://trillionedition.vercel.app", "_blank")
+              window.open("https://trillionedition.com", "_blank")
             }
           />
           <span className="text-base md:text-lg text-white">

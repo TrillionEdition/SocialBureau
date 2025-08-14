@@ -21,8 +21,9 @@ export default function CareersPost() {
           <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ fontFamily: "Playfair Display, serif" }}>Careers</h2>
           <p className="text-xl text-gray-300 font-light">Designed for professionals of distinction</p>
         </div>
+        <p className="text-center justify-center flex items-center">No openings are currently available.</p>
         <div className="grid md:grid-cols-2 gap-8">
-          <p>No openings are currently available.</p>
+          
           {/* {positions.map((pos, idx) => (
             <div key={idx} className="border border-gray-700 hover:border-[#ff0000] p-5 md:p-8 shadow-xl rounded-[1rem]">
                 <Link to={pos.link}>
