@@ -283,7 +283,7 @@ let’s discuss.”
                 <i className="fab fa-linkedin"></i>
               </a>
               <a href="https://twitter.com" className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition-all duration-200">
-                <i className="fab fa-twitter"></i>
+                <i className="fab fa-x-twitter"></i>
               </a>
               <a href="mailto:info@socialbureau.in" className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition-all duration-200">
                 <i className="fas fa-envelope"></i>
