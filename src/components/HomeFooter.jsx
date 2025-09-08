@@ -25,7 +25,7 @@ const HomeFooter = () => {
 
       {/* Bottom Section */}
       <div className="flex flex-col md:flex-row items-center justify-between bg-black py-20 md:py-10 rounded-lg px-10 md:px-12 lg:px-30 gap-4 mt-4">
-        <h2 className="text-xl md:text-2xl font-semibold text-white text-center md:text-left">
+        <h2 className="text-xl md:text-2xl text-white text-center md:text-left">
           Ready to Engineer Growth That Sticks?
         </h2>
         <button onClick={() => {

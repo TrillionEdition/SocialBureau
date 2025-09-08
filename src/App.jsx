@@ -18,6 +18,7 @@ import Disclaimer from './components/Disclaimer'
 import { Careers } from './pages/Careers'
 import { OurTeam } from './pages/OurTeam'
 import { OurWork } from './pages/OurWork'
+import { ScorePage } from './pages/ScorePage'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
@@ -38,6 +39,7 @@ function App() {
         <Route path="/careers" element={<Careers/>} />
         <Route path="/our-team" element={<OurTeam/>} />
         <Route path="/our-works" element={<OurWork/>} />
+        <Route path="/score" element={<ScorePage/>} />
         <Route path="/services/:serviceTitle" element={<Service1 />} />
         <Route path="/voice" element={
           <Suspense fallback={<div>Loading...</div>}>

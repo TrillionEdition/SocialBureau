@@ -18,13 +18,6 @@ const teamMembers = [
     hoverImage: "/assets/aa.png",
   },
   {
-    name: "Abhishek Sathyan",
-    link: "https://www.linkedin.com/in/abhishek-sathyan-performancemarketer",
-    role: "COO",
-    image: "/assets/people1.png",
-    hoverImage: "/assets/aa.png",
-  },
-  {
     name: "Hajira Mohammed",
     link: "https://www.linkedin.com/in/hajira-mohammed-10005b335",
     role: "Admin",
@@ -32,16 +25,9 @@ const teamMembers = [
     hoverImage: "/assets/aa.png",
   },
   {
-    name: "Nithya M",
-    link: "https://www.linkedin.com/in/nithya-m-bb9285301",
-    role: "CSM",
-    image: "/assets/people1.png",
-    hoverImage: "/assets/aa.png",
-  },
-  {
-    name: "Shankar Krishnan",
+    name: "Anjay Ramesh",
     link: "https://www.linkedin.com/in/shankar-krishnan-1a3800263",
-    role: "Creative Director",
+    role: "Content Writer",
     image: "/assets/people1.png",
     hoverImage: "/assets/aa.png",
   },
@@ -66,6 +52,20 @@ const teamMembers = [
     image: "/assets/people1.png",
     hoverImage: "/assets/aa.png",
   },
+  {
+    name: "Afnas",
+    link: "#",
+    role: "Videographer",
+    image: "/assets/people1.png",
+    hoverImage: "/assets/aa.png",
+  },
+  {
+    name: "Shadil",
+    link: "#",
+    role: "Intern",
+    image: "/assets/people1.png",
+    hoverImage: "/assets/aa.png",
+  },
 ];
 
 const TeamCard = ({ name, role, image, hoverImage, link }) => {
@@ -76,11 +76,11 @@ const TeamCard = ({ name, role, image, hoverImage, link }) => {
         <img
           src={image}
           alt={name}
-          className="rounded-[1rem] absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:opacity-0 "
+          className="rounded-[1rem] absolute inset-0 w-full h-full object-cover transition duration-500 opacity-10 "
         />
         {/* Hover Image */}
         <img
-          src={hoverImage}
+          src={image}
           alt={`${name} Hover`}
           className="absolute inset-0 w-full h-full object-cover scale-110 opacity-0 group-hover:opacity-100 group-hover:scale-[1.2] transition-all duration-700 ease-out"
         />
