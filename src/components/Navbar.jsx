@@ -47,6 +47,9 @@ export default function Navbar() {
           <Link to="/services">Services</Link>
         </li>
         <li className="hover:text-[#ff0000] p-1 hover:font-bold">
+          <Link to="/tool">Business Analyser Tool</Link>
+        </li>
+        <li className="hover:text-[#ff0000] p-1 hover:font-bold">
           <Link to="/careers">Careers</Link>
         </li>
         <li className="hover:text-[#ff0000] p-1 hover:font-bold">
@@ -83,6 +86,9 @@ export default function Navbar() {
           </li>
           <li>
             <Link to="/services">Services</Link>
+          </li>
+          <li>
+            <Link to="/tool">Business Analyser Tool</Link>
           </li>
           <li>
             <Link to="/voice">Let's Talk</Link>

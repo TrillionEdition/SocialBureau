@@ -29,7 +29,7 @@ function App() {
        <ScrollTop />
       <Routes>        
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/about" element={<About />} />        
          <Route path="/casestudy" element={<CaseStudy />} />
         <Route path="/services" element={<Services />} />
         <Route path="/blog" element={<Blog />} />
@@ -39,7 +39,7 @@ function App() {
         <Route path="/careers" element={<Careers/>} />
         <Route path="/our-team" element={<OurTeam/>} />
         <Route path="/our-works" element={<OurWork/>} />
-        <Route path="/score" element={<ScorePage/>} />
+        <Route path="/tool" element={<ScorePage/>} />
         <Route path="/services/:serviceTitle" element={<Service1 />} />
         <Route path="/voice" element={
           <Suspense fallback={<div>Loading...</div>}>
