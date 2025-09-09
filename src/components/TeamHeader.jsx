@@ -3,10 +3,8 @@ import React from 'react'
 export const TeamHeader = () => {
   return (
     <div
-  className="flex border-b-1 border-[#ff0000] flex-col justify-center items-center text-center md:h-[60vh] bg-cover bg-center bg-no-repeat px-4 md:pt-50 pt-15 md:pb-0 pb-20 w-[100vw]"
-  style={{
-    backgroundImage: "linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9)),url('assets/team.jpeg')", // Replace with your actual image path
-  }}
+  className="flex border-b-1 border-[#ff0000] flex-col justify-center items-center text-center bg-cover bg-center bg-no-repeat px-4 pt-15 md:pb-10 pb-10 w-[100vw]"
+  
 >
   <h2
     className="font-playfair text-4xl md:text-5xl font-bold mb-6 text-white"

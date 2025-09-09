@@ -11,7 +11,7 @@ export const About = () => {
 
   return (
     <div className='bg-black text-white '>
-      <HomeMouse/>      
+      {/* <HomeMouse/>       */}
         <AboutSB/>
         <AboutTagline/>
         <AboutCoreValues/>

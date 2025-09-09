@@ -29,7 +29,7 @@ const [isMobile, setIsMobile] = useState(false);
     }, []);
   return (
     <div>
-      <HomeMouse/>
+      {/* <HomeMouse/> */}
         <Navbar/>
       <ServicesHeader onArrowClick={handleArrowClick} />
       {isMobile ? (

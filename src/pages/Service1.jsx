@@ -240,7 +240,7 @@ const Service1 = () => {
   return (
     <div className="relative min-h-screen">
       <InteractiveBackground />
-      <HomeMouse/>
+      {/* <HomeMouse/> */}
       <div className="relative z-10">
         <Navbar />
         <MetaTags title={meta.title} description={meta.description} />

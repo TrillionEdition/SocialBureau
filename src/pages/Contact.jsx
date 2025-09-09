@@ -8,7 +8,7 @@ export const Contact = () => {
   return (
     <div className='bg-black'>
         <Navbar/>
-        <HomeMouse/>
+        {/* <HomeMouse/> */}
         <ContactSection/>
     </div>
   )

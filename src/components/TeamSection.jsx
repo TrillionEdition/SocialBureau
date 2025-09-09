@@ -8,64 +8,64 @@ const teamMembers = [
     link: "https://www.linkedin.com/in/alen-jacob-695a99184",
     role: "Director, CFO & Co-Founder",
     image: "/assets/AlenJacob.webp",
-    hoverImage: "/assets/aa.png",
+    hoverImage: "/assets/AlenJacob.webp",
   },
   {
     name: "Sham S K",
     link: "https://shamsk.vercel.app",
     role: "CEO & Co-Founder",
     image: "/assets/ShamSK.webp",
-    hoverImage: "/assets/aa.png",
+    hoverImage: "/assets/ShamSK.webp",
   },
   {
     name: "Hajira Mohammed",
     link: "https://www.linkedin.com/in/hajira-mohammed-10005b335",
     role: "Admin",
-    image: "/assets/people1.png",
-    hoverImage: "/assets/aa.png",
+    image: "/assets/hajira m.webp",
+    hoverImage: "/assets/hajira.webp",
   },
   {
     name: "Anjay Ramesh",
     link: "https://www.linkedin.com/in/shankar-krishnan-1a3800263",
     role: "Content Writer",
-    image: "/assets/people1.png",
-    hoverImage: "/assets/aa.png",
+    image: "/assets/anjay ramesh.webp",
+    hoverImage: "/assets/anjay.webp",
   },
   {
     name: "Elizebath Thomas",
     link: "https://www.linkedin.com/in/elizebath-thomas-3b7801216",
     role: "Web Developer",
-    image: "/assets/people1.png",
-    hoverImage: "/assets/aa.png",
+    image: "/assets/elizebath thomas.webp",
+    hoverImage: "/assets/elizebath.webp",
   },
   {
     name: "Haridas",
     link: "#",
     role: "Graphics Designer",
-    image: "/assets/people1.png",
-    hoverImage: "/assets/aa.png",
+    image: "/assets/haridas pm.webp",
+    hoverImage: "/assets/haridas.webp",
   },
-  {
-    name: "Rimsad",
-    link: "#",
-    role: "Graphics Designer",
-    image: "/assets/people1.png",
-    hoverImage: "/assets/aa.png",
-  },
+  // {
+  //   name: "Rimsad",
+  //   link: "#",
+  //   role: "Graphics Designer",
+  //   image: "/assets/rimshad.webp",
+  //   hoverImage: "/assets/rimshad.webp",
+  // },
   {
     name: "Afnas",
     link: "#",
     role: "Videographer",
-    image: "/assets/people1.png",
-    hoverImage: "/assets/aa.png",
+    image: "/assets/afnas n.webp",
+    hoverImage: "/assets/afnas.webp",
   },
-  {
-    name: "Shadil",
-    link: "#",
-    role: "Intern",
-    image: "/assets/people1.png",
-    hoverImage: "/assets/aa.png",
-  },
+  // {
+  //   name: "Shadil",
+  //   link: "#",
+  //   role: "Intern",
+  //   image: "/assets/shadil.png",
+  //   hoverImage: "/assets/shadil.png",
+  // },
 ];
 
 const TeamCard = ({ name, role, image, hoverImage, link }) => {
@@ -76,12 +76,12 @@ const TeamCard = ({ name, role, image, hoverImage, link }) => {
         <img
           src={image}
           alt={name}
-          className="rounded-[1rem] absolute inset-0 w-full h-full object-cover transition duration-500 opacity-10 "
+          className="rounded-[1rem] absolute inset-0 w-full h-full object-cover transition duration-500 opacity-100 group-hover:opacity-0"
         />
         {/* Hover Image */}
         <img
-          src={image}
-          alt={`${name} Hover`}
+          src={hoverImage}
+          alt={`${name}`}
           className="absolute inset-0 w-full h-full object-cover scale-110 opacity-0 group-hover:opacity-100 group-hover:scale-[1.2] transition-all duration-700 ease-out"
         />
         <div className="absolute bottom-0 left-0 w-full bg-black text-white p-4 z-10 transition-all duration-500 translate-y-10 group-hover:translate-y-0">
@@ -95,7 +95,7 @@ const TeamCard = ({ name, role, image, hoverImage, link }) => {
 
 const TeamSection = () => {
   return (
-    <section className="bg-black py-16 pt-50 md:px-35 px-10 text-center text-white">
+    <section className="bg-black py-16 pt-30 md:px-35 px-10 text-center text-white">
       <div className="flex flex-wrap justify-center gap-12 gap-y-18">
         {teamMembers.map((member, idx) => (
           <TeamCard key={idx} {...member} />

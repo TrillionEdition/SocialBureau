@@ -40,9 +40,7 @@ export default function Navbar() {
         <li className="p-1 hover:font-bold hover:text-[#ff0000]">
           <Link to="/">Home</Link>
         </li>
-        <li className="hover:text-[#ff0000] p-1 hover:font-bold">
-          <Link to="/about">About</Link>
-        </li>
+        
         <li className="hover:text-[#ff0000] p-1 hover:font-bold">
           <Link to="/services">Services</Link>
         </li>
@@ -50,7 +48,16 @@ export default function Navbar() {
           <Link to="/tool">Business Analyser Tool</Link>
         </li>
         <li className="hover:text-[#ff0000] p-1 hover:font-bold">
+          <Link to="/blog">Blogs</Link>
+        </li>
+        <li className="hover:text-[#ff0000] p-1 hover:font-bold">
           <Link to="/careers">Careers</Link>
+        </li>
+        <li className="hover:text-[#ff0000] p-1 hover:font-bold">
+          <Link to="/our-team">Our Team</Link>
+        </li>
+        <li className="hover:text-[#ff0000] p-1 hover:font-bold">
+          <Link to="/about">About</Link>
         </li>
         <li className="hover:text-[#ff0000] p-1 hover:font-bold">
           <Link to="/contact">Contact</Link>
@@ -76,19 +83,25 @@ export default function Navbar() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/about">About</Link>
-          </li>
-          <li>
             <Link to="/careers">Careers</Link>
-          </li>
-          <li>
-            <Link to="/contact">Contact</Link>
-          </li>
+          </li>          
           <li>
             <Link to="/services">Services</Link>
           </li>
           <li>
             <Link to="/tool">Business Analyser Tool</Link>
+          </li>
+          <li>
+            <Link to="/blog">Blogs</Link>
+          </li>
+          <li>
+            <Link to="/our-team">Our Team</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+          <li>
+            <Link to="/contact">Contact</Link>
           </li>
           <li>
             <Link to="/voice">Let's Talk</Link>

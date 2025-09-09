@@ -9,7 +9,7 @@ import HomeMouse from '../components/HomeMouse'
 export const CaseStudy = () => {
   return (
     <div>
-        <HomeMouse/>
+        {/* <HomeMouse/> */}
         <Navbar/>
         <CaseStudyHeader/>
         <CaseStudyCards/>

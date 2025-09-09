@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, Building2, Target, DollarSign, MessageSquare, Download, BarChart3, TrendingUp, AlertTriangle, CheckCircle, Loader } from 'lucide-react';
+import emailjs from 'emailjs-com';
 
 const InteractiveForm = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ const InteractiveForm = () => {
     challenges: "",
     goals: "",
   });
-
+  
   const industries = [
     "Technology",
     "Healthcare",
@@ -45,6 +46,30 @@ const InteractiveForm = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     validateField(name, value);
   };
+
+  const sendEmail = (recipient, subject, message) => {
+  return emailjs.send(
+    import.meta.env.VITE_EMAILJS_SERVICE_ID,   // ✅ Correct
+    import.meta.env.VITE_EMAILJS_TEMPLATE_ID,  // ✅ Correct
+    {
+      to_email: recipient,
+      subject,
+      message,
+    },
+    import.meta.env.VITE_EMAILJS_PUBLIC_KEY 
+  );
+};
+function formatKey(key) {
+  // Split camelCase or snake_case into words and capitalize each
+  return key
+    .replace(/([A-Z])/g, " $1") // add space before capital letters
+    .replace(/[_-]/g, " ") // replace underscores/dashes with space
+    .replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1)); // capitalize each word
+}
+
+
+
+// Send to user and admin (can be parallel)
 
   const validateField = (name, value) => {
     let error = "";
@@ -234,10 +259,109 @@ Be precise, data-driven, and provide specific, actionable insights. Consider ind
     } finally {
       setIsAnalyzing(false);
     }
+      // After setAnalysis(analysisResult); and before setShowReport(true);
+const userEmail = formData.contactEmail;
+const adminEmail = 'web.socialbureau@gmail.com'; // put your admin email here
+
+const subject = `TrillionEdition AI Business Analysis Report for ${formData.companyName}`;
+console.log(analysis);
+
+const message = `
+  <h2>Company Details</h2>
+  <table border="1" cellpadding="6" cellspacing="0" 
+    style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 14px;">
+    <tr><td><strong>Company Name</strong></td><td>${formData.companyName}</td></tr>
+    <tr><td><strong>Industry</strong></td><td>${formData.industry}</td></tr>
+    <tr><td><strong>Size</strong></td><td>${formData.size}</td></tr>
+    <tr><td><strong>Email</strong></td><td>${formData.contactEmail}</td></tr>
+    <tr><td><strong>Phone</strong></td><td>${formData.contactPhone}</td></tr>
+    <tr><td><strong>Vision</strong></td><td>${formData.vision}</td></tr>
+    <tr><td><strong>Mission</strong></td><td>${formData.mission}</td></tr>
+    <tr><td><strong>USP</strong></td><td>${formData.usp}</td></tr>
+    <tr><td><strong>Main Services</strong></td><td>${formData.mainServices}</td></tr>
+    <tr><td><strong>API Spend</strong></td><td>${formData.apiSpend}</td></tr>
+    <tr><td><strong>Performance Marketing Budget</strong></td><td>${formData.perfMarketingBudget}</td></tr>
+    <tr><td><strong>Social Media Spend</strong></td><td>${formData.socialMediaSpend}</td></tr>
+    <tr><td><strong>Digital Campaign Spend</strong></td><td>${formData.digitalCampaignSpend}</td></tr>
+    <tr><td><strong>Content Marketing Budget</strong></td><td>${formData.contentMarketingBudget}</td></tr>
+    <tr><td><strong>Metrics</strong></td><td>${formData.metrics}</td></tr>
+    <tr><td><strong>Priorities</strong></td><td>${formData.priorities}</td></tr>
+    <tr><td><strong>Challenges</strong></td><td>${formData.challenges}</td></tr>
+    <tr><td><strong>Goals</strong></td><td>${formData.goals}</td></tr>
+  </table>
+
+  <h2>Analysis Result</h2>
+  <table border="1" cellpadding="6" cellspacing="0" 
+    style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 14px;">
+    <tr><td><strong>Overall Score</strong></td>
+        <td style="color:${analysis.overallScore >= 70 ? 'green' : analysis.overallScore >= 50 ? 'orange' : 'red'};">
+          ${analysis.overallScore}
+        </td></tr>
+    <tr><td><strong>Industry Benchmark</strong></td><td>${analysis.industryBenchmark}</td></tr>
+    <tr><td><strong>Performance Level</strong></td>
+        <td style="color:${analysis.performance.level === 'Good' ? 'green' : analysis.performance.level === 'Fair' ? 'orange' : 'red'};">
+          ${analysis.performance.level}
+        </td></tr>
+    <tr><td><strong>Description</strong></td><td>${analysis.performance.description}</td></tr>
+  </table>
+
+  <h3>Category Scores</h3>
+  <table border="1" cellpadding="6" cellspacing="0" 
+    style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 14px;">
+    ${Object.entries(analysis.categoryScores)
+      .map(([k, v]) => {
+        let color = v >= 15 ? "green" : v >= 10 ? "orange" : "red";
+        return `<tr><td><strong>${formatKey(k)}</strong></td><td style="color:${color};">${v}</td></tr>`;
+      })
+      .join("")}
+  </table>
+
+  <h3>Strengths</h3>
+  <ul>
+    ${analysis.strengths.map(s => `<li>${s}</li>`).join("")}
+  </ul>
+
+  <h3>Weaknesses</h3>
+  <ul>
+    ${analysis.weaknesses.map(w => `<li>${w}</li>`).join("")}
+  </ul>
+
+  <h3>Recommendations</h3>
+  <ul>
+    ${analysis.recommendations.map(r => `<li>${r}</li>`).join("")}
+  </ul>
+
+  <h3>Detailed Analysis</h3>
+  <ul>
+    ${Object.entries(analysis.detailedAnalysis)
+      .map(([k, v]) => `<li><strong>${k}:</strong> ${v}</li>`)
+      .join("")}
+  </ul>
+
+  <p style="margin-top:20px;">Best regards,<br><strong>SocialBureau Team</strong></p>
+`;
+
+    sendEmail(userEmail, subject, message)
+      .then(() => console.log('Email sent to user'))
+      .catch(err => console.error('User email error:', err));
+
+    sendEmail(adminEmail, subject, message)
+      .then(() => console.log('Email sent to admin'))
+      .catch(err => console.error('Admin email error:', err));
+
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+  if (!formData.contactEmail.trim()) {
+    setErrors({ contactEmail: "Company email id is required" });
+    return;
+  }
+  else if (!formData.contactPhone.trim()) {
+    setErrors({ contactPhone: "Phone number is required" });
+    return;
+  }
     analyzeWithOpenAI();
   };
 
@@ -545,7 +669,7 @@ Be precise, data-driven, and provide specific, actionable insights. Consider ind
               {selected || "Select Industry / Sector"}
             </button>
             {open && (
-              <ul className="absolute mt-1 w-full bg-black rounded-lg border border-gray-700 shadow-lg z-20 max-h-48 overflow-y-auto">
+              <ul className="absolute mt-1 w-full bg-black rounded-lg border border-gray-700 shadow-lg z-20 max-h-40 overflow-y-auto">
                 {industries.map((industry, idx) => (
                   <li
                     key={idx}
@@ -580,7 +704,7 @@ Be precise, data-driven, and provide specific, actionable insights. Consider ind
           </div>
           <div>
             <input
-              type="email"
+              type="email" required
               name="contactEmail"
               placeholder="Email Address"
               value={formData.contactEmail}
@@ -596,7 +720,7 @@ Be precise, data-driven, and provide specific, actionable insights. Consider ind
           <div>
             <input
               type="text"
-              name="contactPhone"
+              name="contactPhone" required
               placeholder="Phone Number"
               value={formData.contactPhone}
               onChange={handleChange}
@@ -660,7 +784,7 @@ Be precise, data-driven, and provide specific, actionable insights. Consider ind
             <input
               type="number"
               name="apiSpend"
-              placeholder="API Spend (Annual $)"
+              placeholder="Digital Marketing Spend (Annual $)"
               value={formData.apiSpend}
               onChange={handleChange}
               className={`w-full bg-gradient-to-br from-black to-[#3f0000] text-gray-300 p-3 rounded-lg border 
@@ -734,44 +858,129 @@ Be precise, data-driven, and provide specific, actionable insights. Consider ind
         </div>
       )
     },
-    {
-      key: 'strategy',
-      title: 'Strategic Planning',
-      icon: MessageSquare,
-      fields: ['priorities', 'challenges', 'goals', 'metrics'],
-      content: (
-        <div className="space-y-4">
-          <textarea
-            name="priorities"
-            placeholder="Current Priorities - What are your top business priorities this year?"
-            value={formData.priorities}
+   {
+  key: 'strategy',
+  title: 'Strategic Planning',
+  icon: MessageSquare,
+  fields: ['priorities', 'challenges', 'goals', 'metrics'],
+  content: (
+    <div className="space-y-4">
+
+      {/* Checklist - Priorities */}
+      <div className="space-y-2">
+        <p className="text-gray-300 text-sm">Business Priorities</p>
+        {["Growth", "Cost Reduction", "Innovation", "Customer Retention", "Other"].map((priority) => (
+          <label key={priority} className="flex items-center space-x-2 text-gray-300">
+            <input
+              type="checkbox"
+              name="priorities"
+              value={priority}
+              checked={formData.priorities.includes(priority)}
+              onChange={handleChange}
+              className="accent-red-500 h-4 w-4"
+            />
+            <span>{priority}</span>
+          </label>
+        ))}
+        {/* Text field for "Other" */}
+        {formData.priorities.includes("Other") && (
+          <input
+            type="text"
+            name="prioritiesOther"
+            placeholder="Please specify"
+            value={formData.prioritiesOther || ""}
             onChange={handleChange}
-            className="w-full h-24 bg-gradient-to-br from-black to-[#3f0000] text-gray-300 p-3 rounded-lg border border-gray-700 focus:border-red-500 focus:outline-none transition-all duration-200 text-sm sm:text-base resize-y"
+            className="w-full bg-black text-gray-300 p-2 rounded-lg border border-gray-700 focus:border-red-500 focus:outline-none text-sm"
           />
-          <textarea
-            name="challenges"
-            placeholder="Key Challenges - What obstacles are you currently facing?"
-            value={formData.challenges}
+        )}
+      </div>
+
+      {/* Dropdown - Challenges */}
+      <div className="space-y-2">
+        <select
+          name="challenges"
+          value={formData.challenges}
+          onChange={handleChange}
+          className="w-full bg-black text-gray-300 p-3 rounded-lg border border-gray-700 focus:border-red-500 focus:outline-none transition-all duration-200 text-sm sm:text-base"
+        >
+          <option value="">Select Key Challenge</option>
+          <option value="competition">High Competition</option>
+          <option value="hiring">Talent Acquisition</option>
+          <option value="scaling">Scaling Operations</option>
+          <option value="cashflow">Cash Flow Management</option>
+          <option value="other">Other</option>
+        </select>
+        {formData.challenges === "other" && (
+          <input
+            type="text"
+            name="challengesOther"
+            placeholder="Please specify"
+            value={formData.challengesOther || ""}
             onChange={handleChange}
-            className="w-full h-24 bg-gradient-to-br from-black to-[#3f0000] text-gray-300 p-3 rounded-lg border border-gray-700 focus:border-red-500 focus:outline-none transition-all duration-200 text-sm sm:text-base resize-y"
+            className="w-full bg-black text-gray-300 p-2 rounded-lg border border-gray-700 focus:border-red-500 focus:outline-none text-sm"
           />
-          <textarea
-            name="goals"
-            placeholder="Goals - What do you want to achieve in the next 12 months?"
-            value={formData.goals}
+        )}
+      </div>
+
+      {/* Checklist - Goals */}
+      <div className="space-y-2">
+        <p className="text-gray-300 text-sm">Next 12-Month Goals</p>
+        {["Expand Market", "Launch New Product", "Increase Revenue", "Improve Efficiency", "Other"].map((goal) => (
+          <label key={goal} className="flex items-center space-x-2 text-gray-300">
+            <input
+              type="checkbox"
+              name="goals"
+              value={goal}
+              checked={formData.goals.includes(goal)}
+              onChange={handleChange}
+              className="accent-red-500 h-4 w-4"
+            />
+            <span>{goal}</span>
+          </label>
+        ))}
+        {formData.goals.includes("Other") && (
+          <input
+            type="text"
+            name="goalsOther"
+            placeholder="Please specify"
+            value={formData.goalsOther || ""}
             onChange={handleChange}
-            className="w-full h-24 bg-gradient-to-br from-black to-[#3f0000] text-gray-300 p-3 rounded-lg border border-gray-700 focus:border-red-500 focus:outline-none transition-all duration-200 text-sm sm:text-base resize-y"
+            className="w-full bg-black text-gray-300 p-2 rounded-lg border border-gray-700 focus:border-red-500 focus:outline-none text-sm"
           />
-          <textarea
-            name="metrics"
-            placeholder="Key Metrics - How do you currently measure success?"
-            value={formData.metrics}
+        )}
+      </div>
+
+      {/* Checklist - Metrics */}
+      <div className="space-y-2">
+        <p className="text-gray-300 text-sm">Key Metrics (How you measure success)</p>
+        {["Revenue Growth", "Customer Satisfaction", "Market Share", "Employee Productivity", "Other"].map((metric) => (
+          <label key={metric} className="flex items-center space-x-2 text-gray-300">
+            <input
+              type="checkbox"
+              name="metrics"
+              value={metric}
+              checked={formData.metrics.includes(metric)}
+              onChange={handleChange}
+              className="accent-red-500 h-4 w-4"
+            />
+            <span>{metric}</span>
+          </label>
+        ))}
+        {formData.metrics.includes("Other") && (
+          <input
+            type="text"
+            name="metricsOther"
+            placeholder="Please specify"
+            value={formData.metricsOther || ""}
             onChange={handleChange}
-            className="w-full h-24 bg-gradient-to-br from-black to-[#3f0000] text-gray-300 p-3 rounded-lg border border-gray-700 focus:border-red-500 focus:outline-none transition-all duration-200 text-sm sm:text-base resize-y"
+            className="w-full bg-black text-gray-300 p-2 rounded-lg border border-gray-700 focus:border-red-500 focus:outline-none text-sm"
           />
-        </div>
-      )
-    }
+        )}
+      </div>
+    </div>
+  )
+}
+
   ];
 
   const ScoreBar = ({ label, score, maxScore, color = "bg-red-500" }) => (
@@ -857,7 +1066,7 @@ Be precise, data-driven, and provide specific, actionable insights. Consider ind
             {/* Submit Section */}
             <div className="pt-6">
               <button 
-                type="button" 
+                type="submit" 
                 onClick={handleSubmit}
                 disabled={isAnalyzing}
                 className="w-full bg-gradient-to-b from-[#3f0000] to-black text-white py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"

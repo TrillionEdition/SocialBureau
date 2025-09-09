@@ -4,9 +4,6 @@ const fetchChannelVideos = async () => {
   const url = `https://www.googleapis.com/youtube/v3/search?key=${import.meta.env.VITE_YOUTUBE_API_KEY}&channelId=${import.meta.env.VITE_CHANNEL_ID}&part=snippet,id&order=date&maxResults=6`;
   const response = await fetch(url);
   const data = await response.json();
-  console.log(url, response, data);
-  
-  // Filter for videos only
   return data.items.filter(item => item.id.kind === 'youtube#video');
 };
 

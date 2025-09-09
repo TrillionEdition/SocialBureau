@@ -9,7 +9,7 @@ export const OurWork = () => {
   return (
     <div>
         <Navbar/>
-        <HomeMouse/>
+        {/* <HomeMouse/> */}
         <WorksHeader/>
         <ScrollingGallery/>
         <Footer/>

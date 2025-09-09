@@ -7,7 +7,7 @@ export const ScorePage = () => {
   return (
     <div className='bg-black'>
         <Navbar/>
-        <HomeMouse/>
+        {/* <HomeMouse/> */}
         <InteractiveForm/>
     </div>
   )

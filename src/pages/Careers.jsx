@@ -10,7 +10,7 @@ export const Careers = () => {
   return (
     <div>
         <Navbar/>
-        <HomeMouse/>
+        {/* <HomeMouse/> */}
         <CareersHeader/>
         <CareersContent/>
         <CareersPost/>    

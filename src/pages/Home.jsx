@@ -12,7 +12,7 @@ import { Header } from '../components/Header'
 export const Home = () => {
   return (
     <div className='bg-black'>      
-        <HomeMouse/>
+        {/* <HomeMouse/> */}
         {/* <Header/> */}
         <Animation/>
         <HomeIntro/>

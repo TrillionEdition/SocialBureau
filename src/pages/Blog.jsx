@@ -9,7 +9,7 @@ export const Blog = () => {
   return (
     <div className='bg-black'>
         <Navbar/>
-        <HomeMouse/>
+        {/* <HomeMouse/> */}
         <BlogHeader/>
         <BlogPosts/>
         <Footer/>
