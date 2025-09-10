@@ -28,9 +28,6 @@ tactics that create undeniable market impact.`;
  <div
  className=" flex flex-col items-center justify-center px-4 py-10 md:pt-20 bg-black overflow-hidden"
  >
- {/* Gradients */}
- <div className="absolute top-0 left-0 w-64 md:h-64 bg-gradient-to-br from-[#ff0000] via-transparent to-transparent rounded-full blur-3xl z-0"></div>
- <div className="absolute bottom-0 right-0 w-64 md:h-64 bg-gradient-to-tl from-[#ff0000] via-transparent to-transparent rounded-full blur-2xl z-0"></div>
 
  {/* Main Content */}
  <div className="relative z-10 text-white text-left px-10 w-full">
@@ -48,13 +45,13 @@ tactics that create undeniable market impact.`;
             {/* Right Column for H2 */}
             <div className="md:w-1/3 mt-10 md:mt-0 md:pl-10 border-l-2 border-[#ff0000]">
               <h2 className="text-sm md:text-base lg:text-lg leading-relaxed font-sans text-left pl-4 text-[#838383ff]">
-                We craft bespoke luxury campaigns for global discernment. Fueled by analytics,
+We craft bespoke luxury campaigns for global discernment. Fueled by analytics,
                 storytelling, and sector-native expertise, we transform visions into legendary brands.
               </h2>
             </div>
           </div>
         </div>
- </div>
+ </div>                
 
  <div className="px-6 lg:px-40 text-white text-center">
  <p
