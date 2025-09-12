@@ -13,8 +13,8 @@ export const Home = () => {
   return (
     <div className='bg-black'>      
         {/* <HomeMouse/> */}
-        {/* <CyberBackground/> */}
-        <Animation/>
+        <CyberBackground/>
+        {/* <Animation/> */}
         <HomeIntro/>
         <Navbar/>
         <HomeCards/>
