@@ -34,8 +34,18 @@ export default function LatestVideos() {
   const visibleOthers = isMobile ? others.slice(0, 4) : others;
 
   return (
-    <div className="container mx-auto p-4 text-white">
-      <h2 className="text-xl font-bold mb-4">Latest Videos</h2>
+    <div className="container mx-auto p-4 text-white">      
+<div className="flex items-center justify-between my-6">
+  <h2 className="text-xl font-bold">Latest Videos</h2>
+  <a
+    href={`https://www.youtube.com/channel/${import.meta.env.VITE_CHANNEL_ID}?sub_confirmation=1`}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-md transition duration-300"
+  >
+    Subscribe
+  </a>
+</div>
 
       {/* Fullscreen latest video */}
       <div className="mb-6 w-full">
@@ -59,7 +69,7 @@ export default function LatestVideos() {
         {visibleOthers.map((video) => (
           <div
             key={video.id.videoId}
-            className="bg-[#3f0000] rounded-lg shadow overflow-hidden flex flex-col"
+            className="rounded-lg shadow overflow-hidden flex flex-col"
           >
             <a
               href={`https://www.youtube.com/watch?v=${video.id.videoId}`}
@@ -81,6 +91,17 @@ export default function LatestVideos() {
           </div>
         ))}
       </div>
+      <div className="flex justify-center my-6">
+  <a
+    href={`https://www.youtube.com/channel/${import.meta.env.VITE_CHANNEL_ID}?sub_confirmation=1`}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-md transition duration-300"
+  >
+    Subscribe
+  </a>
+</div>
+
     </div>
   );
 }

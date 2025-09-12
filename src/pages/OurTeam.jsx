@@ -5,6 +5,7 @@ import { TeamHeader } from '../components/TeamHeader'
 import TeamSection from '../components/TeamSection'
 import HomeMouse from '../components/HomeMouse'
 import LatestVideos from '../components/YoutubeVideos'
+import Testimonials from '../components/Testimonials'
 
 export const OurTeam = () => {
   return (
@@ -14,6 +15,7 @@ export const OurTeam = () => {
         <TeamHeader/>
         <TeamSection/>
         <LatestVideos/>
+        {/* <Testimonials/> */}
         <Footer/>
     </div>
   )

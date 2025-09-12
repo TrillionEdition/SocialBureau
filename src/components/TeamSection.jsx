@@ -38,14 +38,21 @@ const teamMembers = [
     hoverImage: "/assets/elizebath.webp",
   },
   {
-    name: "Haridas",
+    name: "Haridas P M",
     link: "#",
     role: "Graphics Designer",
     image: "/assets/haridas pm.webp",
     hoverImage: "/assets/haridas.webp",
   },
   {
-    name: "Afnas",
+    name: "Rimshad M",
+    link: "#",
+    role: "Graphics Designer",
+    image: "/assets/rimshad m.webp",
+    hoverImage: "/assets/rimshad.webp",
+  },
+  {
+    name: "Afnas N",
     link: "#",
     role: "Videographer",
     image: "/assets/afnas n.webp",
