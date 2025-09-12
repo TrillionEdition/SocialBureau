@@ -1,6 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const teamMembers = [
   {
@@ -45,13 +44,6 @@ const teamMembers = [
     image: "/assets/haridas pm.webp",
     hoverImage: "/assets/haridas.webp",
   },
-  // {
-  //   name: "Rimsad",
-  //   link: "#",
-  //   role: "Graphics Designer",
-  //   image: "/assets/rimshad.webp",
-  //   hoverImage: "/assets/rimshad.webp",
-  // },
   {
     name: "Afnas",
     link: "#",
@@ -59,13 +51,6 @@ const teamMembers = [
     image: "/assets/afnas n.webp",
     hoverImage: "/assets/afnas.webp",
   },
-  // {
-  //   name: "Shadil",
-  //   link: "#",
-  //   role: "Intern",
-  //   image: "/assets/shadil.png",
-  //   hoverImage: "/assets/shadil.png",
-  // },
 ];
 
 const TeamCard = ({ name, role, image, hoverImage, link }) => {
@@ -85,23 +70,35 @@ const TeamCard = ({ name, role, image, hoverImage, link }) => {
           className="absolute inset-0 w-full h-full object-cover scale-110 opacity-0 group-hover:opacity-100 group-hover:scale-[1.2] transition-all duration-700 ease-out"
         />
         <div className="absolute bottom-0 left-0 w-full bg-black text-white p-4 z-10 transition-all duration-500 translate-y-10 group-hover:translate-y-0">
-        <h3 className="text-xl font-semibold">{name}</h3>
-        <p className="text-sm opacity-80">{role}</p>
-      </div>
+          <h3 className="text-xl font-semibold">{name}</h3>
+          <p className="text-sm opacity-80">{role}</p>
+        </div>
       </Link>
     </div>
   );
 };
 
 const TeamSection = () => {
+  const firstRow = teamMembers.slice(0, 2);
+  const rest = teamMembers.slice(2);
+
   return (
-    <section className="bg-black py-16 pt-30 md:px-35 px-10 text-center text-white">
-      <div className="flex flex-wrap justify-center gap-12 gap-y-18">
-        {teamMembers.map((member, idx) => (
+    <section className="bg-black py-16 md:px-35 px-10 text-center text-white">
+      {/* First Row → Only 2 Columns */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 mb-16">
+        {firstRow.map((member, idx) => (
           <TeamCard key={idx} {...member} />
         ))}
       </div>
+
+      {/* Rest → Normal Grid */}
+      <div className="flex flex-wrap justify-center gap-12 gap-y-18">
+        {rest.map((member, idx) => (
+          <TeamCard key={idx + 2} {...member} />
+        ))}
+      </div>
     </section>
+    
   );
 };
 

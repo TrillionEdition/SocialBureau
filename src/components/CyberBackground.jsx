@@ -154,7 +154,7 @@ export function CyberBackground({
         }}
       />
 
-      {/* Mobile tap button */}
+      {/* Mobile tap button
       <button
         onTouchStart={(e) => {
           const t = e.touches && e.touches[0];
@@ -175,8 +175,8 @@ export function CyberBackground({
         }}
         className="md:hidden absolute bottom-6 left-1/2 -translate-x-1/2 bg-transparent border px-3 py-2 rounded-full text-sm text-red-300"
       >
-        Tap to reveal
-      </button>
+        
+      </button> */}
     </div>
   );
 }
