@@ -34,3 +34,20 @@
   animation: spin3d 20s linear infinite;
 }
 
+@keyframes move1 {
+  0%, 100% { transform: translate(-30%, -30%); }
+  50% { transform: translate(30%, 30%); }
+}
+
+@keyframes move2 {
+  0%, 100% { transform: translate(30%, -20%); }
+  50% { transform: translate(-30%, 20%); }
+}
+
+.animate-move1 {
+  animation: move1 12s ease-in-out infinite alternate;
+}
+
+.animate-move2 {
+  animation: move2 15s ease-in-out infinite alternate;
+}

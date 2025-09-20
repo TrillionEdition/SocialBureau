@@ -102,7 +102,7 @@ const servicesData = {
     cta: {
       headline: "Ready to unlock full-funnel ROI?",
       button: "Talk to a Growth Operator",
-      link: "tel:+916238422887",
+      link: "tel:+918921840486",
     },
   },
 
@@ -143,7 +143,7 @@ const servicesData = {
     cta: {
       headline: "Map Your Growth Journey Now",
       button: "Schedule Discovery",
-      link: "tel:+916238422887",
+      link: "tel:+918921840486",
     },
   },
 
@@ -184,7 +184,7 @@ const servicesData = {
     cta: {
       headline: "Want Pages That Convert? Let’s Test That.",
       button: "Contact Now",
-      link: "tel:+916238422887",
+      link: "tel:+918921840486",
     },
   },
 
@@ -225,7 +225,7 @@ const servicesData = {
     cta: {
       headline: "Speak the Language of Your Market.",
       button: "Contact Now",
-      link: "tel:+916238422887",
+      link: "tel:+918921840486",
     },
   },
 "Web Application Development": {
@@ -297,7 +297,7 @@ const servicesData = {
   cta: {
     headline: "Let’s Build Your Platform.",
     button: "Start Your Web App",
-    link: "tel:+916238422887",
+    link: "tel:+918921840486",
   },
 },
 
@@ -354,7 +354,7 @@ const servicesData = {
     cta: {
       headline: "Ready to Scale with Automation?",
       button: "Automate Growth",
-      link: "tel:+916238422887",
+      link: "tel:+918921840486",
     },
   },
 
@@ -410,7 +410,7 @@ const servicesData = {
     cta: {
       headline: "Crack Your Category",
       button: "Talk Strategy",
-      link: "tel:+916238422887",
+      link: "tel:+918921840486",
     },
   },
 
@@ -452,7 +452,7 @@ const servicesData = {
     cta: {
       headline: "Let’s Make Influencer Spend Perform.",
       button: "Launch a UGC Engine",
-      link: "tel:+916238422887",
+      link: "tel:+918921840486",
     },
   },
 
@@ -494,7 +494,7 @@ const servicesData = {
     cta: {
       headline: "Let’s Turn Lifecycle Into Lifetime Value.",
       button: "Book a Retention Audit",
-      link: "tel:+916238422887",
+      link: "tel:+918921840486",
     },
   },
   "Software GTM & Growth Architecture": {
@@ -551,7 +551,7 @@ const servicesData = {
     cta: {
       headline: "Ready to Scale Smarter",
       button: "Contact Now",
-      link: "tel:+916238422887",
+      link: "tel:+918921840486",
     },
   },
 };

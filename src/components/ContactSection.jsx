@@ -237,7 +237,7 @@ export default function ContactSection() {
             <button
               onClick={() => {
                 window.open(
-                  "https://wa.me/916238422887?text=Hello, I would like to learn more.",
+                  "https://wa.me/918921840486?text=Hello, I would like to learn more.",
                   "_blank"
                 );
               }}

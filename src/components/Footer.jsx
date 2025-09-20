@@ -18,7 +18,7 @@ export default function Footer() {
 
   {/* WhatsApp */}
   <a
-    href="tel:+916238422887"
+    href="tel:+918921840486"
     className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition"
   >
     <FaWhatsapp size={20} />
