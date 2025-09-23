@@ -25,7 +25,7 @@ const teamMembers = [
   },
   {
     name: "Anjay Ramesh",
-    link: "https://www.linkedin.com/in/shankar-krishnan-1a3800263",
+    link: "https://www.linkedin.com/in/anjay-ramesh-49811b166",
     role: "Content Writer & Copy Writer",
     image: "/assets/anjay ramesh.webp",
     hoverImage: "/assets/anjay.webp",
@@ -39,14 +39,14 @@ const teamMembers = [
   },
   {
     name: "Haridas P M",
-    link: "#",
+    link: "https://www.linkedin.com/in/haridas-pm-22april2000",
     role: "Graphics Designer",
     image: "/assets/haridas pm.webp",
     hoverImage: "/assets/haridas.webp",
   },
   {
     name: "Rimshad M",
-    link: "#",
+    link: "https://www.linkedin.com/in/rimshad",
     role: "Graphics Designer",
     image: "/assets/rimshad m.webp",
     hoverImage: "/assets/rimshad.webp",
