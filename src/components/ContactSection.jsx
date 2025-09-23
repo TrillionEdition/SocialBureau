@@ -212,7 +212,7 @@ export default function ContactSection() {
             </label>
           </div>
           
-          <button 
+          <button name="send"
             onClick={handleSubmit}
             disabled={isSubmitting || !formData.name || !formData.email || !formData.company || !formData.role || !formData.message}
             className="w-full border border-white hover:border-[#ff0000] text-white hover:bg-[#ff0000] transition-all duration-300 font-medium py-3 px-3 rounded-md flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
@@ -234,7 +234,7 @@ export default function ContactSection() {
             <p className="text-lg md:text-xl font-semibold text-white">
               Talk to a Growth Architect
             </p>
-            <button
+            <button name="chat"
               onClick={() => {
                 window.open(
                   "https://wa.me/918921840486?text=Hello, I would like to learn more.",

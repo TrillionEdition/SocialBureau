@@ -11,7 +11,7 @@ export const NotFound = () => {
         alt="Not Found"
         className="mb-6 max-h-[60vh]"
       />
-      <button
+      <button name='home'
         onClick={() => navigate('/')}
         className="bg-[#ff0000] font-bold text-white px-6 py-2 rounded-lg hover:bg-white hover:text-[#ff0000] transition-all"
       >

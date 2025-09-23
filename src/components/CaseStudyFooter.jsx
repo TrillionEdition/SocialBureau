@@ -12,7 +12,7 @@ export default function CaseStudyFooter() {
           Ready to engineer measurable growth for your brand? Let's discuss
           how we can replicate these results for you.
         </p>
-        <button className="bg-[#ff0000] hover:bg-[#ff0000] transition-colors text-white font-semibold text-base py-3 px-6 rounded-full inline-flex items-center gap-2">
+        <button name="request" className="bg-[#ff0000] hover:bg-[#ff0000] transition-colors text-white font-semibold text-base py-3 px-6 rounded-full inline-flex items-center gap-2">
           <FaCalendarAlt />
           Request a Strategy Session
         </button>

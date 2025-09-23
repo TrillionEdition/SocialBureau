@@ -114,7 +114,7 @@ function VideoCard({ video }) {
             <h3 className="text-white font-semibold text-sm truncate">
               {video.title}
             </h3>
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-red-600 hover:bg-red-700">
+            <button name="play" className="w-8 h-8 flex items-center justify-center rounded-full bg-red-600 hover:bg-red-700">
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"

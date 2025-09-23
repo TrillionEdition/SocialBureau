@@ -661,7 +661,7 @@ const message = `
             )}
           </div>
           <div>
-            <button
+            <button name='industry'
               type="button"
               onClick={() => setOpen(!open)}
               className="w-full bg-black text-gray-300 p-3 rounded-lg border border-gray-700 text-left focus:outline-none"
@@ -1020,7 +1020,7 @@ const message = `
 
               return (
                 <div key={section.key} className="bg-gradient-to-br from-red-800/50 to-black/50 rounded-xl border border-red-700/50 backdrop-blur-sm overflow-hidden transition-all duration-300 hover:border-red-500/30">
-                  <button
+                  <button name='progress'
                     type="button"
                     onClick={() => toggleSection(section.key)}
                     className="w-full p-4 sm:p-6 flex items-center justify-between hover:bg-red-800/30 transition-all duration-200"
@@ -1065,7 +1065,7 @@ const message = `
 
             {/* Submit Section */}
             <div className="pt-6">
-              <button 
+              <button name='analyze'
                 type="submit" 
                 onClick={handleSubmit}
                 disabled={isAnalyzing}
@@ -1255,14 +1255,14 @@ const message = `
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <button
+              <button name='download'
                 onClick={generateDetailedPDF}
                 className="flex-1 bg-gradient-to-r from-red-600 to-red-800 text-white py-4 px-6 rounded-xl font-semibold transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg flex items-center justify-center space-x-2"
               >
                 <Download size={20} />
                 <span>Download AI Report</span>
               </button>
-              <button
+              <button name='edit'
                 onClick={() => setShowReport(false)}
                 className="flex-1 bg-black text-white py-4 px-6 rounded-xl font-semibold transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg"
               >

@@ -309,7 +309,7 @@ const Service1 = () => {
         {/* CTA */}
         <div className="flex flex-col md:flex-row items-center justify-between py-20 md:py-10 rounded-lg px-10 md:px-12 lg:px-40 gap-4 mt-4 backdrop-blur-sm bg-black/30">
           <h2 className="text-xl md:text-2xl font-semibold text-white text-center md:text-left">{cta.headline}</h2>
-          <button onClick={() => window.open(cta.link, "_blank")} className="bg-[#ff0000] text-white px-4 py-2 rounded-md hover:bg-[#cc0000] hover:scale-105 transition-all duration-200 flex items-center">
+          <button name='phone' onClick={() => window.open(cta.link, "_blank")} className="bg-[#ff0000] text-white px-4 py-2 rounded-md hover:bg-[#cc0000] hover:scale-105 transition-all duration-200 flex items-center">
             <img src="/assets/phone.webp" alt="phone" className="h-5 md:h-6 mr-2" />
             <span>{cta.button}</span>
           </button>

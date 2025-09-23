@@ -50,7 +50,7 @@ export default function BlogPosts() {
       {/* If a post is selected, show detailed view */}
       {activePost ? (
         <div className="bg-gradient-to-br from-black to-[#3f0000] rounded-xl p-8 shadow-xl border border-[#3f0000]">
-          <button
+          <button name="posts"
             onClick={() => setActivePost(null)}
             className="flex items-center text-sm text-gray-400 hover:text-[#ff0000] transition-colors mb-6"
           >
@@ -92,7 +92,7 @@ export default function BlogPosts() {
           {/* Categories */}
           <div className="flex flex-wrap gap-3 mb-10 lg:px-20">
             {categories.map((category) => (
-              <button
+              <button name="categories"
                 key={category}
                 onClick={() => {
                   setSelectedCategory(category);
@@ -140,7 +140,7 @@ export default function BlogPosts() {
                         {post.author}
                       </span>
                     </div>
-                    <button
+                    <button name="read more"
                       onClick={() => setActivePost(post)}
                       className="text-sm text-[#ff0000] font-medium hover:scale-105"
                     >
@@ -155,7 +155,7 @@ export default function BlogPosts() {
           {/* Pagination Arrows */}
           {totalPages > 1 && (
             <div className="flex justify-center items-center gap-4 mt-8">
-              <button
+              <button name="prev"
                 onClick={handlePrev}
                 disabled={currentPage === 0}
                 className="px-4 py-2 rounded bg-gray-800 text-white disabled:opacity-50 hover:bg-[#ff0000] transition"
@@ -165,7 +165,7 @@ export default function BlogPosts() {
               <span className="text-white text-sm">
                 {currentPage + 1} of {totalPages}
               </span>
-              <button
+              <button name="next"
                 onClick={handleNext}
                 disabled={currentPage === totalPages - 1}
                 className="px-4 py-2 rounded bg-gray-800 text-white disabled:opacity-50 hover:bg-[#ff0000] transition"

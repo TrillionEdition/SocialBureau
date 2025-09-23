@@ -1,5 +1,5 @@
 import React from "react";
-import { FaLinkedin,FaEnvelope, FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { FaLinkedin,FaEnvelope, FaFacebook, FaInstagram, FaWhatsapp, FaPhone } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 export default function Footer() {
@@ -10,29 +10,30 @@ export default function Footer() {
       <div className="flex space-x-4">
   {/* Email */}
   <a
-    href="mailto:info@socialbureau.in"
-    className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition"
-  >
-    <FaEnvelope size={20} />
-  </a>
+  href="mailto:info@socialbureau.in"
+  aria-label="Email Social Bureau"
+  className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white"
+>
+  <FaEnvelope aria-hidden="true" />
+</a>
 
-  {/* WhatsApp */}
-  <a
-    href="tel:+918921840486"
-    className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition"
-  >
-    <FaWhatsapp size={20} />
-  </a>
+<a
+  href="tel:+918921840486"
+  aria-label="Call Social Bureau"
+  className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white"
+>
+  <FaPhone aria-hidden="true" />
+</a>
 
-  {/* LinkedIn */}
-  <a
-    href="https://www.linkedin.com/company/socialbureau-in"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition"
-  >
-    <FaLinkedin size={20} />
-  </a>
+<a
+  href="https://www.linkedin.com/company/socialbureau-in"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Visit Social Bureau on LinkedIn"
+  className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white"
+>
+  <FaLinkedin aria-hidden="true" />
+</a>
 
   {/* Instagram */}
   <a
@@ -64,7 +65,7 @@ export default function Footer() {
 
       {/* Copyright */}
       <p className="text-sm text-center leading-8">
-         © 2025 SocialBureau. All rights reserved.<br/> <a  onClick={() => navigate("/privacy-policy")} className="text-white text-decoration-none hover:font-bold">Our Privacy Policy</a>  |  <a  onClick={() => navigate("/disclaimer")} className="text-white text-decoration-none hover:font-bold">Our Disclaimer</a>
+         © 2025 SocialBureau. All rights reserved.<br/> <a  href="/privacy-policy" className="text-white text-decoration-none hover:font-bold">Our Privacy Policy</a>  |  <a  href="/disclaimer" className="text-white text-decoration-none hover:font-bold">Our Disclaimer</a>
       </p>
     </footer>
   );

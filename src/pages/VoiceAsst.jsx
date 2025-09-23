@@ -380,7 +380,7 @@ const navigate=useNavigate();
         </div>
 
         {/* Close */}
-        <button
+        <button name="close"
           onClick={() => navigate('/')}
           className="absolute top-6 right-6 text-3xl hover:text-black"
         >
@@ -415,7 +415,7 @@ const navigate=useNavigate();
           {suggestions.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 w-full max-w-2xl">
               {suggestions.map((btn, i) => (
-                <button
+                <button name="suggestion"
                   key={btn.action}
                   className="suggestion-btn hover:bg-[#ff0000] px-6 py-4 rounded-xl font-semibold flex items-center space-x-3 w-full text-left"
                   style={{ animationDelay: `${i * 0.1}s` }}
@@ -425,7 +425,7 @@ const navigate=useNavigate();
                   <span>{btn.text}</span>
                 </button>
               ))}
-              <button
+              <button name="chat"
                 onClick={() => {
                   window.open(
                     "https://wa.me/918921840486?text=Hello, I would like to learn more.",
@@ -445,7 +445,7 @@ const navigate=useNavigate();
           {/* Controls */}
           <div className="flex space-x-4 mt-8">
             {!isActive ? (
-              <button
+              <button name="assistant"
                 onClick={startAssistant}
                 className="suggestion-btn hover:bg-[#ff0000] px-6 py-3 rounded-xl font-semibold flex items-center space-x-2"
               >
@@ -453,7 +453,7 @@ const navigate=useNavigate();
                 <span>Start Assistant</span>
               </button>
             ) : (
-              <button
+              <button name="stop"
                 onClick={stopAssistant}
                 className="hover:bg-[#ff0000] suggestion-btn px-6 py-3 rounded-xl mb-20 font-semibold flex items-center space-x-2"
               >

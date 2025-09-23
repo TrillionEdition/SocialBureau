@@ -166,7 +166,7 @@ const handleMouseLeave = (workIdx) => {
 
     {currentWork.media.length > 1 && (
       <>
-        <button
+        <button name="prev"
           onClick={(e) => {
             e.stopPropagation();
             setCurrentIndex((prev) => (prev - 1 + currentWork.media.length) % currentWork.media.length);
@@ -175,7 +175,7 @@ const handleMouseLeave = (workIdx) => {
         >
           ‹
         </button>
-        <button
+        <button name="next"
           onClick={(e) => {
             e.stopPropagation();
             setCurrentIndex((prev) => (prev + 1) % currentWork.media.length);
@@ -187,7 +187,7 @@ const handleMouseLeave = (workIdx) => {
       </>
     )}
 
-    <button
+    <button 
       onClick={() => {
         setCurrentWork(null);
         setCurrentIndex(0);

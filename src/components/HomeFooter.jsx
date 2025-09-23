@@ -28,12 +28,12 @@ const HomeFooter = () => {
         <h2 className="text-xl md:text-2xl text-white text-center md:text-left">
           Ready to Engineer Growth That Sticks?
         </h2>
-        <button onClick={() => {
+        <button name="book" onClick={() => {
                   window.open(
                     "https://wa.me/918921840486?text=Hello, I would like to learn more.",
                     "_blank"
                   );
-                }} className="bg-[#ff0000] text-white px-4 py-2 lg:m-20 rounded-md hover:bg-[#ff0000] transition flex items-center gap-2 mt-1 md:mt-0">
+                }} className="bg-[#ff0000] text-white px-4 py-2 lg:m-20 rounded-md hover:bg-red-600 transition flex items-center gap-2 mt-1 md:mt-0">
           <img src="/assets/phone.webp" alt="phone" className="h-5 md:h-6" />
           <span className="text-sm md:text-base font-medium">
             Book a Strategy Call

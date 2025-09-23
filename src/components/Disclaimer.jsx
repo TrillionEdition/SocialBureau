@@ -6,7 +6,7 @@ const Disclaimer = () => {
 
   return (
     <div className="min-h-screen bg-black py-20 px-4 md:px-12 flex justify-center items-start">
-        <button
+        <button name='back'
           onClick={() => navigate('/')}
           className="absolute top-5 left-10 text-[#ff0000] px-4 py-2 rounded-lg hover:bg-[#ff0000] hover:text-white transition"
         >

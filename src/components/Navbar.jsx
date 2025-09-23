@@ -55,7 +55,7 @@ export default function Navbar() {
 
       {/* Dropdown for the rest */}
       <li className="relative group">
-        <button
+        <button name="more"
           onClick={() => setOpen(!open)}
           className="flex items-center gap-1 hover:text-[#ff0000] p-1 hover:font-bold"
         >
@@ -88,7 +88,7 @@ export default function Navbar() {
 
       {/* Hamburger */}
       <div className="md:hidden">
-        <button onClick={toggleMenu}>
+        <button name="menu" onClick={toggleMenu}>
           {menuOpen ? <FaTimes size={28} /> : <FaBars size={28} />}
         </button>
       </div>
