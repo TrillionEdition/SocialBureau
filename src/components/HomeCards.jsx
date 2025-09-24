@@ -119,30 +119,28 @@ function FloatingCard({
 }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-useEffect(() => {
-  const handleResize = () => {
-    setIsMobile(window.innerWidth < 768);
-  };
-  handleResize();
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const commonStyles = {
-    // border: `2px solid ${card.color}`,
-    color: isHovered ? card.textColor :"white",
+    color: isHovered && !isMobile ? card.textColor : "white",
     padding: "2rem",
     textAlign: "center",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    filter: isMobile ? "none" : dimOthers ? "blur(2px) brightness(60%)" : "none",
-    transform: isHovered && !isMobile ? "scale(1.2)" : "scale(1)",
+    filter: !isMobile && dimOthers ? "blur(2px) brightness(60%)" : "none",
+    transform: !isMobile && isHovered ? "scale(1.2)" : "scale(1)",
     zIndex: isHovered ? 10 : 1,
     cursor: "pointer",
     transition: "all 0.3s ease-in-out",
-    background: isMobile ? "transparent" : isHovered ? card.color : "transparent",
+    background: !isMobile && isHovered ? card.color : "transparent",
   };
 
   const variants = {
@@ -151,52 +149,46 @@ useEffect(() => {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: {
-        duration: 0.6,
-        delay,
-        ease: "easeOut",
-      },
+      transition: { duration: 0.6, delay, ease: "easeOut" },
     },
   };
 
   return (
     <div
-  ref={ref}
-  onMouseEnter={onHover}
-  onMouseLeave={onLeave}
-  onClick={onClick}
-  style={{ gridArea, position: "relative" }}
-className="relative flex items-center justify-center text-xl lg:text-2xl w-[70vw] md:w-full max-w-[100vw] aspect-square rounded-full"
->
-
-  {/* Card content */}
-  <motion.div
-    className="md:w-full h-full rounded-full flex items-center justify-center"
-    style={commonStyles}
-    variants={variants}
-    initial="hidden"
-    animate={inView ? "visible" : "hidden"}
-  >
-    <svg
-  className="absolute h-full md:h-[18vw] animate-rotate-center md:w-[18vw]"
-  viewBox="0 0 100 100"
-  xmlns="http://www.w3.org/2000/svg"
->
-  <circle
-    cx="50"
-    cy="50"
-    r="45"
-    fill="none"
-    stroke={card.color}
-    strokeWidth="1"
-    strokeLinecap="round"
-    strokeDasharray="80,10" // 2 segments and gaps
-  />
-</svg>
-
-    {card.title}
-  </motion.div>
-</div>
- 
+      ref={ref}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+      onClick={onClick}
+      style={{ gridArea, position: "relative" }}
+      className="relative flex items-center justify-center text-xl lg:text-2xl w-[70vw] md:w-full max-w-[100vw] aspect-square rounded-full"
+    >
+      <motion.div
+        className="md:w-full h-full rounded-full flex items-center justify-center"
+        style={commonStyles}
+        variants={variants}
+        initial="hidden"
+        animate={inView ? "visible" : "hidden"}
+      >
+        {!isMobile && (
+          <svg
+            className="absolute h-full md:h-[18vw] animate-rotate-center md:w-[18vw]"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              r="45"
+              fill="none"
+              stroke={card.color}
+              strokeWidth="1"
+              strokeLinecap="round"
+              strokeDasharray="80,10"
+            />
+          </svg>
+        )}
+        {card.title}
+      </motion.div>
+    </div>
   );
 }

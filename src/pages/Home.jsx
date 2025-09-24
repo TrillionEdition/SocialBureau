@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import HomeIntro from '../components/HomeIntro'
 import HomeMouse from '../components/HomeMouse'
@@ -8,12 +8,46 @@ import HomeFooter from '../components/HomeFooter'
 import Footer from '../components/Footer'
 import Animation from '../components/Animation'
 import { CyberBackground } from '../components/CyberBackground'
+import { useNavigate } from 'react-router-dom'
 
 export const Home = () => {
+  const [showPopup, setShowPopup] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setShowPopup(true);
+  }, []);
   return (
     <div className='bg-black'>      
         {/* <HomeMouse/> */}
         <CyberBackground/>
+        {showPopup && (
+        <div
+  className="fixed bottom-5 right-5 bg-black border-2 rounded-2xl p-4 cursor-pointer hover:opacity-90 transition-all z-50"
+  style={{
+    borderImage: "linear-gradient(to right, #3b82f6, #8b5cf6) 1",
+  }}
+>
+          {/* Close Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation(); // prevent redirect when closing
+              setShowPopup(false);
+            }}
+            className="absolute top-1 right-1 text-white font-bold"
+          >
+            x
+          </button>
+
+          {/* Popup Content */}
+          <div onClick={() => navigate("/careers")} className='bg-black'>
+            <p className="text-sm font-medium text-white">
+              Join our Team
+            </p>
+            <span className="text-xs text-purple-400 ">New Openings</span>
+          </div>
+        </div>
+      )}
         {/* <Animation/> */}
         <HomeIntro/>
         <Navbar/>
