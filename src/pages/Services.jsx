@@ -4,7 +4,6 @@ import ServicesHeader from '../components/ServicesHeader'
 import ServicesList from '../components/ServicesList'
 import ServiceFooter from '../components/ServiceFooter'
 import Footer from '../components/Footer'
-import HomeMouse from '../components/HomeMouse'
 import Ser from '../components/ViewServices'
 
 export const Services = () => {
@@ -29,7 +28,6 @@ const [isMobile, setIsMobile] = useState(false);
     }, []);
   return (
     <div>
-      {/* <HomeMouse/> */}
         <Navbar/>
       <ServicesHeader onArrowClick={handleArrowClick} />
       {isMobile ? (

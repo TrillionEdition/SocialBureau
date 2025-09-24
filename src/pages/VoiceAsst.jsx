@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import Footer from "../components/Footer";
-import { div } from "framer-motion/client";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 

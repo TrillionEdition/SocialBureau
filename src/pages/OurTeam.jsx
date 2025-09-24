@@ -11,7 +11,6 @@ export const OurTeam = () => {
   return (
     <div>
         <Navbar/>
-        {/* <HomeMouse/> */}
         <TeamHeader/>
         <TeamSection/>
         <LatestVideos/>

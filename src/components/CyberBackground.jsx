@@ -1,17 +1,24 @@
 import React, { Suspense } from "react";
 import { useNavigate } from "react-router-dom";
+
 const BackgroundGlows = React.lazy(() => import("./Background"));
 
 export function CyberBackground() {
   const navigate = useNavigate();
+  const isMobile = window.innerWidth < 768; // md breakpoint
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen max-h-screen bg-black overflow-hidden">
-      
-      {/* Lazy-load animations after initial paint */}
-      <Suspense fallback={null}>
-        <BackgroundGlows />
-      </Suspense>
+    <div
+      className={`relative flex items-center justify-center min-h-screen max-h-screen overflow-hidden
+        ${isMobile ? "bg-gradient-to-b from-black via-gray-900 to-black" : "bg-black"}
+      `}
+    >
+      {/* Only show animated glows on desktop */}
+      {!isMobile && (
+        <Suspense fallback={null}>
+          <BackgroundGlows />
+        </Suspense>
+      )}
 
       {/* Center Content */}
       <div className="relative z-10 text-center px-4 md:px-40 sm:px-30">
@@ -32,13 +39,15 @@ export function CyberBackground() {
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-          <button name="services"
+          <button
+            name="services"
             onClick={() => navigate("/services")}
             className="relative overflow-hidden px-6 py-3 rounded-full bg-black text-white font-medium shadow-lg hover:shadow-xl transition scan-button"
           >
             View Our Services
           </button>
-          <button name="chat"
+          <button
+            name="chat"
             onClick={() => {
               window.open(
                 "https://wa.me/918921840486?text=Hello, I would like to learn more.",

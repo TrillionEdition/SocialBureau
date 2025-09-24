@@ -140,6 +140,7 @@ function FloatingCard({
     zIndex: isHovered ? 10 : 1,
     cursor: "pointer",
     transition: "all 0.3s ease-in-out",
+    border: isMobile ? "2px solid red" : "2px solid black",
     background: !isMobile && isHovered ? card.color : "transparent",
   };
 

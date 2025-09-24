@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import HomeIntro from '../components/HomeIntro'
-import HomeMouse from '../components/HomeMouse'
 import HomeCards from '../components/HomeCards'
 import Hometagline from '../components/Hometagline'
 import HomeFooter from '../components/HomeFooter'
 import Footer from '../components/Footer'
-import Animation from '../components/Animation'
 import { CyberBackground } from '../components/CyberBackground'
 import { useNavigate } from 'react-router-dom'
 
@@ -18,8 +16,7 @@ export const Home = () => {
     setShowPopup(true);
   }, []);
   return (
-    <div className='bg-black'>      
-        {/* <HomeMouse/> */}
+    <div className='bg-black'>    
         <CyberBackground/>
         {showPopup && (
         <div
@@ -48,7 +45,6 @@ export const Home = () => {
           </div>
         </div>
       )}
-        {/* <Animation/> */}
         <HomeIntro/>
         <Navbar/>
         <HomeCards/>
