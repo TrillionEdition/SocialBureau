@@ -8,7 +8,7 @@ const positions = [
     description:
       "The Video Editor requires a disciplined, accountable professional who can manage multiple projects with speed, precision, and results-driven execution.",
     type: "Kochi • On-site",
-    link: "https://www.linkedin.com/jobs/view/123456789",
+    link: "https://in.indeed.com/viewjob?jk=c98984cab5ce9d08&from=shareddesktop_copy",
     company: "SocialBureau | TrillionEdition LLP",
     location: "Panampilly, Kochi, Kerala",
     employment: "Full-Time | Internship",
@@ -54,7 +54,7 @@ const positions = [
     description:
       "The position of Performance marketer requires a highly disciplined and accountable professional with the ability to manage multiple projects simultaneously without compromising quality.",
     type: "Kochi • On-site",
-    link: "https://www.linkedin.com/jobs/view/123456789",
+    link: "#",
     company: "SocialBureau | TrillionEdition LLP",
     location: "Panampilly, Kochi, Kerala",
     employment: "Full-Time | Internship",

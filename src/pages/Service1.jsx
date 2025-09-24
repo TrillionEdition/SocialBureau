@@ -5,7 +5,6 @@ import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import servicesData from '../data/services';
 import { Link } from 'react-router-dom';
-import HomeMouse from '../components/HomeMouse';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 // Interactive Background Component
@@ -15,12 +14,21 @@ const InteractiveBackground = () => {
   const wavesRef = useRef([]);
   const mouseRef = useRef({ x: 0, y: 0 });
   const gridRef = useRef([]);
+  const [isMobile, setIsMobile] = React.useState(false);
 
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768); // adjust breakpoint
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return; // skip animation on mobile
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    
-    // Initialize grid points
+
     const initGrid = () => {
       gridRef.current = [];
       const spacing = 80;
@@ -37,7 +45,7 @@ const InteractiveBackground = () => {
         }
       }
     };
-    
+
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -47,7 +55,6 @@ const InteractiveBackground = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Initialize waves
     const initWaves = () => {
       wavesRef.current = [];
       for (let i = 0; i < 5; i++) {
@@ -65,19 +72,15 @@ const InteractiveBackground = () => {
     };
 
     initWaves();
+
     const handleMouseMove = (e) => {
       mouseRef.current.x = e.clientX;
       mouseRef.current.y = e.clientY;
-      
-      // Create ripple effect at mouse position
-      
     };
 
     window.addEventListener('mousemove', handleMouseMove);
 
-    // Animation loop
     const animate = () => {
-      // Clear canvas with dark gradient
       const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
       gradient.addColorStop(0, '#000000');
       gradient.addColorStop(0.3, '#1a0000');
@@ -86,110 +89,7 @@ const InteractiveBackground = () => {
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      const time = Date.now() * 0.001;
-
-      // Animate and draw grid with distortion
-      ctx.strokeStyle = 'rgba(139, 0, 0, 0.1)';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      
-      gridRef.current.forEach(point => {
-        // Apply wave distortion
-        let distortionX = 0;
-        let distortionY = 0;
-        
-        wavesRef.current.forEach(wave => {
-          const dx = point.originalX - wave.x;
-          const dy = point.originalY - wave.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          
-          if (distance < wave.radius) {
-            const influence = (wave.radius - distance) / wave.radius;
-            const waveStrength = Math.sin(distance * wave.frequency - time * 2) * influence * wave.opacity * 30;
-            distortionX += (dx / distance) * waveStrength;
-            distortionY += (dy / distance) * waveStrength;
-          }
-        });
-
-        // Mouse influence
-        const mouseDx = mouseRef.current.x - point.originalX;
-        const mouseDy = mouseRef.current.y - point.originalY;
-        const mouseDistance = Math.sqrt(mouseDx * mouseDx + mouseDy * mouseDy);
-        
-        if (mouseDistance < 150) {
-          const mouseInfluence = (150 - mouseDistance) / 150;
-          distortionX += mouseDx * mouseInfluence * 0.1;
-          distortionY += mouseDy * mouseInfluence * 0.1;
-        }
-
-        point.x = point.originalX + distortionX + Math.sin(time + point.offset) * 5;
-        point.y = point.originalY + distortionY + Math.cos(time * 1.1 + point.offset) * 5;
-      });
-
-      // Draw grid lines
-      const spacing = 80;
-      for (let i = 0; i < gridRef.current.length; i++) {
-        const point = gridRef.current[i];
-        const gridX = Math.floor(point.originalX / spacing);
-        const gridY = Math.floor(point.originalY / spacing);
-        
-        // Horizontal lines
-        const rightNeighbor = gridRef.current.find(p => 
-          Math.floor(p.originalX / spacing) === gridX + 1 && 
-          Math.floor(p.originalY / spacing) === gridY
-        );
-        if (rightNeighbor) {
-          ctx.moveTo(point.x, point.y);
-          ctx.lineTo(rightNeighbor.x, rightNeighbor.y);
-        }
-        
-        // Vertical lines
-        const bottomNeighbor = gridRef.current.find(p => 
-          Math.floor(p.originalX / spacing) === gridX && 
-          Math.floor(p.originalY / spacing) === gridY + 1
-        );
-        if (bottomNeighbor) {
-          ctx.moveTo(point.x, point.y);
-          ctx.lineTo(bottomNeighbor.x, bottomNeighbor.y);
-        }
-      }
-      ctx.stroke();
-
-      
-      // Add floating hexagons
-      for (let i = 0; i < 4; i++) {
-        const x = canvas.width * (0.2 + i * 0.2) + Math.sin(time * 0.5 + i) * 50;
-        const y = canvas.height * 0.3 + Math.cos(time * 0.3 + i * 0.7) * 100;
-        const size = 25 + Math.sin(time * 0.4 + i) * 8;
-        
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(time * 0.2 + i);
-        
-        // Draw hexagon
-        ctx.beginPath();
-        for (let j = 0; j < 6; j++) {
-          const angle = (j * Math.PI) / 3;
-          const px = Math.cos(angle) * size;
-          const py = Math.sin(angle) * size;
-          if (j === 0) ctx.moveTo(px, py);
-          else ctx.lineTo(px, py);
-        }
-        ctx.closePath();
-        ctx.strokeStyle = `rgba(139, 0, 0, 0.15)`;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      // Add scanning lines effect
-      const scanY = (time * 100) % (canvas.height + 200) - 100;
-      const gradient2 = ctx.createLinearGradient(0, scanY - 50, 0, scanY + 50);
-      gradient2.addColorStop(0, 'rgba(255, 0, 0, 0)');
-      gradient2.addColorStop(0.5, 'rgba(255, 0, 0, 0.1)');
-      gradient2.addColorStop(1, 'rgba(255, 0, 0, 0)');
-      ctx.fillStyle = gradient2;
-      ctx.fillRect(0, scanY - 50, canvas.width, 100);
+      // ... rest of your canvas animation code ...
 
       animationRef.current = requestAnimationFrame(animate);
     };
@@ -199,19 +99,25 @@ const InteractiveBackground = () => {
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('mousemove', handleMouseMove);
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, []);
+  }, [isMobile]);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 z-0 pointer-events-none"
-    />
-  );
+  // Render static gradient on mobile
+  if (isMobile) {
+    return (
+      <div
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          background: 'linear-gradient(135deg, #000000 0%, #1a0000 30%, #0d0000 70%, #000000 100%)'
+        }}
+      />
+    );
+  }
+
+  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none" />;
 };
+
 
 const Service1 = () => {
   const { serviceTitle } = useParams();
