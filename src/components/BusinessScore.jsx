@@ -264,7 +264,7 @@ const userEmail = formData.contactEmail;
 const adminEmail = 'web.socialbureau@gmail.com'; // put your admin email here
 
 const subject = `TrillionEdition AI Business Analysis Report for ${formData.companyName}`;
-console.log(analysis);
+console.log(analysis || '');
 
 const message = `
   <h2>Company Details</h2>
