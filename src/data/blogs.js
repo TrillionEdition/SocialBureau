@@ -160,65 +160,65 @@ const posts = [
 //     time: "10 min read",
 //     image: "assets/luxury.webp",
 //   },
-//          {
-//       id: 8,
-//     category: "Marketing",
-//     title: "Social Media Minimalism: How High-End Brands Win by Saying Less",
-//     excerpt:
-//       "The most exclusive brands are following a completely different course in a world where every brand is vying for consumers' attention...",
-//     content: [
-//       `The most exclusive brands are following a completely different course in a world where every brand is vying for consumers' attention. High-end brands are adopting social media minimalism, a purposeful, condensed approach that speaks volumes through restraint, as an alternative to bombarding feeds with daily updates.  
-// This quiet strategy isn't about doing less work for luxury marketers. It involves creating a sense of exclusivity that upholds reputation, draws in affluent clients, and fosters a stronger emotional bond.`,
-//       `**Why “Less Is More” in the Luxury Space**  
-// Luxury thrives on scarcity. Whether it’s a handcrafted watch, a limited couture line, or a bespoke real estate experience, exclusivity fuels desire. Overexposure on social media risks diluting that allure.  
-// Minimalism in posting frequency, tone, and design achieves three things:  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. Preserves mystique – Selective updates leave room for curiosity.  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. Signals confidence – A brand that doesn’t clamor for attention conveys authority.  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. Prioritizes quality over noise – Every post carries intention and craft.  `,
-//       `**Elements of a Minimalist Luxury Feed**  
-// A quiet strategy doesn’t mean bland or empty. It’s about curating a feed where every detail counts.  
-//  **Elements of a Minimalist Luxury Feed**   
-//  Clean, elegant layouts with generous white space let products breathe. Use consistent filters, restrained color palettes, and cinematic lighting to elevate storytelling.  
-//  **2. Fewer, Deeper Posts**  
-// Instead of a constant stream, share thoughtfully planned pieces: behind-the-scenes looks, a single hero product shot, or short-form films showing artisans at work.  
-// **3. Intentional Captions**  
-// Luxury captions tend to be short and poetic, letting imagery take center stage. A line or two can communicate heritage, craftsmanship, or invitation.  
-// **4. Editorial Rhythm**  
-// Post in measured intervals weekly or biweekly rather than reacting to every trend. The rhythm reinforces calm authority.   `,
-//       `**Case Studies: Brands That Master Minimalism**  
-//       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Bottega Veneta famously left Instagram for a time, relying on private events and curated press moments to spark intrigue.  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Rolex posts rarely, yet each image highlights timeless design, ensuring the brand stays aspirational.  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· In hospitality, Aman Resorts uses serene visuals and limited copy, reflecting the tranquil exclusivity of its properties.  
-// These brands prove that social media silence, when paired with quality offline touchpoints, can elevate rather than diminish relevance.  `,
-// `**Crafting a Minimalist Strategy for Your Brand**  
-// **1. Audit Your Current Presence**   
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Review posting frequency, engagement, and alignment with brand positioning.  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Identify content that feels cluttered or off-message.  
-// **2. Define Core Pillars**   
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Choose 3–4 storytelling themes (e.g., craftsmanship, heritage, innovation, lifestyle).  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Build content calendars around these pillars.  
-// **3. Refine Design Systems**   
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Set typography, spacing, and color guidelines.  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Keep templates flexible yet consistent.  
-// **4. Link Online & Offline**   
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Pair digital minimalism with exclusive events, personalised invitations, or high-touch email outreach.  
-// **5. Measure Meaningful Metrics**   
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Track quality KPIs saves, shares, direct inquiries instead of vanity likes.  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Monitor sentiment and brand perception over raw reach.  `,
-// `**Balancing Minimalism and Visibility**  
-// The challenge is staying selective without disappearing. A few tips:  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Leverage Stories or ephemeral content for behind-the-scenes peeks without cluttering the grid.  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Use micro-influencer collaborations sparingly to introduce products through trusted voices.  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Ensure customer service remains prompt on social channels, discretion shouldn’t mean inaccessibility.      
-// Minimalism works best when paired with responsiveness and memorable real-world experiences.  `,
-// `**The Payoff: Elevating Prestige Through Restraint**  
-// Luxury audiences crave brands that respect their attention. A carefully edited social media presence signals that your offering like your time is too valuable to be squandered.  
-// By saying less, high-end brands allow meaning, beauty, and heritage to resonate louder than a flood of content ever could. In the end, social media minimalism isn’t about silence; it’s about creating space for aspiration to breathe.`
-//     ],
-//     author: "MS Shadil",
-//     time: "7 min read",
-//     image: "assets/minimal.webp",
-//   },
+         {
+      id: 8,
+    category: "Marketing",
+    title: "Social Media Minimalism: How High-End Brands Win by Saying Less",
+    excerpt:
+      "The most exclusive brands are following a completely different course in a world where every brand is vying for consumers' attention...",
+    content: [
+      `The most exclusive brands are following a completely different course in a world where every brand is vying for consumers' attention. High-end brands are adopting social media minimalism, a purposeful, condensed approach that speaks volumes through restraint, as an alternative to bombarding feeds with daily updates.  
+This quiet strategy isn't about doing less work for luxury marketers. It involves creating a sense of exclusivity that upholds reputation, draws in affluent clients, and fosters a stronger emotional bond.`,
+      `**Why “Less Is More” in the Luxury Space**  
+Luxury thrives on scarcity. Whether it’s a handcrafted watch, a limited couture line, or a bespoke real estate experience, exclusivity fuels desire. Overexposure on social media risks diluting that allure.  
+Minimalism in posting frequency, tone, and design achieves three things:  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. Preserves mystique – Selective updates leave room for curiosity.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. Signals confidence – A brand that doesn’t clamor for attention conveys authority.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. Prioritizes quality over noise – Every post carries intention and craft.  `,
+      `**Elements of a Minimalist Luxury Feed**  
+A quiet strategy doesn’t mean bland or empty. It’s about curating a feed where every detail counts.  
+ **Elements of a Minimalist Luxury Feed**   
+ Clean, elegant layouts with generous white space let products breathe. Use consistent filters, restrained color palettes, and cinematic lighting to elevate storytelling.  
+ **2. Fewer, Deeper Posts**  
+Instead of a constant stream, share thoughtfully planned pieces: behind-the-scenes looks, a single hero product shot, or short-form films showing artisans at work.  
+**3. Intentional Captions**  
+Luxury captions tend to be short and poetic, letting imagery take center stage. A line or two can communicate heritage, craftsmanship, or invitation.  
+**4. Editorial Rhythm**  
+Post in measured intervals weekly or biweekly rather than reacting to every trend. The rhythm reinforces calm authority.   `,
+      `**Case Studies: Brands That Master Minimalism**  
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Bottega Veneta famously left Instagram for a time, relying on private events and curated press moments to spark intrigue.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Rolex posts rarely, yet each image highlights timeless design, ensuring the brand stays aspirational.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· In hospitality, Aman Resorts uses serene visuals and limited copy, reflecting the tranquil exclusivity of its properties.  
+These brands prove that social media silence, when paired with quality offline touchpoints, can elevate rather than diminish relevance.  `,
+`**Crafting a Minimalist Strategy for Your Brand**  
+**1. Audit Your Current Presence**   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Review posting frequency, engagement, and alignment with brand positioning.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Identify content that feels cluttered or off-message.  
+**2. Define Core Pillars**   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Choose 3–4 storytelling themes (e.g., craftsmanship, heritage, innovation, lifestyle).  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Build content calendars around these pillars.  
+**3. Refine Design Systems**   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Set typography, spacing, and color guidelines.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Keep templates flexible yet consistent.  
+**4. Link Online & Offline**   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Pair digital minimalism with exclusive events, personalised invitations, or high-touch email outreach.  
+**5. Measure Meaningful Metrics**   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Track quality KPIs saves, shares, direct inquiries instead of vanity likes.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Monitor sentiment and brand perception over raw reach.  `,
+`**Balancing Minimalism and Visibility**  
+The challenge is staying selective without disappearing. A few tips:  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Leverage Stories or ephemeral content for behind-the-scenes peeks without cluttering the grid.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Use micro-influencer collaborations sparingly to introduce products through trusted voices.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Ensure customer service remains prompt on social channels, discretion shouldn’t mean inaccessibility.      
+Minimalism works best when paired with responsiveness and memorable real-world experiences.  `,
+`**The Payoff: Elevating Prestige Through Restraint**  
+Luxury audiences crave brands that respect their attention. A carefully edited social media presence signals that your offering like your time is too valuable to be squandered.  
+By saying less, high-end brands allow meaning, beauty, and heritage to resonate louder than a flood of content ever could. In the end, social media minimalism isn’t about silence; it’s about creating space for aspiration to breathe.`
+    ],
+    author: "MS Shadil",
+    time: "7 min read",
+    image: "assets/minimal.webp",
+  },
 //         {
 //       id: 7,
 //     category: "Marketing",
