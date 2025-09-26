@@ -53,7 +53,7 @@ export default function Footer() {
 
   {/* Twitter */}
   <a
-    href="https://twitter.com"
+    href="https://x.com/SocialBure23829"
     target="_blank"
     rel="noopener noreferrer"
     className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition"
