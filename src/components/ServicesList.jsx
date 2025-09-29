@@ -31,7 +31,7 @@ const cards = [
     description: "Generic messaging kills growth. We uncover category-specific codes using ethnographic and linguistic analysis."
   },
   {
-    title: "Web Application Development",
+    title: "Web Development",
     description: "From MVPs to scalable platforms, we design, develop, and deploy web apps that are fast, secure, and user-centric."
   },
   {

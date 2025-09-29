@@ -30,7 +30,7 @@ const Hometagline = () => {
   return (
     <div
       tabIndex={0}
-      className="relative z-10 flex bg-black select-none items-center text-center justify-center pb-20"
+      className="relative z-10 flex bg-black select-none items-center text-center justify-center py-20"
     >
       <div className="flex flex-col md:flex-row gap-3 text-center ">
         {showAll

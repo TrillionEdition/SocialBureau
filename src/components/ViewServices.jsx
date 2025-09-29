@@ -20,7 +20,7 @@ const cards = [
   { image:'assets/service2.webp',title: 'Funnel Architecture & Growth Pathways', content: 'Stop leaking revenue. We map awareness to LTV with customized, P&L-aligned blueprints.' },
   { image:'assets/service3.webp',title: 'Conversion Rate Optimization & Landing Systems', content: 'Built with psychology, tested with micro-experiments. Bounce less. Convert more.' },
   { image:'assets/service4.webp',title: 'Messaging & Positioning for Niche Brands', content: 'Generic messaging kills growth. We uncover category-specific codes using ethnographic and linguistic analysis.' },
-  { image:'assets/service5.webp',title: 'Web Application Development', content: 'From MVPs to scalable platforms, we design, develop, and deploy web apps that are fast, secure, and user-centric.' },
+  { image:'assets/service5.webp',title: 'Web-Development', content: 'From MVPs to scalable platforms, we design, develop, and deploy web apps that are fast, secure, and user-centric.' },
   { image:'assets/service6.webp',title: 'API-Driven Growth & Automated Distribution', content: 'Eliminate friction. Merge engineering + marketing for compounding growth loops.' },
   { image:'assets/service7.webp',title: 'Niche Market Penetration Strategy', content: 'We speak fluent healthtech, crypto, fintech, and more. Penetrate with precision.' },
   { image:'assets/service8.webp',title: 'Influencer & UGC Growth Engines', content: 'No vanity metrics. Just creator content built for performance and attribution.' },

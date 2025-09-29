@@ -7,6 +7,10 @@ import HomeFooter from '../components/HomeFooter'
 import Footer from '../components/Footer'
 import { CyberBackground } from '../components/CyberBackground'
 import { useNavigate } from 'react-router-dom'
+import Clients from '../components/Clients'
+import posts from "../data/blogs";
+import LatestBlogs from '../components/LatestBlogs'
+import LatestCareers from '../components/LatestCareers'
 
 export const Home = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -49,6 +53,9 @@ export const Home = () => {
         <Navbar/>
         <HomeCards/>
         <div style={{ height: "10vh" }} />
+        {/* <LatestCareers/>
+        <Clients/>
+        <LatestBlogs posts={posts} /> */}
         <Hometagline/>
         <HomeFooter/>
         <Footer/>

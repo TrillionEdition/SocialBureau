@@ -228,7 +228,7 @@ const servicesData = {
       link: "tel:+918921840486",
     },
   },
-"Web Application Development": {
+"Web-Development": {
   meta: {
     title: "Custom Web Application Development for Modern Brands | Social Bureau",
     description:
