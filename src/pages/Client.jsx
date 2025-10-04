@@ -9,7 +9,6 @@ export const Client = () => {
     <div>
         <Navbar/>
         <ClientDetails/>
-
         <ClientTestimonials/>
         <Footer/>
     </div>

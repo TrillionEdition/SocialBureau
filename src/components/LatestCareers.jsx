@@ -17,24 +17,12 @@ export default function LatestCareers() {
       image: "/assets/ShamSK.webp",
       description: "Visionary leader driving innovation, growth, and impact",
     },
-    {
-      name: "Hajira M",
-      role: "Administration",
-      image: "/assets/hajira.webp",
-      description: "Managing operations with precision and strategy",
-    },
   ];
 
   return (
     <section className="py-16 bg-black text-white">
       <div className="max-w-6xl mx-auto px-6 text-center">
-        <h2
-          className="font-playfair text-4xl md:text-4xl font-bold mb-10 text-white text-center"
-          style={{ fontFamily: "Playfair Display, serif" }}
-        >
-          Meet Our Team
-        </h2>
-
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           {/* Team Members */}
           {team.map((member, index) => (
@@ -64,8 +52,36 @@ export default function LatestCareers() {
                 <p className="text-sm text-gray-300 mb-2">{member.role}</p>
                 <p className="text-sm text-gray-400">{member.description}</p>
               </div>
+              
             </div>
           ))}
+<div className="bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-6 md:py-10 flex flex-col items-center justify-center hover:scale-105 transition-transform duration-300">
+  <div className="flex flex-wrap justify-center gap-4 mb-4">
+    <img
+      src="/assets/anjay.webp"
+      alt="Anjay"
+      className="w-16 h-16 rounded-full border border-white/20 object-cover"
+    />
+    <img
+      src="/assets/elizebath.webp"
+      alt="Elizebath"
+      className="w-16 h-16 rounded-full border border-white/20 object-cover"
+    />
+    <img
+      src="/assets/hajira.webp"
+      alt="Hajira"
+      className="w-16 h-16 rounded-full border border-white/20 object-cover"
+    />
+  </div>
+
+  {/* Button */}
+  <button
+    onClick={() => navigate("/our-team")}
+    className="px-4 py-2 bg-white text-black rounded-full font-semibold hover:bg-gray-200"
+  >
+    View Team →
+  </button>
+</div>
 
           {/* Careers Card (same across both views) */}
           <div

@@ -3,6 +3,7 @@ const posts = [
 //       id: 10,
 //     category: "Marketing",
 //     title: "The Power of Micro-Niches , How Ultra-Focused Marketing Creates Unshakable Brand Loyalty",
+//     slug: "The-Power-of-Micro-Niches",
 //     excerpt:
 //       "In today’s noisy, fast-scrolling marketplace, standing out isn’t about shouting louder...",
 //     content: [
@@ -83,12 +84,13 @@ const posts = [
 //     ],
 //     author: "MS Shadil",
 //     time: "10 min read",
-//     image: "assets/impact.webp",
+//     image: "../assets/impact.webp",
 //   },
 //         {
 //       id: 9,
 //     category: "Marketing",
 //     title: "Building Private Communities That Elevate High-Value Luxury Clients",
+//     slug: "Building-Private-Communities-That-Elevate-High-Value-Luxury-Clients",
 //     excerpt:
 //       "In today’s noisy, fast-scrolling marketplace, standing out isn’t about shouting louder specially for brands that serve affluent...",
 //     content: [
@@ -158,12 +160,13 @@ const posts = [
 //     ],
 //     author: "MS Shadil",
 //     time: "10 min read",
-//     image: "assets/luxury.webp",
+//     image: "../assets/luxury.webp",
 //   },
          {
       id: 8,
     category: "Marketing",
     title: "Social Media Minimalism: How High-End Brands Win by Saying Less",
+    slug: "Social-Media-Minimalism",
     excerpt:
       "The most exclusive brands are following a completely different course in a world where every brand is vying for consumers' attention...",
     content: [
@@ -217,12 +220,13 @@ By saying less, high-end brands allow meaning, beauty, and heritage to resonate 
     ],
     author: "MS Shadil",
     time: "7 min read",
-    image: "assets/minimal.webp",
+    image: "../assets/minimal.webp",
   },
 //         {
 //       id: 7,
 //     category: "Marketing",
 //     title: "Mastering Marketing Funnels for Predictable, Scalable Growth",
+// slug: "Mastering-Marketing-Funnels-for-Predictable,Scalable-Growth",
 //     excerpt:
 //       "Luxury marketing poses a conundrum in the fiercely competitive world of today. While growth necessitates visibility, innovation, and data...",
 //     content: [
@@ -314,7 +318,7 @@ By saying less, high-end brands allow meaning, beauty, and heritage to resonate 
 //     ],
 //     author: "MS Shadil",
 //     time: "10 min read",
-//     image: "assets/funnels.webp",
+//     image: "../assets/funnels.webp",
 //   },
     {
       id: 6,
@@ -368,7 +372,7 @@ It is not necessary to chase every metric in order to convert premium marketing 
     ],
     author: "MS Shadil",
     time: "8 min read",
-    image: "assets/insight.webp",
+    image: "../assets/insight.webp",
   },
   {
       id: 5,
@@ -441,7 +445,7 @@ Ultimately, aligning data with creative flow is a sustainable approach to growth
     ],
     author: "MS Shadil",
     time: "10 min read",
-    image: "assets/roi.webp",
+    image: "../assets/roi.webp",
   },   
   {
       id: 4,
@@ -529,7 +533,7 @@ At SocialBureau, we help brands unlock that edge. Because when creativity meets 
     ],
     author: "MS Shadil",
     time: "10 min read",
-    image: "assets/creative.webp",
+    image: "../assets/creative.webp",
   },
    {
       id: 3,
@@ -585,7 +589,7 @@ Question for you: Which brand’s storytelling has had the greatest impact?`
     ],
     author: "MS Shadil",
     time: "8 min read",
-    image: "assets/STORY.webp",
+    image: "../assets/STORY.webp",
   },
 {
     id: 2,
@@ -642,7 +646,7 @@ Startups don't need massive budgets to make an impact. By focusing on niche mark
     ],
     author: "MS Shadil",
     time: "8 min read",
-    image: "assets/dark.webp",
+    image: "../assets/dark.webp",
   },
 {
     id: 1,
@@ -690,7 +694,7 @@ Startups don't need massive budgets to make an impact. By focusing on niche mark
     ],
     author: "MS Shadil",
     time: "5 min read",
-    image: "assets/niche.webp",
+    image: "../assets/niche.webp",
   },
 ];
 

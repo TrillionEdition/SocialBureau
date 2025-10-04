@@ -2,7 +2,7 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import CareersHeader from '../components/CareersHeader'
-import CareersPost from '../components/CareersPost'
+import CareersPost from '../components/CareersList'
 import CareersContent from '../components/CareersContent'
 
 export const Careers = () => {
