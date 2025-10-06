@@ -11,6 +11,7 @@ import Clients from '../components/Clients'
 import posts from "../data/blogs";
 import LatestBlogs from '../components/LatestBlogs'
 import LatestCareers from '../components/LatestCareers'
+import HomeServices from '../components/HomeServices'
 
 export const Home = () => {
   const [showPopups, setShowPopups] = useState([false, false, false, false]);
@@ -105,8 +106,8 @@ export const Home = () => {
 
       <HomeIntro />
       <Navbar />
-      <HomeCards />
-      <div style={{ height: "10vh" }} />
+      {/* <HomeCards /> */}
+      <HomeServices/>
       <LatestCareers />
       <Clients />
       <LatestBlogs posts={posts} />

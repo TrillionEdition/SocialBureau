@@ -128,3 +128,67 @@ export default function Navbar() {
     </nav>
   );
 }
+
+// import { useState } from "react";
+// import { FaHome, FaBriefcase, FaTools, FaEnvelope, FaBlog, FaUsers, FaInfoCircle, FaMicrophone } from "react-icons/fa";
+// import { Link } from "react-router-dom";
+
+// export default function Sidebar() {
+//   const [isHovered, setIsHovered] = useState(false);
+
+//   return (
+//     <nav
+//       className={`fixed top-0 left-0 h-full text-white flex flex-col items-start transition-all duration-300 z-50 ${
+//         isHovered ? "w-48" : "w-16"
+//       }`}
+//       onMouseEnter={() => setIsHovered(true)}
+//       onMouseLeave={() => setIsHovered(false)}
+//     >
+//       {/* Logo */}
+//       <div className="flex items-center gap-3 p-4 cursor-pointer">
+//         <img src="/assets/logo.webp" alt="Logo" className="h-5 w-5" />
+//         {isHovered && <span className="font-bold text-lg">SocialBureau</span>}
+//       </div>
+
+//       {/* Links */}
+//       <ul className="flex flex-col gap-4 mt-6 w-full ">
+//         <li className="flex items-center gap-3 px-4 hover:bg-[#ff0000] hover:font-bold py-2 rounded-md">
+//           <FaHome />
+//           {isHovered && <Link to="/">Home</Link>}
+//         </li>
+//         <li className="flex items-center gap-3 px-4 hover:bg-[#ff0000] hover:font-bold py-2 rounded-md">
+//           <FaBriefcase />
+//           {isHovered && <Link to="/services">Services</Link>}
+//         </li>
+//         <li className="flex items-center gap-3 px-4 hover:bg-[#ff0000] hover:font-bold py-2 rounded-md">
+//           <FaTools />
+//           {isHovered && <Link to="/tool">Business Tool</Link>}
+//         </li>
+//         <li className="flex items-center gap-3 px-4 hover:bg-[#ff0000] hover:font-bold py-2 rounded-md">
+//           <FaBlog />
+//           {isHovered && <Link to="/blog">Blogs</Link>}
+//         </li>
+//         <li className="flex items-center gap-3 px-4 hover:bg-[#ff0000] hover:font-bold py-2 rounded-md">
+//           <FaUsers />
+//           {isHovered && <Link to="/our-team">Our Team</Link>}
+//         </li>
+//         <li className="flex items-center gap-3 px-4 hover:bg-[#ff0000] hover:font-bold py-2 rounded-md">
+//           <FaInfoCircle />
+//           {isHovered && <Link to="/about">About</Link>}
+//         </li>
+//         <li className="flex items-center gap-3 px-4 hover:bg-[#ff0000] hover:font-bold py-2 rounded-md">
+//           <FaEnvelope />
+//           {isHovered && <Link to="/contact">Contact</Link>}
+//         </li>
+//       </ul>
+
+//       {/* Bottom Action */}
+//       <div className="mt-auto w-full mb-6">
+//         <li className="flex items-center gap-3 px-4 hover:bg-[#ff0000] py-2 rounded-md cursor-pointer">
+//           <FaMicrophone />
+//           {isHovered && <Link to="/voice">Let's Talk</Link>}
+//         </li>
+//       </div>
+//     </nav>
+//   );
+// }
