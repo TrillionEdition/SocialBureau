@@ -37,7 +37,7 @@ const jobs = [
     ],
     qualifications: [
       "Bachelor’s degree in a relevant field.",
-      "Minimum 1 year professional experience (mandatory, except internships).",
+      "Prior experience as a video editor, either in a professional setting (2 years) or as a freelancer (3 Years)",
       "Familiarity with Zoho, ClickUp, Trello, or similar tools.",
       "Strong technical skills in editing workflows.",
       "Excellent time management & communication skills.",
