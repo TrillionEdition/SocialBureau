@@ -132,7 +132,7 @@ export default function TeamLayout() {
                 <img
                   src={profile.photo}
                   alt={profile.name}
-                  className="w-full h-full object-cover rounded-xl"
+                  className="w-[75%] h-full object-cover rounded-xl"
                 />
                 <div className="absolute inset-0 bg-white/95 backdrop-blur-md opacity-0 translate-y-10 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 rounded-2xl flex flex-col">
                   {/* Top 1/3 Image Background */}
