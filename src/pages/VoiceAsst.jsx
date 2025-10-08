@@ -235,7 +235,7 @@ const navigate=useNavigate();
 
     /* You might have other existing styles here */
     .gradient-bg {
-      background: linear-gradient(135deg,rgb(56, 0, 0),rgb(148, 0, 0),rgb(156, 0, 0));
+      background: linear-gradient(to right, #3b82f6, #8b5cf6);
     }
 
     .particle {
@@ -318,7 +318,7 @@ const navigate=useNavigate();
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      border: 3px solid rgba(255, 0, 0, 0.5);
+      border: 3px solid #8b5cf6;
       animation: pulse 1.5s infinite cubic-bezier(0.66, 0, 0.34, 1);
     }
 

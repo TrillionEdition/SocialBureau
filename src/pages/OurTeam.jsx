@@ -13,8 +13,8 @@ export const OurTeam = () => {
     <div>
         <Navbar/>
         <TeamHeader/>
-        {/* <TeamLayout/> */}
         <TeamSection/>
+        <TeamLayout/>        
         <LatestVideos/>
         {/* <Testimonials/> */}
         <Footer/>

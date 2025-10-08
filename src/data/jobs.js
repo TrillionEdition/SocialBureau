@@ -46,7 +46,7 @@ const jobs = [
     experience: [
       "Prior experience as a video editor, either in a professional setting (2 years) or as a freelancer (3 Years)"
     ],
-    salary: "₹20,000.00 - ₹30,000.00 per month",
+    salary: "₹20,000 - ₹30,000 per month",
     
     nextSteps:
       "Shortlisted candidates will be invited for an interview. A 1–2 min professional video submission is mandatory."
