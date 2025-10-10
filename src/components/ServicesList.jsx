@@ -15,6 +15,10 @@ const icons = [
 
 const cards = [
   {
+    title: "API-Driven Growth & Automated Distribution",
+    description: "Eliminate friction. Merge engineering + marketing for compounding growth loops."
+  },
+  {
     title: "Full-Funnel Performance Marketing",
     description: "Click costs don't matter if they don't convert. We deploy vertical-informed models and 14-day sprint cycles tied to LTV, not vanity ROAS."
   },
@@ -33,10 +37,6 @@ const cards = [
   {
     title: "Web Development",
     description: "From MVPs to scalable platforms, we design, develop, and deploy web apps that are fast, secure, and user-centric."
-  },
-  {
-    title: "API-Driven Growth & Automated Distribution",
-    description: "Eliminate friction. Merge engineering + marketing for compounding growth loops."
   },
   {
     title: "Niche Market Penetration Strategy",

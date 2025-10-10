@@ -11,7 +11,7 @@ const profiles = [
       { name: "wordpress", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330" },
       { name: "figma", img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97" }
     ],
-    img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+    img: "assets/cover5.webp",
     photo:"assets/team4.webp",
     user:"assets/anjay.webp",
     rating: "4.6",
@@ -22,7 +22,7 @@ const profiles = [
   {
     name: "Sherin",
     role: "COO & HR",
-    img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97",
+    img: "assets/cover1.webp",
     photo:"assets/team3.webp",
     tools:[
       { name: "zoho", img: "https://www.softwaredekho.in/_next/image?url=https%3A%2F%2Fsoftwaredekho.s3.ap-south-1.amazonaws.com%2Fpublic-assets%2F1c46627d832b8c12dd366f695c04aabe.jpg&w=3840&q=75" },
@@ -35,7 +35,7 @@ const profiles = [
   {
     name: "Elizebath Thomas",
     role: "Web Developer",
-    img: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce",
+    img: "assets/cover3.webp",
     tools:[
       { name: "react", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/862px-React-icon.svg.png" },
       { name: "node", img: "https://cdn-icons-png.flaticon.com/512/919/919825.png" },
@@ -54,7 +54,7 @@ const profiles = [
   {
     name: "Aneek",
     role: "Performance Marketer",
-    img: "https://images.unsplash.com/photo-1503264116251-35a269479413",
+    img: "assets/cover4.webp",
     photo:"assets/team6.webp",
     user:"assets/aneek.webp",
     rating: "4.5",
@@ -64,7 +64,7 @@ const profiles = [
   {
     name: "Afnas",
     role: "Cinematographer",
-    img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97",
+    img: "assets/cover2.webp",
     photo:"assets/team7.webp",
     user:"assets/afnas.webp",
     rating: "4.8",
@@ -74,7 +74,7 @@ const profiles = [
   {
     name: "Hajira",
     role: "Administration Head",
-    img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+    img: "assets/cover6.webp",
     photo:"assets/team8.webp",
     user:"assets/hajira.webp",
     rating: "4.6",
@@ -82,19 +82,17 @@ const profiles = [
     rate: "$50/hr",
   },
 ];
-
 export default function TeamLayout() {
-  const [centerIndex, setCenterIndex] = useState(2); // Default to the middle card
-  const [isPaused, setIsPaused] = useState(false);   // <-- NEW
+  const [centerIndex, setCenterIndex] = useState(2);
+  const [isPaused, setIsPaused] = useState(false);
 
-  // AUTOSCROLL: scrolls to next card every 2 seconds, unless paused
   useEffect(() => {
-    if (isPaused) return; // <-- NEW
+    if (isPaused) return;
     const interval = setInterval(() => {
       handleNext();
     }, 2000);
     return () => clearInterval(interval);
-  }, [centerIndex, isPaused]); // <-- include isPaused
+  }, [centerIndex, isPaused]);
 
   const handlePrev = () => {
     setCenterIndex((idx) => (idx === 0 ? profiles.length - 1 : idx - 1));
@@ -103,7 +101,6 @@ export default function TeamLayout() {
     setCenterIndex((idx) => (idx === profiles.length - 1 ? 0 : idx + 1));
   };
 
-  // Cards to display (center + 2 on each side)
   const getDisplayProfiles = () => {
     const shown = [];
     for (let offset = -2; offset <= 2; offset++) {
@@ -115,32 +112,27 @@ export default function TeamLayout() {
 
   return (
     <div className="relative flex items-center w-full h-[500px] overflow-hidden bg-black/90 px-0 md:px-10">
-      
-      {/* Cards */}
-      <div className="flex flex-1 justify-center items-center h-full">
+      <div className="flex flex-1 justify-center items-center h-full relative">
         {getDisplayProfiles().map((profile, idx) => {
           if (profile.offset === 0) {
             return (
               <div
                 key={profile.name}
-                className="relative group w-80 md:w-96 h-[420px] z-20 mx-[-40px] scale-105 hover:scale-110 transition-transform duration-300 rounded-xl shadow-2xl"
+                className="relative group w-[90vw] max-w-[320px] md:w-80 md:max-w-[384px] h-[420px] z-20 mx-auto scale-105 hover:scale-110 transition-transform duration-300 rounded-xl shadow-2xl"
                 style={{ boxShadow: "0 6px 48px 8px #0007" }}
-                onMouseEnter={() => setIsPaused(true)}    // <-- NEW
-                onMouseLeave={() => setIsPaused(false)}   // <-- NEW
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
               >
-                {/* Main Image */}
                 <img
                   src={profile.photo}
                   alt={profile.name}
-                  className="w-[75%] h-full object-cover rounded-xl"
+                  className="w-[75%] h-full object-cover rounded-xl mx-auto"
                 />
                 <div className="absolute inset-0 bg-white/95 backdrop-blur-md opacity-0 translate-y-10 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 rounded-2xl flex flex-col">
-                  {/* Top 1/3 Image Background */}
                   <div
-                    className="h-32 w-full bg-cover bg-center rounded-t-2xl"
+                    className="h-30 w-full bg-cover bg-center rounded-t-2xl"
                     style={{ backgroundImage: `url(${profile.img})` }}
                   ></div>
-                  {/* Profile Info */}
                   <div className="flex flex-col items-center text-center p-4 flex-grow">
                     <div className="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center -mt-10 mb-3 border-4 border-white shadow-md">
                       <img
@@ -153,18 +145,16 @@ export default function TeamLayout() {
                       {profile.name}
                     </h3>
                     <p className="text-sm text-gray-500 mb-4">{profile.role}</p>
-                    {/* Tools */}
                     <div className="flex items-center justify-center gap-3 mb-4">
                       {profile.tools?.map((tool) => (
                         <img
                           key={tool.name}
                           src={tool.img}
                           alt={tool.name}
-                          className="w-10 h-10 rounded-full object-cover"
+                          className="w-8 h-8 rounded-full object-cover"
                         />
                       ))}
                     </div>
-                    {/* Stats */}
                     <div className="flex justify-between w-full border-t pt-3 text-sm text-gray-600">
                       <div className="flex flex-col items-center w-1/3">
                         <div className="flex items-center gap-1">
@@ -183,7 +173,6 @@ export default function TeamLayout() {
                       </div>
                     </div>
                   </div>
-                  {/* Button */}
                   <div className="p-4 pt-0">
                     <button className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-900 transition">
                       Get in touch
@@ -193,53 +182,52 @@ export default function TeamLayout() {
               </div>
             );
           }
-          // Side cards styling (angled, faded)
-          // For adjacent (2nd) cards
-let angle = 0, scale = 0.8, zIdx = 8, opacity = 0.6, translateY = "0px", blur = "blur-sm";
-if (profile.offset === -1) {
-  angle = -12;
-  scale = 0.92;
-  zIdx = 15;
-  opacity = 0.84;
-  translateY = "-20px";
-  blur = "";
-} else if (profile.offset === 1) {
-  angle = 12;
-  scale = 0.92;
-  zIdx = 15;
-  opacity = 0.84;
-  translateY = "-20px";
-  blur = "";
-} else if (profile.offset === -2) {
-  angle = -18;
-  scale = 0.78;
-  zIdx = 8;
-  opacity = 0.50;
-  translateY = "24px";
-  blur = "blur-sm";
-} else if (profile.offset === 2) {
-  angle = 18;
-  scale = 0.78;
-  zIdx = 8;
-  opacity = 0.50;
-  translateY = "24px";
-  blur = "blur-sm";
-}
+          // Side cards: hide on mobile, show on desktop
+          let angle = 0, scale = 0.8, zIdx = 8, opacity = 0.6, translateY = "0px", blur = "blur-sm";
+          if (profile.offset === -1) {
+            angle = -12;
+            scale = 0.92;
+            zIdx = 15;
+            opacity = 0.84;
+            translateY = "-20px";
+            blur = "";
+          } else if (profile.offset === 1) {
+            angle = 12;
+            scale = 0.92;
+            zIdx = 15;
+            opacity = 0.84;
+            translateY = "-20px";
+            blur = "";
+          } else if (profile.offset === -2) {
+            angle = -18;
+            scale = 0.78;
+            zIdx = 8;
+            opacity = 0.50;
+            translateY = "24px";
+            blur = "blur-sm";
+          } else if (profile.offset === 2) {
+            angle = 18;
+            scale = 0.78;
+            zIdx = 8;
+            opacity = 0.50;
+            translateY = "24px";
+            blur = "blur-sm";
+          }
 
           return (
             <div
-  key={profile.name}
-  style={{
-    left: `calc(50% + ${profile.offset * 220}px - 180px)`,
-    transform: `rotateY(${angle}deg) scale(${scale}) translateY(${translateY})`,
-    zIndex: zIdx,
-    opacity,
-    width: "300px",
-    height: "380px",
-    pointerEvents: "none"
-  }}
-  className={`absolute transition-transform duration-500 rounded-xl shadow-xl overflow-hidden ${blur}`}
->
+              key={profile.name}
+              style={{
+                left: `calc(50% + ${profile.offset * 220}px - 180px)`,
+                transform: `rotateY(${angle}deg) scale(${scale}) translateY(${translateY})`,
+                zIndex: zIdx,
+                opacity,
+                width: "300px",
+                height: "380px",
+                pointerEvents: "none"
+              }}
+              className={`absolute transition-transform duration-500 rounded-xl shadow-xl overflow-hidden ${blur} hidden md:block`}
+            >
               <img
                 src={profile.photo}
                 alt={profile.name}

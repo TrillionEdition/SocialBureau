@@ -65,7 +65,65 @@ import {
 import { FaArrowUpRightDots } from "react-icons/fa6";
 
 const servicesData = {
-  "Full-Funnel Performance Marketing": {
+  
+  "API-Driven-Growth-Automated-Distribution": {
+    meta: {
+      title: "API-Driven Growth & Automated Marketing Distribution | Social Bureau",
+      description: "Connect product, marketing, and ops through API-led automation. Eliminate handoff friction and scale faster with growth loops.",
+    },
+    hero: {
+      headline: "Data Moves Faster Than Humans, So Should Your Marketing",
+      highlight: "Faster",
+      subtext: "Without process automation or knowledge, scale and personalization are challenging.",
+    },
+    problems: {
+      title: "The ",
+      highlight: "Problem",
+      items : [
+  { title: "Manual workflows", icon: <FaRegClock  /> },
+  { title: "Slow personalization", icon: <FaUserClock  /> },
+  { title: "Disconnected tech stack", icon: <FaPuzzlePiece  /> },
+],
+    },
+    deliveries: {
+      title: "Our",
+      highlight: "Solution",
+      items: [
+        {
+    title: "API connection between all ad, CRM, and analytics platforms",
+    description: "Connect all your growth tools to blend data and automate workflows through API connections.",
+    icon: <FaLink />,
+  },
+  {
+    title: "Event-based audience segmentation",
+    description: " Create dynamic audiences from user behavior to get precise targeting and personalized experiences.",
+    icon: <FaCalendarAlt />,
+  },
+  {
+    title: "Behavior-driven growth loops",
+    description: "Take user behavior and turn it into growth triggers that can repeat over and over and can continuously attract and retain new users.",
+    icon: <FaSyncAlt />,
+  },
+  {
+    title: "Zero-delay personalization engines",
+    description: "Your users will experience how their behavior drives real-time experiences, instantly increasing conversion rates.",
+    icon: <FaBolt/>,
+  },
+      ],
+    },
+    whyItWorks: {
+      title: "The",
+      highlight: "Impact",
+      subtext: "Fewer handoffs. Faster iterations. Growth that compounds without burnout.",
+    },
+    cta: {
+      headline: "Ready to Scale with Automation?",
+      button: "Automate Growth",
+      link: "tel:+918921840486",
+    },
+  },
+
+  "Full-Funnel-Performance-Marketing": {
     meta: {
       title: "Full-Funnel Performance Marketing Agency for Niche Brands | Social Bureau",
       description: "Maximize ROI with full-funnel performance marketing designed for niche brands. We engineer strategies that turn ad spend into sustainable growth.",
@@ -106,7 +164,7 @@ const servicesData = {
     },
   },
 
-  "Funnel Architecture & Growth Pathways": {
+  "Funnel-Architecture-Growth-Pathways": {
     meta: {
       title: "Funnel Architecture & Growth Strategy for Scaling Brands | Social Bureau",
       description: "Design customer journeys that convert. We build funnel architectures that map awareness to revenue with P&L-aligned growth pathways.",
@@ -147,7 +205,7 @@ const servicesData = {
     },
   },
 
-  "Conversion Rate Optimization & Landing Systems": {
+  "Conversion-Rate-Optimization-Landing-Systems": {
     meta: {
       title: "Conversion Rate Optimization & Landing Pages That Convert | Social Bureau",
       description: "High-converting landing pages and CRO systems based on psychology, friction scoring, and micro-experiments—built for niche markets.",
@@ -188,7 +246,7 @@ const servicesData = {
     },
   },
 
-  "Messaging & Positioning for Niche Brands": {
+  "Messaging-Positioning-for-Niche-Brands": {
     meta: {
       title: "Messaging & Brand Positioning for Niche Audiences | Social Bureau",
       description: "Go beyond generic messaging. We uncover linguistic, cultural, and psychological drivers that differentiate your brand in saturated markets.",
@@ -301,64 +359,7 @@ const servicesData = {
   },
 },
 
-  "API-Driven Growth & Automated Distribution": {
-    meta: {
-      title: "API-Driven Growth & Automated Marketing Distribution | Social Bureau",
-      description: "Connect product, marketing, and ops through API-led automation. Eliminate handoff friction and scale faster with growth loops.",
-    },
-    hero: {
-      headline: "Data Moves Faster Than Humans, So Should Your Marketing",
-      highlight: "Faster",
-      subtext: "Without process automation or knowledge, scale and personalization are challenging.",
-    },
-    problems: {
-      title: "The ",
-      highlight: "Problem",
-      items : [
-  { title: "Manual workflows", icon: <FaRegClock  /> },
-  { title: "Slow personalization", icon: <FaUserClock  /> },
-  { title: "Disconnected tech stack", icon: <FaPuzzlePiece  /> },
-],
-    },
-    deliveries: {
-      title: "Our",
-      highlight: "Solution",
-      items: [
-        {
-    title: "API connection between all ad, CRM, and analytics platforms",
-    description: "Connect all your growth tools to blend data and automate workflows through API connections.",
-    icon: <FaLink />,
-  },
-  {
-    title: "Event-based audience segmentation",
-    description: " Create dynamic audiences from user behavior to get precise targeting and personalized experiences.",
-    icon: <FaCalendarAlt />,
-  },
-  {
-    title: "Behavior-driven growth loops",
-    description: "Take user behavior and turn it into growth triggers that can repeat over and over and can continuously attract and retain new users.",
-    icon: <FaSyncAlt />,
-  },
-  {
-    title: "Zero-delay personalization engines",
-    description: "Your users will experience how their behavior drives real-time experiences, instantly increasing conversion rates.",
-    icon: <FaBolt/>,
-  },
-      ],
-    },
-    whyItWorks: {
-      title: "The",
-      highlight: "Impact",
-      subtext: "Fewer handoffs. Faster iterations. Growth that compounds without burnout.",
-    },
-    cta: {
-      headline: "Ready to Scale with Automation?",
-      button: "Automate Growth",
-      link: "tel:+918921840486",
-    },
-  },
-
-  "Niche Market Penetration Strategy": {
+  "Niche-Market-Penetration-Strategy": {
     meta: {
       title: "Niche Market Penetration Strategy for High-Growth Brands | Social Bureau",
       description: "Drive growth in niche verticals with cultural fluency, ethnographic insights, and performance marketing built to fit your market.",
@@ -414,7 +415,7 @@ const servicesData = {
     },
   },
 
-  "Influencer & UGC Growth Engines": {
+  "Influencer-UGC-Growth-Engines": {
     meta: {
       title: "Influencer & UGC Growth Systems Tied to Revenue | Social Bureau",
       description: "We contract creators on performance KPIs, not vanity metrics. Our UGC flows into your funnel for trust, reach, and conversion.",
@@ -456,7 +457,7 @@ const servicesData = {
     },
   },
 
-  "Lifecycle & Email Automation Strategy": {
+  "Lifecycle-Email-Automation-Strategy": {
     meta: {
       title: "Lifecycle & Email Automation That Drives Repeat Revenue | Social Bureau",
       description: "Trigger-based email flows and nurture systems that increase repeat purchases and reduce churn. Built for vertical-specific behavior.",
@@ -497,7 +498,7 @@ const servicesData = {
       link: "tel:+918921840486",
     },
   },
-  "Software GTM & Growth Architecture": {
+  "Software-GTM-Growth-Architecture": {
     meta: {
       title: "Software Growth Architecture & GTM Strategy for SaaS | Social Bureau",
       description: "Bridge the gap between product, marketing, and rev-ops. We build PLG and sales-assist systems that grow MRR with precision.",

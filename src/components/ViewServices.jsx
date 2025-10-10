@@ -16,16 +16,16 @@ const icons = [
   <i className="fas fa-rocket text-2xl"></i>,
 ];
 const cards = [
-  { image:'assets/service1.webp',title: 'Full-Funnel Performance Marketing', content: 'Click costs don\'t matter if they don\'t convert. We deploy vertical-informed models and 14-day sprint cycles tied to LTV, not vanity ROAS.' },
-  { image:'assets/service2.webp',title: 'Funnel Architecture & Growth Pathways', content: 'Stop leaking revenue. We map awareness to LTV with customized, P&L-aligned blueprints.' },
-  { image:'assets/service3.webp',title: 'Conversion Rate Optimization & Landing Systems', content: 'Built with psychology, tested with micro-experiments. Bounce less. Convert more.' },
-  { image:'assets/service4.webp',title: 'Messaging & Positioning for Niche Brands', content: 'Generic messaging kills growth. We uncover category-specific codes using ethnographic and linguistic analysis.' },
-  { image:'assets/service5.webp',title: 'Web-Development', content: 'From MVPs to scalable platforms, we design, develop, and deploy web apps that are fast, secure, and user-centric.' },
-  { image:'assets/service6.webp',title: 'API-Driven Growth & Automated Distribution', content: 'Eliminate friction. Merge engineering + marketing for compounding growth loops.' },
-  { image:'assets/service7.webp',title: 'Niche Market Penetration Strategy', content: 'We speak fluent healthtech, crypto, fintech, and more. Penetrate with precision.' },
-  { image:'assets/service8.webp',title: 'Influencer & UGC Growth Engines', content: 'No vanity metrics. Just creator content built for performance and attribution.' },
-  { image:'assets/service9.webp',title: 'Lifecycle & Email Automation Strategy', content: 'Trigger behavior-based flows that drive revenue, measured on 30-day impact.' },
-  { image:'assets/service10.webp',title: 'Software GTM & Growth Architecture', content: 'PLG meets sales-assist in a system that converts trials and grows MRR.' }
+  { image:'assets/service6.webp',title: 'API-Driven-Growth-Automated-Distribution', content: 'Eliminate friction. Merge engineering + marketing for compounding growth loops.' },
+  { image:'assets/service1.webp',title: 'Full-Funnel-Performance-Marketing', content: 'Click costs don\'t matter if they don\'t convert. We deploy vertical-informed models and 14-day sprint cycles tied to LTV, not vanity ROAS.' },
+  { image:'assets/service2.webp',title: 'Funnel-Architecture-Growth-Pathways', content: 'Stop leaking revenue. We map awareness to LTV with customized, P&L-aligned blueprints.' },
+  { image:'assets/service3.webp',title: 'Conversion-Rate-Optimization-Landing-Systems', content: 'Built with psychology, tested with micro-experiments. Bounce less. Convert more.' },
+  { image:'assets/service4.webp',title: 'Messaging-Positioning-for-Niche-Brands', content: 'Generic messaging kills growth. We uncover category-specific codes using ethnographic and linguistic analysis.' },
+  { image:'assets/service5.webp',title: 'Web-Development', content: 'From MVPs to scalable platforms, we design, develop, and deploy web apps that are fast, secure, and user-centric.' },  
+  { image:'assets/service7.webp',title: 'Niche-Market-Penetration-Strategy', content: 'We speak fluent healthtech, crypto, fintech, and more. Penetrate with precision.' },
+  { image:'assets/service8.webp',title: 'Influencer-UGC-Growth-Engines', content: 'No vanity metrics. Just creator content built for performance and attribution.' },
+  { image:'assets/service9.webp',title: 'Lifecycle-Email-Automation-Strategy', content: 'Trigger behavior-based flows that drive revenue, measured on 30-day impact.' },
+  { image:'assets/service10.webp',title: 'Software-GTM-Growth-Architecture', content: 'PLG meets sales-assist in a system that converts trials and grows MRR.' }
 ];
 
 export default function Ser() {

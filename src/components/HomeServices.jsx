@@ -16,8 +16,8 @@ export default function HomeServices() {
     rose: 'text-rose-200'
   };
   const badges = [
-    { icon: 'fas fa-chart-line', text: 'Full-Funnel Performance Marketing', color: 'teal' },
     { icon: 'fas fa-sitemap', text: 'API-Driven Growth Loops', color: 'purple' },
+    { icon: 'fas fa-chart-line', text: 'Full-Funnel Performance Marketing', color: 'teal' },    
     { icon: 'fas fa-bullseye', text: 'Vertical-Specific Strategy', color: 'amber' },
     { icon: 'fas fa-comments', text: 'Advanced CRO & Lifecycle Systems', color: 'indigo' },
     { icon: 'fas fa-globe', text: 'Lifecycle Automation', color: 'rose' },
@@ -25,15 +25,31 @@ export default function HomeServices() {
 
   return (
     <div className="h-[80vh] bg-black flex items-center justify-center p-4 sm:p-6 md:p-8">
-      <div className="w-full max-w-6xl overflow-x-auto">
+      <div className="w-full max-w-6xl">
         <div className="flex justify-center gap-4 gap-y-6 flex-wrap">
           {badges.map((badge, idx) => {
             const c = styles[badge.color];
             return (
               <div
                 key={idx}
-                className={`p-[2px] rounded-full bg-gradient-to-r ${c.gradient} hover:scale-105 transition-transform duration-300 flex-shrink-0 w-full sm:w-auto`}
+                className={`p-[2px] rounded-full bg-gradient-to-r ${c.gradient} hover:scale-105 transition-transform duration-300 flex-shrink-0 w-full sm:w-auto relative`}
               >
+                {/* Top left "New" icon for first badge */}
+                {idx === 0 && (
+                  <span
+                    className="
+                      absolute top-0 left-5 -translate-y-1/2 -translate-x-1/2 z-10
+                      flex items-center justify-center
+                      px-2 py-0.5 rounded-full bg-gradient-to-r from-pink-500 to-yellow-400
+                      text-xs font-bold text-white shadow-lg
+                      whitespace-nowrap
+                      drop-shadow
+                      animate-bounce
+                    "
+                  >
+                    <i className="fas fa-star mr-1" /> New
+                  </span>
+                )}
                 <button
                   className={`
                     relative group
