@@ -2,90 +2,12 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { FaStar, FaWordpress, FaFigma } from "react-icons/fa";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-const profiles = [
-  
-  {
-    name: "Anjay Ramesh",
-    role: "Content & Copy Writer",
-    tools:[
-      { name: "wordpress", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330" },
-      { name: "figma", img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97" }
-    ],
-    img: "assets/cover5.webp",
-    photo:"assets/team4.webp",
-    user:"assets/anjay.webp",
-    rating: "4.6",
-    duration: "7 Days",
-    rate: "$50/hr",
-  },
-  
-  {
-    name: "Sherin",
-    role: "COO & HR",
-    img: "assets/cover1.webp",
-    photo:"assets/team3.webp",
-    tools:[
-      { name: "zoho", img: "https://www.softwaredekho.in/_next/image?url=https%3A%2F%2Fsoftwaredekho.s3.ap-south-1.amazonaws.com%2Fpublic-assets%2F1c46627d832b8c12dd366f695c04aabe.jpg&w=3840&q=75" },
-    ],
-    user:"assets/sherin.webp",
-    rating: "4.8",
-    duration: "12 Days",
-    rate: "$55/hr",
-  },
-  {
-    name: "Elizebath Thomas",
-    role: "Web Developer",
-    img: "assets/cover3.webp",
-    tools:[
-      { name: "react", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/862px-React-icon.svg.png" },
-      { name: "node", img: "https://cdn-icons-png.flaticon.com/512/919/919825.png" },
-      { name: "mongodb", img: "https://toppng.com/uploads/preview/mongodb-logo-11609369386lqoc6r2ga9.png" },
-      { name: "clickup", img: "https://clickup.com/images/for-se-page/clickup.png" },
-      { name: "python", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1200px-Python-logo-notext.svg.png" },
-      { name: "wordpress", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiQqvP9mSAN_KNxZlbvD9VT-yl4Vf_PuT6Cw&s" },
-      { name: "shopify", img: "https://cdn3.iconfinder.com/data/icons/social-media-2068/64/_shopping-512.png" },
-    ],
-    photo:"assets/team5.webp",
-    user:"assets/elizebath.webp",
-    rating: "4.2",
-    duration: "5 Days",
-    rate: "$35/hr",
-  },
-  {
-    name: "Aneek",
-    role: "Performance Marketer",
-    img: "assets/cover4.webp",
-    photo:"assets/team6.webp",
-    user:"assets/aneek.webp",
-    rating: "4.5",
-    duration: "10 Days",
-    rate: "$45/hr",
-  },
-  {
-    name: "Afnas",
-    role: "Cinematographer",
-    img: "assets/cover2.webp",
-    photo:"assets/team7.webp",
-    user:"assets/afnas.webp",
-    rating: "4.8",
-    duration: "12 Days",
-    rate: "$55/hr",
-  },
-  {
-    name: "Hajira",
-    role: "Administration Head",
-    img: "assets/cover6.webp",
-    photo:"assets/team8.webp",
-    user:"assets/hajira.webp",
-    rating: "4.6",
-    duration: "7 Days",
-    rate: "$50/hr",
-  },
-];
+import profiles from "../data/profiles";
+import { Link } from "react-router-dom";
 export default function TeamLayout() {
   const [centerIndex, setCenterIndex] = useState(2);
   const [isPaused, setIsPaused] = useState(false);
-
+  
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
@@ -109,9 +31,27 @@ export default function TeamLayout() {
     }
     return shown;
   };
-
   return (
-    <div className="relative flex items-center w-full h-[500px] overflow-hidden bg-black/90 px-0 md:px-10">
+    <div className="relative flex items-center w-screen h-[500px] overflow-hidden bg-black/90 px-0 md:px-10 md:pl-20">
+  {/* Left Arrow */}
+  <button
+    className="absolute left-2 md:left-6 z-30 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition disabled:opacity-40"
+    onClick={handlePrev}
+    aria-label="Previous"
+    style={{ top: "50%", transform: "translateY(-50%)" }}
+  >
+    <FaChevronLeft size={28} className="text-black" />
+  </button>
+  {/* Right Arrow */}
+  <button
+    className="absolute right-2 md:right-6 z-30 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition disabled:opacity-40"
+    onClick={handleNext}
+    aria-label="Next"
+    style={{ top: "50%", transform: "translateY(-50%)" }}
+  >
+    <FaChevronRight size={28} className="text-black" />
+  </button>
+
       <div className="flex flex-1 justify-center items-center h-full relative">
         {getDisplayProfiles().map((profile, idx) => {
           if (profile.offset === 0) {
@@ -146,12 +86,12 @@ export default function TeamLayout() {
                     </h3>
                     <p className="text-sm text-gray-500 mb-4">{profile.role}</p>
                     <div className="flex items-center justify-center gap-3 mb-4">
-                      {profile.tools?.map((tool) => (
+                      {profile.tools?.slice(0, 7).map((tool) => (
                         <img
                           key={tool.name}
                           src={tool.img}
                           alt={tool.name}
-                          className="w-8 h-8 rounded-full object-cover"
+                          className="w-5 h-5 rounded-full object-cover"
                         />
                       ))}
                     </div>
@@ -164,8 +104,8 @@ export default function TeamLayout() {
                         <p className="text-xs">rating</p>
                       </div>
                       <div className="flex flex-col items-center w-1/3">
-                        <span className="font-semibold">{profile.duration}</span>
-                        <p className="text-xs">duration</p>
+                        <span className="font-semibold">{profile.exp}</span>
+                        <p className="text-xs">Experience</p>
                       </div>
                       <div className="flex flex-col items-center w-1/3">
                         <span className="font-semibold">{profile.rate}</span>
@@ -174,9 +114,8 @@ export default function TeamLayout() {
                     </div>
                   </div>
                   <div className="p-4 pt-0">
-                    <button className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-900 transition">
-                      Get in touch
-                    </button>
+                    {/* <button className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-900 transition"><Link to={`/${encodeURIComponent(profile.name)}`}>Get in touch</Link>
+                    </button> */}
                   </div>
                 </div>
               </div>

@@ -22,6 +22,8 @@ import { ScorePage } from './pages/ScorePage'
 import { Client } from './pages/Client'
 import BlogDetail from './components/BlogDetail'
 import CareerDetail from './components/CareerDetail'
+import { Team } from './pages/Team'
+import { StaffDashboard } from './components/StaffDashboard'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
@@ -46,6 +48,7 @@ function App() {
         <Route path="/clients" element={<Client/>} />
         <Route path="/blogs/:slug" element={<BlogDetail />} />
         <Route path="/careers/:slug" element={<CareerDetail />} />
+        <Route path="/:name" element={<StaffDashboard />} />
         <Route path="/services/:serviceTitle" element={<Service1 />} />
         <Route path="/voice" element={
           <Suspense fallback={<div>Loading...</div>}>

@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import {
   FaBars, FaTimes, FaHome, FaBriefcase, FaTools, FaEnvelope, FaBlog,
-  FaInfoCircle, FaMicrophone, FaUserTie
+  FaInfoCircle, FaMicrophone, FaUserTie,
+  FaUsers
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -10,7 +11,7 @@ const MENU_ITEMS = [
   { icon: <FaBriefcase />, label: "Services", path: "/services" },
   { icon: <FaTools />, label: "Business Tool", path: "/tool" },
   { icon: <FaBlog />, label: "Blogs", path: "/blog" },
-  // { icon: <FaUsers />, label: "Our Team", path: "/our-team" },
+  { icon: <FaUsers />, label: "Our Team", path: "/our-team" },
   { icon: <FaUserTie />, label: "Careers", path: "/careers" },
   { icon: <FaInfoCircle />, label: "About", path: "/about" },
   { icon: <FaEnvelope />, label: "Contact", path: "/contact" },
@@ -32,7 +33,7 @@ const SEARCH_ITEMS = [
   { icon: <FaBriefcase />, label: "Software GTM Growth Architecture", path: "/services/Software-GTM-Growth-Architecture" },
   { icon: <FaTools />, label: "Business Tool", path: "/tool" },
   { icon: <FaBlog />, label: "Blogs", path: "/blog" },
-  // { icon: <FaUsers />, label: "Our Team", path: "/our-team" },
+  { icon: <FaUsers />, label: "Our Team", path: "/our-team" },
   { icon: <FaUserTie />, label: "Careers", path: "/careers" },
   { icon: <FaInfoCircle />, label: "About", path: "/about" },
   { icon: <FaEnvelope />, label: "Contact", path: "/contact" },
@@ -97,7 +98,7 @@ export default function Navbar() {
     <>
       {/* Desktop Sidebar */}
       <nav
-        className={`hidden md:flex fixed top-0 left-0 h-full text-white flex-col items-center justify-start transition-all duration-500 z-50
+        className={`hidden md:flex fixed top-0 left-0 h-screen text-white flex-col items-center justify-start transition-all duration-500 z-50
         ${isHovered ? "w-48 backdrop-blur-md bg-[rgba(255,255,255,0.1)] border-r border-[rgba(255,255,255,0.2)] shadow-[0_0_20px_rgba(255,255,255,0.15)]" : "w-20 bg-transparent border-none shadow-none"}
         ${showNavbar ? "opacity-100" : "opacity-0 pointer-events-none"}`}
         onMouseEnter={() => setIsHovered(true)}
@@ -106,10 +107,10 @@ export default function Navbar() {
           setShowSuggestions(false);
         }}
       >
-        <ul className="flex flex-col gap-6 mt-8 w-full items-center">
+        <ul className="flex flex-col gap-6 mt-5 w-full items-center">
           {/* Search Box (only visible when hovered) */}
-          {isHovered && (
-            <li className="w-full px-4 mt-2" ref={searchInputRef}>
+          {/* {isHovered && (
+            <li className="w-full px-4" ref={searchInputRef}>
               <div className="relative">
                 <input
                   type="text"
@@ -135,10 +136,10 @@ export default function Navbar() {
                 )}
               </div>
             </li>
-          )}
+          )} */}
 
           {/* Logo */}
-          <li className="mb-2">
+          <li>
             <Link to="/">
               <img
                 src="/assets/logo.webp"
@@ -152,7 +153,7 @@ export default function Navbar() {
           {MENU_ITEMS.map((item, idx) => (
             <li
               key={idx}
-              className={`flex items-center gap-4 w-full justify-start px-4 transition-all duration-300`}
+              className={`flex items-center gap-x-4 w-full justify-start px-4 transition-all duration-300`}
             >
               {/* Circular Icon */}
               <div

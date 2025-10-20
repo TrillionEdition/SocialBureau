@@ -67,14 +67,18 @@ export default function Chatbot() {
           onClick={() => setOpen(true)}
         >
           <div className="rounded-full shadow-lg flex items-center justify-center w-12 hover:scale-110 transition">
-            <button className="w-16 h-12 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
-                            flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform duration-300">
-              <FaCommentAlt className="text-xl" />
-            </button>
+            <video 
+  src="assets/bot.mp4"
+  autoPlay
+  loop
+  muted
+  playsInline
+  style={{ width: "100%", height: "auto" }}
+></video>
           </div>
         </div>
       )}
-
+      
       {/* Chatbot Popup */}
       {open && (
         <div className="fixed top-0 right-0 z-50 flex items-start justify-end" style={{width: '100vw', height: '100vh'}} onClick={() => setOpen(false)}>
@@ -106,8 +110,15 @@ export default function Chatbot() {
               ×
             </button>
             {/* Chatbot Title */}
-            <div className="flex items-center gap-2 mb-2">
-              <span className="font-semibold text-lg" style={{ color: "#fff", letterSpacing: "1px" }}>SB Talks</span>
+            <div className="flex items-center gap-1 mb-2 bg-black rounded-full pl-3 py-1">
+              <video 
+  src="assets/bot.mp4"
+  autoPlay
+  loop
+  muted
+  playsInline
+  style={{ width: "10%", height: "auto" }}
+></video><span className="font-semibold text-lg" style={{ color: "#fff", letterSpacing: "1px" }}>SB Talks</span> 
             </div>
             <div className="rounded-md h-60 overflow-y-auto mb-3 px-2 py-2" style={{ background: "rgba(255,255,255,0.07)" }}>
               {messages.map((msg, i) => (

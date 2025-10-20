@@ -80,3 +80,130 @@ export default function Ser() {
       </div>
   );
 }
+
+
+
+// import React, { useState } from "react";
+// import { FaArrowRight } from "react-icons/fa";
+// import { Link } from "react-router-dom";
+
+// const cards = [
+//   {
+//     title: 'API-Driven-Growth-Automated-Distribution',
+//     content: 'Eliminate friction. Merge engineering + marketing for compounding growth loops.',
+//     bg: "to-teal-700"
+//   },
+//   {
+//     title: 'Full-Funnel-Performance-Marketing',
+//     content: 'Click costs don\'t matter if they don\'t convert. We deploy vertical-informed models and 14-day sprint cycles tied to LTV, not vanity ROAS.',
+//     bg: "to-purple-700"
+//   },
+//   {
+//     title: 'Funnel-Architecture-Growth-Pathways',
+//     content: 'Stop leaking revenue. We map awareness to LTV with customized, P&L-aligned blueprints.',
+//     bg: "to-amber-700"
+//   },
+//   {
+//     title: 'Conversion-Rate-Optimization-Landing-Systems',
+//     content: 'Built with psychology, tested with micro-experiments. Bounce less. Convert more.',
+//     bg: "to-indigo-700"
+//   },
+//   {
+//     title: 'Messaging-Positioning-for-Niche-Brands',
+//     content: 'Generic messaging kills growth. We uncover category-specific codes using ethnographic and linguistic analysis.',
+//     bg: "to-rose-700"
+//   },
+//   {
+//     title: 'Web-Development',
+//     content: 'From MVPs to scalable platforms, we design, develop, and deploy web apps that are fast, secure, and user-centric.',
+//     bg: "to-orange-700"
+//   },
+//   {
+//     title: 'Niche-Market-Penetration-Strategy',
+//     content: 'We speak fluent healthtech, crypto, fintech, and more. Penetrate with precision.',
+//     bg: "to-sky-700"
+//   },
+//   {
+//     title: 'Influencer-UGC-Growth-Engines',
+//     content: 'No vanity metrics. Just creator content built for performance and attribution.',
+//     bg: "to-yellow-700"
+//   },
+//   {
+//     title: 'Lifecycle-Email-Automation-Strategy',
+//     content: 'Trigger behavior-based flows that drive revenue, measured on 30-day impact.',
+//     bg: "to-gray-700"
+//   },
+//   {
+//     title: 'Software-GTM-Growth-Architecture',
+//     content: 'PLG meets sales-assist in a system that converts trials and grows MRR.',
+//     bg: "to-fuchsia-700"
+//   }
+// ];
+
+// // Utility for randomized vertical offset
+// const getRandomOffset = (idx) => {
+//   const offsets = ["mt-0", "mt-8", "mt-16", "mt-12", "mt-20", "mt-4"];
+//   return offsets[idx % offsets.length];
+// };
+
+// export default function ViewServices() {
+//   const [hoveredIdx, setHoveredIdx] = useState(null);
+
+//   return (
+//     <div className="relative min-h-[80vh] bg-black flex items-center justify-center px-5 pl-20 py-8">
+//       <div className="relative w-full max-w-6xl mx-auto">
+//         {cards.map((card, idx) => {
+//           // Alternate left/right
+//           const alignRight = idx % 2 !== 0;
+//           const alignClass = alignRight
+//             ? "items-end justify-end"
+//             : "items-start justify-start";
+//           const randomOffset = getRandomOffset(idx);
+
+//           return (
+//             <div
+//               key={card.title}
+//               className={`flex ${alignClass} w-full ${randomOffset} relative`}
+//             >
+//               <Link to={`/services/${encodeURIComponent(card.title)}`}>
+//               <div
+//                 className={`
+//                   group rounded-full
+//                   bg-gradient-to-r from-black ${card.bg}
+//                   shadow-xl hover:shadow-white/5 flex items-center justify-center
+//                   w-70 h-70 sm:w-72 sm:h-72
+//                   p-3 text-center cursor-pointer
+//                   hover:scale-105
+//                   relative 
+//                 `}
+//                 onMouseEnter={() => setHoveredIdx(idx)}
+//                 onMouseLeave={() => setHoveredIdx(null)}
+//               >
+//                 <span className="font-medium text-xl text-white px-2">
+//                   {card.title.replace(/-/g, " ")}
+//                 </span>
+//                 {/* Description shown on hover, outside the circle */}
+//                 {hoveredIdx === idx && (
+//                   <div
+//                     className={`
+//                       absolute top-1/2 transform -translate-y-1/2
+//                       min-w-100 p-3 rounded-xl shadow-2xl bg-gradient-to-l from-black ${card.bg} bg-[length:200%_200%] text-white text-md font-medium
+//                       z-20 transition-all duration-300
+//                       ${alignRight
+//                         ? "right-full mr-6 text-right"
+//                         : "left-full ml-6 text-left"}
+//                     `}
+//                   >
+//                     {card.content}
+//                   </div>
+//                 )}
+                
+//               </div>
+//               </Link>
+//             </div>
+//           );
+//         })}
+//       </div>
+//     </div>
+//   );
+// }

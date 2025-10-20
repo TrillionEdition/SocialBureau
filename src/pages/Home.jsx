@@ -15,11 +15,9 @@ import HomeServices from '../components/HomeServices'
 import Chatbot from '../components/Chatbot'
 
 export const Home = () => {
-  const [showPopups, setShowPopups] = useState([false, false, false, false]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [paused, setPaused] = useState(false); // track if loop should pause
   const navigate = useNavigate();
 
+  // Regular rotating popups (bottom-right)
   const popups = [
     { title: "New Openings: Hiring Video Editors", subtitle: "Join our Team", link: "/careers/video-editor" },
     { title: "New Openings: Hiring Performance Marketers", subtitle: "Join our Team", link: "/careers/performance-marketer" },
@@ -27,12 +25,27 @@ export const Home = () => {
     { title: "New Openings: Hiring SEO Specialist", subtitle: "Join our Team", link: "/careers/seo-specialist" },
   ];
 
+  // Separate Diwali popup shown as centered modal
+  const diwaliPopup = { title: "Happy Diwali!", subtitle: "Warm wishes from SocialBureau", link: "/specials/diwali" };
+
+  // showPopups for rotating bottom-right popups (dynamic length)
+  const [showPopups, setShowPopups] = useState(() => Array(popups.length).fill(false));
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  // Centered diwali modal visibility
+  const [showDiwali, setShowDiwali] = useState(true); // set true to show on load, set false to hide
+
+  // Pause rotation while diwali popup is visible
   useEffect(() => {
-    if (paused) return; // don't run the interval if paused
+    setPaused(showDiwali);
+  }, [showDiwali]);
+
+  useEffect(() => {
+    if (paused) return;
 
     const interval = setInterval(() => {
-      setShowPopups((prev) => {
-        const newState = [false, false, false, false];
+      setShowPopups(() => {
+        const newState = Array(popups.length).fill(false);
         newState[currentIndex] = true;
         return newState;
       });
@@ -41,26 +54,31 @@ export const Home = () => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [currentIndex, paused]); // re-run only if currentIndex or paused changes
+  }, [currentIndex, paused, popups.length]);
 
   const closePopup = (index) => {
     setShowPopups((prev) =>
       prev.map((val, i) => (i === index ? false : val))
     );
-    setPaused(true); // pause the loop when user closes a popup
+    setPaused(true);
+  };
+
+  const closeDiwali = () => {
+    setShowDiwali(false);
   };
 
   return (
     <div className="bg-black">
       <CyberBackground />
-      {/* <Chatbot/> */}
+      <Chatbot/>
 
+      {/* Rotating bottom-right popups */}
       {popups.map(
         (popup, index) =>
           showPopups[index] && (
             <div
               key={index}
-              className="fixed right-4 bottom-4 flex flex-col gap-4 z-50 animate-fade-in"
+              className="fixed right-4 bottom-4 flex flex-col gap-4 z-40 animate-fade-in"
             >
               <div
                 className="relative bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-xl p-4 w-64 text-center hover:scale-105 transition-transform duration-300 cursor-pointer"
@@ -77,7 +95,7 @@ export const Home = () => {
                 </button>
 
                 <h2 className="text-lg font-bold text-white mb-1 drop-shadow-lg">{popup.title}</h2>
-                <p className="text-xs text-white/90 mb-3">{popup.subtitle}</p>
+                <p className="text-xs text-red/90 mb-3 shadow-xl">{popup.subtitle}</p>
                 <button className="bg-white text-purple-600 text-sm font-semibold px-4 py-1.5 rounded-full shadow hover:shadow-lg hover:bg-purple-100 transition-all">
                   Apply
                 </button>
