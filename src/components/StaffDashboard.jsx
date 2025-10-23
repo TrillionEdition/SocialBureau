@@ -7,8 +7,8 @@ import { FaCrown, FaGem, FaLeaf, FaMapMarkerAlt, FaMedal, FaPiggyBank, FaRocket,
 import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
 import axios from 'axios';
-import { dashboardAPI } from "../../services/clickupServices";
 import { useQuery } from '@tanstack/react-query';
+import { userDetailsAPI } from "../../services/clickupServices";
 
 const LEVELS = [
   {
@@ -98,19 +98,16 @@ const reviews = [
 export function StaffDashboard() {
   const staffName = useParams();
   const decodedName = decodeURIComponent(staffName.name);
-const { data, refetch } = useQuery({
-    queryKey: ['profile'],
-    queryFn: dashboardAPI,
-  });
-console.log(data);
-  const profile = profiles.find(p => p.name === decodedName);
-  const experienceData = [
-    { year: "2019", users: 3.2 },
-    { year: "2020", users: 4.0 },
-    { year: "2021", users: 4.2 },
-    { year: "2022", users: 3.4 },
-  ];
+  console.log(decodedName);
+  
+  const { data, isLoading, error } = useQuery({
+  queryKey: ['profile'],
+  queryFn: userDetailsAPI,
+});
+const user=data?.user
+const clickup=data?.clickup
 
+const profile = profiles.find(p => p.name === decodedName);
   // For review carousel
   const [startIdx, setStartIdx] = useState(0);
   const cardsToShow = 3;
@@ -129,7 +126,20 @@ console.log(data);
       </>
     );
   }
+  const handleClick = () => {
+    const subject = 'Enquiry about your service';
+    const body = 'Hi,\n\nI would like to enquire about...';
 
+    if (!user?.email) {
+      // Option: open mail with only CC if no user email, or show message
+      const mailtoNoTo = `mailto:?cc=${encodeURIComponent('web@socialbureau.in')}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailtoNoTo;
+      return;
+    }
+
+    const mailto = `mailto:${user.email}?cc=${encodeURIComponent('web@socialbureau.in')}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailto;
+  };
   return (
     <>
       <Navbar />
@@ -137,7 +147,7 @@ console.log(data);
         {/* Cover */}
         <section className="relative mb-3">
           <div className="w-full h-auto flex items-end justify-end rounded-b-lg">
-            <img src={`/${profile.img}`} alt={profile.name} className="w-full md:h-auto object-cover rounded-b-lg"/>
+            <img src={user?.coverImage} alt={user?.name} className="w-full md:h-auto object-cover rounded-b-lg"/>
           </div>
         </section>
 
@@ -147,14 +157,14 @@ console.log(data);
             <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-4">
               <div className="flex-1 w-full">
                 <h1 className="text-xl md:text-2xl font-bold text-gray-900 flex items-center gap-2">
-                  {profile.name}
+                  {user?.name}
                   <img 
                     src="https://img.icons8.com/ios11/512/FA5252/instagram-verification-badge.png" 
                     alt="icon" 
                     className="h-5 w-5"
                   />
                 </h1>
-                <div className="text-gray-700 mt-2 font-medium">{data?.user.username}</div>
+                <div className="text-gray-700 mt-2 font-medium">{user?.name}</div>
                 <div className="text-sm text-gray-500 mt-1">Kochi, Kerala</div>
                 <div className="mt-2 text-red-600 font-bold text-sm">50+ connections</div>
                 <span className="inline-flex items-center py-1 text-sm">
@@ -197,7 +207,12 @@ console.log(data);
               </div>
             </div>
             <div className="flex space-x-3 mt-5">
-              <button className="bg-red-600 text-white px-4 py-2 rounded font-semibold shadow hover:bg-red-700 w-full md:w-auto">Enquire Now</button>
+              <button
+      className="bg-red-600 text-white px-4 py-2 rounded font-semibold shadow hover:bg-red-700 w-full md:w-auto"
+      onClick={handleClick}
+    >
+      Enquire Now
+    </button>
             </div>
           </div>
           
@@ -205,7 +220,7 @@ console.log(data);
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mt-4">
             <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
               <span className="text-gray-400 text-xs mb-2">Total works done</span>
-              <span className="text-3xl font-bold text-white">{data?.worksDone}</span>
+              <span className="text-3xl font-bold text-white">.worksDone</span>
               <span className="text-xs text-gray-400 mt-2">Last 30 days</span>
             </div>
             <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
@@ -262,7 +277,7 @@ console.log(data);
             <div className="rounded-xl p-6 flex flex-col items-center"></div>
             <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
               <span className="text-gray-400 text-xs mb-2">Time Worked</span>
-              <span className="text-3xl font-bold text-white">{data ? Math.floor(data.totalHours) : 0} hrs</span>
+              <span className="text-3xl font-bold text-white"> hrs</span>
               <span className="text-xs text-gray-400 mt-2">Last 30 days</span>
             </div>
             <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
