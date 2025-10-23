@@ -25,21 +25,10 @@ export const Home = () => {
     { title: "New Openings: Hiring SEO Specialist", subtitle: "Join our Team", link: "/careers/seo-specialist" },
   ];
 
-  // Separate Diwali popup shown as centered modal
-  const diwaliPopup = { title: "Happy Diwali!", subtitle: "Warm wishes from SocialBureau", link: "/specials/diwali" };
-
   // showPopups for rotating bottom-right popups (dynamic length)
   const [showPopups, setShowPopups] = useState(() => Array(popups.length).fill(false));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [paused, setPaused] = useState(false);
-  // Centered diwali modal visibility
-  const [showDiwali, setShowDiwali] = useState(true); // set true to show on load, set false to hide
-
-  // Pause rotation while diwali popup is visible
-  useEffect(() => {
-    setPaused(showDiwali);
-  }, [showDiwali]);
-
   useEffect(() => {
     if (paused) return;
 
@@ -61,10 +50,6 @@ export const Home = () => {
       prev.map((val, i) => (i === index ? false : val))
     );
     setPaused(true);
-  };
-
-  const closeDiwali = () => {
-    setShowDiwali(false);
   };
 
   return (
