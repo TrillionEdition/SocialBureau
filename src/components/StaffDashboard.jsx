@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import profiles from "../data/profiles";
 import { FaCrown, FaGem, FaLeaf, FaMapMarkerAlt, FaMedal, FaPiggyBank, FaRocket, FaStar, FaUserGraduate } from "react-icons/fa";
 import domtoimage from "dom-to-image";
@@ -97,15 +97,20 @@ const reviews = [
 
 export function StaffDashboard() {
   const staffName = useParams();
-  const decodedName = decodeURIComponent(staffName.name);
-  console.log(decodedName);
-  
-  const { data, isLoading, error } = useQuery({
-  queryKey: ['profile'],
-  queryFn: userDetailsAPI,
+  const decodedName = decodeURIComponent(staffName.name);  
+  const { data } = useQuery({
+  queryKey: ['profile', decodedName],
+  queryFn: () => userDetailsAPI(decodedName),
+  staleTime: Infinity,            // never becomes stale → no automatic refetch
+  cacheTime: 1000 * 60 * 60,      // keep cached for 1 hour (adjust as needed)
+  refetchOnWindowFocus: false,
+  refetchOnReconnect: false,
+  refetchOnMount: false,          // don't refetch on mount if cached
 });
+const navigate=useNavigate()
 const user=data?.user
 const clickup=data?.clickup
+console.log(data);
 
 const profile = profiles.find(p => p.name === decodedName);
   // For review carousel
@@ -114,7 +119,7 @@ const profile = profiles.find(p => p.name === decodedName);
   const totalReviews = reviews.length;
   const prev = () => setStartIdx((prevIdx) => Math.max(prevIdx - 1, 0));
   const next = () => setStartIdx((prevIdx) => Math.min(prevIdx + 1, totalReviews - cardsToShow));
-  if (!profile) {
+  if (!user) {
     return (
       <>
         <Navbar />
@@ -140,6 +145,13 @@ const profile = profiles.find(p => p.name === decodedName);
     const mailto = `mailto:${user.email}?cc=${encodeURIComponent('web@socialbureau.in')}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailto;
   };
+  function getExpIndex(exp) {
+  if (exp < 0.3) return 0;
+  if (exp < 1) return 1;
+  if (exp < 2) return 2;
+  if (exp < 5) return 3;
+}
+const expIndex = getExpIndex(user.exp);
   return (
     <>
       <Navbar />
@@ -169,7 +181,7 @@ const profile = profiles.find(p => p.name === decodedName);
                 <div className="mt-2 text-red-600 font-bold text-sm">50+ connections</div>
                 <span className="inline-flex items-center py-1 text-sm">
   <div className="flex flex-col sm:flex-row  justify-start space-y-3 sm:space-y-0 sm:space-x-3">
-    {profile.links?.map((tool, key) => (
+    {user.links?.map((tool, key) => (
       <a href={tool.url} key={key}>
         <img
           key={tool.name}
@@ -186,13 +198,14 @@ const profile = profiles.find(p => p.name === decodedName);
               <div className="flex flex-col items-end mt-4 md:mt-0">
                 <span className="inline-flex items-center px-2 py-1 mb-2 font-semibold">
                   <div className="flex flex-row justify-end mb-2 space-x-3 ml-3">
-                    {profile.tools?.map((tool) => (
+                    {user?.tools?.map((tool,i) => (
                       <img
-                        key={tool.name}
-                        src={tool.img}
-                        alt={tool.name}
-                        title={tool.name}
+                        key={tool.toolName}
+                        src={tool.icon}
+                        alt={tool.toolName}
+                        title={tool.toolName}
                         className="w-8 h-8 rounded-full object-cover"
+                        onClick={()=>navigate(tool.url)}
                       />
                     ))}
                   </div>
@@ -200,9 +213,9 @@ const profile = profiles.find(p => p.name === decodedName);
                 <div className="flex items-center space-x-4 mt-2">
                   <span className="flex items-center text-yellow-500 font-semibold text-sm border-7 border-yellow-500 rounded-full h-15 w-15 p-2">
                     <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.564-.955L10 0l2.948 5.955 6.564.955-4.756 4.635 1.122 6.545z"/></svg>
-                    {profile.rating}
+                    {user.rating}
                   </span>
-                  <span className="text-green-600 font-bold text-lg">{profile.rate}</span>
+                  <span className="text-green-600 font-bold text-lg">${user.rate}/hr</span>
                 </div>
               </div>
             </div>
@@ -220,7 +233,7 @@ const profile = profiles.find(p => p.name === decodedName);
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mt-4">
             <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
               <span className="text-gray-400 text-xs mb-2">Total works done</span>
-              <span className="text-3xl font-bold text-white">.worksDone</span>
+              <span className="text-3xl font-bold text-white">{clickup.tasks.length}</span>
               <span className="text-xs text-gray-400 mt-2">Last 30 days</span>
             </div>
             <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
@@ -230,12 +243,12 @@ const profile = profiles.find(p => p.name === decodedName);
             </div>
             <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
               <span className="text-gray-400 text-xs mb-2">Projects Delivered</span>
-              <span className="text-3xl font-bold text-white">{profile.projects}5</span>
+              <span className="text-3xl font-bold text-white">5</span>
               <span className="text-xs text-gray-400 mt-2">This quarter</span>
             </div>
             <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
               <span className="text-gray-400 text-xs mb-2">Active Clients</span>
-              <span className="text-3xl font-bold text-white">{profile.clients.length}</span>
+              <span className="text-3xl font-bold text-white">{user?.clients?.length || 3}</span>
               <span className="text-xs text-gray-400 mt-2">Realtime</span>
             </div>
           </div>
@@ -246,7 +259,7 @@ const profile = profiles.find(p => p.name === decodedName);
               <React.Fragment key={level.key}>
                 <div
                   className={`flex flex-col items-center p-2 md:p-3 rounded-xl ${
-                    profile.exp == (idx + 1)
+                    expIndex === idx
                       ? 'border-2 border-[#D7FF40] shadow-lg scale-105 md:scale-110'
                       : 'border-0'
                   }`}
@@ -277,13 +290,19 @@ const profile = profiles.find(p => p.name === decodedName);
             <div className="rounded-xl p-6 flex flex-col items-center"></div>
             <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
               <span className="text-gray-400 text-xs mb-2">Time Worked</span>
-              <span className="text-3xl font-bold text-white"> hrs</span>
+              <span className="text-3xl font-bold text-white">{Math.round(Number(clickup?.totalHours ?? 0))} hrs</span>
               <span className="text-xs text-gray-400 mt-2">Last 30 days</span>
             </div>
             <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
-              <span className="text-gray-400 text-xs mb-2">Years of Experience</span>
-              <span className="text-3xl font-bold text-white">{profile.rating}</span>
-              <span className="text-xs text-gray-400 mt-2">This month</span>
+              <span className="text-gray-400 text-xs mb-2">Experience</span>
+              <span className="text-3xl font-bold text-white">
+                {user?.exp < 1
+                  ? `${String(user.exp).split(".")[1] || "0"}`
+                  : `${Math.floor(user.exp)}`}
+              </span>
+              <span className="text-xs text-gray-400 mt-2">{user?.exp < 1
+                  ? `months`
+                  : `years`}</span>
             </div>
           </div>
           
@@ -291,7 +310,7 @@ const profile = profiles.find(p => p.name === decodedName);
           <div className="bg-gray-900 rounded-lg shadow-md p-4 md:p-6 mb-4 mt-4">
             <h2 className="text-lg md:text-xl font-bold mb-4 text-white">Clients</h2>
             <div className="flex flex-wrap gap-8 md:gap-4 justify-start items-center">
-              {profile.clients.map((client, idx) => (
+              {profile?.clients?.map((client, idx) => (
                 <div
                   key={client.name}
                   className={`w-20 h-24 md:w-24 md:h-28 flex flex-col items-center justify-center rounded-lg shadow hover:shadow-lg transition-shadow p-2
@@ -349,7 +368,7 @@ const profile = profiles.find(p => p.name === decodedName);
             </div>
             {/* Right Side: Review Cards */}
             <div className="w-full md:w-2/3 flex flex-col md:flex-row justify-between space-y-4 md:space-y-0 md:space-x-4">
-              {profile.reviews.slice(startIdx, startIdx + cardsToShow).map((review, idx) => (
+              {profile?.reviews?.slice(startIdx, startIdx + cardsToShow).map((review, idx) => (
                 <div key={idx} className="flex-1 bg-white rounded-lg shadow p-4 md:p-5">
                   <p className="text-gray-700 mb-4">{review.text}</p>
                   <div className="flex items-center mb-2">
