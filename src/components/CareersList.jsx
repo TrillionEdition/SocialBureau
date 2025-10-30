@@ -4,7 +4,7 @@ import jobs from "../data/jobs";
 
 export default function CareersList() {
   return (
-    <section className="text-white py-20 px-6 md:w-[80vw] mx-auto">
+    <section className="text-white py-20 px-6 md:px-30 mx-auto ">
       <h2 className="text-5xl font-bold mb-6 text-center">Careers</h2>
       <p className="text-xl text-gray-300 font-light text-center mb-12">
         Designed for professionals of distinction
@@ -14,7 +14,7 @@ export default function CareersList() {
         {jobs.map((job) => (
           <div
             key={job.slug}
-            className="border border-gray-700 hover:border-[#ff0000] p-5 md:p-8 shadow-xl rounded-[1rem]"
+            className="border border-gray-700 hover:border-[#ff0000] p-5 md:p-8 shadow-xl rounded-[1rem] bg-black"
           >
             <div className="flex justify-between items-start mb-6">
               <h3 className="text-2xl font-semibold">{job.title}</h3>

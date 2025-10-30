@@ -29,7 +29,7 @@ export default function BlogDetail() {
       >
         ← Back to Posts
       </Link>
-      <div className="max-w-4xl mx-auto border border-2 border-white p-5 mb-10">
+      <div className="max-w-4xl mx-auto border border-[#3f0000] p-5 mb-10 bg-gradient-to-tr from-black to-[#3f0000] rounded-sm">
       <h1 className="text-4xl font-bold text-white mb-4">{post.title}</h1>
       <div className="flex items-center mb-4 space-x-3">
         <span className="text-xs font-medium bg-white text-[#ff0000] px-3 py-1 rounded-full">

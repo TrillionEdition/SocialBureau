@@ -3,6 +3,7 @@ const jobs = [
     title: "Video Editor",
     slug: "video-editor", // added slug
     icon: "fas fa-video",
+    img:"https://res.cloudinary.com/dtwcgfmar/image/upload/v1761804108/SB_Hiring_Poster_2_1_kabpbh.png",
     description:
       "The Video Editor requires a disciplined, accountable professional who can manage multiple projects with speed, precision, and results-driven execution.",
     type: "Kochi • On-site",
@@ -46,7 +47,7 @@ const jobs = [
     experience: [
       "Prior experience as a video editor, either in a professional setting (2 years) or as a freelancer (3 Years)"
     ],
-    salary: "₹20,000 - ₹30,000 per month",
+    salary: "Competitive and aligned with industry standards. Increments based on performance.",
     
     nextSteps:
       "Shortlisted candidates will be invited for an interview. A 1–2 min professional video submission is mandatory."
