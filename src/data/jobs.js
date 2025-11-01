@@ -3,7 +3,8 @@ const jobs = [
     title: "Video Editor",
     slug: "video-editor", // added slug
     icon: "fas fa-video",
-    img:"https://res.cloudinary.com/dtwcgfmar/image/upload/v1761804108/SB_Hiring_Poster_2_1_kabpbh.png",
+    img:["https://res.cloudinary.com/dtwcgfmar/image/upload/v1761804108/SB_Hiring_Poster_2_1_kabpbh.png",
+    ],
     description:
       "The Video Editor requires a disciplined, accountable professional who can manage multiple projects with speed, precision, and results-driven execution.",
     type: "Kochi • On-site",
@@ -146,6 +147,13 @@ const jobs = [
   },
   {
     title: "SEO Specialist",
+    img:[
+      "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761990714/Artboard_1_du2cpv.jpg",
+      "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761990713/Artboard_1_copy_ogqe7e.jpg",
+      "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761990714/Artboard_1_copy_2_rphxam.jpg",
+      "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761990713/Artboard_1_copy_3_ptvvlf.jpg",
+      "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761990713/Artboard_1_copy_4_zvjrll.jpg",
+    ],
     slug: "seo-specialist", // added slug
     icon: "fas fa-search",
     description:

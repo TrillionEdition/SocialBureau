@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import jobs from "../data/jobs";
 import Navbar from "./Navbar";
@@ -9,6 +9,17 @@ export default function CareerDetail() {
   const job = jobs.find((j) => j.slug === slug); // use slug
 
   if (!job) return <p className="text-white text-center py-20">Job not found.</p>;
+const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Change image every 3 seconds
+  useEffect(() => {
+    if (!job?.img || job.img.length === 0) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % job.img.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [job.img]);
 
   return (
     <div className="bg-gradient-to-bl from-black to-[#3f0000] min-h-screen">
@@ -42,15 +53,7 @@ export default function CareerDetail() {
               </div>
 
               {/* Image */}
-              <div className="flex-shrink-0 mt-6 md:mt-0">
-                {job.img && (
-                  <img
-                    src={job.img}
-                    alt={job.title}
-                    className="max-h-[50vh] w-auto max-w-[45vw] object-contain md:ml-0"
-                  />
-                )}
-              </div>
+              
             </div>
 
             <div className="space-y-4 leading-relaxed mt-6">
@@ -102,6 +105,16 @@ export default function CareerDetail() {
 
           {/* Right column: Google Form */}
           <div className="w-full md:w-1/3 mt-8 md:mt-0">
+          <div className="flex-shrink-0 mt-6 md:mt-0">
+            {job.img && job.img.length > 0 && (
+              <img
+                src={job.img[currentIndex]}
+                alt={job.title}
+                className="w-full object-contain md:ml-0 transition-opacity duration-700 ease-in-out pb-10 rounded-xl"
+                key={job.img[currentIndex]}
+              />
+            )}
+          </div>
             <div className="bg-white rounded-lg overflow-hidden shadow-lg">
               {/* Make iframe responsive: full width of column, with large min height */}
               <iframe
