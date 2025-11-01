@@ -179,7 +179,7 @@ export default function Navbar() {
 
       {/* Mobile Navbar (unchanged) */}
 <nav
-  className={`md:hidden fixed top-0 left-0 w-full bg-[rgba(0,0,0,0.4)] text-white px-6 py-4 flex flex-col gap-2 transition-opacity duration-500 z-50 ${
+  className={`md:hidden fixed top-0 left-0 w-full bg-black text-white px-6 py-4 flex flex-col gap-2 transition-opacity duration-500 z-50 ${
     showNavbar ? "opacity-100" : "opacity-0 pointer-events-none"
   }`}
 >

@@ -1,48 +1,48 @@
 import React, { useRef, useEffect, useState } from "react";
 
 const videosList = [
-  {
-    id: "1",
-    thumbnail: "https://img.youtube.com/vi/ysz5S6PUM-U/hqdefault.jpg",
-    title: "Hajira M",
-    description: "Administration",
-    link: "https://www.youtube.com/watch?v=ysz5S6PUM-U",
-  },
+  // {
+  //   id: "1",
+  //   thumbnail: "https://img.youtube.com/vi/ysz5S6PUM-U/hqdefault.jpg",
+  //   title: "Hajira M",
+  //   description: "Administration",
+  //   link: "https://www.youtube.com/watch?v=ysz5S6PUM-U",
+  // },
   {
     id: "2",
-    thumbnail: "https://img.youtube.com/vi/jNQXAC9IVRw/hqdefault.jpg",
+    thumbnail: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761907046/SB_Testimonial_YouTube_Thumbanil_Anjay_g9vebt.png",
     title: "Anjay Ramesh",
     description: "Content & Copy Writer",
-    link: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+    link: "https://youtu.be/D0G2NYgGpLY?si=5-r1F2JvljJp9pl8",
   },
   {
     id: "3",
-    thumbnail: "https://img.youtube.com/vi/aqz-KE-bpKQ/hqdefault.jpg",
+    thumbnail: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761906713/SB_Testimonial_YouTube_Thumbanil_Elizebath_loehcz.png",
     title: "Elizebath Thomas",
     description: "Web Developer",
-    link: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+    link: "https://youtu.be/gNebMaTqoQg?si=7uUvk1H389lKdBdJ",
   },
-  {
-    id: "4",
-    thumbnail: "https://img.youtube.com/vi/ysz5S6PUM-U/hqdefault.jpg",
-    title: "Afnas N",
-    description: "Videographer",
-    link: "https://www.youtube.com/watch?v=ysz5S6PUM-U",
-  },
-  {
-    id: "5",
-    thumbnail: "https://img.youtube.com/vi/jNQXAC9IVRw/hqdefault.jpg",
-    title: "Haridas PM",
-    description: "Editor",
-    link: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
-  },
-  {
-    id: "6",
-    thumbnail: "https://img.youtube.com/vi/aqz-KE-bpKQ/hqdefault.jpg",
-    title: "Rimshad M",
-    description: "Graphics Designer",
-    link: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
-  },
+  // {
+  //   id: "4",
+  //   thumbnail: "https://img.youtube.com/vi/ysz5S6PUM-U/hqdefault.jpg",
+  //   title: "Afnas N",
+  //   description: "Videographer",
+  //   link: "https://www.youtube.com/watch?v=ysz5S6PUM-U",
+  // },
+  // {
+  //   id: "5",
+  //   thumbnail: "https://img.youtube.com/vi/jNQXAC9IVRw/hqdefault.jpg",
+  //   title: "Haridas PM",
+  //   description: "Editor",
+  //   link: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+  // },
+  // {
+  //   id: "6",
+  //   thumbnail: "https://img.youtube.com/vi/aqz-KE-bpKQ/hqdefault.jpg",
+  //   title: "Rimshad M",
+  //   description: "Graphics Designer",
+  //   link: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+  // },
 ];
 
 export default function Testimonials() {
@@ -76,7 +76,7 @@ export default function Testimonials() {
   }, []);
 
   return (
-    <section className="w-full bg-black py-12 overflow-hidden">
+    <section className="w-full bg-black py-12 overflow-hidden px-5 mx-10">
       <h2 className="text-xl font-bold mb-6 text-left pl-5 text-white">
         Testimonials
       </h2>

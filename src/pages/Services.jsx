@@ -5,6 +5,7 @@ import ServicesList from '../components/ServicesList'
 import ServiceFooter from '../components/ServiceFooter'
 import Footer from '../components/Footer'
 import Ser from '../components/ViewServices'
+import Liquid from '../components/Liquid'
 
 export const Services = () => {
     const listRef = useRef(null);
@@ -30,7 +31,8 @@ const [isMobile, setIsMobile] = useState(false);
     <div>
         <Navbar/>
       <ServicesHeader onArrowClick={handleArrowClick} />
-      {isMobile ? (
+      <Liquid/>
+      {/* {isMobile ? (
                 <ServicesList />
             ) : (
                 <Ser/>
@@ -38,14 +40,12 @@ const [isMobile, setIsMobile] = useState(false);
 
             {!isMobile && (
                 <div className="other-desktop-elements">
-                    {/* Desktop-specific "other" elements */}
                 </div>
             )}
             {isMobile && (
                 <div className="other-mobile-elements">
-                    {/* Mobile-specific "other" elements */}
                 </div>
-            )}
+            )} */}
       <ServiceFooter/>
       <Footer/>
     </div>

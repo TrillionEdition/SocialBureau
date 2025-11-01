@@ -55,7 +55,7 @@ export const Home = () => {
   return (
     <div className="bg-black">
       <CyberBackground />
-      <Chatbot/>
+      {/* <Chatbot/> */}
 
       {/* Rotating bottom-right popups */}
       {popups.map(

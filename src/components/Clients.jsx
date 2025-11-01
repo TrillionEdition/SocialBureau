@@ -1,5 +1,5 @@
 import { ArrowRight, ArrowRightCircle, ChevronRight, MoveRight } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Clients() {
@@ -11,10 +11,75 @@ export default function Clients() {
     { url: "https://suntipstea.online/wp-content/uploads/2024/11/suntip-logo-white-673633bc349a1-scaled-e1731606777757.webp"},
     { url: "https://kochamminis.com/cdn/shop/files/logo.png?v=1740811705" },
   ];
+const bubbles = [
+  // sizes: { sm, md, lg } in px
+  { id: 1, value: "30+", label: "Social media handled", sizes: { sm: 180, md: 240, lg: 270 }, top: 25, left: 22 },
+  { id: 2, value: "327K+", label: "Viewership", sizes: { sm: 220, md: 350, lg: 380 }, top: 35, left: 57 },
+  { id: 3, value: "30+", label: "On going projects", sizes: { sm: 140, md: 200, lg: 220 }, top: 60, left: 35 },
+  { id: 4, value: "5M+", label: "Organic Followers Created", sizes: { sm: 170, md: 180, lg: 220 }, top: 55, left: 80 },
+  { id: 5, value: "10+", label: "Trusted Clients", sizes: { sm: 110, md: 140, lg: 160 }, top: 14, left: 78 },
+];
+function useBreakpoint() {
+  const getBp = (w) => {
+    if (w < 640) return "sm"; // mobile
+    if (w < 1024) return "md"; // tablet
+    return "lg"; // desktop and up
+  };
 
+  const [bp, setBp] = useState(getBp(typeof window !== "undefined" ? window.innerWidth : 1200));
+
+  useEffect(() => {
+    function onResize() {
+      setBp(getBp(window.innerWidth));
+    }
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  return bp;
+}
+const bp = useBreakpoint();
   const navigate=useNavigate();
   return (
     <div>
+      <div className="w-full md:h-[100vh] sm:h-[80vh] bg-black relative overflow-hidden px-6 sm:px-8 md:px-10 lg:px-12">
+      {bubbles.map((b) => {
+        const size = b.sizes[bp] ?? b.sizes.lg;
+        // fonts relative to bubble size; tweak multipliers as needed
+        const bigFont = Math.round(size * 0.28); // big number size
+        const smallFont = Math.round(size * 0.085); // label size
+
+        return (
+          <div
+            key={b.id}
+            className="absolute rounded-full border border-gray-300/40 flex flex-col items-center justify-center text-white select-none"
+            style={{
+              width: `${size}px`,
+              height: `${size}px`,
+              top: `${b.top}%`,
+              left: `${b.left}%`,
+              transform: "translate(-50%, -50%)",
+              backgroundColor: "transparent",
+            }}
+            aria-hidden={false}
+            role="group"
+          >
+            <div
+              className="font-extrabold leading-none text-white"
+              style={{ fontSize: `${bigFont}px`, lineHeight: 1 }}
+            >
+              {b.value}
+            </div>
+            <div
+              className="mt-2 text-center text-gray-100"
+              style={{ fontSize: `${smallFont}px`, lineHeight: 1.05 }}
+            >
+              {b.label}
+            </div>
+          </div>
+        );
+      })}
+    </div>
   <h2
     className="font-playfair text-4xl md:text-4xl font-bold mb-6 text-white text-center"
     style={{ fontFamily: "Playfair Display, serif" }}

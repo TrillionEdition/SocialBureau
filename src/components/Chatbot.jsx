@@ -64,7 +64,7 @@ export default function Chatbot() {
         <div 
           className="fixed top-4 right-4 z-50"
           style={{ cursor: "pointer" }}
-          onClick={() => setOpen(true)}
+          // onClick={() => setOpen(true)}
         >
           <div className="rounded-full shadow-lg flex items-center justify-center w-12 hover:scale-110 transition">
             <video 

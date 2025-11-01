@@ -24,7 +24,7 @@ export default function HomeServices() {
   ];
 
   return (
-    <div className="h-[80vh] bg-black flex items-center justify-center p-4 sm:p-6 md:p-8">
+    <div className="my-10 md:h-[50vh] bg-black flex items-center justify-center p-4 sm:p-6 md:p-8">
       <div className="w-full max-w-6xl">
         <div className="flex justify-center gap-4 gap-y-6 flex-wrap">
           {badges.map((badge, idx) => {

@@ -15,45 +15,45 @@ const icons = [
 
 const cards = [
   {
-    title: "API-Driven Growth & Automated Distribution",
-    description: "Eliminate friction. Merge engineering + marketing for compounding growth loops."
-  },
+    title: 'API-Driven-Growth-Automated-Distribution',
+    content: 'Eliminate friction. Merge engineering + marketing for compounding growth loops.',
+    },
   {
-    title: "Full-Funnel Performance Marketing",
-    description: "Click costs don't matter if they don't convert. We deploy vertical-informed models and 14-day sprint cycles tied to LTV, not vanity ROAS."
-  },
+    title: 'Full-Funnel-Performance-Marketing',
+    content: 'Click costs don\'t matter if they don\'t convert. We deploy vertical-informed models and 14-day sprint cycles tied to LTV, not vanity ROAS.',
+    },
   {
-    title: "Funnel Architecture & Growth Pathways",
-    description: "Stop leaking revenue. We map awareness to LTV with customized, P&L-aligned blueprints."
-  },
+    title: 'Funnel-Architecture-Growth-Pathways',
+    content: 'Stop leaking revenue. We map awareness to LTV with customized, P&L-aligned blueprints.',
+    },
   {
-    title: "Conversion Rate Optimization & Landing Systems",
-    description: "Built with psychology, tested with micro-experiments. Bounce less. Convert more."
-  },
+    title: 'Conversion-Rate-Optimization-Landing-Systems',
+    content: 'Built with psychology, tested with micro-experiments. Bounce less. Convert more.',
+    },
   {
-    title: "Messaging & Positioning for Niche Brands",
-    description: "Generic messaging kills growth. We uncover category-specific codes using ethnographic and linguistic analysis."
-  },
+    title: 'Messaging-Positioning-for-Niche-Brands',
+    content: 'Generic messaging kills growth. We uncover category-specific codes using ethnographic and linguistic analysis.',
+    },
   {
-    title: "Web Development",
-    description: "From MVPs to scalable platforms, we design, develop, and deploy web apps that are fast, secure, and user-centric."
-  },
+    title: 'Web-Development',
+    content: 'From MVPs to scalable platforms, we design, develop, and deploy web apps that are fast, secure, and user-centric.',
+    },
   {
-    title: "Niche Market Penetration Strategy",
-    description: "We speak fluent healthtech, crypto, fintech, and more. Penetrate with precision."
-  },
+    title: 'Niche-Market-Penetration-Strategy',
+    content: 'We speak fluent healthtech, crypto, fintech, and more. Penetrate with precision.',
+    },
   {
-    title: "Influencer & UGC Growth Engines",
-    description: "No vanity metrics. Just creator content built for performance and attribution."
-  },
+    title: 'Influencer-UGC-Growth-Engines',
+    content: 'No vanity metrics. Just creator content built for performance and attribution.',
+    },
   {
-    title: "Lifecycle & Email Automation Strategy",
-    description: "Trigger behavior-based flows that drive revenue, measured on 30-day impact."
-  },
+    title: 'Lifecycle-Email-Automation-Strategy',
+    content: 'Trigger behavior-based flows that drive revenue, measured on 30-day impact.',
+    },
   {
-    title: "Software GTM & Growth Architecture",
-    description: "PLG meets sales-assist in a system that converts trials and grows MRR."
-  },
+    title: 'Software-GTM-Growth-Architecture',
+    content: 'PLG meets sales-assist in a system that converts trials and grows MRR.',
+     }
 ];
 
 function useOnScreen(ref, rootMargin = "0px") {
@@ -110,10 +110,10 @@ const ServicesList = forwardRef(function ServicesList(_, ref) {
                   </div>
                   <div>
                     <h3 className="mt-2 text-base sm:text-lg font-bold text-white">
-                      {card.title}
+                       {card.title.replace(/-/g, " ")}
                     </h3>
                     <p className="mt-2 text-neutral-300 text-sm sm:text-base">
-                      {card.description}
+                       {card.content}
                     </p>
                   </div>
                   </a>
