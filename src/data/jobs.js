@@ -198,7 +198,7 @@ const jobs = [
     ],
     salary: "Competitive and aligned with industry standards. Increments based on performance.",
     nextSteps:
-      "Shortlisted candidates will be invited for an interview. A 1–2 min professional video submission is mandatory."
+      "Shortlisted candidates will be invited for an interview. A 1–2 min professional video submission is mandatory explaining a strategy for socialbureau.in."
   },
 ];
 
