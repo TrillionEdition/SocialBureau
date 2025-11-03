@@ -1,13 +1,13 @@
 import React, { useRef, useEffect, useState } from "react";
 
 const videosList = [
-  // {
-  //   id: "1",
-  //   thumbnail: "https://img.youtube.com/vi/ysz5S6PUM-U/hqdefault.jpg",
-  //   title: "Hajira M",
-  //   description: "Administration",
-  //   link: "https://www.youtube.com/watch?v=ysz5S6PUM-U",
-  // },
+  {
+    id: "1",
+    thumbnail: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1762161989/SB_Testimonail_Hajira_st7208.jpg",
+    title: "Hajira M",
+    description: "Administration",
+    link: "https://youtu.be/9KBzUyHXiR4?si=9P9qNnXb2i6n1aJG",
+  },
   {
     id: "2",
     thumbnail: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761907046/SB_Testimonial_YouTube_Thumbanil_Anjay_g9vebt.png",
@@ -36,13 +36,13 @@ const videosList = [
   //   description: "Editor",
   //   link: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
   // },
-  // {
-  //   id: "6",
-  //   thumbnail: "https://img.youtube.com/vi/aqz-KE-bpKQ/hqdefault.jpg",
-  //   title: "Rimshad M",
-  //   description: "Graphics Designer",
-  //   link: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
-  // },
+  {
+    id: "6",
+    thumbnail: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1762162088/SB_Testimonail_Rimshad_vxakgn.jpg",
+    title: "Rimshad M",
+    description: "Graphics Designer",
+    link: "#",
+  },
 ];
 
 export default function Testimonials() {

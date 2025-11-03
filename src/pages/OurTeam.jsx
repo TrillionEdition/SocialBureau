@@ -16,7 +16,7 @@ export const OurTeam = () => {
         <TeamSection/>
         <TeamLayout/>        
         <LatestVideos/>
-        {/* <Testimonials/> */}
+        <Testimonials/>
         <Footer/>
     </div>
   )
