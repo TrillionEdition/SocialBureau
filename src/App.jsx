@@ -48,6 +48,7 @@ function App() {
         <Route path="/clients" element={<Client/>} />
         <Route path="/blogs/:slug" element={<BlogDetail />} />
         <Route path="/careers/:slug" element={<CareerDetail />} />
+        
         <Route path="/:name" element={<StaffDashboard />} />
         <Route path="/services/:serviceTitle" element={<Service1 />} />
         <Route path="/voice" element={

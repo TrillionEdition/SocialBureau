@@ -1,5 +1,5 @@
 import React from "react";
-import { FaLinkedin,FaEnvelope, FaFacebook, FaInstagram, FaWhatsapp, FaPhone } from "react-icons/fa";
+import { FaLinkedin,FaEnvelope, FaFacebook, FaInstagram, FaWhatsapp, FaPhone, FaReddit } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 export default function Footer() {
@@ -49,6 +49,13 @@ export default function Footer() {
     className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition"
   >
     <FaFacebook size={20} />
+  </a>
+
+  <a
+    href="https://www.reddit.com/user/SocialBureau_in/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button"
+    className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition"
+  >
+    <FaReddit size={20} />
   </a>
 
   {/* Twitter */}
