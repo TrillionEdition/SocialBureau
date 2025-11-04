@@ -95,6 +95,56 @@ export const Home = () => {
       <HomeIntro />
       <Navbar />
       <HomeServices/>
+<div className="relative px-6 lg:px-32 py-20 text-white overflow-hidden max-w-6xl mx-auto text-center">
+
+  {/* background gradient glow */}
+  <div className="absolute inset-0 -z-10 blur-[160px] opacity-20 bg-gradient-to-br from-purple-600 via-indigo-500 to-blue-600"></div>
+
+  {/* Section Title */}
+  <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] mb-16">
+    Why us?
+  </h1>
+
+  <div className="relative flex flex-col gap-16 items-center">
+
+    {/* CARD 1 */}
+    <div className="md:max-w-[70%] bg-gradient-to-br from-black to-[#3f0000] text-gray-300 backdrop-blur-xl border border-white/10 p-8 rounded-2xl shadow-lg hover:shadow-[#3f0000] transition-all md:self-start text-left">
+      <h3 className="text-3xl font-semibold mb-3">Cultural Fluency</h3>
+      <p className="text-lg opacity-80">
+        Native insights across <span className="font-semibold text-[#ff0000ff]">28+ Indian languages</span>&nbsp;
+        and micro-cultures, enabling every campaign to resonate at a hyper-local level while scaling nationally.
+      </p>
+    </div>
+
+    {/* CARD 2 */}
+    <div className="md:max-w-[70%] bg-gradient-to-br from-black to-[#3f0000] backdrop-blur-xl border border-white/10 p-8 rounded-2xl shadow-lg hover:shadow-[#3f0000] transition-all md:self-end text-left">
+      <h3 className="text-3xl font-semibold mb-3">ROI-Driven Strategy</h3>
+      <p className="text-lg opacity-80">
+        Predictive modeling, attribution & LTV optimization →
+        making every rupee <span className="font-semibold text-[#ff0000ff]">accountable for growth.</span>
+      </p>
+    </div>
+
+    {/* CARD 3 */}
+    <div className="md:max-w-[70%] bg-gradient-to-br from-black to-[#3f0000] backdrop-blur-xl border border-white/10 p-8 rounded-2xl shadow-lg hover:shadow-[#3f0000] transition-all md:self-start text-left">
+      <h3 className="text-3xl font-semibold mb-3">API-Powered Performance</h3>
+      <p className="text-lg opacity-80">
+        Frictionless CRM/ERP/e-commerce integration + real-time bidding triggers →
+        <span className="font-semibold text-[#ff0000ff]"> machine-speed execution.</span>
+      </p>
+    </div>
+  </div>
+
+  {/* Outcome */}
+  <p className="mt-20 font-light opacity-90 text-lg max-w-5xl mx-auto">
+    The result?
+    <span className="font-semibold text-[#ff0000ff]"> Market dominance →</span>
+    higher conversions, lower CAC, and brand love that compounds. If you are a B2B disruptor, SaaS trailblazer, or premium lifestyle brand,
+    building your <span className="font-semibold text-[#ff0000ff]">unfair advantage</span> would be our pleasure.
+  </p>
+</div>
+
+
       <LatestCareers />
       <Clients />
       <LatestBlogs posts={posts} />

@@ -16,9 +16,7 @@ const HomeIntro = () => {
     "Design",
     "Deliver",
   ];
- const paragraph = `SocialBureau isn’t standard agency! We’re the engine for niche, high-growth brands
-scaling smarter and faster. We deliver cultural fluency, ROI-driven strategy, and precise
-tactics that create undeniable market impact.`;
+ const paragraph = `At SocialBureau we are not your regular agency! We are a growth partner that has been precisely engineered to meet the needs of the next wave of category leaders. By being India's first API marketing agency, we combine proprietary data pipelines, real-time automation, and cultural intelligence to help niche, high-growth brands scale in a more efficient manner, faster and with surgical precision.`;
  const words = paragraph.split(" ");
 
  return (
@@ -57,13 +55,11 @@ We craft bespoke luxury campaigns for global discernment. Fueled by analytics,
  <p
 ref={paragraphRef}
  className="text-xl sm:text-xl md:text-2xl lg:text-2xl leading-relaxed text-center"
->
+>At &nbsp;
 <span style={{ fontFamily: "MyFont, sans-serif" }}>
           Social<span className="text-[#ff0000]">B</span>ureau
         </span>&nbsp;
-  isn’t standard agency! We’re the engine for niche, high-growth brands
- scaling smarter and faster. We deliver cultural fluency, ROI-driven strategy, and precise
- tactics that create undeniable market impact.
+   we are not your regular agency! We are a growth partner that has been precisely engineered to meet the needs of the next wave of category leaders. By being India's first API marketing agency, we combine proprietary data pipelines, real-time automation, and cultural intelligence to help niche, high-growth brands scale in a more efficient manner, faster and with surgical precision.
  </p>
  </div>
  </section>

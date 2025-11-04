@@ -41,7 +41,7 @@ const videosList = [
     thumbnail: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1762162088/SB_Testimonail_Rimshad_vxakgn.jpg",
     title: "Rimshad M",
     description: "Graphics Designer",
-    link: "#",
+    link: "https://youtu.be/eBJnlmTuuIk?si=CYTR9TTw6uxhnniB",
   },
 ];
 
