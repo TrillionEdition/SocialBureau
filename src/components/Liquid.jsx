@@ -96,7 +96,7 @@ function useLiquidPointer(ref) {
 const icons = [
   <i className="fas fa-chart-line text-[#ffffffff] text-2xl"></i>,
   <i className="fas fa-sitemap text-[#ffffffff] text-2xl"></i>,
-  <i className="fas fa-bullseye text-[#ffffffff] text-2xl"></i>,
+  <i className="fas fa-code text-[#ffffffff] text-2xl"></i>,
   <i className="fas fa-comments text-[#ffffffff] text-2xl"></i>,
   <i className="fas fa-globe text-[#ffffffff] text-2xl"></i>,
   <i className="fas fa-cogs text-[#ffffffff] text-2xl"></i>,
@@ -104,59 +104,77 @@ const icons = [
   <i className="fas fa-users text-[#ffffffff] text-2xl"></i>,
   <i className="fas fa-envelope text-[#ffffffff] text-2xl"></i>,
   <i className="fas fa-rocket text-[#ffffffff] text-2xl"></i>,
+<i className="fas fa-bullseye text-[#ffffffff] text-2xl"></i>,
+<i className="fas fa-drafting-compass text-[#ffffffff] text-2xl"></i>,
+<i className="fas fa-bullseye text-[#ffffffff] text-2xl"></i>,
 ];
-
 const cards = [
   {
-    title: 'API-Driven-Growth-Automated-Distribution',
-    content: 'Eliminate friction. Merge engineering + marketing for compounding growth loops.',
-    bg: "to-teal-700"
+    title: "API Marketing",
+    slug: "API-Marketing",
+    content: "Integrate platforms using API automation. No manual campaign handling.",
+    bg: "to-teal-700",
   },
   {
-    title: 'Full-Funnel-Performance-Marketing',
-    content: 'Click costs don\'t matter if they don\'t convert. We deploy vertical-informed models and 14-day sprint cycles tied to LTV, not vanity ROAS.',
-    bg: "to-purple-700"
+    title: "Performance Marketing",
+    slug: "Performance-Marketing",
+    content: "Full-funnel, ROI-driven performance systems engineered for conversion.",
+    bg: "to-purple-700",
   },
   {
-    title: 'Funnel-Architecture-Growth-Pathways',
-    content: 'Stop leaking revenue. We map awareness to LTV with customized, P&L-aligned blueprints.',
-    bg: "to-amber-700"
+    title: "Platform Prompting™",
+    slug: "Platform-Prompting",
+    content: "Teach algorithms (Meta, Google, TikTok) to understand your brand.",
+    bg: "to-red-800",
   },
   {
-    title: 'Conversion-Rate-Optimization-Landing-Systems',
-    content: 'Built with psychology, tested with micro-experiments. Bounce less. Convert more.',
-    bg: "to-indigo-700"
+    title: "Multi-Platform Ad Management",
+    slug: "Multi-Platform-Ad-Management",
+    content: "Meta, Google, TikTok, LinkedIn — managed from one unified system.",
+    bg: "to-slate-700",
   },
   {
-    title: 'Messaging-Positioning-for-Niche-Brands',
-    content: 'Generic messaging kills growth. We uncover category-specific codes using ethnographic and linguistic analysis.',
-    bg: "to-rose-700"
+    title: "Content & Niche Marketing",
+    slug: "Content-Niche-Marketing",
+    content: "Industry-specific content that aligns with niche psychology + culture.",
+    bg: "to-yellow-700",
   },
   {
-    title: 'Web-Development',
-    content: 'From MVPs to scalable platforms, we design, develop, and deploy web apps that are fast, secure, and user-centric.',
-    bg: "to-orange-700"
+    title: "SEO & Influencer",
+    slug: "SEO-Influencer",
+    content: "Demand capturing + demand influencing. Full spectrum visibility.",
+    bg: "to-rose-700",
   },
   {
-    title: 'Niche-Market-Penetration-Strategy',
-    content: 'We speak fluent healthtech, crypto, fintech, and more. Penetrate with precision.',
-    bg: "to-sky-700"
+    title: "Analytics",
+    slug: "Analytics",
+    content: "Dashboards + attribution + predictive insights using AI + API data.",
+    bg: "to-sky-800",
   },
   {
-    title: 'Influencer-UGC-Growth-Engines',
-    content: 'No vanity metrics. Just creator content built for performance and attribution.',
-    bg: "to-yellow-700"
+    title: "MarTech Integration",
+    slug: "MarTech",
+    content: "CRM automation, tracking, CDP integration, server-side setup.",
+    bg: "to-indigo-800",
   },
   {
-    title: 'Lifecycle-Email-Automation-Strategy',
-    content: 'Trigger behavior-based flows that drive revenue, measured on 30-day impact.',
-    bg: "to-gray-700"
+    title: "Global Media Buying",
+    slug: "Global-Media-Buying",
+    content: "DV360, Amazon DSP, Programmatic OTT. Buy media worldwide.",
+    bg: "to-cyan-700",
   },
   {
-    title: 'Software-GTM-Growth-Architecture',
-    content: 'PLG meets sales-assist in a system that converts trials and grows MRR.',
-    bg: "to-fuchsia-700"
-  }
+    title: "Third-Party App Ads",
+    slug: "Third-Party-App-Ads",
+    content: "Ads inside apps like Swiggy, Zomato, Meesho, ShareChat, DailyHunt.",
+    bg: "to-lime-700",
+  },
+  {
+    title: "Innovation & R&D",
+    slug: "Innovation-R&D",
+    content: "Experimentation, predictive modeling, beta ad platforms & API products.",
+    bg: "to-orange-700",
+  },
 ];
 
 export default function Liquid() {
@@ -166,10 +184,12 @@ export default function Liquid() {
       <StyleBlock />
       <div className="max-w-6xl w-full grid grid-cols-1 sm:grid-cols-3 gap-6">
         {cards?.map((card, i) => (
-             <a href={`/services/${encodeURIComponent(card.title)}`}>
-        <LiquidCard key={i} title={card.title}>
-            
-                  
+             <a href={`/services/${encodeURIComponent(card.slug)}`}>
+        <LiquidCard
+  key={i}
+  title={card.title}
+  className="h-[350px] flex flex-col justify-between"
+>              
             <p className="text-md text-gray-200 md:h-[25vh] h-[12vh]">{card.content}</p>
             <div className="flex items-center justify-between">                    
                     {icons[i]}

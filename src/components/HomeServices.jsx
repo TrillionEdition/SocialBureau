@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function HomeServices() {
   const styles = {
@@ -15,64 +15,107 @@ export default function HomeServices() {
     indigo: 'text-indigo-200',
     rose: 'text-rose-200'
   };
-  const badges = [
-    { icon: 'fas fa-sitemap', text: 'API-Driven Growth Loops', color: 'purple' },
-    { icon: 'fas fa-chart-line', text: 'Full-Funnel Performance Marketing', color: 'teal' },    
-    { icon: 'fas fa-bullseye', text: 'Vertical-Specific Strategy', color: 'amber' },
-    { icon: 'fas fa-comments', text: 'Advanced CRO & Lifecycle Systems', color: 'indigo' },
-    { icon: 'fas fa-globe', text: 'Lifecycle Automation', color: 'rose' },
-  ];
+const badges = [
+  {
+    icon: "fas fa-sitemap",
+    text: "API Marketing",
+    color: "purple",
+    description: "Integrate your ad platforms and automate campaign delivery through advanced APIs."
+  },
+  
+  {
+    icon: "fas fa-bullseye",
+    text: "Niche Marketing",
+    color: "amber",
+    description: "Hyper-targeted campaigns tailored for specific industries and audiences."
+  },
+  {
+    icon: "fas fa-comments",
+    text: "Content Marketing",
+    color: "indigo",
+    description: "Data-backed storytelling that increases brand awareness and engagement."
+  },
+  {
+    icon: "fas fa-globe",
+    text: "AdTech Integration",
+    color: "rose",
+    description: "Seamless connection between social, analytics, and CRM platforms."
+  },
+  {
+    icon: "fas fa-chart-line",
+    text: "Performance Marketing",
+    color: "teal",
+    description: "ROI-driven strategies to boost leads, sales, and visibility."
+  },
+];
+const [openIndex, setOpenIndex] = useState(null);
 
+  const handleToggle = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
   return (
-    <div className="my-10 md:h-[50vh] bg-black flex items-center justify-center p-4 sm:p-6 md:p-8">
-      <div className="w-full max-w-6xl">
-        <div className="flex justify-center gap-4 gap-y-6 flex-wrap">
-          {badges.map((badge, idx) => {
-            const c = styles[badge.color];
-            return (
-              <div
-                key={idx}
-                className={`p-[2px] rounded-full bg-gradient-to-r ${c.gradient} hover:scale-105 transition-transform duration-300 flex-shrink-0 w-full sm:w-auto relative`}
-              >
-                {/* Top left "New" icon for first badge */}
-                {idx === 0 && (
-                  <span
-                    className="
-                      absolute top-0 left-5 -translate-y-1/2 -translate-x-1/2 z-10
-                      flex items-center justify-center
-                      px-2 py-0.5 rounded-full bg-gradient-to-r from-pink-500 to-yellow-400
-                      text-xs font-bold text-white shadow-lg
-                      whitespace-nowrap
-                      drop-shadow
-                      animate-bounce
-                    "
-                  >
-                    <i className="fas fa-star mr-1" /> New
-                  </span>
-                )}
-                <button
-                  className={`
-                    relative group
-                    bg-gradient-to-r ${c.inner}
-                    rounded-full px-4 py-2
-                    flex items-center justify-center
-                    transition-all duration-300
-                    hover:brightness-110
-                    active:scale-95
-                    whitespace-nowrap
-                    w-full sm:w-auto
-                  `}
-                >
-                  <span className={`text-lg sm:text-xl mr-2 ${badge.icon} ${textColors[badge.color]}`}></span>
-                  <span className={`${textColors[badge.color]} sm:text-lg`}>{badge.text}</span>
+   <>
+      <div className="my-10 md:h-[70vh] bg-black flex flex-col md:flex-row items-center md:items-start justify-center p-4 sm:p-6 md:p-8">
+  <div className="px-6 lg:px-40 text-white text-center items-center">
+          <p className="text-xl sm:text-xl md:text-2xl lg:text-2xl leading-relaxed text-center items-center">
+            At &nbsp;
+            <span style={{ fontFamily: "MyFont, sans-serif" }}>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </span>
+            &nbsp; our core services include:
+            <br /><br />
+          </p>
+        </div>
 
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </button>
-              </div>
-            );
-          })}
+        <div className="md:w-full max-w-6xl">
+         <div className="md:w-1/2 max-w-lg flex flex-col gap-4">
+  {badges.map((badge, idx) => {
+    const c = styles[badge.color];
+
+    return (
+      <div
+        key={idx}
+        className="
+          group relative
+          p-[2px] rounded-full bg-black
+          transition-transform duration-300 hover:scale-105
+          w-full          /* ✅ ALWAYS full width in desktop */
+        "
+      >
+        <button
+          onClick={() => handleToggle(idx)}
+          className={`
+            bg-gradient-to-r ${c.inner}
+            rounded-full px-6 py-3
+            flex items-center justify-start gap-2
+            transition-all duration-300
+            w-full               /* ✅ full width badge */
+          `}
+        >
+          <span className={`text-xl ${badge.icon} ${textColors[badge.color]}`} />
+          <span className={`font-medium ${textColors[badge.color]}`}>
+            {badge.text}
+          </span>
+        </button>
+
+        <div
+          className={`
+            overflow-hidden transition-all duration-300
+            pt-2 px-4 text-gray-300 text-sm
+
+            sm:group-hover:max-h-40 sm:group-hover:opacity-100
+            ${openIndex === idx ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}
+          `}
+        >
+          {badge.description}
         </div>
       </div>
-    </div>
+    );
+  })}
+</div>
+
+        </div>
+      </div>
+    </>
   );
 }

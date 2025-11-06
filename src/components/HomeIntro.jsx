@@ -4,18 +4,6 @@ import { motion, useInView } from "framer-motion";
 const HomeIntro = () => {
  const paragraphRef = useRef(null);
 
- const isInView = useInView(paragraphRef, {
- margin: "0px",
- });
-
-  const items = [
-    "Define",
-    "Design",
-    "Deliver",
-    "Define",
-    "Design",
-    "Deliver",
-  ];
  const paragraph = `At SocialBureau we are not your regular agency! We are a growth partner that has been precisely engineered to meet the needs of the next wave of category leaders. By being India's first API marketing agency, we combine proprietary data pipelines, real-time automation, and cultural intelligence to help niche, high-growth brands scale in a more efficient manner, faster and with surgical precision.`;
  const words = paragraph.split(" ");
 
@@ -32,36 +20,25 @@ const HomeIntro = () => {
           <div className="flex flex-col md:flex-row md:items-start justify-between">
             {/* Left Column for H1 */}
             <div className="flex-1 md:pr-5">
-              <h1
+              <h2
                 style={{ fontFamily: "Playfair Display, serif" }}
                 className="text-3xl sm:text-2xl md:text-3xl lg:text-[3.5rem] leading-tight md:leading-tight lg:leading-tight xl:leading-[1.1] font-serif font-bold text-left"
               >
-                Unfair Advantage for Niche Brands in Noisy Markets
-              </h1>
+                Smart Marketing, Built for a Connected World
+              </h2>
             </div>
 
             {/* Right Column for H2 */}
             <div className="md:w-1/3 mt-10 md:mt-0 md:pl-10 border-l-2 border-[#ff0000]">
-              <h2 className="text-sm md:text-base lg:text-lg leading-relaxed font-sans text-left pl-4 text-[#838383ff]">
-We craft bespoke luxury campaigns for global discernment. Fueled by analytics,
-                storytelling, and sector-native expertise, we transform visions into legendary brands.
-              </h2>
+              <p className="text-sm md:text-base lg:text-lg leading-relaxed font-sans text-left pl-4 text-[#838383ff]">
+ We combine creativity with code to power your marketing ecosystem. As a division of <a href="https://trillionedition.com">TrillionEdition LLP</a>, SocialBureau bridges data, automation, and human insight to create marketing systems that scale globally.
+              </p>
             </div>
           </div>
         </div>
  </div>                
 
- <div className="px-6 lg:px-40 text-white text-center">
- <p
-ref={paragraphRef}
- className="text-xl sm:text-xl md:text-2xl lg:text-2xl leading-relaxed text-center"
->At &nbsp;
-<span style={{ fontFamily: "MyFont, sans-serif" }}>
-          Social<span className="text-[#ff0000]">B</span>ureau
-        </span>&nbsp;
-   we are not your regular agency! We are a growth partner that has been precisely engineered to meet the needs of the next wave of category leaders. By being India's first API marketing agency, we combine proprietary data pipelines, real-time automation, and cultural intelligence to help niche, high-growth brands scale in a more efficient manner, faster and with surgical precision.
- </p>
- </div>
+ 
  </section>
  </div>
  );

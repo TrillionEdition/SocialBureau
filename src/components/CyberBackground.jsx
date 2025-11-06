@@ -29,13 +29,11 @@ export function CyberBackground() {
              tracking-tight"
           style={{ fontFamily: "Inter, sans-serif" }}
         >
-          Integrated API Solutions to Help Accelerate Your Growth
+          World’s First API-Driven Marketing Agency
         </h1>
 
         <p className="mt-6 text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto">
-          From custom integrations to enterprise-level advanced API services, we
-          build relationships that will help your business stay smarter and
-          faster.
+          Automate, Integrate, and Scale Your Marketing powered by real-time data, AI, and performance APIs.
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
@@ -44,21 +42,20 @@ export function CyberBackground() {
             onClick={() => navigate("/services")}
             className="relative overflow-hidden px-6 py-3 rounded-full bg-black text-white font-medium shadow-lg hover:shadow-xl transition scan-button"
           >
-            View Our Services
+            Get Started
           </button>
           <button
-            name="chat"
-            onClick={() => {
-              window.open(
-                "https://wa.me/918921840486?text=Hello, I would like to learn more.",
-                "_blank"
-              );
-            }}
+            name="services"
+            onClick={() => navigate("/services")}            
             className="px-6 py-3 rounded-full border border-gray-500 text-gray-300 hover:bg-gray-500/40 transition"
           >
-            Book an Appointment Today!
+            Explore Our Solutions
           </button>
         </div>
+        {/* <p className="mt-15 text-lg sm:text-xl text-gray-300 font-medium max-w-5xl mx-auto leading-relaxed">
+          At SocialBureau, we redefine how brands grow with technology.
+          From API-based ad automation to niche-focused digital campaigns, we deliver marketing that performs at the speed of code.
+        </p> */}
       </div>
     </div>
   );
