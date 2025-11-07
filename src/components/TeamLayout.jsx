@@ -110,7 +110,7 @@ export default function TeamLayout() {
       </button>
 
       <div className="flex flex-1 justify-center items-center h-full relative">
-        {users.map((rawProfile, idx) => {
+        {users?.map((rawProfile, idx) => {
           // Normalize shape: API may provide different fields; use fallbacks
           const profile = {
             id: rawProfile.id ?? rawProfile._id ?? rawProfile.name,
