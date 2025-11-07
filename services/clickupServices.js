@@ -9,10 +9,14 @@ export const dashboardAPI=async()=>{
     return response.data
 }
 
-export const userDetailsAPI=async(data)=>{
+export const userDetailsAPI=async(name)=>{
     // const userToken=getToken()  
-    const response=await axios.get(`${BASE_URL}/clickup/user-details`,{
-    params: { data }, // will send ?name=... automatically
-  })
+    const response = await axios.get(`${BASE_URL}/clickup/user-details`, {
+  params: { name },
+  headers: { "Accept": "application/json" }
+});
+
+  console.log(name,response);
+  
     return response.data
 }

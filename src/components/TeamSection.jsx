@@ -144,7 +144,7 @@ const TeamCard = ({ name, role, image, hoverImage, link, description }) => (
     <div className="absolute bottom-0 p-6 translate-y-8 group-hover:translate-y-2 transition-all duration-500">
       <h3 className="text-xl font-semibold text-white">{name}</h3>
       <p className="text-sm text-gray-300">{role}</p>
-      <p className="text-sm text-gray-200 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 text-justify line-clamp-4">
+      <p className="text-sm text-gray-200 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 line-clamp-4">
         {description}
       </p>
     </div>
