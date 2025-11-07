@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { useNavigate, useParams } from "react-router-dom";
-import profiles from "../data/profiles";
 import { FaCrown, FaGem, FaLeaf, FaMapMarkerAlt, FaMedal, FaPiggyBank, FaRocket, FaStar, FaUserGraduate } from "react-icons/fa";
 import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
@@ -13,13 +12,13 @@ import { userDetailsAPI } from "../../services/clickupServices";
 const LEVELS = [
   {
     key: 1,
-    name: 'Intern',
+    name: 'Probation',
     icon: <FaUserGraduate style={{ fontSize: '2.5rem', color: '#ffffffff' }} />,
     bg: '#cd7f32',
     border: '#cd7f32',
     iconColor: '#a97142',
     time: 'Bronze',
-    subtitle: 'Intern',
+    subtitle: 'Probation',
     textColor: 'white',
   },
   {
@@ -112,7 +111,6 @@ const user=data?.user
 const clickup=data?.clickup
 console.log(data);
 
-const profile = profiles.find(p => p.name === decodedName);
   // For review carousel
   const [startIdx, setStartIdx] = useState(0);
   const cardsToShow = 3;
@@ -145,13 +143,35 @@ const profile = profiles.find(p => p.name === decodedName);
     const mailto = `mailto:${user.email}?cc=${encodeURIComponent('web@socialbureau.in')}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailto;
   };
-  function getExpIndex(exp) {
-  if (exp < 0.3) return 0;
-  if (exp < 1) return 1;
-  if (exp < 2) return 2;
-  if (exp < 5) return 3;
-}
-const expIndex = getExpIndex(user.exp);
+
+  function getExperienceFromDOJ(doj) {
+  if (!doj) return 0;
+
+  const start = new Date(doj);
+  const now = new Date();
+
+  const diffInMs = now - start; // difference in milliseconds
+  const diffInDays = diffInMs / (1000 * 60 * 60 * 24); // convert to days
+
+  const diffInMonths = diffInDays / 30.44; // avg month length
+
+  return diffInMonths; // returning months precisely
+  }
+
+  function getExpIndex(doj) {
+    const months = getExperienceFromDOJ(doj);
+
+    // 🔥 Precision based on actual days difference, not rough year decimals
+    if (months < 3) return 0;        // < 3 months completed
+    if (months < 12) return 1;       // >= 3 months but < 1 year
+    if (months < 24) return 2;       // >= 1 year but < 2 years
+    if (months < 60) return 3;       // >= 2 years but < 5 years
+
+    return 3;
+  }
+
+const expIndex = getExpIndex(user?.doj);
+
   return (
     <>
       <Navbar />
@@ -165,93 +185,112 @@ const expIndex = getExpIndex(user.exp);
 
         {/* Details Section */}
         <section className="max-w-full md:max-w-[80vw] mx-auto mt-4 md:mt-8 px-2">
-          <div className="bg-white p-4 md:p-5 rounded-lg">
-            <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-4">
-              <div className="flex-1 w-full">
-                <h1 className="text-xl md:text-2xl font-bold text-gray-900 flex items-center gap-2">
-                  {user?.name}
-                  <img 
-                    src="https://img.icons8.com/ios11/512/FA5252/instagram-verification-badge.png" 
-                    alt="icon" 
-                    className="h-5 w-5"
-                  />
-                </h1>
-                <div className="text-gray-700 mt-2 font-medium">{user?.name}</div>
-                <div className="text-sm text-gray-500 mt-1">Kochi, Kerala</div>
-                <div className="mt-2 text-red-600 font-bold text-sm">50+ connections</div>
-                <span className="inline-flex items-center py-1 text-sm">
-  <div className="flex flex-col sm:flex-row  justify-start space-y-3 sm:space-y-0 sm:space-x-3">
-    {user.links?.map((tool, key) => (
-      <a href={tool.url} key={key}>
-        <img
-          key={tool.name}
-          src={tool.img}
-          alt={tool.name}
-          className="w-8 h-8 rounded-full object-cover"
-        />
-      </a>
-    ))}
+          <section className="max-w-full md:max-w-[80vw] mx-auto mt-4 md:mt-8 px-2">
+  <div className="bg-white p-4 md:p-5 rounded-lg">
+    <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-4">
+
+      {/* Left Side - User Info */}
+      <div className="flex-1 w-full text-center md:text-left">
+        <h1 className="text-xl md:text-2xl font-bold text-gray-900 flex justify-center md:justify-start items-center gap-2">
+          {user?.name}
+          <img
+            src="https://img.icons8.com/ios11/512/FA5252/instagram-verification-badge.png"
+            alt="verify"
+            className="h-5 w-5"
+          />
+        </h1>
+
+        <div className="text-gray-700 mt-2 font-medium">{user?.role}</div>
+        <div className="text-sm text-gray-500 mt-1">Kochi, Kerala</div>
+        <div className="mt-2 text-red-600 font-bold text-sm">50+ connections</div>
+
+        {/* social media links */}
+        <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-3">
+          {user.links?.map((tool, key) => (
+            <a href={tool.url} key={key}>
+              <img
+                src={tool.img}
+                alt={tool.name}
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* Right Side - Rating, Price, Tools */}
+      <div className="flex flex-col items-center md:items-end w-full md:w-auto">
+
+        {/* tools */}
+        <div className="flex flex-wrap justify-center md:justify-end gap-3 mb-2 mt-2 md:mt-0">
+          {user?.tools?.map((tool) => (
+            <img
+              key={tool.toolName}
+              src={tool.icon}
+              alt={tool.toolName}
+              title={tool.toolName}
+              className="w-8 h-8 rounded-full object-cover cursor-pointer"
+              onClick={() => navigate(tool.url)}
+            />
+          ))}
+        </div>
+
+        {/* rating + rate */}
+        <div className="flex items-center justify-center gap-4 mt-2">
+          <span className="flex items-center text-yellow-500 font-semibold text-sm border rounded-full px-3 py-2">
+            <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.564-.955L10 0l2.948 5.955 6.564.955-4.756 4.635 1.122 6.545z" />
+            </svg>
+            {user.rating || 4}
+          </span>
+
+          <span className="text-green-600 font-bold text-lg">
+            ${user.rate}/hr
+          </span>
+        </div>
+
+      </div>
+    </div>
+
+    {/* CTA Button */}
+    <div className="flex mt-5">
+      <button
+        className="bg-red-600 text-white px-4 py-2 rounded font-semibold shadow hover:bg-red-700 w-full md:w-auto"
+        onClick={handleClick}
+      >
+        Enquire Now
+      </button>
+    </div>
+
   </div>
-</span>
-              </div>
-              {/* Badge and Tools */}
-              <div className="flex flex-col items-end mt-4 md:mt-0">
-                <span className="inline-flex items-center px-2 py-1 mb-2 font-semibold">
-                  <div className="flex flex-row justify-end mb-2 space-x-3 ml-3">
-                    {user?.tools?.map((tool,i) => (
-                      <img
-                        key={tool.toolName}
-                        src={tool.icon}
-                        alt={tool.toolName}
-                        title={tool.toolName}
-                        className="w-8 h-8 rounded-full object-cover"
-                        onClick={()=>navigate(tool.url)}
-                      />
-                    ))}
-                  </div>
-                </span>
-                <div className="flex items-center space-x-4 mt-2">
-                  <span className="flex items-center text-yellow-500 font-semibold text-sm border-7 border-yellow-500 rounded-full h-15 w-15 p-2">
-                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.564-.955L10 0l2.948 5.955 6.564.955-4.756 4.635 1.122 6.545z"/></svg>
-                    {user.rating}
-                  </span>
-                  <span className="text-green-600 font-bold text-lg">${user.rate}/hr</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex space-x-3 mt-5">
-              <button
-      className="bg-red-600 text-white px-4 py-2 rounded font-semibold shadow hover:bg-red-700 w-full md:w-auto"
-      onClick={handleClick}
-    >
-      Enquire Now
-    </button>
-            </div>
-          </div>
-          
-          {/* GRID CARDS - Responsive */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mt-4">
-            <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
-              <span className="text-gray-400 text-xs mb-2">Total works done</span>
-              <span className="text-3xl font-bold text-white">{clickup.tasks.length}</span>
-              <span className="text-xs text-gray-400 mt-2">Last 30 days</span>
-            </div>
-            <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
-              <span className="text-gray-400 text-xs mb-2">Articles Published</span>
-              <span className="text-3xl font-bold text-white">0</span>
-              <span className="text-xs text-gray-400 mt-2">This month</span>
-            </div>
-            <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
-              <span className="text-gray-400 text-xs mb-2">Projects Delivered</span>
-              <span className="text-3xl font-bold text-white">5</span>
-              <span className="text-xs text-gray-400 mt-2">This quarter</span>
-            </div>
-            <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
-              <span className="text-gray-400 text-xs mb-2">Active Clients</span>
-              <span className="text-3xl font-bold text-white">{user?.clients?.length || 3}</span>
-              <span className="text-xs text-gray-400 mt-2">Realtime</span>
-            </div>
-          </div>
+</section>
+{/* GRID CARDS - Responsive */}
+<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mt-4">
+  <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
+    <span className="text-gray-400 text-xs mb-2">Total works done</span>
+    <span className="text-3xl font-bold text-white">{clickup.tasks}</span>
+    <span className="text-xs text-gray-400 mt-2">Last 30 days</span>
+  </div>
+
+  <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
+    <span className="text-gray-400 text-xs mb-2">Articles Published</span>
+    <span className="text-3xl font-bold text-white">0</span>
+    <span className="text-xs text-gray-400 mt-2">This month</span>
+  </div>
+
+  <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
+    <span className="text-gray-400 text-xs mb-2">Projects Delivered</span>
+    <span className="text-3xl font-bold text-white">5</span>
+    <span className="text-xs text-gray-400 mt-2">This quarter</span>
+  </div>
+
+  <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
+    <span className="text-gray-400 text-xs mb-2">Active Clients</span>
+    <span className="text-3xl font-bold text-white">{user?.clients?.length || 3}</span>
+    <span className="text-xs text-gray-400 mt-2">Realtime</span>
+  </div>
+</div>
+
           
           {/* LEVELS BAR - Responsive flex-wrap */}
           <div className="flex flex-wrap md:flex-nowrap items-center justify-between bg-black p-4 md:p-8 rounded-xl w-full max-w-5xl mx-auto mt-4">
@@ -260,8 +299,8 @@ const expIndex = getExpIndex(user.exp);
                 <div
                   className={`flex flex-col items-center p-2 md:p-3 rounded-xl ${
                     expIndex === idx
-                      ? 'border-2 border-[#D7FF40] shadow-lg scale-105 md:scale-110'
-                      : 'border-0'
+                      ? "border-2 border-[#D7FF40] shadow-lg scale-105 md:scale-110"
+                      : "border-0"
                   }`}
                 >
                   <div
@@ -286,7 +325,7 @@ const expIndex = getExpIndex(user.exp);
           </div>
           
           {/* Extra Cards - Responsive */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mt-4">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mt-4">
             <div className="rounded-xl p-6 flex flex-col items-center"></div>
             <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
               <span className="text-gray-400 text-xs mb-2">Time Worked</span>
@@ -296,43 +335,81 @@ const expIndex = getExpIndex(user.exp);
             <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
               <span className="text-gray-400 text-xs mb-2">Experience</span>
               <span className="text-3xl font-bold text-white">
-                {user?.exp < 1
-                  ? `${String(user.exp).split(".")[1] || "0"}`
-                  : `${Math.floor(user.exp)}`}
+                {(() => {
+                  if (!user?.doj) return "0"; // fallback if doj not available
+
+                  const doj = new Date(user.doj);
+                  const now = new Date();
+
+                  const diffInMonths =
+                    (now.getFullYear() - doj.getFullYear()) * 12 +
+                    (now.getMonth() - doj.getMonth());
+
+                  const years = Math.floor(diffInMonths / 12);
+                  const months = diffInMonths % 12;
+
+                  return years < 1 ? months : years;
+                })()}
               </span>
-              <span className="text-xs text-gray-400 mt-2">{user?.exp < 1
-                  ? `months`
-                  : `years`}</span>
+
+              <span className="text-xs text-gray-400 mt-2">
+                {(() => {
+                  if (!user?.doj) return "years"; // fallback label
+
+                  const doj = new Date(user.doj);
+                  const now = new Date();
+
+                  const diffInMonths =
+                    (now.getFullYear() - doj.getFullYear()) * 12 +
+                    (now.getMonth() - doj.getMonth());
+
+                  return diffInMonths < 12 ? "months" : "years";
+                })()}
+              </span>
+
             </div>
           </div>
           
           {/* Clients - Responsive */}
-          <div className="bg-gray-900 rounded-lg shadow-md p-4 md:p-6 mb-4 mt-4">
-            <h2 className="text-lg md:text-xl font-bold mb-4 text-white">Clients</h2>
-            <div className="flex flex-wrap gap-8 md:gap-4 justify-start items-center">
-              {profile?.clients?.map((client, idx) => (
-                <div
-                  key={client.name}
-                  className={`w-20 h-24 md:w-24 md:h-28 flex flex-col items-center justify-center rounded-lg shadow hover:shadow-lg transition-shadow p-2
-                  ${idx % 2 === 0 ? "bg-white" : "bg-black"}
-                  `}
-                >
-                  <img
-                    src={client.logo}
-                    alt={client.name}
-                    title={client.name}
-                    className="w-12 h-12 md:w-16 md:h-16 object-contain mb-2"
-                  />
-                  <p className={`text-xs font-semibold text-center ${idx % 2 === 0 ? "text-gray-700" : "text-white"}`}>
-                    {client.name}
-                  </p>
-                </div>
-              ))}
-            </div>
+          <div className="bg-gray-900 rounded-2xl shadow-lg p-6 md:p-8 my-6">
+  <div className="flex justify-between items-center mb-6">
+    <h2 className="text-xl md:text-2xl font-bold text-white">
+      Clients Handled
+    </h2>
+    <span className="px-3 py-1 text-xs bg-gray-800 text-gray-300 rounded-full">
+      {user?.clients?.length || 0} Brands
+    </span>
+  </div>
+
+  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+    {user?.clients?.map((client, idx) => (
+      <div
+        key={client.name}
+        onClick={() => client.website && window.open(client.website, "_blank")}
+        className="group cursor-pointer border border-gray-700 hover:border-black rounded-xl transition-all duration-300 p-4 flex flex-col items-center justify-center bg-gray-800/40 hover:bg-gray-800"
+      >
+        {client.logo && (
+          <div className="w-14 h-14 md:w-16 md:h-16 flex items-center justify-center">
+            <img
+              src={client.logo}
+              alt={client.name}
+              title={client.name}
+              className="object-contain w-full h-full group-hover:scale-110 transition-transform duration-300"
+            />
           </div>
+        )}
+
+        <p className="mt-3 text-xs font-medium text-gray-300 text-center group-hover:text-white transition-colors">
+          {client.name}
+        </p>
+      </div>
+    ))}
+  </div>
+</div>
+
           
           {/* Review Section - Responsive */}
-          <div className="bg-white rounded-lg shadow p-4 md:p-6 flex flex-col md:flex-row items-center md:items-start mt-4">
+          <div className="bg-white rounded-lg shadow m-10 p-4 md:p-6 flex flex-col md:flex-row items-center md:items-start mt-4">
             {/* Left Side: Quote and Title */}
             <div className="w-full md:w-1/3 flex flex-col items-start mb-4 md:mb-0">
               <svg className="w-8 h-8 md:w-12 md:h-12 text-[#4b1886ff] mb-2" fill="none" viewBox="0 0 48 48">
@@ -368,15 +445,21 @@ const expIndex = getExpIndex(user.exp);
             </div>
             {/* Right Side: Review Cards */}
             <div className="w-full md:w-2/3 flex flex-col md:flex-row justify-between space-y-4 md:space-y-0 md:space-x-4">
-              {profile?.reviews?.slice(startIdx, startIdx + cardsToShow).map((review, idx) => (
-                <div key={idx} className="flex-1 bg-white rounded-lg shadow p-4 md:p-5">
-                  <p className="text-gray-700 mb-4">{review.text}</p>
+              {user?.reviews?.slice(startIdx, startIdx + cardsToShow).map((review, idx) => (
+                <div key={idx} className="flex-1 bg-white rounded-lg shadow p-4 md:p-5 hover:bg-gray-800/10">
+                  <p className="text-gray-700 mb-4">{review.review}</p>
                   <div className="flex items-center mb-2">
-                    {[...Array(5)].map((_, i) => (
-                      <svg key={i} className="w-4 h-4 md:w-5 md:h-5 text-[#4b1886ff]" fill="currentColor" viewBox="0 0 20 20">
+                   {Array.from({ length: Number(review.rating) }, (_, i) => (
+                      <svg
+                        key={i}
+                        className="w-4 h-4 md:w-5 md:h-5 text-[#4b1886ff]"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
                         <polygon points="10,1 12,7 18,7 13,11 15,17 10,13 5,17 7,11 2,7 8,7" />
                       </svg>
                     ))}
+
                   </div>
                   <div className="flex items-center mt-2">
                     <img src="https://i.pinimg.com/474x/b0/83/31/b0833156962d005d1ccbee648cba509b.jpg" alt="user_icon" className="h-8 w-8 mr-2 md:mr-5"/>

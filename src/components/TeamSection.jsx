@@ -13,7 +13,7 @@ export const teamData = {
       hoverImage: "/assets/AlenJacob.webp",
     },
     {
-      name: "Sham S.K",
+      name: "Sham SK",
       link: "https://shamsk.vercel.app",
       role: "CEO & Managing Director",
       description:
@@ -34,7 +34,7 @@ export const teamData = {
 
   strategyMarketing: [
     {
-      name: "Sherin",
+      name: "Sherin Joseph",
       role: "CMO & HR Head",
       image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761195483/SB_ID_Card_Sherin_New_wtgfyo.png",
       hoverImage: "/assets/sherin.webp",
@@ -77,21 +77,21 @@ export const teamData = {
         "Leads content pipeline — from idea to execution to performance analytics.",
     },
     {
-      name: "Afnas",
+      name: "Afnas N",
       role: "Cinematographer",
       image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761030913/images/kuktmap7exgze81z2afh.png",
       hoverImage: "/assets/afnas.webp",
       description:
         "Responsible for visual direction on shoots using Sony A7M4 + DJI systems.",
     },
-    {
-      name: "Taijo",
-      role: "Graphic Designer",
-      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1762493545/SB_ID_Card_Taijo_New_1_-1_eb0ygm.jpg",
-      hoverImage: "/assets/taijo.webp",
-      description:
-        "Creates visual experiences that improve clarity, recall, and conversion.",
-    },
+    // {
+    //   name: "Taijo",
+    //   role: "Graphic Designer",
+    //   image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1762493545/SB_ID_Card_Taijo_New_1_-1_eb0ygm.jpg",
+    //   hoverImage: "/assets/taijo.webp",
+    //   description:
+    //     "Creates visual experiences that improve clarity, recall, and conversion.",
+    // },
     // {
     //   name: "Joseph",
     //   role: "Video Editor",
@@ -170,7 +170,7 @@ const TeamSection = () => (
     <Section title="Leadership Team" data={teamData.leadership} />
     <Section title="Strategy & Marketing Division" data={teamData.strategyMarketing} />
     <Section title="Content & Production Department" data={teamData.contentProduction} />
-    <Section title="Technology & Development" data={teamData.technology} />
+    {/* <Section title="Technology & Development" data={teamData.technology} /> */}
     <p className="mt-20 font-light opacity-90 text-lg max-w-5xl mx-auto text-white text-center">
       Together, this team powers <span style={{ fontFamily: "MyFont, sans-serif" }}>
               Social<span className="text-[#ff0000]">B</span>ureau
