@@ -97,15 +97,16 @@ const reviews = [
 export function StaffDashboard() {
   const staffName = useParams();
   const decodedName = decodeURIComponent(staffName.name);  
-  const { data } = useQuery({
+  const { data, isLoading, isFetching } = useQuery({
   queryKey: ['profile', decodedName],
   queryFn: () => userDetailsAPI(decodedName),
-  staleTime: Infinity,            // never becomes stale → no automatic refetch
-  cacheTime: 1000 * 60 * 60,      // keep cached for 1 hour (adjust as needed)
+  staleTime: Infinity,
+  cacheTime: 1000 * 60 * 60,
   refetchOnWindowFocus: false,
   refetchOnReconnect: false,
-  refetchOnMount: false,          // don't refetch on mount if cached
+  refetchOnMount: false,
 });
+
 const navigate=useNavigate()
 const user=data?.user
 const clickup=data?.clickup
@@ -117,18 +118,31 @@ console.log(data);
   const totalReviews = reviews.length;
   const prev = () => setStartIdx((prevIdx) => Math.max(prevIdx - 1, 0));
   const next = () => setStartIdx((prevIdx) => Math.min(prevIdx + 1, totalReviews - cardsToShow));
-  if (!user) {
-    return (
-      <>
-        <Navbar />
-        <div className="bg-black min-h-screen flex flex-col items-center justify-center text-white">
-          <h1 className="text-3xl font-bold mb-4">Staff Not Found</h1>
-          <p className="text-lg">The staff member "{decodedName}" does not exist.</p>
-        </div>
-        <Footer />
-      </>
-    );
-  }
+  if (isLoading || isFetching) {
+  return (
+    <>
+      <Navbar />
+      <div className="bg-black min-h-screen flex flex-col items-center justify-center text-white">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-red-600 border-solid"></div>
+        <h1 className="mt-4 text-xl font-semibold">Loading Staff Profile...</h1>
+      </div>
+      <Footer />
+    </>
+  );
+}
+if (!user) {
+  return (
+    <>
+      <Navbar />
+      <div className="bg-black min-h-screen flex flex-col items-center justify-center text-white">
+        <h1 className="text-3xl font-bold mb-4">Staff Not Found</h1>
+        <p className="text-lg">The staff member "{decodedName}" does not exist.</p>
+      </div>
+      <Footer />
+    </>
+  );
+}
+
   const handleClick = () => {
     const subject = 'Enquiry about your service';
     const body = 'Hi,\n\nI would like to enquire about...';
