@@ -7,11 +7,11 @@ export default function CareersHeader() {
       
       <section className="py-30 px-6 text-center">
         <div className="max-w-4xl mx-auto">
-          <h1 style={{ fontFamily: "Playfair Display, serif" }} className="text-6xl md:text-7xl font-bold mb-8 leading-tight">
-            Be  <span className="text-[#ff0000]">Inspired</span>
-          </h1>
+          <h2 style={{ fontFamily: "Playfair Display, serif" }} className="text-6xl md:text-7xl font-bold mb-8 leading-tight">
+            Build the Future of <span className="text-[#ff0000]">API Marketing</span>
+          </h2>
           <p className="text-xl md:text-2xl font-light text-gray-300 mb-12">
-            Join a premium team of exceptional talent with incredible opportunity
+            Join the World’s First API Marketing Agency<br/> Be Part of the Next Marketing Revolution
           </p>
           <a
             href="#positions"
@@ -21,7 +21,23 @@ export default function CareersHeader() {
           </a>
         </div>
       </section>
+      <section className="py-30 px-6 text-center">
+        <div className="max-w-4xl mx-auto">
+          
+          <p className="text-xl md:text-2xl font-light text-gray-300 mb-12">
+            At <span style={{ fontFamily: "MyFont, sans-serif" }}>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </span> (A Project by <a href="https://trillionedition.com"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="font-semibold cursor-pointer">TrillionEdition LLP</a>), we’re building the next generation of marketing powered by APIs, performance, data, and creativity.
 
+ In the next 6 months, we’re expanding our team with 25+ new opportunities across creative, strategy, and technology departments.
+
+ If you’re passionate about redefining how digital marketing works, this is your place to grow.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }

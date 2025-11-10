@@ -43,7 +43,7 @@ export const AboutTagline = () => {
         <span className="highlight">RESULTS</span>.
         <br className="about-break" />
         Whether it’s cutting CAC,
-        unlocking new audiences, or compounding LTV—we move fast,{" "}
+        unlocking new audiences, or compounding LTV, we move fast,{" "}
         <span
           className="animated-text"
         >

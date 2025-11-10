@@ -296,7 +296,9 @@ let’s discuss.”
               </a>
             </div><br/>
             <p className="text-sm text-center text-gray-400">
-              © 2025 SocialBureau. All rights reserved.
+              © 2025 <span style={{ fontFamily: "MyFont, sans-serif" }}>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </span>. All rights reserved.
             </p>
           </div>
         </div>

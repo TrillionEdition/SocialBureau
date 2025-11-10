@@ -22,7 +22,9 @@ export default function CareersList() {
             </div>
             <p className="text-gray-300 mb-6 text-left">{job.description}</p>
             <div className="flex justify-between items-center">
+             <span className="text-sm text-gray-400">{job.department}</span>
               <span className="text-sm text-gray-400">{job.type}</span>
+              
               <Link
                 to={`/careers/${job.slug}`} // use slug
                 className="border rounded-[1rem] border-[#ff0000] px-6 py-2 text-sm bg-[#ff0000] hover:bg-black hover:text-white transition"

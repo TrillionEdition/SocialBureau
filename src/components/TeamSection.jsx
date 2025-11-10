@@ -74,7 +74,7 @@ export const teamData = {
       image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761195484/SB_ID_Card_Anjay_New_bbobhw.png",
       hoverImage: "/assets/anjay.webp",
       description:
-        "Leads content pipeline — from idea to execution to performance analytics.",
+        "Leads content pipeline from idea to execution to performance analytics.",
     },
     {
       name: "Afnas N",
@@ -170,7 +170,7 @@ const TeamSection = () => (
     <Section title="Leadership Team" data={teamData.leadership} />
     <Section title="Strategy & Marketing Division" data={teamData.strategyMarketing} />
     <Section title="Content & Production Department" data={teamData.contentProduction} />
-    {/* <Section title="Technology & Development" data={teamData.technology} /> */}
+    <Section title="Technology & Development" data={teamData.technology} />
     <p className="mt-20 font-light opacity-90 text-lg max-w-5xl mx-auto text-white text-center">
       Together, this team powers <span style={{ fontFamily: "MyFont, sans-serif" }}>
               Social<span className="text-[#ff0000]">B</span>ureau

@@ -36,7 +36,7 @@ const [isMobile, setIsMobile] = useState(false);
       title: "Branding",
       icon: <FaShapes className="text-4xl" />,
       intro:
-        "Your brand is more than a logo — it’s your language, tone, color logic, and content DNA.",
+        "Your brand is more than a logo, it’s your language, tone, color logic, and content DNA.",
       description:
         "We combine psychology, design systems, and data to create brand identities that perform across every platform.",
       list: [
@@ -60,7 +60,7 @@ const [isMobile, setIsMobile] = useState(false);
       title: "Experience Design (XD)",
       icon: <FaBrain className="text-4xl" />,
       intro:
-        "Your user experience isn’t just visual — it’s emotional, behavioral, and algorithmic.",
+        "Your user experience isn’t just visual, it’s emotional, behavioral, and algorithmic.",
       description:
         "We design digital environments that align with user intent, platform behavior, and business goals.",
       list: [
@@ -84,7 +84,7 @@ const [isMobile, setIsMobile] = useState(false);
       title: "Technology",
       icon: <FaCogs className="text-4xl" />,
       intro:
-        "The future of marketing is technical — and SocialBureau is built on it.",
+        "The future of marketing is technical, and SocialBureau is built on it.",
       description:
         "We build API marketing systems, automation tools, and digital platforms that make marketing measurable.",
       list: [

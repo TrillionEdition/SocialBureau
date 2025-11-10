@@ -130,7 +130,7 @@ const cards = [
   {
     title: "Multi-Platform Ad Management",
     slug: "Multi-Platform-Ad-Management",
-    content: "Meta, Google, TikTok, LinkedIn — managed from one unified system.",
+    content: "Meta, Google, TikTok, LinkedIn managed from one unified system.",
     bg: "to-slate-700",
   },
   {

@@ -396,7 +396,7 @@ const servicesData = {
         {
           title: "Unified dashboards",
           description:
-            "Google Analytics, Meta, LinkedIn — in one dashboard.",
+            "Google Analytics, Meta, LinkedIn in one dashboard.",
           icon: <FaDatabase />,
         },
         {
@@ -451,7 +451,7 @@ const servicesData = {
         {
           title: "CRM automation",
           description:
-            "HubSpot, Salesforce, Zoho — synced with your funnel.",
+            "HubSpot, Salesforce, Zoho synced with your funnel.",
           icon: <FaShareAlt />,
         },
         {
