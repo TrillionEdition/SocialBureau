@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { useNavigate, useParams } from "react-router-dom";
-import { FaCrown, FaGem, FaLeaf, FaMapMarkerAlt, FaMedal, FaPiggyBank, FaRocket, FaStar, FaUserGraduate } from "react-icons/fa";
+import { FaCrown, FaDownload, FaGem, FaLeaf, FaMapMarkerAlt, FaMedal, FaPiggyBank, FaRocket, FaStar, FaUserGraduate } from "react-icons/fa";
 import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
+import jsPDF from 'jspdf';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { userDetailsAPI } from "../../services/clickupServices";
@@ -186,6 +187,34 @@ if (!user) {
 
 const expIndex = getExpIndex(user?.doj);
 
+  const downloadPagePdf = async () => {
+    try {
+      const node = document.documentElement || document.body;
+      if (!node) return;
+
+      const scale = 2;
+      const width = Math.max(node.scrollWidth, node.clientWidth || 0);
+      const height = Math.max(node.scrollHeight, node.clientHeight || 0);
+
+      const dataUrl = await domtoimage.toPng(node, {
+        width: width * scale,
+        height: height * scale,
+        style: {
+          transform: 'scale(' + scale + ')',
+          transformOrigin: 'top left',
+          width: width + 'px',
+        },
+      });
+
+      const pdf = new jsPDF({ unit: 'px', format: [width, height] });
+      pdf.addImage(dataUrl, 'PNG', 0, 0, width, height);
+      const fileName = `${user?.name ? user.name.replace(/\s+/g, '_') : 'page'}.pdf`;
+      pdf.save(fileName);
+    } catch (err) {
+      console.error('Failed to generate page PDF', err);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -274,6 +303,12 @@ const expIndex = getExpIndex(user?.doj);
       >
         Enquire Now
       </button>
+      <button
+                  onClick={downloadPagePdf}
+                  className="px-3 py-1 rounded-md bg-red-600 text-white text-sm hover:opacity-90 transition ml-2"
+                >
+                  <FaDownload />
+                </button>
     </div>
 
   </div>
@@ -476,7 +511,7 @@ const expIndex = getExpIndex(user?.doj);
 
                   </div>
                   <div className="flex items-center mt-2">
-                    <img src="https://i.pinimg.com/474x/b0/83/31/b0833156962d005d1ccbee648cba509b.jpg" alt="user_icon" className="h-8 w-8 mr-2 md:mr-5"/>
+                    <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1762926257/b0833156962d005d1ccbee648cba509b_fl58sy.jpg" alt="user_icon" className="h-8 w-8 mr-2 md:mr-5"/>
                     <div>
                       <div className="font-medium text-gray-800 text-xs md:text-sm">{review.name}</div>
                       <div className="text-xs text-gray-500">{review.time}</div>

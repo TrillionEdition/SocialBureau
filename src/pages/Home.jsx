@@ -13,6 +13,7 @@ import LatestBlogs from '../components/LatestBlogs'
 import LatestCareers from '../components/LatestCareers'
 import HomeServices from '../components/HomeServices'
 import Chatbot from '../components/Chatbot'
+import {Googlereview} from '../components/Googlereview'
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ export const Home = () => {
     { title: "New Openings: Hiring Performance Marketers", subtitle: "Join our Team", link: "/careers/performance-marketer" },
     { title: "New Openings: Hiring Graphics Designers", subtitle: "Join our Team", link: "/careers/graphics-designer" },
     { title: "New Openings: Hiring SEO Specialist", subtitle: "Join our Team", link: "/careers/seo-specialist" },
+    { title: "New Openings: Web Developers", subtitle: "Join our Team", link: "/careers/web-developer" },
   ];
 
   // showPopups for rotating bottom-right popups (dynamic length)
@@ -66,7 +68,7 @@ export const Home = () => {
               className="fixed right-4 bottom-4 flex flex-col gap-4 z-40 animate-fade-in"
             >
               <div
-                className="relative bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-xl p-4 w-64 text-center hover:scale-105 transition-transform duration-300 cursor-pointer"
+                className="relative bg-gradient-to-r from-red-600 to-black rounded-2xl shadow-xl p-4 w-64 text-center hover:scale-105 transition-transform duration-300 cursor-pointer"
                 onClick={() => navigate(popup.link)}
               >
                 <button
@@ -80,13 +82,13 @@ export const Home = () => {
                 </button>
 
                 <h2 className="text-lg font-bold text-white mb-1 drop-shadow-lg">{popup.title}</h2>
-                <p className="text-xs text-red/90 mb-3 shadow-xl">{popup.subtitle}</p>
-                <button className="bg-white text-purple-600 text-sm font-semibold px-4 py-1.5 rounded-full shadow hover:shadow-lg hover:bg-purple-100 transition-all">
+                <p className="text-xs text-gray-200 mb-3 shadow-xl">{popup.subtitle}</p>
+                <button className="bg-white text-gray-800 text-sm font-semibold px-4 py-1.5 rounded-full shadow hover:shadow-lg hover:bg-purple-100 transition-all">
                   Apply
                 </button>
 
-                <span className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-purple-400 opacity-30 animate-pulse"></span>
-                <span className="absolute -bottom-4 -right-4 w-10 h-10 rounded-full bg-blue-400 opacity-30 animate-pulse"></span>
+                <span className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-red-400 opacity-30 animate-pulse"></span>
+                <span className="absolute -bottom-4 -right-4 w-10 h-10 rounded-full bg-red-800 opacity-30 animate-pulse"></span>
               </div>
             </div>
           )
@@ -161,6 +163,7 @@ We believe the future of marketing is programmable and we’re already building 
 
 
       <LatestCareers />
+<Googlereview />
       <Clients />
       <LatestBlogs posts={posts} />
       <Hometagline />
