@@ -34,7 +34,7 @@ export default function LatestVideos() {
   const visibleOthers = isMobile ? others.slice(0, 4) : others;
 
   return (
-    <div className="container mx-auto p-4 text-white max-w-5xl">      
+    <div className="container mx-auto p-4 text-white max-w-[80vw]">      
 <div className="flex items-center justify-between my-6">
   <h2 className="text-xl font-bold">Latest Videos</h2>
   <a

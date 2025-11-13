@@ -21,15 +21,6 @@ export const teamData = {
       image: "/assets/ShamSK.webp",
       hoverImage: "/assets/ShamSK.webp",
     },
-    {
-      name: "Hajira",
-      link: "https://www.linkedin.com/in/hajira-mohammed-10005b335",
-      role: "Administration & Operations Head",
-      description:
-        "Ensures flawless daily operations and inter-department workflow excellence.",
-      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761221472/images/btrvj8lxwc3la4xli6es.png",
-      hoverImage: "/assets/hajira.webp",
-    },
   ],
 
   strategyMarketing: [
@@ -40,6 +31,15 @@ export const teamData = {
       hoverImage: "/assets/sherin.webp",
       description:
         "Drives talent acquisition & creative alignment ensuring brand consistency.",
+    },
+    {
+      name: "Hajira",
+      link: "https://www.linkedin.com/in/hajira-mohammed-10005b335",
+      role: "Administration & Operations Head",
+      description:
+        "Ensures flawless daily operations and inter-department workflow excellence.",
+      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761221472/images/btrvj8lxwc3la4xli6es.png",
+      hoverImage: "/assets/hajira.webp",
     },
     {
       name: "Aneek",
@@ -171,11 +171,19 @@ const TeamSection = () => (
     <Section title="Strategy & Marketing Division" data={teamData.strategyMarketing} />
     <Section title="Content & Production Department" data={teamData.contentProduction} />
     <Section title="Technology & Development" data={teamData.technology} />
-    <p className="mt-20 font-light opacity-90 text-lg max-w-5xl mx-auto text-white text-center">
-      Together, this team powers <span style={{ fontFamily: "MyFont, sans-serif" }}>
+    <div className="mt-20 max-w-5xl mx-auto text-center">
+      <p className="font-light opacity-90 text-lg text-white">
+        Together, this team powers <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
               Social<span className="text-[#ff0000]">B</span>ureau
-            </span>’s mission, to redefine API Marketing, Performance Marketing, and Data-Driven Content Creation for the new era of global business growth.
-    </p>
+            </a>'s mission, to redefine API Marketing, Performance Marketing, and Data-Driven Content Creation for the new era of global business growth.
+      </p>
+      <Link
+        to="/careers"
+        className="inline-block mt-8 px-8 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+      >
+        Apply Now
+      </Link>
+    </div>
   </div>
 );
 

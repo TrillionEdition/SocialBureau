@@ -1,4 +1,48 @@
 const posts = [
+      {
+  id: 11,
+  category: "Marketing",
+  title: "The Creative Edge: Why Digital Marketing in 2025 Belongs to Bold Ideas, Not Just Algorithms",
+  slug: "Why-Digital-Marketing-in-2025-Belongs-to-Bold-Ideas",
+  excerpt:
+    "In 2025, every brand is playing in the same environment full of digital noise. Your strategies are the same. Your brand...",
+  content: [
+    `Children’s Day exemplifies innocence, curiosity, and the limitless potential of the next generation. Celebrated globally, the day serves as a reminder to adults that children must be protected, educated, and nurtured with compassion. Beyond festivities, Children’s Day carries a deeper mission—strengthening our responsibility to support and empower young minds.`,
+    
+    `**Historical Origins**  
+The idea of dedicating a day to children emerged in the early 20th century when global concerns rose around child welfare, education, and the abolition of child labor. The first official celebration was held in Turkey in 1920, when Mustafa Kemal Atatürk declared April 23 as National Sovereignty and Children’s Day.  
+The concept soon spread across the world. In 1925, an international conference in Geneva designated June 1 as International Children’s Day. Later in 1954, the United Nations adopted November 20 as Universal Children’s Day to promote child welfare and highlight the Declaration and Convention on the Rights of the Child.`,
+    
+    `India’s celebration evolved differently—initially observed on November 20, it was later moved to November 14, the birth anniversary of Jawaharlal Nehru, a leader who deeply believed that children are the foundation of a nation’s future. Since 1964, his birthday has been celebrated nationwide with programs, activities, and tributes.`,
+    
+    `**Children’s Day Around the World**  
+Countries celebrate differently while honoring the same core message—children are the drivers of human progress.  
+• China (June 1): Free access to parks and cultural events  
+• South Korea (May 5): Family bonding and outdoor activities  
+• Nigeria (May 27): Awareness campaigns on child labor and poverty  
+• United Kingdom: Charity events and welfare initiatives  
+Despite the cultural variations, the mission remains universal: uphold the rights and wellbeing of all children.`,
+    
+    `Over the decades, Children’s Day has transitioned from symbolic observances to driving major reform movements. The UN Convention on the Rights of the Child (CRC), signed by 196 nations in 1989, established a global standard for protecting children’s right to survival, education, and participation in society.`,
+    
+    `**Modern-Day Significance**  
+Today’s Children’s Day highlights pressing global issues such as poverty, inequality in education, child safety, and digital-age threats like cyberbullying. Schools, NGOs, and communities organize events focusing on sustainability, mental well-being, and online safety.  
+The COVID-19 pandemic significantly emphasized the importance of mental health, play, and emotional support for children.`,
+    
+    `In India, November 14 is used to promote welfare programs, including mid-day meals, health drives, and awareness campaigns. UNICEF uses the global platform to advocate for girl child education, vaccination, disability rights, and protection in war zones.`,
+    
+    `Children’s Day also celebrates creativity, imagination, and the freedom that all children deserve. It urges societies to invest more in education, emotional development, and early childhood support—investments that research shows have long-term economic and social benefits.`,
+    
+    `**Conclusion**  
+From Atatürk’s Turkey in 1920 to a worldwide celebration adopted by the UN, Children’s Day has grown into a powerful symbol of hope and humanity.  
+It reminds us that while the world evolves—with digital challenges, climate concerns, and social pressures—our responsibility remains constant: to protect the dreams, rights, and future of every child.  
+The future belongs to them—and safeguarding that future is the greatest duty we share.`
+  ],
+  author: "Anjay Ramesh",
+  time: "3 min read",
+  image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1763041321/Childrens_day_wide_gpjcmq.jpg",
+},
+
 //        {
 //       id: 10,
 //     category: "Marketing",

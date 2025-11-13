@@ -38,13 +38,17 @@ const PrivacyPolicy = () => {
           <ul className="list-disc list-inside ml-4 space-y-2">
             <li><strong>Account</strong> means a unique account created for You to access our Service or parts of our Service.</li>
             <li><strong>Affiliate</strong> means an entity that controls, is controlled by or is under common control with a party...</li>
-            <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our") refers to SocialBureau, Business Bureau...</li>
+            <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our") refers to <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a>, Business Bureau...</li>
             <li><strong>Cookies</strong> are small files that are placed on Your device by a website...</li>
             <li><strong>Country</strong> refers to: Kerala, India</li>
             <li><strong>Device</strong> means any device that can access the Service...</li>
             <li><strong>Personal Data</strong> is any information that relates to an identified or identifiable individual.</li>
             <li><strong>Service</strong> refers to the Website.</li>
-            <li><strong>Website</strong> refers to SocialBureau, accessible from <span className='text-[#ff0000]' onClick={()=>navigate('/')}>socialbureau.in</span></li>
+            <li><strong>Website</strong> refers to <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a>, accessible from <span className='text-[#ff0000]' onClick={()=>navigate('/')}>socialbureau.in</span></li>
             <li><strong>You</strong> means the individual accessing or using the Service...</li>
           </ul>
           <h2 className="text-xl font-semibold text-[#ff0000] mt-6">Contact Us</h2>

@@ -76,8 +76,8 @@ export default function Testimonials() {
   }, []);
 
   return (
-    <section className="max-w-7xl bg-black py-12 overflow-hidden px-5 mx-10">
-      <h2 className="text-xl font-bold mb-6 text-left pl-5 text-white">
+    <section className="max-w-[80vw] bg-black py-12 overflow-hidden px-5 mx-auto flex flex-col">
+      <h2 className="text-xl font-bold mb-6 text-left text-white">
         Testimonials
       </h2>
       <div

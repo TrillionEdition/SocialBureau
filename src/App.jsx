@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { Home } from './pages/Home'
 import Navbar from './components/Navbar'
@@ -24,9 +24,25 @@ import BlogDetail from './components/BlogDetail'
 import CareerDetail from './components/CareerDetail'
 import { Team } from './pages/Team'
 import { StaffDashboard } from './components/StaffDashboard'
+import LoadingSpinner from './components/LoadingSpinner'
+import BrandingService from './components/BrandingService'
+import XDService from './components/XDService'
+import TechnologyService from './components/TechnologyService'
+import GlobalMarketingService from './components/GlobalMarketingService'
+import GoogleMarketingService from './components/GoogleMarketingService'
+import AppAdvertisingService from './components/AppAdvertisingService'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
+  const [loading, setLoading] = useState(true);
+  
+    useEffect(() => {
+      const timer = setTimeout(() => setLoading(false), 1200);
+      return () => clearTimeout(timer);
+    }, []);
+  
+    if (loading) return <LoadingSpinner />;
+  
   return (
     <>
       <BrowserRouter>
@@ -50,6 +66,12 @@ function App() {
         <Route path="/careers/:slug" element={<CareerDetail />} />
         
         <Route path="/:name" element={<StaffDashboard />} />
+        <Route path="/services/branding" element={<BrandingService />} />
+        <Route path="/services/experience-design" element={<XDService />} />
+        <Route path="/services/technology" element={<TechnologyService />} />
+        <Route path="/services/global-marketing" element={<GlobalMarketingService />} />
+        <Route path="/services/google-marketing" element={<GoogleMarketingService />} />
+        <Route path="/services/app-advertising" element={<AppAdvertisingService />} />
         <Route path="/services/:serviceTitle" element={<Service1 />} />
         <Route path="/voice" element={
           <Suspense fallback={<div>Loading...</div>}>

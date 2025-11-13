@@ -51,9 +51,9 @@ export const Intro = () => {
 
   {/* Outcome */}
   <p className="mt-20 font-light opacity-90 text-lg max-w-5xl mx-auto">
-    <span style={{ fontFamily: "MyFont, sans-serif" }}>
+    <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
               Social<span className="text-[#ff0000]">B</span>ureau
-            </span> is a project by <a
+            </a> is a project by <a
   href="https://trillionedition.com"
   target="_blank"
   rel="noopener noreferrer"

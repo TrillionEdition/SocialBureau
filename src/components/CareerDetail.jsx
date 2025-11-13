@@ -49,9 +49,9 @@ const [currentIndex, setCurrentIndex] = useState(0);
                   <strong>Employment Type:</strong> {job?.employment}
                 </p>
                 <h2 className="text-2xl font-semibold">About the Company</h2>
-                <p className="my-2">At <span style={{ fontFamily: "MyFont, sans-serif" }}>
+                <p className="my-2">At <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
               Social<span className="text-[#ff0000]">B</span>ureau
-            </span>, we don’t just build marketing campaigns. We architect high-performance
+            </a>, we don’t just build marketing campaigns. We architect high-performance
                     ecosystems. Operating under the strategic umbrella of Trillion Edition, we fuse analytical muscle
                     with cultural nuance to drive real outcomes for niche, high-growth brands.<br/><br/>
                     We obsess over one thing: <span className="font-bold">RESULTS</span>.<br/><br/>
@@ -68,9 +68,9 @@ const [currentIndex, setCurrentIndex] = useState(0);
                       <li>● Zero Vanity – No fake work. Only compounding ROI.</li>
                     </ul>
                     <p className="my-2">
-At <span style={{ fontFamily: "MyFont, sans-serif" }}>
+At <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
               Social<span className="text-[#ff0000]">B</span>ureau
-            </span>, employees are part of a results-driven, fast-moving ecosystem. We encourage
+            </a>, employees are part of a results-driven, fast-moving ecosystem. We encourage
 healthy professional relationships, mutual respect, and collaboration. Every working hour is
 expected to be utilized productively, with structured reporting through Zoho, ClickUp, or
 equivalent project management platforms. This ensures full transparency, accountability, and
@@ -94,7 +94,9 @@ the ability to:
                       <li> Respect deadlines and ensure projects are executed with speed and precision.</li>
                       <li> Collaborate with teams while maintaining professional conduct and respect.</li>
                       
-                      <li>Contribute actively to SocialBureau’s ecosystem by aligning with its performance-first culture.</li></ul>
+                      <li>Contribute actively to <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a>’s ecosystem by aligning with its performance-first culture.</li></ul>
 This is a results-driven role, not task-driven. Every deliverable must create measurable value
 and align with the company’s mission of scaling the unscalable.
 </p>
@@ -172,7 +174,9 @@ readiness to adapt to company standards.</li>
   <li>All employees must maintain structured task updates daily.</li>
   <li>Confidentiality of company and client data is a strict requirement.</li>
   <li>Any violation of policies or repeated underperformance will lead to disciplinary action.</li>
-  <li>SocialBureau reserves the right to reassign tasks or restructure roles as business demands.</li>
+  <li><a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a> reserves the right to reassign tasks or restructure roles as business demands.</li>
 </ul>
 
               <h2 className="text-2xl font-semibold mt-6">Salary</h2>
@@ -188,7 +192,9 @@ readiness to adapt to company standards.</li>
   <li>Role-specific expertise.</li>
   <li>Familiarity with structured reporting tools (Zoho, ClickUp, etc.).</li>
   <li>Discipline, punctuality, and professional conduct.</li>
-  <li>Ability to align with SocialBureau’s performance-first culture.</li>
+  <li>Ability to align with <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a>’s performance-first culture.</li>
 </ul>
 
 <h2 className="text-2xl font-semibold mt-6">Video Guidelines</h2>

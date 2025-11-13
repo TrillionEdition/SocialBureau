@@ -59,9 +59,9 @@ const [openIndex, setOpenIndex] = useState(null);
   <div className="px-6 lg:px-40 text-white text-center items-center">
           <p className="text-xl sm:text-xl md:text-2xl lg:text-2xl leading-relaxed text-center items-center">
             At &nbsp;
-            <span style={{ fontFamily: "MyFont, sans-serif" }}>
+            <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
               Social<span className="text-[#ff0000]">B</span>ureau
-            </span>
+            </a>
             &nbsp; our core services include:
             <br /><br />
           </p>

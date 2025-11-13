@@ -338,9 +338,9 @@ const message = `
       .join("")}
   </ul>
 
-  <p style="margin-top:20px;">Best regards,<br><strong><span style={{ fontFamily: "MyFont, sans-serif" }}>
+  <p style="margin-top:20px;">Best regards,<br><strong><a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
               Social<span className="text-[#ff0000]">B</span>ureau
-            </span> Team</strong></p>
+            </a> Team</strong></p>
 `;
 
     sendEmail(userEmail, subject, message)

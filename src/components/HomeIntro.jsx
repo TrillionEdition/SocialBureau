@@ -31,7 +31,9 @@ const HomeIntro = () => {
             {/* Right Column for H2 */}
             <div className="md:w-1/3 mt-10 md:mt-0 md:pl-10 border-l-2 border-[#ff0000]">
               <p className="text-sm md:text-base lg:text-lg leading-relaxed font-sans text-left pl-4 text-[#838383ff]">
- We combine creativity with code to power your marketing ecosystem. As a division of <a href="https://trillionedition.com">TrillionEdition LLP</a>, SocialBureau bridges data, automation, and human insight to create marketing systems that scale globally.
+ We combine creativity with code to power your marketing ecosystem. As a division of <a href="https://trillionedition.com">TrillionEdition LLP</a>, <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a> bridges data, automation, and human insight to create marketing systems that scale globally.
               </p>
             </div>
           </div>

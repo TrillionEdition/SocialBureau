@@ -29,10 +29,14 @@ const Disclaimer = () => {
           <h3 className="text-lg font-medium text-white mt-4">Definitions</h3>
           <p>For the purposes of this Disclaimer:</p>
           <ul className="list-disc list-inside ml-4 space-y-2">
-            <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our") refers to SocialBureau, Business Bureau, Main Avenue, Panampilly Nagar, Kochi, Ernakulam, Kerala 682036.</li>
+            <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our") refers to <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a>, Business Bureau, Main Avenue, Panampilly Nagar, Kochi, Ernakulam, Kerala 682036.</li>
             <li><strong>Service</strong> refers to the Website.</li>
             <li><strong>You</strong> means the individual accessing the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service.</li>
-            <li><strong>Website</strong> refers to SocialBureau, accessible from <span className="text-[#ff0000]" onClick={()=>navigate('/')}>socialbureau.in</span></li>
+            <li><strong>Website</strong> refers to <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a>, accessible from <span className="text-[#ff0000]" onClick={()=>navigate('/')}>socialbureau.in</span></li>
           </ul>
 
           <h2 className="text-xl font-semibold text-[#ff0000] mt-6">Disclaimer</h2>

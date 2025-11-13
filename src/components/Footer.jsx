@@ -19,7 +19,7 @@ export default function Footer() {
 
 <a
   href="tel:+918921840486"
-  aria-label="Call Social Bureau"
+  aria-label="Call SocialBureau"
   className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white"
 >
   <FaPhone aria-hidden="true" />
@@ -29,7 +29,7 @@ export default function Footer() {
   href="https://www.linkedin.com/company/socialbureau-in"
   target="_blank"
   rel="noopener noreferrer"
-  aria-label="Visit Social Bureau on LinkedIn"
+  aria-label="Visit SocialBureau on LinkedIn"
   className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white"
 >
   <FaLinkedin aria-hidden="true" />
@@ -72,7 +72,9 @@ export default function Footer() {
 
       {/* Copyright */}
       <p className="text-sm text-center leading-8">
-         © 2025 SocialBureau. All rights reserved.<br/> <a  href="/privacy-policy" className="text-white text-decoration-none hover:font-bold">Our Privacy Policy</a>  |  <a  href="/disclaimer" className="text-white text-decoration-none hover:font-bold">Our Disclaimer</a>
+         © 2025 <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a>. All rights reserved.<br/> <a  href="/privacy-policy" className="text-white text-decoration-none hover:font-bold">Our Privacy Policy</a>  |  <a  href="/disclaimer" className="text-white text-decoration-none hover:font-bold">Our Disclaimer</a>
       </p>
     </footer>
   );

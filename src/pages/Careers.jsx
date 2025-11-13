@@ -4,24 +4,24 @@ import Footer from '../components/Footer'
 import CareersHeader from '../components/CareersHeader'
 import CareersPost from '../components/CareersList'
 import CareersContent from '../components/CareersContent'
+import { CareerCTA } from '../components/CareerCTA'
+import Seo from '../components/Seo'
 
 export const Careers = () => {
   return (
     <div className='bg-gradient-to-br from-black to-[#3f0000]'>
+      <Seo
+              title="SocialBureau Careers | Join India’s Fastest-Growing Creative & Digital Agency"
+              description="Explore exciting career opportunities at SocialBureau. Join our team of designers, marketers, developers, and creators shaping the future of digital experiences."
+              keywords="socialbureau careers, trillionedition llp jobs, api marketing jobs, digital marketing career, seo expert jobs india, creative agency hiring, video editor hiring, content writer jobs, performance marketing openings, join socialbureau"
+              image="/assets/socialbureau.png"
+              url="https://www.socialbureau.in/careers"
+            />
         <Navbar/>
         <CareersHeader/>
         <CareersContent/>
         <CareersPost/>    
-        <div className="max-w-6xl mx-auto text-center mb-10">
-          <h2 className="font-playfair text-4xl md:text-5xl font-bold mb-6 text-white" style={{ fontFamily: "Playfair Display, serif" }}>Get Started</h2>
-          <p className="text-xl text-gray-300 font-light">Are you ready to join an organization that values excellence?</p>
-            <a
-            href="https://www.linkedin.com/jobs/socialbureau.in-jobs-worldwide?position=1&pageNum=0" 
-            className="inline-block border hover:border-white rounded-full p-3 px-5 my-10 text-lg font-medium bg-[#ff0000] border-[#ff0000] hover:bg-black hover:scale-105 text-white transition"
-          >
-            Join Now
-          </a>
-        </div>    
+        <CareerCTA/>
         <Footer/>
     </div>
   )
