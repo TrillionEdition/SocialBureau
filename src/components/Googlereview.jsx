@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { BASE_URL } from '../../utils/urls';
 import { useQuery } from '@tanstack/react-query';
 import { googlereviewAPI } from '../../services/reviewServices';
+import LoadingSpinner from './LoadingSpinner';
 
 export const Googlereview = () => {
 const { data, isLoading, isFetching } = useQuery({
