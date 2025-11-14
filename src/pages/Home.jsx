@@ -113,8 +113,24 @@ export const Home = () => {
       <Googlereview />
       <Clients />
       <LatestBlogs posts={posts} />
+      <div className="bg-gray-900 text-white">
+      
+      <section className="bg-black/55 p-12 mt-10">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl font-bold">Get Real Answers. From Real Experts.</h2>
+          <p className="mt-4 text-gray-300 max-w-2xl mx-auto">
+            Explore SocialBureau’s Live Q/A Hub. Ask questions, solve marketing challenges, and learn from expert discussions.
+          </p>
+
+          <button className="mt-6 px-6 py-3 bg-[#3f0000] rounded-full font-semibold hover:bg-[#2f0000] transition" onClick={()=>(navigate('/qa-section'))}>
+            Visit Q/A Hub
+          </button>
+        </div>
+      </section>
+      </div>
       <Hometagline />
       <HomeFooter />
+    
       <Footer />
     </div>
   );

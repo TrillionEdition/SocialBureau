@@ -31,6 +31,7 @@ import TechnologyService from './components/TechnologyService'
 import GlobalMarketingService from './components/GlobalMarketingService'
 import GoogleMarketingService from './components/GoogleMarketingService'
 import AppAdvertisingService from './components/AppAdvertisingService'
+import QASection from './components/QASection'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
@@ -64,7 +65,7 @@ function App() {
         <Route path="/clients" element={<Client/>} />
         <Route path="/blogs/:slug" element={<BlogDetail />} />
         <Route path="/careers/:slug" element={<CareerDetail />} />
-        
+        <Route path="/qa-section" element={<QASection />} />
         <Route path="/:name" element={<StaffDashboard />} />
         <Route path="/services/branding" element={<BrandingService />} />
         <Route path="/services/experience-design" element={<XDService />} />
