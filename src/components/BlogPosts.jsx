@@ -39,7 +39,6 @@ export default function BlogPosts() {
     if (post.description) {
       wordCount += post.description.split(/\s+/).length;
     }
-    console.log(wordCount);
     
     const minutes = Math.ceil(wordCount / 100);
     return minutes;
