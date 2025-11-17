@@ -84,22 +84,22 @@ export const teamData = {
       description:
         "Responsible for visual direction on shoots using Sony A7M4 + DJI systems.",
     },
-    // {
-    //   name: "Taijo",
-    //   role: "Graphic Designer",
-    //   image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1762493545/SB_ID_Card_Taijo_New_1_-1_eb0ygm.jpg",
-    //   hoverImage: "/assets/taijo.webp",
-    //   description:
-    //     "Creates visual experiences that improve clarity, recall, and conversion.",
-    // },
-    // {
-    //   name: "Joseph",
-    //   role: "Video Editor",
-    //   image: "/assets/joseph.webp",
-    //   hoverImage: "/assets/joseph.webp",
-    //   description:
-    //     "Narrative-driven editor skilled in 4K workflows, color grading, and motion.",
-    // },
+    {
+      name: "Taijo John",
+      role: "Graphic Designer",
+      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1762493545/SB_ID_Card_Taijo_New_1_-1_eb0ygm.jpg",
+      hoverImage: "/assets/taijo.webp",
+      description:
+        "Creates visual experiences that improve clarity, recall, and conversion.",
+    },
+    {
+      name: "Joseph",
+      role: "Video Editor",
+      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1763380488/images/fnzkzrdkb3f8cli8583p.png",
+      hoverImage: "/assets/joseph.webp",
+      description:
+        "Narrative-driven editor skilled in 4K workflows, color grading, and motion.",
+    },
   ],
 
   technology: [
