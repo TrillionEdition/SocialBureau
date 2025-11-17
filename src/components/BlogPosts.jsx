@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { blogAPI } from "../../services/blogServices";
 import posts from "../data/blogs";
 
 const categories = [
@@ -18,10 +20,49 @@ export default function BlogPosts() {
 
   const postsPerPage = 6;
 
+  // Calculate reading time based on word count (average 200 words per minute)
+  const calculateReadingTime = (post) => {
+    let wordCount = 0;
+    
+    // Count words from title and excerpt
+    wordCount += (post.title?.split(/\s+/).length || 0);
+    wordCount += (post.excerpt?.split(/\s+/).length || 0);
+    
+    // Count words from content array (backend posts)
+    if (post.content && Array.isArray(post.content)) {
+      post.content.forEach(section => {
+        wordCount += (section.text?.split(/\s+/).length || 0);
+      });
+    }
+    
+    // Count words from description (static posts)
+    if (post.description) {
+      wordCount += post.description.split(/\s+/).length;
+    }
+    console.log(wordCount);
+    
+    const minutes = Math.ceil(wordCount / 100);
+    return minutes;
+  };
+
+  // Fetch blogs from backend
+  const { data: backendData, isLoading } = useQuery({
+    queryKey: ["blogs", selectedCategory],
+    queryFn: () => blogAPI.getBlogs({
+      category: selectedCategory !== "All Posts" ? selectedCategory : undefined,
+      limit: 100,
+      published: true,
+    }),
+  });
+
+  // Combine static posts with backend posts
+  const backendPosts = backendData?.data || [];
+  const allPosts = [...backendPosts, ...posts];
+
   const filteredPosts =
     selectedCategory === "All Posts"
-      ? posts
-      : posts.filter((post) => post.category === selectedCategory);
+      ? allPosts
+      : allPosts.filter((post) => post.category === selectedCategory);
 
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
   const startIndex = currentPage * postsPerPage;
@@ -63,41 +104,53 @@ export default function BlogPosts() {
 
       {/* Posts */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {paginatedPosts.map((post) => (
-          <div
-            key={post.id}
-            className="rounded-lg border shadow-sm overflow-hidden flex flex-col hover:border-[#ff0000] hover:scale-105 transition"
-          >
-            <div className="p-5 flex-1 flex flex-col">
-              <div className="flex items-center mb-2">
-                <span className="text-xs bg-gray-100 text-gray-800 px-2 py-0.5 rounded-full mr-2">
-                  {post.category}
-                </span>
-                <span className="text-xs text-gray-400">{post.time}</span>
-              </div>
-              <img src={post.image} alt={post.title} />
-              <h3 className="text-lg text-white font-semibold mb-2">
-                {post.title}
-              </h3>
-              <p className="text-sm text-gray-600 flex-1">{post.excerpt}</p>
-              <div className="mt-4 flex items-center justify-between">
-                <div className="flex items-center space-x-2 ">
-                  <i
-                    className="fa fa-user bg-white p-1 rounded-full"
-                    aria-hidden="true"
-                  ></i>
-                  <span className="text-xs text-gray-700">{post.author}</span>
+        {isLoading ? (
+          <div className="col-span-full text-center text-white py-10">Loading blogs...</div>
+        ) : paginatedPosts.length === 0 ? (
+          <div className="col-span-full text-center text-white py-10">No blogs found</div>
+        ) : (
+          paginatedPosts.map((post) => (
+            <div
+              key={post.id || post._id}
+              className="rounded-lg border shadow-sm overflow-hidden flex flex-col hover:border-[#ff0000] hover:scale-105 transition"
+            >
+              <div className="p-5 flex-1 flex flex-col">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs bg-gray-100 text-gray-800 px-2 py-0.5 rounded-full">
+                    {post.category}
+                  </span>
+                  <span className="text-xs text-gray-400">{post.time || new Date(post.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
                 </div>
-                <button
-                  onClick={() => navigate(`/blogs/${post.slug}`)}
-                  className="text-sm text-[#ff0000] font-medium hover:scale-105"
-                >
-                  Read More →
-                </button>
+                <img src={post.image} alt={post.title} className="w-full h-48 object-cover rounded mb-2" />
+                {post.createdAt && (
+                  <div className="flex items-center gap-1 mb-2 text-xs text-gray-500">
+                    <i className="far fa-clock"></i>
+                    <span>{calculateReadingTime(post)} min read</span>
+                  </div>
+                )}
+                <h3 className="text-lg text-white font-semibold mb-2">
+                  {post.title}
+                </h3>
+                <p className="text-sm text-gray-600 flex-1">{post.excerpt}</p>
+                <div className="mt-4 flex items-center justify-between">
+                  <div className="flex items-center space-x-2 ">
+                    <i
+                      className="fa fa-user bg-white p-1 rounded-full"
+                      aria-hidden="true"
+                    ></i>
+                    <span className="text-xs text-gray-700">{post.author || post.authorName}</span>
+                  </div>
+                  <button
+                    onClick={() => navigate(`/blogs/${post.slug}`)}
+                    className="text-sm text-[#ff0000] font-medium hover:scale-105"
+                  >
+                    Read More →
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       {/* Pagination Arrows */}

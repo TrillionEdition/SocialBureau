@@ -1,13 +1,37 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import { useQuery } from "@tanstack/react-query";
+import { blogAPI } from "../../services/blogServices";
 import posts from "../data/blogs";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
 export default function BlogDetail() {
   const { slug } = useParams();
-  const post = posts.find((p) => p.slug === slug);
+  
+  // Try to find in static posts first
+  let post = posts.find((p) => p.slug === slug);
+  
+  // Fetch from backend if not found in static posts
+  const { data: backendData, isLoading } = useQuery({
+    queryKey: ["blog", slug],
+    queryFn: () => blogAPI.getBlogBySlug(slug),
+    enabled: !post, // Only fetch if not found in static posts
+  });
+
+  // Use backend data if available
+  if (!post && backendData?.data) {
+    post = backendData.data;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
+      </div>
+    );
+  }
 
   if (!post) {
     return (
@@ -35,9 +59,11 @@ export default function BlogDetail() {
         <span className="text-xs font-medium bg-white text-[#ff0000] px-3 py-1 rounded-full">
           {post.category}
         </span>
-        <span className="text-xs text-white">{post.time}</span>
+        <span className="text-xs text-white">
+          {post.time || (post.createdAt && new Date(post.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }))}
+        </span>
       </div>
-      <img src={post.image} alt={post.title} className="mb-6" />
+      <img src={post.image} alt={post.title} className="mb-6 w-full rounded" />
       <div className="prose prose-invert max-w-none text-gray-400 leading-relaxed">
         {post.content.map((section, index) => (
           <ReactMarkdown key={index}>{section}</ReactMarkdown>
@@ -47,7 +73,7 @@ export default function BlogDetail() {
         <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
           <i className="fa fa-user" aria-hidden="true"></i>
         </div>
-        <span className="text-sm text-gray-400">{post.author}</span>
+        <span className="text-sm text-gray-400">{post.author || post.authorName}</span>
       </div>
     </div>
     <Footer/>

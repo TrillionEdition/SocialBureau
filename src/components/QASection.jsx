@@ -180,15 +180,15 @@ export default function QASection() {
           </div>
 
           <div className="flex gap-3 items-center">
-            <div className="relative">
+            <div className="relative flex-1 md:flex-none">
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search Q/A threads..."
-                className="bg-white/5 placeholder-white/60 px-4 py-2 rounded-full w-72 focus:outline-none"
+                className="bg-white/5 placeholder-white/60 px-4 py-2 rounded-full w-full md:w-72 focus:outline-none"
               />
             </div>
-            <button onClick={() => setIsModalOpen(true)} className="px-4 py-2 rounded-full bg-gradient-to-br from-sky-500 to-indigo-500 text-white font-semibold">Post</button>
+            <button onClick={() => setIsModalOpen(true)} className="px-4 py-2 rounded-full bg-gradient-to-br from-sky-500 to-indigo-500 text-white font-semibold whitespace-nowrap">Post</button>
           </div>
         </div>
 
@@ -239,8 +239,8 @@ export default function QASection() {
                         <p className="mt-3 text-white/80">{t.body}</p>
 
                         <div className="mt-3 flex items-center gap-3 text-sm text-white/70">
-                          <div className="px-2 py-1 bg-white/5 rounded">#{t.category.toLowerCase()}</div>
                           <button onClick={() => upvote(t._id)} className="px-2 py-1 bg-white/6 rounded-full"><FaThumbsUp /></button>
+                          <div className="px-2 py-1 bg-white/5 rounded">#{t.category.toLowerCase()}</div>                          
                           <button className="px-2 py-1 bg-white/5 rounded">Share</button>
                           <button className="px-2 py-1 bg-white/5 rounded">Save</button>
                         </div>
