@@ -33,6 +33,10 @@ import GoogleMarketingService from './components/GoogleMarketingService'
 import AppAdvertisingService from './components/AppAdvertisingService'
 import QASection from './components/QASection'
 import SubmitBlog from './components/SubmitBlog'
+import CookieConsent from './components/CookieConsent'
+import CookiePolicy from './components/CookiePolicy'
+import Events from './components/Events'
+import AddEvent from './components/AddEvent'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
@@ -50,6 +54,7 @@ function App() {
       <BrowserRouter>
       {/* <Navbar/> */}
        <ScrollTop />
+       <CookieConsent />
       <Routes>        
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />        
@@ -58,7 +63,10 @@ function App() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/submit" element={<SubmitBlog />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/events/add" element={<AddEvent />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/cookie-policy" element={<CookiePolicy />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
         <Route path="/careers" element={<Careers/>} />
         <Route path="/our-team" element={<OurTeam/>} />

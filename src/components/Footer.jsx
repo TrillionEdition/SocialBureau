@@ -74,7 +74,7 @@ export default function Footer() {
       <p className="text-sm text-center leading-8">
          © 2025 <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
               Social<span className="text-[#ff0000]">B</span>ureau
-            </a>. All rights reserved.<br/> <a  href="/privacy-policy" className="text-white text-decoration-none hover:font-bold">Our Privacy Policy</a>  |  <a  href="/disclaimer" className="text-white text-decoration-none hover:font-bold">Our Disclaimer</a>
+            </a>. All rights reserved.<br/> <a  href="/privacy-policy" className="text-white text-decoration-none hover:font-bold">Our Privacy Policy</a>  |  <a  href="/cookie-policy" className="text-white text-decoration-none hover:font-bold">Cookie Policy</a>  |  <a  href="/disclaimer" className="text-white text-decoration-none hover:font-bold">Our Disclaimer</a>
       </p>
     </footer>
   );

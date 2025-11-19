@@ -9,6 +9,7 @@ import jsPDF from 'jspdf';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { userDetailsAPI } from "../../services/clickupServices";
+import { BASE_URL } from "../../utils/urls";
 
 const LEVELS = [
   {
@@ -111,7 +112,6 @@ export function StaffDashboard() {
 const navigate=useNavigate()
 const user=data?.user
 const clickup=data?.clickup
-console.log(data);
 
   // For review carousel
   const [startIdx, setStartIdx] = useState(0);
@@ -119,6 +119,54 @@ console.log(data);
   const totalReviews = reviews.length;
   const prev = () => setStartIdx((prevIdx) => Math.max(prevIdx - 1, 0));
   const next = () => setStartIdx((prevIdx) => Math.min(prevIdx + 1, totalReviews - cardsToShow));
+
+  // For review submission form
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [reviewFormData, setReviewFormData] = useState({
+    name: '',
+    email: '',
+    company: '',
+    review: '',
+    rating: 5
+  });
+  const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleReviewInputChange = (e) => {
+    const { name, value } = e.target;
+    setReviewFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleRatingChange = (rating) => {
+    setReviewFormData(prev => ({ ...prev, rating }));
+  };
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus({ type: '', message: '' });
+
+    try {
+      const response = await axios.post(`${BASE_URL}/review/add`, {
+        ...reviewFormData,
+        employee: user._id
+      });
+
+      if (response.data.success) {
+        setSubmitStatus({ type: 'success', message: 'Thank you! Your review has been submitted and is pending approval.' });
+        setReviewFormData({ name: '', email: '', company: '', review: '', rating: 5 });
+        setShowReviewForm(false);
+        // Optionally refresh the page data
+        setTimeout(() => setSubmitStatus({ type: '', message: '' }), 5000);
+      }
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Failed to submit review. Please try again.';
+      setSubmitStatus({ type: 'error', message: errorMessage });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (isLoading || isFetching) {
   return (
     <>
@@ -462,9 +510,18 @@ const expIndex = getExpIndex(user?.doj);
             {/* Left Side: Quote and Title */}
             <div className="w-full md:w-1/3 flex flex-col items-start mb-4 md:mb-0">
               <svg className="w-8 h-8 md:w-12 md:h-12 text-[#4b1886ff] mb-2" fill="none" viewBox="0 0 48 48">
-                <text x="0" y="40" fontSize="40" fontFamily="Arial" fill="currentColor">“</text>
+                <text x="0" y="40" fontSize="40" fontFamily="Arial" fill="currentColor">"</text>
               </svg>
               <h2 className="font-semibold text-lg md:text-2xl mb-2 text-gray-800">What our clients are saying</h2>
+              
+              {/* Add Review Button */}
+              <button
+                onClick={() => setShowReviewForm(!showReviewForm)}
+                className="bg-[#4b1886ff] text-white px-4 py-2 rounded-lg hover:bg-[#370d66ff] transition text-sm font-semibold mb-4"
+              >
+                {showReviewForm ? 'Cancel' : 'Add a Review'}
+              </button>
+
               <div className="flex items-center space-x-2 mt-2 md:mt-4">
                 <button
                   onClick={prev}
@@ -514,13 +571,149 @@ const expIndex = getExpIndex(user?.doj);
                     <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1762926257/b0833156962d005d1ccbee648cba509b_fl58sy.jpg" alt="user_icon" className="h-8 w-8 mr-2 md:mr-5"/>
                     <div>
                       <div className="font-medium text-gray-800 text-xs md:text-sm">{review.name}</div>
-                      <div className="text-xs text-gray-500">{review.time}</div>
+                      {review.company && (
+                        <div className="text-xs text-gray-600 font-medium">{review.company}</div>
+                      )}
+                      <div className="text-xs text-gray-500">
+                        {review.time || new Date(review.createdAt).toLocaleDateString('en-US', { 
+                          year: 'numeric', 
+                          month: 'short', 
+                          day: 'numeric' 
+                        })}
+                      </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+
+          {/* Review Submission Form */}
+          {showReviewForm && (
+            <div className="bg-gray-900 rounded-lg shadow-lg m-10 p-6 md:p-8 mt-4">
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-4">Write Your Review</h3>
+              
+              {submitStatus.message && (
+                <div className={`mb-4 p-3 rounded-lg ${
+                  submitStatus.type === 'success' ? 'bg-green-600/20 text-green-200' : 'bg-red-600/20 text-red-200'
+                }`}>
+                  {submitStatus.message}
+                </div>
+              )}
+
+              <form onSubmit={handleReviewSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-gray-300 text-sm font-medium mb-2">
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={reviewFormData.name}
+                      onChange={handleReviewInputChange}
+                      className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-red-600"
+                      placeholder="Enter your name"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-300 text-sm font-medium mb-2">
+                      Your Email <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={reviewFormData.email}
+                      onChange={handleReviewInputChange}
+                      required
+                      className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-red-600"
+                      placeholder="your@email.com"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-gray-300 text-sm font-medium mb-2">
+                    Company Name
+                  </label>
+                  <input
+                    type="text"
+                    name="company"
+                    value={reviewFormData.company}
+                    onChange={handleReviewInputChange}
+                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-red-600"
+                    placeholder="Your company or organization (optional)"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-300 text-sm font-medium mb-2">
+                    Rating <span className="text-red-500">*</span>
+                  </label>
+                  <div className="flex gap-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => handleRatingChange(star)}
+                        className="focus:outline-none"
+                      >
+                        <svg
+                          className={`w-8 h-8 transition ${
+                            star <= reviewFormData.rating ? 'text-yellow-500' : 'text-gray-600'
+                          }`}
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <polygon points="10,1 12,7 18,7 13,11 15,17 10,13 5,17 7,11 2,7 8,7" />
+                        </svg>
+                      </button>
+                    ))}
+                    <span className="text-gray-400 ml-2 self-center">
+                      {reviewFormData.rating} star{reviewFormData.rating !== 1 ? 's' : ''}
+                    </span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-gray-300 text-sm font-medium mb-2">
+                    Your Review <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    name="review"
+                    value={reviewFormData.review}
+                    onChange={handleReviewInputChange}
+                    required
+                    rows="5"
+                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-red-600 resize-none"
+                    placeholder="Share your experience working with this team member..."
+                  />
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? 'Submitting...' : 'Submit'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowReviewForm(false)}
+                    className="bg-gray-700 text-white px-6 py-2 rounded-lg font-semibold hover:bg-gray-600 transition"
+                  >
+                    Cancel
+                  </button>
+                </div>
+
+                <p className="text-xs text-gray-400 mt-2">
+                  * Your review will be reviewed by our team before being published.
+                </p>
+              </form>
+            </div>
+          )}
         </section>
       </div>
       <Footer/>

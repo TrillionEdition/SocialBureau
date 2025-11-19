@@ -15,6 +15,5 @@ export const userDetailsAPI=async(name)=>{
     params: { name},
     headers: { "Accept": "application/json" }
   });
-    console.log(name,response);  
     return response.data
 }

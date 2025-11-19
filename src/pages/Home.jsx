@@ -16,6 +16,7 @@ import Chatbot from '../components/Chatbot'
 import {Googlereview} from '../components/Googlereview'
 import { Intro } from '../components/Intro'
 import LoadingSpinner from '../components/LoadingSpinner'
+import UpcomingEvents from '../components/UpcomingEvents'
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -108,7 +109,8 @@ export const Home = () => {
       <HomeIntro />
       <Navbar />
       <HomeServices/>
-      <Intro />      
+      <Intro />     
+      {/* <UpcomingEvents />  */}
       <LatestCareers />
       <Googlereview />
       <Clients />

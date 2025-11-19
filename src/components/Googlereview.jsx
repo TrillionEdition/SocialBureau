@@ -20,7 +20,6 @@ const scrollRef = useRef(null);
 if (isLoading) return <div className="text-sm text-gray-400">Loading reviews…</div>;
 
 const reviews = data?.data?.reviews || [];
-console.log(reviews);
 
   const scroll = (direction) => {
     const scrollAmount = 320; // each card width + gap
@@ -32,10 +31,37 @@ console.log(reviews);
     }
   };
 
+  const handleWriteGoogleReview = () => {
+    // Replace with your actual Google Place ID
+    const GOOGLE_PLACE_ID = import.meta.env.VITE_GOOGLE_PLACE_ID;
+    const googleReviewUrl = `https://search.google.com/local/writereview?placeid=${GOOGLE_PLACE_ID}`;
+    window.open(googleReviewUrl, '_blank');
+  };
+
   return (
-  <div className="relative w-[95vw] md:w-full mb-5 max-w-6xl mx-auto flex justify-center">
-      <style>{`.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}`}</style>
-      {/* Scroll Buttons */}
+    <div className="w-full py-12 bg-black">
+      {/* Heading */}
+      <div className="text-center mb-10">
+        <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+  Reviews That Speak for Themselves
+</h2>
+<p className="text-gray-400 text-sm md:text-base">
+  Honest opinions shared on our Google Business Profile
+</p>
+        
+        {/* Write a Review Button */}
+        <button
+          onClick={handleWriteGoogleReview}
+          className="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold shadow-lg transition inline-flex items-center gap-2"
+        >
+          <i className="fab fa-google"></i>
+          Write a Google Review
+        </button>
+      </div>
+
+      <div className="relative w-[95vw] md:w-full mb-5 max-w-6xl mx-auto flex justify-center">
+        <style>{`.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}`}</style>
+        {/* Scroll Buttons */}
       <button
         onClick={() => scroll("left")}
         className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 p-2 rounded-full z-10"
@@ -106,6 +132,7 @@ console.log(reviews);
             </div>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );

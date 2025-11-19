@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import {
   FaBars, FaTimes, FaHome, FaBriefcase, FaTools, FaEnvelope, FaBlog,
   FaInfoCircle, FaMicrophone, FaUserTie,
-  FaUsers
+  FaUsers, FaCalendarAlt
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -11,6 +11,7 @@ const MENU_ITEMS = [
   { icon: <FaBriefcase />, label: "Services", path: "/services" },
   { icon: <FaTools />, label: "Business Tool", path: "/tool" },
   { icon: <FaBlog />, label: "Blogs", path: "/blog" },
+  { icon: <FaCalendarAlt />, label: "Events", path: "/events" },
   { icon: <FaUsers />, label: "Our Team", path: "/our-team" },
   { icon: <FaUserTie />, label: "Careers", path: "/careers" },
   { icon: <FaInfoCircle />, label: "About", path: "/about" },
@@ -33,6 +34,7 @@ const SEARCH_ITEMS = [
   { icon: <FaBriefcase />, label: "Software GTM Growth Architecture", path: "/services/Software-GTM-Growth-Architecture" },
   { icon: <FaTools />, label: "Business Tool", path: "/tool" },
   { icon: <FaBlog />, label: "Blogs", path: "/blog" },
+  { icon: <FaCalendarAlt />, label: "Events", path: "/events" },
   { icon: <FaUsers />, label: "Our Team", path: "/our-team" },
   { icon: <FaUserTie />, label: "Careers", path: "/careers" },
   { icon: <FaInfoCircle />, label: "About", path: "/about" },
