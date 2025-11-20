@@ -31,12 +31,16 @@ import TechnologyService from './components/TechnologyService'
 import GlobalMarketingService from './components/GlobalMarketingService'
 import GoogleMarketingService from './components/GoogleMarketingService'
 import AppAdvertisingService from './components/AppAdvertisingService'
+import GEOService from './components/GEOService'
+import SEOService from './components/SEOService'
+import AEOService from './components/AEOService'
 import QASection from './components/QASection'
 import SubmitBlog from './components/SubmitBlog'
 import CookieConsent from './components/CookieConsent'
 import CookiePolicy from './components/CookiePolicy'
 import Events from './components/Events'
 import AddEvent from './components/AddEvent'
+import ViewEvents from './components/ViewEvents'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
@@ -64,6 +68,7 @@ function App() {
         <Route path="/blog/submit" element={<SubmitBlog />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/events" element={<Events />} />
+        <Route path="/events/manage" element={<ViewEvents />} />
         <Route path="/events/add" element={<AddEvent />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/cookie-policy" element={<CookiePolicy />} />
@@ -82,6 +87,9 @@ function App() {
         <Route path="/services/technology" element={<TechnologyService />} />
         <Route path="/services/global-marketing" element={<GlobalMarketingService />} />
         <Route path="/services/google-marketing" element={<GoogleMarketingService />} />
+        <Route path="/services/geo" element={<GEOService />} />
+        <Route path="/services/seo" element={<SEOService />} />
+        <Route path="/services/aeo" element={<AEOService />} />
         <Route path="/services/app-advertising" element={<AppAdvertisingService />} />
         <Route path="/services/:serviceTitle" element={<Service1 />} />
         <Route path="/voice" element={

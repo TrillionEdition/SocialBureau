@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import MetaTags from '../components/MetaTags';
+import Seo from '../components/Seo';
+import { motion } from 'framer-motion';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import servicesData from '../data/services';
@@ -149,57 +150,162 @@ const Service1 = () => {
       {/* <HomeMouse/> */}
       <div className="relative z-10">
         <Navbar />
-        <MetaTags title={meta.title} description={meta.description} />
+        <motion.div
+          initial={{ height: 0 }}
+          animate={{ height: "100vh" }}
+          transition={{ duration: 1.5 }}
+          className="fixed left-1/2 top-0 w-[1px] bg-red-500/10"
+        ></motion.div>
+        <Seo title={meta.title} description={meta.description} image={meta?.image || '/assets/socialbureau.png'} url={`https://www.socialbureau.in/services/${encodeURIComponent(decodedTitle)}`} />
 
-        {/* Hero Section */}
-        <div className="flex flex-col justify-center items-center text-center py-20 px-10">
-          <h1 style={{ fontFamily: "Playfair Display, serif" }} className="text-4xl md:text-6xl font-black text-white mb-4 lg:px-70 lg:pt-20">
-            {hero.headline.split(hero.highlight).map((part, i, arr) => (
-              <React.Fragment key={i}>
-                {part}
-                {i < arr.length - 1 && (
-                  <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#ff0000]">{hero.highlight}</span>
-                )}
-              </React.Fragment>
+        {/* HERO SECTION — PREMIUM, INTERACTIVE, ANIMATED */}
+        <header className="relative min-h-[70vh] md:min-h-[90vh] flex items-center overflow-hidden">
+
+          {/* Background Gradient (AI Style) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 1.2 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0 bg-gradient-to-br from-[#0d0000] via-[#1a0000] to-black"
+            style={{ filter: "blur(40px)" }}
+          />
+
+          {/* Floating Red Particles */}
+          <div className="absolute inset-0 pointer-events-none">
+            {[...Array(20)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-1.5 h-1.5 rounded-full bg-red-500/40"
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{
+                  opacity: [0, 1, 0],
+                  scale: [0, 1.4, 0],
+                  y: ["100%", "-20%"],
+                  x: i % 2 === 0 ? ["0%", "20%"] : ["0%", "-20%"],
+                }}
+                transition={{
+                  duration: 8 + i,
+                  repeat: Infinity,
+                  delay: i * 0.3,
+                }}
+                style={{ left: `${Math.random() * 100}%` }}
+              ></motion.div>
             ))}
-          </h1>
-          <div className="flex items-center justify-center mb-2 py-2">
-            <span className="block w-10 h-0.5 bg-[#ff0000]" />
           </div>
-          <p className="max-w-4xl text-base sm:text-xl text-neutral-300 font-medium">{hero.subtext}</p>
-        </div>
+
+          {/* Background Image / Illustration */}
+          <motion.img
+            src="https://i.pinimg.com/736x/9c/c9/8a/9cc98a51fece3a2d58be714649283bd8.jpg"
+            alt="AI Illustration"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 0.25, y: 0 }}
+            transition={{ duration: 1 }}
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] md:w-[60%] object-contain pointer-events-none"
+          />
+
+          {/* Frosted Glass Center Content */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="relative z-10 max-w-5xl mx-auto text-center px-8 py-10 rounded-3xl"
+            style={{
+              background: "rgba(255,255,255,0.08)",
+              backdropFilter: "blur(22px)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              boxShadow: "0 0 35px rgba(255,0,0,0.25)",
+            }}
+          >
+            <h1
+              style={{ fontFamily: "Playfair Display, serif" }}
+              className="text-4xl md:text-6xl font-black text-white leading-tight mb-4"
+            >
+              {hero.headline.split(hero.highlight).map((part, i, arr) => (
+                <React.Fragment key={i}>
+                  {part}
+                  {i < arr.length - 1 && (
+                    <span className="text-transparent bg-clip-text bg-gradient-to-b from-red-500 to-red-700 animate-pulse">
+                      {hero.highlight}
+                    </span>
+                  )}
+                </React.Fragment>
+              ))}
+            </h1>
+
+            {/* Animated Separator */}
+            <motion.div
+              initial={{ width: 0 }}
+              whileInView={{ width: 70 }}
+              transition={{ duration: 0.6 }}
+              className="h-1 bg-red-500 mx-auto rounded-full mb-6"
+            />
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="max-w-3xl mx-auto text-base md:text-xl text-neutral-300"
+            >
+              {hero.subtext}
+            </motion.p>
+          </motion.div>
+        </header>
 
         {/* Problems Section */}
-        <section className="text-white py-20 px-6 backdrop-blur-sm bg-black/20">
+        <section className="relative text-white py-20 px-6 backdrop-blur-sm bg-black/20">
+          
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">
             {problems.title} <span className="text-[#ff0000]">{problems.highlight}</span>
           </h2>
           <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto text-center">
             {problems.items.map((problem, idx) => (
-              <div key={idx} className="border border-zinc-700/50 backdrop-blur-sm bg-black/30 rounded-xl p-6 hover:shadow-lg hover:scale-[1.03] transition-all duration-300 ease-in-out hover:border-[#ff0000]">
-                <div className="flex justify-center items-center mb-4 text-[#ff0000] text-3xl">
+              <motion.div
+                key={idx}
+                whileHover={{ scale: 1.05, rotate: -1 }}
+                transition={{ duration: 0.3 }}
+                className="border border-zinc-700/50 bg-black/40 backdrop-blur-lg rounded-xl p-6 hover:border-red-600/50 shadow-lg hover:shadow-red-500/20 transition-all"
+              >
+                <motion.div animate={{ y: [0, -8, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="text-red-500 text-4xl mb-3">
                   {problem.icon}
-                </div>
+                </motion.div>
                 <h3 className="text-lg font-semibold">{problem.title}</h3>
-              </div>
+              </motion.div>
             ))}
           </div>
         </section>
 
         {/* Deliveries Section */}
-        <section className="text-white py-20 px-6">
+        <section className="relative text-white py-20 px-6">
+          <div className="absolute inset-0 -z-10 opacity-20">
+            <motion.img
+              src="https://i.pinimg.com/736x/80/db/ed/80dbed77700c602352393c71b285a9ae.jpg"
+              animate={{ scale: [1, 1.1, 1], rotate: [0, 3, -3, 0] }}
+              transition={{ duration: 10, repeat: Infinity }}
+              className="w-full h-full object-cover"
+            />
+          </div>
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">
             {deliveries.title} <span className="text-[#ff0000]">{deliveries.highlight}</span>
           </h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
             {deliveries.items.map((item, idx) => (
-              <div key={idx} className="group flex items-start gap-4 hover:bg-black/60 backdrop-blur-sm bg-black/20 backdrop-blur-sm p-4 transition-all duration-300 rounded-lg hover:shadow-lg">
-                <div className="bg-[#ff0000] p-2 rounded-md group-hover:scale-110 transition-transform">{item.icon}</div>
+              <motion.div
+                key={idx}
+                whileHover={{ scale: 1.02 }}
+                className="group flex items-start gap-4 bg-black/30 backdrop-blur-lg border border-zinc-700/40 p-5 rounded-xl hover:border-red-600 shadow-lg hover:shadow-red-600/10 transition-all"
+              >
+                <motion.div
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ repeat: Infinity, duration: 3 }}
+                  className="bg-red-600 p-2 rounded-md text-white"
+                >
+                  {item.icon}
+                </motion.div>
                 <div>
-                  <h3 className="text-lg font-semibold mb-1 group-hover:text-[#ff0000]">{item.title}</h3>
-                  <p className="text-md text-gray-400 group-hover:text-gray-300">{item.description}</p>
+                  <h3 className="font-semibold text-lg group-hover:text-red-600 transition">{item.title}</h3>
+                  <p className="text-gray-400 group-hover:text-gray-300">{item.description}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </section>

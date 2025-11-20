@@ -65,6 +65,47 @@ export default function BrandingService() {
     "Brand Asset Management (global campaigns)",
   ];
 
+  const serviceDetails = [
+    {
+      title: 'Brand Strategy & Positioning',
+      detail:
+        'Define market territory, audience archetypes, and the positioning that lets your brand own a clear space.',
+      bullets: ['Audience mapping', 'Value proposition', 'Competitive edge'],
+    },
+    {
+      title: 'Visual Identity Design',
+      detail:
+        'Logos, color systems and typography that scale across platforms and are algorithm-friendly.',
+      bullets: ['Logo systems', 'Color & typography', 'Brand guidelines'],
+    },
+    {
+      title: 'Brand Voice & Messaging Framework',
+      detail:
+        "A replicable tone, messaging hierarchy and content templates so your voice is consistent everywhere.",
+      bullets: ['Tone guide', 'Key messages', 'Content templates'],
+    },
+    {
+      title: 'Rebranding & Brand Audits',
+      detail: 'Audit brand assets and lead structured rebrands with minimal operational friction.',
+      bullets: ['Audit reports', 'Transition plan', 'Stakeholder workshops'],
+    },
+    {
+      title: 'Marketing Collateral Design',
+      detail: 'High-conversion creatives, templates and sales enablement kits.',
+      bullets: ['Pitch decks', 'Social templates', 'Print & digital assets'],
+    },
+    {
+      title: 'Product Launch Branding',
+      detail: 'End-to-end launch identity that ties product story to market demand.',
+      bullets: ['Launch kits', 'Go-to-market assets', 'Campaign creatives'],
+    },
+    {
+      title: 'Brand Asset Management',
+      detail: 'Systems and repos that keep assets consistent across regions and platforms.',
+      bullets: ['CDP & repo setup', 'Access controls', 'Localization workflows'],
+    },
+  ];
+
   return (
     <>
     <Navbar />
@@ -253,15 +294,24 @@ export default function BrandingService() {
               <h2 className="text-2xl font-bold">Our Branding Services Include</h2>
               <ul className="mt-4 space-y-2">
                 {services.map((s, idx) => (
-                  <li key={s} className="bg-slate-800/40 p-3 rounded-md flex items-start gap-3">
+                  <li
+                    key={s}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') setActiveService(idx);
+                    }}
+                    onClick={() => setActiveService(idx)}
+                    className={`bg-slate-800/40 p-3 rounded-md flex items-start gap-3 cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-400/40 transition ${
+                      activeService === idx ? 'ring-2 ring-teal-300/30 scale-[1.01]' : ''
+                    }`}
+                    aria-pressed={activeService === idx}
+                  >
                     <div className="text-teal-300 font-semibold mt-0.5">{idx + 1}.</div>
                     <div className="flex-1">
                       <div className="font-medium">{s}</div>
                       <div className="text-slate-400 text-sm mt-1">
-                        {""}
-                        {/* short descriptions could be injected here for each service */}
-                        {idx === 0 && "Position your brand to own a clear market territory and emotional space."}
-                        {idx === 1 && "Logos, color systems, and typography that scale across platforms."}
+                        {idx === 0 && 'Position your brand to own a clear market territory and emotional space.'}
+                        {idx === 1 && 'Logos, color systems, and typography that scale across platforms.'}
                         {idx === 2 && "A tone-of-voice guide so your content sounds like you — everywhere."}
                       </div>
                     </div>
@@ -285,7 +335,6 @@ export default function BrandingService() {
                 We create brands built for both human emotion and machine interpretation — so your
                 identity performs better across all algorithms and search systems.
               </p>
-
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-gradient-to-br from-slate-800/60 to-black/40 p-4 rounded-xl">
                   <div className="font-semibold">Human-first emotion</div>
@@ -306,6 +355,43 @@ export default function BrandingService() {
                     and consistent cross-platform conversion benchmarks.
                   </div>
                 </details>
+              </div>
+
+              {/* Interactive service detail panel */}
+              <div className="mt-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: activeService !== null ? 1 : 0.5, y: activeService !== null ? 0 : 6 }}
+                  transition={{ duration: 0.35 }}
+                  className="bg-gradient-to-br from-slate-800/50 to-black/30 p-4 rounded-xl border border-slate-700"
+                >
+                  {activeService === null ? (
+                    <div className="text-slate-300">Select a service to see details and quick actions.</div>
+                  ) : (
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="font-semibold">{serviceDetails[activeService].title}</div>
+                          <div className="text-slate-400 text-sm mt-1">{serviceDetails[activeService].detail}</div>
+                        </div>
+                        <div>
+                          <button
+                            onClick={() => downloadAssets()}
+                            className="px-3 py-2 bg-teal-500 text-black rounded-md font-medium"
+                          >
+                            Download brief
+                          </button>
+                        </div>
+                      </div>
+
+                      <ul className="mt-3 text-slate-400 text-sm space-y-1">
+                        {serviceDetails[activeService].bullets.map((b) => (
+                          <li key={b}>• {b}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </motion.div>
               </div>
             </div>
           </div>

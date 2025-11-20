@@ -107,6 +107,9 @@ const icons = [
 <i className="fas fa-bullseye text-[#ffffffff] text-2xl"></i>,
 <i className="fas fa-drafting-compass text-[#ffffffff] text-2xl"></i>,
 <i className="fas fa-bullseye text-[#ffffffff] text-2xl"></i>,
+<i className="fas fa-map-marker-alt text-[#ffffffff] text-2xl"></i>,
+<i className="fas fa-search text-[#ffffffff] text-2xl"></i>,
+<i className="fas fa-robot text-[#ffffffff] text-2xl"></i>,
 ];
 const cards = [
   {
@@ -126,6 +129,24 @@ const cards = [
     slug: "Platform-Prompting",
     content: "Teach algorithms (Meta, Google, TikTok) to understand your brand.",
     bg: "to-red-800",
+  },
+  {
+    title: "GEO — Generative Engine Optimization",
+    slug: "geo",
+    content: "Generative search-optimised content, entity building and API-driven data to get your brand surfaced in AI-generated answers.",
+    bg: "to-green-700",
+  },
+  {
+    title: "SEO — Search Engine Optimization",
+    slug: "seo",
+    content: "Technical SEO, content & backlink systems plus API-driven monitoring to grow organic traffic.",
+    bg: "to-blue-700",
+  },
+  {
+    title: "AEO — Answer Engine Optimization",
+    slug: "aeo",
+    content: "Make your brand the default answer across AI assistants via schema, knowledge graphs and LLM-ready content.",
+    bg: "to-purple-700",
   },
   {
     title: "Multi-Platform Ad Management",
