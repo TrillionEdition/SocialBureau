@@ -41,6 +41,7 @@ import CookiePolicy from './components/CookiePolicy'
 import Events from './components/Events'
 import AddEvent from './components/AddEvent'
 import ViewEvents from './components/ViewEvents'
+import { ClientPortfolios } from './pages/ClientPortfolios'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
@@ -81,7 +82,8 @@ function App() {
         <Route path="/blogs/:slug" element={<BlogDetail />} />
         <Route path="/careers/:slug" element={<CareerDetail />} />
         <Route path="/qa-section" element={<QASection />} />
-        <Route path="/:name" element={<StaffDashboard />} />
+        <Route path="/partnerships" element={<ClientPortfolios />} />
+        
         <Route path="/services/branding" element={<BrandingService />} />
         <Route path="/services/experience-design" element={<XDService />} />
         <Route path="/services/technology" element={<TechnologyService />} />
@@ -92,6 +94,7 @@ function App() {
         <Route path="/services/aeo" element={<AEOService />} />
         <Route path="/services/app-advertising" element={<AppAdvertisingService />} />
         <Route path="/services/:serviceTitle" element={<Service1 />} />
+        <Route path="/:name" element={<StaffDashboard />} />
         <Route path="/voice" element={
           <Suspense fallback={<div>Loading...</div>}>
             <VoiceAsst />

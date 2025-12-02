@@ -74,13 +74,13 @@ export const Events = () => {
                   Join us for workshops, webinars, and networking events
                 </p>
               </div>
-              <button
+              {/* <button
                 onClick={() => navigate('/events/add')}
                 className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition flex items-center gap-2 shadow-lg"
               >
                 <FaPlus />
                 Add Event
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

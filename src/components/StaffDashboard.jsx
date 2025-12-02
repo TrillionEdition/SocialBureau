@@ -156,7 +156,20 @@ const clickup=data?.clickup
         setSubmitStatus({ type: 'success', message: 'Thank you! Your review has been submitted and is pending approval.' });
         setReviewFormData({ name: '', email: '', company: '', review: '', rating: 5 });
         setShowReviewForm(false);
-        // Optionally refresh the page data
+        // Optionally open Google 'Write a review' for the user to also post publicly.
+        try {
+          const GOOGLE_PLACE_ID = import.meta.env.VITE_GOOGLE_PLACE_ID;
+          if (GOOGLE_PLACE_ID) {
+            const googleReviewUrl = `https://search.google.com/local/writereview?placeid=${GOOGLE_PLACE_ID}`;
+            // open in new tab/window (user action initiated earlier via submit)
+            window.open(googleReviewUrl, '_blank', 'noopener,noreferrer');
+          }
+        } catch (err) {
+          // silently fail if env is not available or window.open blocked
+          console.warn('Could not open Google review link', err);
+        }
+
+        // clear the success message after a short delay
         setTimeout(() => setSubmitStatus({ type: '', message: '' }), 5000);
       }
     } catch (error) {

@@ -111,6 +111,14 @@ export const teamData = {
       description:
         "Builds React-based digital infrastructure & API integrations for automation.",
     },
+    {
+      name: "Hasna",
+      role: "Asst Web Developer",
+      hoverImage: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1764580735/images/p6piwfsx26mqv3vd6eoz.png",
+      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1764580735/images/p6piwfsx26mqv3vd6eoz.png",
+      description:
+        "Engineering modern ecosystems with intelligent API-driven automation..",
+    },
   ],
 };
 
