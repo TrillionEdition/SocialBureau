@@ -124,26 +124,30 @@ export const teamData = {
 
 const TeamCard = ({ name, role, image, hoverImage, link, description }) => (
   <a
-    href={`/${encodeURIComponent(name)}`}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="group relative w-72 sm:w-80 h-[430px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
-  >
+  href={`/${encodeURIComponent(name)}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="group relative w-72 sm:w-80 h-[430px] rounded-2xl overflow-visible shadow-lg hover:shadow-2xl transition-all duration-500"
+>
+
     {/* Image Transition */}
-    <div className="absolute inset-0">
-      <img
-        src={image}
-        alt={name}
-        className="w-full h-auto object-cover transition-all duration-700 group-hover:scale-110 group-hover:opacity-0"
-      />
-      {hoverImage && (
-        <img
-          src={image}
-          alt="Hover"
-          className="absolute inset-0 w-full h-full object-cover opacity-0 transition-all duration-700 group-hover:opacity-100 group-hover:scale-110"
-        />
-      )}
-    </div>
+    <div className="relative" style={{ overflow: "visible" }}>
+  <div className="absolute inset-0">
+    <img
+      src={image}
+      alt={name}
+      className="w-72 sm:w-80 h-[430px] object-cover"
+    />
+  </div>
+
+  <img 
+    src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1764674437/Untitled_design_23_owrydd.png"
+    alt="badge"
+    className="absolute -top-4 -right-10 w-25 h-auto z-[999]"
+  />
+</div>
+
+
 
     {/* overlay */}
     <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>

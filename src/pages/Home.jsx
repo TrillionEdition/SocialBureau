@@ -24,9 +24,9 @@ export const Home = () => {
   // Regular rotating popups (bottom-right)
   const popups = [
     { title: "New Openings: Hiring Video Editors", subtitle: "Join our Team", link: "/careers/video-editor" },
-    { title: "New Openings: Hiring Performance Marketers", subtitle: "Join our Team", link: "/careers/performance-marketer" },
-    { title: "New Openings: Hiring Graphics Designers", subtitle: "Join our Team", link: "/careers/graphics-designer" },
-    { title: "New Openings: Hiring SEO Specialist", subtitle: "Join our Team", link: "/careers/seo-specialist" },
+    { title: "New Openings: Hiring Performance Marketers", subtitle: "Join our Team", link: "/careers/performance-marketing-manager" },
+    { title: "New Openings: Hiring Graphics Designers", subtitle: "Join our Team", link: "/careers/graphic-designer" },
+    { title: "New Openings: Hiring SEO Specialist", subtitle: "Join our Team", link: "/careers/seo-expert" },
     { title: "New Openings: Web Developers", subtitle: "Join our Team", link: "/careers/web-developer" },
   ];
 

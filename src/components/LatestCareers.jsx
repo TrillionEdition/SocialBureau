@@ -108,6 +108,26 @@ export default function LatestCareers() {
           </div>
         </div>
       </div>
+      <div className="mt-8 flex justify-center">
+        <a
+          href="https://clickup.com/verified-power-user"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-6xl flex justify-between items-center px-5 py-3 rounded-lg bg-gradient-to-r from-[#6a11cb] to-[#2575fc] text-white gap-4 shadow-lg hover:scale-105 transition-transform"
+          aria-label="Click to view ClickUp verification"
+        >
+          <p style={{ margin: 0, fontSize: 16, fontWeight: 500 }}>
+            We are Verified ClickUp Power Users
+          </p>
+
+          <img
+            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1764674437/Untitled_design_23_owrydd.png"
+            alt="clickup-badge"
+            style={{ height: 80, width: 'auto' }}
+          />
+        </a>
+      </div>
+
     </section>
   );
 }
