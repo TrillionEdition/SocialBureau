@@ -21,6 +21,20 @@ import UpcomingEvents from '../components/UpcomingEvents'
 export const Home = () => {
   const navigate = useNavigate();
 
+  // Image modal state
+  const [showImageModal, setShowImageModal] = useState(true);
+  const modalImage =
+    (typeof import.meta !== 'undefined' && import.meta.env?.VITE_HOME_MODAL_IMAGE) ||
+    'https://res.cloudinary.com/dtwcgfmar/image/upload/v1764823489/Click_up_2_x1hfwl.png';
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') setShowImageModal(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
   // Regular rotating popups (bottom-right)
   const popups = [
     { title: "New Openings: Hiring Video Editors", subtitle: "Join our Team", link: "/careers/video-editor" },
@@ -70,8 +84,6 @@ export const Home = () => {
     <div className="bg-black">
       <CyberBackground />
       {/* <Chatbot/> */}
-
-      {/* Rotating bottom-right popups */}
       {popups.map(
         (popup, index) =>
           showPopups[index] && (
@@ -134,6 +146,33 @@ export const Home = () => {
       <HomeFooter />
     
       <Footer />
+
+      {/* Image Modal (centered) */}
+      {showImageModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+          onClick={() => setShowImageModal(false)}
+        >
+          <div
+            className="relative max-w-4xl w-[90%] mx-auto p-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowImageModal(false)}
+              className="absolute -top-4 -right-4 bg-black/80 text-white rounded-full p-2 shadow-lg"
+              aria-label="Close image"
+            >
+              ✕
+            </button>
+
+            <img
+              src={modalImage}
+              alt="Showcase"
+              className="w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
