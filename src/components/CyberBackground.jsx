@@ -1,11 +1,19 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const BackgroundGlows = React.lazy(() => import("./Background"));
 
 export function CyberBackground() {
   const navigate = useNavigate();
-  const isMobile = window.innerWidth < 768; // md breakpoint
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' ? window.innerWidth < 768 : true
+  ); // md breakpoint
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   return (
     <div
@@ -20,9 +28,29 @@ export function CyberBackground() {
         </Suspense>
       )}
 
+      {/* Background media: video on desktop, static image on mobile */}
+      {isMobile ? (
+        <img
+          src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1765000791/SB-min_k1dl7k.png"
+          alt="SB background"
+          className="w-full h-auto"
+        />
+      ) : (
+        <video
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+          src="https://res.cloudinary.com/dtwcgfmar/video/upload/v1765003262/freepik__create-a-1416-second-4k-30fps-3d-isometric-animati__9939_kib2mf.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        />
+      )}
+
       {/* Center Content */}
       <div className="relative z-10 text-center px-4 md:px-40 sm:px-30">
-        <h1
+        {/* <h1
           className="text-3xl sm:text-5xl md:text-6xl font-bold 
              bg-gradient-to-r from-gray-300/20 via-white to-gray-300/20 
              bg-clip-text text-transparent
@@ -51,7 +79,7 @@ export function CyberBackground() {
           >
             Explore Our Solutions
           </button>
-        </div>
+        </div> */}
         {/* <p className="mt-15 text-lg sm:text-xl text-gray-300 font-medium max-w-5xl mx-auto leading-relaxed">
           At SocialBureau, we redefine how brands grow with technology.
           From API-based ad automation to niche-focused digital campaigns, we deliver marketing that performs at the speed of code.
