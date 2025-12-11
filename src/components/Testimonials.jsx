@@ -43,6 +43,13 @@ const videosList = [
     description: "Graphics Designer",
     link: "https://youtu.be/eBJnlmTuuIk?si=CYTR9TTw6uxhnniB",
   },
+  {
+    id: "7",
+    thumbnail: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1765429124/Aneek_oertfd.png",
+    title: "Aneek",
+    description: "Performance Marketer",
+    link: "https://youtu.be/-FZtOCgZP2Y?si=v0_zYYa9NDJPF1Zk",
+  },
 ];
 
 export default function Testimonials() {

@@ -41,14 +41,14 @@ export const teamData = {
       image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761221472/images/btrvj8lxwc3la4xli6es.png",
       hoverImage: "/assets/hajira.webp",
     },
-    {
-      name: "Aneek",
-      role: "Performance Marketing Team Head",
-      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761281558/images/bsa5x1ay2qrdoryvxaty.png",
-      hoverImage: "/assets/aneek.webp",
-      description:
-        "Leads paid media & performance strategies across global ad ecosystems.",
-    },
+    // {
+    //   name: "Aneek",
+    //   role: "Performance Marketing Team Head",
+    //   image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761281558/images/bsa5x1ay2qrdoryvxaty.png",
+    //   hoverImage: "/assets/aneek.webp",
+    //   description:
+    //     "Leads paid media & performance strategies across global ad ecosystems.",
+    // },
     // {
     //   name: "Joshwa",
     //   role: "Performance Marketer",
