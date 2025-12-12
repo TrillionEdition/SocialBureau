@@ -22,7 +22,16 @@ export const teamData = {
       hoverImage: "/assets/ShamSK.webp",
     },
   ],
-
+finance: [
+{
+      name: "Keerthana",
+      role: "Accountant",
+      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1765443202/images/uytbxoupcmslyxf74fzd.png",
+      hoverImage: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1765443202/images/uytbxoupcmslyxf74fzd.png",
+      description:
+        "Oversees budgeting, ledger management, and financial statements to support business decisions.",
+    },
+  ],
   strategyMarketing: [
     {
       name: "Sherin Joseph",
@@ -41,6 +50,23 @@ export const teamData = {
       image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761221472/images/btrvj8lxwc3la4xli6es.png",
       hoverImage: "/assets/hajira.webp",
     },
+    
+    // {
+    //   name: "Muhasin",
+    //   role: "SEO Specialist and Performance Marketer",
+    //   image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761281558/images/bsa5x1ay2qrdoryvxaty.png",
+    //   hoverImage: "/assets/aneek.webp",
+    //   description:
+    //     "Leads paid media & performance strategies across global ad ecosystems.",
+    // },
+    // {
+    //   name: "Amal",
+    //   role: "Digital Marketer",
+    //   image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761281558/images/bsa5x1ay2qrdoryvxaty.png",
+    //   hoverImage: "/assets/aneek.webp",
+    //   description:
+    //     "Leads paid media & performance strategies across global ad ecosystems.",
+    // },
     // {
     //   name: "Aneek",
     //   role: "Performance Marketing Team Head",
@@ -181,6 +207,7 @@ const TeamSection = () => (
 
     <Section title="Leadership Team" data={teamData.leadership} />
     <Section title="Strategy & Marketing Division" data={teamData.strategyMarketing} />
+    <Section title="Finance Division" data={teamData.finance} />
     <Section title="Content & Production Department" data={teamData.contentProduction} />
     <Section title="Technology & Development" data={teamData.technology} />
     <div className="mt-20 max-w-5xl mx-auto text-center">

@@ -3,9 +3,6 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaCrown, FaDownload, FaGem, FaLeaf, FaMapMarkerAlt, FaMedal, FaPiggyBank, FaRocket, FaStar, FaUserGraduate } from "react-icons/fa";
-import domtoimage from "dom-to-image";
-import { saveAs } from "file-saver";
-import jsPDF from 'jspdf';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { userDetailsAPI } from "../../services/clickupServices";
@@ -97,17 +94,20 @@ const reviews = [
 ];
 
 export function StaffDashboard() {
-  const staffName = useParams();
-  const decodedName = decodeURIComponent(staffName.name);  
+  const { name } = useParams();
+  const decodedName = name ? decodeURIComponent(name) : null;
+
+  // Only run the query when we have a decodedName to avoid unnecessary/invalid requests
   const { data, isLoading, isFetching } = useQuery({
-  queryKey: ['profile', decodedName],
-  queryFn: () => userDetailsAPI(decodedName),
-  staleTime: Infinity,
-  cacheTime: 1000 * 60 * 60,
-  refetchOnWindowFocus: false,
-  refetchOnReconnect: false,
-  refetchOnMount: false,
-});
+    queryKey: ['profile', decodedName],
+    queryFn: () => userDetailsAPI(decodedName),
+    enabled: Boolean(decodedName),
+    staleTime: Infinity,
+    cacheTime: 1000 * 60 * 60,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  });
 
 const navigate=useNavigate()
 const user=data?.user
@@ -181,6 +181,22 @@ const clickup=data?.clickup
   };
 
   if (isLoading || isFetching) {
+  // If decodedName is missing (malformed route) show a small message (avoid firing query)
+  if (!decodedName) {
+    return (
+      <>
+        <Navbar />
+        <div className="bg-black min-h-screen flex items-center justify-center text-white p-6">
+          <div className="max-w-xl text-center">
+            <h1 className="text-2xl font-semibold mb-2">No staff selected</h1>
+            <p className="text-gray-400">Please open a staff profile from the team list.</p>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
   return (
     <>
       <Navbar />
@@ -250,6 +266,10 @@ const expIndex = getExpIndex(user?.doj);
 
   const downloadPagePdf = async () => {
     try {
+      // lazy-load heavy libraries only when user requests download
+      const domtoimage = (await import('dom-to-image')).default;
+      const jsPDF = (await import('jspdf')).default;
+
       const node = document.documentElement || document.body;
       if (!node) return;
 
