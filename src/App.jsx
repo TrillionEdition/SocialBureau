@@ -42,6 +42,7 @@ import Events from './components/Events'
 import AddEvent from './components/AddEvent'
 import ViewEvents from './components/ViewEvents'
 import { ClientPortfolios } from './pages/ClientPortfolios'
+import ProofFlow from './components/proofFlow'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
@@ -100,7 +101,9 @@ function App() {
             <VoiceAsst />
           </Suspense>
         } />
+        <Route path="/proofflow" element={<ProofFlow />} />
         <Route path="/*" element={<NotFound />} />
+
       </Routes>
     </BrowserRouter>
     </>
