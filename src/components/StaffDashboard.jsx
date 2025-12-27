@@ -66,33 +66,6 @@ const LEVELS = [
   },
 ];
 
-const reviews = [
-  {
-    text: "My buying experience is so nice, and received me very politely. Riding experience is also very good. Very good performance. I never experienced such a kind of performance. Very good service.",
-    name: "Karan",
-    time: "1 week ago",
-    avatar: "https://randomuser.me/api/portraits/men/31.jpg",
-  },
-  {
-    text: "Visited to EO store. Product, particularly welds, looked good. My wife and I took small test ride in parking lot area. We bought with customization after staff went over all the options. Very satisfied.",
-    name: "Peter",
-    time: "2 weeks ago",
-    avatar: "https://randomuser.me/api/portraits/men/45.jpg",
-  },
-  {
-    text: "I love my e-bike and the customer service is excellent. They respond in a timely manner with loads of information about e-bikes, accessories and maintenance information.",
-    name: "Catherine",
-    time: "10 days ago",
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-  },
-  {
-    text: "Visited to EO store. Product, particularly welds, looked good. My wife and I took small test ride in parking lot area. We bought with customization after staff went over all the options. Very satisfied.",
-    name: "Peter",
-    time: "2 weeks ago",
-    avatar: "https://randomuser.me/api/portraits/men/45.jpg",
-  },
-];
-
 export function StaffDashboard() {
   const { name } = useParams();
   const decodedName = name ? decodeURIComponent(name) : null;
@@ -116,7 +89,7 @@ const clickup=data?.clickup
   // For review carousel
   const [startIdx, setStartIdx] = useState(0);
   const cardsToShow = 3;
-  const totalReviews = reviews.length;
+  const totalReviews = user?.reviews.length;
   const prev = () => setStartIdx((prevIdx) => Math.max(prevIdx - 1, 0));
   const next = () => setStartIdx((prevIdx) => Math.min(prevIdx + 1, totalReviews - cardsToShow));
 

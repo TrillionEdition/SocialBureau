@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import { Home } from './pages/Home'
 import Navbar from './components/Navbar'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
 import { About } from './pages/About'
 import { Services } from './pages/Services'
 import { CaseStudy } from './pages/CaseStudy'
@@ -42,7 +42,13 @@ import Events from './components/Events'
 import AddEvent from './components/AddEvent'
 import ViewEvents from './components/ViewEvents'
 import { ClientPortfolios } from './pages/ClientPortfolios'
-import ProofFlow from './components/proofFlow'
+import { Login } from './pages/Login'
+import { UserRegister } from './pages/UserRegistration'
+import { Register } from './pages/Register'
+import ProofFlow from './pages/ProofFlow'
+import Landing from './components/ExternalPortfolio'
+import Verification from './pages/UserVerification'
+import ChooseCharacter from './components/CardChoice'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
@@ -84,7 +90,7 @@ function App() {
         <Route path="/careers/:slug" element={<CareerDetail />} />
         <Route path="/qa-section" element={<QASection />} />
         <Route path="/partnerships" element={<ClientPortfolios />} />
-        
+        <Route path='/portfolio' element={<Landing/>} />
         <Route path="/services/branding" element={<BrandingService />} />
         <Route path="/services/experience-design" element={<XDService />} />
         <Route path="/services/technology" element={<TechnologyService />} />
@@ -95,13 +101,18 @@ function App() {
         <Route path="/services/aeo" element={<AEOService />} />
         <Route path="/services/app-advertising" element={<AppAdvertisingService />} />
         <Route path="/services/:serviceTitle" element={<Service1 />} />
-        <Route path="/:name" element={<StaffDashboard />} />
+        <Route path="/employee/:name" element={<StaffDashboard />} />
         <Route path="/voice" element={
           <Suspense fallback={<div>Loading...</div>}>
             <VoiceAsst />
           </Suspense>
         } />
-        <Route path="/proofflow" element={<ProofFlow />} />
+        <Route path='/register' element={<Register/>} />
+        <Route path='/login' element={<Login/>} />
+        <Route path='/user-register' element={<UserRegister/>} />
+        <Route path='/pre' element={<ProofFlow/>} />
+        <Route path='/proof' element={<Verification />} />
+        <Route path='/card' element={<ChooseCharacter/>} />
         <Route path="/*" element={<NotFound />} />
 
       </Routes>

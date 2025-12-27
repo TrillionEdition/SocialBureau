@@ -21,12 +21,16 @@
     "@tanstack/react-query": "^5.90.9",
     "@xenova/transformers": "^2.17.2",
     "axios": "^1.12.2",
+    "bcryptjs": "^3.0.3",
     "canvas-confetti": "^1.9.3",
     "chart.js": "^4.5.0",
     "clsx": "^2.1.1",
+    "cors": "^2.8.5",
     "dom-to-image": "^2.6.0",
     "dom-to-image-more": "^3.7.1",
+    "dotenv": "^17.2.3",
     "emailjs-com": "^3.2.0",
+    "express": "^5.2.1",
     "file-saver": "^2.0.5",
     "framer-motion": "^12.23.24",
     "gsap": "^3.13.0",
@@ -35,6 +39,10 @@
     "jspdf": "^3.0.3",
     "lucide-react": "^0.523.0",
     "mongodb": "^6.20.0",
+    "mongoose": "^9.0.1",
+    "multer": "^2.0.2",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.12",
     "openai": "^5.16.0",
     "react": "^19.1.0",
     "react-chartjs-2": "^5.3.0",
@@ -49,6 +57,7 @@
     "react-quill": "^2.0.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.2",
+    "react-toastify": "^11.0.5",
     "react-tsparticles": "^2.12.2",
     "recharts": "^3.1.0",
     "styled-components": "^6.1.19",
@@ -67,6 +76,20 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.2.0",
+    "nodemon": "^3.1.11",
     "vite": "^6.3.5"
-  }
+  },
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SocialBureauWeb/SocialBureau.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SocialBureauWeb/SocialBureau/issues"
+  },
+  "homepage": "https://github.com/SocialBureauWeb/SocialBureau#readme"
 }

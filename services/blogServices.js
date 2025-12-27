@@ -99,4 +99,134 @@ export const blogAPI = {
     const response = await axios.get(`${BASE_URL}/blog/stats`);
     return response.data;
   },
+  // NEW: Like methods
+  // likeBlog: async (slug, isLiked) => {
+  //   const response = await fetch(`${BASE_URL}/blog/blogs/${slug}/like`, {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ isLiked }),
+  //   });
+  //   console.log(response);
+    
+  //   if (!response.ok) throw new Error('Failed to like blog');
+  //   return response.json();
+  // },
+  likeBlog: async (slug) => {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${BASE_URL}/blog/blogs/${slug}/like`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // kept for backward compatibility
+      },
+      // Ensure browser sends cookies (httpOnly token) to backend
+      credentials: 'include',
+    }
+  );
+console.log("response:", response);
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    const msg = (err && err.message) || "";
+    if (response.status === 401 && /jwt expired/i.test(msg)) {
+      throw new Error("AUTH_EXPIRED");
+    }
+    if (response.status === 401) {
+      throw new Error("AUTH_REQUIRED");
+    }
+    throw new Error(msg || "Failed to like blog");
+  }
+
+  return response.json();
+},
+
+
+  // NEW: Comments methods
+  // getComments: async (slug) => {
+  //   const response = await fetch(`${BASE_URL}/blog/blogs/${slug}/comments`);
+  //   if (!response.ok) throw new Error('Failed to fetch comments');
+  //   return response.json();
+  // },
+
+  // addComment: async (slug, text, author = 'Anonymous') => {
+  //   const response = await fetch(`${BASE_URL}/blog/blogs/${slug}/comments`, {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ text, author }),
+  //   });
+  //   if (!response.ok) throw new Error('Failed to add comment');
+  //   return response.json();
+  // },
+addComment: async (slug, text) => {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${BASE_URL}/blog/blogs/${slug}/comments`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`, // kept for backward compatibility
+      },
+      body: JSON.stringify({ text }),
+      // Ensure browser sends cookies (httpOnly token) to backend
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    const msg = (err && err.message) || "";
+    if (response.status === 401 && /jwt expired/i.test(msg)) {
+      throw new Error("AUTH_EXPIRED");
+    }
+    if (response.status === 401) {
+      throw new Error("AUTH_REQUIRED");
+    }
+    throw new Error(msg || 'Failed to add comment');
+  }
+
+  return response.json();
+},
+
+  // deleteComment: async (slug, commentId) => {
+  //   const response = await fetch(`${BASE_URL}/blog/blogs/${slug}/comments/${commentId}`, {
+  //     method: 'DELETE',
+  //   });
+  //   if (!response.ok) throw new Error('Failed to delete comment');
+  //   return response.json();
+  // },
+deleteComment: async (slug, commentId) => {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${BASE_URL}/blog/blogs/${slug}/comments/${commentId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`, // kept for backward compatibility
+      },
+      // Ensure browser sends cookies (httpOnly token) to backend
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    const msg = (err && err.message) || "";
+    if (response.status === 401 && /jwt expired/i.test(msg)) {
+      throw new Error("AUTH_EXPIRED");
+    }
+    if (response.status === 401) {
+      throw new Error("AUTH_REQUIRED");
+    }
+    throw new Error(msg || 'Failed to delete comment');
+  }
+
+  return response.json();
+},
+
 };
