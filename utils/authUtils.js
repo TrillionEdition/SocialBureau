@@ -44,13 +44,7 @@ export const clearAuthData = async () => {
   window.dispatchEvent(new Event("authChange"));
 };
 
-// ============================================
-// ✅ AUTH STATUS CHECKS
-// ============================================
-
 export const isAuthenticated = () => {
-  // User data exists = user is logged in
-  // Token is in httpOnly cookie (not accessible from JS)
   return !!getUserData();
 };
 
@@ -67,10 +61,6 @@ export const isVerified = () => {
 export const canAccessEmployeeDashboard = () => {
   return isAuthenticated() && isEmployee() && isVerified();
 };
-
-// ============================================
-// 🪝 CUSTOM HOOK - USE THIS IN COMPONENTS
-// ============================================
 
 export const useAuth = () => {
   const [currentUser, setCurrentUser] = useState(null);
