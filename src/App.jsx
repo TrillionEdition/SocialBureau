@@ -118,6 +118,7 @@ function App() {
         <Route path="/jobs/create" element={<AdminCreateJob />} />
         <Route path='/leaderboard' element={<Leaderboard/>} /> */}
         <Route path="/*" element={<NotFound />} />
+
       </Routes>
     </BrowserRouter>
     </>

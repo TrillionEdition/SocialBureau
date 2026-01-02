@@ -397,15 +397,9 @@ const TeamCard = ({ name, role, image, hoverImage, link, description }) => (
         <img
           src={image}
           alt={name}
-          className="w-72 sm:w-80 h-[430px] object-cover"
+          className="w-72 sm:w-80 h-[430px] object-cover rounded"
         />
       </div>
-
-      <img
-        src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1764674437/Untitled_design_23_owrydd.png"
-        alt="badge"
-        className="absolute -top-4 -right-10 w-25 h-auto z-[999]"
-      />
     </div>
 
     {/* overlay */}
