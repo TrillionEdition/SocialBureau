@@ -577,7 +577,7 @@ if (data.user) {
 
               <p className="text-center text-sm text-gray-400">
                 Don't have an account?{" "}
-                <a href="/register" className="text-red-500 hover:underline">
+                <a href="/user-register" className="text-red-500 hover:underline">
                   Create Account
                 </a>
               </p>

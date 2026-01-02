@@ -20,7 +20,7 @@ export const Careers = () => {
         <Navbar/>
         <CareersHeader/>
         <CareersContent/>
-        <CareersPost/>    
+        <CareersPost/>
         <CareerCTA/>
         <Footer/>
     </div>

@@ -511,6 +511,7 @@ import {
   FaChevronRight,
   FaArrowLeft
 } from "react-icons/fa";
+import { BASE_URL } from "../../utils/urls";
 
 // Table of Contents Component
 function TableOfContents({ headings }) {
@@ -575,6 +576,10 @@ export default function BlogDetail() {
   const [headings, setHeadings] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [toast, setToast] = useState(null);
+  const [email, setEmail] = useState("");
+  const [subscribeMsg, setSubscribeMsg] = useState(null);
+  const [isSubscribing, setIsSubscribing] = useState(false);
+
 
   const showToast = (type, message) => {
     setToast({ type, message });
@@ -587,6 +592,70 @@ export default function BlogDetail() {
       navigate("/login", { state: { from: location } });
     }, 1500);
   };
+const handleNewsletterSubscribe = async (e) => {
+  e.preventDefault();
+
+  if (!email.trim()) {
+    setSubscribeMsg({ type: "warning", text: "Please enter your email" });
+    return;
+  }
+
+  // Basic email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    setSubscribeMsg({ type: "error", text: "Please enter a valid email" });
+    return;
+  }
+
+  setIsSubscribing(true);
+  try {
+    const baseUrl = BASE_URL;
+    console.log("🔄 Sending subscribe request...", { email, baseUrl });
+
+    const url = `${baseUrl.replace(/\/$/, "")}/api/newsletter/subscribe`;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+
+    console.log("📊 Response status:", response.status, response.statusText);
+    const contentType = response.headers.get("content-type") || "";
+    let data = null;
+
+    // Try to parse JSON if possible, otherwise capture text
+    if (contentType.includes("application/json")) {
+      try {
+        data = await response.json();
+      } catch (err) {
+        console.warn("⚠️ Failed to parse JSON response:", err);
+        data = { message: "Invalid JSON response" };
+      }
+    } else {
+      const text = await response.text();
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        data = { message: text };
+      }
+    }
+
+    console.log("📦 Response payload:", data);
+
+    if (response.ok) {
+      setSubscribeMsg({ type: "success", text: data.message || "Subscribed successfully!" });
+      setEmail("");
+      setTimeout(() => setSubscribeMsg(null), 3000);
+    } else {
+      setSubscribeMsg({ type: "error", text: data?.message || response.statusText || "Subscription failed" });
+    }
+  } catch (err) {
+    console.error("❌ Subscribe error:", err);
+    setSubscribeMsg({ type: "error", text: "Network error. Please check your connection and try again." });
+  } finally {
+    setIsSubscribing(false);
+  }
+};
 
   useEffect(() => {
     const checkAuth = () => {
@@ -1016,14 +1085,42 @@ export default function BlogDetail() {
                 </div>
               )}
 
-              <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 mt-8 border border-gray-700">
-                <h3 className="text-xl font-bold text-gray-100 mb-3">Stay Updated</h3>
-                <p className="text-gray-400 mb-4 text-sm">Get the latest articles and insights delivered to your inbox.</p>
-                <div className="space-y-3">
-                  <input type="email" placeholder="Your email address" className="w-full px-4 py-3 rounded-lg border border-gray-700 bg-gray-900 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
-                  <button className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 rounded-lg transition">Subscribe</button>
-                </div>
-              </div>
+  <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 mt-8 border border-gray-700">
+      <h3 className="text-xl font-bold text-gray-100 mb-3">Stay Updated</h3>
+      <p className="text-gray-400 mb-4 text-sm">
+        Get the latest articles and insights delivered to your inbox.
+      </p>
+      <form onSubmit={handleNewsletterSubscribe} className="space-y-3">
+        <input
+          type="email"
+          placeholder="Your email address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={isSubscribing}
+          className="w-full px-4 py-3 rounded-lg border border-gray-700 bg-gray-900 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent disabled:opacity-50"
+        />
+        <button
+          type="submit"
+          disabled={isSubscribing}
+          className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isSubscribing ? "Subscribing..." : "Subscribe"}
+        </button>
+        {subscribeMsg && (
+          <p
+            className={`text-sm text-center ${
+              subscribeMsg.type === "success"
+                ? "text-green-400"
+                : subscribeMsg.type === "error"
+                ? "text-red-400"
+                : "text-yellow-400"
+            }`}
+          >
+            {subscribeMsg.text}
+          </p>
+        )}
+      </form>
+    </div>
             </div>
           </div>
         </div>

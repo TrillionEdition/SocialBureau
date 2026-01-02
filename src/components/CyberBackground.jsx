@@ -222,7 +222,7 @@ export const CyberBackground = () => {
 
     webm: "/videos/hero-bg.webm",
 
-    mp4: "https://res.cloudinary.com/dtwcgfmar/video/upload/v1765006733/freepik__shot-1-a-majestic-christmas-tree-adorned-with-vibr__9944_umqgdq.mp4",
+    mp4: "https://res.cloudinary.com/dtwcgfmar/video/upload/v1767002073/freepik__a-cinematic-new-year-transition-designed-for-a-10s__74337_tpqwcr.mp4",
 
     poster: "/videos/hero-poster.jpg",
 
@@ -234,7 +234,7 @@ export const CyberBackground = () => {
 
     webm: "/videos/hero-mobile.webm", // smaller/responsive mobile-optimized webm
 
-    mp4: "https://res.cloudinary.com/dtwcgfmar/video/upload/v1765006737/freepik__shot-1-a-majestic-christmas-tree-adorned-with-vibr__9942_gp0ks6.mp4", // example mobile mp4
+    mp4: "https://res.cloudinary.com/dtwcgfmar/video/upload/v1767002056/freepik__a-cinematic-new-year-transition-designed-for-a-10s__74336_ocgmng.mp4", // example mobile mp4
 
     poster: "/videos/hero-mobile-poster.jpg",
 
