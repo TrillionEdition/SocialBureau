@@ -1,5 +1,6 @@
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
+import { Linkedin, Instagram } from "lucide-react";
 export default function Landing() {
   return (
     <div className="bg-[#0b0d10] text-white">
@@ -9,6 +10,7 @@ export default function Landing() {
       <MobileCard />     
       <LatestBlogs /> 
       <GradientFeatures />
+      <LatestWebsite />
       <ContactUsForm/>
       <Footer/>
     </div>
@@ -20,8 +22,19 @@ function HeroEditorial() {
     <section className="relative min-h-screen bg-[#f5f4f0] text-black overflow-hidden">
 
       {/* TOP LEFT BRAND */}
-      <div className="absolute top-10 left-10 z-20">
-        <h3 className="text-3xl font-bold tracking-wide">Looplogik</h3>
+      <div className="
+        absolute z-20
+        top-4 left-4
+        sm:top-6 sm:left-6
+        lg:top-10 lg:left-10
+      ">
+        <h3 className="
+          text-lg sm:text-xl lg:text-3xl
+          font-bold tracking-wide
+          mx-0 sm:mx-4 lg:mx- px-5
+        ">
+          Looplogik
+        </h3>
       </div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 px-6 lg:px-10 py-24">
@@ -49,10 +62,68 @@ function HeroEditorial() {
             <span className="relative">RANJITH</span>
           </h1>
 
-          <p className="mt-6 text-gray-600 max-w-md">
-            Communication designer working across writing, photography,
-            audio-visual, print and digital media to craft meaningful narratives.
-          </p>
+<p className="mt-6 text-gray-600 max-w-md">
+  <span className="block font-medium text-gray-800">
+    Principal Communication Designer, Looplogik
+  </span>
+  Multi-disciplinary visual artist and communication designer based in
+  Kochi, Kerala, with over three decades of experience across writing,
+  photography, audio-visual, print and digital media.
+</p>
+
+<p className="mt-3 text-xs uppercase tracking-widest text-gray-500">
+  Established 2010 · 15+ Years Professional Experience
+</p>
+{/* SOCIAL LINKS */}
+<div className="mt-8 flex items-center gap-2 p-4">
+
+  <a
+    href="https://www.linkedin.com/in/ranjit-chettur"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="
+      group flex items-center gap-2
+      text-xs uppercase tracking-widest
+      text-gray-600 hover:text-black
+      transition
+    "
+  >
+    <Linkedin className="w-4 h-4" />
+    <span className="relative">
+      <span className="
+        absolute left-0 -bottom-1
+        w-0 h-[1px] bg-black
+        group-hover:w-full
+        transition-all duration-300
+      " />
+    </span>
+  </a>
+
+  <span className="h-4 w-px bg-gray-300" />
+
+  <a
+    href="https://instagram.com/chetturranjit"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="
+      group flex items-center gap-2
+      text-xs uppercase tracking-widest
+      text-gray-600 hover:text-black
+      transition
+    "
+  >
+    <Instagram className="w-4 h-4" />
+    <span className="relative">
+      <span className="
+        absolute left-0 -bottom-1
+        w-0 h-[1px] bg-black
+        group-hover:w-full
+        transition-all duration-300
+      " />
+    </span>
+  </a>
+
+</div>
 
         </div>
 
@@ -74,9 +145,7 @@ function HeroEditorial() {
             text-white text-md leading-relaxed opacity-90
           "
         >
-          Looplogik is a communication design practice integrating
-          words, images, sound and structure to create effective
-          communication solutions across media.
+         A communication design practice focused on storytelling through writing, photography and multi-media platforms.
         </p>
         </div>
 
@@ -96,63 +165,6 @@ function HeroEditorial() {
     </section>
   );
 }
-
-// function SplitFeature() {
-//   return (
-//     <section className="relative bg-white overflow-hidden">
-//       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 min-h-[720px]">
-
-//         {/* LEFT IMAGE */}
-//         <div className="relative">
-//           <img
-//             src="./assets/dp2.jpg"
-//             alt="Ranjith Chettur"
-//             className="h-full w-full object-cover grayscale"
-//           />
-//         </div>
-
-//         {/* RIGHT PANEL */}
-//         <div className="relative flex items-center">
-
-//           {/* SHARP V CUT PANEL */}
-//           <div
-//             className="
-//               absolute inset-0 bg-[#f1f3f5]
-//               [clip-path:polygon(0_0,88%_0,100%_50%,88%_100%,0_100%)]
-//             "
-//           />
-
-//           {/* CONTENT */}
-//           <div className="relative z-10 pl-20 pr-24 max-w-sm">
-//             <p className="text-xs pt-6 uppercase tracking-widest text-gray-500 mb-3">
-//               About the Practice
-//             </p>
-
-//             <h3 className="text-4xl font-serif leading-tight mb-4 text-gray-900">
-//               Looplogik <br /> Communication Design
-//             </h3>
-
-//             <p className="text-xs text-gray-500 mb-6">
-//               Established 2010 · 15+ Years Experience
-//             </p>
-
-//             <p className="text-sm text-gray-700 leading-relaxed mb-6">
-//               Looplogik is a communication design practice working across
-//               audio-visual, print, social media and web-based platforms.
-//               The studio integrates writing, photography, video and sonic
-//               design to create clear and effective communication solutions.
-//             </p>
-
-//             <p className="italic text-gray-800 text-sm leading-relaxed pb-9">
-//               “An eclectic practice shaped by cinema, literature, music
-//               and the performing arts.”
-//             </p>
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
 
 function SplitFeature() {
   return (
@@ -179,24 +191,24 @@ function SplitFeature() {
             "
           />
 
-          {/* CONTENT */}
-          <div className="relative z-10 pl-20 pr-24 max-w-sm">
-            <p className="text-xs pt-6 uppercase tracking-widest text-gray-500 mb-3">
-              About the Designer
-            </p>
+        {/* CONTENT */}
+        <div className="relative z-10 px-10 lg:px-14 max-w-xl">
+          <p className="text-xs pt-6 uppercase tracking-widest text-gray-500 mb-3">
+            About Me
+          </p>
 
-            <h3 className="text-4xl font-serif leading-tight mb-4 text-gray-900">
-              Ranjit <br /> Chettur
-            </h3>
+          <h3 className="text-4xl font-serif leading-tight mb-4 text-gray-900">
+            Ranjit <br /> Chettur
+          </h3>
 
-            <p className="text-xs text-gray-500 mb-6">
-              Visual Artist · Communication Designer  30+ Years Experience
-            </p>
+          <p className="text-xs text-gray-500 mb-6">
+            Visual Artist · Principal Communication Designer · 15+ Years Experience
+          </p>
 
-            <p className="text-sm text-gray-700 leading-relaxed mb-6">
-              Ranjit Chettur is a multi-disciplinary visual artist and
-              communication designer based in Kochi, Kerala. He functions as
-              the principal designer at Looplogik, a communication design
+          <p className="text-sm text-gray-700 leading-relaxed mb-6">
+            Ranjit Chettur is a multi-disciplinary visual artist and
+            communication designer based in Kochi, Kerala.He functions as
+                      the principal designer at Looplogik, a communication design
               practice.
             </p>
 
@@ -227,341 +239,6 @@ const cards = [
   { img: "/assets/p1.jpg", title: "PRINT AND SOCIAL MEDIA", link: "https://looplogik.wordpress.com/2025/07/19/the-best-things-in-life-are-free-2" },
   { img: "/assets/b1.png", title: "TEXTUAL PROJECTS", link: "https://looplogik.wordpress.com/2025/06/25/fauna-of-mirrors" },
 ];
-
-// function MobileCard() {
-//   const navigate = useNavigate();
-
-//   const [expanded, setExpanded] = useState(false);
-//   const [hovered, setHovered] = useState(null);
-  
-//   const sectionRef = useRef(null);
-//   const handleCardClick = (link) => {
-//   if (link.startsWith("http")) {
-//     window.open(link, "_blank"); // external
-//   } else {
-//     navigate(link); // internal
-//   }
-// };
-
-
-//   // 🔁 Expand / collapse based on visibility (repeatable)
-//   useEffect(() => {
-//     const observer = new IntersectionObserver(
-//       ([entry]) => {
-//         if (entry.intersectionRatio >= 0.8) {
-//           setExpanded(true);
-//         } else {
-//           setExpanded(false);
-//         }
-//       },
-//       {
-//         threshold: [0, 0.8, 1],
-//       }
-//     );
-
-//     if (sectionRef.current) {
-//       observer.observe(sectionRef.current);
-//     }
-
-//     return () => observer.disconnect();
-//   }, []);
-
-//   return (
-//     <section ref={sectionRef} className="bg-black py-24">
-//       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center">
-
-//         {/* HEADING */}
-//         <h2 className="text-xl sm:text-2xl font-semibold mb-12 text-white">
-//           Explore Our Work
-//         </h2>
-// {/* MOBILE STACK — EDITORIAL */}
-// <div className="sm:hidden w-full space-y-20">
-
-//   {cards.map((card, index) => (
-//     <div
-//       key={index}
-//       onClick={() => handleCardClick(card.link)}
-//       className="group relative w-full max-w-[360px] mx-auto cursor-pointer"
-//     >
-//       {/* IMAGE */}
-//       <div className="relative h-[420px] rounded-[28px] overflow-hidden">
-//         <img
-//           src={card.img}
-//           alt={card.title}
-//           className="
-//             w-full h-full object-cover
-//             transition-transform duration-700
-//             group-active:scale-105
-//           "
-//         />
-
-//         {/* GRADIENT */}
-//         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-
-//         {/* INDEX */}
-//         <span className="absolute top-6 left-6 text-xs text-white/50 tracking-widest">
-//           0{index + 1}
-//         </span>
-
-//         {/* TEXT */}
-//         <div className="absolute bottom-8 left-8 right-8 text-white">
-//           <p className="text-xs uppercase tracking-widest text-white/60 mb-2">
-//             Featured Work
-//           </p>
-//           <h3 className="text-2xl font-serif leading-tight">
-//             {card.title}
-//           </h3>
-//         </div>
-//       </div>
-
-//       {/* DIVIDER */}
-//       {index !== cards.length - 1 && (
-//         <div className="w-px h-16 bg-white/10 mx-auto mt-10" />
-//       )}
-//     </div>
-//   ))}
-
-// </div>
-
-
-// {/* DESKTOP */}
-// <div className="relative w-[520px] h-[420px] hidden sm:block [perspective:1600px]">
-//   {cards.map((card, index) => {
-//     const isHovered = hovered === index;
-
-//     return (
-//       <div
-//         key={index}
-//         onMouseEnter={() => setHovered(index)}
-//         onMouseLeave={() => setHovered(null)}
-//         onClick={() => handleCardClick(card.link)}
-//         className={`
-//           group absolute top-1/2 left-1/2
-//           w-[300px] h-[380px]
-//           -translate-x-1/2 -translate-y-1/2
-//           cursor-pointer
-//           [transform-style:preserve-3d]
-
-//           transition-all duration-700
-//           [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]
-
-//           ${!expanded && index === 0 && "z-30 translate-y-[-48%]"}
-//           ${!expanded && index === 1 && "z-20 translate-y-[-38%] scale-[0.96] opacity-90"}
-//           ${!expanded && index === 2 && "z-10 translate-y-[-28%] scale-[0.92] opacity-80"}
-
-//           ${expanded && index === 0 && "-translate-x-[140%] rotate-y-[35deg] z-40"}
-//           ${expanded && index === 1 && "translate-x-[0%] rotate-y-[20deg] z-30"}
-//           ${expanded && index === 2 && "translate-x-[140%] rotate-y-[25deg] z-10"}
-
-//           ${isHovered && "scale-[1.06] rotate-y-0 z-50"}
-//         `}
-//       >
-//         {/* IMAGE */}
-//         <div className="relative w-full h-full rounded-[24px] overflow-hidden shadow-2xl">
-//           <img
-//             src={card.img}
-//             alt={card.title}
-//             className="
-//               w-full h-full object-cover
-//               transition-transform duration-700
-//               group-hover:scale-110
-//             "
-//           />
-
-//           {/* DARK GRADIENT */}
-//           <div className="
-//             absolute inset-0
-//             bg-gradient-to-t from-black/80 via-black/30 to-transparent
-//             opacity-0 group-hover:opacity-100
-//             transition-opacity duration-500
-//           " />
-
-//           {/* EDITORIAL TEXT */}
-//           <div className="
-//             absolute bottom-8 left-8 right-8
-//             text-white
-//             opacity-0 translate-y-6
-//             group-hover:opacity-100 group-hover:translate-y-0
-//             transition-all duration-500
-//           ">
-//             <p className="text-xs uppercase tracking-widest text-white/60 mb-2">
-//               Featured Work
-//             </p>
-//             <h3 className="text-2xl font-serif leading-tight">
-//               {card.title}
-//             </h3>
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   })}
-// </div>
-
-
-//       </div>
-//     </section>
-//   );
-// }
-
-//  function MobileCard() {
-//   const navigate = useNavigate();
-
-//   // Scroll-based expand
-//   const [scrollExpanded, setScrollExpanded] = useState(false);
-
-//   // Manual expand (hover / click)
-//   const [manualExpand, setManualExpand] = useState(false);
-
-//   // Hovered card index (desktop)
-//   const [hovered, setHovered] = useState(null);
-
-//   const sectionRef = useRef(null);
-
-//   // 🔁 Scroll-triggered expand (repeatable)
-//   useEffect(() => {
-//     const observer = new IntersectionObserver(
-//       ([entry]) => {
-//         if (entry.intersectionRatio >= 0.8) {
-//           setScrollExpanded(true);
-//         } else if (!manualExpand) {
-//           setScrollExpanded(false);
-//         }
-//       },
-//       { threshold: [0, 0.8, 1] }
-//     );
-
-//     if (sectionRef.current) observer.observe(sectionRef.current);
-//     return () => observer.disconnect();
-//   }, [manualExpand]);
-
-//   // Combined state
-//   const expanded = scrollExpanded || manualExpand;
-
-//   // Click handler (expand + navigate)
-//   const handleCardClick = (link) => {
-//     setManualExpand(true);
-
-//     setTimeout(() => {
-//       if (link.startsWith("http")) {
-//         window.open(link, "_blank");
-//       } else {
-//         navigate(link);
-//       }
-//     }, 150);
-//   };
-
-//   return (
-//     <section ref={sectionRef} className="bg-black py-24">
-//       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center">
-
-//         {/* HEADING */}
-//         <h2 className="text-xl sm:text-2xl font-semibold mb-12 text-white">
-//           Explore Our Work
-//         </h2>
-
-//         {/* ================= MOBILE ================= */}
-//         <div className="sm:hidden w-full space-y-20">
-//           {cards.map((card, index) => (
-//             <div
-//               key={index}
-//               onClick={() => handleCardClick(card.link)}
-//               className="group relative w-full max-w-[360px] mx-auto cursor-pointer"
-//             >
-//               <div className="relative h-[420px] rounded-[28px] overflow-hidden">
-//                 <img
-//                   src={card.img}
-//                   alt={card.title}
-//                   className="w-full h-full object-cover transition-transform duration-700 group-active:scale-105"
-//                 />
-
-//                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-
-//                 <span className="absolute top-6 left-6 text-xs text-white/50 tracking-widest">
-//                   0{index + 1}
-//                 </span>
-
-//                 <div className="absolute bottom-8 left-8 right-8 text-white">
-//                   <p className="text-xs uppercase tracking-widest text-white/60 mb-2">
-//                     Featured Work
-//                   </p>
-//                   <h3 className="text-2xl font-serif leading-tight">
-//                     {card.title}
-//                   </h3>
-//                 </div>
-//               </div>
-
-//               {index !== cards.length - 1 && (
-//                 <div className="w-px h-16 bg-white/10 mx-auto mt-10" />
-//               )}
-//             </div>
-//           ))}
-//         </div>
-
-//         {/* ================= DESKTOP ================= */}
-//         <div className="relative w-[520px] h-[420px] hidden sm:block [perspective:1600px]">
-//           {cards.map((card, index) => {
-//             const isHovered = hovered === index;
-
-//             return (
-//               <div
-//                 key={index}
-//                 onMouseEnter={() => {
-//                   setHovered(index);
-//                   setManualExpand(true);
-//                 }}
-//                 onMouseLeave={() => {
-//                   setHovered(null);
-//                   setManualExpand(false);
-//                 }}
-//                 onClick={() => handleCardClick(card.link)}
-//                 className={`
-//                   group absolute top-1/2 left-1/2
-//                   w-[300px] h-[380px]
-//                   -translate-x-1/2 -translate-y-1/2
-//                   cursor-pointer
-//                   [transform-style:preserve-3d]
-
-//                   transition-all duration-700
-//                   [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]
-
-//                   ${!expanded && index === 0 && "z-30 translate-y-[-48%]"}
-//                   ${!expanded && index === 1 && "z-20 translate-y-[-38%] scale-[0.96] opacity-90"}
-//                   ${!expanded && index === 2 && "z-10 translate-y-[-28%] scale-[0.92] opacity-80"}
-
-//                   ${expanded && index === 0 && "-translate-x-[140%] rotate-y-[35deg] z-40"}
-//                   ${expanded && index === 1 && "translate-x-[0%] rotate-y-[20deg] z-30"}
-//                   ${expanded && index === 2 && "translate-x-[140%] rotate-y-[25deg] z-10"}
-
-//                   ${isHovered && "scale-[1.06] rotate-y-0 z-50"}
-//                 `}
-//               >
-//                 <div className="relative w-full h-full rounded-[24px] overflow-hidden shadow-2xl">
-//                   <img
-//                     src={card.img}
-//                     alt={card.title}
-//                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-//                   />
-
-//                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-//                   <div className="absolute bottom-8 left-8 right-8 text-white opacity-0 translate-y-6 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-//                     <p className="text-xs uppercase tracking-widest text-white/60 mb-2">
-//                       Featured Work
-//                     </p>
-//                     <h3 className="text-2xl font-serif leading-tight">
-//                       {card.title}
-//                     </h3>
-//                   </div>
-//                 </div>
-//               </div>
-//             );
-//           })}
-//         </div>
-
-//       </div>
-//     </section>
-//   );
-// }
 
 function MobileCard() {
   const [scrollExpanded, setScrollExpanded] = useState(false);
@@ -649,7 +326,7 @@ function MobileCard() {
             hidden sm:flex relative w-full h-[520px] items-center justify-center
             [perspective:1600px]
             transition-all duration-700
-            mx-auto
+            mx-auto overflow-visible
           `}
         >
           {/* EXPANDING BACKGROUND LAYER - INVISIBLE HIT AREA */}
@@ -665,10 +342,23 @@ function MobileCard() {
             `}
           />
 
-          {/* CARDS CONTAINER */}
-          <div className="relative w-[520px] h-[420px]">
+          {/* CARDS CONTAINER - WIDER FOR BETTER SPACING */}
+          <div className="relative w-[640px] h-[420px]">
             {cards.map((card, index) => {
               const isHovered = hovered === index;
+              
+              // Calculate positions for better visual balance
+              const collapsedPositions = [
+                "translate-x-[-48%]",  // Left-most card
+                "translate-x-[-38%]",  // Middle card
+                "translate-x-[-28%]",  // Right-most card
+              ];
+              
+              const expandedPositions = [
+                "translate-x-[-180%]", // Far left
+                "translate-x-[-50%]",  // Center
+                "translate-x-[80%]",   // Far right
+              ];
 
               return (
                 <div
@@ -685,37 +375,58 @@ function MobileCard() {
                   className={`
                     group absolute top-1/2 left-1/2
                     w-[300px] h-[380px]
-                    -translate-x-1/2 -translate-y-1/2
+                    -translate-y-1/2
                     cursor-pointer
                     [transform-style:preserve-3d]
                     transition-all duration-700
                     [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]
                     z-20
 
+                    /* Collapsed state - staggered */
+                    ${!expanded && collapsedPositions[index]}
                     ${!expanded && index === 0 && "translate-y-[-48%]"}
                     ${!expanded && index === 1 && "translate-y-[-38%] scale-[0.96] opacity-90"}
                     ${!expanded && index === 2 && "translate-y-[-28%] scale-[0.92] opacity-80"}
 
-                    ${expanded && index === 0 && "-translate-x-[140%]"}
-                    ${expanded && index === 1 && "translate-x-[0%]"}
-                    ${expanded && index === 2 && "translate-x-[140%]"}
+                    /* Expanded state - evenly spaced */
+                    ${expanded && expandedPositions[index]}
+                    ${expanded && "translate-y-[-50%] scale-100 opacity-100"}
 
+                    /* Hover effects */
                     ${isHovered && "scale-[1.08] z-50"}
+                    
+                    /* Smooth hover transitions */
+                    ${!isHovered && expanded && "hover:scale-[1.02] hover:z-30"}
                   `}
                 >
-                  <div className="relative w-full h-full rounded-[24px] overflow-hidden shadow-2xl">
+                  <div className="relative w-full h-full rounded-[24px] overflow-hidden shadow-2xl shadow-black/50">
                     <img
                       src={card.img}
                       alt={card.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
-                    <div className="absolute bottom-8 left-8 right-8 text-white opacity-0 translate-y-6 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                      <p className="text-xs uppercase tracking-widest text-white/60 mb-2">Featured Work</p>
-                      <h3 className="text-2xl font-serif leading-tight">{card.title}</h3>
+                    {/* Card number - top left */}
+                    <span className="absolute top-6 left-6 text-xs text-white/50 tracking-widest font-mono">
+                      0{index + 1}
+                    </span>
+
+                    {/* Content overlay - always visible but enhanced on hover */}
+                    <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                      <div className="transform transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                        <p className="text-xs uppercase tracking-widest text-white/60 mb-2 opacity-80 group-hover:opacity-100 transition-opacity">
+                          Featured Work
+                        </p>
+                        <h3 className="text-2xl font-serif leading-tight opacity-90 group-hover:opacity-100 transition-opacity">
+                          {card.title}
+                        </h3>
+                      </div>
                     </div>
+
+                    {/* Hover indicator line */}
+                    <div className="absolute bottom-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
                 </div>
               );
@@ -727,211 +438,6 @@ function MobileCard() {
     </section>
   );
 }
-
-//   const blogs = [
-//     {
-//       id: 1,
-//       title: "Fauna Of Mirrors",
-//       category: "UI Interface",
-//       image: "/assets/p2.jpg",
-//       link: "https://looplogik.wordpress.com/2025/06/25/fauna-of-mirrors",
-//     },
-//     {
-//       id: 2,
-//       title: "Ammu,Kunju and Pandi",
-//       category: "UI Interface",
-//       image: "/assets/p5.jpg",
-//       link: "https://looplogik.wordpress.com/2025/06/25/ammukunju-and-pandi",
-//     },
-//     {
-//       id: 3,
-//       title: "Lonesome and Blue",
-//       category: "UI Interface",
-//       image: "/assets/p8.jpg",
-//       link: "https://looplogik.wordpress.com/2025/06/25/lonesome-and-blue",
-//     },
-//     {
-//       id: 4,
-//       title: "Swansong",
-//       category: "UI Interface",
-//       image: "/assets/p2.jpg",
-//       link: "https://looplogik.wordpress.com/2025/06/25/swansong",
-//     },
-//     {
-//       id: 5,
-//       title: "About DC Kizhakemuri",
-//       category: "UI Interface",
-//       image: "/assets/p5.jpg",
-//       link: "https://looplogik.wordpress.com/2025/04/09/about-dc-kizhakemuri-2",
-//     },
-//     {
-//       id: 6,
-//       title: "Kerala Literature Festival website",
-//       category: "UI Interface",
-//       image: "/assets/p8.jpg",
-//       link: "https://looplogik.wordpress.com/2025/07/24/kerala-literature-festival-website-2",
-//     },
-//     {
-//       id: 7,
-//       title: "Going Home",
-//       category: "UI Interface",
-//       image: "/assets/p2.jpg",
-//       link: "https://looplogik.wordpress.com/2025/06/25/going-home-2",
-//     },
-//     {
-//       id: 8,
-//       title: "Historical consequences of maritime trade in Kochi",
-//       category: "UI Interface",
-//       image: "/assets/p5.jpg",
-//       link: "https://looplogik.wordpress.com/2025/06/25/historical-consequences-of-maritime-trade-in-kochi",
-//     },
-//     {
-//       id: 9,
-//       title: "The best things in life are free",
-//       category: "UI Interface",
-//       image: "/assets/p5.jpg",
-//       link: "https://looplogik.wordpress.com/2025/07/19/the-best-things-in-life-are-free-2",
-//     },
-// ];
-
-
-// function LatestBlogs() {
-//   const scrollRef = useRef(null);
-
-//   const scrollRight = () => {
-//     scrollRef.current?.scrollBy({
-//       left: 360,
-//       behavior: "smooth",
-//     });
-//   };
-
-//   const handleClick = (link) => {
-//     if (!link) return;
-//     window.open(link, "_blank");
-//   };
-
-//   return (
-//     <section className="py-24 bg-white text-black relative">
-//       <style>{`
-//         .hide-scrollbar {
-//           -ms-overflow-style: none;
-//           scrollbar-width: none;
-//         }
-//         .hide-scrollbar::-webkit-scrollbar {
-//           display: none;
-//         }
-//       `}</style>
-
-//       <div className="max-w-7xl mx-auto px-6">
-//         {/* HEADER */}
-//         <div className="flex items-center justify-between mb-12">
-//           <h2 className="text-4xl font-serif font-bold">Latest Writing</h2>
-
-//           <button
-//             onClick={scrollRight}
-//             className="
-//               hidden sm:flex items-center justify-center
-//               w-12 h-12 rounded-full
-//               border border-gray-300
-//               hover:bg-black hover:text-white hover:border-black
-//               transition-all duration-300
-//               text-lg font-light
-//             "
-//             aria-label="Scroll right"
-//           >
-//             →
-//           </button>
-//         </div>
-
-//         {/* SCROLL AREA WITH GRADIENT FADE */}
-//         <div className="relative">
-//           <div
-//             ref={scrollRef}
-//             className="
-//               hide-scrollbar
-//               flex gap-6
-//               overflow-x-auto
-//               overflow-y-hidden
-//               scroll-smooth
-//               pb-4
-//             "
-//           >
-//             {blogs.map((blog) => (
-//               <article
-//                 key={blog.id}
-//                 onClick={() => handleClick(blog.link)}
-//                 className="
-//                   min-w-[280px] sm:min-w-[320px]
-//                   cursor-pointer
-//                   flex-shrink-0
-//                   group
-//                   transition-all duration-300
-//                   hover:scale-105
-//                 "
-//               >
-//                 {/* IMAGE */}
-//                 <div className="relative h-[320px] sm:h-[380px] rounded-2xl overflow-hidden bg-gray-200">
-//                   <img
-//                     src={blog.image}
-//                     alt={blog.title}
-//                     className="
-//                       w-full h-full object-cover
-//                       group-hover:scale-110
-//                       transition-transform duration-500
-//                     "
-//                   />
-//                   {/* OVERLAY */}
-//                   <div className="
-//                     absolute inset-0
-//                     bg-black/0 group-hover:bg-black/10
-//                     transition-colors duration-300
-//                   " />
-//                 </div>
-
-//                 {/* TEXT */}
-//                 <div className="mt-5 pr-4">
-//                   <p className="text-xs uppercase tracking-wider text-gray-500 mb-3">
-//                     {blog.category}
-//                   </p>
-
-//                   <h3 className="
-//                     text-base sm:text-lg font-serif font-semibold
-//                     leading-snug
-//                     line-clamp-2
-//                     group-hover:text-gray-700
-//                     transition-colors duration-300
-//                   ">
-//                     {blog.title}
-//                   </h3>
-
-//                   {blog.link && (
-//                     <span className="
-//                       inline-block mt-3 text-sm text-gray-600
-//                       group-hover:text-black group-hover:underline
-//                       transition-all duration-300
-//                     ">
-//                       Read →
-//                     </span>
-//                   )}
-//                 </div>
-//               </article>
-//             ))}
-//           </div>
-
-//           {/* RIGHT GRADIENT FADE */}
-//           <div className="
-//             absolute right-0 top-0 bottom-0
-//             w-12 sm:w-16
-//             bg-gradient-to-l from-white to-transparent
-//             pointer-events-none
-//           " />
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
-
-
 
 const blogs = [
   {
@@ -1001,19 +507,40 @@ const blogs = [
 
 function LatestBlogs() {
   const scrollRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
-  const scrollRight = () => {
-    scrollRef.current?.scrollBy({
-      left: 360,
-      behavior: "smooth",
-    });
-  };
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
-  const scrollLeft = () => {
-    scrollRef.current?.scrollBy({
-      left: -360,
-      behavior: "smooth",
-    });
+  const CARD_WIDTH = isMobile ? 300 : 320;
+  const GAP = 16;
+  const TOTAL_WIDTH = CARD_WIDTH + GAP;
+
+  const scroll = (direction) => {
+    let newIndex = currentIndex;
+    
+    if (direction === 'right') {
+      newIndex = Math.min(currentIndex + 1, blogs.length - 1);
+    } else {
+      newIndex = Math.max(currentIndex - 1, 0);
+    }
+    
+    setCurrentIndex(newIndex);
+    
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        left: newIndex * TOTAL_WIDTH,
+        behavior: "smooth",
+      });
+    }
   };
 
   const handleClick = (link) => {
@@ -1021,8 +548,11 @@ function LatestBlogs() {
     window.open(link, "_blank");
   };
 
+  const canScrollLeft = currentIndex > 0;
+  const canScrollRight = currentIndex < blogs.length - 1;
+
   return (
-    <section className="py-24 bg-white text-black relative">
+    <section className="py-16 sm:py-24 bg-white text-black">
       <style>{`
         .hide-scrollbar {
           -ms-overflow-style: none;
@@ -1033,36 +563,45 @@ function LatestBlogs() {
         }
       `}</style>
 
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* HEADER */}
-        <div className="flex items-center justify-between mb-12">
-          <h2 className="text-4xl font-serif font-bold">Latest Writing</h2>
+        <div className="flex items-center justify-between mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-4xl font-serif font-bold">Latest Writing</h2>
 
-          <div className="flex gap-3">
+          {/* Desktop Buttons */}
+          <div className="hidden sm:flex gap-3">
             <button
-              onClick={scrollLeft}
-              className="
-                hidden sm:flex items-center justify-center
+              onClick={() => scroll('left')}
+              disabled={!canScrollLeft}
+              className={`
+                flex items-center justify-center
                 w-12 h-12 rounded-full
                 border border-gray-300
-                hover:bg-black hover:text-white hover:border-black
                 transition-all duration-300
                 text-lg font-light
-              "
+                ${canScrollLeft 
+                  ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer' 
+                  : 'opacity-40 cursor-not-allowed'
+                }
+              `}
               aria-label="Scroll left"
             >
               ←
             </button>
             <button
-              onClick={scrollRight}
-              className="
-                hidden sm:flex items-center justify-center
+              onClick={() => scroll('right')}
+              disabled={!canScrollRight}
+              className={`
+                flex items-center justify-center
                 w-12 h-12 rounded-full
                 border border-gray-300
-                hover:bg-black hover:text-white hover:border-black
                 transition-all duration-300
                 text-lg font-light
-              "
+                ${canScrollRight 
+                  ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer' 
+                  : 'opacity-40 cursor-not-allowed'
+                }
+              `}
               aria-label="Scroll right"
             >
               →
@@ -1070,97 +609,541 @@ function LatestBlogs() {
           </div>
         </div>
 
-        {/* SCROLL AREA WITH GRADIENT FADE */}
-        <div className="relative">
-          <div
-            ref={scrollRef}
-            className="
-              hide-scrollbar
-              flex gap-6
-              overflow-x-auto
-              overflow-y-hidden
-              scroll-smooth
-              pb-4
-            "
-          >
-            {blogs.map((blog) => (
-              <article
-                key={blog.id}
-                onClick={() => handleClick(blog.link)}
-                className="
-                  min-w-[300px]
-                  cursor-pointer
-                  flex-shrink-0
-                  group
-                  transition-all duration-300
-                "
-              >
-                {/* IMAGE */}
-                <div className="relative h-[380px] rounded-2xl overflow-hidden bg-gray-200">
-                  <img
-                    src={blog.image}
-                    alt={blog.title}
-                    className="
-                      w-full h-full object-cover
-                      group-hover:scale-110
-                      transition-transform duration-500
-                    "
-                  />
-                  {/* OVERLAY */}
-                  <div className="
-                    absolute inset-0
-                    bg-black/0 group-hover:bg-black/10
-                    transition-colors duration-300
-                  " />
-                </div>
+        {/* SCROLLABLE CONTAINER */}
+        <div
+          ref={scrollRef}
+          className="
+            hide-scrollbar
+            flex gap-4
+            overflow-x-auto
+            overflow-y-hidden
+            scroll-smooth
+            pb-4
+          "
+        >
+          {blogs.map((blog) => (
+            <article
+              key={blog.id}
+              onClick={() => handleClick(blog.link)}
+              className="
+                flex-shrink-0
+                cursor-pointer
+                group
+                transition-all duration-300
+              "
+              style={{ width: CARD_WIDTH }}
+            >
+              {/* IMAGE */}
+              <div className="relative h-[380px] rounded-2xl overflow-hidden bg-gray-200">
+                <img
+                  src={blog.image}
+                  alt={blog.title}
+                  className="
+                    w-full h-full object-cover
+                    group-hover:scale-110
+                    transition-transform duration-500
+                  "
+                  onError={(e) => {
+                    e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="320" height="380"%3E%3Crect fill="%23e5e7eb" width="320" height="380"/%3E%3C/svg%3E';
+                  }}
+                />
+              </div>
 
-                {/* TEXT */}
-                <div className="mt-5 pr-4">
-                  {/* <p className="text-xs uppercase tracking-wider text-gray-500 mb-3">
-                    {blog.category}
-                  </p> */}
+              {/* TEXT */}
+              <div className="mt-5">
+                <h3 className="
+                  text-lg font-serif font-semibold
+                  leading-snug
+                  line-clamp-2
+                  group-hover:text-gray-700
+                  transition-colors duration-300
+                ">
+                  {blog.title}
+                </h3>
 
-                  <h3 className="
-                    text-lg font-serif font-semibold
-                    leading-snug
-                    line-clamp-2
-                    group-hover:text-gray-700
-                    transition-colors duration-300
+                {blog.link && (
+                  <span className="
+                    inline-block mt-3 text-sm text-gray-600
+                    group-hover:text-black group-hover:underline
+                    transition-all duration-300
                   ">
-                    {blog.title}
-                  </h3>
-
-                  {blog.link && (
-                    <span className="
-                      inline-block mt-3 text-sm text-gray-600
-                      group-hover:text-black group-hover:underline
-                      transition-all duration-300
-                    ">
-                      Read →
-                    </span>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
-
-          {/* LEFT GRADIENT FADE */}
-          <div className="
-            absolute left-0 top-0 bottom-0
-            w-12 sm:w-16
-            pointer-events-none
-          " />
-
-          {/* RIGHT GRADIENT FADE */}
-          <div className="
-            absolute right-0 top-0 bottom-0
-            w-12 sm:w-16
-            pointer-events-none
-          " />
+                    Read →
+                  </span>
+                )}
+              </div>
+            </article>
+          ))}
         </div>
+
+        {/* MOBILE SCROLL BUTTONS - Below Content */}
+        {isMobile && (
+          <div className="flex gap-3 justify-center sm:hidden">
+            <button
+              onClick={() => scroll('left')}
+              disabled={!canScrollLeft}
+              className={`
+                flex items-center justify-center
+                w-12 h-12 rounded-full
+                border border-gray-300
+                transition-all duration-300
+                text-lg font-light
+                ${canScrollLeft 
+                  ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer' 
+                  : 'opacity-40 cursor-not-allowed'
+                }
+              `}
+              aria-label="Scroll left"
+            >
+              ←
+            </button>
+            <button
+              onClick={() => scroll('right')}
+              disabled={!canScrollRight}
+              className={`
+                flex items-center justify-center
+                w-12 h-12 rounded-full
+                border border-gray-300
+                transition-all duration-300
+                text-lg font-light
+                ${canScrollRight 
+                  ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer' 
+                  : 'opacity-40 cursor-not-allowed'
+                }
+              `}
+              aria-label="Scroll right"
+            >
+              →
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
+}
+
+
+// const web = [
+//   {
+//     id: 1,
+//     title: "Welcome to DC Kizhakemuri Foundation",
+//     category: "UI Interface",
+//     image: "/assets/dkf.png",
+//     link: "https://dckf.in",
+//   },
+//   {
+//     id: 2,
+//     title: "DC BOOKS",
+//     category: "UI Interface",
+//     image: "/assets/dcbookslogo.jpg",
+//     link: "https://dcbooks.com"
+//     },
+//   {
+//     id: 3,
+//     title: "Chandy's Drizzle Drops",
+//     category: "UI Interface",
+//     image: "/assets/cdd.jpg",
+//     link: "https://chandysdrizzledrops.com"
+//     },
+//   {
+//     id: 4,
+//     title: "Chandy's Windy Woods",
+//     category: "UI Interface",
+//     image: "/assets/cwwm.jpg",
+//     link: "https://www.chandyswindywoods.com/overview.html",
+//   },
+//     {
+//     id: 5,
+//     title: "Planet Munnar",
+//     category: "UI Interface",
+//     image: "/assets/tpmunnar.png",
+//     link: "https://planetmunnar.com"  
+//   },
+//   {
+//     id: 6,
+//     title: "Gokulam Grand Kozhikode",
+//     category: "UI Interface",
+//     image: "/assets/gkozhi.png",
+//     link: "https://gokulamhotels.com/gokulam-grand-kozhikode"
+//     },
+//   {
+//     id: 7,
+//     title: "Gokulam Grand Kumarakom",
+//     category: "UI Interface",
+//     image: "/assets/gk2.jpg",
+//     link: "https://gokulamhotels.com/gokulamgrandkumarakom",
+//   },
+//     {
+//     id: 8,
+//     title: "Gokulam Grand Trivandrum",
+//     category: "UI Interface",
+//     image: "/assets/gotri.png",
+//     link: "https://gokulamhotels.com/gokulamgrandtrivandrum",
+//   }
+// ];
+
+// function LatestWebsite() {
+//   const scrollRef = useRef(null);
+//   const [currentIndex, setCurrentIndex] = useState(0);
+//   const [isMobile, setIsMobile] = useState(false);
+
+//   useEffect(() => {
+//     const checkMobile = () => {
+//       setIsMobile(window.innerWidth < 640);
+//     };
+    
+//     checkMobile();
+//     window.addEventListener('resize', checkMobile);
+//     return () => window.removeEventListener('resize', checkMobile);
+//   }, []);
+
+//   const CARD_WIDTH = isMobile ? 300 : 320;
+//   const GAP = 16;
+//   const TOTAL_WIDTH = CARD_WIDTH + GAP;
+
+//   const scroll = (direction) => {
+//     let newIndex = currentIndex;
+    
+//     if (direction === 'right') {
+//       newIndex = Math.min(currentIndex + 1, web.length - 1);
+//     } else {
+//       newIndex = Math.max(currentIndex - 1, 0);
+//     }
+    
+//     setCurrentIndex(newIndex);
+    
+//     if (scrollRef.current) {
+//       scrollRef.current.scrollTo({
+//         left: newIndex * TOTAL_WIDTH,
+//         behavior: "smooth",
+//       });
+//     }
+//   };
+
+//   const handleClick = (link) => {
+//     if (!link) return;
+//     window.open(link, "_blank");
+//   };
+
+//   const canScrollLeft = currentIndex > 0;
+//   const canScrollRight = currentIndex < web.length - 1;
+
+//   return (
+//     <section className="py-16 sm:py-24 bg-white text-black">
+//       <style>{`
+//         .hide-scrollbar {
+//           -ms-overflow-style: none;
+//           scrollbar-width: none;
+//         }
+//         .hide-scrollbar::-webkit-scrollbar {
+//           display: none;
+//         }
+//       `}</style>
+
+//       <div className="max-w-7xl mx-auto px-4 sm:px-6">
+//         {/* HEADER */}
+//         <div className="flex items-center justify-between mb-8 sm:mb-12">
+//           <h2 className="text-2xl sm:text-4xl font-serif font-bold">Latest Writing</h2>
+
+//           {/* Desktop Buttons */}
+//           <div className="hidden sm:flex gap-3">
+//             <button
+//               onClick={() => scroll('left')}
+//               disabled={!canScrollLeft}
+//               className={`
+//                 flex items-center justify-center
+//                 w-12 h-12 rounded-full
+//                 border border-gray-300
+//                 transition-all duration-300
+//                 text-lg font-light
+//                 ${canScrollLeft 
+//                   ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer' 
+//                   : 'opacity-40 cursor-not-allowed'
+//                 }
+//               `}
+//               aria-label="Scroll left"
+//             >
+//               ←
+//             </button>
+//             <button
+//               onClick={() => scroll('right')}
+//               disabled={!canScrollRight}
+//               className={`
+//                 flex items-center justify-center
+//                 w-12 h-12 rounded-full
+//                 border border-gray-300
+//                 transition-all duration-300
+//                 text-lg font-light
+//                 ${canScrollRight 
+//                   ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer' 
+//                   : 'opacity-40 cursor-not-allowed'
+//                 }
+//               `}
+//               aria-label="Scroll right"
+//             >
+//               →
+//             </button>
+//           </div>
+//         </div>
+
+//         {/* SCROLLABLE CONTAINER */}
+//         <div
+//           ref={scrollRef}
+//           className="
+//             hide-scrollbar
+//             flex gap-4
+//             overflow-x-auto
+//             overflow-y-hidden
+//             scroll-smooth
+//             pb-4
+//           "
+//         >
+//           {web.map((webs) => (
+//             <article
+//               key={webs.id}
+//               onClick={() => handleClick(webs.link)}
+//               className="
+//                 flex-shrink-0
+//                 cursor-pointer
+//                 group
+//                 transition-all duration-300
+//               "
+//               style={{ width: CARD_WIDTH }}
+//             >
+//               {/* IMAGE */}
+//               <div className="relative h-[380px] rounded-2xl overflow-hidden bg-gray-200">
+//                 <img
+//                   src={webs.image}
+//                   alt={webs.title}
+//                   className="
+//                     w-full h-full object-cover
+//                     group-hover:scale-110
+//                     transition-transform duration-500
+//                   "
+//                   onError={(e) => {
+//                     e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="320" height="380"%3E%3Crect fill="%23e5e7eb" width="320" height="380"/%3E%3C/svg%3E';
+//                   }}
+//                 />
+//               </div>
+
+//               {/* TEXT */}
+//               <div className="mt-5">
+//                 <h3 className="
+//                   text-lg font-serif font-semibold
+//                   leading-snug
+//                   line-clamp-2
+//                   group-hover:text-gray-700
+//                   transition-colors duration-300
+//                 ">
+//                   {webs.title}
+//                 </h3>
+
+//                 {webs.link && (
+//                   <span className="
+//                     inline-block mt-3 text-sm text-gray-600
+//                     group-hover:text-black group-hover:underline
+//                     transition-all duration-300
+//                   ">
+//                     Read →
+//                   </span>
+//                 )}
+//               </div>
+//             </article>
+//           ))}
+//         </div>
+
+//         {/* MOBILE SCROLL BUTTONS - Below Content */}
+//         {isMobile && (
+//           <div className="flex gap-3 justify-center sm:hidden">
+//             <button
+//               onClick={() => scroll('left')}
+//               disabled={!canScrollLeft}
+//               className={`
+//                 flex items-center justify-center
+//                 w-12 h-12 rounded-full
+//                 border border-gray-300
+//                 transition-all duration-300
+//                 text-lg font-light
+//                 ${canScrollLeft 
+//                   ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer' 
+//                   : 'opacity-40 cursor-not-allowed'
+//                 }
+//               `}
+//               aria-label="Scroll left"
+//             >
+//               ←
+//             </button>
+//             <button
+//               onClick={() => scroll('right')}
+//               disabled={!canScrollRight}
+//               className={`
+//                 flex items-center justify-center
+//                 w-12 h-12 rounded-full
+//                 border border-gray-300
+//                 transition-all duration-300
+//                 text-lg font-light
+//                 ${canScrollRight 
+//                   ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer' 
+//                   : 'opacity-40 cursor-not-allowed'
+//                 }
+//               `}
+//               aria-label="Scroll right"
+//             >
+//               →
+//             </button>
+//           </div>
+//         )}
+//       </div>
+//     </section>
+//   );
+// }
+function LatestWebsite() {
+const web = [
+  {
+    id: 1,
+    name: "DC Kizhakemuri Foundation",
+    logo: "/assets/dckf12.webp",
+    link: "https://dckf.in",
+  },
+  {
+    id: 2,
+    name: "DC Books",
+    logo: "/assets/dcbookslogo.jpg",
+    link: "https://dcbooks.com",
+  },
+  {
+    id: 3,
+    name: "Chandy's Drizzle Drops",
+    logo: "/assets/cdd.jpg",
+    link: "https://chandysdrizzledrops.com",
+  },
+  {
+    id: 4,
+    name: "Chandy's Windy Woods",
+    logo: "/assets/cwwm.jpg",
+    link: "https://www.chandyswindywoods.com/overview.html",
+  },
+  {
+    id: 5,
+    name: "Planet Munnar",
+    logo: "/assets/tpmunnar.png",
+    link: "https://planetmunnar.com",
+  },
+  {
+    id: 6,
+    name: "Gokulam Grand Kozhikode",
+    logo: "/assets/gkozhi.png",
+    link: "https://gokulamhotels.com/gokulam-grand-kozhikode",
+  },
+  {
+    id: 7,
+    name: "Gokulam Grand Kumarakom",
+    logo: "/assets/gk2.jpg",
+    link: "https://gokulamhotels.com/gokulamgrandkumarakom",
+  },
+  {
+    id: 8,
+    name: "Gokulam Grand Trivandrum",
+    logo: "/assets/gotri1.PNG",
+    link: "https://gokulamhotels.com/gokulamgrandtrivandrum",
+  },
+];
+  // return (
+  //   <section className="bg-white py-44">
+  //     <div className="max-w-6xl mx-auto px-6">
+
+  //       {/* HEADING */}
+  //       <h2 className="
+  //         text-center
+  //         text-4xl sm:text-5xl
+  //         font-serif
+  //         text-black
+  //         mb-32
+  //       ">
+  //         Web Copywriting
+  //       </h2>
+
+  //       {/* LOGO GRID */}
+  //       <div className="
+  //         grid grid-cols-2 sm:grid-cols-4
+  //         gap-y-28 gap-x-16
+  //         place-items-center
+  //       ">
+  //         {web.map((item) => (
+  //           <a
+  //             key={item.id}
+  //             href={item.link}
+  //             target="_blank"
+  //             rel="noopener noreferrer"
+  //             className="
+  //               opacity-70
+  //               hover:opacity-100
+  //               transition-opacity duration-300
+  //             "
+  //           >
+  //             <img
+  //               src={item.logo}
+  //               alt={item.name}
+  //               className="
+  //                 max-h-24 sm:max-h-30
+  //                 w-auto object-contain
+  //               "
+  //             />
+  //           </a>
+  //         ))}
+  //       </div>
+
+  //     </div>
+  //   </section>
+  // );
+return (
+  <section className="bg-white py-28">
+    <div className="max-w-6xl mx-auto px-6">
+
+      {/* HEADING */}
+      <h2 className="
+        text-center
+        text-4xl sm:text-5xl
+        font-serif
+        text-black
+        mb-20
+      ">
+        Web Copywriting
+      </h2>
+
+      {/* LOGO GRID */}
+      <div className="
+        grid grid-cols-2 sm:grid-cols-4
+        gap-y-20 gap-x-16
+        place-items-center
+      ">
+        {web.map((item) => (
+          <a
+            key={item.id}
+            href={item.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              opacity-70
+              hover:opacity-100
+              transition-opacity duration-300
+            "
+          >
+            <img
+              src={item.logo}
+              alt={item.name}
+              className="
+                max-h-24 sm:max-h-30
+                w-auto object-contain
+              "
+            />
+          </a>
+        ))}
+      </div>
+
+    </div>
+  </section>
+);
+
 }
 
 
@@ -1186,7 +1169,7 @@ function ContactUsForm() {
     <section className="py-32 bg-black">
       <div className="max-w-7xl mx-auto px-6">
 
-        {/* UNIFIED CONTAINER */}
+        {/* MAIN CONTAINER */}
         <div className="
           relative grid grid-cols-1 lg:grid-cols-2
           rounded-[36px] overflow-hidden
@@ -1201,11 +1184,8 @@ function ContactUsForm() {
               alt="Contact"
               className="w-full h-full object-cover"
             />
-
-            {/* DARK GRADIENT OVERLAY */}
             <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-black/40 to-black/70" />
 
-            {/* IMAGE TEXT */}
             <div className="absolute bottom-10 left-10 max-w-sm text-white">
               <p className="text-xs uppercase tracking-widest text-white/60 mb-3">
                 Contact
@@ -1216,30 +1196,26 @@ function ContactUsForm() {
             </div>
           </div>
 
-          {/* FORM PANEL */}
+          {/* FORM PANEL – FULL WIDTH */}
           <div className="relative p-10 lg:p-16 flex items-center">
-            <div className="
-              w-full max-w-md
-              bg-white/5 backdrop-blur-xl
-              rounded-[28px] p-8
-              border border-white/10
-            ">
+            <div className="w-full">
 
-              <h2 className="text-xl font-semibold text-white mb-2">
+              <h2 className="text-2xl font-semibold text-white mb-2">
                 Contact Us
               </h2>
-              <p className="text-sm text-white/60 mb-6">
+              <p className="text-sm text-white/60 mb-8">
                 Tell us about your project
               </p>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-5 max-w-xl">
+
                 <input
                   type="text"
                   name="name"
                   placeholder="Your Name"
                   value={form.name}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-white/40"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-green-500"
                 />
 
                 <input
@@ -1248,26 +1224,32 @@ function ContactUsForm() {
                   placeholder="Email Address"
                   value={form.email}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-white/40"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-green-500"
                 />
 
                 <textarea
                   name="message"
-                  rows={4}
+                  rows={5}
                   placeholder="Your Message"
                   value={form.message}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-white/40 resize-none"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/40 resize-none focus:outline-none focus:ring-1 focus:ring-green-500"
                 />
 
                 <button
                   type="submit"
-                  className="w-full bg-green-500 text-black rounded-xl py-2.5 text-sm font-medium hover:bg-green-400 transition"
+                  className="
+                    inline-flex items-center justify-center
+                    bg-green-500 text-black
+                    rounded-xl px-8 py-3
+                    text-sm font-medium
+                    hover:bg-green-400 transition
+                  "
                 >
                   Send Message
                 </button>
-              </form>
 
+              </form>
             </div>
           </div>
 
@@ -1277,12 +1259,14 @@ function ContactUsForm() {
   );
 }
 
+
+
 function GradientFeatures() {
   return (
     <section className="py-32 bg-black text-white">
       <div className="max-w-7xl mx-auto px-10">
         <h2 className="text-4xl font-semibold mb-4">
-          Services We Provide
+          My Work
         </h2>
         <p className="text-white/60 max-w-2xl mb-16">
           An integrated communication design practice spanning audio-visual,

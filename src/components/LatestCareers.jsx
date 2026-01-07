@@ -58,8 +58,8 @@ export default function LatestCareers() {
 <div className="bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-6 md:py-10 flex flex-col items-center justify-center hover:scale-105 transition-transform duration-300">
   <div className="flex flex-wrap justify-center gap-4 mb-4">
     <img
-      src="/assets/anjay.webp"
-      alt="Anjay"
+      src="/assets/amal.jpg"
+      alt="Amal"
       className="w-16 h-16 rounded-full border border-white/20 object-cover"
     />
     <img

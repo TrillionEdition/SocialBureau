@@ -2,7 +2,7 @@ import React from 'react'
 
 export const Intro = () => {
   return (
-    <div className="relative px-6 lg:px-32 py-20 text-white overflow-hidden max-w-6xl mx-auto text-center">
+    <div className="relative px-6 lg:px-32 text-white overflow-hidden max-w-6xl mx-auto text-center">
 
   {/* background gradient glow */}
   <div className="absolute inset-0 -z-10 blur-[160px] opacity-20 bg-gradient-to-br from-purple-600 via-indigo-500 to-blue-600"></div>

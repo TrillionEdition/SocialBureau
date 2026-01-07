@@ -196,7 +196,7 @@ if (!user) {
 
   const handleClick = () => {
     const subject = 'Enquiry about your service';
-    const body = 'Hi,\n\nI would like to enquire about...';
+    const body = 'Hi,\n\nlike to enquire about...';
 
     if (!user?.email) {
       // Option: open mail with only CC if no user email, or show message

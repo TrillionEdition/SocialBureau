@@ -15,14 +15,14 @@ export default function QASection() {
   
   const experts = [
     {
-      name: "Anjay Ramesh",
-      title: "CCW",
-      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1763119935/9_lmmwxq.png"
+      name: "Amal",
+      title: "DM",
+      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1767762347/amal_fnathg.jpg"
     },
     {
-      name: "Aneek K",
-      title: "PMO",
-      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1763119838/images/kaisk2kjqgf55lu9c1w5.webp"
+      name: "Muhsin",
+      title: "SEO",
+      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1767762340/muhsin_pcrnxx.jpg"
     }
   ];
 

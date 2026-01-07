@@ -1,22 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import { BASE_URL } from "../../utils/urls";
-import { setUserData } from "../../utils/authUtils";
 
-export const Login = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+export const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const [email, setEmail] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,62 +16,28 @@ export const Login = () => {
     try {
       setLoading(true);
 
-      if (!form.email || !form.password) {
-        throw new Error("Email and password are required");
+      if (!email) {
+        throw new Error("Email is required");
       }
 
-      const response = await fetch(`${BASE_URL}/user/login`, {
+      const response = await fetch(`${BASE_URL}/user/forgot-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email: form.email,
-          password: form.password,
-        }),
-        credentials: "include",
+        body: JSON.stringify({ email }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Login failed");
+        throw new Error(data.message || "Failed to send reset email");
       }
 
-      console.log("Response from backend:", data);
-      console.log("User object:", data.user);
-
-      // if (data.user) {
-      //   setUserData(data.user);
-      // }
-if (data.user) {
-  setUserData(data.user);
-  localStorage.setItem('user', JSON.stringify(data.user));
-  
-  // ✅ Store token if provided in response
-  if (data.token) {
-    localStorage.setItem('token', data.token);
-  }
-}
-      setSuccess("Login successful ✅");
-      window.dispatchEvent(new Event("authChange"));
-
-      // ✅ Get the page user came from
-      const from = location.state?.from?.pathname || "/";
-
-      setTimeout(() => {
-        if (data.user?.isEmployee && !data.user?.isVerified) {
-          console.log("Employee not verified – navigating to verification");
-          navigate("/verify-employee");
-        } else {
-          // ✅ Redirect to previous page
-          console.log(`Redirecting to previous page: ${from}`);
-          navigate(from, { replace: true });
-        }
-      }, 1000);
+      setSuccess("Password reset link sent to your email 📩");
+      setEmail("");
     } catch (err) {
       setError(err.message || "Something went wrong");
-      setForm((prev) => ({ ...prev, password: "" }));
     } finally {
       setLoading(false);
     }
@@ -114,8 +70,13 @@ if (data.user) {
       <div className="relative z-10">
         <div className="flex items-center justify-center pt-20 pb-10">
           <div className="text-center">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">LOGIN</h1>
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">
+              FORGOT PASSWORD
+            </h1>
             <img src="/assets/logo.webp" alt="Logo" className="mx-auto w-40" />
+            <p className="mt-3 text-sm text-gray-400">
+              Enter your email to receive a password reset link
+            </p>
           </div>
         </div>
 
@@ -133,6 +94,7 @@ if (data.user) {
                   {error}
                 </div>
               )}
+
               {success && (
                 <div className="p-4 bg-green-950/30 border border-green-700/50 rounded-lg text-center text-green-400">
                   {success}
@@ -145,23 +107,8 @@ if (data.user) {
                 </label>
                 <input
                   type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  className="w-full p-3 rounded-lg bg-black text-white border border-red-900/30 focus:border-red-500 focus:outline-none focus:shadow-lg focus:shadow-red-900/20 transition"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block mb-2 text-sm text-gray-400">
-                  Password <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  value={form.password}
-                  onChange={handleChange}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="w-full p-3 rounded-lg bg-black text-white border border-red-900/30 focus:border-red-500 focus:outline-none focus:shadow-lg focus:shadow-red-900/20 transition"
                   required
                 />
@@ -172,13 +119,13 @@ if (data.user) {
                 disabled={loading}
                 className="w-full py-4 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 font-semibold text-lg shadow-lg hover:shadow-red-900/40 transition disabled:opacity-50"
               >
-                {loading ? "Signing in..." : "Sign In"}
+                {loading ? "Sending..." : "Send Reset Link"}
               </button>
 
               <p className="text-center text-sm text-gray-400">
-                Don't have an account?{" "}
-                <a href="/user-register" className="text-red-500 hover:underline">
-                  Create Account
+                Remember your password?{" "}
+                <a href="/login" className="text-red-500 hover:underline">
+                  Go back to login
                 </a>
               </p>
             </div>

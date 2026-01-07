@@ -41,16 +41,18 @@ import CookiePolicy from './components/CookiePolicy'
 import Events from './components/Events'
 import AddEvent from './components/AddEvent'
 import ViewEvents from './components/ViewEvents'
-// import { ClientPortfolios } from './pages/ClientPortfolios'
-// import { Login } from './pages/Login'
-// import { UserRegister } from './pages/UserRegistration'
-// import { Register } from './pages/Register'
-// import ProofFlow from './pages/ProofFlow'
-// import Landing from './components/ExternalPortfolio'
-// import Verification from './pages/UserVerification'
-// import ChooseCharacter from './components/CardChoice'
-// import AdminCreateJob from './pages/CreateJob'
-// import Leaderboard from './components/Leaderboard'
+import { ClientPortfolios } from './pages/ClientPortfolios'
+import { Login } from './pages/Login'
+import { UserRegister } from './pages/UserRegistration'
+import { Register } from './pages/Register'
+import ProofFlow from './pages/ProofFlow'
+import Landing from './components/ExternalPortfolio'
+import Verification from './pages/UserVerification'
+import ChooseCharacter from './components/CardChoice'
+import AdminCreateJob from './pages/CreateJob'
+import Leaderboard from './components/Leaderboard'
+import { ForgotPassword } from './components/ForgetPassword'
+import { ResetPassword } from './pages/ForgetPassword'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
@@ -66,7 +68,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-      {/* <Navbar/> */}
+       <Navbar/> 
        <ScrollTop />
        <CookieConsent />
       <Routes>        
@@ -91,8 +93,8 @@ function App() {
         <Route path="/blogs/:slug" element={<BlogDetail />} />
         <Route path="/careers/:slug" element={<CareerDetail />} />
         <Route path="/qa-section" element={<QASection />} />
-        {/* <Route path="/partnerships" element={<ClientPortfolios />} /> */}
-        {/* <Route path='/portfolio' element={<Landing/>} /> */}
+        <Route path="/partnerships" element={<ClientPortfolios />} />
+        <Route path='/Ranjith' element={<Landing/>} />
         <Route path="/services/branding" element={<BrandingService />} />
         <Route path="/services/experience-design" element={<XDService />} />
         <Route path="/services/technology" element={<TechnologyService />} />
@@ -109,14 +111,16 @@ function App() {
             <VoiceAsst />
           </Suspense>
         } />
-        {/* <Route path='/register' element={<Register/>} />
+        <Route path='/register' element={<Register/>} />
         <Route path='/login' element={<Login/>} />
         <Route path='/user-register' element={<UserRegister/>} />
         <Route path='/pre' element={<ProofFlow/>} />
         <Route path='/proof' element={<Verification />} />
         <Route path='/card' element={<ChooseCharacter/>} />
         <Route path="/jobs/create" element={<AdminCreateJob />} />
-        <Route path='/leaderboard' element={<Leaderboard/>} /> */}
+        <Route path='/leaderboard' element={<Leaderboard/>} />
+        <Route path='/forget-password' element={<ForgotPassword/>} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/*" element={<NotFound />} />
 
       </Routes>

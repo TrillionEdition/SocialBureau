@@ -39,7 +39,7 @@ const reviews = data?.data?.reviews || [];
   };
 
   return (
-    <div className="w-full py-12 bg-black">
+    <div className="w-full pt-12 bg-black">
       {/* Heading */}
       <div className="text-center mb-10">
         <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
@@ -79,7 +79,7 @@ const reviews = data?.data?.reviews || [];
       {/* Scrollable Row */}
       <div
         ref={scrollRef}
-        className="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth px-10 py-4"
+        className="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth px-10 pt-4"
       >
         {reviews.length === 0 && (
           <div className="text-sm text-gray-400">No public Google reviews found.</div>

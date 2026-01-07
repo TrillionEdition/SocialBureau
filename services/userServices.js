@@ -45,3 +45,5 @@ export const checkEmailExistsAPI = async (email) => {
     (u) => u.email?.toLowerCase() === email.toLowerCase()
   );
 };
+
+
