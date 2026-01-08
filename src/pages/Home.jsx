@@ -23,9 +23,9 @@ export const Home = () => {
 
   // Image modal state
   const [showImageModal, setShowImageModal] = useState(true);
-  // const modalImage =
-  //   (typeof import.meta !== 'undefined' && import.meta.env?.VITE_HOME_MODAL_IMAGE) ||
-  //   'https://res.cloudinary.com/dtwcgfmar/image/upload/v1764823489/Click_up_2_x1hfwl.png';
+  const modalImage =
+    (typeof import.meta !== 'undefined' && import.meta.env?.VITE_HOME_MODAL_IMAGE) ||
+    'https://res.cloudinary.com/dtwcgfmar/image/upload/v1767434989/Artboard_1_copy_3_1_daw2ii.png';
 
   useEffect(() => {
     const onKey = (e) => {
@@ -148,7 +148,7 @@ export const Home = () => {
       <Footer />
 
       {/* Image Modal (centered) */}
-      {/* {showImageModal && (
+      {showImageModal && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
           onClick={() => setShowImageModal(false)}
@@ -172,7 +172,7 @@ export const Home = () => {
             />
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 };

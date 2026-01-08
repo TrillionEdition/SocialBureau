@@ -411,7 +411,7 @@
 //               <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 mb-8 shadow-lg">
 //                 <h4 className="text-lg font-semibold text-gray-100 mb-4">Add a comment {!currentUser && <span className="text-sm text-gray-400 ml-2">(Login required)</span>}</h4>
 //                 <textarea value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder={!currentUser ? "Please login to comment..." : "Share your thoughts..."} className={`w-full bg-gray-900 text-gray-100 placeholder-gray-500 p-4 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent border border-gray-700 resize-none ${!currentUser ? "cursor-not-allowed opacity-50" : ""}`} rows="4" disabled={!currentUser} />
-                
+
 //                 {!currentUser ? (
 //                   <button onClick={() => redirectToLogin("Login to post a comment")} className="w-full bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition font-medium">Login to Comment</button>
 //                 ) : (
@@ -511,7 +511,7 @@ import {
   FaChevronRight,
   FaArrowLeft
 } from "react-icons/fa";
-import { BASE_URL } from "../../utils/urls";
+import { subscribeNewsletter } from "../../services/newsLetterServices";
 
 // Table of Contents Component
 function TableOfContents({ headings }) {
@@ -592,70 +592,41 @@ export default function BlogDetail() {
       navigate("/login", { state: { from: location } });
     }, 1500);
   };
-const handleNewsletterSubscribe = async (e) => {
-  e.preventDefault();
+  const handleNewsletterSubscribe = async (e) => {
+    e.preventDefault();
 
-  if (!email.trim()) {
-    setSubscribeMsg({ type: "warning", text: "Please enter your email" });
-    return;
-  }
-
-  // Basic email validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    setSubscribeMsg({ type: "error", text: "Please enter a valid email" });
-    return;
-  }
-
-  setIsSubscribing(true);
-  try {
-    const baseUrl = BASE_URL;
-    console.log("🔄 Sending subscribe request...", { email, baseUrl });
-
-    const url = `${baseUrl.replace(/\/$/, "")}/api/newsletter/subscribe`;
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
-
-    console.log("📊 Response status:", response.status, response.statusText);
-    const contentType = response.headers.get("content-type") || "";
-    let data = null;
-
-    // Try to parse JSON if possible, otherwise capture text
-    if (contentType.includes("application/json")) {
-      try {
-        data = await response.json();
-      } catch (err) {
-        console.warn("⚠️ Failed to parse JSON response:", err);
-        data = { message: "Invalid JSON response" };
-      }
-    } else {
-      const text = await response.text();
-      try {
-        data = JSON.parse(text);
-      } catch (e) {
-        data = { message: text };
-      }
+    if (!email.trim()) {
+      setSubscribeMsg({ type: "warning", text: "Please enter your email" });
+      return;
     }
 
-    console.log("📦 Response payload:", data);
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setSubscribeMsg({ type: "error", text: "Please enter a valid email" });
+      return;
+    }
 
-    if (response.ok) {
+    setIsSubscribing(true);
+    try {
+      const response = await subscribeNewsletter(email);
+      console.log("Newsletter response:", response);
+
+      // Axios returns data in response.data
+      const data = response.data;
+
       setSubscribeMsg({ type: "success", text: data.message || "Subscribed successfully!" });
       setEmail("");
       setTimeout(() => setSubscribeMsg(null), 3000);
-    } else {
-      setSubscribeMsg({ type: "error", text: data?.message || response.statusText || "Subscription failed" });
+    } catch (err) {
+      console.error("❌ Subscribe error:", err);
+      // Handle axios error response
+      const errorMessage = err.response?.data?.message || err.message || "Subscription failed";
+      setSubscribeMsg({ type: "error", text: errorMessage });
+    } finally {
+      setIsSubscribing(false);
     }
-  } catch (err) {
-    console.error("❌ Subscribe error:", err);
-    setSubscribeMsg({ type: "error", text: "Network error. Please check your connection and try again." });
-  } finally {
-    setIsSubscribing(false);
-  }
-};
+  };
 
   useEffect(() => {
     const checkAuth = () => {
@@ -675,13 +646,13 @@ const handleNewsletterSubscribe = async (e) => {
 
     // Check auth on mount
     checkAuth();
-    
+
     // Listen for auth changes from other components
     window.addEventListener('authChange', checkAuth);
-    
+
     // Also check when component comes back into focus
     window.addEventListener('focus', checkAuth);
-    
+
     return () => {
       window.removeEventListener('authChange', checkAuth);
       window.removeEventListener('focus', checkAuth);
@@ -700,11 +671,11 @@ const handleNewsletterSubscribe = async (e) => {
       setPost(blogData);
       setLikes(blogData.likedBy?.length || 0); // ✅ Count unique likers
       setComments(blogData.comments || []);
-      
+
       // ✅ Check if current user already liked this blog
       if (currentUser && blogData.likedBy) {
         const userLiked = blogData.likedBy.some(
-          userId =>userId.toString() === currentUser.id);
+          userId => userId.toString() === currentUser.id);
         setIsLiked(userLiked);
         console.log("User liked this blog:", userLiked);
       }
@@ -760,7 +731,7 @@ const handleNewsletterSubscribe = async (e) => {
       const responseData = response.data || response;
       const newLikeCount = responseData.likes || responseData.likedBy?.length || likes;
       const newIsLiked = responseData.isLiked !== undefined ? responseData.isLiked : !isLiked;
-      
+
       setIsLiked(newIsLiked);
       setLikes(newLikeCount);
       console.log(responseData);
@@ -1023,7 +994,7 @@ const handleNewsletterSubscribe = async (e) => {
               <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 mb-8 shadow-lg">
                 <h4 className="text-lg font-semibold text-gray-100 mb-4">Add a comment {!currentUser && <span className="text-sm text-gray-400 ml-2">(Login required)</span>}</h4>
                 <textarea value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder={!currentUser ? "Please login to comment..." : "Share your thoughts..."} className={`w-full bg-gray-900 text-gray-100 placeholder-gray-500 p-4 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent border border-gray-700 resize-none ${!currentUser ? "cursor-not-allowed opacity-50" : ""}`} rows="4" disabled={!currentUser} />
-                
+
                 {!currentUser ? (
                   <button onClick={() => redirectToLogin("Login to post a comment")} className="w-full bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition font-medium">Login to Comment</button>
                 ) : (
@@ -1085,42 +1056,41 @@ const handleNewsletterSubscribe = async (e) => {
                 </div>
               )}
 
-  <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 mt-8 border border-gray-700">
-      <h3 className="text-xl font-bold text-gray-100 mb-3">Stay Updated</h3>
-      <p className="text-gray-400 mb-4 text-sm">
-        Get the latest articles and insights delivered to your inbox.
-      </p>
-      <form onSubmit={handleNewsletterSubscribe} className="space-y-3">
-        <input
-          type="email"
-          placeholder="Your email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={isSubscribing}
-          className="w-full px-4 py-3 rounded-lg border border-gray-700 bg-gray-900 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent disabled:opacity-50"
-        />
-        <button
-          type="submit"
-          disabled={isSubscribing}
-          className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isSubscribing ? "Subscribing..." : "Subscribe"}
-        </button>
-        {subscribeMsg && (
-          <p
-            className={`text-sm text-center ${
-              subscribeMsg.type === "success"
-                ? "text-green-400"
-                : subscribeMsg.type === "error"
-                ? "text-red-400"
-                : "text-yellow-400"
-            }`}
-          >
-            {subscribeMsg.text}
-          </p>
-        )}
-      </form>
-    </div>
+              <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 mt-8 border border-gray-700">
+                <h3 className="text-xl font-bold text-gray-100 mb-3">Stay Updated</h3>
+                <p className="text-gray-400 mb-4 text-sm">
+                  Get the latest articles and insights delivered to your inbox.
+                </p>
+                <form onSubmit={handleNewsletterSubscribe} className="space-y-3">
+                  <input
+                    type="email"
+                    placeholder="Your email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={isSubscribing}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-700 bg-gray-900 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent disabled:opacity-50"
+                  />
+                  <button
+                    type="submit"
+                    disabled={isSubscribing}
+                    className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubscribing ? "Subscribing..." : "Subscribe"}
+                  </button>
+                  {subscribeMsg && (
+                    <p
+                      className={`text-sm text-center ${subscribeMsg.type === "success"
+                          ? "text-green-400"
+                          : subscribeMsg.type === "error"
+                            ? "text-red-400"
+                            : "text-yellow-400"
+                        }`}
+                    >
+                      {subscribeMsg.text}
+                    </p>
+                  )}
+                </form>
+              </div>
             </div>
           </div>
         </div>

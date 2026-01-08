@@ -39,7 +39,7 @@ const reviews = data?.data?.reviews || [];
   };
 
   return (
-    <div className="w-full pt-12 bg-black">
+    <div className="w-full pt-12 bg-black pb-15">
       {/* Heading */}
       <div className="text-center mb-10">
         <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">

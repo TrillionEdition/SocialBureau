@@ -144,9 +144,9 @@ export default function Navbar() {
           <li>
             <Link to="/">
               <img
-                src="/assets/logo.webp"
+                src="/assets/socialbureau.webp"
                 alt="Logo"
-                className={`transition-all duration-500 ${isHovered ? "w-24" : "w-10"}`}
+                className={`transition-all duration-500 ${isHovered ? "w-15" : "w-10"}`}
               />
             </Link>
           </li>
