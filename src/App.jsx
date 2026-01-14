@@ -56,6 +56,9 @@ import { ResetPassword } from './pages/ForgetPassword'
 import ApiMarketingPage from './components/ApiMarketing'
 import DashboardX from './pages/DashboardX'
 import SocialBureauInsight from './pages/SocialBureauInsight'
+import { Edit } from 'lucide-react'
+import EditUser from './pages/EditUser'
+import NicheMarketing from './components/NicheMArketing'
 
 
 function App() {
@@ -129,7 +132,8 @@ function App() {
           <Route path="/dashboard-x" element={<DashboardX />} />
           <Route path="/insights" element={<SocialBureauInsight />} />
           <Route path="/*" element={<NotFound />} />
-
+          <Route path='/edit-user' element={<EditUser />} />
+          <Route path='/Niche-Marketing' element={<NicheMarketing/>} />
         </Routes>
       </BrowserRouter>
     </>
