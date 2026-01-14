@@ -49,7 +49,7 @@ function HeroEditorial() {
               select-none pointer-events-none
             "
           >
-            RANJITH
+            RANJIT CHETTUR
           </span>
 
           <h1 className="relative text-[48px] lg:text-[64px] font-serif leading-tight">
@@ -57,9 +57,9 @@ function HeroEditorial() {
               className="absolute inset-0 text-white blur-xl opacity-70"
               aria-hidden="true"
             >
-              RANJITH
+              RANJIT CHETTUR
             </span>
-            <span className="relative">RANJITH</span>
+            <span className="relative">RANJIT CHETTUR</span>
           </h1>
 
 <p className="mt-6 text-gray-600 max-w-md">
@@ -72,7 +72,7 @@ function HeroEditorial() {
 </p>
 
 <p className="mt-3 text-xs uppercase tracking-widest text-gray-500">
-  Established 2010 · 15+ Years Professional Experience
+  Established 2010 | 30+ Years Professional Experience
 </p>
 {/* SOCIAL LINKS */}
 <div className="mt-8 flex items-center gap-2 p-4">
@@ -202,7 +202,7 @@ function SplitFeature() {
           </h3>
 
           <p className="text-xs text-gray-500 mb-6">
-            Visual Artist · Principal Communication Designer · 15+ Years Experience
+            Visual Artist · Principal Communication Designer · 30+ Years Experience
           </p>
 
           <p className="text-sm text-gray-700 leading-relaxed mb-6">
@@ -230,14 +230,13 @@ function SplitFeature() {
 }
 
 
-
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const cards = [
-  { img: "/assets/p4.jpg", title: "AUDIO-VISUAL PROJECTS ", link: "https://www.jumpcutpictures.in" },
-  { img: "/assets/p1.jpg", title: "PRINT AND SOCIAL MEDIA", link: "https://looplogik.wordpress.com/2025/07/19/the-best-things-in-life-are-free-2" },
-  { img: "/assets/b1.png", title: "TEXTUAL PROJECTS", link: "https://looplogik.wordpress.com/2025/06/25/fauna-of-mirrors" },
+  { img: "/assets/stone.webp", title: "Work samples", link: "https://looplogik.wordpress.com/2025/07/20/work-samples-2" },
+  { img: "/assets/happy.jpg", title: "The best things in life are free", link: "https://looplogik.wordpress.com/2025/07/19/the-best-things-in-life-are-free-2" },
+  { img: "/assets/workout.webp", title: "D1 FORTIFICATION -social media", link: "https://looplogik.wordpress.com/2025/07/19/d1-fortification-social-media-2" },
 ];
 
 function MobileCard() {
@@ -282,10 +281,10 @@ function MobileCard() {
 
   return (
     <section ref={sectionRef} className="bg-black py-24">
-      <div className="max-w-7xl mx-auto px-6 flex flex-col items-center">
+      <div className="max-w-7xl mx-auto px-6 flex flex-col items-center" id="print-n-social">
 
         <h2 className="text-xl sm:text-2xl font-semibold mb-12 text-white">
-          Explore Our Work
+          PRINT AND SOCIAL MEDIA
         </h2>
 
         {/* MOBILE */}
@@ -444,7 +443,7 @@ const blogs = [
     id: 1,
     title: "Fauna Of Mirrors",
     category: "UI Interface",
-    image: "/assets/a1.png",
+    image: "/assets/fau.jpg",
     link: "https://looplogik.wordpress.com/2025/06/25/fauna-of-mirrors",
   },
   {
@@ -496,12 +495,25 @@ const blogs = [
     image: "/assets/kochi.jpg",
     link: "https://looplogik.wordpress.com/2025/06/25/historical-consequences-of-maritime-trade-in-kochi",
   },
-  {
+  // {
+  //   id: 9,
+  //   title: "The best things in life are free",
+  //   category: "UI Interface",
+  //   image: "/assets/happy.jpg",
+  //   link: "https://looplogik.wordpress.com/2025/07/19/the-best-things-in-life-are-free-2",
+  // },
+    {
     id: 9,
-    title: "The best things in life are free",
+    title: "Backyard Musings- A life the world forgot",
     category: "UI Interface",
-    image: "/assets/happy.jpg",
-    link: "https://looplogik.wordpress.com/2025/07/19/the-best-things-in-life-are-free-2",
+    image: "/assets/yard.png",
+    link: "https://looplogik.wordpress.com/2026/01/05/backyard-musings-a-life-the-world-forgot",
+    },{
+    id: 10,
+    title: "B.Arch – DC School of Architecture and Design",
+    category: "UI Interface",
+    image: "/assets/dcschool.webp",
+    link: "https://looplogik.wordpress.com/2025/05/13/b-arch-dc-school-of-architecture-and-design-blog-post",
   },
 ];
 
@@ -566,7 +578,7 @@ function LatestBlogs() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* HEADER */}
         <div className="flex items-center justify-between mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-4xl font-serif font-bold">Latest Writing</h2>
+          <h2 className="text-2xl sm:text-4xl font-serif font-bold">TEXTUAL PROJECTS</h2>
 
           {/* Desktop Buttons */}
           <div className="hidden sm:flex gap-3">
@@ -1097,7 +1109,7 @@ const web = [
   // );
 return (
   <section className="bg-white py-28">
-    <div className="max-w-6xl mx-auto px-6">
+    <div className="max-w-6xl mx-auto px-6" id='web-copywriting'>
 
       {/* HEADING */}
       <h2 className="
@@ -1298,20 +1310,21 @@ function GradientFeatures() {
               "Static posts, reels & blogs",
             ]}
             cta="View Work Samples →"
-            link="https://looplogik.wordpress.com/2025/07/20/work-samples-2"
+            link="#print-n-social"
             glow="blue"
           />
 
           <GradientCard
             title="Websites"
             description={[
-              "Interface design",
-              "Hosting & maintenance",
               "Textual information architecture",
+              "Website content writing & editing",
               "Content-driven web experiences",
+              "Concept development & narrative structure",
+              "Collaboration with design & development teams",
             ]}
             cta="Explore Projects →"
-            link="https://looplogik.wordpress.com/2025/07/24/kerala-literature-festival-website-2/"
+            link="#web-copywriting"
             glow="green"
           />
         </div>
@@ -1359,8 +1372,6 @@ function GradientCard({ title, description, cta, link, glow }) {
 
         <a
           href={link}
-          target="_blank"
-          rel="noreferrer"
           className="text-sm font-medium text-white/80 hover:text-white transition"
         >
           {cta}

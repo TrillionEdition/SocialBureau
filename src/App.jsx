@@ -53,78 +53,85 @@ import AdminCreateJob from './pages/CreateJob'
 import Leaderboard from './components/Leaderboard'
 import { ForgotPassword } from './components/ForgetPassword'
 import { ResetPassword } from './pages/ForgetPassword'
+import ApiMarketingPage from './components/ApiMarketing'
+import DashboardX from './pages/DashboardX'
+import SocialBureauInsight from './pages/SocialBureauInsight'
+
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
   const [loading, setLoading] = useState(true);
-  
-    useEffect(() => {
-      const timer = setTimeout(() => setLoading(false), 1200);
-      return () => clearTimeout(timer);
-    }, []);
-  
-    if (loading) return <LoadingSpinner />;
-  
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <LoadingSpinner />;
+
   return (
     <>
       <BrowserRouter>
-       <Navbar/> 
-       <ScrollTop />
-       <CookieConsent />
-      <Routes>        
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />        
-         <Route path="/casestudy" element={<CaseStudy />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/submit" element={<SubmitBlog />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/events/manage" element={<ViewEvents />} />
-        <Route path="/events/add" element={<AddEvent />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/cookie-policy" element={<CookiePolicy />} />
-        <Route path="/disclaimer" element={<Disclaimer />} />
-        <Route path="/careers" element={<Careers/>} />
-        <Route path="/our-team" element={<OurTeam/>} />
-        <Route path="/our-works" element={<OurWork/>} />
-        <Route path="/tool" element={<ScorePage/>} />
-        <Route path="/clients" element={<Client/>} />
-        <Route path="/blogs/:slug" element={<BlogDetail />} />
-        <Route path="/careers/:slug" element={<CareerDetail />} />
-        <Route path="/qa-section" element={<QASection />} />
-        <Route path="/partnerships" element={<ClientPortfolios />} />
-        <Route path='/Ranjith' element={<Landing/>} />
-        <Route path="/services/branding" element={<BrandingService />} />
-        <Route path="/services/experience-design" element={<XDService />} />
-        <Route path="/services/technology" element={<TechnologyService />} />
-        <Route path="/services/global-marketing" element={<GlobalMarketingService />} />
-        <Route path="/services/google-marketing" element={<GoogleMarketingService />} />
-        <Route path="/services/geo" element={<GEOService />} />
-        <Route path="/services/seo" element={<SEOService />} />
-        <Route path="/services/aeo" element={<AEOService />} />
-        <Route path="/services/app-advertising" element={<AppAdvertisingService />} />
-        <Route path="/services/:serviceTitle" element={<Service1 />} />
-        <Route path="/employee/:name" element={<StaffDashboard />} />
-        <Route path="/voice" element={
-          <Suspense fallback={<div>Loading...</div>}>
-            <VoiceAsst />
-          </Suspense>
-        } />
-        <Route path='/register' element={<Register/>} />
-        <Route path='/login' element={<Login/>} />
-        <Route path='/user-register' element={<UserRegister/>} />
-        <Route path='/pre' element={<ProofFlow/>} />
-        <Route path='/proof' element={<Verification />} />
-        <Route path='/card' element={<ChooseCharacter/>} />
-        <Route path="/jobs/create" element={<AdminCreateJob />} />
-        <Route path='/leaderboard' element={<Leaderboard/>} />
-        <Route path='/forget-password' element={<ForgotPassword/>} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route path="/*" element={<NotFound />} />
+        <Navbar />
+        <ScrollTop />
+        <CookieConsent />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/casestudy" element={<CaseStudy />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/submit" element={<SubmitBlog />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/events/manage" element={<ViewEvents />} />
+          <Route path="/events/add" element={<AddEvent />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/our-team" element={<OurTeam />} />
+          <Route path="/our-works" element={<OurWork />} />
+          <Route path="/tool" element={<ScorePage />} />
+          <Route path="/clients" element={<Client />} />
+          <Route path="/blogs/:slug" element={<BlogDetail />} />
+          <Route path="/careers/:slug" element={<CareerDetail />} />
+          <Route path="/qa-section" element={<QASection />} />
+          <Route path="/partnerships" element={<ClientPortfolios />} />
+          <Route path='/Ranjit' element={<Landing />} />
+          <Route path="/services/branding" element={<BrandingService />} />
+          <Route path="/services/experience-design" element={<XDService />} />
+          <Route path="/services/technology" element={<TechnologyService />} />
+          <Route path="/services/global-marketing" element={<GlobalMarketingService />} />
+          <Route path="/services/google-marketing" element={<GoogleMarketingService />} />
+          <Route path="/services/geo" element={<GEOService />} />
+          <Route path="/services/seo" element={<SEOService />} />
+          <Route path="/services/aeo" element={<AEOService />} />
+          <Route path="/services/app-advertising" element={<AppAdvertisingService />} />
+          <Route path="/services/:serviceTitle" element={<Service1 />} />
+          <Route path="/employee/:name" element={<StaffDashboard />} />
+          <Route path="/voice" element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <VoiceAsst />
+            </Suspense>
+          } />
+          <Route path='/register' element={<Register />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/user-register' element={<UserRegister />} />
+          <Route path='/pre' element={<ProofFlow />} />
+          <Route path='/proof' element={<Verification />} />
+          <Route path='/card' element={<ChooseCharacter />} />
+          <Route path="/jobs/create" element={<AdminCreateJob />} />
+          <Route path='/leaderboard' element={<Leaderboard />} />
+          <Route path='/forget-password' element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/api-marketing" element={<ApiMarketingPage />} />
+          <Route path="/dashboard-x" element={<DashboardX />} />
+          <Route path="/insights" element={<SocialBureauInsight />} />
+          <Route path="/*" element={<NotFound />} />
 
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }
