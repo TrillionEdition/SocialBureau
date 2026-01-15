@@ -28,13 +28,18 @@ function HeroEditorial() {
         sm:top-6 sm:left-6
         lg:top-10 lg:left-10
       ">
-        <h3 className="
-          text-lg sm:text-xl lg:text-3xl
-          font-bold tracking-wide
-          mx-0 sm:mx-4 lg:mx- px-5
-        ">
-          Looplogik
-        </h3>
+        <a
+  href="https://www.jumpcutpictures.in/print-gallery.html#portfolio"
+  className="
+    text-lg sm:text-xl lg:text-3xl
+    font-bold tracking-wide
+    mx-0 sm:mx-4 lg:mx- px-5
+    hover:underline
+  "
+>
+  Looplogik
+</a>
+
       </div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 px-6 lg:px-10 py-24">
@@ -64,7 +69,12 @@ function HeroEditorial() {
 
 <p className="mt-6 text-gray-600 max-w-md">
   <span className="block font-medium text-gray-800">
-    Principal Communication Design Consultant, Looplogik
+    Principal Communication Design Consultant, <a
+  href="https://www.jumpcutpictures.in/print-gallery.html#portfolio"
+>
+  Looplogik
+</a>
+
   </span>
   Multi-disciplinary visual artist and communication designer based in
   Kochi, Kerala, with over three decades of experience across writing,
@@ -72,7 +82,11 @@ function HeroEditorial() {
 </p>
 
 <p className="mt-3 text-gray-600 max-w-md text-sm">
-  We are an eclectic bunch at Looplogik, bringing diverse creative perspectives to every project.
+  We are an eclectic bunch at <a
+  href="https://www.jumpcutpictures.in/print-gallery.html#portfolio"
+>
+  Looplogik
+</a>, bringing diverse creative perspectives to every project.
 </p>
 
 <p className="mt-3 text-xs uppercase tracking-widest text-gray-500">
@@ -212,7 +226,11 @@ function SplitFeature() {
           <p className="text-sm text-gray-700 leading-relaxed mb-6">
             Ranjit Chettur is a multi-disciplinary visual artist and
             communication designer based in Kochi, Kerala.He functions as
-                      the principal designer at Looplogik, a communication design
+                      the principal designer at <a
+  href="https://www.jumpcutpictures.in/print-gallery.html#portfolio"
+>
+  Looplogik
+</a>, a communication design
               practice.
             </p>
 
