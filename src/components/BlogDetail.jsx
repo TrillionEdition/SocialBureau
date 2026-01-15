@@ -474,7 +474,7 @@
 //               )}
 
 //               <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 mt-8 border border-gray-700">
-//                 <h3 className="text-xl font-bold text-gray-100 mb-3">Stay Updated</h3>
+//                 <h3 className="text-xl font-bold text-gray-100 mb-3"></h3>
 //                 <p className="text-gray-400 mb-4 text-sm">Get the latest articles and insights delivered to your inbox.</p>
 //                 <div className="space-y-3">
 //                   <input type="email" placeholder="Your email address" className="w-full px-4 py-3 rounded-lg border border-gray-700 bg-gray-900 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
