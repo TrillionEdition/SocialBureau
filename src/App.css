@@ -1,10 +1,12 @@
 @import "tailwindcss";
+
 @font-face {
   font-family: 'MyFont';
   src: url('/assets/logo.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
+
 /* Custom scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
@@ -28,6 +30,7 @@
   from {
     transform: rotateY(0deg);
   }
+
   to {
     transform: rotateY(360deg);
   }
@@ -39,13 +42,27 @@
 }
 
 @keyframes move1 {
-  0%, 100% { transform: translate(-30%, -30%); }
-  50% { transform: translate(30%, 30%); }
+
+  0%,
+  100% {
+    transform: translate(-30%, -30%);
+  }
+
+  50% {
+    transform: translate(30%, 30%);
+  }
 }
 
 @keyframes move2 {
-  0%, 100% { transform: translate(30%, -20%); }
-  50% { transform: translate(-30%, 20%); }
+
+  0%,
+  100% {
+    transform: translate(30%, -20%);
+  }
+
+  50% {
+    transform: translate(-30%, 20%);
+  }
 }
 
 .animate-move1 {
@@ -57,13 +74,23 @@
 }
 
 @keyframes scroll-left {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes scroll-right {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .animate-scroll-left {
@@ -82,6 +109,7 @@
   0% {
     background-position: 0% 50%;
   }
+
   100% {
     background-position: 100% 50%;
   }
@@ -89,4 +117,15 @@
 
 .animate-gradient-move {
   animation: gradient-move 2s linear infinite;
+}
+
+
+/* Add to your globals.css */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

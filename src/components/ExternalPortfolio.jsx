@@ -4,18 +4,235 @@ import { Linkedin, Instagram } from "lucide-react";
 export default function Landing() {
   return (
     <div className="bg-[#0b0d10] text-white">
-      <Navbar/>
+      <Navbar />
       <HeroEditorial />
-      <SplitFeature />
-      <MobileCard />     
-      <LatestBlogs /> 
       <GradientFeatures />
+      {/* <SplitFeature /> */}
+      <MobileCard />
+      <LatestBlogs />
+      {/* <GradientFeatures /> */}
       <LatestWebsite />
-      <ContactUsForm/>
-      <Footer/>
+      <ContactUsForm />
+      <Footer />
     </div>
   );
 }
+
+// function HeroEditorial() {
+//   return (
+//     <section className="relative min-h-screen bg-[#f5f4f0] text-black overflow-hidden">
+
+//       {/* TOP LEFT BRAND */}
+//       <div className="
+//         absolute z-20
+//         top-4 left-4
+//         sm:top-6 sm:left-6
+//         lg:top-10 lg:left-10
+//       ">
+//         <h3 className="
+//           text-lg sm:text-xl lg:text-3xl
+//           font-bold tracking-wide
+//           mx-0 sm:mx-4 lg:mx- px-5
+//         ">
+//           Looplogik
+//         </h3>
+//       </div>
+
+//       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 px-6 lg:px-10 py-24">
+
+//         {/* LEFT CONTENT */}
+//         <div className="relative flex flex-col justify-center z-10">
+//           <span
+//             className="
+//               absolute -left-10 top-1/2 -translate-y-1/2
+//               text-[120px] lg:text-[160px]
+//               font-serif text-black/5
+//               select-none pointer-events-none
+//             "
+//           >
+//             RANJIT CHETTUR
+//           </span>
+
+//           <h1 className="relative text-[48px] lg:text-[64px] font-serif leading-tight">
+//             <span
+//               className="absolute inset-0 text-white blur-xl opacity-70"
+//               aria-hidden="true"
+//             >
+//               RANJIT CHETTUR
+//             </span>
+//             <span className="relative">RANJIT CHETTUR</span>
+//           </h1>
+
+//           <p className="mt-6 text-gray-600 max-w-md">
+//             <span className="block font-medium text-gray-800">
+//               Principal Communication Design Consultant, Looplogik
+//             </span>
+//             Multi-disciplinary visual artist and communication designer based in
+//             Kochi, Kerala, with over three decades of experience across writing,
+//             photography, audio-visual, print and digital media.
+//           </p>
+
+//           <p className="mt-3 text-gray-600 max-w-md text-sm">
+//             We are an eclectic bunch at Looplogik, bringing diverse creative perspectives to every project.
+//           </p>
+
+//           <p className="mt-3 text-xs uppercase tracking-widest text-gray-500">
+//             Established 2007 | 30+ Years Professional Experience
+//           </p>
+//           {/* SOCIAL LINKS */}
+//           <div className="mt-8 flex items-center gap-2 p-4">
+
+//             <a
+//               href="https://www.linkedin.com/in/ranjit-chettur"
+//               target="_blank"
+//               rel="noopener noreferrer"
+//               className="
+//       group flex items-center gap-2
+//       text-xs uppercase tracking-widest
+//       text-gray-600 hover:text-black
+//       transition
+//     "
+//             >
+//               <Linkedin className="w-4 h-4" />
+//               <span className="relative">
+//                 <span className="
+//         absolute left-0 -bottom-1
+//         w-0 h-[1px] bg-black
+//         group-hover:w-full
+//         transition-all duration-300
+//       " />
+//               </span>
+//             </a>
+
+//             <span className="h-4 w-px bg-gray-300" />
+
+//             <a
+//               href="https://instagram.com/chetturranjit"
+//               target="_blank"
+//               rel="noopener noreferrer"
+//               className="
+//       group flex items-center gap-2
+//       text-xs uppercase tracking-widest
+//       text-gray-600 hover:text-black
+//       transition
+//     "
+//             >
+//               <Instagram className="w-4 h-4" />
+//               <span className="relative">
+//                 <span className="
+//         absolute left-0 -bottom-1
+//         w-0 h-[1px] bg-black
+//         group-hover:w-full
+//         transition-all duration-300
+//       " />
+//               </span>
+//             </a>
+
+//           </div>
+
+//         </div>
+
+//         {/* RIGHT IMAGE */}
+//         <div className="relative flex flex-col items-center lg:items-end">
+
+//           {/* IMAGE */}
+//           <img
+//             src="./assets/dp3.jpg"
+//             className="w-full max-h-[70vh] lg:max-h-[900px] object-contain lg:object-cover"
+//             alt="Looplogik"
+//           />
+
+//           {/* DESKTOP OVERLAY TEXT */}
+//           <p
+//             className="
+//             hidden lg:block
+//             absolute bottom-20 right-12 max-w-xs
+//             text-white text-md leading-relaxed opacity-90
+//           "
+//           >
+//             A communication design practice grounded in storytelling across writing, photography, and multi-media platforms.
+//           </p>
+//         </div>
+
+//         {/* MOBILE TEXT — BELOW IMAGE */}
+//         <p
+//           className="
+//             lg:hidden mt-6
+//             text-gray-700 text-sm leading-relaxed
+//             text-center px-6 
+//           "
+//         >
+//           A communication design practice focused on storytelling
+//           through writing, photography and multi-media platforms.
+//         </p>
+
+//       </div>
+//     </section>
+//   );
+// }
+
+// function SplitFeature() {
+//   return (
+//     <section className="relative bg-white overflow-hidden">
+//       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 min-h-[720px]">
+
+//         {/* LEFT IMAGE */}
+//         <div className="relative">
+//           <img
+//             src="./assets/dp2.jpg"
+//             alt="Ranjit Chettur"
+//             className="h-full w-full object-cover grayscale"
+//           />
+//         </div>
+
+//         {/* RIGHT PANEL */}
+//         <div className="relative flex items-center">
+
+//           {/* SHARP V CUT PANEL */}
+//           <div
+//             className="
+//               absolute inset-0 bg-[#f1f3f5]
+//               [clip-path:polygon(0_0,88%_0,100%_50%,88%_100%,0_100%)]
+//             "
+//           />
+
+//           {/* CONTENT */}
+//           <div className="relative z-10 px-10 lg:px-14 max-w-xl">
+//             <p className="text-xs pt-6 uppercase tracking-widest text-gray-500 mb-3">
+//               About Me
+//             </p>
+
+//             <h3 className="text-4xl font-serif leading-tight mb-4 text-gray-900">
+//               Ranjit <br /> Chettur
+//             </h3>
+
+//             <p className="text-xs text-gray-500 mb-6">
+//               Visual Artist · Principal Communication Design Consultant · 30+ Years Experience
+//             </p>
+
+//             <p className="text-sm text-gray-700 leading-relaxed mb-6">
+//               Ranjit Chettur is a multi-disciplinary visual artist and
+//               communication designer based in Kochi, Kerala.He functions as
+//               the principal designer at Looplogik, a communication design
+//               practice.
+//             </p>
+
+//             <p className="text-sm text-gray-700 leading-relaxed mb-6">
+//               He possesses professional experience spanning over three decades
+//               in advertising and industrial photography, video film making,
+//               and textual communication.
+//             </p>
+//             <p className="italic text-gray-800 text-sm leading-relaxed pb-9">
+//               "A practice shaped by deep visual literacy, narrative thinking,
+//               and hands-on experience across media—bringing together influences
+//               from cinema, photography, literature, music and performing arts."
+//             </p>
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
 
 function HeroEditorial() {
   return (
@@ -62,95 +279,98 @@ function HeroEditorial() {
             <span className="relative">RANJIT CHETTUR</span>
           </h1>
 
-<p className="mt-6 text-gray-600 max-w-md">
-  <span className="block font-medium text-gray-800">
-    Principal Communication Design Consultant, Looplogik
-  </span>
-  Multi-disciplinary visual artist and communication designer based in
-  Kochi, Kerala, with over three decades of experience across writing,
-  photography, audio-visual, print and digital media.
-</p>
+          <p className="mt-6 text-gray-600 max-w-md">
+            <span className="block font-medium text-gray-800">
+              Principal Communication Design Consultant, Looplogik
+            </span>
+            Multi-disciplinary visual artist and communication designer based in
+            Kochi, Kerala, with over three decades of experience across writing,
+            photography, audio-visual, print and digital media.
+          </p>
 
-<p className="mt-3 text-gray-600 max-w-md text-sm">
-  We are an eclectic bunch at Looplogik, bringing diverse creative perspectives to every project.
-</p>
+          <p className="mt-3 text-gray-600 max-w-md text-sm">
+            We are an eclectic bunch at Looplogik, bringing diverse creative perspectives to every project.
+          </p>
+          <p className="italic text-gray-800 text-sm leading-relaxed">
+            "A practice shaped by deep visual literacy, narrative thinking,
+            and hands-on experience across media—bringing together influences
+            from cinema, photography, literature, music and performing arts."
+          </p>
 
-<p className="mt-3 text-xs uppercase tracking-widest text-gray-500">
-  Established 2007 | 30+ Years Professional Experience
-</p>
-{/* SOCIAL LINKS */}
-<div className="mt-8 flex items-center gap-2 p-4">
+          <p className="mt-3 text-xs uppercase tracking-widest text-gray-500">
+            Established 2007 | 30+ Years Professional Experience
+          </p>
 
-  <a
-    href="https://www.linkedin.com/in/ranjit-chettur"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="
-      group flex items-center gap-2
-      text-xs uppercase tracking-widest
-      text-gray-600 hover:text-black
-      transition
-    "
-  >
-    <Linkedin className="w-4 h-4" />
-    <span className="relative">
-      <span className="
-        absolute left-0 -bottom-1
-        w-0 h-[1px] bg-black
-        group-hover:w-full
-        transition-all duration-300
-      " />
-    </span>
-  </a>
+          {/* SOCIAL LINKS */}
+          <div className="mt-8 flex items-center gap-2 p-4">
+            <a
+              href="https://www.linkedin.com/in/ranjit-chettur"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                group flex items-center gap-2
+                text-xs uppercase tracking-widest
+                text-gray-600 hover:text-black
+                transition
+              "
+            >
+              <Linkedin className="w-4 h-4" />
+              <span className="relative">
+                <span className="
+                  absolute left-0 -bottom-1
+                  w-0 h-[1px] bg-black
+                  group-hover:w-full
+                  transition-all duration-300
+                " />
+              </span>
+            </a>
 
-  <span className="h-4 w-px bg-gray-300" />
+            <span className="h-4 w-px bg-gray-300" />
 
-  <a
-    href="https://instagram.com/chetturranjit"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="
-      group flex items-center gap-2
-      text-xs uppercase tracking-widest
-      text-gray-600 hover:text-black
-      transition
-    "
-  >
-    <Instagram className="w-4 h-4" />
-    <span className="relative">
-      <span className="
-        absolute left-0 -bottom-1
-        w-0 h-[1px] bg-black
-        group-hover:w-full
-        transition-all duration-300
-      " />
-    </span>
-  </a>
-
-</div>
+            <a
+              href="https://instagram.com/chetturranjit"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                group flex items-center gap-2
+                text-xs uppercase tracking-widest
+                text-gray-600 hover:text-black
+                transition
+              "
+            >
+              <Instagram className="w-4 h-4" />
+              <span className="relative">
+                <span className="
+                  absolute left-0 -bottom-1
+                  w-0 h-[1px] bg-black
+                  group-hover:w-full
+                  transition-all duration-300
+                " />
+              </span>
+            </a>
+          </div>
 
         </div>
 
-        {/* RIGHT IMAGE */}
+        {/* RIGHT IMAGE - Only one image remains */}
         <div className="relative flex flex-col items-center lg:items-end">
-
           {/* IMAGE */}
           <img
             src="./assets/dp3.jpg"
-            className= "w-full max-h-[70vh] lg:max-h-[900px] object-contain lg:object-cover"
+            className="w-full max-h-[70vh] lg:max-h-[900px] object-contain lg:object-cover"
             alt="Looplogik"
           />
 
           {/* DESKTOP OVERLAY TEXT */}
           <p
-          className="
-            hidden lg:block
-            absolute bottom-20 right-12 max-w-xs
-            text-white text-md leading-relaxed opacity-90
-          "
-        >
-         A communication design practice grounded in storytelling across writing, photography, and multi-media platforms.
-        </p>
+            className="
+              hidden lg:block
+              absolute bottom-20 right-12 max-w-xs
+              text-white text-md leading-relaxed opacity-90
+            "
+          >
+            A communication design practice grounded in storytelling across writing, photography, and multi-media platforms.
+          </p>
         </div>
 
         {/* MOBILE TEXT — BELOW IMAGE */}
@@ -164,75 +384,10 @@ function HeroEditorial() {
           A communication design practice focused on storytelling
           through writing, photography and multi-media platforms.
         </p>
-
       </div>
     </section>
   );
 }
-
-function SplitFeature() {
-  return (
-    <section className="relative bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 min-h-[720px]">
-
-        {/* LEFT IMAGE */}
-        <div className="relative">
-          <img
-            src="./assets/dp2.jpg"
-            alt="Ranjit Chettur"
-            className="h-full w-full object-cover grayscale"
-          />
-        </div>
-
-        {/* RIGHT PANEL */}
-        <div className="relative flex items-center">
-
-          {/* SHARP V CUT PANEL */}
-          <div
-            className="
-              absolute inset-0 bg-[#f1f3f5]
-              [clip-path:polygon(0_0,88%_0,100%_50%,88%_100%,0_100%)]
-            "
-          />
-
-        {/* CONTENT */}
-        <div className="relative z-10 px-10 lg:px-14 max-w-xl">
-          <p className="text-xs pt-6 uppercase tracking-widest text-gray-500 mb-3">
-            About Me
-          </p>
-
-          <h3 className="text-4xl font-serif leading-tight mb-4 text-gray-900">
-            Ranjit <br /> Chettur
-          </h3>
-
-          <p className="text-xs text-gray-500 mb-6">
-            Visual Artist · Principal Communication Design Consultant · 30+ Years Experience
-          </p>
-
-          <p className="text-sm text-gray-700 leading-relaxed mb-6">
-            Ranjit Chettur is a multi-disciplinary visual artist and
-            communication designer based in Kochi, Kerala.He functions as
-                      the principal designer at Looplogik, a communication design
-              practice.
-            </p>
-
-            <p className="text-sm text-gray-700 leading-relaxed mb-6">
-              He possesses professional experience spanning over three decades
-              in advertising and industrial photography, video film making,
-              and textual communication.
-            </p>
-<p className="italic text-gray-800 text-sm leading-relaxed pb-9">
-  "A practice shaped by deep visual literacy, narrative thinking,
-  and hands-on experience across media—bringing together influences
-  from cinema, photography, literature, music and performing arts."
-</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -322,7 +477,7 @@ function MobileCard() {
         </div>
 
         {/* DESKTOP - WITH CONNECTING BACKGROUND LAYER */}
-        <div 
+        <div
           ref={containerRef}
           onMouseLeave={handleContainerLeave}
           className={`
@@ -349,14 +504,14 @@ function MobileCard() {
           <div className="relative w-[640px] h-[420px]">
             {cards.map((card, index) => {
               const isHovered = hovered === index;
-              
+
               // Calculate positions for better visual balance
               const collapsedPositions = [
                 "translate-x-[-48%]",  // Left-most card
                 "translate-x-[-38%]",  // Middle card
                 "translate-x-[-28%]",  // Right-most card
               ];
-              
+
               const expandedPositions = [
                 "translate-x-[-180%]", // Far left
                 "translate-x-[-50%]",  // Center
@@ -471,7 +626,7 @@ const blogs = [
     image: "/assets/dcbooks.png",
     link: "https://looplogik.wordpress.com/2025/04/09/about-dc-kizhakemuri-2",
   },
-    {
+  {
     id: 5,
     title: "Ammu,Kunju and Pandi",
     category: "UI Interface",
@@ -506,13 +661,13 @@ const blogs = [
   //   image: "/assets/happy.jpg",
   //   link: "https://looplogik.wordpress.com/2025/07/19/the-best-things-in-life-are-free-2",
   // },
-    {
+  {
     id: 9,
     title: "Backyard Musings- A life the world forgot",
     category: "UI Interface",
     image: "/assets/yard.png",
     link: "https://looplogik.wordpress.com/2026/01/05/backyard-musings-a-life-the-world-forgot",
-    },{
+  }, {
     id: 10,
     title: "B.Arch – DC School of Architecture and Design",
     category: "UI Interface",
@@ -530,7 +685,7 @@ function LatestBlogs() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 640);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -542,15 +697,15 @@ function LatestBlogs() {
 
   const scroll = (direction) => {
     let newIndex = currentIndex;
-    
+
     if (direction === 'right') {
       newIndex = Math.min(currentIndex + 1, blogs.length - 1);
     } else {
       newIndex = Math.max(currentIndex - 1, 0);
     }
-    
+
     setCurrentIndex(newIndex);
-    
+
     if (scrollRef.current) {
       scrollRef.current.scrollTo({
         left: newIndex * TOTAL_WIDTH,
@@ -595,8 +750,8 @@ function LatestBlogs() {
                 border border-gray-300
                 transition-all duration-300
                 text-lg font-light
-                ${canScrollLeft 
-                  ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer' 
+                ${canScrollLeft
+                  ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer'
                   : 'opacity-40 cursor-not-allowed'
                 }
               `}
@@ -613,8 +768,8 @@ function LatestBlogs() {
                 border border-gray-300
                 transition-all duration-300
                 text-lg font-light
-                ${canScrollRight 
-                  ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer' 
+                ${canScrollRight
+                  ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer'
                   : 'opacity-40 cursor-not-allowed'
                 }
               `}
@@ -703,8 +858,8 @@ function LatestBlogs() {
                 border border-gray-300
                 transition-all duration-300
                 text-lg font-light
-                ${canScrollLeft 
-                  ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer' 
+                ${canScrollLeft
+                  ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer'
                   : 'opacity-40 cursor-not-allowed'
                 }
               `}
@@ -721,8 +876,8 @@ function LatestBlogs() {
                 border border-gray-300
                 transition-all duration-300
                 text-lg font-light
-                ${canScrollRight 
-                  ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer' 
+                ${canScrollRight
+                  ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer'
                   : 'opacity-40 cursor-not-allowed'
                 }
               `}
@@ -806,7 +961,7 @@ function LatestBlogs() {
 //     const checkMobile = () => {
 //       setIsMobile(window.innerWidth < 640);
 //     };
-    
+
 //     checkMobile();
 //     window.addEventListener('resize', checkMobile);
 //     return () => window.removeEventListener('resize', checkMobile);
@@ -818,15 +973,15 @@ function LatestBlogs() {
 
 //   const scroll = (direction) => {
 //     let newIndex = currentIndex;
-    
+
 //     if (direction === 'right') {
 //       newIndex = Math.min(currentIndex + 1, web.length - 1);
 //     } else {
 //       newIndex = Math.max(currentIndex - 1, 0);
 //     }
-    
+
 //     setCurrentIndex(newIndex);
-    
+
 //     if (scrollRef.current) {
 //       scrollRef.current.scrollTo({
 //         left: newIndex * TOTAL_WIDTH,
@@ -1013,56 +1168,56 @@ function LatestBlogs() {
 //   );
 // }
 function LatestWebsite() {
-const web = [
-  {
-    id: 1,
-    name: "DC Kizhakemuri Foundation",
-    logo: "/assets/dckf12.webp",
-    link: "https://dckf.in",
-  },
-  {
-    id: 2,
-    name: "DC Books",
-    logo: "/assets/dcbookslogo.jpg",
-    link: "https://dcbooks.com",
-  },
-  {
-    id: 3,
-    name: "Chandy's Drizzle Drops",
-    logo: "/assets/cdd.jpg",
-    link: "https://chandysdrizzledrops.com",
-  },
-  {
-    id: 4,
-    name: "Chandy's Windy Woods",
-    logo: "/assets/cwwm.jpg",
-    link: "https://www.chandyswindywoods.com/overview.html",
-  },
-  {
-    id: 5,
-    name: "Planet Munnar",
-    logo: "/assets/tpmunnar.png",
-    link: "https://planetmunnar.com",
-  },
-  {
-    id: 6,
-    name: "Gokulam Grand Kozhikode",
-    logo: "/assets/gkozhi.png",
-    link: "https://gokulamhotels.com/gokulam-grand-kozhikode",
-  },
-  {
-    id: 7,
-    name: "Gokulam Grand Kumarakom",
-    logo: "/assets/gk2.jpg",
-    link: "https://gokulamhotels.com/gokulamgrandkumarakom",
-  },
-  {
-    id: 8,
-    name: "Gokulam Grand Trivandrum",
-    logo: "/assets/gotri1.PNG",
-    link: "https://gokulamhotels.com/gokulamgrandtrivandrum",
-  },
-];
+  const web = [
+    {
+      id: 1,
+      name: "DC Kizhakemuri Foundation",
+      logo: "/assets/dckf12.webp",
+      link: "https://dckf.in",
+    },
+    {
+      id: 2,
+      name: "DC Books",
+      logo: "/assets/dcbookslogo.jpg",
+      link: "https://dcbooks.com",
+    },
+    {
+      id: 3,
+      name: "Chandy's Drizzle Drops",
+      logo: "/assets/cdd.jpg",
+      link: "https://chandysdrizzledrops.com",
+    },
+    {
+      id: 4,
+      name: "Chandy's Windy Woods",
+      logo: "/assets/cwwm.jpg",
+      link: "https://www.chandyswindywoods.com/overview.html",
+    },
+    {
+      id: 5,
+      name: "Planet Munnar",
+      logo: "/assets/tpmunnar.png",
+      link: "https://planetmunnar.com",
+    },
+    {
+      id: 6,
+      name: "Gokulam Grand Kozhikode",
+      logo: "/assets/gkozhi.png",
+      link: "https://gokulamhotels.com/gokulam-grand-kozhikode",
+    },
+    {
+      id: 7,
+      name: "Gokulam Grand Kumarakom",
+      logo: "/assets/gk2.jpg",
+      link: "https://gokulamhotels.com/gokulamgrandkumarakom",
+    },
+    {
+      id: 8,
+      name: "Gokulam Grand Trivandrum",
+      logo: "/assets/gotri1.PNG",
+      link: "https://gokulamhotels.com/gokulamgrandtrivandrum",
+    },
+  ];
   // return (
   //   <section className="bg-white py-44">
   //     <div className="max-w-6xl mx-auto px-6">
@@ -1111,54 +1266,54 @@ const web = [
   //     </div>
   //   </section>
   // );
-return (
-  <section className="bg-white py-28">
-    <div className="max-w-6xl mx-auto px-6" id='web-copywriting'>
+  return (
+    <section className="bg-white py-28">
+      <div className="max-w-6xl mx-auto px-6" id='web-copywriting'>
 
-      {/* HEADING */}
-      <h2 className="
+        {/* HEADING */}
+        <h2 className="
         text-center
         text-4xl sm:text-5xl
         font-serif
         text-black
         mb-20
       ">
-        Web Communication Design
-      </h2>
+          Website Content
+        </h2>
 
-      {/* LOGO GRID */}
-      <div className="
+        {/* LOGO GRID */}
+        <div className="
         grid grid-cols-2 sm:grid-cols-4
         gap-y-20 gap-x-16
         place-items-center
       ">
-        {web.map((item) => (
-          <a
-            key={item.id}
-            href={item.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="
+          {web.map((item) => (
+            <a
+              key={item.id}
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
               opacity-70
               hover:opacity-100
               transition-opacity duration-300
             "
-          >
-            <img
-              src={item.logo}
-              alt={item.name}
-              className="
+            >
+              <img
+                src={item.logo}
+                alt={item.name}
+                className="
                 max-h-24 sm:max-h-30
                 w-auto object-contain
               "
-            />
-          </a>
-        ))}
-      </div>
+              />
+            </a>
+          ))}
+        </div>
 
-    </div>
-  </section>
-);
+      </div>
+    </section>
+  );
 
 }
 
@@ -1286,15 +1441,15 @@ import { Mail, User, MessageSquare, Send } from "lucide-react";
 
 //   const handleSubmit = (e) => {
 //     e.preventDefault();
-    
+
 //     // Create WhatsApp message with form data
 //     const whatsappMessage = `New Contact Form Submission:%0A%0A*Name:* ${form.name}%0A*Email:* ${form.email}%0A*Message:* ${form.message}`;
-    
+
 //     // Open WhatsApp with pre-filled message
 //     window.open(`https://wa.me/918921840486?text=${whatsappMessage}`, "_blank");
-    
+
 //     console.log("Form submitted:", form);
-    
+
 //     // Optional: Reset form after submission
 //     setForm({
 //       name: "",
@@ -1437,7 +1592,7 @@ function ContactUsForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Create WhatsApp message with all form details
     const whatsappMessage = `
 New Project Inquiry - Looplogik Design Studio
@@ -1455,15 +1610,15 @@ Design Studio: Looplogik
 Location: Kochi, Kerala
 Submitted via: Website Contact Form
     `.trim();
-    
+
     // URL encode the message
     const encodedMessage = encodeURIComponent(whatsappMessage);
-    
+
     // Open WhatsApp with the formatted message
     window.open(`https://wa.me/918921840486?text=${encodedMessage}`, "_blank");
-    
+
     console.log("Form submitted:", form);
-    
+
     // Reset form after submission
     setForm({
       name: "",
@@ -1560,7 +1715,7 @@ Submitted via: Website Contact Form
                   "
                 >
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.826 9.826 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411"/>
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.826 9.826 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411" />
                   </svg>
                   Send to Ranjit Chettur via WhatsApp
                 </button>
@@ -1570,7 +1725,7 @@ Submitted via: Website Contact Form
               {/* Note about the process */}
               <div className="mt-8 pt-6 border-t border-white/10">
                 <p className="text-white/50 text-xs">
-                  Your details will be sent directly to Ranjit Chettur, 
+                  Your details will be sent directly to Ranjit Chettur,
                   Principal Communication Design Consultant at Looplogik.
                 </p>
               </div>
@@ -1592,11 +1747,11 @@ function GradientFeatures() {
         <h2 className="text-4xl font-semibold mb-4">
           My Work
         </h2>
-<p className="text-white/60 max-w-2xl mb-16">
-  An integrated communication design practice spanning audio-visual,
-  print, social media, and web-based experiences, aligning distinctive
-  aesthetic solutions with client communication objectives.
-</p>
+        <p className="text-white/60 max-w-2xl mb-16">
+          An integrated communication design practice spanning audio-visual,
+          print, social media, and web-based experiences, aligning distinctive
+          aesthetic solutions with client communication objectives.
+        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <GradientCard

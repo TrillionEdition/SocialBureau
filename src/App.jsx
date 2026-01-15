@@ -59,7 +59,7 @@ import SocialBureauInsight from './pages/SocialBureauInsight'
 import { Edit } from 'lucide-react'
 import EditUser from './pages/EditUser'
 import NicheMarketing from './components/NicheMArketing'
-
+import HorizontalScrollSection from './components/trail'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
@@ -133,7 +133,9 @@ function App() {
           <Route path="/insights" element={<SocialBureauInsight />} />
           <Route path="/*" element={<NotFound />} />
           <Route path='/edit-user' element={<EditUser />} />
-          <Route path='/Niche-Marketing' element={<NicheMarketing/>} />
+          <Route path='/Niche-Marketing' element={<NicheMarketing />} />
+          <Route path='/horizontal' element={<HorizontalScrollSection />} />
+
         </Routes>
       </BrowserRouter>
     </>
