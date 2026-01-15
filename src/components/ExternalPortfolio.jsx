@@ -246,17 +246,16 @@ function HeroEditorial() {
         lg:top-10 lg:left-10
       ">
         <a
-  href="https://www.jumpcutpictures.in/print-gallery.html#portfolio"
-  className="
+          href="https://www.jumpcutpictures.in/print-gallery.html#portfolio"
+          className="
     text-lg sm:text-xl lg:text-3xl
     font-bold tracking-wide
     mx-0 sm:mx-4 lg:mx- px-5
     hover:underline
   "
->
-  Looplogik
-</a>
-
+        >
+          Looplogik
+        </a>
       </div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 px-6 lg:px-10 py-24">
@@ -284,46 +283,56 @@ function HeroEditorial() {
             <span className="relative">RANJIT CHETTUR</span>
           </h1>
 
-<p className="mt-6 text-gray-600 max-w-md">
-  <span className="block font-medium text-gray-800">
-    Principal Communication Design Consultant, Looplogik
-  </span>
-  Multi-disciplinary visual artist and communication designer based in
-  Kochi, Kerala, with over three decades of experience across writing,
-  photography, audio-visual, print and digital media.
-</p>
 
-<p className="mt-3 text-gray-600 max-w-md text-sm">
-  We are an eclectic bunch at Looplogik, bringing diverse creative perspectives to every project.
-</p>
+          <p className="mt-6 text-gray-600 max-w-md">
+            <span className="block font-medium text-gray-800">
+              Principal Communication Design Consultant, <a
+                href="https://www.jumpcutpictures.in/print-gallery.html#portfolio"
+              >
+                Looplogik
+              </a>
 
-<p className="mt-3 text-xs uppercase tracking-widest text-gray-500">
-  Established 2007 | 30+ Years Professional Experience
-</p>
-{/* SOCIAL LINKS */}
-<div className="mt-8 flex items-center gap-2 p-4">
+            </span>
+            Multi-disciplinary visual artist and communication designer based in
+            Kochi, Kerala, with over three decades of experience across writing,
+            photography, audio-visual, print and digital media.
+          </p>
 
-  <a
-    href="https://www.linkedin.com/in/ranjit-chettur"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="
-      group flex items-center gap-2
-      text-xs uppercase tracking-widest
-      text-gray-600 hover:text-black
-      transition
-    "
-  >
-    <Linkedin className="w-4 h-4" />
-    <span className="relative">
-      <span className="
-        absolute left-0 -bottom-1
-        w-0 h-[1px] bg-black
-        group-hover:w-full
-        transition-all duration-300
-      " />
-    </span>
-  </a>
+          <p className="mt-3 text-gray-600 max-w-md text-sm">
+            We are an eclectic bunch at <a
+              href="https://www.jumpcutpictures.in/print-gallery.html#portfolio"
+            >
+              Looplogik
+            </a>, bringing diverse creative perspectives to every project.
+          </p>
+
+          <p className="mt-3 text-xs uppercase tracking-widest text-gray-500">
+            Established 2007 | 30+ Years Professional Experience
+          </p>
+
+          {/* SOCIAL LINKS */}
+          <div className="mt-8 flex items-center gap-2 p-4">
+            <a
+              href="https://www.linkedin.com/in/ranjit-chettur"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                group flex items-center gap-2
+                text-xs uppercase tracking-widest
+                text-gray-600 hover:text-black
+                transition
+              "
+            >
+              <Linkedin className="w-4 h-4" />
+              <span className="relative">
+                <span className="
+                  absolute left-0 -bottom-1
+                  w-0 h-[1px] bg-black
+                  group-hover:w-full
+                  transition-all duration-300
+                " />
+              </span>
+            </a>
 
             <span className="h-4 w-px bg-gray-300" />
 
@@ -349,109 +358,41 @@ function HeroEditorial() {
               </span>
             </a>
           </div>
-
         </div>
 
-        {/* RIGHT IMAGE - Only one image remains */}
+        {/* Right Image Section */}
         <div className="relative flex flex-col items-center lg:items-end">
-          {/* IMAGE */}
           <img
             src="./assets/dp3.jpg"
             className="w-full max-h-[70vh] lg:max-h-[900px] object-contain lg:object-cover"
             alt="Looplogik"
           />
 
-          {/* DESKTOP OVERLAY TEXT */}
-          <p
-            className="
-              hidden lg:block
-              absolute bottom-20 right-12 max-w-xs
-              text-white text-md leading-relaxed opacity-90
-            "
-          >
-            A communication design practice grounded in storytelling across writing, photography, and multi-media platforms.
+          {/* Desktop-only overlay */}
+          <p className="
+    hidden lg:block
+    absolute bottom-20 right-12 max-w-xs
+    text-white text-sm leading-relaxed opacity-90 italic
+  ">
+            "A practice shaped by deep visual literacy, narrative thinking,
+            and hands-on experience across media—bringing together influences
+            from cinema, photography, literature, music and performing arts."
           </p>
         </div>
 
-        {/* MOBILE TEXT — BELOW IMAGE */}
-        <p
-          className="
-            lg:hidden mt-6
-            text-gray-700 text-sm leading-relaxed
-            text-center px-6 
-          "
-        >
-          A communication design practice focused on storytelling
-          through writing, photography and multi-media platforms.
+        {/* Mobile-only text (placed outside image container) */}
+        <p className="
+  lg:hidden mt-6
+  text-gray-700 text-sm leading-relaxed text-center px-6 italic
+">
+          "A practice shaped by deep visual literacy, narrative thinking,
+          and hands-on experience across media—bringing together influences
+          from cinema, photography, literature, music and performing arts."
         </p>
       </div>
     </section>
   );
 }
-
-function SplitFeature() {
-  return (
-    <section className="relative bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 min-h-[720px]">
-
-        {/* LEFT IMAGE */}
-        <div className="relative">
-          <img
-            src="./assets/dp2.jpg"
-            alt="Ranjit Chettur"
-            className="h-full w-full object-cover grayscale"
-          />
-        </div>
-
-        {/* RIGHT PANEL */}
-        <div className="relative flex items-center">
-
-          {/* SHARP V CUT PANEL */}
-          <div
-            className="
-              absolute inset-0 bg-[#f1f3f5]
-              [clip-path:polygon(0_0,88%_0,100%_50%,88%_100%,0_100%)]
-            "
-          />
-
-        {/* CONTENT */}
-        <div className="relative z-10 px-10 lg:px-14 max-w-xl">
-          <p className="text-xs pt-6 uppercase tracking-widest text-gray-500 mb-3">
-            About Me
-          </p>
-
-          <h3 className="text-4xl font-serif leading-tight mb-4 text-gray-900">
-            Ranjit <br /> Chettur
-          </h3>
-
-          <p className="text-xs text-gray-500 mb-6">
-            Visual Artist · Principal Communication Design Consultant · 30+ Years Experience
-          </p>
-
-          <p className="text-sm text-gray-700 leading-relaxed mb-6">
-            Ranjit Chettur is a multi-disciplinary visual artist and
-            communication designer based in Kochi, Kerala.He functions as
-                      the principal designer at Looplogik, a communication design
-              practice.
-            </p>
-
-            <p className="text-sm text-gray-700 leading-relaxed mb-6">
-              He possesses professional experience spanning over three decades
-              in advertising and industrial photography, video film making,
-              and textual communication.
-            </p>
-<p className="italic text-gray-800 text-sm leading-relaxed pb-9">
-  "A practice shaped by deep visual literacy, narrative thinking,
-  and hands-on experience across media—bringing together influences
-  from cinema, photography, literature, music and performing arts."
-</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -663,19 +604,6 @@ function MobileCard() {
 
 const blogs = [
   {
-    id: 9,
-    title: "Backyard Musings- A life the world forgot",
-    category: "UI Interface",
-    image: "/assets/yard.png",
-    link: "https://looplogik.wordpress.com/2026/01/05/backyard-musings-a-life-the-world-forgot",
-    },{
-    id: 10,
-    title: "B.Arch – DC School of Architecture and Design",
-    category: "UI Interface",
-    image: "/assets/dcschool.webp",
-    link: "https://looplogik.wordpress.com/2025/05/13/b-arch-dc-school-of-architecture-and-design-blog-post",
-  },
-  {
     id: 1,
     title: "Fauna Of Mirrors",
     category: "UI Interface",
@@ -738,13 +666,13 @@ const blogs = [
   //   image: "/assets/happy.jpg",
   //   link: "https://looplogik.wordpress.com/2025/07/19/the-best-things-in-life-are-free-2",
   // },
-    {
+  {
     id: 9,
     title: "Backyard Musings- A life the world forgot",
     category: "UI Interface",
     image: "/assets/yard.png",
     link: "https://looplogik.wordpress.com/2026/01/05/backyard-musings-a-life-the-world-forgot",
-    },{
+  }, {
     id: 10,
     title: "B.Arch – DC School of Architecture and Design",
     category: "UI Interface",
@@ -969,281 +897,6 @@ function LatestBlogs() {
   );
 }
 
-
-// const web = [
-//   {
-//     id: 1,
-//     title: "Welcome to DC Kizhakemuri Foundation",
-//     category: "UI Interface",
-//     image: "/assets/dkf.png",
-//     link: "https://dckf.in",
-//   },
-//   {
-//     id: 2,
-//     title: "DC BOOKS",
-//     category: "UI Interface",
-//     image: "/assets/dcbookslogo.jpg",
-//     link: "https://dcbooks.com"
-//     },
-//   {
-//     id: 3,
-//     title: "Chandy's Drizzle Drops",
-//     category: "UI Interface",
-//     image: "/assets/cdd.jpg",
-//     link: "https://chandysdrizzledrops.com"
-//     },
-//   {
-//     id: 4,
-//     title: "Chandy's Windy Woods",
-//     category: "UI Interface",
-//     image: "/assets/cwwm.jpg",
-//     link: "https://www.chandyswindywoods.com/overview.html",
-//   },
-//     {
-//     id: 5,
-//     title: "Planet Munnar",
-//     category: "UI Interface",
-//     image: "/assets/tpmunnar.png",
-//     link: "https://planetmunnar.com"  
-//   },
-//   {
-//     id: 6,
-//     title: "Gokulam Grand Kozhikode",
-//     category: "UI Interface",
-//     image: "/assets/gkozhi.png",
-//     link: "https://gokulamhotels.com/gokulam-grand-kozhikode"
-//     },
-//   {
-//     id: 7,
-//     title: "Gokulam Grand Kumarakom",
-//     category: "UI Interface",
-//     image: "/assets/gk2.jpg",
-//     link: "https://gokulamhotels.com/gokulamgrandkumarakom",
-//   },
-//     {
-//     id: 8,
-//     title: "Gokulam Grand Trivandrum",
-//     category: "UI Interface",
-//     image: "/assets/gotri.png",
-//     link: "https://gokulamhotels.com/gokulamgrandtrivandrum",
-//   }
-// ];
-
-// function LatestWebsite() {
-//   const scrollRef = useRef(null);
-//   const [currentIndex, setCurrentIndex] = useState(0);
-//   const [isMobile, setIsMobile] = useState(false);
-
-//   useEffect(() => {
-//     const checkMobile = () => {
-//       setIsMobile(window.innerWidth < 640);
-//     };
-
-//     checkMobile();
-//     window.addEventListener('resize', checkMobile);
-//     return () => window.removeEventListener('resize', checkMobile);
-//   }, []);
-
-//   const CARD_WIDTH = isMobile ? 300 : 320;
-//   const GAP = 16;
-//   const TOTAL_WIDTH = CARD_WIDTH + GAP;
-
-//   const scroll = (direction) => {
-//     let newIndex = currentIndex;
-
-//     if (direction === 'right') {
-//       newIndex = Math.min(currentIndex + 1, web.length - 1);
-//     } else {
-//       newIndex = Math.max(currentIndex - 1, 0);
-//     }
-
-//     setCurrentIndex(newIndex);
-
-//     if (scrollRef.current) {
-//       scrollRef.current.scrollTo({
-//         left: newIndex * TOTAL_WIDTH,
-//         behavior: "smooth",
-//       });
-//     }
-//   };
-
-//   const handleClick = (link) => {
-//     if (!link) return;
-//     window.open(link, "_blank");
-//   };
-
-//   const canScrollLeft = currentIndex > 0;
-//   const canScrollRight = currentIndex < web.length - 1;
-
-//   return (
-//     <section className="py-16 sm:py-24 bg-white text-black">
-//       <style>{`
-//         .hide-scrollbar {
-//           -ms-overflow-style: none;
-//           scrollbar-width: none;
-//         }
-//         .hide-scrollbar::-webkit-scrollbar {
-//           display: none;
-//         }
-//       `}</style>
-
-//       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-//         {/* HEADER */}
-//         <div className="flex items-center justify-between mb-8 sm:mb-12">
-//           <h2 className="text-2xl sm:text-4xl font-serif font-bold">Latest Writing</h2>
-
-//           {/* Desktop Buttons */}
-//           <div className="hidden sm:flex gap-3">
-//             <button
-//               onClick={() => scroll('left')}
-//               disabled={!canScrollLeft}
-//               className={`
-//                 flex items-center justify-center
-//                 w-12 h-12 rounded-full
-//                 border border-gray-300
-//                 transition-all duration-300
-//                 text-lg font-light
-//                 ${canScrollLeft 
-//                   ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer' 
-//                   : 'opacity-40 cursor-not-allowed'
-//                 }
-//               `}
-//               aria-label="Scroll left"
-//             >
-//               ←
-//             </button>
-//             <button
-//               onClick={() => scroll('right')}
-//               disabled={!canScrollRight}
-//               className={`
-//                 flex items-center justify-center
-//                 w-12 h-12 rounded-full
-//                 border border-gray-300
-//                 transition-all duration-300
-//                 text-lg font-light
-//                 ${canScrollRight 
-//                   ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer' 
-//                   : 'opacity-40 cursor-not-allowed'
-//                 }
-//               `}
-//               aria-label="Scroll right"
-//             >
-//               →
-//             </button>
-//           </div>
-//         </div>
-
-//         {/* SCROLLABLE CONTAINER */}
-//         <div
-//           ref={scrollRef}
-//           className="
-//             hide-scrollbar
-//             flex gap-4
-//             overflow-x-auto
-//             overflow-y-hidden
-//             scroll-smooth
-//             pb-4
-//           "
-//         >
-//           {web.map((webs) => (
-//             <article
-//               key={webs.id}
-//               onClick={() => handleClick(webs.link)}
-//               className="
-//                 flex-shrink-0
-//                 cursor-pointer
-//                 group
-//                 transition-all duration-300
-//               "
-//               style={{ width: CARD_WIDTH }}
-//             >
-//               {/* IMAGE */}
-//               <div className="relative h-[380px] rounded-2xl overflow-hidden bg-gray-200">
-//                 <img
-//                   src={webs.image}
-//                   alt={webs.title}
-//                   className="
-//                     w-full h-full object-cover
-//                     group-hover:scale-110
-//                     transition-transform duration-500
-//                   "
-//                   onError={(e) => {
-//                     e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="320" height="380"%3E%3Crect fill="%23e5e7eb" width="320" height="380"/%3E%3C/svg%3E';
-//                   }}
-//                 />
-//               </div>
-
-//               {/* TEXT */}
-//               <div className="mt-5">
-//                 <h3 className="
-//                   text-lg font-serif font-semibold
-//                   leading-snug
-//                   line-clamp-2
-//                   group-hover:text-gray-700
-//                   transition-colors duration-300
-//                 ">
-//                   {webs.title}
-//                 </h3>
-
-//                 {webs.link && (
-//                   <span className="
-//                     inline-block mt-3 text-sm text-gray-600
-//                     group-hover:text-black group-hover:underline
-//                     transition-all duration-300
-//                   ">
-//                     Read →
-//                   </span>
-//                 )}
-//               </div>
-//             </article>
-//           ))}
-//         </div>
-
-//         {/* MOBILE SCROLL BUTTONS - Below Content */}
-//         {isMobile && (
-//           <div className="flex gap-3 justify-center sm:hidden">
-//             <button
-//               onClick={() => scroll('left')}
-//               disabled={!canScrollLeft}
-//               className={`
-//                 flex items-center justify-center
-//                 w-12 h-12 rounded-full
-//                 border border-gray-300
-//                 transition-all duration-300
-//                 text-lg font-light
-//                 ${canScrollLeft 
-//                   ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer' 
-//                   : 'opacity-40 cursor-not-allowed'
-//                 }
-//               `}
-//               aria-label="Scroll left"
-//             >
-//               ←
-//             </button>
-//             <button
-//               onClick={() => scroll('right')}
-//               disabled={!canScrollRight}
-//               className={`
-//                 flex items-center justify-center
-//                 w-12 h-12 rounded-full
-//                 border border-gray-300
-//                 transition-all duration-300
-//                 text-lg font-light
-//                 ${canScrollRight 
-//                   ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer' 
-//                   : 'opacity-40 cursor-not-allowed'
-//                 }
-//               `}
-//               aria-label="Scroll right"
-//             >
-//               →
-//             </button>
-//           </div>
-//         )}
-//       </div>
-//     </section>
-//   );
-// }
 function LatestWebsite() {
   const web = [
     {
@@ -1295,54 +948,7 @@ function LatestWebsite() {
       link: "https://gokulamhotels.com/gokulamgrandtrivandrum",
     },
   ];
-  // return (
-  //   <section className="bg-white py-44">
-  //     <div className="max-w-6xl mx-auto px-6">
 
-  //       {/* HEADING */}
-  //       <h2 className="
-  //         text-center
-  //         text-4xl sm:text-5xl
-  //         font-serif
-  //         text-black
-  //         mb-32
-  //       ">
-  //         Web Copywriting
-  //       </h2>
-
-  //       {/* LOGO GRID */}
-  //       <div className="
-  //         grid grid-cols-2 sm:grid-cols-4
-  //         gap-y-28 gap-x-16
-  //         place-items-center
-  //       ">
-  //         {web.map((item) => (
-  //           <a
-  //             key={item.id}
-  //             href={item.link}
-  //             target="_blank"
-  //             rel="noopener noreferrer"
-  //             className="
-  //               opacity-70
-  //               hover:opacity-100
-  //               transition-opacity duration-300
-  //             "
-  //           >
-  //             <img
-  //               src={item.logo}
-  //               alt={item.name}
-  //               className="
-  //                 max-h-24 sm:max-h-30
-  //                 w-auto object-contain
-  //               "
-  //             />
-  //           </a>
-  //         ))}
-  //       </div>
-
-  //     </div>
-  //   </section>
-  // );
   return (
     <section className="bg-white py-28">
       <div className="max-w-6xl mx-auto px-6" id='web-copywriting'>
@@ -1398,114 +1004,7 @@ function LatestWebsite() {
 
 import { Mail, User, MessageSquare, Send } from "lucide-react";
 
-// function ContactUsForm() {
-//   const [form, setForm] = useState({
-//     name: "",
-//     email: "",
-//     message: "",
-//   });
 
-//   const handleChange = (e) =>
-//     setForm({ ...form, [e.target.name]: e.target.value });
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     console.log(form);
-//   };
-
-//   return (
-//     <section className="py-32 bg-black">
-//       <div className="max-w-7xl mx-auto px-6">
-
-//         {/* MAIN CONTAINER */}
-//         <div className="
-//           relative grid grid-cols-1 lg:grid-cols-2
-//           rounded-[36px] overflow-hidden
-//           border border-white/10
-//           bg-[#0e1014]
-//         ">
-
-//           {/* IMAGE PANEL */}
-//           <div className="relative h-[420px] lg:h-auto">
-//             <img
-//               src="/assets/p10.jpg"
-//               alt="Contact"
-//               className="w-full h-full object-cover"
-//             />
-//             <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-black/40 to-black/70" />
-
-//             <div className="absolute bottom-10 left-10 max-w-sm text-white">
-//               <p className="text-xs uppercase tracking-widest text-white/60 mb-3">
-//                 Contact
-//               </p>
-//               <h3 className="text-3xl font-serif leading-tight">
-//                 Let’s start a conversation.
-//               </h3>
-//             </div>
-//           </div>
-
-//           {/* FORM PANEL – FULL WIDTH */}
-//           <div className="relative p-10 lg:p-16 flex items-center">
-//             <div className="w-full">
-
-//               <h2 className="text-2xl font-semibold text-white mb-2">
-//                 Contact Us
-//               </h2>
-//               <p className="text-sm text-white/60 mb-8">
-//                 Tell us about your project
-//               </p>
-
-//               <form onSubmit={handleSubmit} className="space-y-5 max-w-xl">
-
-//                 <input
-//                   type="text"
-//                   name="name"
-//                   placeholder="Your Name"
-//                   value={form.name}
-//                   onChange={handleChange}
-//                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-green-500"
-//                 />
-
-//                 <input
-//                   type="email"
-//                   name="email"
-//                   placeholder="Email Address"
-//                   value={form.email}
-//                   onChange={handleChange}
-//                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-green-500"
-//                 />
-
-//                 <textarea
-//                   name="message"
-//                   rows={5}
-//                   placeholder="Your Message"
-//                   value={form.message}
-//                   onChange={handleChange}
-//                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/40 resize-none focus:outline-none focus:ring-1 focus:ring-green-500"
-//                 />
-
-//                 <button
-//                   type="submit"
-//                   className="
-//                     inline-flex items-center justify-center
-//                     bg-green-500 text-black
-//                     rounded-xl px-8 py-3
-//                     text-sm font-medium
-//                     hover:bg-green-400 transition
-//                   "
-//                 >
-//                   Start the Conversation
-//                 </button>
-
-//               </form>
-//             </div>
-//           </div>
-
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
 // function ContactUsForm() {
 //   const [form, setForm] = useState({
 //     name: "",
@@ -1519,15 +1018,33 @@ import { Mail, User, MessageSquare, Send } from "lucide-react";
 //   const handleSubmit = (e) => {
 //     e.preventDefault();
 
-//     // Create WhatsApp message with form data
-//     const whatsappMessage = `New Contact Form Submission:%0A%0A*Name:* ${form.name}%0A*Email:* ${form.email}%0A*Message:* ${form.message}`;
+//     // Create WhatsApp message with all form details
+//     const whatsappMessage = `
+// New Project Inquiry - Looplogik Design Studio
 
-//     // Open WhatsApp with pre-filled message
-//     window.open(`https://wa.me/918921840486?text=${whatsappMessage}`, "_blank");
+//  Client Details:
+// • Name: ${form.name}
+// • Email: ${form.email}
+
+// Project Requirements:
+// ${form.message}
+
+// --- 
+// For: Ranjit Chettur
+// Design Studio: Looplogik
+// Location: Kochi, Kerala
+// Submitted via: Website Contact Form
+//     `.trim();
+
+//     // URL encode the message
+//     const encodedMessage = encodeURIComponent(whatsappMessage);
+
+//     // Open WhatsApp with the formatted message
+//     window.open(`https://wa.me/918921840486?text=${encodedMessage}`, "_blank");
 
 //     console.log("Form submitted:", form);
 
-//     // Optional: Reset form after submission
+//     // Reset form after submission
 //     setForm({
 //       name: "",
 //       email: "",
@@ -1574,7 +1091,7 @@ import { Mail, User, MessageSquare, Send } from "lucide-react";
 //                 Contact Us
 //               </h2>
 //               <p className="text-sm text-white/60 mb-8">
-//                 Tell us about your project
+//                 Tell us about your project and we'll connect you with Ranjit Chettur
 //               </p>
 
 //               <form onSubmit={handleSubmit} className="space-y-5 max-w-xl">
@@ -1602,52 +1119,42 @@ import { Mail, User, MessageSquare, Send } from "lucide-react";
 //                 <textarea
 //                   name="message"
 //                   rows={5}
-//                   placeholder="Your Message"
+//                   placeholder="Describe your project requirements..."
 //                   value={form.message}
 //                   onChange={handleChange}
 //                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/40 resize-none focus:outline-none focus:ring-1 focus:ring-green-500"
 //                   required
 //                 />
 
+//                 {/* Single WhatsApp Button */}
 //                 <button
 //                   type="submit"
-//                   className="
-//                     inline-flex items-center justify-center
-//                     bg-green-500 text-black
-//                     rounded-xl px-8 py-3
-//                     text-sm font-medium
-//                     hover:bg-green-400 transition
-//                     w-full
-//                   "
-//                 >
-//                   Start the Conversation
-//                 </button>
-
-//                 {/* WhatsApp Direct Button */}
-//                 <button
-//                   type="button"
-//                   onClick={() => {
-//                     window.open(
-//                       "https://wa.me/918921840486?text=Hello%20Looplogik,%20I'd%20like%20to%20discuss%20a%20project.",
-//                       "_blank"
-//                     );
-//                   }}
 //                   className="
 //                     inline-flex items-center justify-center
 //                     bg-[#25D366] text-white
 //                     rounded-xl px-8 py-3
 //                     text-sm font-medium
 //                     hover:bg-[#128C7E] transition
-//                     w-full mt-4
+//                     w-full
+//                     gap-3
 //                   "
 //                 >
-//                   <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-//                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.826 9.826 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411"/>
+//                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+//                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.826 9.826 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411" />
 //                   </svg>
-//                   Chat on WhatsApp Directly
+//                   Send to Ranjit Chettur via WhatsApp
 //                 </button>
 
 //               </form>
+
+//               {/* Note about the process */}
+//               <div className="mt-8 pt-6 border-t border-white/10">
+//                 <p className="text-white/50 text-xs">
+//                   Your details will be sent directly to Ranjit Chettur,
+//                   Principal Communication Design Consultant at Looplogik.
+//                 </p>
+//               </div>
+
 //             </div>
 //           </div>
 
@@ -1656,7 +1163,6 @@ import { Mail, User, MessageSquare, Send } from "lucide-react";
 //     </section>
 //   );
 // }
-
 function ContactUsForm() {
   const [form, setForm] = useState({
     name: "",
@@ -1791,21 +1297,10 @@ Submitted via: Website Contact Form
                     gap-3
                   "
                 >
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.826 9.826 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411"/>
-                  </svg>
-                  Send to Ranjit Chettur via WhatsApp
+                  Submit
                 </button>
 
               </form>
-
-              {/* Note about the process */}
-              <div className="mt-8 pt-6 border-t border-white/10">
-                <p className="text-white/50 text-xs">
-                  Your details will be sent directly to Ranjit Chettur, 
-                  Principal Communication Design Consultant at Looplogik.
-                </p>
-              </div>
 
             </div>
           </div>
@@ -1815,7 +1310,6 @@ Submitted via: Website Contact Form
     </section>
   );
 }
-
 
 function GradientFeatures() {
   return (
@@ -1926,3 +1420,8 @@ function GradientCard({ title, description, cta, link, glow }) {
     </div>
   );
 }
+
+
+
+
+
