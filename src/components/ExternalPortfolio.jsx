@@ -245,13 +245,18 @@ function HeroEditorial() {
         sm:top-6 sm:left-6
         lg:top-10 lg:left-10
       ">
-        <h3 className="
-          text-lg sm:text-xl lg:text-3xl
-          font-bold tracking-wide
-          mx-0 sm:mx-4 lg:mx- px-5
-        ">
-          Looplogik
-        </h3>
+        <a
+  href="https://www.jumpcutpictures.in/print-gallery.html#portfolio"
+  className="
+    text-lg sm:text-xl lg:text-3xl
+    font-bold tracking-wide
+    mx-0 sm:mx-4 lg:mx- px-5
+    hover:underline
+  "
+>
+  Looplogik
+</a>
+
       </div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 px-6 lg:px-10 py-24">
@@ -279,51 +284,46 @@ function HeroEditorial() {
             <span className="relative">RANJIT CHETTUR</span>
           </h1>
 
-          <p className="mt-6 text-gray-600 max-w-md">
-            <span className="block font-medium text-gray-800">
-              Principal Communication Design Consultant, Looplogik
-            </span>
-            Multi-disciplinary visual artist and communication designer based in
-            Kochi, Kerala, with over three decades of experience across writing,
-            photography, audio-visual, print and digital media.
-          </p>
+<p className="mt-6 text-gray-600 max-w-md">
+  <span className="block font-medium text-gray-800">
+    Principal Communication Design Consultant, Looplogik
+  </span>
+  Multi-disciplinary visual artist and communication designer based in
+  Kochi, Kerala, with over three decades of experience across writing,
+  photography, audio-visual, print and digital media.
+</p>
 
-          <p className="mt-3 text-gray-600 max-w-md text-sm">
-            We are an eclectic bunch at Looplogik, bringing diverse creative perspectives to every project.
-          </p>
-          <p className="italic text-gray-800 text-sm leading-relaxed">
-            "A practice shaped by deep visual literacy, narrative thinking,
-            and hands-on experience across media—bringing together influences
-            from cinema, photography, literature, music and performing arts."
-          </p>
+<p className="mt-3 text-gray-600 max-w-md text-sm">
+  We are an eclectic bunch at Looplogik, bringing diverse creative perspectives to every project.
+</p>
 
-          <p className="mt-3 text-xs uppercase tracking-widest text-gray-500">
-            Established 2007 | 30+ Years Professional Experience
-          </p>
+<p className="mt-3 text-xs uppercase tracking-widest text-gray-500">
+  Established 2007 | 30+ Years Professional Experience
+</p>
+{/* SOCIAL LINKS */}
+<div className="mt-8 flex items-center gap-2 p-4">
 
-          {/* SOCIAL LINKS */}
-          <div className="mt-8 flex items-center gap-2 p-4">
-            <a
-              href="https://www.linkedin.com/in/ranjit-chettur"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
-                group flex items-center gap-2
-                text-xs uppercase tracking-widest
-                text-gray-600 hover:text-black
-                transition
-              "
-            >
-              <Linkedin className="w-4 h-4" />
-              <span className="relative">
-                <span className="
-                  absolute left-0 -bottom-1
-                  w-0 h-[1px] bg-black
-                  group-hover:w-full
-                  transition-all duration-300
-                " />
-              </span>
-            </a>
+  <a
+    href="https://www.linkedin.com/in/ranjit-chettur"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="
+      group flex items-center gap-2
+      text-xs uppercase tracking-widest
+      text-gray-600 hover:text-black
+      transition
+    "
+  >
+    <Linkedin className="w-4 h-4" />
+    <span className="relative">
+      <span className="
+        absolute left-0 -bottom-1
+        w-0 h-[1px] bg-black
+        group-hover:w-full
+        transition-all duration-300
+      " />
+    </span>
+  </a>
 
             <span className="h-4 w-px bg-gray-300" />
 
@@ -388,6 +388,70 @@ function HeroEditorial() {
     </section>
   );
 }
+
+function SplitFeature() {
+  return (
+    <section className="relative bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 min-h-[720px]">
+
+        {/* LEFT IMAGE */}
+        <div className="relative">
+          <img
+            src="./assets/dp2.jpg"
+            alt="Ranjit Chettur"
+            className="h-full w-full object-cover grayscale"
+          />
+        </div>
+
+        {/* RIGHT PANEL */}
+        <div className="relative flex items-center">
+
+          {/* SHARP V CUT PANEL */}
+          <div
+            className="
+              absolute inset-0 bg-[#f1f3f5]
+              [clip-path:polygon(0_0,88%_0,100%_50%,88%_100%,0_100%)]
+            "
+          />
+
+        {/* CONTENT */}
+        <div className="relative z-10 px-10 lg:px-14 max-w-xl">
+          <p className="text-xs pt-6 uppercase tracking-widest text-gray-500 mb-3">
+            About Me
+          </p>
+
+          <h3 className="text-4xl font-serif leading-tight mb-4 text-gray-900">
+            Ranjit <br /> Chettur
+          </h3>
+
+          <p className="text-xs text-gray-500 mb-6">
+            Visual Artist · Principal Communication Design Consultant · 30+ Years Experience
+          </p>
+
+          <p className="text-sm text-gray-700 leading-relaxed mb-6">
+            Ranjit Chettur is a multi-disciplinary visual artist and
+            communication designer based in Kochi, Kerala.He functions as
+                      the principal designer at Looplogik, a communication design
+              practice.
+            </p>
+
+            <p className="text-sm text-gray-700 leading-relaxed mb-6">
+              He possesses professional experience spanning over three decades
+              in advertising and industrial photography, video film making,
+              and textual communication.
+            </p>
+<p className="italic text-gray-800 text-sm leading-relaxed pb-9">
+  "A practice shaped by deep visual literacy, narrative thinking,
+  and hands-on experience across media—bringing together influences
+  from cinema, photography, literature, music and performing arts."
+</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -599,6 +663,19 @@ function MobileCard() {
 
 const blogs = [
   {
+    id: 9,
+    title: "Backyard Musings- A life the world forgot",
+    category: "UI Interface",
+    image: "/assets/yard.png",
+    link: "https://looplogik.wordpress.com/2026/01/05/backyard-musings-a-life-the-world-forgot",
+    },{
+    id: 10,
+    title: "B.Arch – DC School of Architecture and Design",
+    category: "UI Interface",
+    image: "/assets/dcschool.webp",
+    link: "https://looplogik.wordpress.com/2025/05/13/b-arch-dc-school-of-architecture-and-design-blog-post",
+  },
+  {
     id: 1,
     title: "Fauna Of Mirrors",
     category: "UI Interface",
@@ -661,13 +738,13 @@ const blogs = [
   //   image: "/assets/happy.jpg",
   //   link: "https://looplogik.wordpress.com/2025/07/19/the-best-things-in-life-are-free-2",
   // },
-  {
+    {
     id: 9,
     title: "Backyard Musings- A life the world forgot",
     category: "UI Interface",
     image: "/assets/yard.png",
     link: "https://looplogik.wordpress.com/2026/01/05/backyard-musings-a-life-the-world-forgot",
-  }, {
+    },{
     id: 10,
     title: "B.Arch – DC School of Architecture and Design",
     category: "UI Interface",
@@ -1715,7 +1792,7 @@ Submitted via: Website Contact Form
                   "
                 >
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.826 9.826 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411" />
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.826 9.826 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411"/>
                   </svg>
                   Send to Ranjit Chettur via WhatsApp
                 </button>
@@ -1725,7 +1802,7 @@ Submitted via: Website Contact Form
               {/* Note about the process */}
               <div className="mt-8 pt-6 border-t border-white/10">
                 <p className="text-white/50 text-xs">
-                  Your details will be sent directly to Ranjit Chettur,
+                  Your details will be sent directly to Ranjit Chettur, 
                   Principal Communication Design Consultant at Looplogik.
                 </p>
               </div>
