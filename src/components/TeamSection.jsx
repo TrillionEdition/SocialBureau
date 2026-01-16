@@ -291,7 +291,7 @@ export const teamData = {
   strategyMarketing: [
     {
       name: "Sherin Joseph",
-      role: "CMO & HR Head",
+      role: "COO & HR",
       image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761195483/SB_ID_Card_Sherin_New_wtgfyo.png",
       hoverImage: "/assets/sherin.webp",
       description:
@@ -300,7 +300,7 @@ export const teamData = {
     {
       name: "Hajira",
       link: "https://www.linkedin.com/in/hajira-mohammed-10005b335",
-      role: "Administration & Operations Head",
+      role: "Administration & COO",
       description:
         "Ensures flawless daily operations and inter-department workflow excellence.",
       image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761221472/images/btrvj8lxwc3la4xli6es.png",
