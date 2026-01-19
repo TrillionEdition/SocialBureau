@@ -254,7 +254,7 @@ export default function ContactSection() {
       <div className="flex-1 flex items-center">
         <div className="bg-black p-6 rounded-lg shadow-lg w-full text-center flex flex-col justify-between">
           <div className="flex flex-col items-center">
-            <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1763383653/oii_upmu8c.png" alt="image" className="md:max-h-[50vh] h-auto min-w-150 md:w-auto md:h-[60vh]"/>
+            <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1763383653/oii_upmu8c.png" alt="image" className=" h-auto min-w-150 md:w-auto "/>
             <div className="bg-gradient-to-br from-black to-[#3f0000] w-10 h-10 flex items-center justify-center rounded-full mb-4">
               <i className="fas fa-rocket text-[#ff0000]"></i>
             </div>

@@ -38,6 +38,7 @@ export const Home = () => {
   // Regular rotating popups (bottom-right)
   const popups = [
     { title: "New Openings: Hiring Video Editors", subtitle: "Join our Team", link: "/careers/video-editor" },
+    { title: "New Openings: Hiring Cinematographers", subtitle: "Join our Team", link: "/careers/cinematographer" },
     { title: "New Openings: Hiring Performance Marketers", subtitle: "Join our Team", link: "/careers/performance-marketing-manager" },
     { title: "New Openings: Hiring Graphics Designers", subtitle: "Join our Team", link: "/careers/graphic-designer" },
     { title: "New Openings: Hiring SEO Specialist", subtitle: "Join our Team", link: "/careers/seo-expert" },
@@ -125,7 +126,7 @@ export const Home = () => {
       {/* <UpcomingEvents />  */}
       <LatestCareers />
       <Googlereview />
-      <Clients />
+      {/* <Clients /> */}
       <LatestBlogs posts={posts} />
       <div className="bg-gray-900 text-white">
 

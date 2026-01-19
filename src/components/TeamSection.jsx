@@ -303,7 +303,7 @@ export const teamData = {
       role: "Administration & CMO",
       description:
         "Ensures flawless daily operations and inter-department workflow excellence.",
-      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1768555593/SB_ID_Card_Hajira_e1f9y0.png",
+      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1768816875/SB_ID_Card_Hajira_lrmfvk.png",
       hoverImage: "/assets/hajira.webp",
     },
     {

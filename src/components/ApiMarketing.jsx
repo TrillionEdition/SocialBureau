@@ -500,7 +500,7 @@ const ApiMarketing = () => {
                     <div className="max-w-7xl mx-auto">
                         <div className="text-center mb-16">
                             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                                What Our <span className="text-transparent bg-gradient-to-r from-red-500 to-red-600 bg-clip-text">Clients Say</span>
+                                Client <span className="text-transparent bg-gradient-to-r from-red-500 to-red-600 bg-clip-text">Reviews</span>
                             </h2>
                         </div>
 
