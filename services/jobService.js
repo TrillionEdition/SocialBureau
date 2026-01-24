@@ -4,7 +4,7 @@ import { BASE_URL } from "../utils/urls";
 export const jobService = {
   // CREATE JOB (ADMIN)
   createJob: async (data) => {
-    const res = await axios.post(`${BASE_URL}/api/jobs`, data, {
+    const res = await axios.post(`${BASE_URL}/job`, data, {
       withCredentials: true,
     });
     return res.data;
@@ -12,13 +12,13 @@ export const jobService = {
 
   // GET ALL JOBS
   getJobs: async () => {
-    const res = await axios.get(`${BASE_URL}/api/jobs`);
+    const res = await axios.get(`${BASE_URL}/job`);
     return res.data;
   },
 
   // GET SINGLE JOB
   getJobBySlug: async (slug) => {
-    const res = await axios.get(`${BASE_URL}/api/jobs/${slug}`);
+    const res = await axios.get(`${BASE_URL}/job/${slug}`);
     return res.data;
   },
 

@@ -662,7 +662,7 @@ export function StaffDashboard() {
               <svg className="w-8 h-8 md:w-12 md:h-12 text-[#4b1886ff] mb-2" fill="none" viewBox="0 0 48 48">
                 <text x="0" y="40" fontSize="40" fontFamily="Arial" fill="currentColor">"</text>
               </svg>
-              <h2 className="font-semibold text-lg md:text-2xl mb-2 text-gray-800">What our clients are saying</h2>
+              <h2 className="font-semibold text-lg md:text-2xl mb-2 text-gray-800">Client Reviews</h2>
 
               {/* Add Review Button */}
               <button

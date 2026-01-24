@@ -1508,9 +1508,9 @@ const NicheMarketing = () => {
                 {/* Testimonials Section */}
                 <section className="relative text-white py-16 sm:py-20 md:py-24 px-4 sm:px-6 bg-black/40">
                     <div className="max-w-7xl mx-auto">
-                        <div className="text-center mb-12 sm:mb-16">
-                            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4">
-                                What Our <span className="text-transparent bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text">Clients Say</span>
+                        <div className="text-center mb-16">
+                            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                                Client <span className="text-transparent bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text">Reviews</span>
                             </h2>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
