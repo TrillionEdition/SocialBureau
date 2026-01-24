@@ -735,7 +735,7 @@ export default function BlogDetail() {
       setIsLiked(newIsLiked);
       setLikes(newLikeCount);
       console.log(responseData);
-      showToast("success", newIsLiked ? "Post liked! ❤️" : "Post unliked");
+      showToast("success", newIsLiked ? "Post liked! " : "Post unliked");
     },
     onError: (error) => {
       console.error("Like error:", error);
@@ -957,7 +957,7 @@ export default function BlogDetail() {
               <div className="flex items-center gap-4">
                 <button onClick={() => { if (!currentUser) { redirectToLogin("Login to like this post"); return; } likeMutation.mutate(); }} disabled={likeMutation.isPending} className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${isLiked ? "bg-red-900/30 text-red-400 border border-red-800" : "bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700"} ${likeMutation.isPending ? "opacity-50 cursor-not-allowed" : ""}`} title={!currentUser ? "Login to like this post" : ""}>
                   <FaHeart className={isLiked ? "fill-red-400" : "fill-gray-400"} />
-                  <span className="font-medium">{isLiked ? "Liked" : "Like"} ({likes})</span>
+                  <span className="font-medium"> {likes}</span>
                 </button>
               </div>
 
@@ -1080,10 +1080,10 @@ export default function BlogDetail() {
                   {subscribeMsg && (
                     <p
                       className={`text-sm text-center ${subscribeMsg.type === "success"
-                          ? "text-green-400"
-                          : subscribeMsg.type === "error"
-                            ? "text-red-400"
-                            : "text-yellow-400"
+                        ? "text-green-400"
+                        : subscribeMsg.type === "error"
+                          ? "text-red-400"
+                          : "text-yellow-400"
                         }`}
                     >
                       {subscribeMsg.text}

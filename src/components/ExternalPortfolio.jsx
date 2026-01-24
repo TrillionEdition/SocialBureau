@@ -18,222 +18,6 @@ export default function Landing() {
   );
 }
 
-// function HeroEditorial() {
-//   return (
-//     <section className="relative min-h-screen bg-[#f5f4f0] text-black overflow-hidden">
-
-//       {/* TOP LEFT BRAND */}
-//       <div className="
-//         absolute z-20
-//         top-4 left-4
-//         sm:top-6 sm:left-6
-//         lg:top-10 lg:left-10
-//       ">
-//         <h3 className="
-//           text-lg sm:text-xl lg:text-3xl
-//           font-bold tracking-wide
-//           mx-0 sm:mx-4 lg:mx- px-5
-//         ">
-//           Looplogik
-//         </h3>
-//       </div>
-
-//       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 px-6 lg:px-10 py-24">
-
-//         {/* LEFT CONTENT */}
-//         <div className="relative flex flex-col justify-center z-10">
-//           <span
-//             className="
-//               absolute -left-10 top-1/2 -translate-y-1/2
-//               text-[120px] lg:text-[160px]
-//               font-serif text-black/5
-//               select-none pointer-events-none
-//             "
-//           >
-//             RANJIT CHETTUR
-//           </span>
-
-//           <h1 className="relative text-[48px] lg:text-[64px] font-serif leading-tight">
-//             <span
-//               className="absolute inset-0 text-white blur-xl opacity-70"
-//               aria-hidden="true"
-//             >
-//               RANJIT CHETTUR
-//             </span>
-//             <span className="relative">RANJIT CHETTUR</span>
-//           </h1>
-
-//           <p className="mt-6 text-gray-600 max-w-md">
-//             <span className="block font-medium text-gray-800">
-//               Principal Communication Design Consultant, Looplogik
-//             </span>
-//             Multi-disciplinary visual artist and communication designer based in
-//             Kochi, Kerala, with over three decades of experience across writing,
-//             photography, audio-visual, print and digital media.
-//           </p>
-
-//           <p className="mt-3 text-gray-600 max-w-md text-sm">
-//             We are an eclectic bunch at Looplogik, bringing diverse creative perspectives to every project.
-//           </p>
-
-//           <p className="mt-3 text-xs uppercase tracking-widest text-gray-500">
-//             Established 2007 | 30+ Years Professional Experience
-//           </p>
-//           {/* SOCIAL LINKS */}
-//           <div className="mt-8 flex items-center gap-2 p-4">
-
-//             <a
-//               href="https://www.linkedin.com/in/ranjit-chettur"
-//               target="_blank"
-//               rel="noopener noreferrer"
-//               className="
-//       group flex items-center gap-2
-//       text-xs uppercase tracking-widest
-//       text-gray-600 hover:text-black
-//       transition
-//     "
-//             >
-//               <Linkedin className="w-4 h-4" />
-//               <span className="relative">
-//                 <span className="
-//         absolute left-0 -bottom-1
-//         w-0 h-[1px] bg-black
-//         group-hover:w-full
-//         transition-all duration-300
-//       " />
-//               </span>
-//             </a>
-
-//             <span className="h-4 w-px bg-gray-300" />
-
-//             <a
-//               href="https://instagram.com/chetturranjit"
-//               target="_blank"
-//               rel="noopener noreferrer"
-//               className="
-//       group flex items-center gap-2
-//       text-xs uppercase tracking-widest
-//       text-gray-600 hover:text-black
-//       transition
-//     "
-//             >
-//               <Instagram className="w-4 h-4" />
-//               <span className="relative">
-//                 <span className="
-//         absolute left-0 -bottom-1
-//         w-0 h-[1px] bg-black
-//         group-hover:w-full
-//         transition-all duration-300
-//       " />
-//               </span>
-//             </a>
-
-//           </div>
-
-//         </div>
-
-//         {/* RIGHT IMAGE */}
-//         <div className="relative flex flex-col items-center lg:items-end">
-
-//           {/* IMAGE */}
-//           <img
-//             src="./assets/dp3.jpg"
-//             className="w-full max-h-[70vh] lg:max-h-[900px] object-contain lg:object-cover"
-//             alt="Looplogik"
-//           />
-
-//           {/* DESKTOP OVERLAY TEXT */}
-//           <p
-//             className="
-//             hidden lg:block
-//             absolute bottom-20 right-12 max-w-xs
-//             text-white text-md leading-relaxed opacity-90
-//           "
-//           >
-//             A communication design practice grounded in storytelling across writing, photography, and multi-media platforms.
-//           </p>
-//         </div>
-
-//         {/* MOBILE TEXT — BELOW IMAGE */}
-//         <p
-//           className="
-//             lg:hidden mt-6
-//             text-gray-700 text-sm leading-relaxed
-//             text-center px-6 
-//           "
-//         >
-//           A communication design practice focused on storytelling
-//           through writing, photography and multi-media platforms.
-//         </p>
-
-//       </div>
-//     </section>
-//   );
-// }
-
-// function SplitFeature() {
-//   return (
-//     <section className="relative bg-white overflow-hidden">
-//       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 min-h-[720px]">
-
-//         {/* LEFT IMAGE */}
-//         <div className="relative">
-//           <img
-//             src="./assets/dp2.jpg"
-//             alt="Ranjit Chettur"
-//             className="h-full w-full object-cover grayscale"
-//           />
-//         </div>
-
-//         {/* RIGHT PANEL */}
-//         <div className="relative flex items-center">
-
-//           {/* SHARP V CUT PANEL */}
-//           <div
-//             className="
-//               absolute inset-0 bg-[#f1f3f5]
-//               [clip-path:polygon(0_0,88%_0,100%_50%,88%_100%,0_100%)]
-//             "
-//           />
-
-//           {/* CONTENT */}
-//           <div className="relative z-10 px-10 lg:px-14 max-w-xl">
-//             <p className="text-xs pt-6 uppercase tracking-widest text-gray-500 mb-3">
-//               About Me
-//             </p>
-
-//             <h3 className="text-4xl font-serif leading-tight mb-4 text-gray-900">
-//               Ranjit <br /> Chettur
-//             </h3>
-
-//             <p className="text-xs text-gray-500 mb-6">
-//               Visual Artist · Principal Communication Design Consultant · 30+ Years Experience
-//             </p>
-
-//             <p className="text-sm text-gray-700 leading-relaxed mb-6">
-//               Ranjit Chettur is a multi-disciplinary visual artist and
-//               communication designer based in Kochi, Kerala.He functions as
-//               the principal designer at Looplogik, a communication design
-//               practice.
-//             </p>
-
-//             <p className="text-sm text-gray-700 leading-relaxed mb-6">
-//               He possesses professional experience spanning over three decades
-//               in advertising and industrial photography, video film making,
-//               and textual communication.
-//             </p>
-//             <p className="italic text-gray-800 text-sm leading-relaxed pb-9">
-//               "A practice shaped by deep visual literacy, narrative thinking,
-//               and hands-on experience across media—bringing together influences
-//               from cinema, photography, literature, music and performing arts."
-//             </p>
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
-
 function HeroEditorial() {
   return (
     <section className="relative min-h-screen bg-[#f5f4f0] text-black overflow-hidden">
@@ -363,7 +147,7 @@ function HeroEditorial() {
         {/* Right Image Section */}
         <div className="relative flex flex-col items-center lg:items-end">
           <img
-            src="./assets/dp3.jpg"
+            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159675/dp3_jscnpp.jpg"
             className="w-full max-h-[70vh] lg:max-h-[900px] object-contain lg:object-cover"
             alt="Looplogik"
           />
@@ -398,9 +182,9 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const cards = [
-  { img: "/assets/stone.webp", title: "Work samples", link: "https://looplogik.wordpress.com/2025/07/20/work-samples-2" },
-  { img: "/assets/happy.jpg", title: "The best things in life are free", link: "https://looplogik.wordpress.com/2025/07/19/the-best-things-in-life-are-free-2" },
-  { img: "/assets/workout.webp", title: "D1 FORTIFICATION -social media", link: "https://looplogik.wordpress.com/2025/07/19/d1-fortification-social-media-2" },
+  { img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159381/stone_tkleic.webp", title: "Work samples", link: "https://looplogik.wordpress.com/2025/07/20/work-samples-2" },
+  { img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159399/happy_k6bfsg.jpg", title: "The best things in life are free", link: "https://looplogik.wordpress.com/2025/07/19/the-best-things-in-life-are-free-2" },
+  { img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159504/workout_jcqzvd.webp", title: "D1 FORTIFICATION -social media", link: "https://looplogik.wordpress.com/2025/07/19/d1-fortification-social-media-2" },
 ];
 
 function MobileCard() {
@@ -607,56 +391,56 @@ const blogs = [
     id: 1,
     title: "Fauna Of Mirrors",
     category: "UI Interface",
-    image: "/assets/fau.jpg",
+    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769158228/fau_tlfwd0.jpg",
     link: "https://looplogik.wordpress.com/2025/06/25/fauna-of-mirrors",
   },
   {
     id: 2,
     title: "Lonesome and Blue",
     category: "UI Interface",
-    image: "/assets/alonely.jpg",
+    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769158257/alonely_ieyd8d.jpg",
     link: "https://looplogik.wordpress.com/2025/06/25/lonesome-and-blue",
   },
   {
     id: 3,
     title: "Swansong",
     category: "UI Interface",
-    image: "/assets/bird4.jpg",
+    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769158463/bird4_sbqrpw.jpg",
     link: "https://looplogik.wordpress.com/2025/06/25/swansong",
   },
   {
     id: 4,
     title: "About DC Kizhakemuri",
     category: "UI Interface",
-    image: "/assets/dcbooks.png",
+    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159114/dcbooks_ocgxh4.png",
     link: "https://looplogik.wordpress.com/2025/04/09/about-dc-kizhakemuri-2",
   },
   {
     id: 5,
     title: "Ammu,Kunju and Pandi",
     category: "UI Interface",
-    image: "/assets/cow.png",
+    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769158977/cow_eduajj.png",
     link: "https://looplogik.wordpress.com/2025/06/25/ammukunju-and-pandi",
   },
   {
     id: 6,
     title: "Kerala Literature Festival website",
     category: "UI Interface",
-    image: "/assets/klv.png",
+    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159211/klv_v04eik.png",
     link: "https://looplogik.wordpress.com/2025/07/24/kerala-literature-festival-website-2",
   },
   {
     id: 7,
     title: "Going Home",
     category: "UI Interface",
-    image: "/assets/home.jpg",
+    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769158760/home_amc5vk.jpg",
     link: "https://looplogik.wordpress.com/2025/06/25/going-home-2",
   },
   {
     id: 8,
     title: "Historical consequences of maritime trade in Kochi",
     category: "UI Interface",
-    image: "/assets/kochi.jpg",
+    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769158815/kochi1_hc2ymq.jpg",
     link: "https://looplogik.wordpress.com/2025/06/25/historical-consequences-of-maritime-trade-in-kochi",
   },
   // {
@@ -679,6 +463,16 @@ const blogs = [
     image: "/assets/dcschool.webp",
     link: "https://looplogik.wordpress.com/2025/05/13/b-arch-dc-school-of-architecture-and-design-blog-post",
   },
+   {
+    id: 11,
+    title: "Integrated Business Consultants – Brochure",
+    category: "UI Interface",
+    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769157941/image-gen_7_g4ewu6.png",
+    link: "https://looplogik.wordpress.com/2026/01/23/integrated-business-consultants-brochure",
+  },
+
+
+  
 ];
 
 function LatestBlogs() {
@@ -797,7 +591,7 @@ function LatestBlogs() {
             pb-4
           "
         >
-          {blogs.map((blog) => (
+          {[...blogs].reverse().map((blog) => (
             <article
               key={blog.id}
               onClick={() => handleClick(blog.link)}
@@ -902,49 +696,49 @@ function LatestWebsite() {
     {
       id: 1,
       name: "DC Kizhakemuri Foundation",
-      logo: "/assets/dckf12.webp",
+      logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159913/dcbookslogo_rocnra.jpg",
       link: "https://dckf.in",
     },
     {
       id: 2,
       name: "DC Books",
-      logo: "/assets/dcbookslogo.jpg",
+      logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159945/cdd_pqfvbx.jpg",
       link: "https://dcbooks.com",
     },
     {
       id: 3,
       name: "Chandy's Drizzle Drops",
-      logo: "/assets/cdd.jpg",
+      logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159962/cwwm_xixzyh.jpg",
       link: "https://chandysdrizzledrops.com",
     },
     {
       id: 4,
       name: "Chandy's Windy Woods",
-      logo: "/assets/cwwm.jpg",
+      logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159991/tpmunnar_tpuz59.png",
       link: "https://www.chandyswindywoods.com/overview.html",
     },
     {
       id: 5,
       name: "Planet Munnar",
-      logo: "/assets/tpmunnar.png",
+      logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769160007/gkozhi_wyulqa.png",
       link: "https://planetmunnar.com",
     },
     {
       id: 6,
       name: "Gokulam Grand Kozhikode",
-      logo: "/assets/gkozhi.png",
+      logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769160007/gkozhi_wyulqa.png",
       link: "https://gokulamhotels.com/gokulam-grand-kozhikode",
     },
     {
       id: 7,
       name: "Gokulam Grand Kumarakom",
-      logo: "/assets/gk2.jpg",
+      logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769160025/gk2_kua1lm.jpg",
       link: "https://gokulamhotels.com/gokulamgrandkumarakom",
     },
     {
       id: 8,
       name: "Gokulam Grand Trivandrum",
-      logo: "/assets/gotri1.PNG",
+      logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769160135/gotri1_heqmvf.png",
       link: "https://gokulamhotels.com/gokulamgrandtrivandrum",
     },
   ];
@@ -1225,7 +1019,7 @@ Submitted via: Website Contact Form
           {/* IMAGE PANEL */}
           <div className="relative h-[420px] lg:h-auto">
             <img
-              src="/assets/p10.jpg"
+              src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159320/p10_sgwvkq.jpg"
               alt="Contact"
               className="w-full h-full object-cover"
             />

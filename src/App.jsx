@@ -9,6 +9,8 @@ import { CaseStudy } from './pages/CaseStudy'
 import ScrollTop from './components/ScrollTop'
 import { Blog } from './pages/Blog'
 import { Contact } from './pages/Contact'
+import CompanyAchievements from './pages/CompanyAchievements'
+
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { NotFound } from './pages/NotFound'
 import React, { lazy, Suspense } from 'react';
@@ -56,10 +58,15 @@ import { ResetPassword } from './pages/ForgetPassword'
 import ApiMarketingPage from './components/ApiMarketing'
 import DashboardX from './pages/DashboardX'
 import SocialBureauInsight from './pages/SocialBureauInsight'
-import { Edit } from 'lucide-react'
 import EditUser from './pages/EditUser'
 import NicheMarketing from './components/NicheMArketing'
 import HorizontalScrollSection from './components/trail'
+import AnalyticsWidget from './components/Analytics'
+import AddAchievementForm from './components/AddAchievementForm'
+// import PaymentPage from './pages/PaymentPage'
+// import PaymentStatus from './pages/PaymentStatus'
+
+import UserManagement from './pages/UserManagement'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
@@ -95,7 +102,9 @@ function App() {
           <Route path="/careers" element={<Careers />} />
           <Route path="/our-team" element={<OurTeam />} />
           <Route path="/our-works" element={<OurWork />} />
+          <Route path="/achievements" element={<CompanyAchievements />} />
           <Route path="/tool" element={<ScorePage />} />
+
           <Route path="/clients" element={<Client />} />
           <Route path="/blogs/:slug" element={<BlogDetail />} />
           <Route path="/careers/:slug" element={<CareerDetail />} />
@@ -131,11 +140,18 @@ function App() {
           <Route path="/api-marketing" element={<ApiMarketingPage />} />
           <Route path="/dashboard-x" element={<DashboardX />} />
           <Route path="/insights" element={<SocialBureauInsight />} />
-          <Route path="/*" element={<NotFound />} />
-          <Route path='/edit-user' element={<EditUser />} />
+          <Route path='/edit-user/:id' element={<EditUser />} />
+          <Route path='/add-user' element={<EditUser />} />
+          <Route path='/user-management' element={<UserManagement />} />
           <Route path='/Niche-Marketing' element={<NicheMarketing />} />
           <Route path='/horizontal' element={<HorizontalScrollSection />} />
+          <Route path='/analytics' element={<AnalyticsWidget />} />
+          <Route path='/achievements-form' element={<AddAchievementForm />} />
+          {/* <Route path='/payment' element={<PaymentPage />} /> */}
+          {/* <Route path='/payment-status' element={<PaymentStatus />} /> */}
 
+
+          <Route path="/*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </>

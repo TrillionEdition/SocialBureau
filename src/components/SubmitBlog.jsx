@@ -1,15 +1,30 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { blogAPI } from "../../services/blogServices";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { useNavigate } from "react-router-dom";
+import Toast from "./Toast";
+import { useNavigate, useLocation } from "react-router-dom";
 import JoditEditor from "jodit-react";
+import { getUserData } from "../../utils/authUtils";
 
 export default function SubmitBlog() {
   const navigate = useNavigate();
+  const location = useLocation();
   const queryClient = useQueryClient();
   const editor = useRef(null);
+  const [toast, setToast] = useState(null);
+
+  useEffect(() => {
+    const userData = getUserData();
+    if (!userData) {
+      setToast({ type: "error", message: "Please login to submit a blog" });
+      setTimeout(() => {
+        navigate("/login", { state: { from: location } });
+      }, 2000);
+      return;
+    }
+  }, [navigate, location]);
 
   // Replaced multiple content sections with a single full-featured editor content
   const [content, setContent] = useState("");
@@ -49,11 +64,13 @@ export default function SubmitBlog() {
     mutationFn: (data) => blogAPI.createBlog(data),
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ["blogs"] });
-      alert('Blog submitted successfully!');
-      navigate(`/blogs/${response.data.slug}`);
+      setToast({ type: "success", message: "Blog submitted successfully!" });
+      setTimeout(() => {
+        navigate(`/blogs/${response.data.slug}`);
+      }, 1500);
     },
     onError: (error) => {
-      alert(error.response?.data?.message || 'Failed to submit blog');
+      setToast({ type: "error", message: error.response?.data?.message || 'Failed to submit blog' });
     },
   });
 
@@ -66,11 +83,11 @@ export default function SubmitBlog() {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        alert('Image size must be less than 5MB');
+        setToast({ type: "error", message: "Image size must be less than 5MB" });
         return;
       }
       if (!['image/jpeg', 'image/png', 'image/jpg', 'image/webp'].includes(file.type)) {
-        alert('Only JPEG, PNG, and WEBP images are allowed');
+        setToast({ type: "error", message: "Only JPEG, PNG, and WEBP images are allowed" });
         return;
       }
       setImageFile(file);
@@ -101,25 +118,25 @@ export default function SubmitBlog() {
     e.preventDefault();
 
     if (!formData.title.trim()) {
-      alert('Title is required');
+      setToast({ type: "error", message: "Title is required" });
       return;
     }
     if (!formData.excerpt.trim()) {
-      alert('Excerpt is required');
+      setToast({ type: "error", message: "Excerpt is required" });
       return;
     }
     if (!imageFile) {
-      alert('Featured image is required');
+      setToast({ type: "error", message: "Featured image is required" });
       return;
     }
     // Ensure content isn't empty (strip tags and check length)
     const plainContent = content.replace(/<[^>]*>/g, '').trim();
     if (!plainContent) {
-      alert('Content is required');
+      setToast({ type: "error", message: "Content is required" });
       return;
     }
     if (wordCount > 2000) {
-      alert(`Content exceeds maximum word limit. Current: ${wordCount} words, Maximum: 2000 words`);
+      setToast({ type: "error", message: `Content exceeds maximum word limit. Current: ${wordCount} words, Maximum: 2000 words` });
       return;
     }
 
@@ -145,6 +162,13 @@ export default function SubmitBlog() {
   return (
     <>
       <Navbar />
+      {toast && (
+        <Toast
+          type={toast.type}
+          message={toast.message}
+          onClose={() => setToast(null)}
+        />
+      )}
       <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-red-950 text-gray-100 py-12 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="bg-black/40 backdrop-blur-xl border border-red-900/30 rounded-2xl p-8 shadow-2xl">
@@ -161,11 +185,15 @@ export default function SubmitBlog() {
                   type="text"
                   name="title"
                   value={formData.title}
+                  maxLength={60}
                   onChange={handleInputChange}
                   placeholder="Enter blog title..."
                   className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-lg focus:outline-none focus:border-red-600 text-white placeholder-gray-500"
                   required
                 />
+                <p className="text-xs text-gray-500 mt-1">
+                  {formData.title.length}/60 characters
+                </p>
               </div>
 
               {/* Custom URL */}
@@ -349,9 +377,9 @@ export default function SubmitBlog() {
                 </p>
                 {imagePreview && (
                   <div className="mt-3 relative">
-                    <img 
-                      src={imagePreview} 
-                      alt="Preview" 
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
                       className="w-full h-48 object-cover rounded-lg border border-gray-700"
                     />
                     <button

@@ -736,8 +736,10 @@ import { FiPlus, FiTrash2, FiUpload, FiCheck, FiArrowRight, FiArrowLeft } from '
 import Navbar from './Navbar';
 import Footer from './Footer';
 import Seo from './Seo';
+import Toast from './Toast';
 
 export default function AddClientPortfolio() {
+  const [toast, setToast] = useState(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [portfolioItems, setPortfolioItems] = useState([
     {
@@ -849,7 +851,7 @@ export default function AddClientPortfolio() {
 
     // Validate number of files
     if (formData.photos.length + files.length > 4) {
-      alert('Maximum 4 photos allowed');
+      setToast({ type: 'error', message: 'Maximum 4 photos allowed' });
       return;
     }
 
@@ -858,7 +860,7 @@ export default function AddClientPortfolio() {
     const invalidFiles = files.filter((file) => !validTypes.includes(file.type));
 
     if (invalidFiles.length > 0) {
-      alert('Only JPEG, PNG, JPG, and WebP formats are allowed');
+      setToast({ type: 'error', message: 'Only JPEG, PNG, JPG, and WebP formats are allowed' });
       return;
     }
 
@@ -867,7 +869,7 @@ export default function AddClientPortfolio() {
     const oversizedFiles = files.filter((file) => file.size > maxSize);
 
     if (oversizedFiles.length > 0) {
-      alert('Each file must be less than 5MB');
+      setToast({ type: 'error', message: 'Each file must be less than 5MB' });
       return;
     }
 
@@ -901,21 +903,27 @@ export default function AddClientPortfolio() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validate photos
     if (formData.photos.length < 3) {
-      alert('Please upload at least 3 photos');
+      setToast({ type: 'error', message: 'Please upload at least 3 photos' });
       return;
     }
 
     console.log('Form Data:', formData);
     console.log('Portfolio Items:', portfolioItems);
     console.log('Skills:', skills);
-    alert('Portfolio submitted successfully! (Demo mode)');
+    setToast({ type: 'success', message: 'Portfolio submitted successfully! (Demo mode)' });
   };
 
   return (
     <>
       <Navbar />
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
       <Seo
         title="Submit Your Portfolio | SocialBureau"
         description="Join our creative network. Submit your portfolio and connect with brands looking for your expertise."
