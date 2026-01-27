@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { FiZap, FiTrendingUp, FiCpu, FiDownload, FiPlay } from 'react-icons/fi';
 import { FaGoogle, FaYoutube } from 'react-icons/fa';
 import { SiGoogleads, SiGoogleanalytics } from 'react-icons/si';
-import Navbar from './Navbar';
 import Seo from './Seo';
 import Footer from './Footer';
 
@@ -91,7 +90,6 @@ export default function GoogleMarketingService() {
 
   return (
     <>
-      <Navbar />
       <Seo
         title="SocialBureau Google Marketing | AI-Powered Google Ads & Analytics Agency 2025"
         description="Master Google's 2025 marketing tools with SocialBureau. We specialize in AI Max Search, Performance Max, Google Ads automation, YouTube shoppable ads, Google Analytics Agentic AI, Meridian MMM, and advanced measurement solutions for global campaigns."

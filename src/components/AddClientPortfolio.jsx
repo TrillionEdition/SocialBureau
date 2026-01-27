@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiPlus, FiTrash2, FiUpload, FiCheck, FiArrowRight, FiArrowLeft } from 'react-icons/fi';
-import Navbar from './Navbar';
 import Footer from './Footer';
 import Seo from './Seo';
 import Toast from './Toast';
@@ -184,7 +183,6 @@ export default function AddClientPortfolio() {
 
   return (
     <>
-      <Navbar />
       {toast && (
         <Toast
           message={toast.message}

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getEventsAPI, addToGoogleCalendar, downloadCalendarFile, registerForEventAPI } from '../../services/eventServices';
 import { useQueryClient } from '@tanstack/react-query';
-import Navbar from './Navbar';
 import Footer from './Footer';
 import { FaCalendarAlt, FaMapMarkerAlt, FaClock, FaDownload, FaExternalLinkAlt, FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -62,7 +61,6 @@ export const Events = () => {
 
   return (
     <>
-      <Navbar />
       <div className="min-h-screen bg-black text-white px-">
         {/* Header */}
         <div className="bg-gradient-to-r from-red-950 to-black py-16">

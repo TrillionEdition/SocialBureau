@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+
 import Footer from "../components/Footer";
 import { registerUserAPI, checkEmailExistsAPI } from "../../services/userServices";
 
@@ -69,7 +69,6 @@ export const UserRegister = () => {
 
   return (
     <div className="relative min-h-screen bg-black text-white overflow-hidden">
-      <Navbar />
 
       {/* Background Glow */}
       <div

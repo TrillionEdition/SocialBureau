@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createEventAPI } from '../../services/eventServices';
-import Navbar from './Navbar';
 import Footer from './Footer';
 import { FaCalendarPlus, FaImage, FaMapMarkerAlt, FaUsers } from 'react-icons/fa';
 
@@ -107,7 +106,6 @@ export const AddEvent = () => {
 
   return (
     <>
-      <Navbar />
       <div className="min-h-screen bg-black text-white py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../utils/urls";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export const Register = () => {
@@ -411,7 +410,6 @@ const handleSubmit = async (e) => {
 
   return (
     <div className="relative min-h-screen bg-black text-white overflow-hidden">
-      <Navbar />
       <div
         className="absolute inset-0 z-0 bg-radial-gradient from-red-500/15 from-0% via-transparent to-transparent"
         style={{

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Navbar from '../components/Navbar'
+
 import ServicesHeader from '../components/ServicesHeader'
 import ServicesList from '../components/ServicesList'
 import ServiceFooter from '../components/ServiceFooter'
@@ -115,7 +115,6 @@ const [isMobile, setIsMobile] = useState(false);
         url="https://www.socialbureau.in/services"
       />
 
-        <Navbar/>
       <ServicesHeader onArrowClick={handleArrowClick} />
       
       <section className="w-full bg-black text-white py-20 px-6 md:px-12 lg:px-24">

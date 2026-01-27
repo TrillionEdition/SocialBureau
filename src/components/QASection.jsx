@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { qaAPI } from "../../services/qaServices";
 import { FaThumbsUp } from "react-icons/fa";
-import Navbar from "./Navbar";
 import Footer from "./Footer";
 
 export default function QASection() {
@@ -123,7 +122,6 @@ export default function QASection() {
 
   return (
     <>
-    <Navbar />
     <div className="min-h-screen bg-black/55 text-gray-100 p-6 md:p-12">
       <div className="max-w-6xl mx-auto">
         {/* HERO */}

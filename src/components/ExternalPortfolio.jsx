@@ -1,10 +1,8 @@
 import Footer from '../components/Footer'
-import Navbar from '../components/Navbar'
 import { Linkedin, Instagram } from "lucide-react";
 export default function Landing() {
   return (
     <div className="bg-[#0b0d10] text-white">
-      <Navbar />
       <HeroEditorial />
       <GradientFeatures />
       {/* <SplitFeature /> */}

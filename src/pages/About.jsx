@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Navbar from '../components/Navbar'
 import { AboutSB } from '../components/AboutSB'
 import { AboutTagline } from '../components/AboutTagline'
 import AboutFooter from '../components/AboutFooter'
@@ -14,7 +13,6 @@ export const About = () => {
         <AboutTagline/>
         <AboutCoreValues/>
         <AboutFooter/>
-        <Navbar/>
         <Footer/>
     </div>
   )
