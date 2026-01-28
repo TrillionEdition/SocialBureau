@@ -67,6 +67,7 @@ import AddAchievementForm from './components/AddAchievementForm'
 // import PaymentStatus from './pages/PaymentStatus'
 
 import UserManagement from './pages/UserManagement'
+import AddReview from './components/AddReview'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
@@ -149,7 +150,7 @@ function App() {
           <Route path='/achievements-form' element={<AddAchievementForm />} />
           {/* <Route path='/payment' element={<PaymentPage />} /> */}
           {/* <Route path='/payment-status' element={<PaymentStatus />} /> */}
-
+          <Route path='/add-review' element={<AddReview/>} />
 
           <Route path="/*" element={<NotFound />} />
         </Routes>

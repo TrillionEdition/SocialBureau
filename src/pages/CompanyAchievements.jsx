@@ -126,7 +126,7 @@ const CompanyAchievements = () => {
                 {/* Hero Section */}
                 <div className="max-w-7xl mx-auto text-center mb-20">
                     <h2 className="text-red-500 font-bold tracking-[0.2em] uppercase text-sm mb-4 animate-fade-in">
-                        Our Journey of Excellence
+
                     </h2>
                     <h1 className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-b from-white via-gray-300 to-gray-500 bg-clip-text text-transparent">
                         Company Achievements
