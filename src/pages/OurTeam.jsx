@@ -1,5 +1,4 @@
 import React from 'react'
-import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { TeamHeader } from '../components/TeamHeader'
 import TeamSection from '../components/TeamSection'
@@ -19,7 +18,6 @@ export const OurTeam = () => {
         image="/assets/socialbureau.png"
         url="https://www.socialbureau.in/our-team"
       />
-        <Navbar/>
         <TeamHeader/>
         <TeamSection/>
         {/* <TeamLayout/>         */}

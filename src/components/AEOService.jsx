@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "./Navbar";
 import Seo from "./Seo";
 import Footer from "./Footer";
 import { motion } from "framer-motion";
@@ -16,7 +15,6 @@ export default function AEOService() {
 
   return (
     <>
-      <Navbar />
       <Seo
         title="AEO — Answer Engine Optimization | SocialBureau"
         description="Be the default answer across AI assistants and chatbots through AEO: AI-Optimised content, schema & entity tuning, and knowledge-graph enhancements."

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import { BASE_URL } from "../../utils/urls";
 
 export const ResetPassword = () => {
   const { token } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -53,7 +54,7 @@ export const ResetPassword = () => {
       }
 
       setSuccess("Password reset successful! Redirecting to login...");
-      setTimeout(() => navigate("/login"), 2000);
+      setTimeout(() => navigate("/login" + location.search, { state: location.state }), 2000);
     } catch (err) {
       setError(err.message || "Something went wrong");
     } finally {
@@ -155,9 +156,13 @@ export const ResetPassword = () => {
 
               <p className="text-center text-sm text-gray-400">
                 Remember your password?{" "}
-                <a href="/login" className="text-red-500 hover:underline">
+                <Link
+                  to={"/login" + location.search}
+                  state={location.state}
+                  className="text-red-500 hover:underline"
+                >
                   Go back to login
-                </a>
+                </Link>
               </p>
             </div>
           </div>

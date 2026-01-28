@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { FiDownload, FiPlay } from 'react-icons/fi';
 import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 import { SiTiktok } from 'react-icons/si';
-import Navbar from './Navbar';
 import Seo from './Seo';
 import Footer from './Footer';
 
@@ -33,7 +32,6 @@ export default function TechnologyService() {
 
   return (
      <>
-        <Navbar />
         <Seo
             title="SocialBureau Tech | Marketing Technology & API Automation Agency"
             description="SocialBureau Tech helps brands automate and scale using marketing technology, API integrations, CRM setup, data tracking, Next.js websites, digital transformation workflows, and custom marketing dashboards. Power your growth with seamless automation and advanced marketing tech."

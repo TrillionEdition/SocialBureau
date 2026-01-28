@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { BASE_URL } from "../../utils/urls";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export const Register = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -22,13 +22,13 @@ export const Register = () => {
     rate: "",
     isEmployee: true,
     tools: [
-  {
-    toolName: "",
-    url: "",
-    icon: "",
-    description: "",
-  },
-],
+      {
+        toolName: "",
+        url: "",
+        icon: "",
+        description: "",
+      },
+    ],
 
   });
 
@@ -64,62 +64,62 @@ export const Register = () => {
   // };
 
   const handleToolChange = (index, field, value) => {
-  const updatedTools = form.tools.map((tool, i) =>
-    i === index ? { ...tool, [field]: value } : tool
-  );
-  setForm({ ...form, tools: updatedTools });
-};
+    const updatedTools = form.tools.map((tool, i) =>
+      i === index ? { ...tool, [field]: value } : tool
+    );
+    setForm({ ...form, tools: updatedTools });
+  };
 
 
-//   const handleToolFile = async (index, file) => {
-//   if (!file) return;
+  //   const handleToolFile = async (index, file) => {
+  //   if (!file) return;
 
-//   try {
-//     setUploadingTools(true);
+  //   try {
+  //     setUploadingTools(true);
 
-//     const iconUrl = await uploadToCloudinary(file);
+  //     const iconUrl = await uploadToCloudinary(file);
 
-//     const updatedTools = form.tools.map((tool, i) =>
-//       i === index ? { ...tool, icon: iconUrl } : tool
-//     );
+  //     const updatedTools = form.tools.map((tool, i) =>
+  //       i === index ? { ...tool, icon: iconUrl } : tool
+  //     );
 
-//     setForm({ ...form, tools: updatedTools });
-//     setError("");
-//   } catch (err) {
-//     setError("Failed to upload tool icon");
-//   } finally {
-//     setUploadingTools(false);
-//   }
-// };
-const handleToolFile = (index, file) => {
-  if (!file) return;
+  //     setForm({ ...form, tools: updatedTools });
+  //     setError("");
+  //   } catch (err) {
+  //     setError("Failed to upload tool icon");
+  //   } finally {
+  //     setUploadingTools(false);
+  //   }
+  // };
+  const handleToolFile = (index, file) => {
+    if (!file) return;
 
-  // Validate file
-  if (file.size > 5 * 1024 * 1024) {
-    setError("Tool icon must be less than 5MB");
-    return;
-  }
+    // Validate file
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Tool icon must be less than 5MB");
+      return;
+    }
 
-  const validImageTypes = ["image/jpeg", "image/png", "image/jpg", "image/webp"];
-  if (!validImageTypes.includes(file.type)) {
-    setError("Please upload only image files (JPEG, PNG, JPG, WEBP)");
-    return;
-  }
+    const validImageTypes = ["image/jpeg", "image/png", "image/jpg", "image/webp"];
+    if (!validImageTypes.includes(file.type)) {
+      setError("Please upload only image files (JPEG, PNG, JPG, WEBP)");
+      return;
+    }
 
-  // ✅ Store file reference for later append
-  const updatedTools = form.tools.map((tool, i) =>
-    i === index 
-      ? { 
-          ...tool, 
+    // ✅ Store file reference for later append
+    const updatedTools = form.tools.map((tool, i) =>
+      i === index
+        ? {
+          ...tool,
           iconFile: file,  // ✅ Store file object
           icon: URL.createObjectURL(file)  // ✅ Show preview locally
-        } 
-      : tool
-  );
+        }
+        : tool
+    );
 
-  setForm({ ...form, tools: updatedTools });
-  setError("");
-};
+    setForm({ ...form, tools: updatedTools });
+    setError("");
+  };
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -185,208 +185,211 @@ const handleToolFile = (index, file) => {
     }
   };
 
-// ✅ FIXED: Frontend Register Component - Proper Tool Handling
-// const handleSubmit = async (e) => {
-//   e.preventDefault();
-//   e.stopPropagation();
+  // ✅ FIXED: Frontend Register Component - Proper Tool Handling
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
 
-//   if (loading) return;
+  //   if (loading) return;
 
-//   setError("");
-//   setSuccess("");
+  //   setError("");
+  //   setSuccess("");
 
-//   try {
-//     setLoading(true);
-//     validateForm();
+  //   try {
+  //     setLoading(true);
+  //     validateForm();
 
-//     const formData = new FormData();
+  //     const formData = new FormData();
 
-//     formData.append("clickupId", form.clickupId);
-//     formData.append("name", form.name);
-//     formData.append("email", form.email);
-//     formData.append("password", form.password);
-//     formData.append("role", form.role);
-//     formData.append("emp_id", form.emp_id);
-//     formData.append("doj", form.doj);
-//     formData.append("rate", form.rate);
-//     formData.append("phone", form.phone || "");
-//     formData.append("isEmployee", "true");
+  //     formData.append("clickupId", form.clickupId);
+  //     formData.append("name", form.name);
+  //     formData.append("email", form.email);
+  //     formData.append("password", form.password);
+  //     formData.append("role", form.role);
+  //     formData.append("emp_id", form.emp_id);
+  //     formData.append("doj", form.doj);
+  //     formData.append("rate", form.rate);
+  //     formData.append("phone", form.phone || "");
+  //     formData.append("isEmployee", "true");
 
-//     // ✅ FIXED: Filter tools that have BOTH name AND url
-//     // Only include tools that are complete (have name, url, and ideally imageUrl)
-//     const toolsData = form.tools
-//   .filter(tool => tool.toolName?.trim()) // ONLY toolName is required
-//   .map(tool => ({
-//     toolName: tool.toolName.trim(),
-//     url: tool.url?.trim() || undefined,
-//     icon: tool.icon || undefined,
-//     description: tool.description?.trim() || undefined,
-//   }));
+  //     // ✅ FIXED: Filter tools that have BOTH name AND url
+  //     // Only include tools that are complete (have name, url, and ideally imageUrl)
+  //     const toolsData = form.tools
+  //   .filter(tool => tool.toolName?.trim()) // ONLY toolName is required
+  //   .map(tool => ({
+  //     toolName: tool.toolName.trim(),
+  //     url: tool.url?.trim() || undefined,
+  //     icon: tool.icon || undefined,
+  //     description: tool.description?.trim() || undefined,
+  //   }));
 
-// console.log("Tools being sent to backend:", toolsData);
-// formData.append("tools", JSON.stringify(toolsData));
+  // console.log("Tools being sent to backend:", toolsData);
+  // formData.append("tools", JSON.stringify(toolsData));
 
 
-//     console.log("Tools being sent to backend:", toolsData); // Debug log
+  //     console.log("Tools being sent to backend:", toolsData); // Debug log
 
-//     // ✅ Send as JSON string (backend will parse it)
-//     formData.append("tools", JSON.stringify(toolsData));
+  //     // ✅ Send as JSON string (backend will parse it)
+  //     formData.append("tools", JSON.stringify(toolsData));
 
-//     if (files.coverImage) formData.append("coverImage", files.coverImage);
-//     if (files.idCard) formData.append("idCard", files.idCard);
+  //     if (files.coverImage) formData.append("coverImage", files.coverImage);
+  //     if (files.idCard) formData.append("idCard", files.idCard);
 
-//     console.log("Complete FormData being submitted:");
-//     for (let [key, value] of formData.entries()) {
-//       if (key === "tools") {
-//         console.log(key, JSON.parse(value)); // Parse and log tools
-//       } else {
-//         console.log(key, typeof value === "object" ? value.name : value);
-//       }
-//     }
-// console.log("Form",formData);
+  //     console.log("Complete FormData being submitted:");
+  //     for (let [key, value] of formData.entries()) {
+  //       if (key === "tools") {
+  //         console.log(key, JSON.parse(value)); // Parse and log tools
+  //       } else {
+  //         console.log(key, typeof value === "object" ? value.name : value);
+  //       }
+  //     }
+  // console.log("Form",formData);
 
-//     const response = await fetch(`${BASE_URL}/user/register`, {
-//       method: "POST",
-//       body: formData,
-//       credentials: "include",
-//     });
+  //     const response = await fetch(`${BASE_URL}/user/register`, {
+  //       method: "POST",
+  //       body: formData,
+  //       credentials: "include",
+  //     });
 
-//     const data = await response.json();
+  //     const data = await response.json();
 
-//     if (!response.ok) {
-//       throw new Error(
-//         data.message || `Registration failed (Status: ${response.status})`
-//       );
-//     }
+  //     if (!response.ok) {
+  //       throw new Error(
+  //         data.message || `Registration failed (Status: ${response.status})`
+  //       );
+  //     }
 
-//     setSuccess("Employee registered successfully! ✅");
+  //     setSuccess("Employee registered successfully! ✅");
 
-//     // Reset form
-//     setForm({
-//       clickupId: "",
-//       name: "",
-//       email: "",
-//       password: "",
-//       role: "",
-//       emp_id: "",
-//       doj: "",
-//       rate: "",
-//       isEmployee: true,
-//       tools: [{ name: "", url: "", image: null, imageUrl: "" }],
-//     });
+  //     // Reset form
+  //     setForm({
+  //       clickupId: "",
+  //       name: "",
+  //       email: "",
+  //       password: "",
+  //       role: "",
+  //       emp_id: "",
+  //       doj: "",
+  //       rate: "",
+  //       isEmployee: true,
+  //       tools: [{ name: "", url: "", image: null, imageUrl: "" }],
+  //     });
 
-//     setFiles({ coverImage: null, idCard: null });
-//     document.querySelectorAll("input[type='file']").forEach((input) => {
-//       input.value = "";
-//     });
+  //     setFiles({ coverImage: null, idCard: null });
+  //     document.querySelectorAll("input[type='file']").forEach((input) => {
+  //       input.value = "";
+  //     });
 
-//     setTimeout(() => {
-//       navigate("/");
-//     }, 1500);
-//   } catch (err) {
-//     setError(err.message || "An error occurred during registration");
-//     console.error("Registration error:", err);
-//   } finally {
-//     setLoading(false);
-//   }
-// };
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  e.stopPropagation();
+  //     setTimeout(() => {
+  //       navigate("/");
+  //     }, 1500);
+  //   } catch (err) {
+  //     setError(err.message || "An error occurred during registration");
+  //     console.error("Registration error:", err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-  if (loading) return;
+    if (loading) return;
 
-  setError("");
-  setSuccess("");
+    setError("");
+    setSuccess("");
 
-  try {
-    setLoading(true);
-    validateForm();
+    try {
+      setLoading(true);
+      validateForm();
 
-    const formData = new FormData();
+      const formData = new FormData();
 
-    formData.append("clickupId", form.clickupId);
-    formData.append("name", form.name);
-    formData.append("email", form.email);
-    formData.append("password", form.password);
-    formData.append("role", form.role);
-    formData.append("emp_id", form.emp_id);
-    formData.append("doj", form.doj);
-    formData.append("rate", form.rate);
-    formData.append("phone", form.phone || "");
-    formData.append("isEmployee", "true");
+      formData.append("clickupId", form.clickupId);
+      formData.append("name", form.name);
+      formData.append("email", form.email);
+      formData.append("password", form.password);
+      formData.append("role", form.role);
+      formData.append("emp_id", form.emp_id);
+      formData.append("doj", form.doj);
+      formData.append("rate", form.rate);
+      formData.append("phone", form.phone || "");
+      formData.append("isEmployee", "true");
 
-    // ✅ FIX: Filter and prepare tools data - DO NOT include icon (let backend use uploaded file)
-    const toolsData = form.tools
-      .filter(tool => tool.toolName?.trim())  // Only require toolName
-      .map(tool => ({
-        toolName: tool.toolName.trim(),
-        url: tool.url?.trim() || undefined,
-        // ❌ DO NOT send icon - backend will use the uploaded file instead
-        description: tool.description?.trim() || undefined,
-      }));
+      // ✅ FIX: Filter and prepare tools data - DO NOT include icon (let backend use uploaded file)
+      const toolsData = form.tools
+        .filter(tool => tool.toolName?.trim())  // Only require toolName
+        .map(tool => ({
+          toolName: tool.toolName.trim(),
+          url: tool.url?.trim() || undefined,
+          // ❌ DO NOT send icon - backend will use the uploaded file instead
+          description: tool.description?.trim() || undefined,
+        }));
 
-    console.log("Tools being sent to backend:", toolsData);
+      console.log("Tools being sent to backend:", toolsData);
 
-    // ✅ FIXED: Append ONCE as JSON string (NOT TWICE!)
-    formData.append("tools", JSON.stringify(toolsData));
+      // ✅ FIXED: Append ONCE as JSON string (NOT TWICE!)
+      formData.append("tools", JSON.stringify(toolsData));
 
-    // ✅ Append tool icon files in FILTERED order (match toolsData order)
-    const filteredTools = form.tools.filter(tool => tool.toolName?.trim());
-    filteredTools.forEach((tool, index) => {
-      if (tool.iconFile) {  // Only if file was selected
-        formData.append("toolIcons", tool.iconFile);
+      // ✅ Append tool icon files in FILTERED order (match toolsData order)
+      const filteredTools = form.tools.filter(tool => tool.toolName?.trim());
+      filteredTools.forEach((tool, index) => {
+        if (tool.iconFile) {  // Only if file was selected
+          formData.append("toolIcons", tool.iconFile);
+        }
+      });
+
+      if (files.coverImage) formData.append("coverImage", files.coverImage);
+      if (files.idCard) formData.append("idCard", files.idCard);
+
+      const response = await fetch(`${BASE_URL}/user/register`, {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.message || `Registration failed (Status: ${response.status})`
+        );
       }
-    });
 
-    if (files.coverImage) formData.append("coverImage", files.coverImage);
-    if (files.idCard) formData.append("idCard", files.idCard);
+      setSuccess("Employee registered successfully! ✅");
 
-    const response = await fetch(`${BASE_URL}/user/register`, {
-      method: "POST",
-      body: formData,
-      credentials: "include",
-    });
+      // Reset form
+      setForm({
+        clickupId: "",
+        name: "",
+        email: "",
+        password: "",
+        role: "",
+        emp_id: "",
+        doj: "",
+        rate: "",
+        isEmployee: true,
+        tools: [{ toolName: "", url: "", icon: "", description: "", iconFile: null }],
+      });
 
-    const data = await response.json();
+      setFiles({ coverImage: null, idCard: null });
+      document.querySelectorAll("input[type='file']").forEach((input) => {
+        input.value = "";
+      });
 
-    if (!response.ok) {
-      throw new Error(
-        data.message || `Registration failed (Status: ${response.status})`
-      );
+      setTimeout(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const redirectParam = queryParams.get("redirect");
+        const from = location.state?.from?.pathname || redirectParam || "/";
+        navigate(from, { replace: true });
+      }, 1500);
+    } catch (err) {
+      setError(err.message || "An error occurred during registration");
+      console.error("Registration error:", err);
+    } finally {
+      setLoading(false);
     }
-
-    setSuccess("Employee registered successfully! ✅");
-
-    // Reset form
-    setForm({
-      clickupId: "",
-      name: "",
-      email: "",
-      password: "",
-      role: "",
-      emp_id: "",
-      doj: "",
-      rate: "",
-      isEmployee: true,
-      tools: [{ toolName: "", url: "", icon: "", description: "", iconFile: null }],
-    });
-
-    setFiles({ coverImage: null, idCard: null });
-    document.querySelectorAll("input[type='file']").forEach((input) => {
-      input.value = "";
-    });
-
-    setTimeout(() => {
-      navigate("/");
-    }, 1500);
-  } catch (err) {
-    setError(err.message || "An error occurred during registration");
-    console.error("Registration error:", err);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const getTodayDate = () => {
     const today = new Date();
@@ -394,14 +397,14 @@ const handleSubmit = async (e) => {
   };
 
   const addTool = () => {
-  setForm({
-    ...form,
-    tools: [
-      ...form.tools,
-      { toolName: "", url: "", icon: "", description: "", iconFile: null },
-    ],
-  });
-};
+    setForm({
+      ...form,
+      tools: [
+        ...form.tools,
+        { toolName: "", url: "", icon: "", description: "", iconFile: null },
+      ],
+    });
+  };
 
 
   const removeTool = (index) => {
@@ -411,7 +414,6 @@ const handleSubmit = async (e) => {
 
   return (
     <div className="relative min-h-screen bg-black text-white overflow-hidden">
-      <Navbar />
       <div
         className="absolute inset-0 z-0 bg-radial-gradient from-red-500/15 from-0% via-transparent to-transparent"
         style={{
@@ -579,20 +581,20 @@ const handleSubmit = async (e) => {
                     >
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
                         <Input
-  label="Tool Name"
-  value={tool.toolName}
-  onChange={(e) =>
-    handleToolChange(index, "toolName", e.target.value)
-  }
-/>
-<Input
-  label="Tool URL"
-  placeholder="https://example.com"
-  value={tool.url}
-  onChange={(e) =>
-    handleToolChange(index, "url", e.target.value)
-  }
-/>
+                          label="Tool Name"
+                          value={tool.toolName}
+                          onChange={(e) =>
+                            handleToolChange(index, "toolName", e.target.value)
+                          }
+                        />
+                        <Input
+                          label="Tool URL"
+                          placeholder="https://example.com"
+                          value={tool.url}
+                          onChange={(e) =>
+                            handleToolChange(index, "url", e.target.value)
+                          }
+                        />
 
                         <FileInput
                           label="Tool Image"

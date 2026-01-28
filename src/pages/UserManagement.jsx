@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { usersAPI } from "../../services/userServices";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
@@ -31,7 +30,7 @@ const UserManagement = () => {
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
-      <Navbar />
+     
       
       <div className="flex-grow container mx-auto px-4 py-8 mt-20">
         <div className="flex justify-between items-center mb-8">

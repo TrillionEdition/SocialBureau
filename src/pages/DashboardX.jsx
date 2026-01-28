@@ -11,7 +11,6 @@ import {
     Layers, Settings, HelpCircle, Briefcase, Plus, MoreVertical,
     ChevronRight, ArrowUpRight, ArrowDownRight, Monitor, Apple, Smartphone, Laptop
 } from 'lucide-react';
-import Navbar from '../components/Navbar';
 
 const balanceData = [
     { name: 'Jan', revenue: 65, expenses: 40 },
@@ -75,7 +74,7 @@ const DashboardX = () => {
 
     return (
         <div className="flex h-screen bg-[#0A0B10] text-[#E2E8F0] font-sans selection:bg-blue-500/30">
-            <Navbar />
+          
             {/* Sidebar */}
             <aside className="w-64 bg-[#0F1117] border-r border-slate-800 flex flex-col hidden lg:flex">
                 <div className="p-6 flex items-center gap-3">

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../../utils/urls";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 const EditUser = () => {
@@ -156,7 +155,6 @@ const EditUser = () => {
   /* ================= UI ================= */
   return (
     <div className="min-h-screen bg-black text-white">
-      <Navbar />
 
       <form onSubmit={handleSubmit} className="max-w-4xl mx-auto py-20 px-4 space-y-4">
         <h1 className="text-3xl font-bold text-center">{id ? "Edit Team Member" : "Add Team Member"}</h1>

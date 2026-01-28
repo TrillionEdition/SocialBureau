@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from '../components/Navbar'
 import HomeIntro from '../components/HomeIntro'
 import HomeCards from '../components/HomeCards'
 import Hometagline from '../components/Hometagline'
@@ -120,7 +119,6 @@ export const Home = () => {
       )}
 
       <HomeIntro />
-      <Navbar />
       <HomeServices />
       <Intro />
       {/* <UpcomingEvents />  */}

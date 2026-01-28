@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "./Navbar";
 import Seo from "./Seo";
 import Footer from "./Footer";
 import { motion } from "framer-motion";
@@ -17,7 +16,6 @@ export default function GEOService() {
 
   return (
     <>
-      <Navbar />
       <Seo
         title="GEO — Google Engine Optimization | SocialBureau"
         description="Increase your local & global visibility on Google with GEO: API-driven GBP, Maps ranking, AI review management, location keyword targeting and multi-location automation."

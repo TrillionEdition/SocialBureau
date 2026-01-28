@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "./Navbar";
 import Seo from "./Seo";
 import Footer from "./Footer";
 import { motion } from "framer-motion";
@@ -16,7 +15,6 @@ export default function SEOService() {
 
   return (
     <>
-      <Navbar />
       <Seo
         title="SEO — Search Engine Optimization | SocialBureau"
         description="Rank higher, drive organic traffic and convert better with our API-driven SEO: technical audits, on-page & off-page, content optimization, backlink building and performance monitoring."

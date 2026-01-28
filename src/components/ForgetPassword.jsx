@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { BASE_URL } from "../../utils/urls";
+import { Link, useLocation } from "react-router-dom";
 
 export const ForgotPassword = () => {
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -124,9 +126,13 @@ export const ForgotPassword = () => {
 
               <p className="text-center text-sm text-gray-400">
                 Remember your password?{" "}
-                <a href="/login" className="text-red-500 hover:underline">
+                <Link
+                  to={"/login" + location.search}
+                  state={location.state}
+                  className="text-red-500 hover:underline"
+                >
                   Go back to login
-                </a>
+                </Link>
               </p>
             </div>
           </div>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
 
 export default function VoiceAsst() {
   const [isActive, setIsActive] = useState(false);
@@ -465,7 +464,6 @@ const navigate=useNavigate();
 
 
       </div>
-      <Navbar/>
       <div className="mb-0 ">
         <Footer />
       </div>

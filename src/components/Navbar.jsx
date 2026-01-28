@@ -260,7 +260,7 @@ const MENU_ITEMS = [
   { icon: <FaUserTie />, label: "Careers", path: "/careers" },
   { icon: <FaBlog />, label: "Blogs", path: "/blog" },
   { icon: < FaTrophy />, label: "Leaderboard", path: "/leaderboard" },
-  { icon: <FaTools />, label: "Business Tool", path: "/tool" },
+  // { icon: <FaTools />, label: "Business Tool", path: "/tool" },
   { icon: <FaEnvelope />, label: "Contact", path: "/contact" },
   { icon: <FaMicrophone />, label: "Let's Talk", path: "/voice" },
 ];
@@ -278,7 +278,7 @@ const SEARCH_ITEMS = [
   { icon: <FaBriefcase />, label: "Influencer UGC Growth Engines", path: "/services/Influencer-UGC-Growth-Engines" },
   { icon: <FaBriefcase />, label: "Lifecycle Email Automation Strategy", path: "/services/Lifecycle-Email-Automation-Strategy" },
   { icon: <FaBriefcase />, label: "Software GTM Growth Architecture", path: "/services/Software-GTM-Growth-Architecture" },
-  { icon: <FaTools />, label: "Business Tool", path: "/tool" },
+  // { icon: <FaTools />, label: "Business Tool", path: "/tool" },
   { icon: <FaBlog />, label: "Blogs", path: "/blog" },
   // { icon: <FaCalendarAlt />, label: "Events", path: "/events" },
   { icon: <FaUsers />, label: "Our Team", path: "/our-team" },

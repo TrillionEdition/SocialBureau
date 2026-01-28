@@ -1,5 +1,4 @@
 import React from 'react'
-import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import CareersHeader from '../components/CareersHeader'
 import CareersPost from '../components/CareersList'
@@ -17,7 +16,6 @@ export const Careers = () => {
               image="/assets/socialbureau.png"
               url="https://www.socialbureau.in/careers"
             />
-        <Navbar/>
         <CareersHeader/>
         <CareersContent/>
         <CareersPost/>

@@ -8,10 +8,10 @@ export const AboutHeading = () => {
         style={{
           fontFamily: "Playfair Display, serif",
           color: "#fff",
-          lineHeight:"5rem"
+          lineHeight: "5rem"
         }}
       >
-        Born to <span className="text-[#ff0000]">SCALE</span><br/> the <span className="text-transparent bg-clip-text bg-gradient-to-t from-[#ff0000] to-black">UNSCALABLE</span>
+        Born to <span className="text-[#ff0000]">SCALE</span><br /> the <span className="text-[#ff0000] bg-clip-text bg-gradient-to-t from-[#ff0000]">UNSCALABLE</span>
       </h1>
     </div>
   );

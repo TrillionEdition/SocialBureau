@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaCrown, FaDownload, FaGem, FaLeaf, FaMapMarkerAlt, FaMedal, FaPiggyBank, FaRocket, FaStar, FaUserGraduate } from "react-icons/fa";
@@ -205,21 +204,18 @@ export function StaffDashboard() {
     if (!decodedName) {
       return (
         <>
-          <Navbar />
           <div className="bg-black min-h-screen flex items-center justify-center text-white p-6">
             <div className="max-w-xl text-center">
               <h1 className="text-2xl font-semibold mb-2">No staff selected</h1>
               <p className="text-gray-400">Please open a staff profile from the team list.</p>
             </div>
           </div>
-          <Footer />
         </>
       );
     }
 
     return (
       <>
-        <Navbar />
         <div className="bg-black min-h-screen flex flex-col items-center justify-center text-white">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-red-600 border-solid"></div>
           <h1 className="mt-4 text-xl font-semibold">Loading Staff Profile...</h1>
@@ -231,7 +227,6 @@ export function StaffDashboard() {
   if (!user) {
     return (
       <>
-        <Navbar />
         <div className="bg-black min-h-screen flex flex-col items-center justify-center text-white">
           <h1 className="text-3xl font-bold mb-4">Staff Not Found</h1>
           <p className="text-lg">The staff member "{decodedName}" does not exist.</p>
@@ -318,7 +313,6 @@ export function StaffDashboard() {
 
   return (
     <>
-      <Navbar />
       <div className="bg-black min-h-screen font-sans">
         {/* Cover */}
         <section className="relative mb-3">
