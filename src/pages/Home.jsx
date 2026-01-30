@@ -4,8 +4,7 @@ import Navbar from "../components/Navbar";
 import HomeIntro from "../components/HomeIntro";
 import HomeCards from "../components/HomeCards";
 import Hometagline from "../components/Hometagline";
-import HomeFooter from "../components/HomeFooter";
-import Footer from "../components/Footer";
+import PremiumFooter from "../components/PremiumFooter";
 import { CyberBackground } from "../components/CyberBackground";
 import CookieConsent from "../components/CookieConsent";
 import { useNavigate } from "react-router-dom";
@@ -203,10 +202,7 @@ export const Home = () => {
           </div>
         </section>
       </div>
-      <Hometagline />
-      <HomeFooter />
-
-      <Footer />
+      <PremiumFooter />
 
       {/* Image Modal (centered) */}
       {/* {showImageModal && (
