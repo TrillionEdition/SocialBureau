@@ -1,13 +1,31 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: 'MyFont';
-  src: url('/assets/logo.otf') format('opentype');
+  font-family: "MyFont";
+  src: url("/assets/logo.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
 
-/* Custom scrollbar */
+/* Custom Global Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #dc2626;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b91c1c;
+}
+
+/* Custom scrollbar utility class */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -36,13 +54,11 @@
   }
 }
 
-
 .animate-spin3d {
   animation: spin3d 20s linear infinite;
 }
 
 @keyframes move1 {
-
   0%,
   100% {
     transform: translate(-30%, -30%);
@@ -54,7 +70,6 @@
 }
 
 @keyframes move2 {
-
   0%,
   100% {
     transform: translate(30%, -20%);
@@ -118,7 +133,6 @@
 .animate-gradient-move {
   animation: gradient-move 2s linear infinite;
 }
-
 
 /* Add to your globals.css */
 .scrollbar-hide::-webkit-scrollbar {

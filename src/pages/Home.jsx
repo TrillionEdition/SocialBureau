@@ -1,51 +1,94 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from '../components/Navbar'
-import HomeIntro from '../components/HomeIntro'
-import HomeCards from '../components/HomeCards'
-import Hometagline from '../components/Hometagline'
-import HomeFooter from '../components/HomeFooter'
-import Footer from '../components/Footer'
-import { CyberBackground } from '../components/CyberBackground'
-import { useNavigate } from 'react-router-dom'
-import Clients from '../components/Clients'
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Navbar from "../components/Navbar";
+import HomeIntro from "../components/HomeIntro";
+import HomeCards from "../components/HomeCards";
+import Hometagline from "../components/Hometagline";
+import HomeFooter from "../components/HomeFooter";
+import Footer from "../components/Footer";
+import { CyberBackground } from "../components/CyberBackground";
+import { useNavigate } from "react-router-dom";
+import Clients from "../components/Clients";
 import posts from "../data/blogs";
-import LatestBlogs from '../components/LatestBlogs'
-import LatestCareers from '../components/LatestCareers'
-import HomeServices from '../components/HomeServices'
-import Chatbot from '../components/Chatbot'
-import { Googlereview } from '../components/Googlereview'
-import { Intro } from '../components/Intro'
-import LoadingSpinner from '../components/LoadingSpinner'
-import UpcomingEvents from '../components/UpcomingEvents'
+import LatestBlogs from "../components/LatestBlogs";
+import LatestCareers from "../components/LatestCareers";
+import HomeServices from "../components/HomeServices";
+import Chatbot from "../components/Chatbot";
+import { Googlereview } from "../components/Googlereview";
+import { Intro } from "../components/Intro";
+import LoadingSpinner from "../components/LoadingSpinner";
+import UpcomingEvents from "../components/UpcomingEvents";
+
+const AwardWinningExperience = React.lazy(
+  () => import("../components/AwardWinning/AwardWinningExperience"),
+);
+const EmployeeOfMonth = React.lazy(
+  () => import("../components/AwardWinning/EmployeeOfMonth/EmployeeOfMonth"),
+);
 
 export const Home = () => {
   const navigate = useNavigate();
 
   // Image modal state
-  const [showImageModal, setShowImageModal] = useState(true);
-  const modalImage =
-    (typeof import.meta !== 'undefined' && import.meta.env?.VITE_HOME_MODAL_IMAGE) ||
-    'https://res.cloudinary.com/dtwcgfmar/image/upload/v1767434989/Artboard_1_copy_3_1_daw2ii.png';
+  // Image modal state
+  // const [showImageModal, setShowImageModal] = useState(false);
+  // const [hasShownModal, setHasShownModal] = useState(false);
+  // const modalImage =
+  //   (typeof import.meta !== 'undefined' && import.meta.env?.VITE_HOME_MODAL_IMAGE) ||
+  //   'https://res.cloudinary.com/dtwcgfmar/image/upload/v1767434989/Artboard_1_copy_3_1_daw2ii.png';
 
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === 'Escape') setShowImageModal(false);
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  // useEffect(() => {
+  //   const onKey = (e) => {
+  //     if (e.key === 'Escape') setShowImageModal(false);
+  //   };
+  //   window.addEventListener('keydown', onKey);
+  //   return () => window.removeEventListener('keydown', onKey);
+  // }, []);
+
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (!showImageModal && !hasShownModal && window.scrollY > window.innerHeight * 5.5) {
+  //       setShowImageModal(true);
+  //       setHasShownModal(true);
+  //     }
+  //   };
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // }, [showImageModal, hasShownModal]);
 
   // Regular rotating popups (bottom-right)
   const popups = [
-    { title: "New Openings: Hiring Video Editors", subtitle: "Join our Team", link: "/careers/video-editor" },
-    { title: "New Openings: Hiring Performance Marketers", subtitle: "Join our Team", link: "/careers/performance-marketing-manager" },
-    { title: "New Openings: Hiring Graphics Designers", subtitle: "Join our Team", link: "/careers/graphic-designer" },
-    { title: "New Openings: Hiring SEO Specialist", subtitle: "Join our Team", link: "/careers/seo-expert" },
-    { title: "New Openings: Web Developers", subtitle: "Join our Team", link: "/careers/web-developer" },
+    {
+      title: "New Openings: Hiring Video Editors",
+      subtitle: "Join our Team",
+      link: "/careers/video-editor",
+    },
+    {
+      title: "New Openings: Hiring Performance Marketers",
+      subtitle: "Join our Team",
+      link: "/careers/performance-marketing-manager",
+    },
+    {
+      title: "New Openings: Hiring Graphics Designers",
+      subtitle: "Join our Team",
+      link: "/careers/graphic-designer",
+    },
+    {
+      title: "New Openings: Hiring SEO Specialist",
+      subtitle: "Join our Team",
+      link: "/careers/seo-expert",
+    },
+    {
+      title: "New Openings: Web Developers",
+      subtitle: "Join our Team",
+      link: "/careers/web-developer",
+    },
   ];
 
   // showPopups for rotating bottom-right popups (dynamic length)
-  const [showPopups, setShowPopups] = useState(() => Array(popups.length).fill(false));
+  const [showPopups, setShowPopups] = useState(() =>
+    Array(popups.length).fill(false),
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   useEffect(() => {
@@ -65,23 +108,19 @@ export const Home = () => {
   }, [currentIndex, paused, popups.length]);
 
   const closePopup = (index) => {
-    setShowPopups((prev) =>
-      prev.map((val, i) => (i === index ? false : val))
-    );
+    setShowPopups((prev) => prev.map((val, i) => (i === index ? false : val)));
     setPaused(true);
   };
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1200);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (loading) return <LoadingSpinner />;
-
+  // No internal loading, using the global loader in App.jsx
 
   return (
     <div className="bg-black">
+      <React.Suspense fallback={<div className="h-screen w-full bg-black" />}>
+        <AwardWinningExperience />
+      </React.Suspense>
+      {/* <React.Suspense fallback={<div className="h-screen w-full bg-black" />}>
+        <EmployeeOfMonth />
+      </React.Suspense> */}
       <CyberBackground />
       {/* <Chatbot/> */}
       {popups.map(
@@ -105,8 +144,12 @@ export const Home = () => {
                   ✕
                 </button>
 
-                <h2 className="text-lg font-bold text-white mb-1 drop-shadow-lg">{popup.title}</h2>
-                <p className="text-xs text-gray-200 mb-3 shadow-xl">{popup.subtitle}</p>
+                <h2 className="text-lg font-bold text-white mb-1 drop-shadow-lg">
+                  {popup.title}
+                </h2>
+                <p className="text-xs text-gray-200 mb-3 shadow-xl">
+                  {popup.subtitle}
+                </p>
                 <button className="bg-white text-gray-800 text-sm font-semibold px-4 py-1.5 rounded-full shadow hover:shadow-lg hover:bg-purple-100 transition-all">
                   Apply
                 </button>
@@ -115,7 +158,7 @@ export const Home = () => {
                 <span className="absolute -bottom-4 -right-4 w-10 h-10 rounded-full bg-red-800 opacity-30 animate-pulse"></span>
               </div>
             </div>
-          )
+          ),
       )}
 
       <HomeIntro />
@@ -128,15 +171,20 @@ export const Home = () => {
       <Clients />
       <LatestBlogs posts={posts} />
       <div className="bg-gray-900 text-white">
-
         <section className="bg-black/55 p-12 mt-10">
           <div className="max-w-6xl mx-auto text-center">
-            <h2 className="text-3xl font-bold">Get Real Answers. From Real Experts.</h2>
+            <h2 className="text-3xl font-bold">
+              Get Real Answers. From Real Experts.
+            </h2>
             <p className="mt-4 text-gray-300 max-w-2xl mx-auto">
-              Explore SocialBureau’s Live Q/A Hub. Ask questions, solve marketing challenges, and learn from expert discussions.
+              Explore SocialBureau’s Live Q/A Hub. Ask questions, solve
+              marketing challenges, and learn from expert discussions.
             </p>
 
-            <button className="mt-6 px-6 py-3 bg-[#3f0000] rounded-full font-semibold hover:bg-[#2f0000] transition" onClick={() => (navigate('/qa-section'))}>
+            <button
+              className="mt-6 px-6 py-3 bg-[#3f0000] rounded-full font-semibold hover:bg-[#2f0000] transition"
+              onClick={() => navigate("/qa-section")}
+            >
               Visit Q/A Hub
             </button>
           </div>
@@ -148,31 +196,42 @@ export const Home = () => {
       <Footer />
 
       {/* Image Modal (centered) */}
-      {showImageModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
-          onClick={() => setShowImageModal(false)}
-        >
-          <div
-            className="relative max-w-4xl w-[90%] mx-auto p-4"
-            onClick={(e) => e.stopPropagation()}
+      {/* Image Modal (centered) */}
+      {/* <AnimatePresence>
+        {showImageModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+            onClick={() => setShowImageModal(false)}
           >
-            <button
-              onClick={() => setShowImageModal(false)}
-              className="absolute -top-4 -right-4 bg-black/80 text-white rounded-full p-2 shadow-lg"
-              aria-label="Close image"
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 50 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, y: 50 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="relative max-w-4xl w-[90%] mx-auto p-4"
+              onClick={(e) => e.stopPropagation()}
             >
-              ✕
-            </button>
+              <button
+                onClick={() => setShowImageModal(false)}
+                className="absolute -top-4 -right-4 bg-black/80 text-white rounded-full p-2 shadow-lg hover:scale-110 transition-transform"
+                aria-label="Close image"
+              >
+                ✕
+              </button>
 
-            <img
-              src={modalImage}
-              alt="Showcase"
-              className="w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
-            />
-          </div>
-        </div>
-      )}
+              <img
+                src={modalImage}
+                alt="Showcase"
+                className="w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence> */}
     </div>
   );
 };

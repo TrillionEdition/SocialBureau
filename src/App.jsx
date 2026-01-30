@@ -25,6 +25,7 @@ import CareerDetail from './components/CareerDetail'
 import { Team } from './pages/Team'
 import { StaffDashboard } from './components/StaffDashboard'
 import LoadingSpinner from './components/LoadingSpinner'
+import LoadingScreen from './components/Loading/LoadingScreen'
 import BrandingService from './components/BrandingService'
 import XDService from './components/XDService'
 import TechnologyService from './components/TechnologyService'
@@ -66,11 +67,10 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1200);
-    return () => clearTimeout(timer);
+    // We handle loading termination via LoadingScreen's onComplete callback
   }, []);
 
-  if (loading) return <LoadingSpinner />;
+  if (loading) return <LoadingScreen onComplete={() => setLoading(false)} />;
 
   return (
     <>

@@ -4,7 +4,7 @@ import {
   FaInfoCircle, FaMicrophone, FaUserTie,
   FaUsers, FaCalendarAlt
 } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const MENU_ITEMS = [
   { icon: <FaHome />, label: "Home", path: "/" },
@@ -53,14 +53,17 @@ export default function Navbar() {
   const searchInputRef = useRef(null);
   const navigate = useNavigate();
 
+  const location = useLocation(); // Make sure to import this from react-router-dom
+
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) setShowNavbar(true);
+      const threshold = location.pathname === '/' ? window.innerHeight * 4.5 : 50;
+      if (window.scrollY > threshold) setShowNavbar(true);
       else setShowNavbar(false);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [location.pathname]);
 
   useEffect(() => {
     // Update suggestions when searchTerm changes
