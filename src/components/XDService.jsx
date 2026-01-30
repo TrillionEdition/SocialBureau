@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiBarChart2, FiPlay, FiDownload } from 'react-icons/fi';
 import Footer from './Footer';
-import Navbar from './Navbar';
 import Seo from './Seo';
 
 // ExperienceDesignPage.jsx
@@ -40,7 +39,7 @@ export default function XDService() {
   }
 
   return (
-<>    <Navbar />
+<>   
 <Seo
                     title="SocialBureau Design | Experience Design & UI/UX Agency in India"
 description="SocialBureau specializes in human-centered experience design, UI/UX strategy, CRO, and digital experience optimization. From UX research to XD design and conversion-focused interfaces, we craft high-performing websites and digital products that deliver results."

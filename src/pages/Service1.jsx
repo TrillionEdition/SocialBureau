@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import Seo from '../components/Seo';
 import { motion } from 'framer-motion';
 import Footer from '../components/Footer';
-import Navbar from '../components/Navbar';
 import servicesData from '../data/services';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
@@ -149,7 +148,6 @@ const Service1 = () => {
       <InteractiveBackground />
       {/* <HomeMouse/> */}
       <div className="relative z-10">
-        <Navbar />
         <motion.div
           initial={{ height: 0 }}
           animate={{ height: "100vh" }}

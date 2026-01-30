@@ -22,7 +22,7 @@ export default function LatestCareers() {
   return (
     <section className="py-16 bg-black text-white">
       <div className="max-w-6xl mx-auto px-6 text-center">
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           {/* Team Members */}
           {team.map((member, index) => (
@@ -52,36 +52,36 @@ export default function LatestCareers() {
                 <p className="text-sm text-gray-300 mb-2">{member.role}</p>
                 <p className="text-sm text-gray-400">{member.description}</p>
               </div>
-              
+
             </div>
           ))}
-<div className="bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-6 md:py-10 flex flex-col items-center justify-center hover:scale-105 transition-transform duration-300">
-  <div className="flex flex-wrap justify-center gap-4 mb-4">
-    <img
-      src="/assets/amal.jpg"
-      alt="Amal"
-      className="w-16 h-16 rounded-full border border-white/20 object-cover"
-    />
-    <img
-      src="/assets/elizebath.webp"
-      alt="Elizebath"
-      className="w-16 h-16 rounded-full border border-white/20 object-cover"
-    />
-    <img
-      src="/assets/hajira.webp"
-      alt="Hajira"
-      className="w-16 h-16 rounded-full border border-white/20 object-cover"
-    />
-  </div>
+          <div className="bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-6 md:py-10 flex flex-col items-center justify-center hover:scale-105 transition-transform duration-300">
+            <div className="flex flex-wrap justify-center gap-4 mb-4">
+              <img
+                src="/assets/amal.jpg"
+                alt="Amal"
+                className="w-16 h-16 rounded-full border border-white/20 object-cover"
+              />
+              <img
+                src="/assets/elizebath.webp"
+                alt="Elizebath"
+                className="w-16 h-16 rounded-full border border-white/20 object-cover"
+              />
+              <img
+                src="/assets/hajira.webp"
+                alt="Hajira"
+                className="w-16 h-16 rounded-full border border-white/20 object-cover"
+              />
+            </div>
 
-  {/* Button */}
-  <button
-    onClick={() => navigate("/our-team")}
-    className="px-4 py-2 bg-white text-black rounded-full font-semibold hover:bg-gray-200"
-  >
-    View Team →
-  </button>
-</div>
+            {/* Button */}
+            <button
+              onClick={() => navigate("/our-team")}
+              className="px-4 py-2 bg-white text-black rounded-full font-semibold hover:bg-gray-200"
+            >
+              View Team →
+            </button>
+          </div>
 
           {/* Careers Card (same across both views) */}
           <div
@@ -117,7 +117,7 @@ export default function LatestCareers() {
           aria-label="Click to view ClickUp verification"
         >
           <p style={{ margin: 0, fontSize: 16, fontWeight: 500 }}>
-            We are Verified ClickUp Power Users
+            We are  ClickUp Power Users
           </p>
 
           <img

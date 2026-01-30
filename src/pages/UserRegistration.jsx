@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+
 import Footer from "../components/Footer";
 import { registerUserAPI, checkEmailExistsAPI } from "../../services/userServices";
 
 export const UserRegister = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [form, setForm] = useState({
     name: "",
@@ -34,7 +35,7 @@ export const UserRegister = () => {
     if (form.password.length < 6)
       return setError("Password must be at least 6 characters");
     if (form.phone && form.phone.length !== 10)
-       return setError("Mobile number must be exactly 10 digits");    
+      return setError("Mobile number must be exactly 10 digits");
     if (form.password !== form.confirmPassword)
       return setError("Passwords do not match");
 
@@ -59,7 +60,7 @@ export const UserRegister = () => {
 
       setSuccess("Account created successfully");
 
-      setTimeout(() => navigate("/login"), 2000);
+      setTimeout(() => navigate("/login" + location.search, { state: location.state }), 2000);
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
     } finally {
@@ -69,7 +70,6 @@ export const UserRegister = () => {
 
   return (
     <div className="relative min-h-screen bg-black text-white overflow-hidden">
-      <Navbar />
 
       {/* Background Glow */}
       <div
@@ -124,23 +124,27 @@ export const UserRegister = () => {
               <Input label="Password" type="password" name="password" value={form.password} onChange={handleChange} required />
               <Input label="Confirm Password" type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} required />
 
-        <button
-          type="submit"
-          disabled={loading}
-          className={`w-full py-4 rounded-xl font-semibold text-lg transition
-            ${loading 
-              ? "bg-red-800 opacity-60 cursor-not-allowed" 
-              : "bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"}
+              <button
+                type="submit"
+                disabled={loading}
+                className={`w-full py-4 rounded-xl font-semibold text-lg transition
+            ${loading
+                    ? "bg-red-800 opacity-60 cursor-not-allowed"
+                    : "bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"}
           `}
-        >
-          {loading ? "Creating..." : "Create Account"}
-        </button>
+              >
+                {loading ? "Creating..." : "Create Account"}
+              </button>
 
               <p className="text-center text-sm text-gray-400">
                 Already have an account?{" "}
-                <a href="/login" className="text-red-500 hover:underline">
+                <Link
+                  to={"/login" + location.search}
+                  state={location.state}
+                  className="text-red-500 hover:underline"
+                >
                   Login
-                </a>
+                </Link>
               </p>
             </div>
           </div>

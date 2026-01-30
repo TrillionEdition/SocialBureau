@@ -23,23 +23,23 @@ export default function BlogPosts() {
   // Calculate reading time based on word count (average 200 words per minute)
   const calculateReadingTime = (post) => {
     let wordCount = 0;
-    
+
     // Count words from title and excerpt
     wordCount += (post.title?.split(/\s+/).length || 0);
     wordCount += (post.excerpt?.split(/\s+/).length || 0);
-    
+
     // Count words from content array (backend posts)
     if (post.content && Array.isArray(post.content)) {
       post.content.forEach(section => {
         wordCount += (section.text?.split(/\s+/).length || 0);
       });
     }
-    
+
     // Count words from description (static posts)
     if (post.description) {
       wordCount += post.description.split(/\s+/).length;
     }
-    
+
     const minutes = Math.ceil(wordCount / 100);
     return minutes;
   };
@@ -90,10 +90,9 @@ export default function BlogPosts() {
               setCurrentPage(0);
             }}
             className={`px-4 py-2 rounded-full text-sm font-medium transition
-              ${
-                selectedCategory === category
-                  ? "bg-[#ff0000] text-white"
-                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+              ${selectedCategory === category
+                ? "bg-[#ff0000] text-white"
+                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
               }`}
           >
             {category}
@@ -174,6 +173,29 @@ export default function BlogPosts() {
           </button>
         </div>
       )}
+      <div className="flex justify-center mt-16">
+        <div className="bg-gradient-to-r from-gray-800 to-gray-900 px-10 py-8 rounded-2xl text-center space-y-4 max-w-xl w-full shadow-lg border border-gray-700">
+
+          <h3 className="text-xl font-semibold text-white">
+            Have a Blog to share?
+          </h3>
+
+          <p className="text-gray-400 text-sm">
+            Submit your blog and get featured on our platform. Share insights, case studies, or creative ideas with our audience.
+          </p>
+
+          <button
+            onClick={() => navigate(`/blog/submit`)}
+            className="inline-flex items-center justify-center gap-2 bg-[#ff0000] text-white px-6 py-3 rounded-full font-medium hover:scale-105 hover:shadow-lg transition"
+          >
+            Submit Your Blog
+            <span className="text-lg">→</span>
+          </button>
+
+        </div>
+      </div>
+
+
     </div>
   );
 }

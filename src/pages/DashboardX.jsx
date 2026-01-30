@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { blogAPI } from '../../services/blogServices';
 import {
     BarChart, Bar, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
     PieChart, Pie, Cell, LineChart, Line
@@ -8,7 +11,6 @@ import {
     Layers, Settings, HelpCircle, Briefcase, Plus, MoreVertical,
     ChevronRight, ArrowUpRight, ArrowDownRight, Monitor, Apple, Smartphone, Laptop
 } from 'lucide-react';
-import Navbar from '../components/Navbar';
 
 const balanceData = [
     { name: 'Jan', revenue: 65, expenses: 40 },
@@ -49,9 +51,30 @@ const subscriptions = [
 ];
 
 const DashboardX = () => {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        try {
+            const storedUser = localStorage.getItem('user');
+            if (storedUser) {
+                setUser(JSON.parse(storedUser));
+            }
+        } catch (err) {
+            console.error("Error parsing user data", err);
+        }
+    }, []);
+
+    const { data: blogsData, isLoading: blogsLoading } = useQuery({
+        queryKey: ['myBlogs', user?.id],
+        queryFn: () => blogAPI.getBlogs({ userId: user?.id, published: 'all', limit: 100 }),
+        enabled: !!user?.id
+    });
+
+    const myBlogs = blogsData?.data || [];
+
     return (
         <div className="flex h-screen bg-[#0A0B10] text-[#E2E8F0] font-sans selection:bg-blue-500/30">
-            <Navbar />
+          
             {/* Sidebar */}
             <aside className="w-64 bg-[#0F1117] border-r border-slate-800 flex flex-col hidden lg:flex">
                 <div className="p-6 flex items-center gap-3">
@@ -282,57 +305,63 @@ const DashboardX = () => {
                         </div>
                     </div>
 
-                    {/* Subscriptions Table */}
-                    <div className="bg-[#0F1117] border border-slate-800 rounded-3xl overflow-hidden">
+                    {/* My Blogs Table */}
+                    <div className="bg-[#0F1117] border border-slate-800 rounded-3xl overflow-hidden mt-6">
                         <div className="p-6 border-b border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
-                            <h4 className="font-bold">Subscriptions</h4>
-                            <div className="flex flex-wrap items-center gap-3">
-                                <span className="text-xs text-slate-500">Search subscription by:</span>
-                                <FilterDropdown label="Date" />
-                                <FilterDropdown label="Location" />
-                                <FilterDropdown label="Customer" />
-                            </div>
+                            <h4 className="font-bold">My Blogs</h4>
+                            <Link to="/submit-blog" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors">
+                                + New Blog
+                            </Link>
                         </div>
                         <div className="overflow-x-auto">
                             <table className="w-full text-left border-collapse">
                                 <thead>
                                     <tr className="border-b border-slate-800/50">
-                                        <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider">#</th>
-                                        <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Name</th>
-                                        <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Email</th>
-                                        <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Date</th>
-                                        <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Location</th>
+                                        <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Title</th>
+                                        <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Category</th>
+                                        <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Views</th>
                                         <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Status</th>
-                                        <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Revenue</th>
+                                        <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Date</th>
+                                        <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    {subscriptions.map((sub) => (
-                                        <tr key={sub.id} className="border-b border-slate-800/50 hover:bg-slate-800/20 transition-colors group">
-                                            <td className="px-6 py-4 text-sm font-medium text-slate-500">{sub.id}</td>
-                                            <td className="px-6 py-4">
-                                                <div className="flex items-center gap-3">
-                                                    <img src={sub.avatar} className="w-8 h-8 rounded-full" alt={sub.name} />
-                                                    <span className="text-sm font-bold group-hover:text-blue-400 transition-colors">{sub.name}</span>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 text-sm text-slate-400">{sub.email}</td>
-                                            <td className="px-6 py-4 text-sm text-slate-400">{sub.date}</td>
-                                            <td className="px-6 py-4 text-sm text-slate-400">{sub.location}</td>
-                                            <td className="px-6 py-4">
-                                                <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${sub.status === 'Active' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'
-                                                    }`}>
-                                                    {sub.status}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 text-sm font-bold">{sub.revenue}</td>
+                                <tbody className="text-xs">
+                                    {blogsLoading ? (
+                                        <tr>
+                                            <td colSpan="6" className="px-6 py-4 text-center text-slate-500">Loading blogs...</td>
                                         </tr>
-                                    ))}
+                                    ) : myBlogs.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="6" className="px-6 py-4 text-center text-slate-500">No blogs found.</td>
+                                        </tr>
+                                    ) : (
+                                        myBlogs.map((blog) => (
+                                            <tr key={blog._id || blog.id} className="border-b border-slate-800/50 hover:bg-slate-800/20 transition-colors group">
+                                                <td className="px-6 py-4 font-bold text-slate-200">{blog.title}</td>
+                                                <td className="px-6 py-4 text-slate-400">{blog.category}</td>
+                                                <td className="px-6 py-4 text-slate-400">{blog.meta?.views || 0}</td>
+                                                <td className="px-6 py-4">
+                                                    <span className={`px-2 py-1 rounded-md font-bold ${blog.published ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'}`}>
+                                                        {blog.published ? 'Published' : 'Draft'}
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-4 text-slate-400">
+                                                    {new Date(blog.createdAt).toLocaleDateString()}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <Link 
+                                                        to={`/blogs/${blog.slug}`} 
+                                                        className="text-blue-400 hover:text-blue-300 mr-3"
+                                                    >
+                                                        View
+                                                    </Link>
+                                                    {/* Add Edit button later if needed */}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
                                 </tbody>
                             </table>
-                        </div>
-                        <div className="p-4 border-t border-slate-800 flex items-center justify-center">
-                            <button className="text-xs font-bold text-slate-500 hover:text-white transition-colors">View all subscriptions</button>
                         </div>
                     </div>
                 </div>

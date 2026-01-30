@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { BASE_URL } from "../../utils/urls";
 import { setUserData } from "../../utils/authUtils";
 
@@ -54,20 +54,22 @@ export const Login = () => {
       // if (data.user) {
       //   setUserData(data.user);
       // }
-if (data.user) {
-  setUserData(data.user);
-  localStorage.setItem('user', JSON.stringify(data.user));
-  
-  // ✅ Store token if provided in response
-  if (data.token) {
-    localStorage.setItem('token', data.token);
-  }
-}
+      if (data.user) {
+        setUserData(data.user);
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        // ✅ Store token if provided in response
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+        }
+      }
       setSuccess("Login successful ✅");
       window.dispatchEvent(new Event("authChange"));
 
       // ✅ Get the page user came from
-      const from = location.state?.from?.pathname || "/";
+      const queryParams = new URLSearchParams(location.search);
+      const redirectParam = queryParams.get("redirect");
+      const from = location.state?.from?.pathname || redirectParam || "/";
 
       setTimeout(() => {
         if (data.user?.isEmployee && !data.user?.isVerified) {
@@ -177,9 +179,13 @@ if (data.user) {
 
               <p className="text-center text-sm text-gray-400">
                 Don't have an account?{" "}
-                <a href="/user-register" className="text-red-500 hover:underline">
+                <Link
+                  to={"/user-register" + location.search}
+                  state={location.state}
+                  className="text-red-500 hover:underline"
+                >
                   Create Account
-                </a>
+                </Link>
               </p>
             </div>
           </div>

@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { FiGlobe, FiTrendingUp, FiZap, FiDownload } from 'react-icons/fi';
 import { FaFacebookF, FaGoogle, FaLinkedinIn, FaTwitter, FaAmazon, FaPinterest, FaSpotify, FaReddit, FaSnapchat } from 'react-icons/fa';
 import { SiTiktok } from 'react-icons/si';
-import Navbar from './Navbar';
 import Seo from './Seo';
 import Footer from './Footer';
 
@@ -81,7 +80,6 @@ export default function GlobalMarketingService() {
 
   return (
     <>
-      <Navbar />
       <Seo
         title="SocialBureau Global Marketing | API Marketing & Multi-Platform Ad Agency"
         description="SocialBureau offers global marketing services powered by API automation across Meta, Google, TikTok, LinkedIn, Amazon Ads, and more. We specialize in API marketing, performance marketing, platform prompting, SEO, content marketing, and AI analytics for worldwide brand growth."

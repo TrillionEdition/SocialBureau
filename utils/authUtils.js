@@ -39,7 +39,7 @@ export const clearAuthData = async () => {
 
   // Clear localStorage
   localStorage.removeItem("userData");
-  
+
   // Notify other components
   window.dispatchEvent(new Event("authChange"));
 };
@@ -150,11 +150,12 @@ export const fetchWithAuth = async (url, options = {}) => {
   };
 
   const response = await fetch(url, finalOptions);
-  
+
   // If unauthorized, clear auth data
   if (response.status === 401) {
     await clearAuthData();
-    window.location.href = "/login";
+    const currentPath = window.location.pathname + window.location.search;
+    window.location.href = `/login?redirect=${encodeURIComponent(currentPath)}`;
   }
 
   return response;

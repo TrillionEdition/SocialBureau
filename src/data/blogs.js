@@ -1,135 +1,135 @@
 const posts = [
-//       {
-//   id: 11,
-//   category: "Marketing",
-//   title: "The Creative Edge: Why Digital Marketing in 2025 Belongs to Bold Ideas, Not Just Algorithms",
-//   slug: "Why-Digital-Marketing-in-2025-Belongs-to-Bold-Ideas",
-//   excerpt:
-//     "In 2025, every brand is playing in the same environment full of digital noise. Your strategies are the same. Your brand...",
-//   content: [
-//     `Children’s Day exemplifies innocence, curiosity, and the limitless potential of the next generation. Celebrated globally, the day serves as a reminder to adults that children must be protected, educated, and nurtured with compassion. Beyond festivities, Children’s Day carries a deeper mission—strengthening our responsibility to support and empower young minds.`,
+      {
+  id: 11,
+  category: "Marketing",
+  title: "The Creative Edge: Why Digital Marketing in 2025 Belongs to Bold Ideas, Not Just Algorithms",
+  slug: "Why-Digital-Marketing-in-2025-Belongs-to-Bold-Ideas",
+  excerpt:
+    "In 2025, every brand is playing in the same environment full of digital noise. Your strategies are the same. Your brand...",
+  content: [
+    `Children’s Day exemplifies innocence, curiosity, and the limitless potential of the next generation. Celebrated globally, the day serves as a reminder to adults that children must be protected, educated, and nurtured with compassion. Beyond festivities, Children’s Day carries a deeper mission—strengthening our responsibility to support and empower young minds.`,
     
-//     `**Historical Origins**  
-// The idea of dedicating a day to children emerged in the early 20th century when global concerns rose around child welfare, education, and the abolition of child labor. The first official celebration was held in Turkey in 1920, when Mustafa Kemal Atatürk declared April 23 as National Sovereignty and Children’s Day.  
-// The concept soon spread across the world. In 1925, an international conference in Geneva designated June 1 as International Children’s Day. Later in 1954, the United Nations adopted November 20 as Universal Children’s Day to promote child welfare and highlight the Declaration and Convention on the Rights of the Child.`,
+    `**Historical Origins**  
+The idea of dedicating a day to children emerged in the early 20th century when global concerns rose around child welfare, education, and the abolition of child labor. The first official celebration was held in Turkey in 1920, when Mustafa Kemal Atatürk declared April 23 as National Sovereignty and Children’s Day.  
+The concept soon spread across the world. In 1925, an international conference in Geneva designated June 1 as International Children’s Day. Later in 1954, the United Nations adopted November 20 as Universal Children’s Day to promote child welfare and highlight the Declaration and Convention on the Rights of the Child.`,
     
-//     `India’s celebration evolved differently—initially observed on November 20, it was later moved to November 14, the birth anniversary of Jawaharlal Nehru, a leader who deeply believed that children are the foundation of a nation’s future. Since 1964, his birthday has been celebrated nationwide with programs, activities, and tributes.`,
+    `India’s celebration evolved differently—initially observed on November 20, it was later moved to November 14, the birth anniversary of Jawaharlal Nehru, a leader who deeply believed that children are the foundation of a nation’s future. Since 1964, his birthday has been celebrated nationwide with programs, activities, and tributes.`,
     
-//     `**Children’s Day Around the World**  
-// Countries celebrate differently while honoring the same core message—children are the drivers of human progress.  
-// • China (June 1): Free access to parks and cultural events  
-// • South Korea (May 5): Family bonding and outdoor activities  
-// • Nigeria (May 27): Awareness campaigns on child labor and poverty  
-// • United Kingdom: Charity events and welfare initiatives  
-// Despite the cultural variations, the mission remains universal: uphold the rights and wellbeing of all children.`,
+    `**Children’s Day Around the World**  
+Countries celebrate differently while honoring the same core message—children are the drivers of human progress.  
+• China (June 1): Free access to parks and cultural events  
+• South Korea (May 5): Family bonding and outdoor activities  
+• Nigeria (May 27): Awareness campaigns on child labor and poverty  
+• United Kingdom: Charity events and welfare initiatives  
+Despite the cultural variations, the mission remains universal: uphold the rights and wellbeing of all children.`,
     
-//     `Over the decades, Children’s Day has transitioned from symbolic observances to driving major reform movements. The UN Convention on the Rights of the Child (CRC), signed by 196 nations in 1989, established a global standard for protecting children’s right to survival, education, and participation in society.`,
+    `Over the decades, Children’s Day has transitioned from symbolic observances to driving major reform movements. The UN Convention on the Rights of the Child (CRC), signed by 196 nations in 1989, established a global standard for protecting children’s right to survival, education, and participation in society.`,
     
-//     `**Modern-Day Significance**  
-// Today’s Children’s Day highlights pressing global issues such as poverty, inequality in education, child safety, and digital-age threats like cyberbullying. Schools, NGOs, and communities organize events focusing on sustainability, mental well-being, and online safety.  
-// The COVID-19 pandemic significantly emphasized the importance of mental health, play, and emotional support for children.`,
+    `**Modern-Day Significance**  
+Today’s Children’s Day highlights pressing global issues such as poverty, inequality in education, child safety, and digital-age threats like cyberbullying. Schools, NGOs, and communities organize events focusing on sustainability, mental well-being, and online safety.  
+The COVID-19 pandemic significantly emphasized the importance of mental health, play, and emotional support for children.`,
     
-//     `In India, November 14 is used to promote welfare programs, including mid-day meals, health drives, and awareness campaigns. UNICEF uses the global platform to advocate for girl child education, vaccination, disability rights, and protection in war zones.`,
+    `In India, November 14 is used to promote welfare programs, including mid-day meals, health drives, and awareness campaigns. UNICEF uses the global platform to advocate for girl child education, vaccination, disability rights, and protection in war zones.`,
     
-//     `Children’s Day also celebrates creativity, imagination, and the freedom that all children deserve. It urges societies to invest more in education, emotional development, and early childhood support—investments that research shows have long-term economic and social benefits.`,
+    `Children’s Day also celebrates creativity, imagination, and the freedom that all children deserve. It urges societies to invest more in education, emotional development, and early childhood support—investments that research shows have long-term economic and social benefits.`,
     
-//     `**Conclusion**  
-// From Atatürk’s Turkey in 1920 to a worldwide celebration adopted by the UN, Children’s Day has grown into a powerful symbol of hope and humanity.  
-// It reminds us that while the world evolves—with digital challenges, climate concerns, and social pressures—our responsibility remains constant: to protect the dreams, rights, and future of every child.  
-// The future belongs to them—and safeguarding that future is the greatest duty we share.`
-//   ],
-//   author: "Anjay Ramesh",
-//   time: "3 min read",
-//   image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1763041321/Childrens_day_wide_gpjcmq.jpg",
-// },
+    `**Conclusion**  
+From Atatürk’s Turkey in 1920 to a worldwide celebration adopted by the UN, Children’s Day has grown into a powerful symbol of hope and humanity.  
+It reminds us that while the world evolves—with digital challenges, climate concerns, and social pressures—our responsibility remains constant: to protect the dreams, rights, and future of every child.  
+The future belongs to them—and safeguarding that future is the greatest duty we share.`
+  ],
+  author: "Anjay Ramesh",
+  time: "3 min read",
+  image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1763041321/Childrens_day_wide_gpjcmq.jpg",
+},
 
-//        {
-//       id: 10,
-//     category: "Marketing",
-//     title: "The Power of Micro-Niches , How Ultra-Focused Marketing Creates Unshakable Brand Loyalty",
-//     slug: "The-Power-of-Micro-Niches",
-//     excerpt:
-//       "In today’s noisy, fast-scrolling marketplace, standing out isn’t about shouting louder...",
-//     content: [
-//       `In today’s digital arena brands face unprecedented competition for attention. Everyone is producing content running ads and vying for the same scrolls and clicks. While most chase mass visibility the most successful players especially in luxury are embracing a radically different mindset. They focus on micro-niches.  
-// A micro-niche is not just a smaller audience. It is a highly specific values-driven segment where passion runs deep and loyalty thrives. These audiences might be small in number but they are powerful in influence purchase intent and word of mouth reach. For high-end brands micro-niche marketing can transform awareness into advocacy.`,
-//       `**What Makes Micro-Niches So Valuable**  
-// Mass marketing casts a wide net but often dilutes relevance. Micro-niches allow brands to craft messages products and experiences with surgical precision. The result  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Sharper resonance as messaging speaks to an audience’s exact needs tastes and aspirations  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Pricing power as highly tailored solutions justify exclusivity and premium rates  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Stronger loyalty as people support brands that truly understand them    
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Efficient spend as marketing resources focus on prospects most likely to convert  
-// For luxury businesses this approach is especially potent. High-value buyers are not motivated by discounts or volume. They want alignment with their identity stories worth sharing and access to circles that feel rare.    `,
-//       `**Examples Across Luxury Sectors**  
-//       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Yachting Instead of targeting wealthy boat lovers a brand could focus on sustainability-minded sailors or investors interested in fractional yacht ownership  
-//       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Fine dining A chef might design a club for travelers seeking immersive culinary adventures in remote locations  
-//       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Fashion A couture house could cultivate collectors of limited-edition archival pieces giving them early access to sketches and fittings  
-//       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Wellness retreats Boutique resorts can focus on executives seeking quiet tech free sanctuaries with curated longevity programs  
-//       Each of these examples shows how narrowing the audience unlocks richer storytelling and higher engagement.  `,
-//       `**How to Identify Your Micro-Niche**  
-// **1. Map Interests Not Just Demographics**  
-// Go beyond age income or geography. Examine values rituals frustrations and unspoken desires.  
-// **2. Study Online and Offline Communities**  
-// Forums invitation-only groups or private clubs can reveal trends and vocabulary insiders use.  
-// **3. Spot Overlooked Needs**  
-// Look for gaps where current offerings underserve or where competitors aim too broadly.  
-// **4. Validate Through Dialogue**  
-// Host small focus conversations coffee chats or micro-surveys to confirm demand before investing.  `, 
-//  `**Crafting a Micro-Niche Marketing Strategy**    
-//  Once you know your segment design a plan that speaks directly to them.  
-//  **Positioning and Storytelling**  
-//  Anchor your narrative in the audience’s worldview. What do they aspire to What do they reject Position your brand as the natural ally in their journey.  
-//  **Bespoke Content**  
-//  Create material that feels made-to-measure such as elegant white papers short videos or masterclasses that reveal rare expertise.  
-//  **Curated Experiences**  
-//  Host private tastings yacht excursions atelier tours or behind the scenes events. Hybrid models mixing virtual and physical touchpoints keep engagement strong.  
-//  **Invitation-Only Communities**  
-//  Build spaces where members interact with your brand and one another. The intimacy of a private circle heightens perceived value.  
-//  **Personalized Service**  
-//  From handwritten notes to custom dashboards personal touches show attention to detail which is a cornerstone of high-end service.  
-//  **Common Pitfalls to Avoid**  
-//  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Going too broad which undermines credibility with discerning audiences  
-//  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Overcomplicating entry since exclusivity should feel special not intimidating  
-//  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Neglecting authenticity as micro-niche buyers sense when a brand’s interest is not genuine  
-//  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Chasing quick wins when true loyalty is built through steady thoughtful engagement  
-//   `, 
-//  `**Measuring Success in Micro-Niche Marketing**  
-//  Traditional KPIs like impressions or clicks only tell part of the story. For micro-niches consider  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Quality of leads and referrals  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Retention and lifetime value  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Sentiment in private discussions or testimonials  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Participation in events or communities  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Growth of organic advocacy  
-// Because audiences are smaller each relationship holds disproportionate weight. Celebrate depth over raw numbers.    `
-// ,`**The Role of Technology**  
-// Sophisticated tools make micro-niche efforts scalable.  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Data segmentation for ultra precise targeting  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· AI assisted personalization to craft bespoke recommendations  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Secure apps or platforms for private memberships  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Immersive media such as VR yacht tours or AR fashion previews  
-// Technology should not overshadow personal touch. Instead it enhances convenience and connection.  `,
-// `**Future Trends in Micro-Niche Marketing**  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Sustainability micro communities built around responsible consumption and conservation  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Experience co-creation that invites clients to influence product design or events  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Cross brand alliances between complementary luxury names to share high-value audiences  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Digital first exclusivity through NFTs tokenized access or members only streams for launches  
-// These developments suggest micro-niches will only grow more sophisticated blending craftsmanship innovation and purpose.  `,
-// `**Why Micro-Niches Matter More Than Ever**  
-// As algorithms shift and attention spans shrink relevance becomes priceless. Micro-niches give brands an edge by  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Creating messaging that cuts through noise  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Turning buyers into collaborators and ambassadors  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Shielding against commoditization by cultivating uniqueness  
-// &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Aligning marketing with long-term brand equity rather than fleeting trends  
-// In luxury where relationships often outlast transactions this approach builds unshakable loyalty. `,
-// `**Final Thoughts**  
-// Marketing to everyone is easy and ineffective. Marketing to a micro-niche requires care insight and courage to say this is for you to a select few. When done well it elevates a brand beyond product and price into a realm of meaning identity and belonging.  
-// Whether your brand sells handcrafted watches superyachts or transformative retreats the formula is the same. Find the tribe that values what you create most speak their language and design experiences that make them feel seen.  
-// That is how micro-niche marketing turns visibility into influence and influence into enduring loyalty.`
-//     ],
-//     author: "MS Shadil",
-//     time: "10 min read",
-//     image: "../assets/impact.webp",
-//   },
+       {
+      id: 10,
+    category: "Marketing",
+    title: "The Power of Micro-Niches , How Ultra-Focused Marketing Creates Unshakable Brand Loyalty",
+    slug: "The-Power-of-Micro-Niches",
+    excerpt:
+      "In today’s noisy, fast-scrolling marketplace, standing out isn’t about shouting louder...",
+    content: [
+      `In today’s digital arena brands face unprecedented competition for attention. Everyone is producing content running ads and vying for the same scrolls and clicks. While most chase mass visibility the most successful players especially in luxury are embracing a radically different mindset. They focus on micro-niches.  
+A micro-niche is not just a smaller audience. It is a highly specific values-driven segment where passion runs deep and loyalty thrives. These audiences might be small in number but they are powerful in influence purchase intent and word of mouth reach. For high-end brands micro-niche marketing can transform awareness into advocacy.`,
+      `**What Makes Micro-Niches So Valuable**  
+Mass marketing casts a wide net but often dilutes relevance. Micro-niches allow brands to craft messages products and experiences with surgical precision. The result  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Sharper resonance as messaging speaks to an audience’s exact needs tastes and aspirations  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Pricing power as highly tailored solutions justify exclusivity and premium rates  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Stronger loyalty as people support brands that truly understand them    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Efficient spend as marketing resources focus on prospects most likely to convert  
+For luxury businesses this approach is especially potent. High-value buyers are not motivated by discounts or volume. They want alignment with their identity stories worth sharing and access to circles that feel rare.    `,
+      `**Examples Across Luxury Sectors**  
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Yachting Instead of targeting wealthy boat lovers a brand could focus on sustainability-minded sailors or investors interested in fractional yacht ownership  
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Fine dining A chef might design a club for travelers seeking immersive culinary adventures in remote locations  
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Fashion A couture house could cultivate collectors of limited-edition archival pieces giving them early access to sketches and fittings  
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Wellness retreats Boutique resorts can focus on executives seeking quiet tech free sanctuaries with curated longevity programs  
+      Each of these examples shows how narrowing the audience unlocks richer storytelling and higher engagement.  `,
+      `**How to Identify Your Micro-Niche**  
+**1. Map Interests Not Just Demographics**  
+Go beyond age income or geography. Examine values rituals frustrations and unspoken desires.  
+**2. Study Online and Offline Communities**  
+Forums invitation-only groups or private clubs can reveal trends and vocabulary insiders use.  
+**3. Spot Overlooked Needs**  
+Look for gaps where current offerings underserve or where competitors aim too broadly.  
+**4. Validate Through Dialogue**  
+Host small focus conversations coffee chats or micro-surveys to confirm demand before investing.  `, 
+ `**Crafting a Micro-Niche Marketing Strategy**    
+ Once you know your segment design a plan that speaks directly to them.  
+ **Positioning and Storytelling**  
+ Anchor your narrative in the audience’s worldview. What do they aspire to What do they reject Position your brand as the natural ally in their journey.  
+ **Bespoke Content**  
+ Create material that feels made-to-measure such as elegant white papers short videos or masterclasses that reveal rare expertise.  
+ **Curated Experiences**  
+ Host private tastings yacht excursions atelier tours or behind the scenes events. Hybrid models mixing virtual and physical touchpoints keep engagement strong.  
+ **Invitation-Only Communities**  
+ Build spaces where members interact with your brand and one another. The intimacy of a private circle heightens perceived value.  
+ **Personalized Service**  
+ From handwritten notes to custom dashboards personal touches show attention to detail which is a cornerstone of high-end service.  
+ **Common Pitfalls to Avoid**  
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Going too broad which undermines credibility with discerning audiences  
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Overcomplicating entry since exclusivity should feel special not intimidating  
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Neglecting authenticity as micro-niche buyers sense when a brand’s interest is not genuine  
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Chasing quick wins when true loyalty is built through steady thoughtful engagement  
+  `, 
+ `**Measuring Success in Micro-Niche Marketing**  
+ Traditional KPIs like impressions or clicks only tell part of the story. For micro-niches consider  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Quality of leads and referrals  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Retention and lifetime value  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Sentiment in private discussions or testimonials  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Participation in events or communities  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Growth of organic advocacy  
+Because audiences are smaller each relationship holds disproportionate weight. Celebrate depth over raw numbers.    `
+,`**The Role of Technology**  
+Sophisticated tools make micro-niche efforts scalable.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Data segmentation for ultra precise targeting  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· AI assisted personalization to craft bespoke recommendations  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Secure apps or platforms for private memberships  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Immersive media such as VR yacht tours or AR fashion previews  
+Technology should not overshadow personal touch. Instead it enhances convenience and connection.  `,
+`**Future Trends in Micro-Niche Marketing**  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Sustainability micro communities built around responsible consumption and conservation  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Experience co-creation that invites clients to influence product design or events  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Cross brand alliances between complementary luxury names to share high-value audiences  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Digital first exclusivity through NFTs tokenized access or members only streams for launches  
+These developments suggest micro-niches will only grow more sophisticated blending craftsmanship innovation and purpose.  `,
+`**Why Micro-Niches Matter More Than Ever**  
+As algorithms shift and attention spans shrink relevance becomes priceless. Micro-niches give brands an edge by  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Creating messaging that cuts through noise  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Turning buyers into collaborators and ambassadors  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Shielding against commoditization by cultivating uniqueness  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· Aligning marketing with long-term brand equity rather than fleeting trends  
+In luxury where relationships often outlast transactions this approach builds unshakable loyalty. `,
+`**Final Thoughts**  
+Marketing to everyone is easy and ineffective. Marketing to a micro-niche requires care insight and courage to say this is for you to a select few. When done well it elevates a brand beyond product and price into a realm of meaning identity and belonging.  
+Whether your brand sells handcrafted watches superyachts or transformative retreats the formula is the same. Find the tribe that values what you create most speak their language and design experiences that make them feel seen.  
+That is how micro-niche marketing turns visibility into influence and influence into enduring loyalty.`
+    ],
+    author: "MS Shadil",
+    time: "10 min read",
+    image: "../assets/impact.webp",
+  },
 //         {
 //       id: 9,
 //     category: "Marketing",

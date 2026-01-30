@@ -7,6 +7,7 @@ import Hometagline from "../components/Hometagline";
 import HomeFooter from "../components/HomeFooter";
 import Footer from "../components/Footer";
 import { CyberBackground } from "../components/CyberBackground";
+import CookieConsent from "../components/CookieConsent";
 import { useNavigate } from "react-router-dom";
 import Clients from "../components/Clients";
 import posts from "../data/blogs";
@@ -29,7 +30,6 @@ const EmployeeOfMonth = React.lazy(
 export const Home = () => {
   const navigate = useNavigate();
 
-  // Image modal state
   // Image modal state
   // const [showImageModal, setShowImageModal] = useState(false);
   // const [hasShownModal, setHasShownModal] = useState(false);
@@ -62,6 +62,11 @@ export const Home = () => {
       title: "New Openings: Hiring Video Editors",
       subtitle: "Join our Team",
       link: "/careers/video-editor",
+    },
+    {
+      title: "New Openings: Hiring Cinematographers",
+      subtitle: "Join our Team",
+      link: "/careers/cinematographer",
     },
     {
       title: "New Openings: Hiring Performance Marketers",
@@ -113,6 +118,8 @@ export const Home = () => {
   };
   // No internal loading, using the global loader in App.jsx
 
+  const [cyberScrollProgress, setCyberScrollProgress] = useState(0);
+
   return (
     <div className="bg-black">
       <React.Suspense fallback={<div className="h-screen w-full bg-black" />}>
@@ -121,54 +128,60 @@ export const Home = () => {
       {/* <React.Suspense fallback={<div className="h-screen w-full bg-black" />}>
         <EmployeeOfMonth />
       </React.Suspense> */}
-      <CyberBackground />
+      <CyberBackground onScrollEnd={setCyberScrollProgress} />
       {/* <Chatbot/> */}
-      {popups.map(
-        (popup, index) =>
-          showPopups[index] && (
-            <div
-              key={index}
-              className="fixed right-4 bottom-4 flex flex-col gap-4 z-40 animate-fade-in"
-            >
+
+      {/* Choreographed Popups based on scroll progress */}
+      {cyberScrollProgress >= 0.99 &&
+        popups.map(
+          (popup, index) =>
+            showPopups[index] && (
               <div
-                className="relative bg-gradient-to-r from-red-600 to-black rounded-2xl shadow-xl p-4 w-64 text-center hover:scale-105 transition-transform duration-300 cursor-pointer"
-                onClick={() => navigate(popup.link)}
+                key={index}
+                className="fixed right-4 bottom-4 flex flex-col gap-4 z-40 animate-fade-in"
               >
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    closePopup(index);
-                  }}
-                  className="absolute top-2 right-2 text-white text-sm font-bold hover:text-gray-200"
+                <div
+                  className="relative bg-gradient-to-br from-red-600 to-black rounded-[1.5rem] shadow-2xl p-6 w-72 text-center hover:scale-105 transition-transform duration-300 cursor-pointer overflow-hidden border border-white/10"
+                  onClick={() => (window.location.href = popup.link)}
                 >
-                  ✕
-                </button>
+                  {/* Pulse Accents */}
+                  <span className="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-red-400 opacity-20 animate-pulse"></span>
+                  <span className="absolute -bottom-6 -right-6 w-14 h-14 rounded-full bg-red-900 opacity-40 animate-pulse"></span>
 
-                <h2 className="text-lg font-bold text-white mb-1 drop-shadow-lg">
-                  {popup.title}
-                </h2>
-                <p className="text-xs text-gray-200 mb-3 shadow-xl">
-                  {popup.subtitle}
-                </p>
-                <button className="bg-white text-gray-800 text-sm font-semibold px-4 py-1.5 rounded-full shadow hover:shadow-lg hover:bg-purple-100 transition-all">
-                  Apply
-                </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      closePopup(index);
+                    }}
+                    className="absolute top-3 right-3 text-white/60 hover:text-white transition-colors"
+                  >
+                    <i className="fas fa-times text-lg"></i>
+                  </button>
 
-                <span className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-red-400 opacity-30 animate-pulse"></span>
-                <span className="absolute -bottom-4 -right-4 w-10 h-10 rounded-full bg-red-800 opacity-30 animate-pulse"></span>
+                  <h2 className="text-xl font-black text-white mb-1 leading-tight tracking-tight drop-shadow-xl">
+                    {popup.title}
+                  </h2>
+                  <p className="text-gray-300 text-xs font-medium mb-6">
+                    {popup.subtitle}
+                  </p>
+
+                  <button className="bg-white text-gray-900 text-[10px] font-black px-8 py-2.5 rounded-full shadow-2xl hover:bg-gray-100 transition-all active:scale-95 uppercase tracking-widest">
+                    APPLY NOW
+                  </button>
+                </div>
               </div>
-            </div>
-          ),
-      )}
+            ),
+        )}
 
+      {/* Cookie Consent appears at the absolute end of the section */}
+      <CookieConsent forceShow={cyberScrollProgress >= 0.99} />
       <HomeIntro />
-      <Navbar />
       <HomeServices />
       <Intro />
       {/* <UpcomingEvents />  */}
       <LatestCareers />
       <Googlereview />
-      <Clients />
+      {/* <Clients /> */}
       <LatestBlogs posts={posts} />
       <div className="bg-gray-900 text-white">
         <section className="bg-black/55 p-12 mt-10">
@@ -196,16 +209,14 @@ export const Home = () => {
       <Footer />
 
       {/* Image Modal (centered) */}
-      {/* Image Modal (centered) */}
-      {/* <AnimatePresence>
-        {showImageModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
-            onClick={() => setShowImageModal(false)}
+      {/* {showImageModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+          onClick={() => setShowImageModal(false)}
+        >
+          <div
+            className="relative max-w-4xl w-[90%] mx-auto p-4"
+            onClick={(e) => e.stopPropagation()}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.8, y: 50 }}
@@ -223,15 +234,14 @@ export const Home = () => {
                 ✕
               </button>
 
-              <img
-                src={modalImage}
-                alt="Showcase"
-                className="w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
-              />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence> */}
+            <img
+              src={modalImage}
+              alt="Showcase"
+              className="w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
+            />
+          </div>
+        </div>
+      )} */}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Mail, Phone, ShieldCheck } from "lucide-react";
-import Navbar from "../components/Navbar";
+
 import Footer from "../components/Footer";
 
 export default function Verification() {
@@ -36,7 +36,7 @@ export default function Verification() {
 
   return (
     <div className="min-h-screen bg-black">
-      <Navbar />
+   
 
       {/* Toast */}
       {toast && (

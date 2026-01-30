@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../../utils/urls";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 const EditUser = () => {
@@ -32,6 +31,8 @@ const EditUser = () => {
 
   /* ================= FETCH USER ================= */
   useEffect(() => {
+    if (!id) return; // Skip if adding new user
+
     const fetchUser = async () => {
       try {
         const res = await fetch(`${BASE_URL}/user/${id}`, {
@@ -47,7 +48,7 @@ const EditUser = () => {
           password: "",
           role: data.role || "",
           emp_id: data.emp_id || "",
-          doj: data.doj?.split("T")[0] || "",
+          doj: data.doj ? data.doj.split("T")[0] : "",
           rate: data.rate || "",
           isEmployee: data.isEmployee ?? true,
           tools: (data.tools || []).map(t => ({
@@ -130,8 +131,11 @@ const EditUser = () => {
       files.coverImage && formData.append("coverImage", files.coverImage);
       files.idCard && formData.append("idCard", files.idCard);
 
-      const res = await fetch(`${BASE_URL}/user/${id}`, {
-        method: "PUT",
+      const url = id ? `${BASE_URL}/user/${id}` : `${BASE_URL}/user/register`;
+      const method = id ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method: method,
         body: formData,
         credentials: "include",
       });
@@ -139,8 +143,8 @@ const EditUser = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
 
-      setSuccess("User updated successfully ✅");
-      setTimeout(() => navigate("/"), 1500);
+      setSuccess(id ? "User updated successfully ✅" : "User created successfully ✅");
+      // setTimeout(() => navigate("/"), 1500); // Optional: redirect back to list
     } catch (err) {
       setError(err.message);
     } finally {
@@ -151,45 +155,63 @@ const EditUser = () => {
   /* ================= UI ================= */
   return (
     <div className="min-h-screen bg-black text-white">
-      <Navbar />
 
       <form onSubmit={handleSubmit} className="max-w-4xl mx-auto py-20 px-4 space-y-4">
-        <h1 className="text-3xl font-bold text-center">Edit Team Member</h1>
+        <h1 className="text-3xl font-bold text-center">{id ? "Edit Team Member" : "Add Team Member"}</h1>
 
         {error && <p className="text-red-500 text-center">{error}</p>}
         {success && <p className="text-green-500 text-center">{success}</p>}
 
-        <input className="input" name="clickupId" value={form.clickupId} onChange={handleChange} placeholder="ClickUp ID" />
-        <input className="input" name="emp_id" value={form.emp_id} onChange={handleChange} placeholder="Employee ID" />
-        <input className="input" name="name" value={form.name} onChange={handleChange} placeholder="Full Name" />
-        <input className="input" name="email" value={form.email} onChange={handleChange} placeholder="Email" />
-        <input className="input" name="role" value={form.role} onChange={handleChange} placeholder="Role" />
-        <input className="input" type="date" name="doj" value={form.doj} onChange={handleChange} />
-        <input className="input" type="number" name="rate" value={form.rate} onChange={handleChange} placeholder="Rate" />
-        <input className="input" type="password" name="password" value={form.password} onChange={handleChange} placeholder="New Password (optional)" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white" name="clickupId" value={form.clickupId} onChange={handleChange} placeholder="ClickUp ID" />
+          <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white" name="emp_id" value={form.emp_id} onChange={handleChange} placeholder="Employee ID" />
+          <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white" name="name" value={form.name} onChange={handleChange} placeholder="Full Name" required />
+          <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white" name="email" value={form.email} onChange={handleChange} placeholder="Email" type="email" required />
+          <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white" name="role" value={form.role} onChange={handleChange} placeholder="Role" />
+          <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white" type="date" name="doj" value={form.doj} onChange={handleChange} />
+          <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white" type="number" name="rate" value={form.rate} onChange={handleChange} placeholder="Rate" />
+          <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white" type="password" name="password" value={form.password} onChange={handleChange} placeholder={id ? "New Password (optional)" : "Password"} required={!id} />
+        </div>
+        
+        <div className="flex gap-4 items-center">
+            <label className="flex items-center gap-2">
+                <input type="checkbox" name="isEmployee" checked={form.isEmployee} onChange={handleChange} />
+                Is Employee?
+            </label>
+        </div>
 
-        <input type="file" name="coverImage" onChange={handleFile} />
-        <input type="file" name="idCard" onChange={handleFile} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <label>Cover Image</label>
+            <input type="file" name="coverImage" onChange={handleFile} className="w-full text-gray-400" />
+          </div>
+          <div className="space-y-2">
+            <label>ID Card</label>
+            <input type="file" name="idCard" onChange={handleFile} className="w-full text-gray-400" />
+          </div>
+        </div>
 
-        <h3 className="font-semibold mt-6">Tools</h3>
+        <h3 className="font-semibold mt-6 text-xl border-b pb-2">Tools</h3>
 
         {form.tools.map((tool, i) => (
-          <div key={i} className="border p-4 rounded space-y-2">
-            <input className="input" value={tool.toolName} onChange={e => handleToolChange(i, "toolName", e.target.value)} placeholder="Tool Name" />
-            <input className="input" value={tool.url} onChange={e => handleToolChange(i, "url", e.target.value)} placeholder="Tool URL" />
-            <input type="file" onChange={e => handleToolFile(i, e.target.files[0])} />
-            <button type="button" onClick={() => removeTool(i)} className="text-red-500 text-sm">
-              Remove Tool
-            </button>
+          <div key={i} className="border border-gray-700 p-4 rounded space-y-2 bg-gray-900">
+            <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white" value={tool.toolName} onChange={e => handleToolChange(i, "toolName", e.target.value)} placeholder="Tool Name" />
+            <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white" value={tool.url} onChange={e => handleToolChange(i, "url", e.target.value)} placeholder="Tool URL" />
+            <div className="flex justify-between items-center">
+                <input type="file" onChange={e => handleToolFile(i, e.target.files[0])} className="text-sm text-gray-400" />
+                <button type="button" onClick={() => removeTool(i)} className="text-red-500 text-sm hover:underline">
+                Remove Tool
+                </button>
+            </div>
           </div>
         ))}
 
-        <button type="button" onClick={addTool} className="text-blue-400">
+        <button type="button" onClick={addTool} className="text-blue-400 hover:text-blue-300">
           + Add Tool
         </button>
 
-        <button disabled={loading} className="w-full py-3 bg-red-600 rounded font-semibold">
-          {loading ? "Updating..." : "Update User"}
+        <button disabled={loading} className="w-full py-3 bg-red-600 hover:bg-red-700 rounded font-semibold transition-colors">
+          {loading ? "Saving..." : (id ? "Update User" : "Create User")}
         </button>
       </form>
 

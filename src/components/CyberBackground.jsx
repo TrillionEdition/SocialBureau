@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
  * CyberBackground - A premium, award-winning section featuring a portrait image
  * with cinematic blurred side effects and smooth scroll-based interactions.
  */
-export function CyberBackground() {
+export function CyberBackground({ onScrollEnd }) {
   const navigate = useNavigate();
   const containerRef = useRef(null);
 
@@ -16,46 +16,41 @@ export function CyberBackground() {
     offset: ["start start", "end end"],
   });
 
-  // Clip Path Animation: Small circle in center -> Full screen
+  // Notify parent of scroll progress for choreographed reveals
+  useEffect(() => {
+    return scrollYProgress.onChange((latest) => {
+      if (onScrollEnd) {
+        onScrollEnd(latest);
+      }
+    });
+  }, [scrollYProgress, onScrollEnd]);
+
+  // Clip Path Animation: Growing from absolute black (0%) as soon as scroll starts
   const clipPath = useTransform(
     scrollYProgress,
-    [0, 0.8],
-    ["circle(0% at 50% 50%)", "circle(150% at 50% 50%)"],
+    [0, 0.25, 0.55], // Starts at 0, smooth growth
+    [
+      "circle(0% at 50% 50%)",
+      "circle(12% at 50% 50%)",
+      "circle(150% at 50% 50%)",
+    ],
   );
 
-  // Content Opacity: Fades in only after the hole has opened significantly
-  const contentOpacity = useTransform(scrollYProgress, [0.7, 0.9], [0, 1]);
-  const contentY = useTransform(scrollYProgress, [0.7, 0.9], [50, 0]);
+  // Content Opacity: Delayed until 75% to ensure a "hold" on the clean image
+  const contentOpacity = useTransform(scrollYProgress, [0.75, 0.9], [0, 1]);
+  const contentY = useTransform(scrollYProgress, [0.75, 0.9], [50, 0]);
 
   // Image zoom effect
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1.2, 1]);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1.1, 1]);
+  // Blur only starts as text comes in
   const imageBlur = useTransform(scrollYProgress, [0.8, 1], ["0px", "4px"]);
 
-  const imageSrc = "/assets/sham.jpg";
+  const imageSrc = "/assets/sham-alen.JPG";
 
   return (
     <div ref={containerRef} className="relative h-[400vh] bg-black">
       {/* Sticky Container */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
-        {/* Grain Overlay */}
-        <div className="absolute inset-0 z-20 pointer-events-none opacity-[0.15] mix-blend-overlay">
-          <svg
-            viewBox="0 0 200 200"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-full h-full"
-          >
-            {/* <filter id="noiseFilter">
-              <feTurbulence
-                type="fractalNoise"
-                baseFrequency="0.65"
-                numOctaves="3"
-                stitchTiles="stitch"
-              />
-            </filter> */}
-            <rect width="100%" height="100%" filter="url(#noiseFilter)" />
-          </svg>
-        </div>
-
         {/* Masked Background Layer */}
         <motion.div
           className="absolute inset-0 w-full h-full z-0 flex items-center justify-center bg-black"

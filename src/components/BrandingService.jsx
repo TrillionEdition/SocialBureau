@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FiCopy, FiDownload, FiInfo } from "react-icons/fi";
 import Footer from "./Footer";
-import Navbar from "./Navbar";
 import Seo from "./Seo";
 
 // BrandingPage.jsx
@@ -108,7 +107,6 @@ export default function BrandingService() {
 
   return (
     <>
-    <Navbar />
     <Seo
         title="SocialBureau Branding | Brand Identity & Strategy Agency in India"
         description="Build a powerful brand with SocialBureau. We specialize in brand identity design, visual branding, rebranding, logo design, brand guidelines, brand positioning, and complete digital brand presence for businesses across India."

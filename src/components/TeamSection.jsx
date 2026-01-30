@@ -50,7 +50,7 @@
 //       image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761221472/images/btrvj8lxwc3la4xli6es.png",
 //       hoverImage: "/assets/hajira.webp",
 //     },
-    
+
 //     {
 //       name: "Muhasin",
 //       role: "SEO Specialist and Performance Marketer",
@@ -234,7 +234,7 @@
 //     <Section title="Content & Production Department" data={teamData.contentProduction} />
 //     <Section title="Technology & Development" data={teamData.technology} />
 //     teamData.exemployee.map=()=>{
-    
+
 //     }
 //     <div className="mt-20 max-w-5xl mx-auto text-center">
 //       <p className="font-light opacity-90 text-lg text-white">
@@ -291,7 +291,7 @@ export const teamData = {
   strategyMarketing: [
     {
       name: "Sherin Joseph",
-      role: "CMO & HR Head",
+      role: "COO & HR",
       image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761195483/SB_ID_Card_Sherin_New_wtgfyo.png",
       hoverImage: "/assets/sherin.webp",
       description:
@@ -300,10 +300,10 @@ export const teamData = {
     {
       name: "Hajira",
       link: "https://www.linkedin.com/in/hajira-mohammed-10005b335",
-      role: "Administration & Operations Head",
+      role: "Administration & CMO",
       description:
         "Ensures flawless daily operations and inter-department workflow excellence.",
-      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761221472/images/btrvj8lxwc3la4xli6es.png",
+      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1768816875/SB_ID_Card_Hajira_lrmfvk.png",
       hoverImage: "/assets/hajira.webp",
     },
     {
@@ -418,7 +418,7 @@ const TeamCard = ({ name, role, image, hoverImage, link, description }) => (
 
 const ExEmployeeImage = ({ image }) => (
   <div className="relative w-72 sm:w-80 h-[430px] rounded-2xl overflow-hidden shadow-lg">
-    
+
     {/* IMAGE */}
     <img
       src={image}
@@ -449,7 +449,7 @@ const Section = ({ title, data }) => (
 const ExEmployeeSection = ({ data }) => (
   <section className="py-20">
     <h2 className="text-white  text-4xl font-light text-center mb-12">
-      X Employees
+      EX Employees
     </h2>
 
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 place-items-center">

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiSmartphone, FiPlay, FiTarget, FiTrendingUp, FiDownload } from 'react-icons/fi';
-import Navbar from './Navbar';
+
 import Seo from './Seo';
 import Footer from './Footer';
 
@@ -55,7 +55,6 @@ export default function AppAdvertisingService() {
 
   return (
     <>
-      <Navbar />
       <Seo
         title="SocialBureau App Advertising | In-App Ads & Mobile Marketing Agency"
         description="Reach users inside the apps they use every day. SocialBureau specializes in third-party app advertising, mobile app marketing, in-app ads, SDK integrations, Unity Ads, IronSource, InMobi, rewarded video ads, and programmatic mobile DSP campaigns."
