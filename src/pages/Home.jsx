@@ -7,7 +7,6 @@ import Footer from '../components/Footer'
 import { CyberBackground } from '../components/CyberBackground'
 import { useNavigate } from 'react-router-dom'
 import Clients from '../components/Clients'
-import posts from "../data/blogs";
 import LatestBlogs from '../components/LatestBlogs'
 import LatestCareers from '../components/LatestCareers'
 import HomeServices from '../components/HomeServices'
@@ -125,7 +124,7 @@ export const Home = () => {
       <LatestCareers />
       <Googlereview />
       {/* <Clients /> */}
-      <LatestBlogs posts={posts} />
+      <LatestBlogs/>
       <div className="bg-gray-900 text-white">
 
         <section className="bg-black/55 p-12 mt-10">

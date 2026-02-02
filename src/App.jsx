@@ -10,7 +10,7 @@ import ScrollTop from './components/ScrollTop'
 import { Blog } from './pages/Blog'
 import { Contact } from './pages/Contact'
 import CompanyAchievements from './pages/CompanyAchievements'
-
+import JohnSamuel from './components/JohnSamuel'
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { NotFound } from './pages/NotFound'
 import React, { lazy, Suspense } from 'react';
@@ -68,6 +68,7 @@ import AddAchievementForm from './components/AddAchievementForm'
 
 import UserManagement from './pages/UserManagement'
 import AddReview from './components/AddReview'
+import PortfolioPager from './components/Partnership'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
@@ -150,8 +151,9 @@ function App() {
           <Route path='/achievements-form' element={<AddAchievementForm />} />
           {/* <Route path='/payment' element={<PaymentPage />} /> */}
           {/* <Route path='/payment-status' element={<PaymentStatus />} /> */}
-          <Route path='/add-review' element={<AddReview/>} />
-
+          <Route path='/add-review' element={<AddReview />} />
+          <Route path='/partner' element={<PortfolioPager />} />
+          <Route path='/john-samuel' element={<JohnSamuel />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

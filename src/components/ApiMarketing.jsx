@@ -1464,7 +1464,6 @@ import React, { useState, useRef } from 'react';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import LatestBlogs from './LatestBlogs';
-import posts from '../data/blogs';
 
 const Footer = () => (
     <footer className="bg-black border-t border-gray-800 text-gray-400 py-8 px-6 text-center text-xs sm:text-sm">
@@ -1863,7 +1862,7 @@ const ApiMarketing = () => {
                     </div>
                 </section>
 
-                <LatestBlogs posts={posts} />
+                <LatestBlogs />
 
                 {/* FAQ Section */}
                 <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 bg-gradient-to-b from-gray-900 to-black">
