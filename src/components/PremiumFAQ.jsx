@@ -60,7 +60,7 @@ const PremiumFAQ = () => {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
           {/* Left Column: Heading & CTA */}
           <div className="w-full lg:w-1/3 space-y-8 lg:space-y-10">
             <motion.div

@@ -249,9 +249,6 @@
 //               </div>
 //             </div>
 
-
-
-
 //             <div className="flex flex-col gap-5 max-w-md mx-auto lg:mx-0">
 //               {badges.map((badge, idx) => {
 //                 const isHovered = hoveredIndex === idx;
@@ -319,7 +316,7 @@
 
 //               {/* Central Core Sphere */}
 //               <div className={`
-//                 w-48 h-48 rounded-full bg-[#030303] border border-white/10 z-10 
+//                 w-48 h-48 rounded-full bg-[#030303] border border-white/10 z-10
 //                 flex flex-col items-center justify-center relative overflow-hidden backdrop-blur-3xl
 //                 transition-all duration-700
 //                 ${hoveredIndex !== null ? 'shadow-[0_0_100px_rgba(255,255,255,0.15)]' : 'shadow-[0_0_50px_rgba(59,130,246,0.1)]'}
@@ -363,7 +360,6 @@
 //   );
 // }
 
-
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -385,41 +381,46 @@ export default function HomeServices() {
       icon: "fas fa-sitemap",
       text: "API Marketing",
       color: "purple",
-      description: "Integrate your ad platforms and automate campaign delivery through advanced APIs.",
+      description:
+        "Integrate your ad platforms and automate campaign delivery through advanced APIs.",
       particleColor: "#a855f7",
-      path: "/api-marketing"
+      path: "/api-marketing",
     },
     {
       icon: "fas fa-bullseye",
       text: "Niche Marketing",
       color: "amber",
-      description: "Hyper-targeted campaigns tailored for specific industries and audiences.",
+      description:
+        "Hyper-targeted campaigns tailored for specific industries and audiences.",
       particleColor: "#f59e0b",
-      path: "/services/Content-Niche-Marketing"
+      path: "/services/Content-Niche-Marketing",
     },
     {
       icon: "fas fa-comments",
       text: "Content Marketing",
       color: "indigo",
-      description: "Data-backed storytelling that increases brand awareness and engagement.",
+      description:
+        "Data-backed storytelling that increases brand awareness and engagement.",
       particleColor: "#6366f1",
-      path: "/services/Content-Niche-Marketing"
+      path: "/services/Content-Niche-Marketing",
     },
     {
       icon: "fas fa-globe",
       text: "AdTech Integration",
       color: "rose",
-      description: "Seamless connection between social, analytics, and CRM platforms.",
+      description:
+        "Seamless connection between social, analytics, and CRM platforms.",
       particleColor: "#ec4899",
-      path: "/services/MarTech"
+      path: "/services/MarTech",
     },
     {
       icon: "fas fa-chart-line",
       text: "Performance Marketing",
       color: "teal",
-      description: "ROI-driven strategies to boost leads, sales, and visibility.",
+      description:
+        "ROI-driven strategies to boost leads, sales, and visibility.",
       particleColor: "#14b8a6",
-      path: "/services/Performance-Marketing"
+      path: "/services/Performance-Marketing",
     },
   ];
 
@@ -427,7 +428,7 @@ export default function HomeServices() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     let animationFrameId;
     let particles = [];
 
@@ -439,7 +440,7 @@ export default function HomeServices() {
       }
     };
 
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
 
     // Background particles
@@ -450,7 +451,7 @@ export default function HomeServices() {
         size: Math.random() * 1.5,
         speedX: (Math.random() - 0.5) * 0.3,
         speedY: (Math.random() - 0.5) * 0.3,
-        opacity: Math.random() * 0.4
+        opacity: Math.random() * 0.4,
       });
     }
 
@@ -459,8 +460,8 @@ export default function HomeServices() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Background Particles
-      ctx.fillStyle = 'white';
-      particles.forEach(p => {
+      ctx.fillStyle = "white";
+      particles.forEach((p) => {
         p.x += p.speedX;
         p.y += p.speedY;
         if (p.x < 0) p.x = canvas.width;
@@ -504,14 +505,14 @@ export default function HomeServices() {
 
           const gradient = ctx.createLinearGradient(startX, startY, hubX, hubY);
           gradient.addColorStop(0, badge.particleColor);
-          gradient.addColorStop(1, 'rgba(0,0,0,0)');
+          gradient.addColorStop(1, "rgba(0,0,0,0)");
 
           ctx.beginPath();
           ctx.moveTo(startX, startY);
           ctx.bezierCurveTo(cx1, cy1, cx2, cy2, hubX, hubY);
 
           ctx.strokeStyle = gradient;
-          ctx.lineCap = 'round';
+          ctx.lineCap = "round";
 
           if (isHovered) {
             ctx.lineWidth = 3;
@@ -527,7 +528,7 @@ export default function HomeServices() {
           ctx.shadowBlur = 0;
 
           // Flowing particle
-          if (isHovered || (!isAnythingHovered)) {
+          if (isHovered || !isAnythingHovered) {
             const time = Date.now() / 1500;
             const t = (time + idx * 0.2) % 1;
 
@@ -537,8 +538,10 @@ export default function HomeServices() {
             const t2 = t * t;
             const t3 = t2 * t;
 
-            const px = mt3 * startX + 3 * mt2 * t * cx1 + 3 * mt * t2 * cx2 + t3 * hubX;
-            const py = mt3 * startY + 3 * mt2 * t * cy1 + 3 * mt * t2 * cy2 + t3 * hubY;
+            const px =
+              mt3 * startX + 3 * mt2 * t * cx1 + 3 * mt * t2 * cx2 + t3 * hubX;
+            const py =
+              mt3 * startY + 3 * mt2 * t * cy1 + 3 * mt * t2 * cy2 + t3 * hubY;
 
             ctx.beginPath();
             ctx.arc(px, py, isHovered ? 4 : 2, 0, Math.PI * 2);
@@ -561,13 +564,16 @@ export default function HomeServices() {
 
     animate();
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener("resize", resizeCanvas);
       cancelAnimationFrame(animationFrameId);
     };
   }, [hoveredIndex]);
 
   return (
-    <div ref={containerRef} className="relative min-h-[90vh] bg-[#050505] overflow-hidden flex items-center py-10 lg:py-20">
+    <div
+      ref={containerRef}
+      className="relative min-h-[90vh] bg-black overflow-hidden flex items-center py-10 lg:py-20"
+    >
       <style>{`
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap');
@@ -585,21 +591,28 @@ export default function HomeServices() {
         }
       `}</style>
 
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none"
+      />
 
       <div className="w-full relative z-10 service-container">
         {/* FULL-WIDTH HEADING — TRUE CENTER */}
         <div className="w-full flex justify-center mb-16 px-6 lg:px-16">
           <div className="text-center max-w-4xl">
-            <h2 className="text-4xl lg:text-7xl font-extrabold text-white mb-6 tracking-tight">
-              Core{" "}
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
-                Services
+            <h2 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-none italic mb-8">
+              <span
+                className="text-transparent mr-4"
+                style={{ WebkitTextStroke: "1px rgba(255,255,255,0.8)" }}
+              >
+                CORE
               </span>
+              <span className="text-red-600">SERVICES</span>
             </h2>
 
-            <p className="text-gray-400 text-lg lg:text-xl leading-relaxed">
-              Connect your brand to advanced data ecosystems and automated growth engines.
+            <p className="text-gray-400 text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto">
+              Connect your brand to advanced data ecosystems and automated
+              growth engines.
             </p>
           </div>
         </div>
@@ -607,7 +620,6 @@ export default function HomeServices() {
         {/* MAIN CONTENT - Services List + Hub */}
         <div className="container mx-auto px-6 lg:px-16">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-24">
-
             {/* Services List */}
             <div className="w-full lg:w-3/5 flex flex-col gap-6">
               <div className="flex flex-col gap-5 max-w-md mx-auto lg:mx-0">
@@ -618,47 +630,55 @@ export default function HomeServices() {
                   return (
                     <div
                       key={idx}
-                      ref={el => cardsRef.current[idx] = el}
+                      ref={(el) => (cardsRef.current[idx] = el)}
                       onMouseEnter={() => setHoveredIndex(idx)}
                       onMouseLeave={() => setHoveredIndex(null)}
                       onClick={() => navigate(badge.path)}
                       className={`
                           service-pill relative flex items-center gap-5 p-3 pr-10 rounded-full cursor-pointer
                           border border-white/10 backdrop-blur-xl group
-                          ${isHovered ? 'translate-x-6 lg:translate-x-10 scale-105' : 'translate-x-0 scale-100'}
-                          ${isDimmed ? 'opacity-30 grayscale-[0.8]' : 'opacity-100 grayscale-0'}
+                          ${isHovered ? "translate-x-6 lg:translate-x-10 scale-105" : "translate-x-0 scale-100"}
+                          ${isDimmed ? "opacity-30 grayscale-[0.8]" : "opacity-100 grayscale-0"}
                       `}
                       style={{
                         background: isHovered
                           ? `linear-gradient(90deg, ${badge.particleColor} 0%, ${badge.particleColor}cc 100%)`
                           : `linear-gradient(90deg, rgba(255,255,255,0.05) 0%, ${badge.particleColor}22 100%)`,
-                        boxShadow: isHovered ? `0 20px 50px -10px ${badge.particleColor}aa` : 'none',
+                        boxShadow: isHovered
+                          ? `0 20px 50px -10px ${badge.particleColor}aa`
+                          : "none",
                       }}
                     >
                       {/* Icon Wrapper */}
-                      <div className={`
+                      <div
+                        className={`
                               w-12 h-12 lg:w-14 lg:h-14 rounded-full flex items-center justify-center text-xl lg:text-2xl
                               bg-white/10 text-white transition-all duration-700
-                              ${isHovered ? 'bg-white text-black rotate-[360deg]' : ''}
-                          `}>
+                              ${isHovered ? "bg-white text-black rotate-[360deg]" : ""}
+                          `}
+                      >
                         <i className={badge.icon}></i>
                       </div>
 
                       {/* Text */}
                       <div className="flex flex-col">
-                        <span className={`
+                        <span
+                          className={`
                                   text-xl lg:text-2xl font-bold tracking-wide transition-colors duration-300
-                                  ${isHovered ? 'text-white' : 'text-gray-200'}
-                              `}>
+                                  ${isHovered ? "text-white" : "text-gray-200"}
+                              `}
+                        >
                           {badge.text}
                         </span>
                       </div>
 
                       {/* Arrow Right */}
-                      <div className={`
+                      <div
+                        className={`
                               ml-auto transition-all duration-500
-                              ${isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}
-                          `}>
+                              ${isHovered ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}
+                          `}
+                      >
                         <i className="fas fa-arrow-right text-white"></i>
                       </div>
                     </div>
@@ -669,40 +689,53 @@ export default function HomeServices() {
 
             {/* Hub Visualization */}
             <div className="hidden lg:flex w-full lg:w-2/5 items-center justify-center lg:justify-end">
-              <div ref={hubRef} className="relative w-80 h-80 flex items-center justify-center">
+              <div
+                ref={hubRef}
+                className="relative w-80 h-80 flex items-center justify-center"
+              >
                 {/* Spinning Decorative Rings */}
                 <div className="hub-ring w-[600px] h-[600px] animate-[spin_40s_linear_infinite] opacity-5 border-blue-500/40"></div>
                 <div className="hub-ring w-[500px] h-[500px] animate-[spin_30s_linear_infinite_reverse] opacity-10 border-purple-500/40"></div>
                 <div className="hub-ring w-[400px] h-[400px] animate-[spin_20s_linear_infinite] opacity-20 border-pink-500/40"></div>
 
                 {/* Central Core Sphere */}
-                <div className={`
+                <div
+                  className={`
                   w-48 h-48 rounded-full bg-[#030303] border border-white/10 z-10 
                   flex flex-col items-center justify-center relative overflow-hidden backdrop-blur-3xl
                   transition-all duration-700
-                  ${hoveredIndex !== null ? 'shadow-[0_0_100px_rgba(255,255,255,0.15)]' : 'shadow-[0_0_50px_rgba(59,130,246,0.1)]'}
-                `}>
+                  ${hoveredIndex !== null ? "shadow-[0_0_100px_rgba(255,255,255,0.15)]" : "shadow-[0_0_50px_rgba(59,130,246,0.1)]"}
+                `}
+                >
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/10 to-pink-600/10 opacity-50"></div>
 
-                  <div className={`
+                  <div
+                    className={`
                     absolute inset-0 bg-white/5 transition-opacity duration-1000
-                    ${hoveredIndex !== null ? 'opacity-100' : 'opacity-0'}
-                  `}></div>
+                    ${hoveredIndex !== null ? "opacity-100" : "opacity-0"}
+                  `}
+                  ></div>
 
-                  <i className={`
+                  <i
+                    className={`
                       fas fa-atom text-5xl text-white/80 relative z-10 mb-3 transition-all duration-1000
-                      ${hoveredIndex !== null ? 'rotate-[360deg] scale-125' : ''}
-                  `}></i>
+                      ${hoveredIndex !== null ? "rotate-[360deg] scale-125" : ""}
+                  `}
+                  ></i>
                   <div className="flex flex-col items-center relative z-10 leading-none">
-                    <span className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase">our core services</span>
+                    <span className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase">
+                      our core services
+                    </span>
                     <span className="text-[8px] font-bold tracking-[0.2em] text-blue-500/60 mt-2 uppercase"></span>
                   </div>
 
                   {/* Core Glow */}
-                  <div className={`
+                  <div
+                    className={`
                       absolute inset-0 rounded-full transition-all duration-700
-                      ${hoveredIndex !== null ? 'bg-white/10 blur-2xl scale-110 opacity-100' : 'opacity-0 scale-50'}
-                  `}></div>
+                      ${hoveredIndex !== null ? "bg-white/10 blur-2xl scale-110 opacity-100" : "opacity-0 scale-50"}
+                  `}
+                  ></div>
                 </div>
 
                 {/* Orbiting Elements */}
@@ -714,7 +747,6 @@ export default function HomeServices() {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
