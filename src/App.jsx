@@ -60,7 +60,6 @@ import DashboardX from './pages/DashboardX'
 import SocialBureauInsight from './pages/SocialBureauInsight'
 import EditUser from './pages/EditUser'
 import NicheMarketing from './components/NicheMArketing'
-import HorizontalScrollSection from './components/trail'
 import AnalyticsWidget from './components/Analytics'
 import AddAchievementForm from './components/AddAchievementForm'
 // import PaymentPage from './pages/PaymentPage'
@@ -145,7 +144,6 @@ function App() {
           <Route path='/add-user' element={<EditUser />} />
           <Route path='/user-management' element={<UserManagement />} />
           <Route path='/Niche-Marketing' element={<NicheMarketing />} />
-          <Route path='/horizontal' element={<HorizontalScrollSection />} />
           <Route path='/analytics' element={<AnalyticsWidget />} />
           <Route path='/achievements-form' element={<AddAchievementForm />} />
           {/* <Route path='/payment' element={<PaymentPage />} /> */}
