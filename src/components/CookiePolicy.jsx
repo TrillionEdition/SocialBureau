@@ -14,7 +14,9 @@ export default function CookiePolicy() {
               <strong>Last Updated:</strong> November 19, 2025
             </p>
             <p className="leading-relaxed">
-              This Cookie Policy explains how SocialBureau ("we", "us", or "our") uses cookies and similar 
+              This Cookie Policy explains how <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a> ("we", "us", or "our") uses cookies and similar 
               technologies when you visit our website at www.socialbureau.in (the "Website").
             </p>
           </section>
@@ -170,8 +172,10 @@ export default function CookiePolicy() {
               If you have any questions about our use of cookies or this Cookie Policy, please contact us:
             </p>
             <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-6">
-              <p className="mb-2"><strong className="text-white">SocialBureau / TrillionEdition LLP</strong></p>
-              <p className="mb-2">Email: <a href="mailto:hello@socialbureau.in" className="text-red-500 hover:underline">hello@socialbureau.in</a></p>
+              <p className="mb-2"><strong className="text-white"><a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a> / TrillionEdition LLP</strong></p>
+              <p className="mb-2">Email: <a href="mailto:info@socialbureau.in" className="text-red-500 hover:underline">info@socialbureau.in</a></p>
               <p>Website: <a href="https://www.socialbureau.in" className="text-red-500 hover:underline">www.socialbureau.in</a></p>
             </div>
           </section>
