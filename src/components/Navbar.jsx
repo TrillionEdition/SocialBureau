@@ -248,7 +248,8 @@ import { useState, useEffect, useRef } from "react";
 import {
   FaBars, FaTimes, FaHome, FaBriefcase, FaTools, FaEnvelope, FaBlog,
   FaInfoCircle, FaMicrophone, FaUserTie,
-  FaUsers, FaCalendarAlt, FaTrophy
+  FaUsers, FaCalendarAlt, FaTrophy,
+  FaHandshake
 } from "react-icons/fa";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
@@ -263,6 +264,7 @@ const MENU_ITEMS = [
   // { icon: <FaTools />, label: "Business Tool", path: "/tool" },
   { icon: <FaEnvelope />, label: "Contact", path: "/contact" },
   { icon: <FaMicrophone />, label: "Let's Talk", path: "/voice" },
+  {icon:<FaHandshake/>, label:"Partnership", path:"/partner"},
 ];
 
 const SEARCH_ITEMS = [
@@ -286,6 +288,7 @@ const SEARCH_ITEMS = [
   { icon: <FaInfoCircle />, label: "About", path: "/about" },
   { icon: <FaEnvelope />, label: "Contact", path: "/contact" },
   { icon: <FaMicrophone />, label: "Let's Talk", path: "/voice" },
+  {icon:<FaHandshake/>, label:"Partnership", path:"/partner"},
 ];
 
 export default function Navbar() {

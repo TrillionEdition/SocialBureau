@@ -67,6 +67,7 @@ function TableOfContents({ headings }) {
   );
 }
 
+// ✅ MAIN COMPONENT - PROPER STRUCTURE
 export default function BlogDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -84,7 +85,6 @@ export default function BlogDetail() {
   const [subscribeMsg, setSubscribeMsg] = useState(null);
   const [isSubscribing, setIsSubscribing] = useState(false);
 
-
   const showToast = (type, message) => {
     setToast({ type, message });
   };
@@ -96,6 +96,7 @@ export default function BlogDetail() {
       navigate("/login", { state: { from: location } });
     }, 1500);
   };
+
   const handleNewsletterSubscribe = async (e) => {
     e.preventDefault();
 
@@ -104,7 +105,6 @@ export default function BlogDetail() {
       return;
     }
 
-    // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setSubscribeMsg({ type: "error", text: "Please enter a valid email" });
@@ -114,17 +114,12 @@ export default function BlogDetail() {
     setIsSubscribing(true);
     try {
       const response = await subscribeNewsletter(email);
-      console.log("Newsletter response:", response);
-
-      // Axios returns data in response.data
       const data = response.data;
-
       setSubscribeMsg({ type: "success", text: data.message || "Subscribed successfully!" });
       setEmail("");
       setTimeout(() => setSubscribeMsg(null), 3000);
     } catch (err) {
       console.error("❌ Subscribe error:", err);
-      // Handle axios error response
       const errorMessage = err.response?.data?.message || err.message || "Subscription failed";
       setSubscribeMsg({ type: "error", text: errorMessage });
     } finally {
@@ -132,6 +127,7 @@ export default function BlogDetail() {
     }
   };
 
+  // ✅ AUTH CHECK
   useEffect(() => {
     const checkAuth = () => {
       const userData = localStorage.getItem('user');
@@ -148,13 +144,8 @@ export default function BlogDetail() {
       }
     };
 
-    // Check auth on mount
     checkAuth();
-
-    // Listen for auth changes from other components
     window.addEventListener('authChange', checkAuth);
-
-    // Also check when component comes back into focus
     window.addEventListener('focus', checkAuth);
 
     return () => {
@@ -163,28 +154,46 @@ export default function BlogDetail() {
     };
   }, []);
 
+  // ✅ FETCH BLOG DATA
   const { data: backendData, isLoading, error } = useQuery({
     queryKey: ["blog", slug],
     queryFn: () => blogAPI.getBlogBySlug(slug),
     enabled: !!slug,
   });
 
+  // ✅ FIX #5: Better like handling with proper state sync
   useEffect(() => {
-    if (backendData) {
-      const blogData = backendData.data || backendData;
-      setPost(blogData);
-      setLikes(blogData.likedBy?.length || 0); // ✅ Count unique likers
-      setComments(blogData.comments || []);
+    if (!backendData || !currentUser) return;
 
-      // ✅ Check if current user already liked this blog
-      if (currentUser && blogData.likedBy) {
-        const userLiked = blogData.likedBy.some(
-          userId => userId.toString() === currentUser.id);
-        setIsLiked(userLiked);
-        console.log("User liked this blog:", userLiked);
-      }
+    const blogData = backendData.data || backendData;
+    setPost(blogData);
+    setLikes(blogData.likedBy?.length || 0);
+    setComments(blogData.comments || []);
+
+    if (blogData.likedBy && Array.isArray(blogData.likedBy)) {
+      const userLiked = blogData.likedBy.some(
+        userId => userId.toString() === currentUser.id.toString()
+      );
+      setIsLiked(userLiked);
     }
   }, [backendData, currentUser]);
+
+  // ✅ FIX #1: Fetch comments on component load
+  useEffect(() => {
+    if (!slug) return;
+    
+    const fetchComments = async () => {
+      try {
+        const response = await blogAPI.getComments(slug);
+        setComments(response.data?.comments || response.comments || []);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+        setComments([]);
+      }
+    };
+
+    fetchComments();
+  }, [slug]);
 
   useEffect(() => {
     if (!post?.content) return;
@@ -224,62 +233,70 @@ export default function BlogDetail() {
     setTimeout(addIdsToHeadings, 100);
   }, [post, headings]);
 
+  // ✅ FIX #7: Better like mutation
   const likeMutation = useMutation({
     mutationFn: () => {
       if (!currentUser) throw new Error("AUTH_REQUIRED");
-      // Send current state, backend will toggle it
       return blogAPI.likeBlog(slug);
     },
     onSuccess: (response) => {
-      // ✅ FIXED: Update from response data
-      const responseData = response.data || response;
-      const newLikeCount = responseData.likes || responseData.likedBy?.length || likes;
-      const newIsLiked = responseData.isLiked !== undefined ? responseData.isLiked : !isLiked;
-
-      setIsLiked(newIsLiked);
-      setLikes(newLikeCount);
-      console.log(responseData);
-      showToast("success", newIsLiked ? "Post liked! " : "Post unliked");
+      const data = response.data || response;
+      setIsLiked(data.isLiked);
+      setLikes(data.likes || 0);
+      showToast("success", data.isLiked ? "Liked" : "Unliked");
     },
     onError: (error) => {
-      console.error("Like error:", error);
-      const msg = (error && error.message) || "";
+      // Prefer explicit Error.message (thrown by blogAPI) and fall back to axios style response
+      const msg = error?.message || error?.response?.data?.message || "Something went wrong";
+
+      // Handle auth cases explicitly
+      if (msg === "AUTH_REQUIRED") {
+        redirectToLogin("Login required to like");
+        return;
+      }
+
       if (msg === "AUTH_EXPIRED" || /jwt expired/i.test(msg)) {
+        // clear local auth state and force re-login
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         window.dispatchEvent(new Event('authChange'));
         redirectToLogin("Session expired — please login again");
         return;
       }
-      if (msg === "AUTH_REQUIRED") {
-        redirectToLogin("Login required to like this post");
-        return;
-      }
-      showToast("error", "Failed to update like");
+
+      showToast("error", msg);
     },
+
   });
 
+  // ✅ FIX #6: Add comment mutation should refresh comments
   const addCommentMutation = useMutation({
     mutationFn: (text) => {
       if (!currentUser) throw new Error("AUTH_REQUIRED");
-      return blogAPI.addComment(slug, text, currentUser.name || currentUser.email || "User");
+      return blogAPI.addComment(slug, text);
     },
     onSuccess: (response) => {
       const newComment = response.data?.comment || response.comment;
+      
       if (newComment) {
-        setComments([...comments, {
-          ...newComment,
-          author: currentUser.name || currentUser.email || "User", // ✅ Use actual username
-          userId: currentUser.id,
-          userEmail: currentUser.email,
-          createdAt: new Date().toISOString()
-        }]);
+        setComments(prevComments => [
+          ...prevComments,
+          {
+            ...newComment,
+            author: newComment.author || currentUser.name || currentUser.email || "User",
+            userId: newComment.userId || currentUser.id,
+            userEmail: newComment.userEmail || currentUser.email,
+            createdAt: newComment.createdAt || new Date().toISOString(),
+            _id: newComment._id || newComment.id
+          }
+        ]);
         setNewComment("");
         showToast("success", "Comment posted successfully!");
       }
     },
     onError: (error) => {
-      const msg = (error && error.message) || "";
+      const msg = error?.response?.data?.message || error?.message || "";
+      
       if (msg === "AUTH_EXPIRED" || /jwt expired/i.test(msg)) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -287,25 +304,31 @@ export default function BlogDetail() {
         redirectToLogin("Session expired — please login again");
         return;
       }
+      
       if (msg === "AUTH_REQUIRED") {
         redirectToLogin("Login required to comment");
         return;
       }
-      showToast("error", "Failed to post comment");
+      
+      showToast("error", msg || "Failed to post comment");
     },
   });
 
+  // ✅ FIX #4: Update comments when mutation succeeds
   const deleteCommentMutation = useMutation({
     mutationFn: (commentId) => {
       if (!currentUser) throw new Error("AUTH_REQUIRED");
       return blogAPI.deleteComment(slug, commentId);
     },
-    onSuccess: (_, commentId) => {
-      setComments(comments.filter(c => c._id !== commentId));
+    onSuccess: (response, commentId) => {
+      setComments(prevComments => 
+        prevComments.filter(c => (c._id || c.id) !== commentId)
+      );
       showToast("success", "Comment deleted successfully");
     },
     onError: (error) => {
-      const msg = (error && error.message) || "";
+      const msg = (error?.response?.data?.message) || error?.message || "";
+      
       if (msg === "AUTH_EXPIRED" || /jwt expired/i.test(msg)) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -313,11 +336,18 @@ export default function BlogDetail() {
         redirectToLogin("Session expired — please login again");
         return;
       }
+      
+      if (msg.includes("You can only delete your own comments")) {
+        showToast("error", msg);
+        return;
+      }
+      
       if (msg === "AUTH_REQUIRED") {
         redirectToLogin("Login required to delete comments");
         return;
       }
-      showToast("error", "Failed to delete comment");
+      
+      showToast("error", msg || "Failed to delete comment");
     },
   });
 
@@ -365,21 +395,35 @@ export default function BlogDetail() {
     addCommentMutation.mutate(newComment);
   };
 
+  // ✅ FIX #2: Proper comment deletion with better error handling
   const handleDeleteComment = (comment) => {
     if (!currentUser) {
       redirectToLogin("Login required to manage comments");
       return;
     }
-    if (comment.userId !== currentUser.id && comment.userEmail !== currentUser.email) {
+
+    const commentUserId = comment.userId?.toString?.() || comment.userId;
+    const currentUserId = currentUser.id?.toString?.() || currentUser.id;
+
+    if (commentUserId !== currentUserId) {
       showToast("warning", "You can only delete your own comments");
       return;
     }
+
     if (window.confirm("Are you sure you want to delete this comment?")) {
       deleteCommentMutation.mutate(comment._id || comment.id);
     }
   };
 
-  const canDeleteComment = (comment) => !currentUser ? false : (comment.userId === currentUser.id || comment.userEmail === currentUser.email);
+  // ✅ FIX #3: Better canDeleteComment check
+  const canDeleteComment = (comment) => {
+    if (!currentUser) return false;
+    
+    const commentUserId = comment.userId?.toString?.() || comment.userId;
+    const currentUserId = currentUser.id?.toString?.() || currentUser.id;
+    
+    return commentUserId === currentUserId;
+  };
 
   const processContentWithIds = (html, sectionIndex) => {
     if (!html) return html;
@@ -404,8 +448,14 @@ export default function BlogDetail() {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <Seo title={post.seo?.title || post.title} description={post.seo?.description || post.excerpt} keywords={post.keywords?.join(", ") || ""} image={post.image} url={`https://www.socialbureau.in/blogs/${post.slug}`} />
-     
+      <Seo 
+        title={post.seo?.title || post.title} 
+        description={post.seo?.description || post.excerpt} 
+        keywords={post.keywords?.join(", ") || ""} 
+        image={post.image} 
+        url={`https://www.socialbureau.in/blogs/${post.slug}`} 
+      />
+
       {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24">
@@ -459,9 +509,23 @@ export default function BlogDetail() {
 
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-8 border-t border-b border-gray-700 mb-12">
               <div className="flex items-center gap-4">
-                <button onClick={() => { if (!currentUser) { redirectToLogin("Login to like this post"); return; } likeMutation.mutate(); }} disabled={likeMutation.isPending} className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${isLiked ? "bg-red-900/30 text-red-400 border border-red-800" : "bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700"} ${likeMutation.isPending ? "opacity-50 cursor-not-allowed" : ""}`} title={!currentUser ? "Login to like this post" : ""}>
+                <button
+                  onClick={() => {
+                    if (!currentUser) {
+                      redirectToLogin("Login to like this post");
+                      return;
+                    }
+                    likeMutation.mutate();
+                  }}
+                  disabled={likeMutation.isPending}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all
+                    ${isLiked
+                      ? "bg-red-900/30 text-red-400 border border-red-800"
+                      : "bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700"}
+                    ${likeMutation.isPending ? "opacity-50 cursor-not-allowed" : ""}`}
+                >
                   <FaHeart className={isLiked ? "fill-red-400" : "fill-gray-400"} />
-                  <span className="font-medium"> {likes}</span>
+                  <span>{likes}</span>
                 </button>
               </div>
 

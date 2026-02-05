@@ -1,5 +1,7 @@
+import { useState, useEffect, useRef } from "react";
 import Footer from '../components/Footer'
-import { Linkedin, Instagram } from "lucide-react";
+import { Mail, User, MessageSquare, Send, Linkedin, Instagram, Play } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 export default function Landing() {
   return (
     <div className="bg-[#0b0d10] text-white">
@@ -10,6 +12,7 @@ export default function Landing() {
       <LatestBlogs />
       {/* <GradientFeatures /> */}
       <LatestWebsite />
+      <YoutubeVideoSection />
       <ContactUsForm />
       <Footer />
     </div>
@@ -175,9 +178,6 @@ function HeroEditorial() {
     </section>
   );
 }
-
-import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 
 const cards = [
   { img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159381/stone_tkleic.webp", title: "Work samples", link: "https://looplogik.wordpress.com/2025/07/20/work-samples-2" },
@@ -461,7 +461,7 @@ const blogs = [
     image: "/assets/dcschool.webp",
     link: "https://looplogik.wordpress.com/2025/05/13/b-arch-dc-school-of-architecture-and-design-blog-post",
   },
-   {
+  {
     id: 11,
     title: "Integrated Business Consultants – Brochure",
     category: "UI Interface",
@@ -470,7 +470,7 @@ const blogs = [
   },
 
 
-  
+
 ];
 
 function LatestBlogs() {
@@ -792,169 +792,6 @@ function LatestWebsite() {
 
 }
 
-
-
-import { Mail, User, MessageSquare, Send } from "lucide-react";
-
-
-// function ContactUsForm() {
-//   const [form, setForm] = useState({
-//     name: "",
-//     email: "",
-//     message: "",
-//   });
-
-//   const handleChange = (e) =>
-//     setForm({ ...form, [e.target.name]: e.target.value });
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-
-//     // Create WhatsApp message with all form details
-//     const whatsappMessage = `
-// New Project Inquiry - Looplogik Design Studio
-
-//  Client Details:
-// • Name: ${form.name}
-// • Email: ${form.email}
-
-// Project Requirements:
-// ${form.message}
-
-// --- 
-// For: Ranjit Chettur
-// Design Studio: Looplogik
-// Location: Kochi, Kerala
-// Submitted via: Website Contact Form
-//     `.trim();
-
-//     // URL encode the message
-//     const encodedMessage = encodeURIComponent(whatsappMessage);
-
-//     // Open WhatsApp with the formatted message
-//     window.open(`https://wa.me/918921840486?text=${encodedMessage}`, "_blank");
-
-//     console.log("Form submitted:", form);
-
-//     // Reset form after submission
-//     setForm({
-//       name: "",
-//       email: "",
-//       message: "",
-//     });
-//   };
-
-//   return (
-//     <section className="py-32 bg-black">
-//       <div className="max-w-7xl mx-auto px-6">
-
-//         {/* MAIN CONTAINER */}
-//         <div className="
-//           relative grid grid-cols-1 lg:grid-cols-2
-//           rounded-[36px] overflow-hidden
-//           border border-white/10
-//           bg-[#0e1014]
-//         ">
-
-//           {/* IMAGE PANEL */}
-//           <div className="relative h-[420px] lg:h-auto">
-//             <img
-//               src="/assets/p10.jpg"
-//               alt="Contact"
-//               className="w-full h-full object-cover"
-//             />
-//             <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-black/40 to-black/70" />
-
-//             <div className="absolute bottom-10 left-10 max-w-sm text-white">
-//               <p className="text-xs uppercase tracking-widest text-white/60 mb-3">
-//                 Contact
-//               </p>
-//               <h3 className="text-3xl font-serif leading-tight">
-//                 Let's start a conversation.
-//               </h3>
-//             </div>
-//           </div>
-
-//           {/* FORM PANEL – FULL WIDTH */}
-//           <div className="relative p-10 lg:p-16 flex items-center">
-//             <div className="w-full">
-
-//               <h2 className="text-2xl font-semibold text-white mb-2">
-//                 Contact Us
-//               </h2>
-//               <p className="text-sm text-white/60 mb-8">
-//                 Tell us about your project and we'll connect you with Ranjit Chettur
-//               </p>
-
-//               <form onSubmit={handleSubmit} className="space-y-5 max-w-xl">
-
-//                 <input
-//                   type="text"
-//                   name="name"
-//                   placeholder="Your Name"
-//                   value={form.name}
-//                   onChange={handleChange}
-//                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-green-500"
-//                   required
-//                 />
-
-//                 <input
-//                   type="email"
-//                   name="email"
-//                   placeholder="Email Address"
-//                   value={form.email}
-//                   onChange={handleChange}
-//                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-green-500"
-//                   required
-//                 />
-
-//                 <textarea
-//                   name="message"
-//                   rows={5}
-//                   placeholder="Describe your project requirements..."
-//                   value={form.message}
-//                   onChange={handleChange}
-//                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/40 resize-none focus:outline-none focus:ring-1 focus:ring-green-500"
-//                   required
-//                 />
-
-//                 {/* Single WhatsApp Button */}
-//                 <button
-//                   type="submit"
-//                   className="
-//                     inline-flex items-center justify-center
-//                     bg-[#25D366] text-white
-//                     rounded-xl px-8 py-3
-//                     text-sm font-medium
-//                     hover:bg-[#128C7E] transition
-//                     w-full
-//                     gap-3
-//                   "
-//                 >
-//                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-//                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.826 9.826 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411" />
-//                   </svg>
-//                   Send to Ranjit Chettur via WhatsApp
-//                 </button>
-
-//               </form>
-
-//               {/* Note about the process */}
-//               <div className="mt-8 pt-6 border-t border-white/10">
-//                 <p className="text-white/50 text-xs">
-//                   Your details will be sent directly to Ranjit Chettur,
-//                   Principal Communication Design Consultant at Looplogik.
-//                 </p>
-//               </div>
-
-//             </div>
-//           </div>
-
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
 function ContactUsForm() {
   const [form, setForm] = useState({
     name: "",
@@ -1214,6 +1051,369 @@ function GradientCard({ title, description, cta, link, glow }) {
 }
 
 
+//video part
+
+const extractVideoId = (url) => {
+  if (!url) return null;
+
+  // youtu.be short link
+  if (url.includes("youtu.be/")) {
+    return url.split("youtu.be/")[1].split("?")[0];
+  }
+
+  // youtube watch
+  if (url.includes("youtube.com/watch")) {
+    return new URL(url).searchParams.get("v");
+  }
+
+  // youtube embed
+  if (url.includes("youtube.com/embed/")) {
+    return url.split("embed/")[1].split("?")[0];
+  }
+
+  // vimeo
+  if (url.includes("vimeo.com/")) {
+    return url.split("vimeo.com/")[1].split("?")[0];
+  }
+
+  return null;
+};
 
 
+const getEmbedUrl = (url) => {
+  const id = extractVideoId(url);
+  if (!id) return null;
 
+  if (url.includes("vimeo")) {
+    return `https://player.vimeo.com/video/${id}?controls=1`;
+  }
+
+  return `https://www.youtube.com/embed/${id}?controls=1&mute=0&playsinline=1`;
+};
+
+const getThumbnailUrl = (url, customThumbnail) => {
+  const id = extractVideoId(url);
+  if (!id) return null;
+
+  // Use provided custom thumbnail first
+  if (customThumbnail) return customThumbnail;
+
+  if (url.includes("youtube") || url.includes("youtu.be")) {
+    return `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+  }
+
+  return `https://vumbnail.com/${id}.jpg`;
+};
+
+const videosData = [
+  {
+    id: 1,
+    title: "Ramayana Patashala from Ranjit Chettur",
+    youtubeId: "https://www.youtube.com/embed/516Ku0G_1EE?si=y433VXgwVukg9R5j",
+    category: "Design Process",
+    youtube_img:"assets/UtubeRanjith1.png",
+  },
+  {
+    id: 2,
+    title: "Breathe from Ranjit Chettur",
+    youtubeId: "https://vimeo.com/1095219209?fl=pl&fe=vl",
+    category: "Documentary",
+    duration: "12:15",
+  },
+  {
+    id: 3,
+    title: "MAIYAS from Ranjit Chettur",
+    youtubeId: "https://vimeo.com/910697374?fl=pl&fe=vl",
+    category: "Testimonial",
+    duration: "5:30",
+  },
+  {
+    id: 4,
+    title: "liquid ox jc fin from Ranjit Chettur",
+    youtubeId: "https://vimeo.com/868754685?fl=pl&fe=vl",
+    category: "Tutorial",
+    duration: "15:20",
+  },
+  {
+    id: 5,
+    title: "The Tin Drummer cut 2.mov from Ranjit Chettur",
+    youtubeId: "https://vimeo.com/331157293?fl=pl&fe=vl",
+    category: "Documentary",
+    duration: "10:45",
+  },
+  {
+    id: 6,
+    title: "Dance With Gravity from Ranjit Chettur",
+    youtubeId: "https://vimeo.com/567127350?fl=pl&fe=vl",
+    category: "Showcase",
+    duration: "7:18",
+  },
+  {
+    id: 7,
+    title: "Origami from Ranjit Chettur",
+    youtubeId: "https://vimeo.com/745219585?fl=pl&fe=vl",
+    category: "Showcase",
+    duration: "7:18",
+  },
+];
+
+function YoutubeVideoSection() {
+  const scrollRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const CARD_WIDTH = isMobile ? 300 : 320;
+  const GAP = 16;
+  const TOTAL_WIDTH = CARD_WIDTH + GAP;
+
+  const scroll = (direction) => {
+    let newIndex = currentIndex;
+
+    if (direction === 'right') {
+      newIndex = Math.min(currentIndex + 1, videosData.length - 1);
+    } else {
+      newIndex = Math.max(currentIndex - 1, 0);
+    }
+
+    setCurrentIndex(newIndex);
+
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        left: newIndex * TOTAL_WIDTH,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const handleVideoClick = (video) => {
+    // Open video in new tab
+    const url = video.youtubeId;
+    if (url.includes('youtube') || url.includes('youtu.be')) {
+      // Open YouTube video in new tab
+      const id = extractVideoId(url);
+      window.open(`https://www.youtube.com/watch?v=${id}`,'_blank');
+    } else if (url.includes('vimeo')) {
+      // Open Vimeo video in new tab
+      const id = extractVideoId(url);
+      window.open(`https://vimeo.com/${id}`,'_blank');
+    } else {
+      window.open(url, '_blank');
+    }
+  };
+
+  const canScrollLeft = currentIndex > 0;
+  const canScrollRight = currentIndex < videosData.length - 1;
+
+  return (
+    <section className="py-32 bg-[#f5f4f0] text-black">
+      <style>{`
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+
+        {/* HEADER WITH SCROLL BUTTONS */}
+        <div className="flex items-center justify-between mb-12 sm:mb-16">
+          <div>
+            <h2 className="text-2xl sm:text-4xl font-serif font-bold">
+              Video Work
+            </h2>
+            <p className="text-gray-600 max-w-2xl leading-relaxed mt-3 text-sm sm:text-base">
+              Explore our audio-visual projects, design processes, and creative documentaries
+            </p>
+          </div>
+
+          {/* Desktop Scroll Buttons */}
+          <div className="hidden sm:flex gap-3">
+            <button
+              onClick={() => scroll('left')}
+              disabled={!canScrollLeft}
+              className={`
+                flex items-center justify-center
+                w-12 h-12 rounded-full
+                border border-gray-300
+                transition-all duration-300
+                text-lg font-light
+                ${canScrollLeft
+                  ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer'
+                  : 'opacity-40 cursor-not-allowed'
+                }
+              `}
+              aria-label="Scroll left"
+            >
+              ←
+            </button>
+            <button
+              onClick={() => scroll('right')}
+              disabled={!canScrollRight}
+              className={`
+                flex items-center justify-center
+                w-12 h-12 rounded-full
+                border border-gray-300
+                transition-all duration-300
+                text-lg font-light
+                ${canScrollRight
+                  ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer'
+                  : 'opacity-40 cursor-not-allowed'
+                }
+              `}
+              aria-label="Scroll right"
+            >
+              →
+            </button>
+          </div>
+        </div>
+
+        {/* SCROLLABLE VIDEO CAROUSEL */}
+        <div
+          ref={scrollRef}
+          className="
+            hide-scrollbar
+            flex gap-4
+            overflow-x-auto
+            overflow-y-hidden
+            scroll-smooth
+            pb-4
+          "
+        >
+          {videosData.map((video) => (
+            <article
+              key={video.id}
+              onClick={() => handleVideoClick(video)}
+              className="
+                flex-shrink-0
+                cursor-pointer
+                group
+                transition-all duration-300
+              "
+              style={{ width: CARD_WIDTH }}
+            >
+              {/* THUMBNAIL */}
+              <div className="relative h-[280px] rounded-2xl overflow-hidden bg-gray-300 mb-4">
+                <img
+                  src={getThumbnailUrl(video.youtubeId, video.youtube_img) || "/fallback.jpg"}
+                  alt={video.title}
+                  className="
+                    w-full h-full object-cover
+                    group-hover:scale-110
+                    transition-transform duration-500
+                  "
+                  onError={(e) => {
+                    const id = extractVideoId(video.youtubeId);
+                    if ((video.youtubeId.includes("youtube") || video.youtubeId.includes("youtu.be")) && e.target.src.includes("maxresdefault")) {
+                      e.target.src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+                    } else if (video.youtubeId.includes("youtube") || video.youtubeId.includes("youtu.be")) {
+                      e.target.src = `https://img.youtube.com/vi/${id}/default.jpg`;
+                    } else {
+                      e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="320" height="280"%3E%3Crect fill="%23999" width="320" height="280"/%3E%3C/svg%3E';
+                    }
+                  }}
+                />
+
+                {/* Overlay Gradient */}
+                <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                {/* Play Button */}
+                <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                  <div className="
+                    w-16 h-16 rounded-full
+                    bg-white/20 backdrop-blur-md
+                    border border-white/30
+                    flex items-center justify-center
+                    group-hover:bg-white/40
+                    group-hover:scale-125
+                    transition-all duration-300
+                  ">
+                    <Play className="w-6 h-6 text-white fill-white" />
+                  </div>
+                </div>
+
+                {/* Duration Badge */}
+                {video.duration && (
+                  <div className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm px-2 py-1 rounded text-xs text-white font-medium">
+                    {video.duration}
+                  </div>
+                )}
+              </div>
+
+              {/* VIDEO INFO */}
+              <div>
+                <p className="text-xs uppercase tracking-widest text-gray-500 mb-2">
+                  {video.category}
+                </p>
+                <h4 className="
+                  text-base sm:text-lg font-serif font-semibold
+                  text-gray-800 leading-snug
+                  line-clamp-2
+                  group-hover:text-gray-950
+                  transition-colors duration-300
+                ">
+                  {video.title}
+                </h4>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* MOBILE SCROLL BUTTONS - Below Content */}
+        {isMobile && (
+          <div className="flex gap-3 justify-center mt-8 sm:hidden">
+            <button
+              onClick={() => scroll('left')}
+              disabled={!canScrollLeft}
+              className={`
+                flex items-center justify-center
+                w-12 h-12 rounded-full
+                border border-gray-300
+                transition-all duration-300
+                text-lg font-light
+                ${canScrollLeft
+                  ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer'
+                  : 'opacity-40 cursor-not-allowed'
+                }
+              `}
+              aria-label="Scroll left"
+            >
+              ←
+            </button>
+            <button
+              onClick={() => scroll('right')}
+              disabled={!canScrollRight}
+              className={`
+                flex items-center justify-center
+                w-12 h-12 rounded-full
+                border border-gray-300
+                transition-all duration-300
+                text-lg font-light
+                ${canScrollRight
+                  ? 'hover:bg-black hover:text-white hover:border-black cursor-pointer'
+                  : 'opacity-40 cursor-not-allowed'
+                }
+              `}
+              aria-label="Scroll right"
+            >
+              →
+            </button>
+          </div>
+        )}
+
+      </div>
+    </section>
+  );
+} 

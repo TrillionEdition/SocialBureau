@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { motion, useSpring, useMotionValue } from 'framer-motion';
+import React, { useEffect, useState } from "react";
+import { motion, useSpring, useMotionValue } from "framer-motion";
 
 const CustomCursor = () => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  
+
   const springConfig = { stiffness: 400, damping: 35 };
   const cursorX = useSpring(mouseX, springConfig);
   const cursorY = useSpring(mouseY, springConfig);
@@ -20,23 +20,36 @@ const CustomCursor = () => {
     const handleMouseOver = (e) => {
       // Check if target is a link or button, or close to one
       const target = e.target;
-      if (target.tagName === 'A' || target.tagName === 'BUTTON' || target.closest('a') || target.closest('button')) {
+      if (
+        target.tagName === "A" ||
+        target.tagName === "BUTTON" ||
+        target.closest("a") ||
+        target.closest("button")
+      ) {
         setIsHovering(true);
       } else {
         setIsHovering(false);
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseover', handleMouseOver);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseover", handleMouseOver);
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseover', handleMouseOver);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseover", handleMouseOver);
     };
   }, [mouseX, mouseY]);
 
   return (
     <>
+      {/* Hide default cursor on md+ screens */}
+      <style>{`
+        @media (min-width: 768px) {
+          *, *::before, *::after {
+            cursor: none !important;
+          }
+        }
+      `}</style>
       <motion.div
         className="fixed top-0 left-0 w-4 h-4 bg-red-600 rounded-full pointer-events-none z-[9999] mix-blend-screen hidden md:block"
         style={{

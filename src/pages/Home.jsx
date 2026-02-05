@@ -9,7 +9,6 @@ import { CyberBackground } from "../components/CyberBackground";
 import CookieConsent from "../components/CookieConsent";
 import { useNavigate } from "react-router-dom";
 import Clients from "../components/Clients";
-import posts from "../data/blogs";
 import LatestBlogs from "../components/LatestBlogs";
 import LatestCareers from "../components/LatestCareers";
 import HomeServices from "../components/HomeServices";
@@ -182,7 +181,7 @@ export const Home = () => {
       <LatestCareers />
       <Googlereview />
       {/* <Clients /> */}
-      <LatestBlogs posts={posts} />
+      <LatestBlogs />
       <PremiumFAQ />
       <PremiumFooter />
 

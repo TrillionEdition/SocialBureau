@@ -10,7 +10,7 @@ import ScrollTop from "./components/ScrollTop";
 import { Blog } from "./pages/Blog";
 import { Contact } from "./pages/Contact";
 import CompanyAchievements from "./pages/CompanyAchievements";
-
+import JohnSamuel from './components/JohnSamuel'
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { NotFound } from "./pages/NotFound";
 import React, { lazy, Suspense } from "react";

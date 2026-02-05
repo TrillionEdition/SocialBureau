@@ -3,7 +3,7 @@ import Footer from '../components/Footer'
 import BlogHeader from '../components/BlogHeader'
 import BlogPosts from '../components/BlogPosts'
 import Seo from '../components/Seo'
-import { BlogFooter } from '../components/BlogFooter'
+// import { BlogFooter } from '../components/BlogFooter'
 
 export const Blog = () => {
   return (
@@ -17,7 +17,7 @@ export const Blog = () => {
                   />
         <BlogHeader/>
         <BlogPosts/>
-        <BlogFooter/>
+        {/* <BlogFooter/> */}
         <Footer/>
     </div>
   )
