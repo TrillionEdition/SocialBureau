@@ -68,6 +68,7 @@ import AddAchievementForm from "./components/AddAchievementForm";
 
 import UserManagement from "./pages/UserManagement";
 import AddReview from "./components/AddReview";
+import PartnershipPortfolio from "./components/Partnership";
 
 function App() {
   const VoiceAsst = lazy(() => import("./pages/VoiceAsst"));
@@ -109,6 +110,7 @@ function App() {
           <Route path="/careers/:slug" element={<CareerDetail />} />
           <Route path="/qa-section" element={<QASection />} />
           <Route path="/partnerships" element={<ClientPortfolios />} />
+          <Route path="/partners" element={<PartnershipPortfolio />} />
           <Route path="/Ranjit" element={<Landing />} />
           <Route path="/services/branding" element={<BrandingService />} />
           <Route path="/services/experience-design" element={<XDService />} />
