@@ -65,7 +65,7 @@ import AnalyticsWidget from './components/Analytics'
 import AddAchievementForm from './components/AddAchievementForm'
 import UserManagement from './pages/UserManagement'
 import AddReview from './components/AddReview'
-import PortfolioPager from './components/Partnership'
+import Partnership from './components/Partnership'
 import PerformanceMarketing from './components/PerformanceMarketing'
 import ContentMarketing from './components/ContentMarketing'
 import AdTechIntegration from './components/AdTechIntegration'
@@ -111,7 +111,7 @@ function App() {
           <Route path="/careers/:slug" element={<CareerDetail />} />
           <Route path="/qa-section" element={<QASection />} />
           <Route path="/partnerships" element={<ClientPortfolios />} />
-          <Route path="/partners" element={<PartnershipPortfolio />} />
+          <Route path="/partners" element={<Partnership/>} />
           <Route path="/Ranjit" element={<Landing />} />
           <Route path="/services/branding" element={<BrandingService />} />
           <Route path="/services/experience-design" element={<XDService />} />
@@ -169,7 +169,7 @@ function App() {
           <Route path='/achievements-form' element={<AddAchievementForm />} />
           <Route path='/add-review' element={<AddReview />} />
 
-          <Route path='/partner' element={<PortfolioPager />} />
+          {/* <Route path='/partner' element={<PortfolioPager />} /> */}
           <Route path='/john-samuel' element={<JohnSamuel />} />
 
           <Route path="/*" element={<NotFound />} />

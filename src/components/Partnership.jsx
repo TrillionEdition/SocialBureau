@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Search, X } from 'lucide-react';
 import Footer from './Footer';
 
-const PortfolioPager = () => {
+const Partnership = () => {
 
 
     // Sample portfolio data
@@ -511,4 +511,4 @@ const PortfolioPager = () => {
     );
 };
 
-export default PortfolioPager;
+export default Partnership;
