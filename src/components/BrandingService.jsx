@@ -134,7 +134,9 @@ export default function BrandingService() {
 
             <p className="text-slate-300/80">
               Your brand is more than a logo — it’s your language, tone, color logic,
-              and content DNA. At <strong>SocialBureau</strong>, we combine
+              and content DNA. At <strong><a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a></strong>, we combine
               psychology, design systems, and data to create brand identities that
               perform across every platform — from Meta to Google to your website.
             </p>

@@ -60,31 +60,6 @@
 // // export default LoadingSpinner;
 
 
-// const LoadingSpinner = () => {
-//   return (
-//     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-//       <img
-//         src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1767617055/FromKlickPinCF3DAnimatedOrb_MotiongraphicsdesignLogodesignvideoWebbannerdesign-ezgif.com-video-to-gif-converter_1_tjuhqo.gif"
-//         alt="Loading"
-//         className="
-//           object-contain
-//           animate-fade-in
-
-//           w-[140px] h-[140px]        /* mobile */
-//           sm:w-[170px] sm:h-[170px] /* small tablets */
-//           md:w-[200px] md:h-[200px] /* tablets */
-//           lg:w-[240px] lg:h-[240px] /* desktop */
-//           xl:w-[280px] xl:h-[280px] /* large screens */
-//         "
-//         style={{ filter: "drop-shadow(0 6px 20px rgba(0,0,0,0.6))" }}
-//       />
-//     </div>
-//   );
-// };
-
-// export default LoadingSpinner;
-
-
 const LoadingSpinner = () => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
@@ -95,11 +70,11 @@ const LoadingSpinner = () => {
           object-contain
           animate-fade-in
 
-          w-[200px] h-[200px]        /* mobile */
-          sm:w-[220px] sm:h-[220px] /* small tablets */
-          md:w-[260px] md:h-[260px] /* tablets */
-          lg:w-[4000px] lg:h-[320px] /* desktop */
-          xl:w-[360px] xl:h-[360px] /* large screens */
+          w-[140px] h-[140px]        /* mobile */
+          sm:w-[170px] sm:h-[170px] /* small tablets */
+          md:w-[200px] md:h-[200px] /* tablets */
+          lg:w-[240px] lg:h-[240px] /* desktop */
+          xl:w-[280px] xl:h-[280px] /* large screens */
         "
         style={{ filter: "drop-shadow(0 6px 20px rgba(0,0,0,0.6))" }}
       />
@@ -108,3 +83,28 @@ const LoadingSpinner = () => {
 };
 
 export default LoadingSpinner;
+
+
+// const LoadingSpinner = () => {
+//   return (
+//     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+//       <img
+//         src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1767617055/FromKlickPinCF3DAnimatedOrb_MotiongraphicsdesignLogodesignvideoWebbannerdesign-ezgif.com-video-to-gif-converter_1_tjuhqo.gif"
+//         alt="Loading"
+//         className="
+//           object-contain
+//           animate-fade-in
+
+//           w-[200px] h-[200px]        /* mobile */
+//           sm:w-[220px] sm:h-[220px] /* small tablets */
+//           md:w-[260px] md:h-[260px] /* tablets */
+//           lg:w-[4000px] lg:h-[320px] /* desktop */
+//           xl:w-[360px] xl:h-[360px] /* large screens */
+//         "
+//         style={{ filter: "drop-shadow(0 6px 20px rgba(0,0,0,0.6))" }}
+//       />
+//     </div>
+//   );
+// };
+
+// export default LoadingSpinner;

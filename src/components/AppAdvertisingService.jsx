@@ -82,7 +82,9 @@ export default function AppAdvertisingService() {
               </h1>
 
               <p className="mt-6 text-xl text-slate-300/90 leading-relaxed">
-                At SocialBureau, we extend your brand's visibility beyond traditional ad platforms. Through API integrations and SDK networks, we connect your campaigns directly into 3rd-party apps, games, and digital ecosystems — reaching users where they spend most of their mobile time.
+                At <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a>, we extend your brand's visibility beyond traditional ad platforms. Through API integrations and SDK networks, we connect your campaigns directly into 3rd-party apps, games, and digital ecosystems — reaching users where they spend most of their mobile time.
               </p>
 
               <div className="mt-8 flex gap-4 flex-wrap">
@@ -242,7 +244,9 @@ export default function AppAdvertisingService() {
           {/* Why Choose Us */}
           <section className="mt-20">
             <div className="bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-purple-500/10 border border-purple-500/30 rounded-3xl p-10">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Why Choose SocialBureau for App Advertising</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Why Choose <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a> for App Advertising</h2>
               <h3 className="text-2xl font-semibold text-purple-300 mb-4">
                 Unified App + Platform Advertising Under One Roof
               </h3>

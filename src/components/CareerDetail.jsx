@@ -220,7 +220,9 @@ export default function CareerDetail() {
       <li>Confidentiality of company and client data is a strict requirement</li>
       <li>Repeated underperformance or policy violations will lead to disciplinary action</li>
       <li>
-        SocialBureau reserves the right to reassign tasks or restructure roles as business demands
+        <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a> reserves the right to reassign tasks or restructure roles as business demands
       </li>
     </ul>
   </div>
@@ -245,7 +247,9 @@ export default function CareerDetail() {
       <li>Role-specific expertise</li>
       <li>Familiarity with structured reporting tools</li>
       <li>Discipline, punctuality, and professional conduct</li>
-      <li>Alignment with SocialBureau’s performance-first culture</li>
+      <li>Alignment with <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a>’s performance-first culture</li>
     </ul>
   </div>
 

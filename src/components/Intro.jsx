@@ -130,9 +130,11 @@ export const Intro = () => {
           transition={{ duration: 1.5, delay: 0.5 }}
           className="mt-32 text-center"
         >
-          <p className="text-xl md:text-3xl font-medium tracking-tighter text-white/30 leading-tight max-w-5xl mx-auto italic">
-            <span className="text-white/80 not-italic font-black">
-              SocialBureau
+          <p className="text-xl md:text-3xl font-medium tracking-tighter text-white/70 leading-tight max-w-5xl mx-auto italic">
+            <span className="text-white not-italic font-black">
+              <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a>
             </span>{" "}
             is a vision by{" "}
             <a

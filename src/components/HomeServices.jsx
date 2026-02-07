@@ -643,10 +643,10 @@ export default function HomeServices() {
                       style={{
                         background: isHovered
                           ? `linear-gradient(90deg, ${badge.particleColor} 0%, ${badge.particleColor}cc 100%)`
-                          : `linear-gradient(90deg, rgba(255,255,255,0.05) 0%, ${badge.particleColor}22 100%)`,
+                          : `linear-gradient(90deg, rgba(255,255,255,0.06) 0%, ${badge.particleColor}77 30%, ${badge.particleColor}22 100%)`,
                         boxShadow: isHovered
                           ? `0 20px 50px -10px ${badge.particleColor}aa`
-                          : "none",
+                          : `0 8px 30px -12px ${badge.particleColor}33`,
                       }}
                     >
                       {/* Icon Wrapper */}

@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react'
-import './App.css'
-import { Home } from './pages/Home'
-import Navbar from './components/Navbar'
-import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
-import { About } from './pages/About'
-import { Services } from './pages/Services'
-import { CaseStudy } from './pages/CaseStudy'
-import ScrollTop from './components/ScrollTop'
-import { Blog } from './pages/Blog'
-import { Contact } from './pages/Contact'
-import CompanyAchievements from './pages/CompanyAchievements'
+import { useEffect, useState } from "react";
+import "./App.css";
+import { Home } from "./pages/Home";
+import Navbar from "./components/Navbar";
+import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
+import { About } from "./pages/About";
+import { Services } from "./pages/Services";
+import { CaseStudy } from "./pages/CaseStudy";
+import ScrollTop from "./components/ScrollTop";
+import { Blog } from "./pages/Blog";
+import { Contact } from "./pages/Contact";
+import CompanyAchievements from "./pages/CompanyAchievements";
 import JohnSamuel from './components/JohnSamuel'
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { NotFound } from './pages/NotFound'
@@ -72,22 +72,20 @@ import AdTechIntegration from './components/AdTechIntegration'
 import Footer from './components/Footer'
 
 function App() {
-  const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
+  const VoiceAsst = lazy(() => import("./pages/VoiceAsst"));
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1200);
-    return () => clearTimeout(timer);
+    // We handle loading termination via LoadingScreen's onComplete callback
   }, []);
 
-  if (loading) return <LoadingSpinner />;
+  // if (loading) return <LoadingScreen onComplete={() => setLoading(false)} />;
 
   return (
     <>
       <BrowserRouter>
         <Navbar />
         <ScrollTop />
-        <CookieConsent />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -113,16 +111,26 @@ function App() {
           <Route path="/careers/:slug" element={<CareerDetail />} />
           <Route path="/qa-section" element={<QASection />} />
           <Route path="/partnerships" element={<ClientPortfolios />} />
-          <Route path='/Ranjit' element={<Landing />} />
+          <Route path="/partners" element={<PartnershipPortfolio />} />
+          <Route path="/Ranjit" element={<Landing />} />
           <Route path="/services/branding" element={<BrandingService />} />
           <Route path="/services/experience-design" element={<XDService />} />
           <Route path="/services/technology" element={<TechnologyService />} />
-          <Route path="/services/global-marketing" element={<GlobalMarketingService />} />
-          <Route path="/services/google-marketing" element={<GoogleMarketingService />} />
+          <Route
+            path="/services/global-marketing"
+            element={<GlobalMarketingService />}
+          />
+          <Route
+            path="/services/google-marketing"
+            element={<GoogleMarketingService />}
+          />
           <Route path="/services/geo" element={<GEOService />} />
           <Route path="/services/seo" element={<SEOService />} />
           <Route path="/services/aeo" element={<AEOService />} />
-          <Route path="/services/app-advertising" element={<AppAdvertisingService />} />
+          <Route
+            path="/services/app-advertising"
+            element={<AppAdvertisingService />}
+          />
           <Route path="/services/:serviceTitle" element={<Service1 />} />
           <Route path="/employee/:name" element={<StaffDashboard />} />
           <Route path="/voice" element={
@@ -169,7 +177,7 @@ function App() {
         <Footer />
       </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
