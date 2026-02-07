@@ -163,14 +163,17 @@ export default function BlogDetail() {
 
   // ✅ FIX #5: Better like handling with proper state sync
   useEffect(() => {
-    if (!backendData || !currentUser) return;
+    if (!backendData) return;
 
     const blogData = backendData.data || backendData;
     setPost(blogData);
     setLikes(blogData.likedBy?.length || 0);
-    setComments(blogData.comments || []);
+    // Only set comments if they exist in the blog data, otherwise keep existing comments
+    if (blogData.comments) {
+      setComments(blogData.comments);
+    }
 
-    if (blogData.likedBy && Array.isArray(blogData.likedBy)) {
+    if (currentUser && blogData.likedBy && Array.isArray(blogData.likedBy)) {
       const userLiked = blogData.likedBy.some(
         userId => userId.toString() === currentUser.id.toString()
       );
@@ -178,20 +181,20 @@ export default function BlogDetail() {
     }
   }, [backendData, currentUser]);
 
-  // ✅ FIX #1: Fetch comments on component load
-  useEffect(() => {
+  // ✅ FIX #1: Fetch comments helper and initial load
+  const fetchComments = async () => {
     if (!slug) return;
-    
-    const fetchComments = async () => {
-      try {
-        const response = await blogAPI.getComments(slug);
-        setComments(response.data?.comments || response.comments || []);
-      } catch (error) {
-        console.error("Error fetching comments:", error);
-        setComments([]);
-      }
-    };
+    try {
+      const response = await blogAPI.getComments(slug);
+      // blogAPI.getComments returns { success: true, comments: [...], totalComments }
+      setComments(response?.data?.comments || response?.comments || []);
+    } catch (err) {
+      console.error("Error fetching comments:", err);
+      setComments([]);
+    }
+  };
 
+  useEffect(() => {
     fetchComments();
   }, [slug]);
 
@@ -275,28 +278,37 @@ export default function BlogDetail() {
       if (!currentUser) throw new Error("AUTH_REQUIRED");
       return blogAPI.addComment(slug, text);
     },
-    onSuccess: (response) => {
+    onSuccess: async (response) => {
       const newComment = response.data?.comment || response.comment;
-      
-      if (newComment) {
-        setComments(prevComments => [
-          ...prevComments,
-          {
-            ...newComment,
-            author: newComment.author || currentUser.name || currentUser.email || "User",
-            userId: newComment.userId || currentUser.id,
-            userEmail: newComment.userEmail || currentUser.email,
-            createdAt: newComment.createdAt || new Date().toISOString(),
-            _id: newComment._id || newComment.id
-          }
-        ]);
-        setNewComment("");
-        showToast("success", "Comment posted successfully!");
+
+      // Clear input and show toast immediately
+      setNewComment("");
+      showToast("success", "Comment posted successfully!");
+
+      // Re-fetch comments from server to ensure authoritative state
+      try {
+        await fetchComments();
+      } catch (err) {
+        console.warn("Failed to refresh comments after posting:", err);
+        // Fallback: append if server did not return full comments list
+        if (newComment) {
+          setComments(prevComments => [
+            ...prevComments,
+            {
+              ...newComment,
+              author: newComment.author || currentUser.name || currentUser.email || "User",
+              userId: newComment.userId || currentUser.id,
+              userEmail: newComment.userEmail || currentUser.email,
+              createdAt: newComment.createdAt || new Date().toISOString(),
+              _id: newComment._id || newComment.id
+            }
+          ]);
+        }
       }
     },
     onError: (error) => {
       const msg = error?.response?.data?.message || error?.message || "";
-      
+
       if (msg === "AUTH_EXPIRED" || /jwt expired/i.test(msg)) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -304,12 +316,12 @@ export default function BlogDetail() {
         redirectToLogin("Session expired — please login again");
         return;
       }
-      
+
       if (msg === "AUTH_REQUIRED") {
         redirectToLogin("Login required to comment");
         return;
       }
-      
+
       showToast("error", msg || "Failed to post comment");
     },
   });
@@ -321,14 +333,14 @@ export default function BlogDetail() {
       return blogAPI.deleteComment(slug, commentId);
     },
     onSuccess: (response, commentId) => {
-      setComments(prevComments => 
+      setComments(prevComments =>
         prevComments.filter(c => (c._id || c.id) !== commentId)
       );
       showToast("success", "Comment deleted successfully");
     },
     onError: (error) => {
       const msg = (error?.response?.data?.message) || error?.message || "";
-      
+
       if (msg === "AUTH_EXPIRED" || /jwt expired/i.test(msg)) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -336,17 +348,17 @@ export default function BlogDetail() {
         redirectToLogin("Session expired — please login again");
         return;
       }
-      
+
       if (msg.includes("You can only delete your own comments")) {
         showToast("error", msg);
         return;
       }
-      
+
       if (msg === "AUTH_REQUIRED") {
         redirectToLogin("Login required to delete comments");
         return;
       }
-      
+
       showToast("error", msg || "Failed to delete comment");
     },
   });
@@ -418,10 +430,10 @@ export default function BlogDetail() {
   // ✅ FIX #3: Better canDeleteComment check
   const canDeleteComment = (comment) => {
     if (!currentUser) return false;
-    
+
     const commentUserId = comment.userId?.toString?.() || comment.userId;
     const currentUserId = currentUser.id?.toString?.() || currentUser.id;
-    
+
     return commentUserId === currentUserId;
   };
 
@@ -448,12 +460,12 @@ export default function BlogDetail() {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <Seo 
-        title={post.seo?.title || post.title} 
-        description={post.seo?.description || post.excerpt} 
-        keywords={post.keywords?.join(", ") || ""} 
-        image={post.image} 
-        url={`https://www.socialbureau.in/blogs/${post.slug}`} 
+      <Seo
+        title={post.seo?.title || post.title}
+        description={post.seo?.description || post.excerpt}
+        keywords={post.keywords?.join(", ") || ""}
+        image={post.image}
+        url={`https://www.socialbureau.in/blogs/${post.slug}`}
       />
 
       {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}

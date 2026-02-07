@@ -1,256 +1,34 @@
-// import axios from 'axios';
-// import { BASE_URL } from '../utils/urls';
-
-
-// export const blogAPI = {
-//   // Get all blogs
-//   getBlogs: async (params = {}) => {
-//     const response = await axios.get(`${BASE_URL}/blog/blogs`, { params });
-//     return response.data;
-//   },
-
-//   // Get latest blogs
-//   getLatestBlogs: async (limit = 3) => {
-//     const response = await axios.get(`${BASE_URL}/blog/blogs/latest`, { 
-//       params: { limit } 
-//     });
-//     return response.data;
-//   },
-
-//   // Get single blog by slug
-//   getBlogBySlug: async (slug) => {
-//     const response = await axios.get(`${BASE_URL}/blog/blogs/${slug}`);
-//     return response.data;
-//   },
-
-//   // Create new blog
-//   createBlog: async (data) => {
-//     const formData = new FormData();
-//     formData.append('title', data.title);
-//     formData.append('excerpt', data.excerpt);
-//     formData.append('category', data.category);
-//     formData.append('author', data.author);
-    
-//     // Add optional fields
-//     if (data.customUrl) {
-//       formData.append('customUrl', data.customUrl);
-//     }
-//     if (data.keywords && data.keywords.length > 0) {
-//       formData.append('keywords', JSON.stringify(data.keywords));
-//     }
-//     if (data.childBlogs && data.childBlogs.length > 0) {
-//       formData.append('childBlogs', JSON.stringify(data.childBlogs));
-//     }
-    
-//     // Process content sections - serialize without images first
-//     const contentForBackend = data.content.map((section, index) => {
-//       const sectionData = {
-//         type: section.type,
-//         text: section.text || '',
-//         heading: section.heading || 'none',
-//       };
-      
-//       // If section has an image, we'll upload it separately and add reference
-//       if (section.image instanceof File) {
-//         sectionData.imageIndex = index; // Mark that this section has an image
-//       }
-      
-//       return sectionData;
-//     });
-    
-//     formData.append('content', JSON.stringify(contentForBackend));
-    
-//     // Add main blog image
-//     if (data.image instanceof File) {
-//       formData.append('image', data.image);
-//     } else if (data.image) {
-//       formData.append('imageUrl', data.image);
-//     }
-    
-//     // Add section images
-//     data.content.forEach((section, index) => {
-//       if (section.image instanceof File) {
-//         formData.append(`sectionImage_${index}`, section.image);
-//       }
-//     });
-
-//     const response = await axios.post(`${BASE_URL}/blog/blogs`, formData, {
-//       headers: {
-//         'Content-Type': 'multipart/form-data',
-//       },
-//     });
-//     return response.data;
-//   },
-
-//   // Update blog
-//   updateBlog: async (slug, data) => {
-//     const response = await axios.patch(`${BASE_URL}/blog/blogs/${slug}`, data);
-//     return response.data;
-//   },
-
-//   // Delete blog
-//   deleteBlog: async (slug) => {
-//     const response = await axios.delete(`${BASE_URL}/blog/blogs/${slug}`);
-//     return response.data;
-//   },
-
-//   // Get stats
-//   getStats: async () => {
-//     const response = await axios.get(`${BASE_URL}/blog/stats`);
-//     return response.data;
-//   },
-//   // NEW: Like methods
-//   // likeBlog: async (slug, isLiked) => {
-//   //   const response = await fetch(`${BASE_URL}/blog/blogs/${slug}/like`, {
-//   //     method: 'POST',
-//   //     headers: { 'Content-Type': 'application/json' },
-//   //     body: JSON.stringify({ isLiked }),
-//   //   });
-//   //   console.log(response);
-    
-//   //   if (!response.ok) throw new Error('Failed to like blog');
-//   //   return response.json();
-//   // },
-//   likeBlog: async (slug) => {
-//   const token = localStorage.getItem("token");
-
-//   const response = await fetch(
-//     `${BASE_URL}/blog/blogs/${slug}/like`,
-//     {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${token}`, // kept for backward compatibility
-//       },
-//       // Ensure browser sends cookies (httpOnly token) to backend
-//       credentials: 'include',
-//     }
-//   );
-// console.log("response:", response);
-
-//   if (!response.ok) {
-//     const err = await response.json().catch(() => ({}));
-//     const msg = (err && err.message) || "";
-//     if (response.status === 401 && /jwt expired/i.test(msg)) {
-//       throw new Error("AUTH_EXPIRED");
-//     }
-//     if (response.status === 401) {
-//       throw new Error("AUTH_REQUIRED");
-//     }
-//     throw new Error(msg || "Failed to like blog");
-//   }
-
-//   return response.json();
-// },
-
-
-//   // NEW: Comments methods
-//   // getComments: async (slug) => {
-//   //   const response = await fetch(`${BASE_URL}/blog/blogs/${slug}/comments`);
-//   //   if (!response.ok) throw new Error('Failed to fetch comments');
-//   //   return response.json();
-//   // },
-
-//   // addComment: async (slug, text, author = 'Anonymous') => {
-//   //   const response = await fetch(`${BASE_URL}/blog/blogs/${slug}/comments`, {
-//   //     method: 'POST',
-//   //     headers: { 'Content-Type': 'application/json' },
-//   //     body: JSON.stringify({ text, author }),
-//   //   });
-//   //   if (!response.ok) throw new Error('Failed to add comment');
-//   //   return response.json();
-//   // },
-// addComment: async (slug, text) => {
-//   const token = localStorage.getItem("token");
-
-//   const response = await fetch(
-//     `${BASE_URL}/blog/blogs/${slug}/comments`,
-//     {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         Authorization: `Bearer ${token}`, // kept for backward compatibility
-//       },
-//       body: JSON.stringify({ text }),
-//       // Ensure browser sends cookies (httpOnly token) to backend
-//       credentials: 'include',
-//     }
-//   );
-
-//   if (!response.ok) {
-//     const err = await response.json().catch(() => ({}));
-//     const msg = (err && err.message) || "";
-//     if (response.status === 401 && /jwt expired/i.test(msg)) {
-//       throw new Error("AUTH_EXPIRED");
-//     }
-//     if (response.status === 401) {
-//       throw new Error("AUTH_REQUIRED");
-//     }
-//     throw new Error(msg || 'Failed to add comment');
-//   }
-
-//   return response.json();
-// },
-
-//   // deleteComment: async (slug, commentId) => {
-//   //   const response = await fetch(`${BASE_URL}/blog/blogs/${slug}/comments/${commentId}`, {
-//   //     method: 'DELETE',
-//   //   });
-//   //   if (!response.ok) throw new Error('Failed to delete comment');
-//   //   return response.json();
-//   // },
-// deleteComment: async (slug, commentId) => {
-//   const token = localStorage.getItem("token");
-
-//   const response = await fetch(
-//     `${BASE_URL}/blog/blogs/${slug}/comments/${commentId}`,
-//     {
-//       method: 'DELETE',
-//       headers: {
-//         Authorization: `Bearer ${token}`, // kept for backward compatibility
-//       },
-//       // Ensure browser sends cookies (httpOnly token) to backend
-//       credentials: 'include',
-//     }
-//   );
-
-//   if (!response.ok) {
-//     const err = await response.json().catch(() => ({}));
-//     const msg = (err && err.message) || "";
-//     if (response.status === 401 && /jwt expired/i.test(msg)) {
-//       throw new Error("AUTH_EXPIRED");
-//     }
-//     if (response.status === 401) {
-//       throw new Error("AUTH_REQUIRED");
-//     }
-//     throw new Error(msg || 'Failed to delete comment');
-//   }
-
-//   return response.json();
-// },
-
-// };
-
-
-
 import axios from 'axios';
 import { BASE_URL } from '../utils/urls';
 
 export const blogAPI = {
   // ✅ FIXED: Correct endpoint paths without the extra '/blog' prefix
-  
+
   // Get all blogs with filtering
   // Endpoint: GET /api/blogs
   getBlogs: async (params = {}) => {
-    const response = await axios.get(`${BASE_URL}/blogs`, { params });
-    return response.data;
+    try {
+      console.log('📚 Fetching blogs from:', `${BASE_URL}/blog`, 'with params:', params);
+      const response = await axios.get(`${BASE_URL}/blog`, { params });
+      console.log('✅ Blogs fetched successfully:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('❌ Error fetching blogs:', error);
+      console.error('Error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        url: `${BASE_URL}/blog`
+      });
+      throw error;
+    }
   },
 
   // Get latest blogs
   // Endpoint: GET /api/blogs/latest
   getLatestBlogs: async (limit = 3) => {
-    const response = await axios.get(`${BASE_URL}/blogs/latest`, { 
-      params: { limit } 
+    const response = await axios.get(`${BASE_URL}/blog/latest`, {
+      params: { limit }
     });
     return response.data;
   },
@@ -258,8 +36,21 @@ export const blogAPI = {
   // Get single blog by slug
   // Endpoint: GET /api/blogs/:slug
   getBlogBySlug: async (slug) => {
-    const response = await axios.get(`${BASE_URL}/blogs/${slug}`);
-    return response.data;
+    try {
+      console.log('📖 Fetching blog by slug:', slug, 'from:', `${BASE_URL}/blog/${slug}`);
+      const response = await axios.get(`${BASE_URL}/blog/${slug}`);
+      console.log('✅ Blog fetched successfully:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('❌ Error fetching blog by slug:', error);
+      console.error('Error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        url: `${BASE_URL}/blog/${slug}`
+      });
+      throw error;
+    }
   },
 
   // Create new blog
@@ -270,7 +61,7 @@ export const blogAPI = {
     formData.append('excerpt', data.excerpt);
     formData.append('category', data.category);
     formData.append('author', data.author);
-    
+
     // Add optional fields
     if (data.customUrl) {
       formData.append('customUrl', data.customUrl);
@@ -281,7 +72,7 @@ export const blogAPI = {
     if (data.childBlogs && data.childBlogs.length > 0) {
       formData.append('childBlogs', JSON.stringify(data.childBlogs));
     }
-    
+
     // Process content sections
     const contentForBackend = data.content.map((section, index) => {
       const sectionData = {
@@ -289,23 +80,23 @@ export const blogAPI = {
         text: section.text || '',
         heading: section.heading || 'none',
       };
-      
+
       if (section.image instanceof File) {
         sectionData.imageIndex = index;
       }
-      
+
       return sectionData;
     });
-    
+
     formData.append('content', JSON.stringify(contentForBackend));
-    
+
     // Add main blog image
     if (data.image instanceof File) {
       formData.append('image', data.image);
     } else if (data.image) {
       formData.append('imageUrl', data.image);
     }
-    
+
     // Add section images
     data.content.forEach((section, index) => {
       if (section.image instanceof File) {
@@ -313,7 +104,7 @@ export const blogAPI = {
       }
     });
 
-    const response = await axios.post(`${BASE_URL}/blogs`, formData, {
+    const response = await axios.post(`${BASE_URL}/blog`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -324,21 +115,21 @@ export const blogAPI = {
   // Update blog
   // Endpoint: PUT /api/blogs/:slug
   updateBlog: async (slug, data) => {
-    const response = await axios.put(`${BASE_URL}/blogs/${slug}`, data);
+    const response = await axios.put(`${BASE_URL}/blog/${slug}`, data);
     return response.data;
   },
 
   // Delete blog
   // Endpoint: DELETE /api/blogs/:slug
   deleteBlog: async (slug) => {
-    const response = await axios.delete(`${BASE_URL}/blogs/${slug}`);
+    const response = await axios.delete(`${BASE_URL}/blog/${slug}`);
     return response.data;
   },
 
   // Get stats
   // Endpoint: GET /api/blogs/stats
   getStats: async () => {
-    const response = await axios.get(`${BASE_URL}/blogs/stats`);
+    const response = await axios.get(`${BASE_URL}/blog/stats`);
     return response.data;
   },
 
@@ -348,7 +139,7 @@ export const blogAPI = {
     const token = localStorage.getItem("token");
 
     const response = await fetch(
-      `${BASE_URL}/blogs/${slug}/like`,
+      `${BASE_URL}/blog/${slug}/like`,
       {
         method: "POST",
         headers: {
@@ -377,71 +168,45 @@ export const blogAPI = {
   // Get comments for a blog
   // Endpoint: GET /api/blogs/:slug/comments
   getComments: async (slug) => {
-    const response = await axios.get(`${BASE_URL}/blogs/${slug}/comments`);
+    const response = await axios.get(`${BASE_URL}/blog/${slug}/comments`);
     return response.data;
   },
 
   // Add comment to blog
-  // Endpoint: POST /api/blogs/:slug/comments
+  // Endpoint: POST /api/blog/:slug/comments
   addComment: async (slug, text) => {
     const token = localStorage.getItem("token");
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) headers.Authorization = `Bearer ${token}`;
 
-    const response = await fetch(
-      `${BASE_URL}/blogs/${slug}/comments`,
+    const response = await axios.post(
+      `${BASE_URL}/blog/${slug}/comments`,
+      { text },
       {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ text }),
-        credentials: 'include',
+        headers,
+        withCredentials: true,
       }
     );
 
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      const msg = (err && err.message) || "";
-      if (response.status === 401 && /jwt expired/i.test(msg)) {
-        throw new Error("AUTH_EXPIRED");
-      }
-      if (response.status === 401) {
-        throw new Error("AUTH_REQUIRED");
-      }
-      throw new Error(msg || 'Failed to add comment');
-    }
-
-    return response.json();
+    return response.data;
   },
 
+
   // Delete comment from blog
-  // Endpoint: DELETE /api/blogs/:slug/comments/:commentId
+  // Endpoint: DELETE /api/blog/:slug/comments/:commentId
   deleteComment: async (slug, commentId) => {
     const token = localStorage.getItem("token");
+    const headers = {};
+    if (token) headers.Authorization = `Bearer ${token}`;
 
-    const response = await fetch(
-      `${BASE_URL}/blogs/${slug}/comments/${commentId}`,
+    const response = await axios.delete(
+      `${BASE_URL}/blog/${slug}/comments/${commentId}`,
       {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        credentials: 'include',
+        headers,
+        withCredentials: true,
       }
     );
 
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      const msg = (err && err.message) || "";
-      if (response.status === 401 && /jwt expired/i.test(msg)) {
-        throw new Error("AUTH_EXPIRED");
-      }
-      if (response.status === 401) {
-        throw new Error("AUTH_REQUIRED");
-      }
-      throw new Error(msg || 'Failed to delete comment');
-    }
-
-    return response.json();
+    return response.data;
   },
 };

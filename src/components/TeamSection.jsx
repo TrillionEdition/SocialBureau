@@ -322,9 +322,25 @@ export const teamData = {
       description:
         "Leads paid media & performance strategies across global ad ecosystems.",
     },
+        {
+      name: "Rachel Susan oommen",
+      role: "HR Asst",
+      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1770037177/images/af8xbvarrsehbzcxjylq.jpg",
+      hoverImage: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1770037177/images/af8xbvarrsehbzcxjylq.jpg",
+      description:
+        "Detail-oriented HR Assistant experienced in administrative support, onboarding, and employee coordination",
+    },
   ],
 
   contentProduction: [
+    //     {
+    //   name: "Gowri Pradeep",
+    //   role: "Creative Director",
+    //   image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1763380488/images/fnzkzrdkb3f8cli8583p.png",
+    //   hoverImage: "/assets/joseph.webp",
+    //   description:
+    //     "Narrative-driven editor skilled in 4K workflows, color grading, and motion.",
+    // },
     {
       name: "Afnas N",
       role: "Cinematographer",
@@ -359,6 +375,14 @@ export const teamData = {
       hoverImage: "/assets/elizebath.webp",
       description:
         "Builds React-based digital infrastructure & API integrations for automation.",
+    },
+    {
+      name: "Reshma Vijayan",
+      role: "Web Developer",
+      hoverImage: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1770036743/images/w4eogtldwfqtsoxl94tl.jpg",
+      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1770036743/images/w4eogtldwfqtsoxl94tl.jpg",
+      description:
+        "Web Developer skilled in developing reliable, responsive, and visually appealing websites",
     },
     {
       name: "Hasna",

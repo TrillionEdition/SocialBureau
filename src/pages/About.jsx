@@ -4,6 +4,7 @@ import { AboutTagline } from '../components/AboutTagline'
 import AboutFooter from '../components/AboutFooter'
 import AboutCoreValues from '../components/AboutCoreValues'
 import Footer from '../components/Footer'
+import {AboutCompany} from '../components/AboutCompany'
 
 export const About = () => {
 
@@ -11,6 +12,7 @@ export const About = () => {
     <div className='bg-black text-white '>
         <AboutSB/>
         <AboutTagline/>
+        <AboutCompany/>
         <AboutCoreValues/>
         <AboutFooter/>
         <Footer/>

@@ -152,7 +152,7 @@ export const CareerCTA = () => {
   </p>
 
   <a
-    href="https://www.linkedin.com/jobs/socialbureau.in-jobs-worldwide?position=1&pageNum=0"
+    href="https://www.linkedin.com/company/socialbureau-in"
     className="inline-block bg-red-600 hover:bg-black border border-red-600 hover:border-white 
                text-white text-lg font-medium rounded-full py-4 px-10 transition transform hover:scale-105"
   >

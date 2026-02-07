@@ -169,7 +169,7 @@ export default function AboutCoreValues() {
           transform: translateY(0);
         }
       `}</style>
-      <section className="py-40 px-6 bg-black flex flex-col items-center">
+      <section className="py-30 px-6 bg-black flex flex-col items-center">
         <h2
           className="text-3xl md:text-5xl font-black text-center mb-16"
           style={{ fontFamily: "Playfair Display, serif" }}
@@ -200,3 +200,167 @@ export default function AboutCoreValues() {
     </>
   );
 }
+
+// import React, { useEffect } from "react";
+
+// const values = [
+//   {
+//     icon: "assets/icon1.webp",
+//     title: "Performance First",
+//     desc: "We don't guess. We design outcomes.",
+//   },
+//   {
+//     icon: "assets/icon2.webp",
+//     title: "Niche-Native Thinking",
+//     desc: "We understand the cultural codes that others ignore",
+//   },
+//   {
+//     icon: "assets/icon3.webp",
+//     title: "Speed & Precision",
+//     desc: "Fast, focused and flawless.",
+//   },
+//   {
+//     icon: "assets/icon4.webp",
+//     title: "Brutal Clarity",
+//     desc: "No jargon. Only sharp, clear, actionable insights",
+//   },
+//   {
+//     icon: "assets/icon5.webp",
+//     title: "Zero Vanity",
+//     desc: "No fake work. Only compounding ROI.",
+//   },
+// ];
+
+// export default function AboutCoreValues() {
+//   useEffect(() => {
+//     const observerOptions = {
+//       threshold: 0.15,
+//       rootMargin: "0px 0px -100px 0px",
+//     };
+
+//     const observer = new window.IntersectionObserver((entries) => {
+//       entries.forEach((entry) => {
+//         if (entry.isIntersecting) {
+//           entry.target.classList.add("animate-in");
+//         }
+//       });
+//     }, observerOptions);
+
+//     document.querySelectorAll(".value-item").forEach((el) => {
+//       observer.observe(el);
+//     });
+
+//     return () => observer.disconnect();
+//   }, []);
+
+//   return (
+//     <>
+//       <style>{`
+//         .accent-line-gradient {
+//           background: linear-gradient(90deg, transparent, #ff0000, transparent);
+//         }
+
+//         @keyframes float-icon {
+//           0%, 100% {
+//             transform: translateY(0);
+//           }
+//           50% {
+//             transform: translateY(-10px);
+//           }
+//         }
+
+//         .value-item {
+//           opacity: 0;
+//           transform: translateY(50px);
+//           transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+//         }
+
+//         .value-item.animate-in {
+//           opacity: 1;
+//           transform: translateY(0);
+//         }
+
+//         .value-icon {
+//           animation: float-icon 3s ease-in-out infinite;
+//         }
+
+//         .value-title {
+//           position: relative;
+//           display: inline-block;
+//         }
+
+//         .value-title::after {
+//           content: '';
+//           position: absolute;
+//           bottom: -4px;
+//           left: 0;
+//           width: 0;
+//           height: 2px;
+//           background: #ff0000;
+//           transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+//         }
+
+//         .value-item:hover .value-title::after {
+//           width: 100%;
+//         }
+
+//         @media (max-width: 480px) {
+//           .value-title {
+//             font-size: 1rem;
+//           }
+//         }
+//       `}</style>
+
+//       <section className="bg-black text-white py-20 md:py-32 px-4 md:px-8 relative">
+//         {/* Top accent line */}
+//         <div className="absolute top-0 left-0 right-0 h-px accent-line-gradient opacity-50" />
+
+//         {/* Bottom accent line */}
+//         <div className="absolute bottom-0 left-0 right-0 h-px accent-line-gradient opacity-50" />
+
+//         <div className="relative z-10 max-w-7xl mx-auto">
+//           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-center mb-16 md:mb-24 uppercase tracking-tight">
+//             Core <span className="text-red-500">Values</span>
+//           </h2>
+
+//           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
+//             {values.map((val, idx) => (
+//               <div
+//                 key={val.title}
+//                 className="value-item"
+//                 style={{ transitionDelay: `${idx * 0.08}s` }}
+//               >
+//                 <div className="space-y-4">
+//                   {/* Icon */}
+//                   <div className="value-icon w-16 h-16 md:w-20 md:h-20">
+//                     <img
+//                       src={val.icon}
+//                       alt={val.title}
+//                       loading="lazy"
+//                       className="w-full h-full object-contain"
+//                     />
+//                   </div>
+
+//                   {/* Title */}
+//                   <h3 className="value-title text-lg md:text-xl lg:text-2xl font-bold leading-tight">
+//                     {val.title}
+//                   </h3>
+
+//                   {/* Description */}
+//                   <p className="text-sm md:text-base text-gray-300 leading-relaxed">
+//                     {val.desc}
+//                   </p>
+
+//                   {/* Divider */}
+//                   <div className="w-12 h-px bg-gradient-to-r from-red-500 to-transparent opacity-60" />
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+//       </section>
+//     </>
+//   );
+// }
+
+

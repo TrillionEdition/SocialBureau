@@ -3,15 +3,20 @@ import { useQuery } from "@tanstack/react-query";
 import { blogAPI } from "../../services/blogServices";
 
 export default function LatestBlogs() {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["latestBlogs"],
-    queryFn: () => blogAPI.getLatestBlogs({ limit: 3 }),
+    queryFn: () => blogAPI.getLatestBlogs(3),
+    staleTime: 1000 * 60 * 5,
   });
 
   const latestPosts = data?.data || [];
 
   if (isLoading) {
     return <div className="text-white">Loading...</div>;
+  }
+
+  if (isError) {
+    return <div className="text-red-400">Error loading blogs: {error?.message || 'Request failed'}</div>;
   }
 
   return (

@@ -44,10 +44,10 @@ import Events from './components/Events'
 import AddEvent from './components/AddEvent'
 import ViewEvents from './components/ViewEvents'
 import { ClientPortfolios } from './pages/ClientPortfolios'
-import { Login } from './pages/Login'
-import { UserRegister } from './pages/UserRegistration'
-import { Register } from './pages/Register'
-import ProofFlow from './pages/ProofFlow'
+// import { Login } from './pages/Login'
+import AuthPage from './pages/UserRegistration'
+// import { Register } from './pages/Register'
+// import ProofFlow from './pages/ProofFlow'
 import Landing from './components/ExternalPortfolio'
 import Verification from './pages/UserVerification'
 import ChooseCharacter from './components/CardChoice'
@@ -56,19 +56,20 @@ import Leaderboard from './components/Leaderboard'
 import { ForgotPassword } from './components/ForgetPassword'
 import { ResetPassword } from './pages/ForgetPassword'
 import ApiMarketingPage from './components/ApiMarketing'
-import DashboardX from './pages/DashboardX'
-import SocialBureauInsight from './pages/SocialBureauInsight'
+// import DashboardX from './pages/DashboardX'
+// import SocialBureauInsight from './pages/SocialBureauInsight'
 import EditUser from './pages/EditUser'
-import NicheMarketing from './components/NicheMArketing'
-import HorizontalScrollSection from './components/trail'
+import NicheMarketing from './components/NicheMarketing'
+// import HorizontalScrollSection from './components/trail'
 import AnalyticsWidget from './components/Analytics'
 import AddAchievementForm from './components/AddAchievementForm'
-// import PaymentPage from './pages/PaymentPage'
-// import PaymentStatus from './pages/PaymentStatus'
-
 import UserManagement from './pages/UserManagement'
 import AddReview from './components/AddReview'
 import PortfolioPager from './components/Partnership'
+import PerformanceMarketing from './components/PerformanceMarketing'
+import ContentMarketing from './components/ContentMarketing'
+import AdTechIntegration from './components/AdTechIntegration'
+import Footer from './components/Footer'
 
 function App() {
   const VoiceAsst = lazy(() => import('./pages/VoiceAsst'));
@@ -129,33 +130,43 @@ function App() {
               <VoiceAsst />
             </Suspense>
           } />
-          <Route path='/register' element={<Register />} />
-          <Route path='/login' element={<Login />} />
+          {/* <Route path='/register' element={<Register />} /> */}
+          {/* <Route path='/login' element={<Login />} />
           <Route path='/user-register' element={<UserRegister />} />
-          <Route path='/pre' element={<ProofFlow />} />
+          <Route path='/pre' element={<ProofFlow />} /> */}
           <Route path='/proof' element={<Verification />} />
           <Route path='/card' element={<ChooseCharacter />} />
+
           <Route path="/jobs/create" element={<AdminCreateJob />} />
+
           <Route path='/leaderboard' element={<Leaderboard />} />
           <Route path='/forget-password' element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path='/login' element={<AuthPage />} />
+
           <Route path="/api-marketing" element={<ApiMarketingPage />} />
-          <Route path="/dashboard-x" element={<DashboardX />} />
-          <Route path="/insights" element={<SocialBureauInsight />} />
+          <Route path='/performance-marketing' element={<PerformanceMarketing />} />
+          <Route path='/niche-marketing' element={<NicheMarketing />} />
+          <Route path='/content-marketing' element={<ContentMarketing />} />
+          <Route path='/adTech-marketing' element={<AdTechIntegration />} />
+          {/* <Route path="/dashboard-x" element={<DashboardX />} /> */}
+          {/* <Route path="/insights" element={<SocialBureauInsight />} /> */}
+
           <Route path='/edit-user/:id' element={<EditUser />} />
           <Route path='/add-user' element={<EditUser />} />
           <Route path='/user-management' element={<UserManagement />} />
-          <Route path='/Niche-Marketing' element={<NicheMarketing />} />
-          <Route path='/horizontal' element={<HorizontalScrollSection />} />
+
           <Route path='/analytics' element={<AnalyticsWidget />} />
+
           <Route path='/achievements-form' element={<AddAchievementForm />} />
-          {/* <Route path='/payment' element={<PaymentPage />} /> */}
-          {/* <Route path='/payment-status' element={<PaymentStatus />} /> */}
           <Route path='/add-review' element={<AddReview />} />
+
           <Route path='/partner' element={<PortfolioPager />} />
           <Route path='/john-samuel' element={<JohnSamuel />} />
+
           <Route path="/*" element={<NotFound />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </>
   )
