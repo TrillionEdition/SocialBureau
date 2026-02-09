@@ -1,8 +1,409 @@
-import React, { useState, useRef } from "react";
+// import React, { useState, useRef, useEffect } from "react";
+// import { useNavigate, useLocation } from "react-router-dom";
+// import { motion, AnimatePresence } from "framer-motion";
+// import { Mail, Lock, User, Phone, ArrowLeft, Eye, EyeOff, CheckCircle2, AlertCircle, ChevronRight, Sparkles } from "lucide-react";
+// import { BASE_URL } from "../../utils/urls";
+// import { setUserData } from "../../utils/authUtils";
+// import { registerUserAPI } from "../../services/userServices";
+
+// export const AuthPage = () => {
+//   const navigate = useNavigate();
+//   const location = useLocation();
+//   const [isLogin, setIsLogin] = useState(true);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState("");
+//   const [success, setSuccess] = useState("");
+//   const [step, setStep] = useState(0);
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [direction, setDirection] = useState(0); // For 3D flip direction
+
+//   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+//   const [signupForm, setSignupForm] = useState({
+//     name: "",
+//     email: "",
+//     phone: "",
+//     password: "",
+//     confirmPassword: "",
+//   });
+
+//   const signupFields = [
+//     { name: "name", label: "What's your name?", placeholder: "John Doe", icon: User, type: "text" },
+//     { name: "email", label: "What's your email?", placeholder: "john@example.com", icon: Mail, type: "email" },
+//     { name: "phone", label: "Your phone number?", placeholder: "1234567890", icon: Phone, type: "tel" },
+//     { name: "password", label: "Create a password", placeholder: "••••••••", icon: Lock, type: "password" },
+//     { name: "confirmPassword", label: "Confirm password", placeholder: "••••••••", icon: Lock, type: "password" },
+//   ];
+
+//   const loginFields = [
+//     { name: "email", label: "Welcome back!", placeholder: "Your email address", icon: Mail, type: "email" },
+//     { name: "password", label: "Security Key", placeholder: "Your password", icon: Lock, type: "password" },
+//   ];
+
+//   const currentFields = isLogin ? loginFields : signupFields;
+//   const currentField = currentFields[step];
+
+//   // --- 3D PAGE TURN ANIMATION VARIANTS ---
+//   const pageFlipVariants = {
+//     enter: (direction) => ({
+//       rotateY: direction > 0 ? 90 : -90,
+//       opacity: 0,
+//       x: direction > 0 ? '50%' : '-50%',
+//       scale: 0.8,
+//       filter: "blur(5px)",
+//     }),
+//     center: {
+//       rotateY: 0,
+//       opacity: 1,
+//       x: 0,
+//       scale: 1,
+//       filter: "blur(0px)",
+//       transition: {
+//         duration: 0.7,
+//         ease: [0.16, 1, 0.3, 1], // Custom cubic-bezier for smooth book turn
+//         opacity: { duration: 0.3 }
+//       }
+//     },
+//     exit: (direction) => ({
+//       rotateY: direction < 0 ? 90 : -90,
+//       opacity: 0,
+//       x: direction < 0 ? '50%' : '-50%',
+//       scale: 0.8,
+//       filter: "blur(5px)",
+//       transition: {
+//         duration: 0.5,
+//         ease: [0.7, 0, 0.84, 0]
+//       }
+//     })
+//   };
+
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+//     if (isLogin) {
+//       setLoginForm(prev => ({ ...prev, [name]: value }));
+//     } else {
+//       setSignupForm(prev => ({ ...prev, [name]: value }));
+//     }
+//     setError("");
+//   };
+
+//   const validateCurrentField = () => {
+//     const value = isLogin ? loginForm[currentField.name] : signupForm[currentField.name];
+//     if (!value) {
+//       setError(`${currentField.label.split(' ').pop().replace('?', '')} is required`);
+//       return false;
+//     }
+//     if (currentField.name === "email" && !/\S+@\S+\.\S+/.test(value)) {
+//       setError("Please enter a valid email");
+//       return false;
+//     }
+//     if (currentField.name === "password" && value.length < 6) {
+//       setError("Password must be at least 6 characters");
+//       return false;
+//     }
+//     if (currentField.name === "confirmPassword" && value !== signupForm.password) {
+//       setError("Passwords do not match");
+//       return false;
+//     }
+//     return true;
+//   };
+
+//   const nextStep = () => {
+//     if (!validateCurrentField()) return;
+//     if (step < currentFields.length - 1) {
+//       setDirection(1);
+//       setStep(s => s + 1);
+//       setError("");
+//     } else {
+//       isLogin ? handleLogin() : handleSignup();
+//     }
+//   };
+
+//   const prevStep = () => {
+//     if (step > 0) {
+//       setDirection(-1);
+//       setStep(s => s - 1);
+//       setError("");
+//     }
+//   };
+
+//   const handleKeyPress = (e) => {
+//     if (e.key === "Enter") {
+//       e.preventDefault();
+//       nextStep();
+//     }
+//   };
+
+//   const handleLogin = async () => {
+//     setLoading(true);
+//     setError("");
+//     try {
+//       const response = await fetch(`${BASE_URL}/user/login`, {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify(loginForm),
+//         credentials: "include",
+//       });
+//       const data = await response.json();
+//       if (!response.ok) throw new Error(data.message || "Login failed");
+//       if (data.user) {
+//         setUserData(data.user);
+//         localStorage.setItem('user', JSON.stringify(data.user));
+//         if (data.token) localStorage.setItem('token', data.token);
+//       }
+//       setSuccess("Welcome back! ✨");
+//       window.dispatchEvent(new Event("authChange"));
+//       const queryParams = new URLSearchParams(location.search);
+//       const redirectParam = queryParams.get("redirect");
+//       const from = location.state?.from?.pathname || redirectParam || "/";
+//       setTimeout(() => navigate(from, { replace: true }), 1500);
+//     } catch (err) {
+//       setError(err.message);
+//       setDirection(-1);
+//       setStep(0);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleSignup = async () => {
+//     setLoading(true);
+//     setError("");
+//     try {
+//       await registerUserAPI({ ...signupForm, role: "user" });
+//       setSuccess("Account secured! 🛡️");
+//       setTimeout(() => {
+//         setIsLogin(true);
+//         setStep(0);
+//         setLoginForm({ email: signupForm.email, password: "" });
+//         setSuccess("");
+//       }, 2000);
+//     } catch (err) {
+//       setError(err.response?.data?.message || "Registration failed");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const toggleAuth = () => {
+//     setDirection(isLogin ? 1 : -1);
+//     setIsLogin(!isLogin);
+//     setStep(0);
+//     setError("");
+//     setSuccess("");
+//   };
+
+//   return (
+//     <div className="min-h-screen w-full bg-[#050510] flex items-center justify-center p-4 relative overflow-hidden selection:bg-cyan-500/30">
+//       {/* Animated Aura Background */}
+//       <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-indigo-600/10 rounded-full blur-[160px] animate-pulse" />
+//       <div className="absolute bottom-[-10%] right-[-20%] w-[60%] h-[60%] bg-cyan-600/10 rounded-full blur-[160px] animate-pulse delay-1000" />
+//       <div className="absolute top-[30%] left-[40%] w-[30%] h-[30%] bg-violet-600/5 rounded-full blur-[120px] animate-bounce duration-[8s]" />
+
+//       {/* High-End Branding Top */}
+//       <motion.div
+//         initial={{ y: -50, opacity: 0 }}
+//         animate={{ y: 0, opacity: 1 }}
+//         className="absolute top-8 left-8 hidden md:flex items-center gap-2"
+//       >
+//         <Sparkles className="text-cyan-400 w-5 h-5" />
+//         <span className="text-white font-bold tracking-[0.2em] text-sm md:text-md uppercase opacity-80" style={{ fontFamily: "MyFont, sans-serif" }}>
+//           SocialBureau <span className="text-indigo-500">Premium</span>
+//         </span>
+//       </motion.div>
+
+//       <div className="w-full max-w-xl z-10 perspective-[2000px]">
+//         {/* Main 3D Card Wrapper */}
+//         <motion.div
+//           initial={{ opacity: 0, scale: 0.9, rotateX: 10 }}
+//           animate={{ opacity: 1, scale: 1, rotateX: 0 }}
+//           transition={{ duration: 1, ease: "backOut" }}
+//           className="relative rounded-[3rem] bg-indigo-950/20 backdrop-blur-3xl border border-white/10 p-10 md:p-14 shadow-[0_30px_100px_rgba(0,0,0,0.6)] overflow-hidden"
+//         >
+//           {/* Subtle Shine Effect */}
+//           <div className="absolute inset-0 bg-gradient-to-tr from-white/[0.02] to-transparent pointer-events-none" />
+
+//           <AnimatePresence mode="wait" custom={direction}>
+//             {success ? (
+//               <motion.div
+//                 key="success"
+//                 initial={{ opacity: 0, scale: 0.8 }}
+//                 animate={{ opacity: 1, scale: 1 }}
+//                 className="flex flex-col items-center justify-center py-16 text-center"
+//               >
+//                 <div className="w-24 h-24 bg-cyan-500/10 rounded-3xl flex items-center justify-center mb-8 border border-cyan-500/20 shadow-[0_0_30px_rgba(34,211,238,0.2)]">
+//                   <CheckCircle2 className="w-12 h-12 text-cyan-400" />
+//                 </div>
+//                 <h2 className="text-3xl font-bold text-white mb-3 tracking-tight">{success}</h2>
+//                 <p className="text-indigo-200/60 font-medium">Entering secure workspace...</p>
+//               </motion.div>
+//             ) : (
+//               <motion.div
+//                 key={`${isLogin ? 'login' : 'signup'}-${step}`}
+//                 custom={direction}
+//                 variants={pageFlipVariants}
+//                 initial="enter"
+//                 animate="center"
+//                 exit="exit"
+//                 className="flex flex-col gap-10"
+//                 style={{ transformStyle: 'preserve-3d' }}
+//               >
+//                 {/* Visual Header */}
+//                 <div className="space-y-4">
+//                   <div className="flex items-center gap-3">
+//                     <div className="h-[2px] w-12 bg-cyan-500 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
+//                     <span className="text-cyan-400 text-xs font-black tracking-[0.3em] uppercase">
+//                       {isLogin ? "Digital ID" : `Protocol Step 0${step + 1}`}
+//                     </span>
+//                   </div>
+//                   <h2 className="text-4xl md:text-5xl font-bold text-white leading-none tracking-tighter">
+//                     {currentField.label}
+//                   </h2>
+//                 </div>
+
+//                 {/* Cyber Input Field */}
+//                 <div className="relative group">
+//                   <div className="absolute inset-0 bg-cyan-400/5 rounded-2xl blur-xl group-focus-within:bg-indigo-400/10 transition-all duration-500" />
+
+//                   <div className="relative flex items-center gap-5 px-8 bg-black/40 border border-white/5 rounded-2xl h-20 focus-within:border-cyan-500/50 focus-within:ring-4 ring-cyan-500/10 transition-all duration-300">
+//                     <currentField.icon className="w-7 h-7 text-indigo-400/60 group-focus-within:text-cyan-400 transition-colors" />
+
+//                     <input
+//                       autoFocus
+//                       type={currentField.name === "password" || currentField.name === "confirmPassword" ? (showPassword ? "text" : "password") : currentField.type}
+//                       name={currentField.name}
+//                       placeholder={currentField.placeholder}
+//                       value={isLogin ? loginForm[currentField.name] : signupForm[currentField.name]}
+//                       onChange={handleInputChange}
+//                       onKeyDown={handleKeyPress}
+//                       autoComplete="off"
+//                       className="flex-1 bg-transparent text-white text-2xl outline-none placeholder:text-gray-700 font-medium"
+//                     />
+
+//                     {(currentField.name === "password" || currentField.name === "confirmPassword") && (
+//                       <button
+//                         type="button"
+//                         onClick={() => setShowPassword(!showPassword)}
+//                         className="p-3 bg-white/5 rounded-xl text-indigo-300 hover:text-cyan-400 transition-all"
+//                       >
+//                         {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
+//                       </button>
+//                     )}
+//                   </div>
+//                 </div>
+
+//                 {/* Animated Alerts */}
+//                 <AnimatePresence>
+//                   {error && (
+//                     <motion.div
+//                       initial={{ opacity: 0, y: -10 }}
+//                       animate={{ opacity: 1, y: 0 }}
+//                       exit={{ opacity: 0, y: -10 }}
+//                       className="flex items-center gap-3 px-6 py-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-400 text-sm font-semibold"
+//                     >
+//                       <AlertCircle size={18} />
+//                       {error}
+//                     </motion.div>
+//                   )}
+//                 </AnimatePresence>
+
+//                 {/* High-Performance Action Controls */}
+//                 <div className="flex items-center justify-between mt-2 pt-4 border-t border-white/5">
+//                   <div className="flex gap-4">
+//                     {step > 0 && (
+//                       <button
+//                         onClick={prevStep}
+//                         className="h-16 w-16 rounded-2xl bg-white/5 text-white hover:bg-white/10 transition-all active:scale-90 flex items-center justify-center border border-white/5 group"
+//                       >
+//                         <ArrowLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
+//                       </button>
+//                     )}
+//                   </div>
+
+//                   <button
+//                     onClick={nextStep}
+//                     disabled={loading}
+//                     className="flex-1 max-w-[280px] h-16 group relative flex items-center justify-center gap-4 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg transition-all active:scale-[0.96] disabled:opacity-50 shadow-[0_20px_40px_rgba(79,70,229,0.3)] hover:shadow-indigo-500/40"
+//                   >
+//                     {loading ? (
+//                       <div className="w-6 h-6 border-3 border-white/20 border-t-white rounded-full animate-spin" />
+//                     ) : (
+//                       <>
+//                         <span className="tracking-widest uppercase text-sm">
+//                           {step === currentFields.length - 1 ? "Initialize" : "Confirm"}
+//                         </span>
+//                         <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+//                       </>
+//                     )}
+//                   </button>
+//                 </div>
+//               </motion.div>
+//             )}
+//           </AnimatePresence>
+
+//           {/* Minimalist Progress Indicator */}
+//           {!success && (
+//             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3">
+//               {currentFields.map((_, i) => (
+//                 <motion.div
+//                   key={i}
+//                   className={`h-1.5 rounded-full transition-all duration-500 ${i === step ? 'w-10 bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]' : 'w-2 bg-white/10'}`}
+//                 />
+//               ))}
+//             </div>
+//           )}
+//         </motion.div>
+
+//         {/* Global Redirect Toggle */}
+//         <motion.div
+//           initial={{ opacity: 0 }}
+//           animate={{ opacity: 1 }}
+//           transition={{ delay: 1 }}
+//           className="mt-12 text-center"
+//         >
+//           <button
+//             onClick={toggleAuth}
+//             className="group inline-flex items-center gap-4 text-indigo-300/60 transition-all hover:text-white"
+//           >
+//             <span className="text-sm font-bold tracking-[0.2em] uppercase">
+//               {isLogin ? "No Secure Node?" : "Authorized Access?"}
+//             </span>
+//             <div className="px-5 py-2 rounded-full border border-indigo-500/20 bg-indigo-500/5 group-hover:bg-indigo-500/20 transition-all group-hover:border-indigo-500/40 text-sm font-black text-cyan-400">
+//               {isLogin ? "Generate Access" : "Portal Gate"}
+//             </div>
+//           </button>
+//         </motion.div>
+//       </div>
+
+//       <style>{`
+//         @font-face {
+//           font-family: 'MyFont';
+//           src: url('/assets/logo.otf') format('opentype');
+//         }
+//         .perspective-[2000px] {
+//           perspective: 2000px;
+//         }
+//         input:-webkit-autofill,
+//         input:-webkit-autofill:hover, 
+//         input:-webkit-autofill:focus {
+//           -webkit-text-fill-color: white;
+//           -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+//           transition: background-color 5000s ease-in-out 0s;
+//         }
+//       `}</style>
+//     </div>
+//   );
+// };
+
+// export default AuthPage;
+
+
+
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { Mail, Lock, User, Phone, Eye, EyeOff, CheckCircle2, AlertCircle, ArrowLeft } from "lucide-react";
 import { BASE_URL } from "../../utils/urls";
 import { setUserData } from "../../utils/authUtils";
-import { Mail, Lock, User, Phone, ArrowRight } from "lucide-react";
 import { registerUserAPI } from "../../services/userServices";
 
 export const AuthPage = () => {
@@ -12,16 +413,11 @@ export const AuthPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [step, setStep] = useState("email");
-  const [fieldErrors, setFieldErrors] = useState({});
+  const [step, setStep] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
+  const [direction, setDirection] = useState(0);
 
-  const passwordInputRef = useRef(null);
-
-  const [loginForm, setLoginForm] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [signupForm, setSignupForm] = useState({
     name: "",
     email: "",
@@ -31,178 +427,122 @@ export const AuthPage = () => {
   });
 
   const signupFields = [
-    { name: "name", label: "Full Name", icon: User },
-    { name: "email", label: "Email", icon: Mail },
-    { name: "phone", label: "Phone", icon: Phone },
-    { name: "password", label: "Password", icon: Lock },
-    { name: "confirmPassword", label: "Confirm Password", icon: Lock },
+    { name: "name", label: "Full Name", placeholder: "John Doe", icon: User, type: "text" },
+    { name: "email", label: "Email Address", placeholder: "name@example.com", icon: Mail, type: "email" },
+    { name: "phone", label: "Phone Number", placeholder: "+1 (555) 123-4567", icon: Phone, type: "tel" },
+    { name: "password", label: "Password", placeholder: "••••••••", icon: Lock, type: "password" },
+    { name: "confirmPassword", label: "Confirm Password", placeholder: "••••••••", icon: Lock, type: "password" },
   ];
 
-  const currentSignupField = signupFields.find(f => f.name === step);
+  const loginFields = [
+    { name: "email", label: "Email Address", placeholder: "name@example.com", icon: Mail, type: "email" },
+    { name: "password", label: "Password", placeholder: "••••••••", icon: Lock, type: "password" },
+  ];
 
-  // ==================== LOGIN HANDLERS ====================
-  const handleLoginChange = (e) => {
-    setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
+  const currentFields = isLogin ? loginFields : signupFields;
+  const currentField = currentFields[step];
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    if (isLogin) {
+      setLoginForm(prev => ({ ...prev, [name]: value }));
+    } else {
+      setSignupForm(prev => ({ ...prev, [name]: value }));
+    }
     setError("");
   };
 
-  const handleLoginEmailKeyPress = (e) => {
-    if (e.key === "Enter" && loginForm.email.trim()) {
-      e.preventDefault();
-      setStep("password");
-      setTimeout(() => passwordInputRef.current?.focus(), 100);
+  const validateCurrentField = () => {
+    const value = isLogin ? loginForm[currentField.name] : signupForm[currentField.name];
+    if (!value) {
+      setError(`${currentField.label} is required`);
+      return false;
+    }
+    if (currentField.name === "email" && !/\S+@\S+\.\S+/.test(value)) {
+      setError("Please enter a valid email");
+      return false;
+    }
+    if (currentField.name === "password" && value.length < 6) {
+      setError("Password must be at least 6 characters");
+      return false;
+    }
+    if (currentField.name === "confirmPassword" && value !== signupForm.password) {
+      setError("Passwords do not match");
+      return false;
+    }
+    return true;
+  };
+
+  const nextStep = () => {
+    if (!validateCurrentField()) return;
+    if (step < currentFields.length - 1) {
+      setDirection(1);
+      setStep(s => s + 1);
+      setError("");
+    } else {
+      isLogin ? handleLogin() : handleSignup();
     }
   };
 
-  const handleLoginPasswordKeyPress = (e) => {
-    if (e.key === "Enter" && loginForm.password.trim()) {
-      e.preventDefault();
-      handleLoginSubmit(e);
+  const prevStep = () => {
+    if (step > 0) {
+      setDirection(-1);
+      setStep(s => s - 1);
+      setError("");
     }
   };
 
-  const handleLoginSubmit = async (e) => {
-    e.preventDefault();
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      nextStep();
+    }
+  };
+
+  const handleLogin = async () => {
+    setLoading(true);
     setError("");
-    setSuccess("");
-
     try {
-      setLoading(true);
-
-      if (!loginForm.email || !loginForm.password) {
-        throw new Error("Email and password are required");
-      }
-
       const response = await fetch(`${BASE_URL}/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: loginForm.email,
-          password: loginForm.password,
-        }),
+        body: JSON.stringify(loginForm),
         credentials: "include",
       });
-
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed");
-      }
-
+      if (!response.ok) throw new Error(data.message || "Login failed");
       if (data.user) {
         setUserData(data.user);
         localStorage.setItem('user', JSON.stringify(data.user));
-        if (data.token) {
-          localStorage.setItem('token', data.token);
-        }
+        if (data.token) localStorage.setItem('token', data.token);
       }
-
-      setSuccess("Login successful ✅");
+      setSuccess("Welcome back");
       window.dispatchEvent(new Event("authChange"));
-
       const queryParams = new URLSearchParams(location.search);
       const redirectParam = queryParams.get("redirect");
       const from = location.state?.from?.pathname || redirectParam || "/";
-
-      setTimeout(() => {
-        if (data.user?.isEmployee && !data.user?.isVerified) {
-          navigate("/verify-employee");
-        } else {
-          navigate(from, { replace: true });
-        }
-      }, 1000);
+      setTimeout(() => navigate(from, { replace: true }), 1500);
     } catch (err) {
-      setError(err.message || "Something went wrong");
-      setLoginForm((prev) => ({ ...prev, password: "" }));
-      setStep("email");
+      setError(err.message);
+      setDirection(-1);
+      setStep(0);
     } finally {
       setLoading(false);
     }
   };
 
-  // ==================== SIGNUP HANDLERS ====================
-  const handleSignupChange = (e) => {
-    setSignupForm({ ...signupForm, [e.target.name]: e.target.value });
-    setFieldErrors({ ...fieldErrors, [e.target.name]: "" });
+  const handleSignup = async () => {
+    setLoading(true);
     setError("");
-  };
-
-  const validateSignupField = (fieldName) => {
-    const value = signupForm[fieldName];
-
-    if (fieldName === "name" && !value.trim()) {
-      setFieldErrors(prev => ({ ...prev, name: "Name is required" }));
-      return false;
-    }
-    if (fieldName === "email" && !value.trim()) {
-      setFieldErrors(prev => ({ ...prev, email: "Email is required" }));
-      return false;
-    }
-    if (fieldName === "password" && value.length < 6) {
-      setFieldErrors(prev => ({ ...prev, password: "Password must be at least 6 characters" }));
-      return false;
-    }
-    if (fieldName === "phone" && value && value.length !== 10) {
-      setFieldErrors(prev => ({ ...prev, phone: "Mobile must be 10 digits" }));
-      return false;
-    }
-    if (fieldName === "confirmPassword" && value !== signupForm.password) {
-      setFieldErrors(prev => ({ ...prev, confirmPassword: "Passwords do not match" }));
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleSignupNext = () => {
-    const currentFieldName = step;
-
-    if (!validateSignupField(currentFieldName)) return;
-
-    const fieldIndex = signupFields.findIndex(f => f.name === currentFieldName);
-    if (fieldIndex < signupFields.length - 1) {
-      setStep(signupFields[fieldIndex + 1].name);
-    } else {
-      handleSignupSubmit();
-    }
-  };
-
-  const handleSignupPrevious = () => {
-    const fieldIndex = signupFields.findIndex(f => f.name === step);
-    if (fieldIndex > 0) {
-      setStep(signupFields[fieldIndex - 1].name);
-      setError("");
-    }
-  };
-
-  const handleSignupSubmit = async () => {
-    setError("");
-    setSuccess("");
-
-    if (!signupForm.name.trim()) return setError("Name is required");
-    if (!signupForm.email.trim()) return setError("Email is required");
-    if (signupForm.password.length < 6) return setError("Password must be at least 6 characters");
-    if (signupForm.phone && signupForm.phone.length !== 10) return setError("Mobile must be 10 digits");
-    if (signupForm.password !== signupForm.confirmPassword) return setError("Passwords do not match");
-
     try {
-      setLoading(true);
-
-      await registerUserAPI({
-        name: signupForm.name,
-        email: signupForm.email,
-        password: signupForm.password,
-        phone: signupForm.phone || undefined,
-        role: "user",
-      });
-
-      setSuccess("Account created successfully ✅");
+      await registerUserAPI({ ...signupForm, role: "user" });
+      setSuccess("Account created");
       setTimeout(() => {
         setIsLogin(true);
-        setStep("email");
+        setStep(0);
         setLoginForm({ email: signupForm.email, password: "" });
-        setSignupForm({ name: "", email: "", phone: "", password: "", confirmPassword: "" });
-      }, 1500);
+        setSuccess("");
+      }, 2000);
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
     } finally {
@@ -210,469 +550,208 @@ export const AuthPage = () => {
     }
   };
 
-  const handleTabSwitch = (newTab) => {
-    setIsLogin(newTab);
+  const toggleAuth = () => {
+    setIsLogin(!isLogin);
+    setStep(0);
     setError("");
     setSuccess("");
-    setStep("email");
-    setFieldErrors({});
   };
 
-  const currentSignupFieldIndex = signupFields.findIndex(f => f.name === step);
-  const signupProgress = ((currentSignupFieldIndex + 1) / signupFields.length) * 100;
-
   return (
-    <div className="min-h-screen flex bg-white overflow-hidden relative">
-      {/* SocialBureau Branding - Top Left */}
-      <div className="absolute top-6 left-6 z-30">
-        <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in' className="text-2xl md:text-3xl font-bold text-gray-800 hover:text-gray-900 transition-colors">
-          Social<span className="text-[#ff0000]">B</span>ureau
-        </a>
+    <div className="min-h-screen w-full bg-black flex items-center justify-center p-4 overflow-hidden">
+      {/* Animated Gradient Background - Subtle */}
+      <div className="fixed inset-0 opacity-30">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse duration-8000" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse delay-4000 duration-8000" />
       </div>
 
-      {/* ==================== LOGIN LAYOUT ==================== */}
-      {isLogin ? (
-        <>
-          {/* Left Side - Form Container (Login) */}
-          <div className="w-full lg:w-1/2 flex items-center justify-center p-8 order-1 lg:order-1 relative z-10">
-            <div className="w-full max-w-md">
-              {/* Mobile Header & Toggle */}
-              <div className="lg:hidden text-center mb-8">
-                <h1 className="text-4xl font-bold text-red-500 mb-4">LOGIN</h1>
-                
-                <div className="flex gap-2 bg-red-100 rounded-full p-1 mb-6 justify-center">
-                  <button
-                    onClick={() => handleTabSwitch(true)}
-                    className={`px-6 py-2 rounded-full font-semibold text-sm transition-all ${
-                      isLogin ? "bg-red-500 text-white" : "text-red-500"
-                    }`}
-                  >
-                    LOGIN
-                  </button>
-                  <button
-                    onClick={() => handleTabSwitch(false)}
-                    className={`px-6 py-2 rounded-full font-semibold text-sm transition-all ${
-                      !isLogin ? "bg-red-500 text-white" : "text-red-500"
-                    }`}
-                  >
-                    SIGN UP
-                  </button>
-                </div>
-              </div>
-
-              {/* LOGIN FORM */}
-              <form onSubmit={handleLoginSubmit} className="space-y-6 animate-slideInLeft">
-                {error && (
-                  <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded text-red-700 text-sm animate-pulse">
-                    {error}
-                  </div>
-                )}
-                {success && (
-                  <div className="p-4 bg-green-50 border-l-4 border-green-500 rounded text-green-700 text-sm animate-pulse">
-                    {success}
-                  </div>
-                )}
-
-                {/* Email Input */}
-                {step === "email" && (
-                  <div className="animate-fadeIn">
-                    <div className="flex items-center gap-3 pb-3 border-b-2 border-gray-300 focus-within:border-red-500 transition-all duration-300">
-                      <Mail size={24} className="text-gray-400" />
-                      <input
-                        autoFocus
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={loginForm.email}
-                        onChange={handleLoginChange}
-                        onKeyPress={handleLoginEmailKeyPress}
-                        className="flex-1 bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none text-lg"
-                        required
-                      />
-                    </div>
-                    <p className="text-xs text-gray-400 mt-2">Press Enter to continue</p>
-                  </div>
-                )}
-
-                {/* Password Input */}
-                {step === "password" && (
-                  <div className="animate-fadeIn">
-                    <div className="flex items-center gap-3 pb-3 border-b-2 border-gray-300 focus-within:border-red-500 transition-all duration-300">
-                      <Lock size={24} className="text-gray-400" />
-                      <input
-                        ref={passwordInputRef}
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        value={loginForm.password}
-                        onChange={handleLoginChange}
-                        onKeyPress={handleLoginPasswordKeyPress}
-                        className="flex-1 bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none text-lg"
-                        required
-                      />
-                    </div>
-                    <p className="text-xs text-gray-400 mt-2">Press Enter to login</p>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setStep("email");
-                        setError("");
-                      }}
-                      className="text-sm text-red-500 hover:text-red-600 transition mt-3"
-                    >
-                      ← Back to email
-                    </button>
-                  </div>
-                )}
-
-                {/* Forgot Password */}
-                {step === "password" && (
-                  <div className="text-right">
-                    <a href="/forgot-password" className="text-red-400 text-sm hover:text-red-500 transition">
-                      Forgot Password?
-                    </a>
-                  </div>
-                )}
-
-                {/* Login Button */}
-                {step === "password" && (
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full py-3 rounded-full bg-gradient-to-r from-red-400 to-red-500 hover:from-red-500 hover:to-red-600 text-white font-semibold text-lg shadow-lg hover:shadow-red-300/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  >
-                    {loading ? "Signing in..." : (
-                      <>
-                        LOGIN
-                        <ArrowRight size={20} />
-                      </>
-                    )}
-                  </button>
-                )}
-
-                {/* Social Buttons */}
-                {step === "password" && (
-                  <>
-                    <div className="relative my-8">
-                      <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-gray-300" />
-                      </div>
-                      <div className="relative flex justify-center text-sm">
-                        <span className="px-4 bg-white text-gray-500">Or Login with</span>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4 justify-center">
-                      <button type="button" className="flex items-center justify-center gap-2 px-6 py-2 border-2 border-gray-300 rounded-lg hover:border-gray-400 transition text-gray-700 font-medium">
-                        <svg className="w-5 h-5" viewBox="0 0 24 24">
-                          <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                          <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                          <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                          <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-                        </svg>
-                        Google
-                      </button>
-                      <button type="button" className="flex items-center justify-center gap-2 px-6 py-2 border-2 border-gray-300 rounded-lg hover:border-gray-400 transition text-gray-700 font-medium">
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                        </svg>
-                        Facebook
-                      </button>
-                    </div>
-                  </>
-                )}
-              </form>
-            </div>
+      <div className="w-full max-w-2xl z-10">
+        {/* Header - Apple TV Style */}
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="mb-16 text-center"
+        >
+          <div className="inline-block mb-8">
+            <h1 className="text-6xl md:text-7xl font-black tracking-tight text-white">
+              <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+                Social<span className="text-[#ff0000]">B</span>ureau
+              </a>
+            </h1>
+            <p className="text-sm font-light text-gray-400 mt-3 tracking-widest uppercase">
+              World’s First API-Driven Marketing Agency
+            </p>
           </div>
+        </motion.div>
 
-          {/* Right Side - Red Gradient (Login) */}
-          <div className="hidden lg:flex w-1/2 bg-gradient-to-br from-red-500 via-red-400 to-red-300 relative overflow-hidden items-center justify-center flex-col order-2 lg:order-2">
-            {/* Diagonal Stripe Pattern */}
-            <div className="absolute inset-0 opacity-20">
-              <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <pattern id="diagonalStripeLogin" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
-                    <line x1="0" y1="0" x2="0" y2="60" stroke="#ffffff" strokeWidth="20" />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#diagonalStripeLogin)" />
-              </svg>
-            </div>
+        {/* Main Card */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="relative rounded-3xl bg-white/[0.02] backdrop-blur-xl border border-white/10 p-12 md:p-16 overflow-hidden"
+        >
+          {/* Subtle Corner Accent */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl -mr-48 -mt-48" />
 
-            {/* Decorative Shapes */}
-            <div className="absolute top-0 left-0 w-96 h-96 bg-red-300 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" />
-            <div className="absolute top-0 right-0 w-96 h-96 bg-red-400 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000" />
-            <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-red-300 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000" />
-
-            {/* Content */}
-            <div className="relative z-10 text-center text-white px-6">
-              <div className="mb-16">
-                <h1 className="text-6xl font-bold mb-2 tracking-tight">LOGIN</h1>
-                <p className="text-2xl font-semibold opacity-90 tracking-wide">SIGN IN</p>
-              </div>
-              
-              {/* Welcome Text */}
-              <div className="max-w-md mx-auto">
-                <p className="text-lg opacity-90 mb-2">Welcome Back!</p>
-                <p className="text-base opacity-80">Sign in to access your personalized dashboard and continue your journey with us.</p>
-              </div>
-            </div>
-
-            {/* Toggle Buttons - Positioned at the boundary */}
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-60">
-              <div className="flex flex-col gap-4">
-                <button
-                  onClick={() => handleTabSwitch(true)}
-                  className={`w-45 h-15 rounded-full shadow-xl transition-all duration-500 flex items-center justify-center text-lg font-bold ${
-                    isLogin
-                      ? "bg-white text-red-500 scale-110"
-                      : "bg-red-500 text-white hover:bg-red-600"
-                  }`}
+          <AnimatePresence mode="wait">
+            {success ? (
+              // Success State
+              <motion.div
+                key="success"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex flex-col items-center justify-center py-20 text-center"
+              >
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                  className="mb-8"
                 >
-                  <span className="whitespace-nowrap">LOGIN</span>
-                </button>
-                <button
-                  onClick={() => handleTabSwitch(false)}
-                  className={`w-50 h-15 rounded-full shadow-xl transition-all duration-500 flex items-center justify-center text-lg font-bold ${
-                    !isLogin
-                      ? "bg-white text-red-500 scale-110"
-                      : "bg-red-500 text-white hover:bg-red-600"
-                  }`}
-                >
-                  <span className="whitespace-nowrap">SIGN UP</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </>
-      ) : (
-        /* ==================== SIGNUP LAYOUT ==================== */
-        <>
-          {/* Left Side - Red Gradient (Signup) */}
-          <div className="hidden lg:flex w-1/2 bg-gradient-to-br from-red-500 via-red-400 to-red-300 relative overflow-hidden items-center justify-center flex-col order-1 lg:order-1">
-            {/* Diagonal Stripe Pattern */}
-            <div className="absolute inset-0 opacity-20">
-              <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <pattern id="diagonalStripeSignup" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
-                    <line x1="0" y1="0" x2="0" y2="60" stroke="#ffffff" strokeWidth="20" />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#diagonalStripeSignup)" />
-              </svg>
-            </div>
-
-            {/* Decorative Shapes */}
-            <div className="absolute top-0 left-0 w-96 h-96 bg-red-300 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" />
-            <div className="absolute top-0 right-0 w-96 h-96 bg-red-400 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000" />
-            <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-red-300 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000" />
-
-            {/* Content */}
-            <div className="relative z-10 text-center text-white px-6">
-              <div className="mb-16">
-                <h1 className="text-6xl font-bold mb-2 tracking-tight">SIGN UP</h1>
-                <p className="text-2xl font-semibold opacity-90 tracking-wide">CREATE ACCOUNT</p>
-              </div>
-              
-              {/* Welcome Text */}
-              <div className="max-w-md mx-auto">
-                <p className="text-lg opacity-90 mb-2">Join Us Today!</p>
-                <p className="text-base opacity-80">Create your account to unlock exclusive features and start your journey with us.</p>
-              </div>
-            </div>
-
-            {/* Toggle Buttons - Positioned at the boundary */}
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-/2 z-30">
-              <div className="flex flex-col gap-4">
-                <button
-                  onClick={() => handleTabSwitch(true)}
-                  className={`w-50 h-15 rounded-full shadow-xl transition-all duration-500 flex items-center justify-center text-sm font-bold ${
-                    isLogin
-                      ? "bg-white text-red-500 scale-110"
-                      : "bg-red-500 text-white hover:bg-red-600"
-                  }`}
-                >
-                  <span className="whitespace-nowrap">LOGIN</span>
-                </button>
-                <button
-                  onClick={() => handleTabSwitch(false)}
-                  className={`w-50 h-15 rounded-full shadow-xl transition-all duration-500 flex items-center justify-center text-sm font-bold ${
-                    !isLogin
-                      ? "bg-white text-red-500 scale-110"
-                      : "bg-red-500 text-white hover:bg-red-600"
-                  }`}
-                >
-                  <span className="whitespace-nowrap">SIGN UP</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Side - Form Container (Signup) */}
-          <div className="w-full lg:w-1/2 flex items-center justify-center p-8 order-2 lg:order-2 relative z-10">
-            <div className="w-full max-w-md">
-              {/* Mobile Header & Toggle */}
-              <div className="lg:hidden text-center mb-8">
-                <h1 className="text-4xl font-bold text-red-500 mb-4 p-4">SIGN UP</h1>
-                
-                <div className="flex gap-2 bg-red-100 rounded-full p-1 mb-6 justify-center">
-                  <button
-                    onClick={() => handleTabSwitch(true)}
-                    className={`px-6 py-2 rounded-full font-semibold text-sm transition-all ${
-                      isLogin ? "bg-red-500 text-white" : "text-red-500"
-                    }`}
-                  >
-                    LOGIN
-                  </button>
-                  <button
-                    onClick={() => handleTabSwitch(false)}
-                    className={`px-6 py-2 rounded-full font-semibold text-sm transition-all p-4 ${
-                      !isLogin ? "bg-red-500 text-white" : "text-red-500"
-                    }`}
-                  >
-                    SIGN UP
-                  </button>
-                </div>
-              </div>
-
-              {/* SIGNUP FORM */}
-              <form onSubmit={(e) => e.preventDefault()} className="space-y-6 animate-slideInRight">
-                {/* Progress Bar */}
-                <div className="mb-6">
-                  <div className="h-1 bg-red-200 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-red-500 to-red-400 transition-all duration-500"
-                      style={{ width: `${signupProgress}%` }}
-                    />
-                  </div>
-                  <p className="text-center text-xs text-gray-500 mt-2">
-                    Step {currentSignupFieldIndex + 1} of {signupFields.length}
+                  <CheckCircle2 className="w-20 h-20 text-emerald-500" strokeWidth={1} />
+                </motion.div>
+                <h2 className="text-4xl font-light text-white mb-2">{success}</h2>
+                <p className="text-gray-500 text-sm tracking-wide">Entering your account...</p>
+              </motion.div>
+            ) : (
+              // Form State
+              <motion.div
+                key={`${isLogin ? 'login' : 'signup'}-${step}`}
+                initial={{ opacity: 0, x: direction > 0 ? 40 : -40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: direction > 0 ? -40 : 40 }}
+                transition={{ duration: 0.5 }}
+                className="space-y-12"
+              >
+                {/* Form Header */}
+                <div className="space-y-4">
+                  <h2 className="text-5xl md:text-6xl font-light text-white tracking-tight">
+                    {isLogin ? "Sign In" : "Create Account"}
+                  </h2>
+                  <p className="text-gray-500 text-lg font-light">
+                    {currentField.label}
                   </p>
                 </div>
 
-                {error && (
-                  <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded text-red-700 text-sm animate-pulse">
-                    {error}
-                  </div>
-                )}
-                {success && (
-                  <div className="p-4 bg-green-50 border-l-4 border-green-500 rounded text-green-700 text-sm animate-pulse">
-                    {success}
-                  </div>
-                )}
+                {/* Input Field - Apple Style */}
+                <div className="space-y-4">
+                  <div className="relative group">
+                    <input
+                      autoFocus
+                      type={currentField.name === "password" || currentField.name === "confirmPassword" ? (showPassword ? "text" : "password") : currentField.type}
+                      name={currentField.name}
+                      placeholder={currentField.placeholder}
+                      value={isLogin ? loginForm[currentField.name] : signupForm[currentField.name]}
+                      onChange={handleInputChange}
+                      onKeyDown={handleKeyPress}
+                      autoComplete="off"
+                      className="w-full bg-white/[0.03] border-b border-white/10 px-0 py-5 text-white text-2xl font-light outline-none placeholder:text-gray-700 transition-all duration-300 focus:border-white/30 focus:bg-white/[0.05]"
+                    />
 
-                {/* Single Field */}
-                {currentSignupField && (
-                  <div className="animate-fadeIn">
-                    <div className="text-center mb-6">
-                      <h2 className="text-xl font-semibold text-red-500 mb-2">
-                        {currentSignupField.label}
-                      </h2>
-                    </div>
-
-                    <div className="flex items-center gap-3 pb-3 border-b-2 border-gray-300 focus-within:border-red-500 transition-all duration-300">
-                      {currentSignupField.icon && <currentSignupField.icon size={24} className="text-gray-400" />}
-                      <input
-                        autoFocus
-                        type={step === "confirmPassword" ? "password" : (step === "email" ? "email" : step === "phone" ? "tel" : "text")}
-                        name={step}
-                        placeholder={currentSignupField.label}
-                        value={signupForm[step] || ""}
-                        onChange={handleSignupChange}
-                        className="flex-1 bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none text-lg"
-                      />
-                    </div>
-                    {fieldErrors[step] && (
-                      <p className="text-red-500 text-sm mt-2">{fieldErrors[step]}</p>
+                    {(currentField.name === "password" || currentField.name === "confirmPassword") && (
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-gray-300 transition-colors"
+                      >
+                        {showPassword ? <EyeOff size={24} strokeWidth={1.5} /> : <Eye size={24} strokeWidth={1.5} />}
+                      </button>
                     )}
                   </div>
-                )}
 
-                {/* Navigation Buttons */}
-                <div className="flex gap-3 mt-8">
-                  <button
-                    type="button"
-                    onClick={handleSignupPrevious}
-                    disabled={currentSignupFieldIndex === 0}
-                    className={`flex-1 py-3 rounded-full font-semibold transition ${
-                      currentSignupFieldIndex === 0
-                        ? "bg-gray-300 text-gray-500 cursor-not-allowed opacity-50"
-                        : "bg-gray-400 text-white hover:bg-gray-500"
-                    }`}
-                  >
-                    Back
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleSignupNext}
-                    disabled={loading}
-                    className="flex-1 py-3 rounded-full bg-gradient-to-r from-red-400 to-red-500 hover:from-red-500 hover:to-red-600 text-white font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-                  >
-                    {loading ? "Creating..." : currentSignupFieldIndex === signupFields.length - 1 ? "Create Account" : "Next"}
-                    <ArrowRight size={20} />
-                  </button>
+                  {/* Progress Indicator */}
+                  <div className="flex gap-1 pt-4">
+                    {currentFields.map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className={`h-0.5 flex-1 rounded-full transition-all duration-500 ${i <= step ? 'bg-white/40' : 'bg-white/10'
+                          }`}
+                      />
+                    ))}
+                  </div>
                 </div>
-              </form>
-            </div>
-          </div>
-        </>
-      )}
 
-      {/* Mobile Bottom Toggle */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40">
-        <div className="flex justify-center p-4">
-          <div className="flex gap-2 bg-red-100 rounded-full p-1">
-            <button
-              onClick={() => handleTabSwitch(true)}
-              className={`px-6 py-2 rounded-full font-semibold text-sm transition-all ${
-                isLogin ? "bg-red-500 text-white" : "text-red-500"
-              }`}
-            >
-              LOGIN
-            </button>
-            <button
-              onClick={() => handleTabSwitch(false)}
-              className={`px-6 py-2 rounded-full font-semibold text-sm transition-all ${
-                !isLogin ? "bg-red-500 text-white" : "text-red-500"
-              }`}
-            >
-              SIGN UP
-            </button>
-          </div>
-        </div>
+                {/* Error State */}
+                <AnimatePresence>
+                  {error && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="flex items-start gap-3 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl"
+                    >
+                      <AlertCircle size={20} className="text-red-500 mt-0.5 flex-shrink-0" strokeWidth={1.5} />
+                      <p className="text-red-400 text-sm font-light">{error}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Action Controls */}
+                <div className="flex gap-4 pt-8">
+                  {step > 0 && (
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={prevStep}
+                      className="px-8 py-3 rounded-full border border-white/20 text-white hover:border-white/40 transition-all text-sm font-light"
+                    >
+                      Back
+                    </motion.button>
+                  )}
+
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={nextStep}
+                    disabled={loading}
+                    className="flex-1 py-4 px-8 rounded-full bg-white text-black font-semibold text-lg hover:bg-gray-100 disabled:opacity-50 transition-all flex items-center justify-center gap-3"
+                  >
+                    {loading ? (
+                      <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+                    ) : (
+                      <span>{step === currentFields.length - 1 ? "Complete" : "Continue"}</span>
+                    )}
+                  </motion.button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* Toggle Auth Link */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="mt-12 text-center flex flex-col items-center gap-4"
+        >
+          <p className="text-gray-500 text-sm font-light">
+            {isLogin ? "Don't have an account?" : "Already have an account?"}
+          </p>
+          <button
+            onClick={toggleAuth}
+            className="text-white text-sm font-semibold hover:text-gray-300 transition-colors"
+          >
+            {isLogin ? "Create Account" : "Sign In"}
+          </button>
+        </motion.div>
       </div>
 
-      {/* Animations */}
       <style>{`
-        @keyframes blob {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideInLeft {
-          from { opacity: 0; transform: translateX(-20px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideInRight {
-          from { opacity: 0; transform: translateX(20px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        .animate-blob { animation: blob 7s infinite; }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
-        .animate-fadeIn { animation: fadeIn 0.4s ease-out; }
-        .animate-slideInLeft { animation: slideInLeft 0.5s ease-out; }
-        .animate-slideInRight { animation: slideInRight 0.5s ease-out; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;600;700;900&display=swap');
         
-        /* Custom font */
-        @font-face {
-          font-family: 'MyFont';
-          src: url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+        * {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus {
+          -webkit-text-fill-color: white;
+          -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+          transition: background-color 5000s ease-in-out 0s;
         }
       `}</style>
     </div>

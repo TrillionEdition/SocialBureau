@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Trophy, Clock } from "lucide-react";
+import { Trophy, Clock, User } from "lucide-react";
 import { BASE_URL } from "../../utils/urls";
 
 export default function DynamicLeaderboard() {
@@ -9,6 +9,31 @@ export default function DynamicLeaderboard() {
   const [error, setError] = useState("");
   const [timeRange, setTimeRange] = useState("monthly");
   const [timeLeft, setTimeLeft] = useState("");
+
+  // Function to get user profile image
+  const getUserProfileImage = (user) => {
+    // Check multiple possible fields where profile image might be stored
+    if (user?.profilePicture) return user.profilePicture;
+    if (user?.avatar) return user.avatar;
+    if (user?.photo) return user.photo;
+    if (user?.image) return user.image;
+    if (user?.coverImage) return user.coverImage;
+
+    // If no image exists, get current user's profile image from localStorage
+    // or use a default placeholder
+    try {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        return parsedUser?.profilePicture || parsedUser?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&background=0A1221&color=fff`;
+      }
+    } catch (err) {
+      console.error("Error getting user from localStorage:", err);
+    }
+
+    // Fallback to initials avatar
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&background=0A1221&color=fff`;
+  };
 
   const getCurrentUserId = () => {
     try {
@@ -23,7 +48,7 @@ export default function DynamicLeaderboard() {
     try {
       setLoading(true);
       setError("");
-      const param = timeRange === "daily" ? "daily" : "monthly";
+      const param = timeRange === "daily";
 
       console.log(`Fetching leaderboard with range: ${param}`);
 
@@ -134,17 +159,6 @@ export default function DynamicLeaderboard() {
 
   const [first, second, third] = getTopThree();
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-[#050B14] to-[#0A1221] flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="animate-spin text-4xl mb-4">⚙️</div>
-          <p className="text-gray-400 text-sm sm:text-base">Loading leaderboard...</p>
-        </div>
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#050B14] to-[#0A1221] flex items-center justify-center p-4">
@@ -187,7 +201,7 @@ export default function DynamicLeaderboard() {
       </div>
 
       <div className="relative z-10 w-full px-3 sm:px-4 pb-8 sm:pb-12 pt-4 sm:pt-6 md:pt-8">
-        {/* Tabs */}
+        {/* Tabs
         <div className="flex justify-center mb-6 sm:mb-8 md:mb-12">
           <div className="bg-[#131B2C] border border-white/5 p-1 rounded-full flex gap-1">
             {["daily", "monthly"].map((tab) => (
@@ -204,7 +218,7 @@ export default function DynamicLeaderboard() {
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Podium Section - Always Horizontal */}
         <div className="flex items-end justify-center gap-2 sm:gap-3 lg:gap-8 mb-10 sm:mb-16 md:mb-24 mt-6 sm:mt-12 md:mt-20 w-full px-2 sm:px-4">
@@ -214,9 +228,13 @@ export default function DynamicLeaderboard() {
               <div className="w-12 sm:w-20 h-12 sm:h-20 rounded-lg sm:rounded-2xl bg-gradient-to-br from-[#2D394F] to-[#1A2333] p-[1px] mx-auto mb-1 sm:mb-3 shadow-lg">
                 <div className="w-full h-full bg-[#1e293b] rounded-lg sm:rounded-2xl overflow-hidden">
                   <img
-                    src={second?.coverImage || second?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${second?.name || 'player2'}`}
+                    src={getUserProfileImage(second)}
                     alt={second?.name}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(second?.name || 'User')}&background=0A1221&color=fff`;
+                    }}
                   />
                 </div>
               </div>
@@ -245,9 +263,13 @@ export default function DynamicLeaderboard() {
               <div className="w-16 sm:w-28 h-16 sm:h-28 rounded-lg sm:rounded-2xl bg-gradient-to-br from-white/20 to-white/5 p-[1px] mx-auto mb-1.5 sm:mb-4 shadow-[0_0_40px_rgba(255,255,255,0.1)]">
                 <div className="w-full h-full rounded-lg sm:rounded-2xl overflow-hidden bg-[#2A3347]">
                   <img
-                    src={first?.coverImage || first?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${first?.name || 'champion'}`}
+                    src={getUserProfileImage(first)}
                     alt={first?.name}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(first?.name || 'User')}&background=0A1221&color=fff`;
+                    }}
                   />
                 </div>
               </div>
@@ -267,8 +289,6 @@ export default function DynamicLeaderboard() {
                   </div>
                   <span className="text-gray-500 text-[8px] sm:text-[10px] uppercase tracking-wider mt-0.5 sm:mt-1 block">Prize</span>
                 </div>
-
-
               </div>
             </div>
           </div>
@@ -279,9 +299,13 @@ export default function DynamicLeaderboard() {
               <div className="w-12 sm:w-20 h-12 sm:h-20 rounded-lg sm:rounded-2xl bg-gradient-to-br from-[#2D394F] to-[#1A2333] p-[1px] mx-auto mb-1 sm:mb-3 shadow-lg">
                 <div className="w-full h-full bg-[#1e293b] rounded-lg sm:rounded-2xl overflow-hidden">
                   <img
-                    src={third?.coverImage || third?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${third?.name || 'player3'}`}
+                    src={getUserProfileImage(third)}
                     alt={third?.name}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(third?.name || 'User')}&background=0A1221&color=fff`;
+                    }}
                   />
                 </div>
               </div>
@@ -356,9 +380,13 @@ export default function DynamicLeaderboard() {
                       <div className="w-7 sm:w-10 h-7 sm:h-10 rounded-full bg-gradient-to-br from-gray-700 to-gray-600 p-[1px] flex-shrink-0">
                         <div className="w-full h-full rounded-full overflow-hidden bg-[#0B121E]">
                           <img
-                            src={user.coverImage || user.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`}
+                            src={getUserProfileImage(user)}
                             alt={user.name}
                             className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&background=0A1221&color=fff`;
+                            }}
                           />
                         </div>
                       </div>

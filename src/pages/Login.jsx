@@ -949,7 +949,7 @@ export const Login = () => {
         <div className="w-full max-w-md">
           {/* Social Bureau Header */}
           <div className="mb-8 text-center">            <h1 className="text-4xl font-bold text-red-500 mb-2">LOGIN</h1>
-           <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+            <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
               Social<span className="text-[#ff0000]">B</span>ureau
             </a>
           </div>
