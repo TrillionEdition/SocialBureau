@@ -104,12 +104,12 @@ const icons = [
   <i className="fas fa-users text-[#ffffffff] text-2xl"></i>,
   <i className="fas fa-envelope text-[#ffffffff] text-2xl"></i>,
   <i className="fas fa-rocket text-[#ffffffff] text-2xl"></i>,
-<i className="fas fa-bullseye text-[#ffffffff] text-2xl"></i>,
-<i className="fas fa-drafting-compass text-[#ffffffff] text-2xl"></i>,
-<i className="fas fa-bullseye text-[#ffffffff] text-2xl"></i>,
-<i className="fas fa-map-marker-alt text-[#ffffffff] text-2xl"></i>,
-<i className="fas fa-search text-[#ffffffff] text-2xl"></i>,
-<i className="fas fa-robot text-[#ffffffff] text-2xl"></i>,
+  <i className="fas fa-bullseye text-[#ffffffff] text-2xl"></i>,
+  <i className="fas fa-drafting-compass text-[#ffffffff] text-2xl"></i>,
+  <i className="fas fa-bullseye text-[#ffffffff] text-2xl"></i>,
+  <i className="fas fa-map-marker-alt text-[#ffffffff] text-2xl"></i>,
+  <i className="fas fa-search text-[#ffffffff] text-2xl"></i>,
+  <i className="fas fa-robot text-[#ffffffff] text-2xl"></i>,
 ];
 const cards = [
   {
@@ -205,33 +205,32 @@ export default function Liquid() {
       <StyleBlock />
       <div className="max-w-6xl w-full grid grid-cols-1 sm:grid-cols-3 gap-6">
         {cards?.map((card, i) => (
-             <a href={`/services/${encodeURIComponent(card.slug)}`}>
-        <LiquidCard
-  key={i}
-  title={card.title}
-  className="h-[350px] flex flex-col justify-between"
->              
-            <p className="text-md text-gray-200 md:h-[25vh] h-[12vh]">{card.content}</p>
-            <div className="flex items-center justify-between">                    
-                    {icons[i]}
-                    <span className="text-neutral-400">
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </span>
-                  </div>
-        </LiquidCard>
-        </a>
+          <a key={card.slug} href={`/services/${encodeURIComponent(card.slug)}`}>
+            <LiquidCard
+              title={card.title}
+              className="h-[350px] flex flex-col justify-between"
+            >
+              <p className="text-md text-gray-200 md:h-[25vh] h-[12vh]">{card.content}</p>
+              <div className="flex items-center justify-between">
+                {icons[i]}
+                <span className="text-neutral-400">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </LiquidCard>
+          </a>
         ))}
       </div>
     </div>

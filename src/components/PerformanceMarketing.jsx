@@ -128,7 +128,7 @@ const PerformanceMarketing = () => {
         },
         {
             icon: Users,
-            title: "Meta Ads",
+            title: "Social Media Ads",
             description: "Audience-focused social campaigns designed to support awareness, consideration, and action across different stages.",
             features: ["Creative aligned to audience behavior", "Funnel-based campaign planning", "Performance-driven iteration cycles"]
         },
@@ -204,9 +204,18 @@ const PerformanceMarketing = () => {
     ];
 
     return (
-        <div className="font-['Noto Sans'] bg-[#F5F1EB] text-[#2C2C2C] overflow-x-hidden">
+        <div className="font-['Noto Sans'] bg-[#F5F1EB] text-[#2C2C2C] overflow-x-hidden pm-page">
+            <SEO
+                title="Performance Marketing Agency in Kochi | Social Bureau"
+                description="Structured performance marketing in Kerala designed to turn data into clarity, optimize spend, and drive consistent, measurable growth"
+            />
             {/* Add inline styles for animations */}
-            <style jsx>{`
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                .pm-page img {
+                    max-width: 100%;
+                    height: auto;
+                }
                 @keyframes fadeInUp {
                     from {
                         opacity: 0;
@@ -245,11 +254,7 @@ const PerformanceMarketing = () => {
                 .clip-path-polygon {
                     clip-path: polygon(100% 0, 100% 100%, 0 100%);
                 }
-                img {
-                    max-width: 100%;
-                    height: auto;
-                }
-            `}</style>
+            `}} />
 
             {/* Scroll Progress Bar */}
             <div className="fixed top-0 left-0 h-1 bg-gradient-to-r from-[#D97634] to-[#B8956A] z-50" style={{ width: '0%' }}></div>
@@ -262,10 +267,7 @@ const PerformanceMarketing = () => {
                 <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 lg:gap-16 items-center relative z-10">
                     <div className="animate-fadeInUp">
                         <h1 className="font-['Noto Sans'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8 text-[#2C2C2C]">
-                            Performance Marketing Agency
-                            <span className="block bg-gradient-to-br from-[#D97634] to-[#B8956A] bg-clip-text text-transparent mt-2">
-                                in Kochi
-                            </span>
+                            Performance Marketing Agency in Kochi
                         </h1>
                         <p className="text-base sm:text-lg text-[#666666] mb-8 lg:mb-12 max-w-2xl">
                             We help businesses scale visibility, enquiries, and revenue through outcome-focused advertising systems designed for measurable growth across modern digital platforms.
@@ -283,7 +285,7 @@ const PerformanceMarketing = () => {
                         <div className="w-full h-full bg-gradient-to-br from-[rgba(230,126,60,0.1)] to-[rgba(74,155,158,0.1)] rounded-3xl overflow-hidden flex items-center justify-center p-4">
                             <img
                                 src="assets/performance-marketing.webp"
-                                alt="Performance Marketing Agency in Kochi"
+                                alt="PERFORMANCE MARKETING IMAGE"
                                 className="w-full h-full object-cover rounded-2xl"
                                 loading="lazy"
                             />
@@ -329,7 +331,7 @@ const PerformanceMarketing = () => {
                     <div className="h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-[rgba(230,126,60,0.1)] to-[rgba(74,155,158,0.1)] rounded-3xl flex items-center justify-center relative overflow-hidden p-4">
                         <img
                             src="assets/performancemarketing3.webp"
-                            alt="Performance Marketing Results"
+                            alt="PERFORMANCE MARKETING IMAGE"
                             className="w-full h-full object-cover rounded-2xl"
                             loading="lazy"
                         />
@@ -340,7 +342,13 @@ const PerformanceMarketing = () => {
                             Performance marketing is a results-oriented approach where every campaign is measured against clear outcomes such as enquiries, purchases, or qualified actions. Instead of focusing only on impressions, performance marketing prioritizes accountability, efficiency, and measurable returns.
                         </p>
                         <p className="text-[#666666] leading-relaxed text-sm sm:text-base">
-                            At Social Bureau, we work as a strategic partner, supporting brands with structured performance-led systems that align budgets, messaging, and targeting with real business objectives.
+                            <span At initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.8 }} className="text-gray-200 text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 sm:mb-10 font-light leading-relaxed">
+
+                                <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+
+                                    Social<span className="text-[#ff0000]">B</span>ureau
+
+                                </a></span>, we work as a strategic partner, supporting brands with structured performance-led systems that align budgets, messaging, and targeting with real business objectives.
                         </p>
                     </div>
                 </div>
@@ -360,7 +368,7 @@ const PerformanceMarketing = () => {
                         <div className="max-w-4xl mx-auto mb-12">
                             <img
                                 src="/assets/performancemarketing1.webp"
-                                alt="Performance Marketing Services"
+                                alt="PERFORMANCE MARKETING IMAGE"
                                 className="w-full h-auto max-h-[400px] object-cover rounded-2xl shadow-lg"
                                 loading="lazy"
                             />
@@ -450,7 +458,7 @@ const PerformanceMarketing = () => {
                         <div className="bg-gradient-to-br from-[rgba(230,126,60,0.1)] to-[rgba(74,155,158,0.1)] rounded-3xl p-4 max-w-[380px]">
                             <img
                                 src="assets/PMO.webp"
-                                alt="Performance Marketing Operating Model"
+                                alt="Performance Marketing Expert"
                                 className="w-full max-h-[540px] object-contain rounded-2xl shadow-xl"
                                 loading="lazy"
                             />
@@ -593,7 +601,7 @@ const PerformanceMarketing = () => {
                 <div className="absolute -top-1/2 -right-1/10 w-64 h-64 sm:w-96 sm:h-96 bg-radial-gradient(circle, rgba(74,155,158,0.2), transparent) rounded-full animate-pulse-slow hidden sm:block"></div>
                 <h2 className="font-['Noto Sans'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 relative z-10 px-4">Ready to Scale Your Business?</h2>
                 <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-gray-200 relative z-10 px-4">
-                    Let's discuss how performance marketing can drive measurable growth for your business.
+                    Let's discuss how <a href='https://en.wikipedia.org/wiki/Performance-based_advertising' className='text-red-700'> performance marketing </a> can drive measurable growth for your business.
                 </p>
                 <a href="https://api.whatsapp.com/send/?phone=918921840486&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-[#E67E3C] to-[#D46E2F] text-white font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-[0_15px_40px_rgba(230,126,60,0.3)] transition-all relative z-10 text-sm sm:text-base">
                     Connect With Us

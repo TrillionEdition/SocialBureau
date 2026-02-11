@@ -7,6 +7,8 @@ import { About } from "./pages/About";
 import { Services } from "./pages/Services";
 import { CaseStudy } from "./pages/CaseStudy";
 import ScrollTop from "./components/ScrollTop";
+import { ReactLenis } from 'lenis/react'
+import 'lenis/dist/lenis.css'
 import { Blog } from "./pages/Blog";
 import { Contact } from "./pages/Contact";
 import CompanyAchievements from "./pages/CompanyAchievements";
@@ -38,6 +40,7 @@ import SEOService from './components/SEOService'
 import AEOService from './components/AEOService'
 import QASection from './components/QASection'
 import SubmitBlog from './components/SubmitBlog'
+import AdminRoute from './components/AdminRoute'
 import CookieConsent from './components/CookieConsent'
 import CookiePolicy from './components/CookiePolicy'
 import Events from './components/Events'
@@ -70,6 +73,7 @@ import PerformanceMarketing from './components/PerformanceMarketing'
 import ContentMarketing from './components/ContentMarketing'
 import AdTechIntegration from './components/AdTechIntegration'
 import Footer from './components/Footer'
+import HeartCursor from "./components/Home/Curser";
 
 function App() {
   const VoiceAsst = lazy(() => import("./pages/VoiceAsst"));
@@ -82,7 +86,7 @@ function App() {
   // if (loading) return <LoadingScreen onComplete={() => setLoading(false)} />;
 
   return (
-    <>
+    <ReactLenis root>
       <BrowserRouter>
         <Navbar />
         <ScrollTop />
@@ -92,11 +96,23 @@ function App() {
           <Route path="/casestudy" element={<CaseStudy />} />
           <Route path="/services" element={<Services />} />
           <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/submit" element={<SubmitBlog />} />
+          <Route path="/blog/submit" element={
+            <AdminRoute>
+              <SubmitBlog />
+            </AdminRoute>
+          } />
           <Route path="/contact" element={<Contact />} />
           <Route path="/events" element={<Events />} />
-          <Route path="/events/manage" element={<ViewEvents />} />
-          <Route path="/events/add" element={<AddEvent />} />
+          <Route path="/events/manage" element={
+            <AdminRoute>
+              <ViewEvents />
+            </AdminRoute>
+          } />
+          <Route path="/events/add" element={
+            <AdminRoute>
+              <AddEvent />
+            </AdminRoute>
+          } />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/cookie-policy" element={<CookiePolicy />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
@@ -111,7 +127,7 @@ function App() {
           <Route path="/careers/:slug" element={<CareerDetail />} />
           <Route path="/qa-section" element={<QASection />} />
           <Route path="/partnerships" element={<ClientPortfolios />} />
-          <Route path="/partners" element={<Partnership/>} />
+          <Route path="/partners" element={<Partnership />} />
           <Route path="/Ranjit" element={<Landing />} />
           <Route path="/services/branding" element={<BrandingService />} />
           <Route path="/services/experience-design" element={<XDService />} />
@@ -145,7 +161,11 @@ function App() {
           <Route path='/proof' element={<Verification />} />
           <Route path='/card' element={<ChooseCharacter />} />
 
-          <Route path="/jobs/create" element={<AdminCreateJob />} />
+          <Route path="/jobs/create" element={
+            <AdminRoute>
+              <AdminCreateJob />
+            </AdminRoute>
+          } />
 
           <Route path='/leaderboard' element={<Leaderboard />} />
           <Route path='/forget-password' element={<ForgotPassword />} />
@@ -160,13 +180,29 @@ function App() {
           {/* <Route path="/dashboard-x" element={<DashboardX />} /> */}
           {/* <Route path="/insights" element={<SocialBureauInsight />} /> */}
 
-          <Route path='/edit-user/:id' element={<EditUser />} />
-          <Route path='/add-user' element={<EditUser />} />
-          <Route path='/user-management' element={<UserManagement />} />
+          <Route path='/edit-user/:id' element={
+            <AdminRoute>
+              <EditUser />
+            </AdminRoute>
+          } />
+          <Route path='/add-user' element={
+            <AdminRoute>
+              <EditUser />
+            </AdminRoute>
+          } />
+          <Route path='/user-management' element={
+            <AdminRoute>
+              <UserManagement />
+            </AdminRoute>
+          } />
 
           <Route path='/analytics' element={<AnalyticsWidget />} />
 
-          <Route path='/achievements-form' element={<AddAchievementForm />} />
+          <Route path='/achievements-form' element={
+            <AdminRoute>
+              <AddAchievementForm />
+            </AdminRoute>
+          } />
           <Route path='/add-review' element={<AddReview />} />
 
           {/* <Route path='/partner' element={<PortfolioPager />} /> */}
@@ -174,9 +210,10 @@ function App() {
 
           <Route path="/*" element={<NotFound />} />
         </Routes>
+
         <Footer />
       </BrowserRouter>
-    </>
+    </ReactLenis>
   );
 }
 

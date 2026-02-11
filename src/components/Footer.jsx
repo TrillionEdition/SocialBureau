@@ -1,81 +1,330 @@
+// import React from "react";
+// import { FaLinkedin,FaEnvelope, FaFacebook, FaInstagram, FaWhatsapp, FaPhone, FaReddit } from "react-icons/fa";
+// import { FaXTwitter } from "react-icons/fa6";
+// import { useNavigate } from "react-router-dom";
+// export default function Footer() {
+//   const navigate=useNavigate()
+//   return (
+//     <footer className="bg-black text-gray-400 py-6 flex flex-col items-center space-y-4 pb-30">
+//       {/* Social Icons */}
+//       <div className="flex space-x-4">
+//   {/* Email */}
+//   <a
+//   href="mailto:info@socialbureau.in"
+//   aria-label="Email Social Bureau"
+//   className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white"
+// >
+//   <FaEnvelope aria-hidden="true" />
+// </a>
+
+// <a
+//   href="tel:+918921840486"
+//   aria-label="Call SocialBureau"
+//   className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white"
+// >
+//   <FaPhone aria-hidden="true" />
+// </a>
+
+// <a
+//   href="https://www.linkedin.com/company/socialbureau-in"
+//   target="_blank"
+//   rel="noopener noreferrer"
+//   aria-label="Visit SocialBureau on LinkedIn"
+//   className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white"
+// >
+//   <FaLinkedin aria-hidden="true" />
+// </a>
+
+//   {/* Instagram */}
+//   <a
+//     href="https://www.instagram.com/socialbureau.in?igsh=NW4yd2lldzRpNXdj"
+//     className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition"
+//   >
+//     <FaInstagram size={20} />
+//   </a>
+
+//   {/* Facebook */}
+//   <a
+//     href="https://www.facebook.com/share/15yzVd5Qcw/"
+//     className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition"
+//   >
+//     <FaFacebook size={20} />
+//   </a>
+
+//   <a
+//     href="https://www.reddit.com/user/SocialBureau_in/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button"
+//     className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition"
+//   >
+//     <FaReddit size={20} />
+//   </a>
+
+//   {/* Twitter */}
+//   <a
+//     href="https://x.com/SocialBure23829"
+//     target="_blank"
+//     rel="noopener noreferrer"
+//     className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition"
+//   >
+//     <FaXTwitter size={20} />
+//   </a>
+// </div>
+
+
+//       {/* Copyright */}
+//       <p className="text-sm text-center leading-8">
+//          © 2025 <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+//               Social<span className="text-[#ff0000]">B</span>ureau
+//             </a>. All rights reserved.<br/> <a  href="/privacy-policy" className="text-white text-decoration-none hover:font-bold">Our Privacy Policy</a>  |  <a  href="/cookie-policy" className="text-white text-decoration-none hover:font-bold">Cookie Policy</a>  |  <a  href="/disclaimer" className="text-white text-decoration-none hover:font-bold">Our Disclaimer</a>
+//       </p>
+//     </footer>
+//   );
+// }
+
+
+
 import React from "react";
-import { FaLinkedin,FaEnvelope, FaFacebook, FaInstagram, FaWhatsapp, FaPhone, FaReddit } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+
 export default function Footer() {
-  const navigate=useNavigate()
+  const footerSections = [
+    {
+      title: "Services",
+      items: [
+        { label: "Services", href: "/services" },
+        { label: "Web Development", href: "/services/Web-Development" },
+        { label: "API Marketing", href: "/api-marketing" },
+        { label: "Performance Marketing", href: "/performance-marketing" },
+        { label: "Niche Marketing", href: "/niche-marketing" },
+        { label: "Content Marketing", href: "/content-marketing" },
+        { label: "AdTech Integration", href: "/adTech-marketing" },
+        { label: "Blog", href: "/blog" },
+      ],
+    },
+    {
+      title: "Company",
+      items: [
+        { label: "Home", href: "/" },
+        { label: "About Us", href: "/about" },
+        { label: "Our Team", href: "/our-team" },
+        { label: "Work", href: "/our-works" },
+        { label: "Events", href: "/events" },
+        { label: "Contact", href: "/contact" },
+        { label: "Let's Talk", href: "/voice" },
+      ],
+    },
+    {
+      title: "Account",
+      items: [
+        { label: "Careers", href: "/careers" },
+        { label: "Blog", href: "/blog" },
+        { label: "Partners", href: "/partners" },
+        { label: "Login", href: "/login" },
+      ],
+    },
+
+    {
+      title: "About Us",
+      items: [
+        { label: "Blogs", href: "/blog" },
+        { label: "Our team", href: "/our-team" },
+        { label: "Career Opportunities", href: "/careers" },
+        { label: "Contact Us", href: "/contact" },
+      ],
+    },
+  ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 },
+    },
+  };
+
   return (
-    <footer className="bg-black text-gray-400 py-6 flex flex-col items-center space-y-4 pb-30">
-      {/* Social Icons */}
-      <div className="flex space-x-4">
-  {/* Email */}
-  <a
-  href="mailto:info@socialbureau.in"
-  aria-label="Email Social Bureau"
-  className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white"
->
-  <FaEnvelope aria-hidden="true" />
-</a>
+    <footer className="bg-[#f5f5f7] text-[#1d1d1f]">
+      {/* Main Footer Content */}
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={containerVariants}
+        className="max-w-[1200px] mx-auto px-4 md:px-6 py-16"
+      >
+        {/* Footer Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 md:gap-12 mb-12">
+          {footerSections.map((section, idx) => (
+            <motion.div key={idx} variants={itemVariants} className="flex flex-col">
+              <h3 className="text-[13px] font-semibold text-black mb-4 tracking-tight">
+                {section.title}
+              </h3>
+              <ul className="flex flex-col gap-2">
+                {section.items.map((item, itemIdx) => (
+                  <li key={itemIdx}>
+                    <Link
+                      to={item.href}
+                      className="text-[12px] text-gray-600 hover:text-black transition-colors duration-200 leading-relaxed"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
+        </div>
 
-<a
-  href="tel:+918921840486"
-  aria-label="Call SocialBureau"
-  className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white"
->
-  <FaPhone aria-hidden="true" />
-</a>
+        {/* Divider */}
+        <motion.div
+          variants={itemVariants}
+          className="border-t border-gray-300 my-8"
+        />
 
-<a
-  href="https://www.linkedin.com/company/socialbureau-in"
-  target="_blank"
-  rel="noopener noreferrer"
-  aria-label="Visit SocialBureau on LinkedIn"
-  className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white"
->
-  <FaLinkedin aria-hidden="true" />
-</a>
+        {/* Bottom Section - Legal & Info */}
+        <motion.div variants={itemVariants} className="flex flex-col gap-6">
+          {/* Description Text */}
+          <div className="text-[12px] text-gray-600 leading-relaxed max-w-4xl">
+            <p className="mb-4">
+              We are a full-service digital marketing and web development agency dedicated to helping businesses grow through innovative strategies, cutting-edge technology, and creative excellence. Our team specializes in performance marketing, brand development, and digital transformation for companies of all sizes.
+            </p>
+            <p className="mb-4">
+              From API-driven growth systems to niche market penetration, we deliver measurable results. Our services span across web development, branding, SEO, content marketing, and advanced marketing automation.
+            </p>
+            <p>
+              Learn more about our services and how we can help your business at{" "}
+              <Link to="/" className="text-blue-600 hover:text-blue-700">
+                SocialBureau.in
+              </Link>
+              .
+            </p>
+          </div>
 
-  {/* Instagram */}
-  <a
-    href="https://www.instagram.com/socialbureau.in?igsh=NW4yd2lldzRpNXdj"
-    className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition"
-  >
-    <FaInstagram size={20} />
-  </a>
+          {/* Contact Information */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-6 border-y border-gray-300">
+            <div>
+              <h4 className="text-[11px] font-semibold text-gray-700 uppercase tracking-widest mb-3">
+                Contact Us
+              </h4>
+              <ul className="text-[12px] text-gray-600 space-y-2">
+                <li>
+                  <strong>Email:</strong>{" "}
+                  <a
+                    href="mailto:info@socialbureau.in"
+                    className="text-blue-600 hover:text-blue-700"
+                  >
+                    info@socialbureau.in
+                  </a>
+                </li>
+                <li>
+                  <strong>Phone:</strong>{" "}
+                  <a
+                    href="tel:+918921840486"
+                    className="text-blue-600 hover:text-blue-700"
+                  >
+                    +91 89218 40486
+                  </a>
+                </li>
+                <li>
+                  <strong>Location:</strong> Kochi, Kerala, India
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-[11px] font-semibold text-gray-700 uppercase tracking-widest mb-3">
+                Follow Us
+              </h4>
+              <div className="flex gap-4">
+                <a
+                  href="https://www.linkedin.com/company/socialbureau-in"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[12px] text-blue-600 hover:text-blue-700 transition-colors"
+                >
+                  LinkedIn
+                </a>
+                <a
+                  href="https://x.com/SocialBure23829"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[12px] text-blue-600 hover:text-blue-700 transition-colors"
+                >
+                  Twitter
+                </a>
+                <a
+                  href="https://www.instagram.com/socialbureau.in?igsh=NW4yd2lldzRpNXdj"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[12px] text-blue-600 hover:text-blue-700 transition-colors"
+                >
+                  Instagram
+                </a>
+                <a
+                  href="https://www.facebook.com/share/15yzVd5Qcw/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[12px] text-blue-600 hover:text-blue-700 transition-colors"
+                >
+                  Facebook
+                </a>
+              </div>
+            </div>
+          </div>
 
-  {/* Facebook */}
-  <a
-    href="https://www.facebook.com/share/15yzVd5Qcw/"
-    className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition"
-  >
-    <FaFacebook size={20} />
-  </a>
-
-  <a
-    href="https://www.reddit.com/user/SocialBureau_in/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button"
-    className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition"
-  >
-    <FaReddit size={20} />
-  </a>
-
-  {/* Twitter */}
-  <a
-    href="https://x.com/SocialBure23829"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-[#ff0000] hover:scale-105 transition"
-  >
-    <FaXTwitter size={20} />
-  </a>
-</div>
-
-
-      {/* Copyright */}
-      <p className="text-sm text-center leading-8">
-         © 2025 <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
-              Social<span className="text-[#ff0000]">B</span>ureau
-            </a>. All rights reserved.<br/> <a  href="/privacy-policy" className="text-white text-decoration-none hover:font-bold">Our Privacy Policy</a>  |  <a  href="/cookie-policy" className="text-white text-decoration-none hover:font-bold">Cookie Policy</a>  |  <a  href="/disclaimer" className="text-white text-decoration-none hover:font-bold">Our Disclaimer</a>
-      </p>
+          {/* Copyright & Legal */}
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-6 text-[11px] text-gray-500">
+            <div>
+              <p>
+                Copyright © 2025 Social Bureau. All rights reserved.
+              </p>
+            </div>
+            <div className="flex gap-4 flex-wrap justify-center md:justify-end">
+              <Link
+                to="/privacy-policy"
+                className="hover:text-gray-700 transition-colors"
+              >
+                Privacy Policy
+              </Link>
+              <span className="text-gray-400">|</span>
+              <Link
+                to="/disclaimer"
+                className="hover:text-gray-700 transition-colors"
+              >
+                Disclaimer
+              </Link>
+              <span className="text-gray-400">|</span>
+              <Link
+                to="/cookie-policy"
+                className="hover:text-gray-700 transition-colors"
+              >
+                Cookie Policy
+              </Link>
+              <span className="text-gray-400">|</span>
+              <select
+                defaultValue="united-states"
+                className="bg-[#f5f5f7] text-gray-600 text-[11px] cursor-pointer hover:text-gray-700"
+              >
+                <option value="united-states">United States</option>
+                <option value="canada">Canada</option>
+                <option value="uk">United Kingdom</option>
+                <option value="india">India</option>
+                <option value="australia">Australia</option>
+              </select>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
     </footer>
   );
 }

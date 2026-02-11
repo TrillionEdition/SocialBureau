@@ -279,9 +279,19 @@ const AdTechIntegration = () => {
     ];
 
     return (
-        <div className="font-['Noto_Sans'] bg-[#FFF8F0] text-[#1A1A1A] overflow-x-hidden">
+        <div className="font-['Noto_Sans'] bg-[#FFF8F0] text-[#1A1A1A] overflow-x-hidden at-page">
+            <Seo
+                title=" AdTech Integration Agency in Kerala | Social Bureau"
+                description="Structured AdTech integrations that connect platforms, align
+data, and improve campaign performance without complexity or wasted spend"
+            />
             {/* Add inline styles for animations */}
-            <style jsx>{`
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                .at-page img {
+                    max-width: 100%;
+                    height: auto;
+                }
                 @keyframes fadeInUp {
                     from {
                         opacity: 0;
@@ -320,11 +330,7 @@ const AdTechIntegration = () => {
                 .clip-path-polygon {
                     clip-path: polygon(100% 0, 100% 100%, 0 100%);
                 }
-                img {
-                    max-width: 100%;
-                    height: auto;
-                }
-            `}</style>
+            `}} />
 
             {/* Scroll Progress Bar */}
             <div className="fixed top-0 left-0 h-1 bg-gradient-to-r from-[#FBBF24] to-[#1F2937] z-50" style={{ width: '0%' }}></div>
@@ -335,7 +341,7 @@ const AdTechIntegration = () => {
                 <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10 px-4 sm:px-6">
                     <div className="animate-fadeInUp">
                         <h1 className="font-['Noto_Sans'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8">
-                            AdTech Integration Agency
+                            AdTech Integration Agency in Kerala
                             <span className="block bg-gradient-to-br from-[#FBBF24] to-[#1F2937] bg-clip-text text-transparent mt-2">
                                 in Kerala
                             </span>
@@ -362,7 +368,7 @@ const AdTechIntegration = () => {
                         <div className="w-full h-full bg-gradient-to-br from-[rgba(251,191,36,0.1)] to-[rgba(31,41,55,0.1)] rounded-3xl overflow-hidden flex items-center justify-center p-4">
                             <img
                                 src="/assets/adtech1.webp"
-                                alt="AdTech Integration Agency in Kerala"
+                                alt="ADTECH INTEGRATION IMAGE,"
                                 className="w-full h-full object-cover rounded-2xl"
                                 loading="lazy"
                                 onError={(e) => {
@@ -390,13 +396,13 @@ const AdTechIntegration = () => {
                             AdTech integration refers to the structured alignment of tools, platforms, and workflows used to manage and optimize ads across digital channels. In today's competitive landscape, digital advertising success depends on how well systems communicate with each other.
                         </p>
                         <p className="font-['Noto_Sans'] text-[#4B5563] leading-relaxed text-sm sm:text-base">
-                            We focus on practical Marketing Technology Integration that supports publishers, media companies, and content platforms. By implementing secure API Integration, we enable seamless data flow between platforms, ensuring accuracy, speed, and long-term flexibility.
+                            We focus on practical Marketing Technology Integration that supports publishers, media companies, and content platforms. By implementing secure <a href='https://en.wikipedia.org/wiki/API' className='text-red-600'>API Integration</a>, we enable seamless data flow between platforms, ensuring accuracy, speed, and long-term flexibility.
                         </p>
                     </div>
                     <div className="h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-[rgba(251,191,36,0.1)] to-[rgba(31,41,55,0.1)] rounded-3xl flex items-center justify-center relative overflow-hidden p-4">
                         <img
                             src="/assets/ad.webp"
-                            alt="Marketing Technology Integration"
+                            alt="ADTECH INTEGRATION IMAGE,"
                             className="w-full h-full object-cover rounded-2xl"
                             loading="lazy"
                             onError={(e) => {
@@ -507,7 +513,7 @@ const AdTechIntegration = () => {
                         <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg">
                             <img
                                 src='/assets/seo.webp'
-                                alt="Advertising Ecosystem Expertise"
+                                alt="ADTECH EXPERT IN KERALA"
                                 className="w-full h-full object-cover rounded-2xl"
                             />
                         </div>

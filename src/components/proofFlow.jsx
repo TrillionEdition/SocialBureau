@@ -58,11 +58,12 @@ export default function ProofFlow() {
 
       </div>
 
-      <style jsx>{`
+      <style dangerouslySetInnerHTML={{
+        __html: `
         .glow-orange { box-shadow: 0 0 60px rgba(251,146,60,0.8); }
         .glow-purple { box-shadow: 0 0 60px rgba(147,51,234,0.9); }
         .glow-blue { box-shadow: 0 0 60px rgba(59,130,246,0.9); }
-      `}</style>
+      `}} />
     </section>
   );
 }

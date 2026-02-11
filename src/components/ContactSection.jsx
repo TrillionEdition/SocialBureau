@@ -338,7 +338,6 @@ export default function ContactSection() {
                   <p className="uppercase text-[10px] tracking-widest text-gray-400">Revenue</p>
                 </div>
               </div>
-              <Footer />
             </div>
           </div>
         </div>

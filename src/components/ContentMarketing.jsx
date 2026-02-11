@@ -558,6 +558,7 @@
 import React, { useState, useEffect } from 'react';
 import Footer from './Footer';
 import { FileText, MessageSquare, PenTool, Video, ShoppingBag, Search, Target, Share2, RefreshCw } from 'lucide-react';
+import Seo from './Seo';
 
 const ContentMarketing = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -714,9 +715,22 @@ const ContentMarketing = () => {
     ];
 
     return (
-        <div className="font-['Noto Sans'] bg-[#FFF8F0] text-[#0A0E27] overflow-x-hidden">
+        <div className="font-['Noto Sans'] bg-[#FFF8F0] text-[#0A0E27] overflow-x-hidden cm-page">
+            <Seo
+                title=" Content Marketing Agency in Kerala | Social Bureau"
+                description="Content Marketing Agency in Kerala helping brands attract
+high-intent audiences with focused strategy, clarity-driven content, and
+measurable growth.
+"
+                keywords="Content Marketing"
+            />
             {/* Add inline styles for animations */}
-            <style jsx>{`
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                .cm-page img {
+                    max-width: 100%;
+                    height: auto;
+                }
                 @keyframes fadeInUp {
                     from {
                         opacity: 0;
@@ -755,11 +769,7 @@ const ContentMarketing = () => {
                 .clip-path-polygon {
                     clip-path: polygon(100% 0, 100% 100%, 0 100%);
                 }
-                img {
-                    max-width: 100%;
-                    height: auto;
-                }
-            `}</style>
+            `}} />
 
             {/* Scroll Progress Bar */}
             <div className="fixed top-0 left-0 h-1 bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] z-50" style={{ width: '0%' }}></div>
@@ -770,10 +780,7 @@ const ContentMarketing = () => {
                 <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10 px-4 sm:px-6">
                     <div className="animate-fadeInUp">
                         <h1 className="font-['Noto Sans'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8">
-                            Content Marketing Agency
-                            <span className="block bg-gradient-to-br from-[#FF6B35] to-[#4ECDC4] bg-clip-text text-transparent mt-2">
-                                in Kerala
-                            </span>
+                            Content Marketing Agency in Kerala
                         </h1>
                         <p className="text-base sm:text-lg text-[#00183dff] mb-8 lg:mb-12 max-w-2xl">
                             Turn strategic ideas into measurable visibility, qualified enquiries, and sustainable business outcomes through performance-driven content systems built for modern search ecosystems.
@@ -789,7 +796,7 @@ const ContentMarketing = () => {
                     </div>
                     <div className="relative h-64 sm:h-80 md:h-96 flex items-center justify-center animate-fadeInUp mt-8 md:mt-0">
                         <div className="w-full h-full bg-gradient-to-br from-[rgba(255,107,53,0.1)] to-[rgba(78,205,196,0.1)] rounded-3xl overflow-hidden">
-                            <img src="assets/content-marketing.webp" alt="Content Marketing" />
+                            <img src="assets/content-marketing.webp" alt="content marketing image" />
                             <div className="w-full h-full bg-gradient-to-br from-[#4ECDC4] to-[#FF6B35] opacity-20"></div>
                         </div>
                     </div>
@@ -824,16 +831,22 @@ const ContentMarketing = () => {
                 </div>
                 <div className="grid md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
                     <div className="h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-[rgba(255,107,53,0.1)] to-[rgba(78,205,196,0.1)] rounded-3xl flex items-center justify-center relative overflow-hidden">
-                        <img src="assets/contentmarketing2.webp" alt="Content Marketing About" />
+                        <img src="assets/contentmarketing2.webp" alt="content marketing image" />
                         <div className="w-full h-full bg-gradient-to-br from-[#4ECDC4] to-[#FF6B35] opacity-20"></div>
                     </div>
                     <div>
                         <h3 className="font-['Noto Sans'] text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Strategic Content Partner</h3>
                         <p className="text-[#00183dff] mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-                            Content marketing is the structured process of creating value-driven digital assets that educate, influence, and guide potential customers toward informed decisions. Instead of publishing content for visibility alone, effective content focuses on relevance, intent, and measurable impact.
+                            <a href='https://en.wikipedia.org/wiki/Content_marketing' className='text-red-900 font-bold'> Content marketing</a> is the structured process of creating value-driven digital assets that educate, influence, and guide potential customers toward informed decisions. Instead of publishing content for visibility alone, effective content focuses on relevance, intent, and measurable impact.
                         </p>
                         <p className="text-[#00183dff] leading-relaxed text-sm sm:text-base">
-                            At Social Bureau, we work as a strategic growth partner, helping brands develop content ecosystems that support long-term authority, trust, and discoverability across search engines and emerging AI-driven discovery platforms.
+                            At <span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.8 }} className="text-gray-900 text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 sm:mb-10 font-light leading-relaxed">
+
+                                <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+
+                                    Social<span className="text-[#ff0000]">B</span>ureau
+
+                                </a></span>, we work as a strategic growth partner, helping brands develop content ecosystems that support long-term authority, trust, and discoverability across search engines and emerging AI-driven discovery platforms.
                         </p>
                     </div>
                 </div>
@@ -846,7 +859,7 @@ const ContentMarketing = () => {
                         <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#4ECDC4] to-[#FF6B35] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                             Our Services
                         </span>
-                        <h2 className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Content Marketing Services in Kerala</h2>
+                        <h2 className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Content Marketing Services in Kochi</h2>
                         <p className="text-base sm:text-lg text-[#00183dff] max-w-3xl mx-auto px-4">
                             Our services are designed to support scalable growth by aligning content creation with search behavior, user expectations, and measurable business objectives. Each service is delivered with a focus on clarity, consistency, and long-term performance rather than short-term visibility.
                         </p>
@@ -960,7 +973,7 @@ const ContentMarketing = () => {
                             <div className="bg-gradient-to-br from-[rgba(255,107,53,0.1)] to-[rgba(78,205,196,0.1)] rounded-3xl overflow-hidden h-auto">
                                 <img
                                     src="assets/amal.webp"
-                                    alt="Content Marketing Strategy"
+                                    alt="Content Marketing expert"
                                     className="w-300 h-600 min-h-[600px] lg:min-h-[550px] object-cover"
                                 />
                             </div>
