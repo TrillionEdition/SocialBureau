@@ -166,7 +166,6 @@ function App() {
               <AdminCreateJob />
             </AdminRoute>
           } />
-
           <Route path='/leaderboard' element={<Leaderboard />} />
           <Route path='/forget-password' element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
