@@ -8,6 +8,7 @@ import PartnershipTeamGrid from "../components/Home/PartnershipNTeam";
 import EntertainmentGrid from "../components/Home/EntertainmentGrid";
 import TestimonialsSection from "../components/Home/TestimonialsSection";
 import FAQSection from "../components/Home/FAQSection";
+import { Googlereview } from "../components/Googlereview";
 
 export const Home = () => {
   return (
@@ -19,6 +20,7 @@ export const Home = () => {
       <CareerSection />
       <PartnershipTeamGrid />
       {/* <EntertainmentGrid /> */}
+      <Googlereview/>
       <TestimonialsSection />
       <FAQSection />
 

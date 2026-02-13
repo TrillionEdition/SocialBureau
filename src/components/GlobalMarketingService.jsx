@@ -33,13 +33,13 @@ export default function GlobalMarketingService() {
     {
       title: 'Performance Marketing',
       subtitle: 'Measurable Results. Global Reach.',
-      desc: 'Our performance campaigns are built to convert — powered by AI + API automation and real-time analytics.',
+      desc: 'Our performance campaigns are built to convert powered by AI + API automation and real-time analytics.',
       gradient: 'from-green-500/20 to-emerald-500/20',
     },
     {
       title: 'Platform Prompting™',
       subtitle: 'Teach Every Platform to Understand Your Brand',
-      desc: 'We are the pioneers of Platform Prompting™ — the process of training algorithms on Meta, Google, TikTok, and others to recognize your brand identity, audience, and business goals.',
+      desc: 'We are the pioneers of Platform Prompting™ the process of training algorithms on Meta, Google, TikTok, and others to recognize your brand identity, audience, and business goals.',
       gradient: 'from-purple-500/20 to-pink-500/20',
     },
     {
@@ -107,7 +107,7 @@ export default function GlobalMarketingService() {
               </h1>
 
               <p className="mt-6 text-xl text-slate-300/90 leading-relaxed">
-                API-driven marketing across Meta, Google, TikTok, LinkedIn, Amazon, and 50+ global platforms — managed from one intelligent dashboard.
+                API-driven marketing across Meta, Google, TikTok, LinkedIn, Amazon, and 50+ global platforms managed from one intelligent dashboard.
               </p>
 
               <div className="mt-8 flex gap-4 flex-wrap">
@@ -221,7 +221,7 @@ export default function GlobalMarketingService() {
                     {i === 2 && (
                       <div className="mt-4 p-4 bg-white/5 rounded-lg border border-white/10">
                         <p className="text-sm italic text-slate-300">
-                          "Every platform is a machine — we teach it your language."
+                          "Every platform is a machine we teach it your language."
                         </p>
                       </div>
                     )}

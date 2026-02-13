@@ -133,12 +133,12 @@ export default function BrandingService() {
             </blockquote>
 
             <p className="text-slate-300/80">
-              Your brand is more than a logo — it’s your language, tone, color logic,
+              Your brand is more than a logo, it’s your language, tone, color logic,
               and content DNA. At <strong><a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
               Social<span className="text-[#ff0000]">B</span>ureau
             </a></strong>, we combine
               psychology, design systems, and data to create brand identities that
-              perform across every platform — from Meta to Google to your website.
+              perform across every platform, from Meta to Google to your website.
             </p>
 
             <div className="flex gap-3 flex-wrap">
@@ -312,7 +312,7 @@ export default function BrandingService() {
                       <div className="text-slate-400 text-sm mt-1">
                         {idx === 0 && 'Position your brand to own a clear market territory and emotional space.'}
                         {idx === 1 && 'Logos, color systems, and typography that scale across platforms.'}
-                        {idx === 2 && "A tone-of-voice guide so your content sounds like you — everywhere."}
+                        {idx === 2 && "A tone-of-voice guide so your content sounds like you everywhere."}
                       </div>
                     </div>
                   </li>
@@ -332,7 +332,7 @@ export default function BrandingService() {
             <div className="md:w-1/2 mt-6 md:mt-0">
               <h3 className="text-xl font-semibold">Why It Matters</h3>
               <p className="text-slate-300/80 mt-3">
-                We create brands built for both human emotion and machine interpretation — so your
+                We create brands built for both human emotion and machine interpretation, so your
                 identity performs better across all algorithms and search systems.
               </p>
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">

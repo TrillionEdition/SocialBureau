@@ -24,6 +24,36 @@ const faqs = [
         answer:
             "Yes. Through our TrillionEdition venture, we provide strategic consultancy for global businesses focused on long-term digital growth and performance.",
     },
+    {
+        question: "How much do your services cost?",
+        answer:
+            "Pricing varies by engagement from tactical campaign work to full-service retained partnerships. We provide tailored proposals after a short discovery call to understand scope and goals.",
+    },
+    {
+        question: "What does onboarding look like?",
+        answer:
+            "Onboarding includes a kickoff, access & permission checks, data audits, and a 30/60/90 day roadmap so we can start delivering measurable outcomes quickly.",
+    },
+    {
+        question: "Do you require long-term contracts?",
+        answer:
+            "We offer flexible terms month-to-month for some services and discounted rates for longer retainers. Contract length is negotiable based on scope.",
+    },
+    {
+        question: "How do you measure success and reporting frequency?",
+        answer:
+            "We track KPIs agreed during discovery and deliver concise reports weekly operational updates and a comprehensive monthly performance review with actionable recommendations.",
+    },
+    {
+        question: "How do you handle data privacy and security?",
+        answer:
+            "We follow industry best practices: least-privilege access, encrypted storage for sensitive credentials, and strict NDA/data processing terms when required.",
+    },
+    {
+        question: "What support channels and response times do you offer?",
+        answer:
+            "Support is available via email and scheduled calls. Critical issues receive prioritized responses (same-day) while routine requests follow agreed SLAs.",
+    },
 ];
 
 const FAQSection = () => {

@@ -81,7 +81,7 @@ export default function Chatbot() {
       
       {/* Chatbot Popup */}
       {open && (
-        <div className="fixed top-0 right-0 z-50 flex items-start justify-end" style={{width: '100vw', height: '100vh'}} onClick={() => setOpen(false)}>
+        <div className="fixed inset-0 z-50 flex items-start justify-end" onClick={() => setOpen(false)}>
           <div
             className="mt-16 p-6 w-full max-w-xs sm:max-w-md relative rounded-2xl shadow-2xl"
             style={{

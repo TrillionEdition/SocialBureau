@@ -342,7 +342,7 @@ data, and improve campaign performance without complexity or wasted spend"
                 <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10 px-4 sm:px-6">
                     <div className="animate-fadeInUp">
                         <h1 className="font-['Noto_Sans'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8">
-                            AdTech Integration Agency in Kerala
+                            AdTech Integration Agency 
                             <span className="block bg-gradient-to-br from-[#FBBF24] to-[#1F2937] bg-clip-text text-transparent mt-2">
                                 in Kerala
                             </span>
@@ -557,7 +557,7 @@ data, and improve campaign performance without complexity or wasted spend"
                                         <div key={idx} className="text-center p-4">
                                             <div className="font-['Noto_Sans'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#FBBF24] mb-1 sm:mb-2">
                                                 <CountUp
-                                                    end={parseInt(result.value.replace(/[^0-9]/g, '')) || 0}
+                                                    end={parseInt(result.value.replace(/[^0-9]/g, '')) || ''}
                                                     suffix={result.value.replace(/[0-9]/g, "")}
                                                 />
                                             </div>

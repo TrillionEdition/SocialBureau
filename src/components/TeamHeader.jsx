@@ -7,7 +7,7 @@ export const TeamHeader = () => {
   
 >
   <h2
-    className="font-playfair text-4xl md:text-5xl font-bold mb-6 text-white"
+  className="h-[80vh] flex border-b-1 border-[#ff0000] flex-col justify-center items-center text-center bg-cover bg-center bg-no-repeat px-10 pt-15 md:pb-10 pb-10 w-full"
     style={{ fontFamily: "Playfair Display, serif" }}
   >
     The Team Behind <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>

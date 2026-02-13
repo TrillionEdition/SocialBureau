@@ -159,7 +159,7 @@ function HeroEditorial() {
     text-white text-sm leading-relaxed opacity-90 italic
   ">
             "A practice shaped by deep visual literacy, narrative thinking,
-            and hands-on experience across media—bringing together influences
+            and hands-on experience across media bringing together influences
             from cinema, photography, literature, music and performing arts."
           </p>
         </div>
@@ -170,7 +170,7 @@ function HeroEditorial() {
   text-gray-700 text-sm leading-relaxed text-center px-6 italic
 ">
           "A practice shaped by deep visual literacy, narrative thinking,
-          and hands-on experience across media—bringing together influences
+          and hands-on experience across media bringing together influences
           from cinema, photography, literature, music and performing arts."
         </p>
       </div>

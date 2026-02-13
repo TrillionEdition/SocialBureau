@@ -84,7 +84,7 @@ export default function AppAdvertisingService() {
               <p className="mt-6 text-xl text-slate-300/90 leading-relaxed">
                 At <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
               Social<span className="text-[#ff0000]">B</span>ureau
-            </a>, we extend your brand's visibility beyond traditional ad platforms. Through API integrations and SDK networks, we connect your campaigns directly into 3rd-party apps, games, and digital ecosystems — reaching users where they spend most of their mobile time.
+            </a>, we extend your brand's visibility beyond traditional ad platforms. Through API integrations and SDK networks, we connect your campaigns directly into 3rd-party apps, games, and digital ecosystems, reaching users where they spend most of their mobile time.
               </p>
 
               <div className="mt-8 flex gap-4 flex-wrap">
@@ -209,7 +209,7 @@ export default function AppAdvertisingService() {
           <section className="mt-20 bg-slate-900/40 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-10">
             <h2 className="text-3xl font-bold mb-8">Our Capabilities</h2>
             <p className="text-slate-300 mb-8 text-lg">
-              Smart API Infrastructure for App Campaigns — We manage every layer of your app advertising through our integrated API framework:
+              Smart API Infrastructure for App Campaigns. We manage every layer of your app advertising through our integrated API framework:
             </p>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
