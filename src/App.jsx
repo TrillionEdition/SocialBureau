@@ -62,7 +62,6 @@ import ApiMarketingPage from './components/ApiMarketing'
 // import DashboardX from './pages/DashboardX'
 // import SocialBureauInsight from './pages/SocialBureauInsight'
 import EditUser from './pages/EditUser'
-import NicheMarketing from './components/NicheMarketing'
 // import HorizontalScrollSection from './components/trail'
 import AnalyticsWidget from './components/Analytics'
 import AddAchievementForm from './components/AddAchievementForm'
@@ -74,6 +73,7 @@ import ContentMarketing from './components/ContentMarketing'
 import AdTechIntegration from './components/AdTechIntegration'
 import Footer from './components/Footer'
 import HeartCursor from "./components/Home/Curser";
+import NicheMarketing from "./components/NicheMarketing";
 
 function App() {
   const VoiceAsst = lazy(() => import("./pages/VoiceAsst"));
