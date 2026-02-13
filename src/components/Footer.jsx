@@ -8,7 +8,7 @@ export default function Footer() {
       title: "Services",
       items: [
         { label: "Services", href: "/services" },
-        { label: "Web Development", href: "/services/Web-Development" },
+        { label: "Web Development", href: "#" },
         { label: "API Marketing", href: "/api-marketing" },
         { label: "Performance Marketing", href: "/performance-marketing" },
         { label: "Niche Marketing", href: "/niche-marketing" },

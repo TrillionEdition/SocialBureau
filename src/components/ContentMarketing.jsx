@@ -239,7 +239,7 @@ measurable growth.
                     </div>
                     <div className="relative h-64 sm:h-80 md:h-96 flex items-center justify-center animate-fadeInUp mt-8 md:mt-0">
                         <div className="w-full h-full bg-gradient-to-br from-[rgba(255,107,53,0.1)] to-[rgba(78,205,196,0.1)] rounded-3xl overflow-hidden">
-                            <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1770978614/Picsart_26-02-10_22-36-15-902_yehobf.jpg" alt="content marketing image" />
+                            <img src="assets/content-marketing.webp" alt="content marketing image" />
                             <div className="w-full h-full bg-gradient-to-br from-[#4ECDC4] to-[#FF6B35] opacity-20"></div>
                         </div>
                     </div>
@@ -415,7 +415,7 @@ measurable growth.
                         <div className="sticky top-24">
                             <div className="bg-gradient-to-br from-[rgba(255,107,53,0.1)] to-[rgba(78,205,196,0.1)] rounded-3xl overflow-hidden h-auto">
                                 <img
-                                    src="assets/amal.webp"
+                                    src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1770978614/Picsart_26-02-10_22-36-15-902_yehobf.jpg"
                                     alt="Content Marketing expert"
                                     className="w-300 h-600 min-h-[600px] lg:min-h-[550px] object-cover"
                                 />
