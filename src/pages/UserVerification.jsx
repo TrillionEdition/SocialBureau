@@ -142,7 +142,7 @@ export default function Verification() {
         </div>
       </section>
 
-      <Footer />
+       
     </div>
   );
 }

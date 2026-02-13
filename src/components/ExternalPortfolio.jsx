@@ -14,7 +14,6 @@ export default function Landing() {
       <LatestWebsite />
       <YoutubeVideoSection />
       <ContactUsForm />
-      <Footer />
     </div>
   );
 }

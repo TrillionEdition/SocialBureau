@@ -107,8 +107,6 @@ export default function AEOService() {
           </section>
         </div>
       </main>
-
-      <Footer />
     </>
   );
 }

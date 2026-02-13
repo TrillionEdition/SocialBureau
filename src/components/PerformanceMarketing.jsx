@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { BarChart3, Megaphone, Search, ShoppingCart, Target, Users } from 'lucide-react';
+import Seo from './Seo';
 
 const PerformanceMarketing = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -205,7 +206,7 @@ const PerformanceMarketing = () => {
 
     return (
         <div className="font-['Noto Sans'] bg-[#F5F1EB] text-[#2C2C2C] overflow-x-hidden pm-page">
-            <SEO
+            <Seo
                 title="Performance Marketing Agency in Kochi | Social Bureau"
                 description="Structured performance marketing in Kerala designed to turn data into clarity, optimize spend, and drive consistent, measurable growth"
             />

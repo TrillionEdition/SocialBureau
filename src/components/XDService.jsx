@@ -186,7 +186,6 @@ image="/assets/socialbureau.png"
         <footer className="mt-10 text-slate-500 text-sm text-center pb-8">© {new Date().getFullYear()} SocialBureau — Experience design, UX research, and growth.</footer>
       </div>
     </div>
-    <Footer />
     </>
   );
 }

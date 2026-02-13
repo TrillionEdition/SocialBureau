@@ -15,7 +15,6 @@ export const About = () => {
         <AboutCompany/>
         <AboutCoreValues/>
         <AboutFooter/>
-        <Footer/>
     </div>
   )
 }

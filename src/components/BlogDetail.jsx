@@ -676,7 +676,6 @@ export default function BlogDetail() {
         </div>
       </div>
 
-      <Footer />
     </div>
   );
 }

@@ -13,6 +13,7 @@ import {
     Layers
 } from 'lucide-react';
 import Footer from './Footer';
+import Seo from './Seo';
 
 const AdTechIntegration = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -639,7 +640,6 @@ data, and improve campaign performance without complexity or wasted spend"
             >
                 ↑
             </button>
-            <Footer />
         </div>
     );
 };

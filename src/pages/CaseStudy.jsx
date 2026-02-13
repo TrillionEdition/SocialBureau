@@ -10,7 +10,6 @@ export const CaseStudy = () => {
         <CaseStudyHeader/>
         <CaseStudyCards/>
         <CaseStudyFooter/>
-        <Footer/>
     </div>
   )
 }

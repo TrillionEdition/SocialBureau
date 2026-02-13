@@ -8,7 +8,6 @@ export const Client = () => {
     <div>
         <ClientDetails/>
         <ClientTestimonials/>
-        <Footer/>
     </div>
   )
 }

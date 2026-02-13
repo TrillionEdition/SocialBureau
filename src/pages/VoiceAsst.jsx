@@ -465,7 +465,7 @@ const navigate=useNavigate();
 
       </div>
       <div className="mb-0 ">
-        <Footer />
+         
       </div>
     </div>
   );

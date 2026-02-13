@@ -92,8 +92,6 @@ const CompanyAchievements = () => {
                 )}
             </main>
 
-            <Footer />
-
             <style>{`
                 @keyframes fade-in {
                     from {

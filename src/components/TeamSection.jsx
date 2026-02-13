@@ -411,7 +411,6 @@ export const teamData = {
 const TeamCard = ({ name, role, image, hoverImage, link, description }) => (
   <a
     href={`/employee/${encodeURIComponent(name)}`}
-    target="_blank"
     rel="noopener noreferrer"
     className="group relative w-72 sm:w-80 h-[430px] rounded-2xl overflow-visible shadow-lg hover:shadow-2xl transition-all duration-500"
   >

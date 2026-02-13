@@ -309,8 +309,6 @@ export default function GlobalMarketingService() {
           </section>
         </div>
       </div>
-
-      <Footer />
     </>
   );
 }

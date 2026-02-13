@@ -217,8 +217,6 @@ export default function AdminCreateJob() {
           </form>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

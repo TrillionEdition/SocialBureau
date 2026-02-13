@@ -394,7 +394,6 @@ const AddAchievementForm = ({ onAchievementAdded }) => {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 };

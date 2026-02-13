@@ -18,7 +18,6 @@ export const Blog = () => {
         <BlogHeader/>
         <BlogPosts/>
         {/* <BlogFooter/> */}
-        <Footer/>
     </div>
   )
 }

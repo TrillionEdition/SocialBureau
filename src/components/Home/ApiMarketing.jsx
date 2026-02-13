@@ -7,7 +7,7 @@ const ApiMarketing = () => {
 
     return (
         <section className="min-h-screen bg-white flex items-center">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-2 gap-8 items-center">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
 
                 {/* TEXT */}
                 <motion.div
@@ -15,7 +15,7 @@ const ApiMarketing = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                 >
-                    <h1 className="text-2xl sm:text-4xl md:text-7xl font-black text-black mb-4 tracking-tighter leading-[1]">
+                    <h1 className="text-4xl sm:text-4xl md:text-7xl font-black text-black mb-4 tracking-tighter leading-[1]">
                         World’s First
                         <br />
                         <span className="bg-gradient-to-r from-black via-black/70 to-black/40 bg-clip-text text-transparent">
@@ -33,14 +33,14 @@ const ApiMarketing = () => {
                     <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
                         <button
                             onClick={() => navigate("/services")}
-                            className="px-6 sm:px-10 py-3 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-[10px] sm:text-xs uppercase tracking-[0.2em]"
+                            className="px-6 sm:px-10 py-3 sm:py-4 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold text-[10px] sm:text-xs uppercase tracking-[0.2em]"
                         >
                             Get Started
                         </button>
 
                         <button
                             onClick={() => navigate("/services")}
-                            className="px-6 sm:px-10 py-3 sm:py-4 border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white rounded-full font-bold text-[10px] sm:text-xs uppercase tracking-[0.2em]"
+                            className="px-6 sm:px-10 py-3 sm:py-4 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white rounded-full font-bold text-[10px] sm:text-xs uppercase tracking-[0.2em]"
                         >
                             Explore Solutions
                         </button>
@@ -49,7 +49,7 @@ const ApiMarketing = () => {
 
                 {/* IMAGE */}
                 <motion.div
-                    className="flex justify-end"
+                    className="flex justify-center md:justify-end"
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.6 }}
@@ -57,7 +57,7 @@ const ApiMarketing = () => {
                     <img
                         src="/assets/ShamSK.webp"
                         alt=""
-                        className="w-full max-w-[140px] sm:max-w-xs md:max-w-md object-contain rounded-3xl"
+                        className="w-full sm:max-w-full md:max-w-md object-contain rounded-3xl"
                     />
                 </motion.div>
 

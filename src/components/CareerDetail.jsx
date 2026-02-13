@@ -322,8 +322,6 @@ export default function CareerDetail() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

@@ -214,8 +214,6 @@ const EditUser = () => {
           {loading ? "Saving..." : (id ? "Update User" : "Create User")}
         </button>
       </form>
-
-      <Footer />
     </div>
   );
 };

@@ -79,8 +79,6 @@ export default function SEOService() {
           </section>
         </div>
       </main>
-
-      <Footer />
     </>
   );
 }

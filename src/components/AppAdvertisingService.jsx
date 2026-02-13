@@ -297,7 +297,6 @@ export default function AppAdvertisingService() {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 }

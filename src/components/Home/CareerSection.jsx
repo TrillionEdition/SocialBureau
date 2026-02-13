@@ -91,7 +91,7 @@ const CareerSection = () => {
                         <div className="flex flex-col sm:flex-row gap-4">
                             <button
                                 onClick={() => navigate("/careers")}
-                                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-full transition-colors"
+                                className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-full transition-colors"
                             >
                                 View Open Roles
                             </button>

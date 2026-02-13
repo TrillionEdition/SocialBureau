@@ -436,7 +436,6 @@ const AddReview = () => {
           </div>
         </div>
       </div>
-      <Footer />
 
     </>
   );

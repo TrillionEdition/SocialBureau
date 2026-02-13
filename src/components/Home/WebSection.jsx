@@ -72,7 +72,7 @@ const WebSection = () => {
                     {/* LEFT SIDE - IMAGE */}
                     <div className="flex justify-center order-2 lg:order-1">
                         <img
-                            src="/assets/home/web.jpg"
+                            src="https://i.pinimg.com/1200x/92/66/ae/9266aed44e5dfe7171ecb35622a63e34.jpg"
                             alt="Web development preview"
                             className="w-full max-w-md lg:max-w-full h-auto object-cover rounded-lg shadow-lg"
                         />
@@ -100,7 +100,7 @@ const WebSection = () => {
                         <div className="flex flex-col sm:flex-row gap-4">
                             <button
                                 onClick={() => navigate("/services")}
-                                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-full transition-colors"
+                                className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-full transition-colors"
                             >
                                 Learn more
                             </button>

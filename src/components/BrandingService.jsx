@@ -421,7 +421,6 @@ export default function BrandingService() {
         </section>
       </div>
     </div>
-    <Footer />
     </>
   );
 }

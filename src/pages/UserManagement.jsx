@@ -99,7 +99,7 @@ const UserManagement = () => {
         )}
       </div>
 
-      <Footer />
+       
     </div>
   );
 };

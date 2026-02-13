@@ -428,7 +428,6 @@ const ApiMarketing = () => {
                     </div>
                 </section>
 
-                <Footer />
             </div>
         </div>
     );

@@ -31,7 +31,6 @@ function AnalyticsWidget() {
                 title="tics"
             />
 
-            <Footer />
         </div>
     )
 }
