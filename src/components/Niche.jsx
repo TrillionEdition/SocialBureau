@@ -3,7 +3,7 @@ import { BarChart3, Megaphone, Search, ShoppingCart, Target, Users, TrendingUp, 
 import Footer from './Footer';
 import Seo from './Seo';
 
-const NicheMarketing = () => {
+const Niche = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [activeFaq, setActiveFaq] = useState(null);
@@ -710,4 +710,4 @@ const NicheMarketing = () => {
     );
 };
 
-export default NicheMarketing;
+export default Niche;

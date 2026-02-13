@@ -73,7 +73,7 @@ import ContentMarketing from './components/ContentMarketing'
 import AdTechIntegration from './components/AdTechIntegration'
 import Footer from './components/Footer'
 import HeartCursor from "./components/Home/Curser";
-import NicheMarketing from "./components/NicheMarketing";
+import Niche from "./components/Niche";
 
 function App() {
   const VoiceAsst = lazy(() => import("./pages/VoiceAsst"));
@@ -173,7 +173,7 @@ function App() {
 
           <Route path="/api-marketing" element={<ApiMarketingPage />} />
           <Route path='/performance-marketing' element={<PerformanceMarketing />} />
-          <Route path='/niche-marketing' element={<NicheMarketing />} />
+          <Route path='/niche-marketing' element={<Niche />} />
           <Route path='/content-marketing' element={<ContentMarketing />} />
           <Route path='/adTech-marketing' element={<AdTechIntegration />} />
           {/* <Route path="/dashboard-x" element={<DashboardX />} /> */}
