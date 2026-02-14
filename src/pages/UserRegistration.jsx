@@ -662,14 +662,32 @@ export const AuthPage = () => {
                   </div>
 
                   {/* Progress Indicator */}
-                  <div className="flex gap-1 pt-4">
-                    {currentFields.map((_, i) => (
+                  <div className="flex flex-col gap-4">
+                    <div className="flex gap-1 pt-4">
+                      {currentFields.map((_, i) => (
+                        <motion.div
+                          key={i}
+                          className={`h-0.5 flex-1 rounded-full transition-all duration-500 ${i <= step ? 'bg-white/40' : 'bg-white/10'
+                            }`}
+                        />
+                      ))}
+                    </div>
+
+                    {isLogin && step === 1 && (
                       <motion.div
-                        key={i}
-                        className={`h-0.5 flex-1 rounded-full transition-all duration-500 ${i <= step ? 'bg-white/40' : 'bg-white/10'
-                          }`}
-                      />
-                    ))}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="flex justify-end"
+                      >
+                        <button
+                          type="button"
+                          onClick={() => navigate("/forgot-password")}
+                          className="text-sm text-gray-500 hover:text-white transition-colors animate-pulse"
+                        >
+                          Forgot password?
+                        </button>
+                      </motion.div>
+                    )}
                   </div>
                 </div>
 

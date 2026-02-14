@@ -67,7 +67,7 @@ const LEVELS = [
 
 export function StaffDashboard() {
   const { name } = useParams();
-  const decodedName = name ? decodeURIComponent(name) : null;
+  const decodedName = name ? decodeURIComponent(name).replace(/_/g, " ") : null;
   const [achievements, setAchievements] = useState([]);
   const [loadingAchievements, setLoadingAchievements] = useState(false);
   // Only run the query when we have a decodedName to avoid unnecessary/invalid requests

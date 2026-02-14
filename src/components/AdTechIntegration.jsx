@@ -13,6 +13,7 @@ import {
     Layers
 } from 'lucide-react';
 import Footer from './Footer';
+import Seo from './Seo';
 
 const AdTechIntegration = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -91,7 +92,7 @@ const AdTechIntegration = () => {
         {
             icon: Settings,
             title: "Ad Infrastructure Setup",
-            description: "We configure enterprise-ready advertising systems that support scalability and long-term monetization.",
+            description: "We configure enterprise-ready advertising systems that support scalability and long-term monetization. By implementing a reliable Ad Server such as Google Ad Manager, publishers gain structured control over inventory, demand sources, and delivery logic. We also support AdSense Services where required, ensuring smooth and compliant integration.",
             features: [
                 "Structured ad inventory management",
                 "Scalable system architecture",
@@ -102,56 +103,51 @@ const AdTechIntegration = () => {
         {
             icon: TrendingUp,
             title: "Monetization Optimization",
-            description: "Deploy advanced Header Bidding frameworks across premium inventory for better revenue performance.",
+            description: "To improve revenue performance, we deploy advanced Header Bidding frameworks across premium inventory. By working with selected SSP and DSP partners and connecting to a secure Ad Exchange, we help publishers achieve better demand competition and more consistent yield.",
             features: [
                 "Demand source diversification",
                 "Improved pricing efficiency",
-                "Optimized bidding strategies",
-                "Secure Ad Exchange integration"
+                "Optimized bidding strategies"
             ]
         },
         {
             icon: DollarSign,
             title: "Revenue & Tracking Solutions",
-            description: "Implement reliable Ad Solutions with accurate tracking for clear visibility into revenue performance.",
+            description: "We implement reliable Ad Solutions with accurate Ad Tracking Implementation to provide clear visibility into revenue performance. These systems help publishers identify opportunities and strengthen Publishers through data-driven decisions.",
             features: [
                 "Granular revenue insights",
                 "Performance-based optimization",
-                "Clear reporting structure",
-                "Data-driven decisions"
+                "Clear reporting structure"
             ]
         },
         {
             icon: Smartphone,
             title: "Multi-Platform Ad Delivery",
-            description: "Ensure consistent ad delivery across devices with structured Advertising Automation.",
+            description: "We support both Mobile Ad and Web Ad Integration to ensure consistent ad delivery across devices. Using structured Advertising Automation, we reduce manual effort while maintaining stable performance across all platforms.",
             features: [
                 "Cross-device consistency",
                 "Automated ad workflows",
-                "Mobile & Web integration",
                 "Reduced operational load"
             ]
         },
         {
             icon: Database,
             title: "Advanced Technology Enablement",
-            description: "Custom AdTech Solutions aligned with broader Marketing Technology ecosystems.",
+            description: "Our custom AdTech Solutions align with broader Marketing Technology ecosystems. with a Data Management Platform enables better audience control, secure data handling, and improved decision-making.",
             features: [
                 "Smarter audience segmentation",
                 "Privacy-conscious data governance",
-                "Scalable technology alignment",
-                "Data Management Platform integration"
+                "Scalable technology alignment"
             ]
         },
         {
             icon: Shield,
             title: "Performance & Security",
-            description: "Enable Real-Time Bidding with First-Party Data Activation and ensure brand safety.",
+            description: "We enable Real-Time Bidding supported by First-Party Data Activation to improve efficiency and relevance. Engagement is enhanced through Dynamic Creative Optimization (DCO), while Ad Fraud Prevention and an Ad Verification Tool ensure brand safety and traffic quality.",
             features: [
                 "Secure ad delivery",
                 "Traffic quality control",
-                "Ad Fraud Prevention",
-                "Dynamic Creative Optimization"
+                "Performance optimization"
             ]
         }
     ];
@@ -160,27 +156,27 @@ const AdTechIntegration = () => {
         {
             icon: Layers,
             title: "Advertising Ecosystem Expertise",
-            description: "Strong understanding of how today's advertising ecosystem functions, including platform interactions, demand sources, and data layers."
+            description: "We have a strong understanding of how today's advertising ecosystem functions, including the interaction between platforms, demand sources, and data layers. This allows us to design systems that are efficient, compliant, and adaptable to changing industry standards."
         },
         {
             icon: BarChart,
             title: "Structured Inventory Management",
-            description: "Specialize in managing ad inventory through well-structured delivery frameworks, organizing placements and demand priorities."
+            description: "Our team specializes in managing ad inventory through well-structured delivery frameworks. By organizing placements, demand priorities, and delivery logic, we help publishers maintain control while ensuring consistent performance across all inventory."
         },
         {
             icon: TrendingUp,
             title: "Targeted Yield Optimization",
-            description: "Apply precision-focused strategies to audience targeting, ensuring ads reach the most relevant users for maximum revenue."
+            description: "We apply precision-focused strategies to audience targeting, ensuring ads reach the most relevant users. Combined with yield optimization techniques, this approach helps maximize revenue while maintaining a balanced user experience."
         },
         {
             icon: Database,
             title: "Data-Driven Strategy",
-            description: "Decisions guided by data rather than assumptions, analyzing performance metrics and behavioral insights."
+            description: "Our decisions are guided by data rather than assumptions. By analyzing performance metrics and behavioral insights, we help businesses refine strategies, identify growth opportunities, and improve advertising outcomes through data-driven advertising practices."
         },
         {
             icon: Monitor,
             title: "Cross-Platform Experience",
-            description: "Hands-on experience managing advertising across multiple platforms and devices for consistency and scalability."
+            description: "We have hands-on experience managing advertising across multiple platforms and devices. This enables us to ensure consistency, performance, and scalability in cross-platform advertising environments, regardless of traffic volume or audience behavior."
         }
     ];
 
@@ -188,32 +184,35 @@ const AdTechIntegration = () => {
         {
             title: "Digital Publisher — Advertising Infrastructure Stabilization",
             type: "Digital Publisher",
-            challenge: "The publisher's advertising setup lacked structure. Inventory management was inconsistent, reporting was unclear, and daily ad operations required manual effort.",
-            approach: "Implemented a reliable Ad Server and introduced structured ad inventory management. Placements, demand priorities, and delivery logic were aligned.",
+            idealCustomer: "A mid-sized digital publisher with growing traffic, multiple ad placements, and increasing operational complexity.",
+            challenge: "The publisher’s advertising setup lacked structure. Inventory management was inconsistent, reporting was unclear, and daily ad operations required manual effort. As traffic increased, delivery stability became difficult to maintain.",
+            approach: "We implemented a reliable Ad Server and introduced structured ad inventory management. Placements, demand priorities, and delivery logic were aligned to create a controlled and scalable advertising environment. ",
             results: [
-                { value: "33%", label: "Reporting accuracy improvement" },
-                { value: "100%", label: "Ad delivery stabilization" },
+                { value: "33%", label: "Reporting accuracy improvement within 90 days" },
+                { value: "100%", label: "Ad delivery stabilization active inventory" },
                 { value: "25%", label: "Reduced daily operations effort" }
             ]
         },
         {
             title: "Media Platform — Monetization Performance Optimization",
             type: "Media Platform",
-            challenge: "Revenue performance was inconsistent due to fragmented demand access. Pricing varied significantly during traffic spikes.",
-            approach: "Deployed Header Bidding frameworks, connected selected SSP and DSP partners, and optimized bidding strategies.",
+            idealCustomer: "A media platform managing multiple demand sources and premium inventory with fluctuating yield.",
+            challenge: "Revenue performance was inconsistent due to fragmented demand access. Pricing varied significantly during traffic spikes, making monetization unpredictable.",
+            approach: "We deployed Header Bidding frameworks, connected selected SSP and DSP partners, and optimized bidding strategies through a secure Ad Exchange to improve demand competition.",
             results: [
-                { value: "26%", label: "Average yield increase" },
-                { value: "Stable", label: "Pricing efficiency" },
+                { value: "26%", label: "Average yield increase over 60 days" },
+                { value: "Stable", label: "Pricing efficiency across premium inventory " },
                 { value: "Consistent", label: "Revenue during peak traffic" }
             ]
         },
         {
             title: "Media Operations Team — Scalable AdTech Integration",
             type: "Operations Team",
-            challenge: "Existing advertising setup was not designed to handle growth, risking performance issues during high-traffic periods.",
-            approach: "Aligned AdTech Solutions with Marketing Technology ecosystems and enabled secure data handling through a Data Management Platform.",
+            idealCustomer: "A digital operations team preparing for traffic growth and long-term scalability.",
+            challenge: "The existing advertising setup was not designed to handle growth, increasing the risk of performance issues during high-traffic periods.",
+            approach: "We aligned AdTech Solutions with Marketing Technology ecosystems and enabled secure data handling through a Data Management Platform to support scalability.",
             results: [
-                { value: "2×", label: "Traffic growth support" },
+                { value: "2", label: "Traffic growth support", suffix: "×" },
                 { value: "Reliable", label: "System during peak usage" },
                 { value: "Flexible", label: "Long-term scalability" }
             ]
@@ -258,7 +257,7 @@ const AdTechIntegration = () => {
         },
         {
             question: "Do you support both web and mobile platforms?",
-            answer: "Yes, we support both Mobile Ad and Web Ad Integration to ensure consistent ad delivery across all devices and platforms."
+            answer: "We support advertising setups for websites, mobile apps, and multi-device environments, ensuring consistent performance across all platforms."
         },
         {
             question: "Is AdTech integration safe for user privacy?",
@@ -281,11 +280,10 @@ const AdTechIntegration = () => {
     return (
         <div className="font-['Noto_Sans'] bg-[#FFF8F0] text-[#1A1A1A] overflow-x-hidden at-page">
             <Seo
-                title=" AdTech Integration Agency in Kerala | Social Bureau"
-                description="Structured AdTech integrations that connect platforms, align
-data, and improve campaign performance without complexity or wasted spend"
+                title="AdTech Integration Agency in Kerala | Social Bureau"
+                description="Structured AdTech integrations that connect platforms, align data, and improve campaign performance without complexity or wasted spend."
+                keywords="AdTech Integration Agency in Kerala,AdTech Integration agency kochi,AdTech Integration Services,Marketing Technology Integration,Adtech expert,AdTech Integration Services in  kochi,Ad Infrastructure Setup,Monetization Optimization,Revenue & Tracking Solutions,Multi-Platform Ad Delivery,Advanced Technology Enablement, Performance & Security"
             />
-            {/* Add inline styles for animations */}
             <style dangerouslySetInnerHTML={{
                 __html: `
                 .at-page img {
@@ -341,13 +339,13 @@ data, and improve campaign performance without complexity or wasted spend"
                 <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10 px-4 sm:px-6">
                     <div className="animate-fadeInUp">
                         <h1 className="font-['Noto_Sans'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8">
-                            AdTech Integration Agency in Kerala
+                            AdTech Integration Agency
                             <span className="block bg-gradient-to-br from-[#FBBF24] to-[#1F2937] bg-clip-text text-transparent mt-2">
                                 in Kerala
                             </span>
                         </h1>
                         <p className="font-['Noto_Sans'] text-base sm:text-lg text-[#4B5563] mb-8 lg:mb-12 max-w-2xl">
-                            Transform your digital advertising revenue with India's leading advertising technology platform integration experts. Trusted by publishers, media houses, and app owners across India.
+                            Transform your digital advertising revenue with India's leading advertising technology platform integration experts. Trusted by publishers, media houses, and app owners across India, our team delivers technology-focused solutions that balance monetization with user experience.
                         </p>
                         <div className="flex flex-col sm:flex-row flex-wrap gap-4">
                             <a
@@ -368,7 +366,7 @@ data, and improve campaign performance without complexity or wasted spend"
                         <div className="w-full h-full bg-gradient-to-br from-[rgba(251,191,36,0.1)] to-[rgba(31,41,55,0.1)] rounded-3xl overflow-hidden flex items-center justify-center p-4">
                             <img
                                 src="/assets/adtech1.webp"
-                                alt="ADTECH INTEGRATION IMAGE,"
+                                alt="ADTECH INTEGRATION IMAGE"
                                 className="w-full h-full object-cover rounded-2xl"
                                 loading="lazy"
                                 onError={(e) => {
@@ -393,16 +391,16 @@ data, and improve campaign performance without complexity or wasted spend"
                     <div>
                         <h3 className="font-['Noto_Sans'] text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-[#1F2937]">Structured Alignment of Digital Advertising</h3>
                         <p className="font-['Noto_Sans'] text-[#4B5563] mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-                            AdTech integration refers to the structured alignment of tools, platforms, and workflows used to manage and optimize ads across digital channels. In today's competitive landscape, digital advertising success depends on how well systems communicate with each other.
+                            AdTech integration refers to the structured alignment of tools, platforms, and workflows used to manage and optimize ads across digital channels. In today's competitive landscape, Digital Advertising success depends on how well systems communicate with each other.
                         </p>
                         <p className="font-['Noto_Sans'] text-[#4B5563] leading-relaxed text-sm sm:text-base">
-                            We focus on practical Marketing Technology Integration that supports publishers, media companies, and content platforms. By implementing secure <a href='https://en.wikipedia.org/wiki/API' className='text-red-600'>API Integration</a>, we enable seamless data flow between platforms, ensuring accuracy, speed, and long-term flexibility.
+                            At <a href='/'>SocialBureau</a>, we focus on practical Marketing Technology Integration that supports publishers, media companies, and content platforms. By implementing secure API Integration, we enable seamless data flow between platforms, ensuring accuracy, speed, and long-term flexibility.
                         </p>
                     </div>
                     <div className="h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-[rgba(251,191,36,0.1)] to-[rgba(31,41,55,0.1)] rounded-3xl flex items-center justify-center relative overflow-hidden p-4">
                         <img
                             src="/assets/ad.webp"
-                            alt="ADTECH INTEGRATION IMAGE,"
+                            alt="ADTECH INTEGRATION IMAGE"
                             className="w-full h-full object-cover rounded-2xl"
                             loading="lazy"
                             onError={(e) => {
@@ -473,9 +471,7 @@ data, and improve campaign performance without complexity or wasted spend"
                     <h2 className="font-['Noto_Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#1F2937]">Advertising Ecosystem Expertise</h2>
                 </div>
 
-                {/* Main Content Grid - Adjusted layout */}
                 <div className="grid lg:grid-cols-3 gap-8 lg:gap-12 items-start">
-                    {/* Left Side - Boxes Grid - 2 columns on mobile, 1 column on desktop */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 sm:gap-6 lg:col-span-2">
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
                             {whyChooseUs.slice(0, 4).map((feature, index) => {
@@ -496,7 +492,6 @@ data, and improve campaign performance without complexity or wasted spend"
                             })}
                         </div>
 
-                        {/* Fifth box spanning full width on mobile, half width on desktop */}
                         <div className="sm:col-span-2 lg:col-span-1">
                             <div className="bg-white p-6 sm:p-8 rounded-2xl text-center hover:shadow-lg hover:border-[#FBBF24] border-2 border-transparent transition-all duration-300 group h-full">
                                 <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#FBBF24] to-[#FBBF24] rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
@@ -508,7 +503,6 @@ data, and improve campaign performance without complexity or wasted spend"
                         </div>
                     </div>
 
-                    {/* Right Side - Image - Taking up less space */}
                     <div className="flex items-center justify-center h-auto lg:col-span-1">
                         <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg">
                             <img
@@ -542,7 +536,12 @@ data, and improve campaign performance without complexity or wasted spend"
                                 <h3 className="font-['Noto_Sans'] text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-[#1F2937]">{study.title}</h3>
 
                                 <div className="mb-6 sm:mb-8">
-                                    <h4 className="font-['Noto_Sans'] text-base sm:text-lg font-semibold text-[#FBBF24] mb-2 sm:mb-3">The Challenge</h4>
+                                    <h4 className="font-['Noto_Sans'] text-base sm:text-lg font-semibold text-[#FBBF24] mb-2 sm:mb-3">Ideal Customer</h4>
+                                    <p className="font-['Noto_Sans'] text-[#4B5563] text-sm sm:text-base">{study.idealCustomer}</p>
+                                </div>
+
+                                <div className="mb-6 sm:mb-8">
+                                    <h4 className="font-['Noto_Sans'] text-base sm:text-lg font-semibold text-[#FBBF24] mb-2 sm:mb-3">The Challenge (Before) </h4>
                                     <p className="font-['Noto_Sans'] text-[#4B5563] text-sm sm:text-base">{study.challenge}</p>
                                 </div>
 
@@ -555,10 +554,7 @@ data, and improve campaign performance without complexity or wasted spend"
                                     {study.results.map((result, idx) => (
                                         <div key={idx} className="text-center p-4">
                                             <div className="font-['Noto_Sans'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#FBBF24] mb-1 sm:mb-2">
-                                                <CountUp
-                                                    end={parseInt(result.value.replace(/[^0-9]/g, '')) || 0}
-                                                    suffix={result.value.replace(/[0-9]/g, "")}
-                                                />
+                                                {result.value}
                                             </div>
                                             <div className="font-['Noto_Sans'] text-xs sm:text-sm text-[#4B5563]">{result.label}</div>
                                         </div>

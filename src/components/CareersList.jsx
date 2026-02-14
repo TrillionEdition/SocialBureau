@@ -40,7 +40,7 @@ export default function CareersPost() {
 
   return (
     <section className="text-white py-20 px-6 md:px-24 mx-auto">
-      <h2 className="text-5xl font-bold mb-6 text-center">Careers</h2>
+      <h2 className="text-5xl font-bold mb-6 text-center" id="careers">Careers</h2>
       <p className="text-xl text-gray-300 font-light text-center mb-16">
         Designed for professionals of distinction
       </p>

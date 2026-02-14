@@ -307,6 +307,14 @@ export const teamData = {
       hoverImage: "/assets/hajira.webp",
     },
     {
+      name: "Mohammed Shereef",
+      role: "PMO",
+      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1770974355/images/wodx1jeooonrc8yi0fib.jpg",
+      hoverImage: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1770974355/images/wodx1jeooonrc8yi0fib.jpg",
+      description:
+        "Ensures every project connects vision to execution and strategy to outcomes.",
+    },
+    {
       name: "Muhasin",
       role: "SEO Specialist and Performance Marketer",
       image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1766494424/images/iy29fzregdmfohgjc3pr.jpg",
@@ -322,7 +330,7 @@ export const teamData = {
       description:
         "Leads paid media & performance strategies across global ad ecosystems.",
     },
-        {
+    {
       name: "Rachel Susan oommen",
       role: "HR Asst",
       image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1770037177/images/af8xbvarrsehbzcxjylq.jpg",
@@ -410,7 +418,7 @@ export const teamData = {
 
 const TeamCard = ({ name, role, image, hoverImage, link, description }) => (
   <a
-    href={`/employee/${encodeURIComponent(name)}`}
+    href={`/employee/${encodeURIComponent(name.replace(/ /g, '_'))}`}
     target="_blank"
     rel="noopener noreferrer"
     className="group relative w-72 sm:w-80 h-[430px] rounded-2xl overflow-visible shadow-lg hover:shadow-2xl transition-all duration-500"

@@ -23,7 +23,6 @@ import { Careers } from './pages/Careers'
 import { OurTeam } from './pages/OurTeam'
 import { OurWork } from './pages/OurWork'
 import { ScorePage } from './pages/ScorePage'
-import { Client } from './pages/Client'
 import BlogDetail from './components/BlogDetail'
 import CareerDetail from './components/CareerDetail'
 import { Team } from './pages/Team'
@@ -34,7 +33,6 @@ import XDService from './components/XDService'
 import TechnologyService from './components/TechnologyService'
 import GlobalMarketingService from './components/GlobalMarketingService'
 import GoogleMarketingService from './components/GoogleMarketingService'
-import AppAdvertisingService from './components/AppAdvertisingService'
 import GEOService from './components/GEOService'
 import SEOService from './components/SEOService'
 import AEOService from './components/AEOService'
@@ -53,7 +51,6 @@ import AuthPage from './pages/UserRegistration'
 // import ProofFlow from './pages/ProofFlow'
 import Landing from './components/ExternalPortfolio'
 import Verification from './pages/UserVerification'
-import ChooseCharacter from './components/CardChoice'
 import AdminCreateJob from './pages/CreateJob'
 import Leaderboard from './components/Leaderboard'
 import { ForgotPassword } from './components/ForgetPassword'
@@ -74,6 +71,9 @@ import ContentMarketing from './components/ContentMarketing'
 import AdTechIntegration from './components/AdTechIntegration'
 import Footer from './components/Footer'
 import HeartCursor from "./components/Home/Curser";
+import HRForum from "./components/HrForum/Home";
+import AdminPanel from "./components/AdminPannel";
+import WebDevelopment from "./components/Home/WebDevelopment";
 
 function App() {
   const VoiceAsst = lazy(() => import("./pages/VoiceAsst"));
@@ -122,13 +122,16 @@ function App() {
           <Route path="/achievements" element={<CompanyAchievements />} />
           <Route path="/tool" element={<ScorePage />} />
 
-          <Route path="/clients" element={<Client />} />
           <Route path="/blogs/:slug" element={<BlogDetail />} />
           <Route path="/careers/:slug" element={<CareerDetail />} />
           <Route path="/qa-section" element={<QASection />} />
-          <Route path="/partnerships" element={<ClientPortfolios />} />
+
+
+          {/* <Route path="/partnerships" element={<ClientPortfolios />} /> */}
           <Route path="/partners" element={<Partnership />} />
           <Route path="/Ranjit" element={<Landing />} />
+
+
           <Route path="/services/branding" element={<BrandingService />} />
           <Route path="/services/experience-design" element={<XDService />} />
           <Route path="/services/technology" element={<TechnologyService />} />
@@ -143,10 +146,10 @@ function App() {
           <Route path="/services/geo" element={<GEOService />} />
           <Route path="/services/seo" element={<SEOService />} />
           <Route path="/services/aeo" element={<AEOService />} />
-          <Route
-            path="/services/app-advertising"
-            element={<AppAdvertisingService />}
-          />
+
+          <Route path="/hr-forum" element={<HRForum />} />
+
+
           <Route path="/services/:serviceTitle" element={<Service1 />} />
           <Route path="/employee/:name" element={<StaffDashboard />} />
           <Route path="/voice" element={
@@ -159,16 +162,11 @@ function App() {
           <Route path='/user-register' element={<UserRegister />} />
           <Route path='/pre' element={<ProofFlow />} /> */}
           <Route path='/proof' element={<Verification />} />
-          <Route path='/card' element={<ChooseCharacter />} />
 
-          <Route path="/jobs/create" element={
-            <AdminRoute>
-              <AdminCreateJob />
-            </AdminRoute>
-          } />
+
 
           <Route path='/leaderboard' element={<Leaderboard />} />
-          <Route path='/forget-password' element={<ForgotPassword />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path='/login' element={<AuthPage />} />
 
@@ -177,9 +175,16 @@ function App() {
           <Route path='/niche-marketing' element={<NicheMarketing />} />
           <Route path='/content-marketing' element={<ContentMarketing />} />
           <Route path='/adTech-marketing' element={<AdTechIntegration />} />
+          <Route path="/web-development" element={<WebDevelopment />} />
           {/* <Route path="/dashboard-x" element={<DashboardX />} /> */}
           {/* <Route path="/insights" element={<SocialBureauInsight />} /> */}
 
+          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/jobs/create" element={
+            <AdminRoute>
+              <AdminCreateJob />
+            </AdminRoute>
+          } />
           <Route path='/edit-user/:id' element={
             <AdminRoute>
               <EditUser />
