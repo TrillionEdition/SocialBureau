@@ -229,7 +229,7 @@ measurable growth.
                             Turn strategic ideas into measurable visibility, qualified enquiries, and sustainable business outcomes through performance-driven content systems built for modern search ecosystems.
                         </p>
                         <div className="flex flex-col sm:flex-row flex-wrap gap-4">
-                            <a href="https://api.whatsapp.com/send/?phone=918921840486&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-br from-[#FF6B35] to-[#4ECDC4] text-white font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-xl transition-all text-sm sm:text-base">
+                            <a href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-br from-[#FF6B35] to-[#4ECDC4] text-white font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-xl transition-all text-sm sm:text-base">
                                 Book a Strategy Call
                             </a>
                             <a href="#services" className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-white text-[#0A0E27] font-semibold rounded-full border-2 border-[#0A0E27] hover:bg-[#0A0E27] hover:text-white hover:translate-y-[-3px] transition-all text-sm sm:text-base">

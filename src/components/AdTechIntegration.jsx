@@ -352,7 +352,7 @@ data, and improve campaign performance without complexity or wasted spend"
                         </p>
                         <div className="flex flex-col sm:flex-row flex-wrap gap-4">
                             <a
-                                href="https://api.whatsapp.com/send/?phone=918921840486&text=Hello%2C+I+would+like+to+learn+more+about+AdTech+Integration.&type=phone_number&app_absent=0"
+                                href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more+about+AdTech+Integration.&type=phone_number&app_absent=0"
                                 className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-br from-[#FBBF24] to-[#1F2937] text-white font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-xl transition-all text-sm sm:text-base"
                             >
                                 Book a Strategy Call
@@ -626,7 +626,7 @@ data, and improve campaign performance without complexity or wasted spend"
                     Let's discuss how AdTech integration can optimize your revenue and streamline your advertising operations.
                 </p>
                 <a
-                    href="https://api.whatsapp.com/send/?phone=918921840486&text=Hello%2C+I+would+like+to+discuss+AdTech+Integration+for+my+business.&type=phone_number&app_absent=0"
+                    href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+discuss+AdTech+Integration+for+my+business.&type=phone_number&app_absent=0"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-white text-[#1F2937] font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-[0_15px_40px_rgba(255,255,255,0.3)] transition-all relative z-10 text-sm sm:text-base"
                 >
                     Book a Strategy Call

@@ -826,7 +826,7 @@ Submitted via: Website Contact Form
     const encodedMessage = encodeURIComponent(whatsappMessage);
 
     // Open WhatsApp with the formatted message
-    window.open(`https://wa.me/918921840486?text=${encodedMessage}`, "_blank");
+    window.open(`https://wa.me/918714952665?text=${encodedMessage}`, "_blank");
 
     console.log("Form submitted:", form);
 

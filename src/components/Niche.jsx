@@ -382,7 +382,7 @@ const Niche = () => {
                             Transform business growth by focusing on clarity, relevance, and specialization. We help brands reach audiences that actually convert—through carefully structured niche-focused strategies designed for long-term authority and sustainable results.
                         </p>
                         <div className="flex flex-col sm:flex-row flex-wrap gap-4">
-                            <a href="https://api.whatsapp.com/send/?phone=918921840486&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-[#C0C0C0] to-[#A9A9A9] text-[#0F0F0F] font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-2xl hover:shadow-[#808080]/40 transition-all text-sm sm:text-base">
+                            <a href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-[#C0C0C0] to-[#A9A9A9] text-[#0F0F0F] font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-2xl hover:shadow-[#808080]/40 transition-all text-sm sm:text-base">
                                 Book a Strategy Call
                             </a>
                             <a href="#services" className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-transparent text-white font-semibold rounded-full border-2 border-[#808080] hover:bg-[#1A1A1A] hover:border-[#C0C0C0] hover:translate-y-[-3px] transition-all text-sm sm:text-base">
@@ -694,7 +694,7 @@ const Niche = () => {
                 <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-[#BFBFBF] relative z-10 px-4">
                     Let's discuss how niche marketing can drive sustainable growth and establish clear positioning for your business.
                 </p>
-                <a href="https://api.whatsapp.com/send/?phone=918921840486&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-[#C0C0C0] to-[#A9A9A9] text-[#0F0F0F] font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-[0_15px_40px_rgba(192,192,192,0.3)] transition-all relative z-10 text-sm sm:text-base">
+                <a href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-[#C0C0C0] to-[#A9A9A9] text-[#0F0F0F] font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-[0_15px_40px_rgba(192,192,192,0.3)] transition-all relative z-10 text-sm sm:text-base">
                     Connect With Us
                 </a>
             </section>

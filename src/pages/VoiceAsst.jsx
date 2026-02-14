@@ -426,7 +426,7 @@ const navigate=useNavigate();
               <button name="chat"
                 onClick={() => {
                   window.open(
-                    "https://wa.me/918921840486?text=Hello, I would like to learn more.",
+                    "https://wa.me/918714952665?text=Hello, I would like to learn more.",
                     "_blank"
                   );
                 }}
