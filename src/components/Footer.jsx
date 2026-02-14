@@ -149,7 +149,7 @@ export default function Footer() {
                     href="tel:+918714952665"
                     className="text-blue-600 hover:text-blue-700"
                   >
-                    +91 89218 40486
+                    +91 8714952665
                   </a>
                 </li>
                 <li>
