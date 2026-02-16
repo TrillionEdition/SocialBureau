@@ -5,6 +5,7 @@ import { blogAPI } from "../../services/blogServices";
 import { FaHeart, FaCalendarAlt, FaUser, FaTag, FaTrashAlt } from "react-icons/fa";
 import Footer from "./Footer";
 import Seo from "./Seo";
+import { generateBlogSchema } from "../utils/schemaGenerator";
 import Toast from "./Toast";
 import {
   FaWhatsapp,
@@ -466,6 +467,7 @@ export default function BlogDetail() {
         keywords={post.keywords?.join(", ") || ""}
         image={post.image}
         url={`https://www.socialbureau.in/blogs/${post.slug}`}
+        jsonLd={generateBlogSchema(post)}
       />
 
       {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}
