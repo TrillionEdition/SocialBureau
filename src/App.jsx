@@ -74,6 +74,7 @@ import AdTechIntegration from './components/AdTechIntegration'
 import Footer from './components/Footer'
 import HeartCursor from "./components/Home/Curser";
 import Niche from "./components/Niche";
+import Sivaprasad from "./components/Sivaprasad";
 
 function App() {
   const VoiceAsst = lazy(() => import("./pages/VoiceAsst"));
@@ -129,6 +130,7 @@ function App() {
           <Route path="/partnerships" element={<ClientPortfolios />} />
           <Route path="/partners" element={<Partnership />} />
           <Route path="/Ranjit" element={<Landing />} />
+          <Route path="/sivaprasad" element={<Sivaprasad />} />
           <Route path="/services/branding" element={<BrandingService />} />
           <Route path="/services/experience-design" element={<XDService />} />
           <Route path="/services/technology" element={<TechnologyService />} />
