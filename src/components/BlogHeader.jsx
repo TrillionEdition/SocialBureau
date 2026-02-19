@@ -26,7 +26,7 @@ export default function BlogHeader() {
               Social<span className="text-[#ff0000]">B</span>ureau
             </a> Insights, our exclusive content hub designed for marketing professionals, agency owners, and freelancers who want to stay ahead of the digital curve.
 
- From Meta and Google Ads updates to the latest in AI tools, content strategy, and platform algorithms — we publish real-world insights that help you upgrade your marketing knowledge every week.
+ From Meta and Google Ads updates to the latest in AI tools, content strategy, and platform algorithms, we publish real-world insights that help you upgrade your marketing knowledge every week.
           </p>
 
 

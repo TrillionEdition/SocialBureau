@@ -14,7 +14,6 @@ export default function Landing() {
       <LatestWebsite />
       <YoutubeVideoSection />
       <ContactUsForm />
-      <Footer />
     </div>
   );
 }
@@ -160,7 +159,7 @@ function HeroEditorial() {
     text-white text-sm leading-relaxed opacity-90 italic
   ">
             "A practice shaped by deep visual literacy, narrative thinking,
-            and hands-on experience across media—bringing together influences
+            and hands-on experience across media bringing together influences
             from cinema, photography, literature, music and performing arts."
           </p>
         </div>
@@ -171,7 +170,7 @@ function HeroEditorial() {
   text-gray-700 text-sm leading-relaxed text-center px-6 italic
 ">
           "A practice shaped by deep visual literacy, narrative thinking,
-          and hands-on experience across media—bringing together influences
+          and hands-on experience across media bringing together influences
           from cinema, photography, literature, music and performing arts."
         </p>
       </div>
@@ -827,7 +826,7 @@ Submitted via: Website Contact Form
     const encodedMessage = encodeURIComponent(whatsappMessage);
 
     // Open WhatsApp with the formatted message
-    window.open(`https://wa.me/918921840486?text=${encodedMessage}`, "_blank");
+    window.open(`https://wa.me/918714952665?text=${encodedMessage}`, "_blank");
 
     console.log("Form submitted:", form);
 

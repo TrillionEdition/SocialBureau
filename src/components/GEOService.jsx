@@ -82,8 +82,6 @@ export default function GEOService() {
           </section>
         </div>
       </main>
-
-      <Footer />
     </>
   );
 }

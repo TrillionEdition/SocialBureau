@@ -20,7 +20,7 @@ const PremiumFooter = () => {
       url: "mailto:info@socialbureau.in",
       label: "Email",
     },
-    { icon: <FaPhone size={20} />, url: "tel:+918921840486", label: "Call" },
+    { icon: <FaPhone size={20} />, url: "tel:+918714952665", label: "Call" },
     {
       icon: <FaLinkedin size={20} />,
       url: "https://www.linkedin.com/company/socialbureau-in",

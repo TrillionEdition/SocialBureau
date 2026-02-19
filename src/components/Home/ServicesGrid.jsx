@@ -1,81 +1,3 @@
-// import React from "react";
-// import { Link } from "react-router-dom";
-
-// const ServicesGrid = () => {
-//     const items = [
-//         {
-//             title: "Content Marketing",
-//             subtitle: "Built for scalable growth",
-//             image: "/assets/home/content.jpg",
-//             bg: "bg-[#FFECDD]",
-//             text: "text-black",
-//             link: "/content-marketing",
-//         },
-//         {
-//             title: "Niche Marketing",
-//             subtitle: "Precision over assumptions",
-//             image: "/assets/home/review.png",
-//             bg: "bg-sky-100",
-//             text: "text-black",
-//             link: "/niche-marketing",
-//         },
-//         {
-//             title: "AdTech Integration",
-//             subtitle: "Engineered for rankings",
-//             image: "/assets/home/agency.png",
-//             bg: "bg-pink-100",
-//             text: "text-black",
-//             link: "/adTech-marketing",
-//         },
-//         {
-//             title: "Performance Marketing",
-//             subtitle: "Marketing, fully automated",
-//             image: "/assets/home/businessperformance.png",
-//             bg: "bg-neutral-100",
-//             text: "text-black",
-//             link: "/performance-marketing",
-//         },
-//     ];
-
-//     return (
-//         <section className="h-screen w-full grid grid-cols-2 grid-rows-2">
-//             {items.map((item, index) => (
-//                 <Link
-//                     key={`${item.title}-${index}`} // ✅ correct key placement
-//                     to={item.link}
-//                     className={`relative flex flex-col items-center justify-center ${item.bg} ${item.text} overflow-hidden group`}
-//                 >
-//                     {/* TEXT */}
-//                     <div className="relative z-10 text-center px-4 sm:px-6">
-//                         <span className="inline-block mb-3 px-3 py-1 text-[10px] sm:text-xs uppercase tracking-[0.3em] rounded-full border border-current">
-//                             Our Services
-//                         </span>
-
-//                         <h2 className="text-lg sm:text-2xl lg:text-4xl font-bold mb-2 tracking-tight">
-//                             {item.title}
-//                         </h2>
-
-//                         <p className="text-xs sm:text-sm lg:text-base opacity-70">
-//                             {item.subtitle}
-//                         </p>
-//                     </div>
-
-//                     {/* IMAGE */}
-//                     <img
-//                         src={item.image}
-//                         alt={item.title}
-//                         className="absolute bottom-0 right-0 w-1/2 sm:w-2/3 max-w-xs object-contain opacity-90 transition-transform duration-700 group-hover:scale-105"
-//                     />
-//                 </Link>
-//             ))}
-//         </section>
-//     );
-// };
-
-// export default ServicesGrid;
-
-
-
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -84,79 +6,86 @@ const ServicesGrid = () => {
         {
             title: "Content Marketing",
             subtitle: "Built for scalable growth",
-            image: "/assets/home/content.jpg",
-            bg: "bg-[#FFECDD]",
-            text: "text-black",
+            image: "/assets/home/amal1.png",
+            bg: "bg-[#FBFBFD]", // Light Apple Grey
+            text: "text-[#1D1D1F]",
             link: "/content-marketing",
         },
         {
             title: "Niche Marketing",
             subtitle: "Precision over assumptions",
-            image: "/assets/home/review.png",
-            bg: "bg-sky-100",
-            text: "text-black",
+            image: "/assets/home/hajira.png",
+            bg: "bg-[#000000ff]",
+            text: "text-[#ffffffff]",
             link: "/niche-marketing",
         },
         {
             title: "AdTech Integration",
             subtitle: "Engineered for rankings",
-            image: "/assets/home/agency.png",
-            bg: "bg-pink-100",
-            text: "text-black",
+            image: "/assets/home/muhsin.png",
+            bg: "bg-black",
+            text: "text-white",
             link: "/adTech-marketing",
         },
         {
             title: "Performance Marketing",
             subtitle: "Marketing, fully automated",
-            image: "/assets/home/businessperformance.png",
-            bg: "bg-neutral-100",
-            text: "text-black",
+            image: "/assets/home/pmo2.png",
+            bg: "bg-[#FBFBFD]",
+            text: "text-[#1D1D1F]",
             link: "/performance-marketing",
         },
     ];
 
     return (
-        <section className="h-screen w-full grid grid-cols-2 grid-rows-2">
+        <section className="w-full grid grid-cols-1 md:grid-cols-2 bg-white">
             {items.map((item, index) => (
-                <Link
+                <div
                     key={`${item.title}-${index}`}
-                    to={item.link}
-                    className={`flex flex-col justify-between ${item.bg} ${item.text} p-6 sm:p-8 group`}
+                    className={`relative flex flex-col h-[420px] sm:h-[580px] lg:h-[620px] ${item.bg} ${item.text} overflow-hidden group cursor-pointer`}
                 >
-                    {/* TEXT (TOP) */}
-                    <div className="text-center">
-                        <span className="inline-block mb-3 px-3 py-1 text-[10px] sm:text-xs uppercase tracking-[0.3em] rounded-full border border-current">
-                            Our Services
-                        </span>
-
-                        <h2 className="text-lg sm:text-2xl lg:text-4xl font-bold mb-2 tracking-tight">
+                    {/* TEXT CONTENT - Top Section */}
+                    <div className="relative z-10 text-center flex flex-col items-center px-6 pt-8 md:pt-16">
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight mb-2">
                             {item.title}
                         </h2>
-
-                        <p className="text-xs sm:text-sm lg:text-base opacity-70">
+                        <p className="text-lg sm:text-xl lg:text-2xl font-normal mb-4 px-4">
                             {item.subtitle}
                         </p>
+
+                        {/* APPLE STYLE BUTTONS */}
+                        <div className="flex gap-4">
+                            <Link
+                                to={item.link}
+                                className="bg-[#0071E3] hover:bg-[#0077ED] text-white px-6 py-2 rounded-full text-sm font-medium transition-colors"
+                            >
+                                Learn more
+                            </Link>
+                        </div>
                     </div>
 
-                    {/* IMAGE (BOTTOM – CENTERED) */}
-                    <div className="flex justify-center items-end mt-6">
+                    {/* IMAGE - Bottom Section */}
+                    <div className="relative flex-1 w-full flex items-end justify-center overflow-hidden pt-4">
                         <img
                             src={item.image}
                             alt={item.title}
                             className="
-            w-1/2
-            max-h-[180px]
-            sm:max-h-[220px]
-            lg:max-h-[260px]
-            object-contain
-            transition-transform
-            duration-700
-            group-hover:scale-105
-        "
+                            w-auto
+                            h-[300px]
+                            sm:h-[380px]
+                            md:h-[400px]
+                            lg:h-[500px]
+                            object-contain
+                            mx-auto
+                            drop-shadow-xl
+                            transition-transform
+                            duration-700
+                            ease-out
+                            group-hover:scale-105
+                            "
                         />
                     </div>
-
-                </Link>
+                </div>
             ))}
         </section>
     );

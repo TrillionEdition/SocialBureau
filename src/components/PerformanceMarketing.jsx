@@ -240,6 +240,7 @@ const PerformanceMarketing = () => {
 
     return (
         <div className="font-['Noto Sans'] bg-[#F5F1EB] text-[#2C2C2C] overflow-x-hidden pm-page">
+            
             <Seo
                 title="Performance Marketing Agency in Kochi | Social Bureau"
                 description="Structured performance marketing in Kerala designed to turn data into clarity, optimize spend, and drive consistent, measurable growth."
@@ -309,7 +310,7 @@ const PerformanceMarketing = () => {
                             We help businesses scale visibility, enquiries, and revenue through outcome-focused advertising systems designed for measurable growth across modern digital platforms.
                         </p>
                         <div className="flex flex-col sm:flex-row flex-wrap gap-4">
-                            <a href="https://api.whatsapp.com/send/?phone=918921840486&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-br from-[#E67E3C] to-[#D46E2F] text-white font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-xl hover:shadow-orange-500/30 transition-all text-sm sm:text-base">
+                            <a href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-br from-[#E67E3C] to-[#D46E2F] text-white font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-xl hover:shadow-orange-500/30 transition-all text-sm sm:text-base">
                                 Book a Strategy Call
                             </a>
                             <a href="#services" className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-white text-[#2C2C2C] font-semibold rounded-full border-2 border-[#B8956A] hover:bg-[#B8956A] hover:text-white hover:translate-y-[-3px] transition-all text-sm sm:text-base">

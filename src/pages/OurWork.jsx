@@ -8,7 +8,6 @@ export const OurWork = () => {
     <div>
         <WorksHeader/>
         <ScrollingGallery/>
-        <Footer/>
     </div>
   )
 }

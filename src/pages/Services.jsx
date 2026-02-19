@@ -183,7 +183,7 @@ const [isMobile, setIsMobile] = useState(false);
                 </div>
             )} */}
       <ServiceFooter/>
-      <Footer/>
+       
     </div>
   )
 }

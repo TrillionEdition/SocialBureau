@@ -688,7 +688,6 @@ export const Register = () => {
           </div>
         </form>
       </div>
-      <Footer />
 
       <style>{`
         @keyframes float {

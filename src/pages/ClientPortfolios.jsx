@@ -6,7 +6,6 @@ export const ClientPortfolios = () => {
   return (
     <div>
         <AddClientPortfolio/>
-        <Footer/>   
     </div>
   )
 }

@@ -346,7 +346,7 @@ const Service1 = () => {
           ) : <div />}
         </div>
 
-        <Footer/>
+         
       </div>
     </div>
   );

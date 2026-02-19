@@ -333,7 +333,6 @@ export const Events = () => {
           </div>
         </div>
       )}
-      <Footer />
     </>
   );
 };

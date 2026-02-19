@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { jobService } from "../../../services/jobService";
+import localJobs from "../../data/jobs";
 
 export default function HRForum() {
     const [jobs, setJobs] = useState([]);
@@ -19,21 +20,29 @@ export default function HRForum() {
         jobService
             .getJobs()
             .then((data) => {
-                setJobs(data);
-                if (data.length > 0) {
-                    // Check if screen is large before selecting the first job automatically
-                    // On mobile, we might want to start with no selection or just let user pick?
-                    // Current behavior selects first job. We'll keep it but ensure UI handles it.
+                if (data && data.length > 0) {
+                    setJobs(data);
                     setSelectedJob(data[0]);
                 } else {
-                    setSelectedJob(null);
+                    // Fallback to local data if API is empty
+                    setJobs(localJobs);
+                    if (localJobs.length > 0) {
+                        setSelectedJob(localJobs[0]);
+                    }
                 }
                 setLoading(false);
             })
             .catch((err) => {
                 console.error(err);
-                setError("Failed to load jobs. Please try again later.");
-                setLoading(false);
+                // Even on error, try to show local jobs
+                setJobs(localJobs);
+                if (localJobs.length > 0) {
+                    setSelectedJob(localJobs[0]);
+                    setLoading(false);
+                } else {
+                    setError("Failed to load jobs. Please try again later.");
+                    setLoading(false);
+                }
             });
     }, []);
 
@@ -70,15 +79,17 @@ export default function HRForum() {
 
     // Generate LinkedIn job search URL
     const getLinkedInUrl = (job) => {
-        const title = encodeURIComponent(job.title);
-        const location = encodeURIComponent(job.location);
+        if (!job) return "#";
+        const title = encodeURIComponent(job.title || "");
+        const location = encodeURIComponent(job.location || "");
         return `https://www.linkedin.com/jobs/search/?keywords=${title}&location=${location}`;
     };
 
     // Generate Indeed job search URL
     const getIndeedUrl = (job) => {
-        const title = encodeURIComponent(job.title);
-        const location = encodeURIComponent(job.location);
+        if (!job) return "#";
+        const title = encodeURIComponent(job.title || "");
+        const location = encodeURIComponent(job.location || "");
         return `https://www.indeed.com/jobs?q=${title}&l=${location}`;
     };
 
@@ -93,7 +104,7 @@ export default function HRForum() {
         );
     }
 
-    if (error) {
+    if (error && (!jobs || jobs.length === 0)) {
         return (
             <div className="min-h-screen bg-[#F5F7FB] flex items-center justify-center">
                 <div className="text-center bg-white p-8 rounded-lg shadow-md">
@@ -117,8 +128,7 @@ export default function HRForum() {
     return (
         <div className="min-h-screen bg-[#F5F7FB] font-sans antialiased">
             {/* ========== HEADER ========== */}
-            <header className="bg-[#003D5C] text-white px-4 md:px-8 py-3 flex flex-wrap items-center justify-between shadow-md sticky top-0 z-50">
-
+            <header className="bg-[#0e686eff] text-white px-4 md:px-8 py-3 flex flex-wrap items-center justify-between shadow-md sticky top-0 z-50">
                 {/* Search Bar */}
                 <div className="flex flex-grow w-full max-w-7xl mx-auto px-4 mt-2 md:mt-0">
                     <div className="flex w-full bg-white rounded-md overflow-hidden shadow-sm">
@@ -148,7 +158,7 @@ export default function HRForum() {
                                 onChange={(e) => setLocationTerm(e.target.value)}
                             />
                         </div>
-                        <button className="bg-[#003D5C] hover:bg-[#002c44] text-white font-semibold px-6 py-2 transition-colors border-l border-[#194a5c]">
+                        <button className="bg-[#0099a7d7] hover:bg-[#002c44] text-white font-semibold px-6 py-2 transition-colors border-l border-[#194a5c]">
                             Find jobs
                         </button>
                     </div>
@@ -162,7 +172,7 @@ export default function HRForum() {
                     <div className="p-4 border-b border-gray-200 bg-gray-50">
                         <div className="flex items-center justify-between">
                             <h2 className="text-sm font-semibold text-gray-800">
-                                <span className="bg-[#2557a0] text-white text-xs px-2 py-0.5 rounded-full mr-2">
+                                <span className="bg-[#0099a7d7] text-white text-xs px-2 py-0.5 rounded-full mr-2">
                                     {filteredJobs.length}
                                 </span>
                                 {filteredJobs.length === 1 ? 'job' : 'jobs'}
@@ -209,7 +219,7 @@ export default function HRForum() {
                                 >
                                     <div className="flex justify-between items-start">
                                         <div>
-                                            <h3 className="font-semibold text-lg text-[#0B3C5C]">
+                                            <h3 className="font-semibold text-lg text-[#0099a7d7]">
                                                 {job.title}
                                             </h3>
                                             <p className="text-sm text-gray-700 font-medium mt-0.5">
@@ -251,7 +261,7 @@ export default function HRForum() {
                             <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-white to-gray-50">
                                 <div className="flex flex-wrap justify-between items-start">
                                     <div>
-                                        <h1 className="text-2xl font-bold text-[#0B3C5C]">
+                                        <h1 className="text-2xl font-bold text-[#0099a7d7]">
                                             {selectedJob.title}
                                         </h1>
                                         <p className="text-lg text-gray-700 mt-1">
@@ -275,17 +285,26 @@ export default function HRForum() {
                                             )}
                                         </div>
                                     </div>
-                                    <div className="bg-gradient-to-br from-gray-200 to-gray-300 w-16 h-16 rounded-md flex items-center justify-center text-gray-700 font-bold text-xl border shadow-sm">
+                                    <div className="bg-gradient-to-br from-[#0099a7d7] to-[#0099a7d7] w-16 h-16 rounded-md flex items-center justify-center text-black-500 font-bold text-xl border shadow-sm">
                                         {selectedJob.company?.charAt(0) || 'C'}
                                     </div>
                                 </div>
 
                                 {/* Action Buttons */}
                                 <div className="flex mt-5 space-x-3">
-                                    <button className="bg-[#2557a0] hover:bg-[#1e4682] text-white font-semibold px-6 py-2.5 rounded-md text-sm shadow transition transform hover:scale-105">
-                                        Apply now
+                                    <button
+                                        onClick={() => {
+                                            const url = selectedJob?.link || getLinkedInUrl(selectedJob);
+                                            window.open(url, "_blank");
+                                        }}
+                                        className="bg-[#0099a7d7] hover:bg-[#1e4682] text-white font-semibold px-8 py-2.5 rounded-md text-sm shadow-lg transition transform hover:scale-105 flex items-center gap-2"
+                                    >
+                                        <span>Apply now</span>
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                        </svg>
                                     </button>
-                                    <button className="border border-gray-300 bg-white hover:bg-gray-100 px-5 py-2.5 rounded-md text-sm font-semibold text-gray-700 transition transform hover:scale-105">
+                                    <button className="border border-gray-300 bg-white hover:bg-gray-100 px-6 py-2.5 rounded-md text-sm font-semibold text-gray-700 transition transform hover:scale-105">
                                         Save
                                     </button>
 
@@ -296,7 +315,7 @@ export default function HRForum() {
                                             href={getLinkedInUrl(selectedJob)}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="bg-[#0A66C2] text-white p-2 rounded-md hover:bg-[#004182] transition transform hover:scale-110"
+                                            className="bg-[#0099a7d7] text-white p-2 rounded-md hover:bg-[#004182] transition transform hover:scale-110"
                                             title="Search on LinkedIn"
                                         >
                                             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -307,7 +326,7 @@ export default function HRForum() {
                                             href={getIndeedUrl(selectedJob)}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="bg-[#003D5C] text-white p-2 rounded-md hover:bg-[#002c44] transition transform hover:scale-110"
+                                            className="bg-[#0099a7d7] text-white p-2 rounded-md hover:bg-[#002c44] transition transform hover:scale-110"
                                             title="Search on Indeed"
                                         >
                                             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -324,19 +343,68 @@ export default function HRForum() {
                                     Full job description
                                 </h2>
                                 <div className="prose prose-sm max-w-none text-gray-700">
-                                    <p className="mb-4">{selectedJob.description}</p>
-                                    <h3 className="font-semibold mt-4 mb-2">
-                                        Requirements:
-                                    </h3>
-                                    <ul className="list-disc pl-5 space-y-1">
-                                        <li>3+ years of experience with modern JavaScript</li>
-                                        <li>Strong proficiency in React and state management</li>
-                                        <li>Experience with Tailwind CSS or similar utility frameworks</li>
-                                        <li>Excellent communication and teamwork</li>
-                                    </ul>
-                                    <p className="mt-4">
-                                        Indeed is committed to diversity and inclusion. Apply today to join a fantastic team!
-                                    </p>
+                                    {selectedJob.about && (
+                                        <div className="mb-6">
+                                            <h3 className="font-bold text-[#0099a7d7] mb-2 uppercase text-xs tracking-wider">About the Role</h3>
+                                            <p className="text-gray-700 leading-relaxed">{selectedJob.about}</p>
+                                        </div>
+                                    )}
+
+                                    <div className="mb-6">
+                                        <h3 className="font-bold text-[#0099a7d7] mb-2 uppercase text-xs tracking-wider">Description</h3>
+                                        <p className="text-gray-700 leading-relaxed">{selectedJob.description}</p>
+                                    </div>
+
+                                    {selectedJob.roleSummary && selectedJob.roleSummary.length > 0 && (
+                                        <div className="mb-6">
+                                            <h3 className="font-bold text-[#0099a7d7] mb-2 uppercase text-xs tracking-wider">Role Summary</h3>
+                                            <ul className="list-disc pl-5 space-y-1 text-gray-700">
+                                                {selectedJob.roleSummary.map((item, i) => (
+                                                    <li key={i}>{item}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+
+                                    {selectedJob.responsibilities && selectedJob.responsibilities.length > 0 && (
+                                        <div className="mb-6">
+                                            <h3 className="font-bold text-[#0099a7d7] mb-2 uppercase text-xs tracking-wider">Responsibilities</h3>
+                                            <ul className="list-disc pl-5 space-y-1 text-gray-700">
+                                                {selectedJob.responsibilities.map((item, i) => (
+                                                    <li key={i}>{item}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+
+                                    {selectedJob.qualifications && selectedJob.qualifications.length > 0 && (
+                                        <div className="mb-6">
+                                            <h3 className="font-bold text-[#0099a7d7] mb-2 uppercase text-xs tracking-wider">Qualifications</h3>
+                                            <ul className="list-disc pl-5 space-y-1 text-gray-700">
+                                                {selectedJob.qualifications.map((item, i) => (
+                                                    <li key={i}>{item}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+
+                                    {selectedJob.experience && selectedJob.experience.length > 0 && (
+                                        <div className="mb-6">
+                                            <h3 className="font-bold text-[#0099a7d7] mb-2 uppercase text-xs tracking-wider">Experience</h3>
+                                            <ul className="list-disc pl-5 space-y-1 text-gray-700">
+                                                {selectedJob.experience.map((item, i) => (
+                                                    <li key={i}>{item}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+
+                                    {selectedJob.nextSteps && (
+                                        <div className="mt-6 p-4 bg-gray-50 rounded-lg border-l-4 border-[#0099a7d7]">
+                                            <h3 className="font-bold text-[#0099a7d7] mb-1 text-sm">Next Steps</h3>
+                                            <p className="text-sm text-gray-600 italic">{selectedJob.nextSteps}</p>
+                                        </div>
+                                    )}
                                 </div>
                                 <hr className="my-6" />
                                 <div className="flex items-center justify-between text-sm text-gray-600">
@@ -344,13 +412,13 @@ export default function HRForum() {
                                         <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        <span>Posted {selectedJob.posted}</span>
+                                        <span>Posted {selectedJob.posted || 'Recent'}</span>
                                     </div>
 
                                     {/* Share buttons */}
                                     <div className="flex items-center space-x-3">
                                         <span className="text-gray-500">Share:</span>
-                                        <button className="text-blue-600 hover:text-blue-800 transition">
+                                        <button className="text-[#0099a7d7] hover:text-[#0099a7d7] transition">
                                             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                                                 <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z" />
                                             </svg>
@@ -358,7 +426,7 @@ export default function HRForum() {
                                     </div>
                                 </div>
                                 <div className="mt-4 bg-blue-50 border border-blue-200 p-4 rounded-lg">
-                                    <p className="text-sm text-blue-800">
+                                    <p className="text-sm text-[#0099a7d7]">
                                         💼 <span className="font-semibold">Hiring multiple candidates</span> — This employer is actively seeking to fill this role.
                                     </p>
                                 </div>
@@ -377,7 +445,6 @@ export default function HRForum() {
                     )}
                 </div>
             </div>
-
 
             {/* Add custom animation styles */}
             <style jsx>{`

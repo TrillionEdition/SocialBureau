@@ -23,7 +23,6 @@ export const OurTeam = () => {
         {/* <TeamLayout/>         */}
         <LatestVideos/>
         <Testimonials/>
-        <Footer/>
     </div>
   )
 }

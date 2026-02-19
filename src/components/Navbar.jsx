@@ -295,7 +295,7 @@ export default function Navbar() {
         {
           title: "Design & Tech",
           items: [
-            { label: "Web Development", href: "/services/Web-Development" },
+            { label: "Web Development", href: "#" },
           ],
         },
         {
@@ -323,6 +323,7 @@ export default function Navbar() {
             { label: "Blog", href: "/blog" },
             { label: "Events", href: "/events" },
             { label: "Partners", href: "/partners" },
+            { label: "Leaderboard", href: "/leaderboard" },
           ],
         },
       ],
@@ -340,7 +341,7 @@ export default function Navbar() {
             { label: "Front Desk Manager", href: "/careers/front-desk-manager" },
             { label: "Digital Marketing Expert", href: "/careers/digital-marketing-expert" },
             { label: "Video Editor", href: "/careers/video-editor" },
-            { label: "Web Developer", href: "/careers/web-developer" },
+            { label: "Web Developer", href: "#" },
             { label: "Office Operations", href: "/careers/office-operations-manager" },
           ],
         },

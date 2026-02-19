@@ -249,30 +249,7 @@ const AppleSection = () => {
 
   return (
     <div className="bg-white py-16 overflow-hidden select-none">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12">
-        <h2 className="text-5xl font-bold text-gray-900 mb-10 tracking-tight">Endless entertainment.</h2>
-      </div>
-
-      {/* Main Large Carousel (The "Apple TV+" style slider) */}
-      <div
-        ref={mainScrollRef}
-        className={`flex gap-5 px-[5%] md:px-[10%] overflow-x-auto snap-x snap-mandatory scroll-smooth ${hideScrollbarClass}`}
-      >
-        {mainMovies.map((movie) => (
-          <div key={movie.id} className="flex-none w-[85vw] md:w-[75vw] snap-center relative aspect-[21/9] rounded-3xl overflow-hidden shadow-2xl">
-            <img src={movie.img} className="absolute inset-0 w-full h-full object-cover" alt={movie.title} />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col justify-end p-10 text-white">
-              <div className="flex items-center gap-4">
-                <button className="bg-white text-black px-8 py-3 rounded-full font-bold text-sm hover:scale-105 transition-transform">Stream now</button>
-                <p className="text-lg font-medium tracking-wide">
-                  <span className="font-extrabold">{movie.tag}</span> • {movie.desc}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
+      
       {/* YouTube Section Header (Integrated from LatestVideos) */}
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 mt-20 flex items-center justify-between">
         <div>

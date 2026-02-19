@@ -506,7 +506,6 @@ const Partnership = () => {
                     display: none;
                 }
             `}</style>
-            <Footer />
         </div>
     );
 };

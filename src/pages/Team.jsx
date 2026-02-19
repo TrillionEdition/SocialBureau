@@ -6,7 +6,7 @@ export const Team = () => {
   return (
     <div>
         <StaffDashboard/>
-        <Footer/>
+         
     </div>
   )
 }

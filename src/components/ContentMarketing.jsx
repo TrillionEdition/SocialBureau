@@ -234,7 +234,7 @@ const ContentMarketing = () => {
                             Turn strategic ideas into measurable visibility, qualified enquiries, and sustainable business outcomes through performance-driven content systems built for modern search ecosystems.
                         </p>
                         <div className="flex flex-col sm:flex-row flex-wrap gap-4">
-                            <a href="https://api.whatsapp.com/send/?phone=918921840486&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-br from-[#FF6B35] to-[#4ECDC4] text-white font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-xl transition-all text-sm sm:text-base">
+                            <a href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-br from-[#FF6B35] to-[#4ECDC4] text-white font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-xl transition-all text-sm sm:text-base">
                                 Book a Strategy Call
                             </a>
                             <a href="#services" className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-white text-[#0A0E27] font-semibold rounded-full border-2 border-[#0A0E27] hover:bg-[#0A0E27] hover:text-white hover:translate-y-[-3px] transition-all text-sm sm:text-base">
@@ -251,26 +251,6 @@ const ContentMarketing = () => {
                 </div>
             </section>
 
-            {/* Stats Section */}
-            <section className="bg-white py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 relative z-20">
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-                        {[
-                            { number: '15+', label: 'Years of Experience' },
-                            { number: '1.7k+', label: 'Events Covered' },
-                            { number: '1.5k+', label: 'Satisfied Clients' },
-                            { number: '4.7', label: 'Customer Rating' }
-                        ].map((stat, index) => (
-                            <div key={index} className="text-center p-4 sm:p-6 lg:p-8 hover:translate-y-[-5px] transition-transform relative after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-3/5 after:bg-gradient-to-b from-transparent via-[#94A3B8] to-transparent after:opacity-20 last:after:hidden even:after:hidden md:even:after:block">
-                                <div className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-br from-[#FF6B35] to-[#4ECDC4] bg-clip-text text-transparent mb-2 sm:mb-3">
-                                    {stat.number}
-                                </div>
-                                <div className="text-xs sm:text-sm lg:text-base text-[#00183dff]">{stat.label}</div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
             {/* About Section */}
             <section id="about" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -642,8 +622,6 @@ const ContentMarketing = () => {
                     Connect With Us
                 </a>
             </section>
-
-            <Footer />
 
             {/* Scroll to Top Button */}
             <button

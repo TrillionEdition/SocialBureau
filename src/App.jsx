@@ -59,7 +59,6 @@ import ApiMarketingPage from './components/ApiMarketing'
 // import DashboardX from './pages/DashboardX'
 // import SocialBureauInsight from './pages/SocialBureauInsight'
 import EditUser from './pages/EditUser'
-import NicheMarketing from './components/NicheMarketing'
 // import HorizontalScrollSection from './components/trail'
 import AnalyticsWidget from './components/Analytics'
 import AddAchievementForm from './components/AddAchievementForm'
@@ -74,6 +73,12 @@ import HeartCursor from "./components/Home/Curser";
 import HRForum from "./components/HrForum/Home";
 import AdminPanel from "./components/AdminPannel";
 import WebDevelopment from "./components/Home/WebDevelopment";
+import Niche from "./components/Niche"
+import ProfilePage from "./components/Profile";
+import JobPosting from "./components/HrForum/JobPosting";
+import JobDetails from "./components/HrForum/JobDetails";
+import JobsList from "./components/HrForum/JobListing";
+import CandidateProfile from "./components/HrForum/CandidateProfile";
 
 function App() {
   const VoiceAsst = lazy(() => import("./pages/VoiceAsst"));
@@ -131,7 +136,6 @@ function App() {
           <Route path="/partners" element={<Partnership />} />
           <Route path="/Ranjit" element={<Landing />} />
 
-
           <Route path="/services/branding" element={<BrandingService />} />
           <Route path="/services/experience-design" element={<XDService />} />
           <Route path="/services/technology" element={<TechnologyService />} />
@@ -148,6 +152,10 @@ function App() {
           <Route path="/services/aeo" element={<AEOService />} />
 
           <Route path="/hr-forum" element={<HRForum />} />
+          <Route path="/appy-job" element={<JobPosting />} />
+          <Route path="/job-details" element={<JobDetails />} />
+          <Route path="/job-listing" element={<JobsList />} />
+          <Route path="/candidate-profile" element={<CandidateProfile />} />
 
 
           <Route path="/services/:serviceTitle" element={<Service1 />} />
@@ -157,6 +165,7 @@ function App() {
               <VoiceAsst />
             </Suspense>
           } />
+
           {/* <Route path='/register' element={<Register />} /> */}
           {/* <Route path='/login' element={<Login />} />
           <Route path='/user-register' element={<UserRegister />} />
@@ -164,7 +173,7 @@ function App() {
           <Route path='/proof' element={<Verification />} />
 
 
-
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path='/leaderboard' element={<Leaderboard />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
@@ -172,14 +181,18 @@ function App() {
 
           <Route path="/api-marketing" element={<ApiMarketingPage />} />
           <Route path='/performance-marketing' element={<PerformanceMarketing />} />
-          <Route path='/niche-marketing' element={<NicheMarketing />} />
+          <Route path='/niche-marketing' element={<Niche />} />
           <Route path='/content-marketing' element={<ContentMarketing />} />
           <Route path='/adTech-marketing' element={<AdTechIntegration />} />
           <Route path="/web-development" element={<WebDevelopment />} />
           {/* <Route path="/dashboard-x" element={<DashboardX />} /> */}
           {/* <Route path="/insights" element={<SocialBureauInsight />} /> */}
 
-          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/admin" element={
+            <AdminRoute>
+              <AdminPanel />
+            </AdminRoute>
+          } />
           <Route path="/jobs/create" element={
             <AdminRoute>
               <AdminCreateJob />

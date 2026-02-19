@@ -144,7 +144,7 @@ const ApiMarketing = () => {
     const faqs = [
         { question: 'What exactly is API marketing?', answer: 'API marketing targets developers through technical documentation and code examples instead of sales presentations.' },
         { question: 'Why do developers ignore traditional marketing?', answer: 'Developers trust peer recommendations over sales content. They want to test functionality before committing time.' },
-        { question: 'What is TTFFC and why does it matter?', answer: 'TTFFC means Time to First Finished Call—how quickly developers make their first successful API request.' },
+        { question: 'What is TTFFC and why does it matter?', answer: 'TTFFC means Time to First Finished Call, how quickly developers make their first successful API request.' },
         { question: 'How does developer portal SEO differ?', answer: 'Developer portal SEO targets technical queries like "Python payment example" instead of broad terms.' },
         { question: 'What role do functional sandboxes play?', answer: 'Sandboxes let developers test your API immediately without setup, increasing conversion rates.' },
         { question: 'Why work with Social Bureau?', answer: 'We specialize in developer-focused marketing with a team of former developers focusing on real metrics.' },
@@ -406,7 +406,7 @@ const ApiMarketing = () => {
                 <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 bg-gradient-to-b from-gray-900 to-black">
                     <div className="max-w-4xl mx-auto">
                         <div className="text-center mb-12 sm:mb-16">
-                            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4">
+                            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 text-white">
                                 Frequently Asked <span className="text-transparent bg-gradient-to-r from-red-500 to-red-600 bg-clip-text">Questions</span>
                             </h2>
                         </div>
@@ -428,7 +428,6 @@ const ApiMarketing = () => {
                     </div>
                 </section>
 
-                <Footer />
             </div>
         </div>
     );

@@ -17,7 +17,7 @@
 //           Meet the Team
 //         </a>
 //         <a
-//           href="tel:+918921840486"
+//           href="tel:+918714952665"
 //           className="bg-white text-black font-medium px-6 py-3 rounded-sm border border-gray-300 transition-colors hover:bg-[#ff0000] hover:border-[#ff0000]"
 //         >
 //           Schedule a Discovery Call
@@ -194,7 +194,7 @@ export default function AboutFooter() {
             <a href="/our-team" className="cta-button cta-primary">
               Meet the Team
             </a>
-            <a href="tel:+918921840486" className="cta-button cta-secondary">
+            <a href="tel:+918714952665" className="cta-button cta-secondary">
               <span>Schedule a Discovery Call</span>
             </a>
           </div>

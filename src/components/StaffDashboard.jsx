@@ -220,7 +220,6 @@ export function StaffDashboard() {
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-red-600 border-solid"></div>
           <h1 className="mt-4 text-xl font-semibold">Loading Staff Profile...</h1>
         </div>
-        <Footer />
       </>
     );
   }
@@ -231,7 +230,6 @@ export function StaffDashboard() {
           <h1 className="text-3xl font-bold mb-4">Staff Not Found</h1>
           <p className="text-lg">The staff member "{decodedName}" does not exist.</p>
         </div>
-        <Footer />
       </>
     );
   }
@@ -368,7 +366,6 @@ export function StaffDashboard() {
                         alt={tool.toolName}
                         title={tool.toolName}
                         className="w-8 h-8 rounded-full object-cover cursor-pointer"
-                        onClick={() => navigate(tool.url)}
                       />
                     ))}
                   </div>
@@ -856,7 +853,6 @@ export function StaffDashboard() {
           )}
         </section>
       </div>
-      <Footer />
     </>
   );
 }

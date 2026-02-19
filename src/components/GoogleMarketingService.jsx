@@ -380,8 +380,6 @@ export default function GoogleMarketingService() {
           </section>
         </div>
       </div>
-
-      <Footer />
     </>
   );
 }

@@ -374,7 +374,6 @@ export const AddEvent = () => {
           </form>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

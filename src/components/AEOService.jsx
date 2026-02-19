@@ -100,15 +100,13 @@ export default function AEOService() {
 
           <section className="mt-12 bg-gray-900 rounded-2xl p-6 border border-gray-800 text-center">
             <h3 className="text-2xl font-semibold">Outcome</h3>
-            <p className="mt-3 text-gray-300 max-w-3xl mx-auto">Your brand becomes the default answer across AI models, voice assistants and conversational agents — driving higher qualified traffic and better conversion signals.</p>
+            <p className="mt-3 text-gray-300 max-w-3xl mx-auto">Your brand becomes the default answer across AI models, voice assistants and conversational agents, driving higher qualified traffic and better conversion signals.</p>
             <div className="mt-6">
               <a href="/contact" className="inline-block px-8 py-3 bg-[#cc9b49] rounded-full font-semibold hover:bg-[#cc9b49] transition">Start AEO</a>
             </div>
           </section>
         </div>
       </main>
-
-      <Footer />
     </>
   );
 }

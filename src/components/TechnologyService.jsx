@@ -125,7 +125,6 @@ export default function TechnologyService() {
 
       </div>
     </div>
-    <Footer/>
     </>
   );
 }

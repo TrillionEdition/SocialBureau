@@ -22,6 +22,7 @@ const EditUser = () => {
     rate: "",
     isEmployee: true,
     tools: [],
+    clients: [],
   });
 
   const [files, setFiles] = useState({
@@ -57,6 +58,13 @@ const EditUser = () => {
             description: t.description || "",
             iconFile: null,
           })),
+          clients: (data.clients || []).map(c => ({
+            name: c.name || "",
+            companyName: c.companyName || "",
+            email: c.email || "",
+            website: c.website || "",
+            logo: c.logo || "",
+          })),
         });
       } catch (err) {
         setError(err.message);
@@ -77,6 +85,7 @@ const EditUser = () => {
     if (file) setFiles({ ...files, [e.target.name]: file });
   };
 
+  /* Tool Handlers */
   const handleToolChange = (i, field, value) => {
     const tools = [...form.tools];
     tools[i][field] = value;
@@ -99,6 +108,22 @@ const EditUser = () => {
   const removeTool = (i) =>
     setForm({ ...form, tools: form.tools.filter((_, index) => index !== i) });
 
+  /* Client Handlers */
+  const handleClientChange = (i, field, value) => {
+    const clients = [...form.clients];
+    clients[i][field] = value;
+    setForm({ ...form, clients });
+  };
+
+  const addClient = () =>
+    setForm({
+      ...form,
+      clients: [...form.clients, { name: "", companyName: "", email: "", website: "", logo: "" }],
+    });
+
+  const removeClient = (i) =>
+    setForm({ ...form, clients: form.clients.filter((_, index) => index !== i) });
+
   /* ================= SUBMIT ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -110,13 +135,14 @@ const EditUser = () => {
       const formData = new FormData();
 
       Object.entries(form).forEach(([key, value]) => {
-        if (key !== "tools" && key !== "password") {
+        if (key !== "tools" && key !== "clients" && key !== "password") {
           formData.append(key, value ?? "");
         }
       });
 
       if (form.password) formData.append("password", form.password);
 
+      // Tools Data
       const toolsData = form.tools
         .filter(t => t.toolName.trim())
         .map(t => ({
@@ -124,8 +150,19 @@ const EditUser = () => {
           url: t.url,
           description: t.description,
         }));
-
       formData.append("tools", JSON.stringify(toolsData));
+
+      // Clients Data
+      const clientsData = form.clients
+        .filter(c => c.name.trim())
+        .map(c => ({
+          name: c.name,
+          companyName: c.companyName,
+          email: c.email,
+          website: c.website,
+          logo: c.logo,
+        }));
+      formData.append("clients", JSON.stringify(clientsData));
 
       form.tools.forEach(t => t.iconFile && formData.append("toolIcons", t.iconFile));
       files.coverImage && formData.append("coverImage", files.coverImage);
@@ -144,7 +181,6 @@ const EditUser = () => {
       if (!res.ok) throw new Error(data.message);
 
       setSuccess(id ? "User updated successfully ✅" : "User created successfully ✅");
-      // setTimeout(() => navigate("/"), 1500); // Optional: redirect back to list
     } catch (err) {
       setError(err.message);
     } finally {
@@ -172,12 +208,12 @@ const EditUser = () => {
           <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white" type="number" name="rate" value={form.rate} onChange={handleChange} placeholder="Rate" />
           <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white" type="password" name="password" value={form.password} onChange={handleChange} placeholder={id ? "New Password (optional)" : "Password"} required={!id} />
         </div>
-        
+
         <div className="flex gap-4 items-center">
-            <label className="flex items-center gap-2">
-                <input type="checkbox" name="isEmployee" checked={form.isEmployee} onChange={handleChange} />
-                Is Employee?
-            </label>
+          <label className="flex items-center gap-2">
+            <input type="checkbox" name="isEmployee" checked={form.isEmployee} onChange={handleChange} />
+            Is Employee?
+          </label>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -193,29 +229,52 @@ const EditUser = () => {
 
         <h3 className="font-semibold mt-6 text-xl border-b pb-2">Tools</h3>
 
-        {form.tools.map((tool, i) => (
-          <div key={i} className="border border-gray-700 p-4 rounded space-y-2 bg-gray-900">
-            <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white" value={tool.toolName} onChange={e => handleToolChange(i, "toolName", e.target.value)} placeholder="Tool Name" />
-            <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white" value={tool.url} onChange={e => handleToolChange(i, "url", e.target.value)} placeholder="Tool URL" />
-            <div className="flex justify-between items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {form.tools.map((tool, i) => (
+            <div key={i} className="border border-gray-700 p-4 rounded space-y-2 bg-gray-900 relative">
+              <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white" value={tool.toolName} onChange={e => handleToolChange(i, "toolName", e.target.value)} placeholder="Tool Name" />
+              <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white" value={tool.url} onChange={e => handleToolChange(i, "url", e.target.value)} placeholder="Tool URL" />
+              <div className="flex justify-between items-center">
                 <input type="file" onChange={e => handleToolFile(i, e.target.files[0])} className="text-sm text-gray-400" />
                 <button type="button" onClick={() => removeTool(i)} className="text-red-500 text-sm hover:underline">
-                Remove Tool
+                  Remove
                 </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
 
         <button type="button" onClick={addTool} className="text-blue-400 hover:text-blue-300">
           + Add Tool
         </button>
 
-        <button disabled={loading} className="w-full py-3 bg-red-600 hover:bg-red-700 rounded font-semibold transition-colors">
+        <h3 className="font-semibold mt-6 text-xl border-b pb-2">Clients Handled</h3>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {form.clients.map((client, i) => (
+            <div key={i} className="border border-gray-700 p-4 rounded space-y-2 bg-gray-900">
+              <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white text-sm" value={client.name} onChange={e => handleClientChange(i, "name", e.target.value)} placeholder="Client Name" />
+              <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white text-sm" value={client.companyName} onChange={e => handleClientChange(i, "companyName", e.target.value)} placeholder="Company Name" />
+              <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white text-sm" value={client.website} onChange={e => handleClientChange(i, "website", e.target.value)} placeholder="Website URL" />
+              <input className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white text-sm" value={client.logo} onChange={e => handleClientChange(i, "logo", e.target.value)} placeholder="Logo URL" />
+              <div className="flex justify-end">
+                <button type="button" onClick={() => removeClient(i)} className="text-red-500 text-xs hover:underline">
+                  Remove Client
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <button type="button" onClick={addClient} className="text-emerald-400 hover:text-emerald-300">
+          + Add Client
+        </button>
+
+        <button disabled={loading} className="w-full py-3 bg-red-600 hover:bg-red-700 rounded font-semibold transition-colors mt-10">
           {loading ? "Saving..." : (id ? "Update User" : "Create User")}
         </button>
+        <Footer />
       </form>
-
-      <Footer />
     </div>
   );
 };
