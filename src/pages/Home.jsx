@@ -7,6 +7,7 @@ import CareerSection from "../components/Home/CareerSection";
 import PartnershipTeamGrid, { PartnershipSection, TeamSection } from "../components/Home/PartnershipNTeam";
 import TestimonialsSection from "../components/Home/TestimonialsSection";
 import FAQSection from "../components/Home/FAQSection";
+import AppleSection from "../components/Home/EntertainmentGrid";
 import { Googlereview } from "../components/Googlereview";
 
 const SectionWrapper = ({ children, index, total, scrollYProgress }) => {

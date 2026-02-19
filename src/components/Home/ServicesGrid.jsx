@@ -6,7 +6,7 @@ const ServicesGrid = () => {
         {
             title: "Content Marketing",
             subtitle: "Built for scalable growth",
-            image: "/assets/home/amal1.png",
+            image: "https://i.pinimg.com/736x/c4/73/ee/c473ee45c9c931e159df0deb793f56dc.jpg",
             bg: "bg-[#FBFBFD]", // Light Apple Grey
             text: "text-[#1D1D1F]",
             link: "/content-marketing",
@@ -22,7 +22,7 @@ const ServicesGrid = () => {
         {
             title: "AdTech Integration",
             subtitle: "Engineered for rankings",
-            image: "/assets/home/muhsin.png",
+            image: "https://i.pinimg.com/1200x/d0/82/70/d08270192b49737bf8cf1214b37a46ca.jpg",
             bg: "bg-black",
             text: "text-white",
             link: "/adTech-marketing",

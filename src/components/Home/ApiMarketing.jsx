@@ -48,7 +48,7 @@ const ApiMarketing = () => {
                     transition={{ duration: 0.6 }}
                 >
                     <img
-                        src="/assets/home/sham3.png"
+                        src="https://i.pinimg.com/736x/07/08/33/070833bad9343eb0d263cf18f74c99eb.jpg"
                         alt=""
                         className="w-full max-w-md md:max-w-full object-contain rounded-2xl"
                     />
