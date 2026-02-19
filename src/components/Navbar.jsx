@@ -298,12 +298,6 @@ export default function Navbar() {
             { label: "Web Development", href: "#" },
           ],
         },
-        {
-          title: "Explore",
-          items: [
-            { label: "Featured Services", href: "/services" },
-          ],
-        },
       ],
     },
     {

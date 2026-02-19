@@ -8,6 +8,18 @@ const Partnership = () => {
     // Sample portfolio data
     const portfolioData = [
         {
+            id: 2,
+            title: 'SIVAPRASAD',
+            category: 'Media',
+            status: 'Completed',
+            image: '/assets/sivaprasad/Siva Prasad.webp',
+            link: '/sivaprasad',
+            subtitle: 'Media Entrepreneur · Visionary Leader · Industry Pioneer',
+            day: 'ENTREPRENEUR',
+            month: 'VISIONARY LEADER',
+            year: '2026',
+        },
+        {
             id: 1,
             title: 'RANJIT',
             category: 'Photography',
@@ -18,91 +30,8 @@ const Partnership = () => {
             day: 'COPYWRITER',
             month: 'CONTENT WRITER',
             year: '2025',
-        }
-        // {
-        //     id: 2,
-        //     title: 'Web Design Project',
-        //     category: 'Design',
-        //     status: 'Completed',
-        //     image: 'https://res.cloudinary.com/dtwcgfmar/image/upload/v1769774256/IMG-20251226-WA0002_ch9qzi.jpg',
-        //     link: '#portfolio-2',
-        //     subtitle: 'Capturing moments through lenses',
-        //     day: 'Sunday',
-        //     month: 'February',
-        //     year: '2027',
-        // },
-        // {
-        //     id: 3,
-        //     title: 'Mobile App Development',
-        //     category: 'Development',
-        //     status: 'In Progress',
-        //     image: 'https://res.cloudinary.com/dtwcgfmar/image/upload/v1769774256/IMG-20251226-WA0002_ch9qzi.jpg',
-        //     link: '#portfolio-3',
-        //     subtitle: 'Who rule the algorithm',
-        //     day: 'Sunday',
-        //     month: 'March',
-        //     year: '2025',
-        // },
-        // {
-        //     id: 4,
-        //     title: 'Video Production',
-        //     category: 'Video',
-        //     status: 'Completed',
-        //     image: 'https://res.cloudinary.com/dtwcgfmar/image/upload/v1769774256/IMG-20251226-WA0002_ch9qzi.jpg',
-        //     link: '#portfolio-4',
-        //     subtitle: 'Capturing moments through lenses',
-        //     day: 'Sunday',
-        //     month: 'January',
-        //     year: '2024',
-        // },
-        // {
-        //     id: 5,
-        //     title: 'Marketing Campaign',
-        //     category: 'Marketing',
-        //     status: 'In Progress',
-        //     image: 'https://res.cloudinary.com/dtwcgfmar/image/upload/v1769774256/IMG-20251226-WA0002_ch9qzi.jpg',
-        //     link: '#portfolio-5',
-        //     subtitle: 'Market thing like nothing',
-        //     day: 'Sunday',
-        //     month: 'February',
-        //     year: '2021',
-        // },
-        // {
-        //     id: 6,
-        //     title: 'Brand Identity',
-        //     category: 'Design',
-        //     status: 'Completed',
-        //     image: 'https://res.cloudinary.com/dtwcgfmar/image/upload/v1769774256/IMG-20251226-WA0002_ch9qzi.jpg',
-        //     link: '#portfolio-6',
-        //     subtitle: 'Design new flooo',
-        //     day: 'Sunday',
-        //     month: 'February',
-        //     year: '2025',
-        // },
-        // {
-        //     id: 7,
-        //     title: 'Event Coverage',
-        //     category: 'Photography',
-        //     status: 'Completed',
-        //     image: 'https://res.cloudinary.com/dtwcgfmar/image/upload/v1769774256/IMG-20251226-WA0002_ch9qzi.jpg',
-        //     link: '#portfolio-7',
-        //     subtitle: 'Capturing moments through lenses',
-        //     day: 'Sunday',
-        //     month: 'February',
-        //     year: '2025',
-        // },
-        // {
-        //     id: 8,
-        //     title: 'Social Media Content',
-        //     category: 'Marketing',
-        //     status: 'In Progress',
-        //     image: 'https://res.cloudinary.com/dtwcgfmar/image/upload/v1769774256/IMG-20251226-WA0002_ch9qzi.jpg',
-        //     link: '#portfolio-8',
-        //     subtitle: 'Capturing moments through lenses',
-        //     day: 'Sunday',
-        //     month: 'February',
-        //     year: '2025',
-        // },
+        },
+        
     ];
 
     //state
@@ -127,7 +56,7 @@ const Partnership = () => {
 
     const itemsPerPage = 8;
 
-    const categories = ['All', 'Design', 'Development', 'Photography', 'Video', 'Marketing'];
+    const categories = ['All', 'Design', 'Development', 'Photography', 'Video', 'Marketing', 'Media'];
     const activeHeroItem = portfolioData[activeHeroIndex];
     // Filter logic
     const filteredData = useMemo(() => {
@@ -390,7 +319,7 @@ const Partnership = () => {
                                                 {item.title}
                                             </h3>
                                             <div className="text-xs text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1 sm:gap-2">
-                                                <span>View Project</span>
+                                                <span>View</span>
                                                 <ChevronRight className="w-3 sm:w-4 h-3 sm:h-4" />
                                             </div>
                                         </div>

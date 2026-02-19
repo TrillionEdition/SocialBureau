@@ -79,6 +79,7 @@ import JobPosting from "./components/HrForum/JobPosting";
 import JobDetails from "./components/HrForum/JobDetails";
 import JobsList from "./components/HrForum/JobListing";
 import CandidateProfile from "./components/HrForum/CandidateProfile";
+import Sivaprasad from "./components/Sivaprasad";
 
 function App() {
   const VoiceAsst = lazy(() => import("./pages/VoiceAsst"));
@@ -135,7 +136,7 @@ function App() {
           {/* <Route path="/partnerships" element={<ClientPortfolios />} /> */}
           <Route path="/partners" element={<Partnership />} />
           <Route path="/Ranjit" element={<Landing />} />
-
+          <Route path="/sivaprasad" element={<Sivaprasad />} />
           <Route path="/services/branding" element={<BrandingService />} />
           <Route path="/services/experience-design" element={<XDService />} />
           <Route path="/services/technology" element={<TechnologyService />} />
