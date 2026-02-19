@@ -13,6 +13,28 @@
 
 //   const navItems = [
 //     { label: "Home", href: "/" },
+//         {
+//       label: "About",
+//       columns: [
+//         {
+//           title: "About",
+//           items: [
+//             { label: "About Us", href: "/about" },
+//             { label: "Our Team", href: "/our-team" },
+//             { label: "Work", href: "/our-works" },
+//           ],
+//         },
+//         {
+//           title: "Community",
+//           items: [
+//             { label: "Blog", href: "/blog" },
+//             { label: "Events", href: "/events" },
+//             { label: "Partners", href: "/partners" },
+//             { label: "Leaderboard", href: "/leaderboard" },
+//           ],
+//         },
+//       ],
+//     },
 //     {
 //       label: "Services",
 //       href: "/services",
@@ -30,38 +52,12 @@
 //         {
 //           title: "Design & Tech",
 //           items: [
-//             { label: "Web Development", href: "/services/Web-Development" },
-//           ],
-//         },
-//         {
-//           title: "Explore",
-//           items: [
-//             { label: "Featured Services", href: "/services" },
+//             { label: "Web Development", href: "#" },
 //           ],
 //         },
 //       ],
 //     },
-//     {
-//       label: "Company",
-//       columns: [
-//         {
-//           title: "About",
-//           items: [
-//             { label: "About Us", href: "/about" },
-//             { label: "Our Team", href: "/our-team" },
-//             { label: "Work", href: "/our-works" },
-//           ],
-//         },
-//         {
-//           title: "Community",
-//           items: [
-//             { label: "Blog", href: "/blog" },
-//             { label: "Events", href: "/events" },
-//             { label: "Partners", href: "/partners" },
-//           ],
-//         },
-//       ],
-//     },
+
 //     {
 //       label: "Careers",
 //       href: "/careers",
@@ -75,7 +71,7 @@
 //             { label: "Front Desk Manager", href: "/careers/front-desk-manager" },
 //             { label: "Digital Marketing Expert", href: "/careers/digital-marketing-expert" },
 //             { label: "Video Editor", href: "/careers/video-editor" },
-//             { label: "Web Developer", href: "/careers/web-developer" },
+//             { label: "Web Developer", href: "#" },
 //             { label: "Office Operations", href: "/careers/office-operations-manager" },
 //           ],
 //         },
@@ -120,23 +116,18 @@
 //     <>
 //       <nav
 //         className={`fixed top-0 w-full z-[100] transition-all duration-300 border-b ${isScrolled || mobileMenuOpen
-//           ? "bg-white/95 border-gray-200 shadow-sm"
-//           : "bg-white/80 border-transparent"
+//           ? "bg-black/95 border-gray-800 shadow-sm"
+//           : "bg-black/80 border-transparent"
 //           } backdrop-blur-md`}
 //         onMouseLeave={() => setActiveDropdown(null)}
 //       >
 //         <div className="max-w-[1300px] mx-auto px-6">
 //           <div className="flex items-center justify-between h-16">
 
-//             {/* Logo */}
-//             <button onClick={() => handleNavClick("/")} className="z-50 shrink-0">
-//               <img
-//                 src="/assets/socialbureau.webp"
-//                 alt="Logo"
-//                 className="h-8 lg:h-9 w-auto object-contain block"
-//                 style={{ minWidth: 'auto' }}
-//               />
-//             </button>
+//             {/* Logo - You might want to use a white/inverted version of your logo */}
+//             <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in' className="text-white text-2xl">
+//               Social<span className="text-[#ff0000]">B</span>ureau
+//             </a>
 
 //             {/* Desktop Nav - Balanced Spacing */}
 //             <div className="hidden lg:flex items-center justify-center flex-1 gap-8 xl:gap-10">
@@ -145,7 +136,7 @@
 //                   <button
 //                     onMouseEnter={() => item.columns && setActiveDropdown(item.label)}
 //                     onClick={() => !item.columns && handleNavClick(item.href)}
-//                     className="text-[14px] font-medium text-gray-700 hover:text-black transition-colors py-5"
+//                     className="text-[14px] font-medium text-gray-300 hover:text-white transition-colors py-5"
 //                   >
 //                     {item.label}
 //                   </button>
@@ -156,7 +147,7 @@
 //             {/* Right Icons */}
 //             <div className="flex items-center gap-5 shrink-0">
 //               <button
-//                 className="lg:hidden text-gray-600 hover:text-black"
+//                 className="lg:hidden text-gray-300 hover:text-white"
 //                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
 //               >
 //                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -165,21 +156,21 @@
 //           </div>
 //         </div>
 
-//         {/* Mega Dropdown - Clean White Design */}
+//         {/* Mega Dropdown - Dark Design */}
 //         <AnimatePresence>
 //           {activeDropdown && (
 //             <motion.div
 //               initial={{ opacity: 0, y: -4 }}
 //               animate={{ opacity: 1, y: 0 }}
 //               exit={{ opacity: 0, y: -4 }}
-//               className="hidden lg:block absolute w-full bg-white border-b border-gray-200 shadow-2xl"
+//               className="hidden lg:block absolute w-full bg-black border-b border-gray-800 shadow-2xl"
 //             >
 //               <div className="max-w-[1200px] mx-auto px-10 py-14 flex flex-row gap-20 justify-start">
 //                 {navItems
 //                   .find((i) => i.label === activeDropdown)
 //                   ?.columns?.map((col, idx) => (
 //                     <div key={idx} className="flex flex-col">
-//                       <h3 className="text-[11px] text-gray-400 font-bold uppercase tracking-[1.5px] mb-6">
+//                       <h3 className="text-[11px] text-gray-500 font-bold uppercase tracking-[1.5px] mb-6">
 //                         {col.title}
 //                       </h3>
 //                       <div className="flex flex-col space-y-1">
@@ -187,7 +178,7 @@
 //                           <button
 //                             key={subitem.label}
 //                             onClick={() => handleNavClick(subitem.href)}
-//                             className="text-[15px] font-semibold text-gray-700 hover:text-black text-left py-2 px-3 -ml-3 rounded-lg hover:bg-gray-50 transition-all duration-200 whitespace-nowrap"
+//                             className="text-[15px] font-semibold text-gray-300 hover:text-white text-left py-2 px-3 -ml-3 rounded-lg hover:bg-gray-900 transition-all duration-200 whitespace-nowrap"
 //                           >
 //                             {subitem.label}
 //                           </button>
@@ -200,40 +191,46 @@
 //           )}
 //         </AnimatePresence>
 
-//         {/* Mobile Menu - Vertical White List */}
+//         {/* Mobile Menu - Dark Vertical List */}
 //         <AnimatePresence>
 //           {mobileMenuOpen && (
 //             <motion.div
 //               initial={{ opacity: 0, height: 0 }}
 //               animate={{ opacity: 1, height: "100vh" }}
 //               exit={{ opacity: 0, height: 0 }}
-//               className="lg:hidden fixed inset-0 top-[64px] bg-white z-40 overflow-y-auto px-6 py-4"
+//               className="lg:hidden fixed inset-0 top-[64px] bg-black z-40 overflow-y-auto px-6 py-4"
 //             >
-//               <div className="flex flex-col divide-y divide-gray-100">
+//               <div className="flex flex-col divide-y divide-gray-800">
 //                 {navItems.map((item) => (
 //                   <div key={item.label} className="py-2">
 //                     {item.columns ? (
 //                       <>
 //                         <button
 //                           onClick={() => setExpandedMobileCategory(expandedMobileCategory === item.label ? null : item.label)}
-//                           className="w-full flex justify-between items-center py-4 text-lg font-bold text-gray-900"
+//                           className="w-full flex justify-between items-center py-4 text-lg font-bold text-white"
 //                         >
 //                           {item.label}
-//                           <ChevronRight className={`transition-transform duration-300 ${expandedMobileCategory === item.label ? 'rotate-90' : ''}`} />
+//                           <ChevronRight className={`transition-transform duration-300 text-gray-400 ${expandedMobileCategory === item.label ? 'rotate-90' : ''}`} />
 //                         </button>
 //                         <AnimatePresence>
 //                           {expandedMobileCategory === item.label && (
 //                             <motion.div
 //                               initial={{ height: 0, opacity: 0 }}
 //                               animate={{ height: "auto", opacity: 1 }}
-//                               className="bg-gray-50 rounded-2xl p-5 mb-4 space-y-6 overflow-hidden"
+//                               className="bg-gray-900 rounded-2xl p-5 mb-4 space-y-6 overflow-hidden"
 //                             >
 //                               {item.columns.map((col) => (
 //                                 <div key={col.title}>
-//                                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">{col.title}</p>
+//                                   <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3">{col.title}</p>
 //                                   <div className="flex flex-col gap-3">
 //                                     {col.items.map(sub => (
-//                                       <button key={sub.label} onClick={() => handleNavClick(sub.href)} className="text-left text-gray-700 font-semibold">{sub.label}</button>
+//                                       <button
+//                                         key={sub.label}
+//                                         onClick={() => handleNavClick(sub.href)}
+//                                         className="text-left text-gray-300 font-semibold hover:text-white"
+//                                       >
+//                                         {sub.label}
+//                                       </button>
 //                                     ))}
 //                                   </div>
 //                                 </div>
@@ -243,7 +240,10 @@
 //                         </AnimatePresence>
 //                       </>
 //                     ) : (
-//                       <button onClick={() => handleNavClick(item.href)} className="w-full text-left py-4 text-lg font-bold text-gray-900">
+//                       <button
+//                         onClick={() => handleNavClick(item.href)}
+//                         className="w-full text-left py-4 text-lg font-bold text-white"
+//                       >
 //                         {item.label}
 //                       </button>
 //                     )}
@@ -259,10 +259,6 @@
 //     </>
 //   );
 // }
-
-
-
-
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Search, Menu, X, ChevronRight } from "lucide-react";
