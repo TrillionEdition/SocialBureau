@@ -278,7 +278,7 @@ const AdTechIntegration = () => {
     ];
 
     return (
-        <div className="font-['Noto_Sans'] bg-[#FFF8F0] text-[#1A1A1A] overflow-x-hidden at-page">
+        <div className="font-['Inter'] bg-[#FFF8F0] text-[#1A1A1A] overflow-x-hidden at-page">
             <Seo
                 title="AdTech Integration Agency in Kerala | Social Bureau"
                 description="Structured AdTech integrations that connect platforms, align data, and improve campaign performance without complexity or wasted spend."

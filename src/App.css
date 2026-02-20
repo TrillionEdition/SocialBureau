@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
+:root {
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure all elements inherit or use Inter */
+h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, select {
+  font-family: 'Inter', sans-serif;
+}
+
+
 @font-face {
   font-family: "MyFont";
   src: url("/assets/logo.otf") format("opentype");

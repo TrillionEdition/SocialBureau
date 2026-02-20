@@ -262,7 +262,7 @@ const NicheMarketing = () => {
     ];
 
     return (
-        <div className="font-['Noto Sans'] bg-[#0F0F0F] text-[#F5F5F5] overflow-x-hidden nm-page">
+        <div className="font-['Inter'] bg-[#0F0F0F] text-[#F5F5F5] overflow-x-hidden nm-page">
             <Seo
                 title="Best Niche Marketing Agency in Kerala | Social Bureau"
                 description="Niche Marketing Agency in Kerala helping brands dominate their niche through data driven strategy, stronger conversions, and long term business growth"
@@ -363,7 +363,7 @@ const NicheMarketing = () => {
                 <div className="absolute top-32 right-0 w-full md:w-3/5 h-full bg-gradient-to-br from-[#C0C0C0] to-[#808080] clip-path-polygon opacity-5 animate-float hidden md:block"></div>
                 <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10 px-4 sm:px-6 pb-20 sm:pb-24 lg:pb-32">
                     <div className="animate-fadeInUp">
-                        <h1 className="font-['Syne'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8 text-white">
+                        <h1 className="font-['Inter'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8 text-white">
                             Niche Marketing Agency in Kerala
                         </h1>
                         <p className="text-base sm:text-lg text-[#BFBFBF] mb-8 lg:mb-12 max-w-2xl">
@@ -390,7 +390,7 @@ const NicheMarketing = () => {
                     <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-r from-[#C0C0C0] to-[#808080] text-[#0F0F0F] text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                         ABOUT SECTION
                     </span>
-                    <h2 className="font-['Syne'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white">niche marketing strategy</h2>
+                    <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white">niche marketing strategy</h2>
                 </div>
                 <div className="grid md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
                     <div className="h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-[rgba(192,192,192,0.1)] to-[rgba(128,128,128,0.1)] rounded-3xl flex items-center justify-center relative overflow-hidden p-4 border border-[#333333]">
@@ -414,7 +414,7 @@ const NicheMarketing = () => {
                         <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-r from-[#C0C0C0] to-[#808080] text-[#0F0F0F] text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                             Our Services
                         </span>
-                        <h2 className="font-['Syne'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white">Niche marketing service</h2>
+                        <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white">Niche marketing service</h2>
                         <p className="text-base sm:text-lg text-[#BFBFBF] max-w-3xl mx-auto px-4">
                             We design and implement marketing solutions that are built around precision rather than assumptions. Each service is delivered with research-backed planning, structured execution, and measurable outcomes.
                         </p>
@@ -432,7 +432,7 @@ const NicheMarketing = () => {
                                     <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-[#C0C0C0] to-[#808080] rounded-xl flex items-center justify-center mb-4 sm:mb-6 relative z-10">
                                         <Icon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-[#0F0F0F]" />
                                     </div>
-                                    <h3 className="font-['Syne'] text-lg sm:text-xl font-bold mb-3 sm:mb-4 relative z-10 text-white">
+                                    <h3 className="font-['Inter'] text-lg sm:text-xl font-bold mb-3 sm:mb-4 relative z-10 text-white">
                                         {service.title}
                                     </h3>
                                     <p className="text-[#BFBFBF] mb-4 sm:mb-6 relative z-10 text-sm sm:text-base">
@@ -460,7 +460,7 @@ const NicheMarketing = () => {
                         <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-r from-[#C0C0C0] to-[#808080] text-[#0F0F0F] text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                             WHY CHOOSE US
                         </span>
-                        <h2 className="font-['Syne'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white">
+                        <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white">
                             What Sets Us Apart
                         </h2>
                     </div>
@@ -484,7 +484,7 @@ const NicheMarketing = () => {
                                 <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#C0C0C0] to-[#808080] text-[#0F0F0F] rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
                                     <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
                                 </div>
-                                <h3 className="font-['Syne'] text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-white">
+                                <h3 className="font-['Inter'] text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-white">
                                     {feature.title}
                                 </h3>
                                 <p className="text-[#BFBFBF] leading-relaxed text-sm sm:text-base">
@@ -503,36 +503,36 @@ const NicheMarketing = () => {
                         <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-r from-[#C0C0C0] to-[#808080] text-[#0F0F0F] text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                             CASE STUDIES
                         </span>
-                        <h2 className="font-['Syne'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white">Proven Results</h2>
+                        <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white">Proven Results</h2>
                     </div>
                     <div className="space-y-8 sm:space-y-12">
                         {caseStudies.map((study, index) => (
                             <div key={index} className="bg-[#252525] rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg relative overflow-hidden border-l-4 border-[#C0C0C0] animate-fadeInUp" style={{ animationDelay: `${index * 0.15}s` }}>
-                                <h3 className="font-['Syne'] text-xl sm:text-2xl font-bold mb-4 text-white">{study.title}</h3>
+                                <h3 className="font-['Inter'] text-xl sm:text-2xl font-bold mb-4 text-white">{study.title}</h3>
 
                                 <div className="mb-6">
-                                    <h4 className="font-['Syne'] text-base sm:text-lg font-semibold text-[#C0C0C0] mb-2">Ideal Customer</h4>
+                                    <h4 className="font-['Inter'] text-base sm:text-lg font-semibold text-[#C0C0C0] mb-2">Ideal Customer</h4>
                                     <p className="text-[#BFBFBF] text-sm sm:text-base">{study.idealCustomer}</p>
                                 </div>
 
                                 <div className="mb-6">
-                                    <h4 className="font-['Syne'] text-base sm:text-lg font-semibold text-[#C0C0C0] mb-2">The Challenge (Before)</h4>
+                                    <h4 className="font-['Inter'] text-base sm:text-lg font-semibold text-[#C0C0C0] mb-2">The Challenge (Before)</h4>
                                     <p className="text-[#BFBFBF] text-sm sm:text-base">{study.challenge}</p>
                                 </div>
 
                                 <div className="mb-6">
-                                    <h4 className="font-['Syne'] text-base sm:text-lg font-semibold text-[#C0C0C0] mb-2">The Approach</h4>
+                                    <h4 className="font-['Inter'] text-base sm:text-lg font-semibold text-[#C0C0C0] mb-2">The Approach</h4>
                                     <p className="text-[#BFBFBF] text-sm sm:text-base">{study.approach}</p>
                                 </div>
 
                                 <div className="mb-4">
-                                    <h4 className="font-['Syne'] text-base sm:text-lg font-semibold text-[#C0C0C0] mb-3">The Results (After) (Infographic):</h4>
+                                    <h4 className="font-['Inter'] text-base sm:text-lg font-semibold text-[#C0C0C0] mb-3">The Results (After) (Infographic):</h4>
                                 </div>
 
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-8 bg-[#333333] rounded-2xl">
                                     {study.results.map((result, idx) => (
                                         <div key={idx} className="text-center p-4">
-                                            <div className="font-['Syne'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#C0C0C0] mb-1 sm:mb-2">
+                                            <div className="font-['Inter'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#C0C0C0] mb-1 sm:mb-2">
                                                 {result.prefix}{result.stat}
                                             </div>
                                             <div className="text-xs sm:text-sm text-[#999999]">{result.label}</div>
@@ -574,7 +574,7 @@ const NicheMarketing = () => {
                     {faqItems.map((item, index) => (
                         <div key={index} className="bg-[#1A1A1A] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-[#333333]">
                             <button
-                                className="w-full p-4 sm:p-6 text-left flex justify-between items-center font-['Syne'] font-semibold hover:text-[#C0C0C0] transition-colors text-sm sm:text-base text-white"
+                                className="w-full p-4 sm:p-6 text-left flex justify-between items-center font-['Inter'] font-semibold hover:text-[#C0C0C0] transition-colors text-sm sm:text-base text-white"
                                 onClick={() => toggleFaq(index)}
                             >
                                 <span className="text-left pr-4">{item.question}</span>
@@ -593,7 +593,7 @@ const NicheMarketing = () => {
             {/* CTA Section */}
             <section id="contact" className="py-12 sm:py-16 lg:py-20 mx-4 sm:mx-6 lg:mx-8 my-8 sm:my-12 lg:my-16 bg-gradient-to-br from-[#1A1A1A] to-[#0F0F0F] text-white rounded-3xl text-center relative overflow-hidden border border-[#333333]">
                 <div className="absolute -top-1/2 -right-1/10 w-64 h-64 sm:w-96 sm:h-96 bg-radial-gradient(circle, rgba(192,192,192,0.1), transparent) rounded-full animate-pulse-slow hidden sm:block"></div>
-                <h2 className="font-['Syne'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 relative z-10 px-4 text-white">Ready to Build Authority in Your Niche?</h2>
+                <h2 className="font-['Inter'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 relative z-10 px-4 text-white">Ready to Build Authority in Your Niche?</h2>
                 <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-[#BFBFBF] relative z-10 px-4">
                     Let's discuss how niche marketing can drive sustainable growth and establish clear positioning for your business.
                 </p>

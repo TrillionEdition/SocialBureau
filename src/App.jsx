@@ -80,6 +80,7 @@ import JobDetails from "./components/HrForum/JobDetails";
 import JobsList from "./components/HrForum/JobListing";
 import CandidateProfile from "./components/HrForum/CandidateProfile";
 import Sivaprasad from "./components/Sivaprasad";
+import ATSChecker from "./pages/ATSChecker";
 
 function App() {
   const VoiceAsst = lazy(() => import("./pages/VoiceAsst"));
@@ -126,6 +127,7 @@ function App() {
           <Route path="/our-team" element={<OurTeam />} />
           <Route path="/our-works" element={<OurWork />} />
           <Route path="/achievements" element={<CompanyAchievements />} />
+          <Route path="/ats-checker" element={<ATSChecker />} />
           <Route path="/tool" element={<ScorePage />} />
 
           <Route path="/blogs/:slug" element={<BlogDetail />} />

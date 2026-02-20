@@ -166,7 +166,7 @@ const ContentMarketing = () => {
     ];
 
     return (
-        <div className="font-['Noto Sans'] bg-[#FFF8F0] text-[#0A0E27] overflow-x-hidden cm-page">
+        <div className="font-['Inter'] bg-[#FFF8F0] text-[#0A0E27] overflow-x-hidden cm-page">
             <Seo
                 title=" Content Marketing Agency in Kerala | Social Bureau"
                 description="Content Marketing Agency in Kerala helping brands attract high-intent audiences with focused strategy, clarity-driven content, and measurable growth"
@@ -227,7 +227,7 @@ const ContentMarketing = () => {
                 <div className="absolute top-0 right-0 w-full md:w-3/5 h-full bg-gradient-to-br from-[#4ECDC4] to-[#FF6B35] clip-path-polygon opacity-10 animate-float hidden md:block"></div>
                 <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10 px-4 sm:px-6">
                     <div className="animate-fadeInUp">
-                        <h1 className="font-['Noto Sans'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8">
+                        <h1 className="font-['Inter'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8">
                             Content Marketing Agency in Kerala
                         </h1>
                         <p className="text-base sm:text-lg text-[#00183dff] mb-8 lg:mb-12 max-w-2xl">
@@ -258,7 +258,7 @@ const ContentMarketing = () => {
                     <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#4ECDC4] to-[#FF6B35] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                         ABOUT SECTION
                     </span>
-                    <h2 className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Content Marketing Firm Kerala</h2>
+                    <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Content Marketing Firm Kerala</h2>
                 </div>
                 <div className="grid md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
                     <div className="h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-[rgba(255,107,53,0.1)] to-[rgba(78,205,196,0.1)] rounded-3xl flex items-center justify-center relative overflow-hidden">
@@ -283,7 +283,7 @@ const ContentMarketing = () => {
                         <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#4ECDC4] to-[#FF6B35] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                             OUR SERVICES
                         </span>
-                        <h2 className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Content Marketing Services in Kerala</h2>
+                        <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Content Marketing Services in Kerala</h2>
                         <p className="text-base sm:text-lg text-[#00183dff] max-w-3xl mx-auto px-4 mb-8">
                             Our services are designed to support scalable growth by aligning content creation with search behavior, user expectations, and measurable business objectives. Each service is delivered with a focus on clarity, consistency, and long-term performance rather than short-term visibility.
                         </p>
@@ -303,7 +303,7 @@ const ContentMarketing = () => {
                                         <Icon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
                                     </div>
 
-                                    <h3 className="font-['Noto Sans'] text-lg sm:text-xl font-bold mb-3 sm:mb-4 relative z-10">
+                                    <h3 className="font-['Inter'] text-lg sm:text-xl font-bold mb-3 sm:mb-4 relative z-10">
                                         {service.title}
                                     </h3>
 
@@ -409,7 +409,7 @@ const ContentMarketing = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mt-8 sm:mt-12 lg:mt-16 max-w-4xl mx-auto">
                     {/* Box 4 */}
                     <div className="bg-white p-6 sm:p-8 lg:p-10 rounded-3xl shadow-lg hover:shadow-2xl hover:translate-y-[-5px] transition-all duration-300">
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#FF6B35] to-[#4ECDC4] text-white rounded-full flex items-center justify-center font-['Noto Sans'] font-bold text-base sm:text-lg mx-auto mb-4 sm:mb-6">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#FF6B35] to-[#4ECDC4] text-white rounded-full flex items-center justify-center font-['Inter'] font-bold text-base sm:text-lg mx-auto mb-4 sm:mb-6">
                             4
                         </div>
                         <h3 className="font-['Noto Sans'] text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-center">Integrated Distribution Thinking</h3>
@@ -438,7 +438,7 @@ const ContentMarketing = () => {
                         <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#4ECDC4] to-[#FF6B35] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                             CASE STUDIES
                         </span>
-                        <h2 className="font-['Syne'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Proven Results</h2>
+                        <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Proven Results</h2>
                     </div>
                     <div className="space-y-8 sm:space-y-12">
                         {/* Case Study 1 */}

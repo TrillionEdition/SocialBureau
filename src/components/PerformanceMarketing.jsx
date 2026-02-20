@@ -239,8 +239,8 @@ const PerformanceMarketing = () => {
     ];
 
     return (
-        <div className="font-['Noto Sans'] bg-[#F5F1EB] text-[#2C2C2C] overflow-x-hidden pm-page">
-            
+        <div className="font-['Inter'] bg-[#F5F1EB] text-[#2C2C2C] overflow-x-hidden pm-page">
+
             <Seo
                 title="Performance Marketing Agency in Kochi | Social Bureau"
                 description="Structured performance marketing in Kerala designed to turn data into clarity, optimize spend, and drive consistent, measurable growth."
@@ -303,7 +303,7 @@ const PerformanceMarketing = () => {
 
                 <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 lg:gap-16 items-center relative z-10">
                     <div className="animate-fadeInUp">
-                        <h1 className="font-['Noto Sans'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8 text-[#2C2C2C]">
+                        <h1 className="font-['Inter'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8 text-[#2C2C2C]">
                             Performance Marketing Agency in Kochi
                         </h1>
                         <p className="text-base sm:text-lg text-[#666666] mb-8 lg:mb-12 max-w-2xl">
@@ -342,7 +342,7 @@ const PerformanceMarketing = () => {
                             { number: '27%', label: 'Reduced Cart Abandonment' }
                         ].map((stat, index) => (
                             <div key={index} className="text-center p-4 sm:p-6 lg:p-8 hover:translate-y-[-5px] transition-transform relative after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-3/5 after:bg-gradient-to-b from-transparent via-[#CCCCCC] to-transparent after:opacity-20 last:after:hidden even:after:hidden md:even:after:block">
-                                <div className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-br from-[#D97634] to-[#B8956A] bg-clip-text text-transparent mb-2 sm:mb-3">
+                                <div className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-br from-[#D97634] to-[#B8956A] bg-clip-text text-transparent mb-2 sm:mb-3">
                                     <CountUp
                                         end={parseInt(stat.number)}
                                         suffix={stat.number.replace(/[0-9]/g, "")}
@@ -362,7 +362,7 @@ const PerformanceMarketing = () => {
                     <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#B8956A] to-[#D97634] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                         ABOUT SECTION
                     </span>
-                    <h2 className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">Performance Marketing Specialist</h2>
+                    <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">Performance Marketing Specialist</h2>
                 </div>
                 <div className="grid md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
                     <div className="h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-[rgba(230,126,60,0.1)] to-[rgba(74,155,158,0.1)] rounded-3xl flex items-center justify-center relative overflow-hidden p-4">
@@ -391,7 +391,7 @@ const PerformanceMarketing = () => {
                         <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#B8956A] to-[#D97634] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                             OUR SERVICES
                         </span>
-                        <h2 className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">Performance Marketing Services Kerala</h2>
+                        <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">Performance Marketing Services Kerala</h2>
                         <p className="text-base sm:text-lg text-[#666666] max-w-3xl mx-auto px-4 mb-8">
                             Our services are designed to support sustainable scaling by aligning paid channels with intent, data signals, and conversion-focused execution. This ensures growth efforts remain efficient, controlled, and adaptable as performance requirements evolve over time.
                         </p>
@@ -419,7 +419,7 @@ const PerformanceMarketing = () => {
                                         <Icon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
                                     </div>
 
-                                    <h3 className="font-['Noto Sans'] text-lg sm:text-xl font-bold mb-3 sm:mb-4 relative z-10 text-[#2C2C2C]">
+                                    <h3 className="font-['Inter'] text-lg sm:text-xl font-bold mb-3 sm:mb-4 relative z-10 text-[#2C2C2C]">
                                         {service.title}
                                     </h3>
 
@@ -453,7 +453,7 @@ const PerformanceMarketing = () => {
                         WHY CHOOSE US
                     </span>
 
-                    <h2 className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2C2C2C]">
+                    <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2C2C2C]">
                         Why Choose Social Bureau
                     </h2>
                 </div>
@@ -469,7 +469,7 @@ const PerformanceMarketing = () => {
                                 className="bg-white p-6 rounded-2xl border border-[#E5E5E5] hover:border-[#B8956A] hover:shadow-lg transition-all"
                             >
 
-                                <h3 className="font-['Noto Sans'] font-bold mb-2 text-base text-[#2C2C2C]">
+                                <h3 className="font-['Inter'] font-bold mb-2 text-base text-[#2C2C2C]">
                                     {feature.title}
                                 </h3>
 
@@ -502,7 +502,7 @@ const PerformanceMarketing = () => {
                         <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#B8956A] to-[#D97634] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                             CASE STUDIES
                         </span>
-                        <h2 className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">Proven Results</h2>
+                        <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">Proven Results</h2>
                     </div>
                     <div className="space-y-8 sm:space-y-12">
                         {/* Case Study 1 */}
@@ -510,21 +510,21 @@ const PerformanceMarketing = () => {
                             <span className="inline-block px-3 py-1 sm:px-4 sm:py-2 bg-[#F8F4F0] text-[#E67E3C] text-xs sm:text-sm font-semibold rounded-full mb-4 sm:mb-6">
                                 CASE STUDY 1: SERVICE-BASED BUSINESS
                             </span>
-                            <h3 className="font-['Noto Sans'] text-xl sm:text-2xl font-bold mb-4 text-[#2C2C2C]">Ideal Customer</h3>
+                            <h3 className="font-['Inter'] text-xl sm:text-2xl font-bold mb-4 text-[#2C2C2C]">Ideal Customer</h3>
                             <p className="text-[#666666] mb-6 text-sm sm:text-base">{caseStudies[0].idealCustomer}</p>
 
                             <div className="mb-6">
-                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2">The Challenge (Before)</h4>
+                                <h4 className="font-['Inter'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2">The Challenge (Before)</h4>
                                 <p className="text-[#666666] text-sm sm:text-base">{caseStudies[0].challenge}</p>
                             </div>
 
                             <div className="mb-6">
-                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2">The Approach</h4>
+                                <h4 className="font-['Inter'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2">The Approach</h4>
                                 <p className="text-[#666666] text-sm sm:text-base">{caseStudies[0].approach}</p>
                             </div>
 
                             <div className="mb-4">
-                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-3">The Results (After)</h4>
+                                <h4 className="font-['Inter'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-3">The Results (After)</h4>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-8 bg-[#F8F4F0] rounded-2xl">
                                     {caseStudies[0].results.map((result, idx) => {
                                         const match = result.match(/(\d+)%/);
@@ -534,7 +534,7 @@ const PerformanceMarketing = () => {
                                         if (percentage) {
                                             return (
                                                 <div key={idx} className="text-center p-4">
-                                                    <div className="font-['Noto Sans'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#E67E3C] mb-1 sm:mb-2">
+                                                    <div className="font-['Inter'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#E67E3C] mb-1 sm:mb-2">
                                                         {result.includes('increased') ? '+' : '-'}{percentage}%
                                                     </div>
                                                     <div className="text-xs sm:text-sm text-[#666666]">{text}</div>
@@ -543,7 +543,7 @@ const PerformanceMarketing = () => {
                                         } else {
                                             return (
                                                 <div key={idx} className="text-center p-4">
-                                                    <div className="font-['Noto Sans'] text-lg sm:text-xl font-bold text-[#E67E3C] mb-1 sm:mb-2">
+                                                    <div className="font-['Inter'] text-lg sm:text-xl font-bold text-[#E67E3C] mb-1 sm:mb-2">
                                                         ✓
                                                     </div>
                                                     <div className="text-xs sm:text-sm text-[#666666]">{result}</div>
@@ -560,7 +560,7 @@ const PerformanceMarketing = () => {
                             <span className="inline-block px-3 py-1 sm:px-4 sm:py-2 bg-[#F8F4F0] text-[#E67E3C] text-xs sm:text-sm font-semibold rounded-full mb-4 sm:mb-6">
                                 CASE STUDY 2: eCOMMERCE BRAND
                             </span>
-                            <h3 className="font-['Noto Sans'] text-xl sm:text-2xl font-bold mb-4 text-[#2C2C2C]">Ideal Customer</h3>
+                            <h3 className="font-['Inter'] text-xl sm:text-2xl font-bold mb-4 text-[#2C2C2C]">Ideal Customer</h3>
                             <p className="text-[#666666] mb-6 text-sm sm:text-base">{caseStudies[1].idealCustomer}</p>
 
                             <div className="mb-6">
@@ -664,7 +664,7 @@ const PerformanceMarketing = () => {
                     <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#B8956A] to-[#D97634] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                         TESTIMONIALS
                     </span>
-                    <h2 className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">What Our Clients Say</h2>
+                    <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">What Our Clients Say</h2>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
                     {testimonials.map((testimonial, index) => (
@@ -708,7 +708,7 @@ const PerformanceMarketing = () => {
             {/* CTA Section */}
             <section id="contact" className="py-12 sm:py-16 lg:py-20 mx-4 sm:mx-6 lg:mx-8 my-8 sm:my-12 lg:my-16 bg-gradient-to-br from-[#2C2C2C] to-[#3C3C3C] text-white rounded-3xl text-center relative overflow-hidden">
                 <div className="absolute -top-1/2 -right-1/10 w-64 h-64 sm:w-96 sm:h-96 bg-radial-gradient(circle, rgba(74,155,158,0.2), transparent) rounded-full animate-pulse-slow hidden sm:block"></div>
-                <h2 className="font-['Noto Sans'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 relative z-10 px-4">Connect With Us</h2>
+                <h2 className="font-['Inter'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 relative z-10 px-4">Connect With Us</h2>
                 <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-gray-200 relative z-10 px-4">
                     Let's discuss how performance marketing can drive measurable growth for your business.
                 </p>

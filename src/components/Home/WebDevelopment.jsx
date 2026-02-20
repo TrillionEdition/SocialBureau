@@ -268,7 +268,7 @@ const WebDevelopment = () => {
     ];
 
     return (
-        <div className="font-['Noto_Sans'] bg-[#FFF8F0] text-[#1A1A1A] overflow-x-hidden wd-page">
+        <div className="font-['Inter'] bg-[#FFF8F0] text-[#1A1A1A] overflow-x-hidden wd-page">
             <style dangerouslySetInnerHTML={{
                 __html: `
                 .wd-page img {
