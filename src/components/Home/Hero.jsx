@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 
 export default function ImageCarousel() {
-    const images = [
-        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1771995838/Artboard_1_copy_2_1_1_haxwde.webp",
+    const images = [        
         "https://res.cloudinary.com/dtwcgfmar/image/upload/v1771995838/Artboard_1_1_1_l982re.webp",
         "https://res.cloudinary.com/dtwcgfmar/image/upload/v1771995838/Artboard_1_copy_2_mmmbkk.webp",
         "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772003206/Untitled-design-40.png_fuipcr.webp",
         "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772003206/Untitled-design-41.png_rblbxq.webp",
-
+        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1771995838/Artboard_1_copy_2_1_1_haxwde.webp",
     ];
 
     const [active, setActive] = useState(0);
