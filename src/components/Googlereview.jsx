@@ -1,280 +1,749 @@
-// import React, { useEffect, useRef, useState } from 'react'
-// import { BASE_URL } from '../../utils/urls';
-// import { useQuery } from '@tanstack/react-query';
-// import { googlereviewAPI } from '../../services/reviewServices';
-// import LoadingSpinner from './LoadingSpinner';
+// import React, {
+//   useRef,
+//   useState,
+//   useEffect,
+//   useCallback,
+//   useMemo,
+// } from 'react';
+// import {
+//   Star,
+//   MapPin,
+//   ChevronLeft,
+//   ChevronRight,
+//   MessageSquare,
+//   ExternalLink,
+//   Info,
+//   RefreshCcw,
+//   Lock,
+//   ArrowRight,
+// } from 'lucide-react';
+// import { motion, AnimatePresence } from 'framer-motion';
 
+// /* ─────────────────────────────────────────────
+//    Load Google Maps SDK
+// ───────────────────────────────────────────── */
+// const loadGoogleScript = (apiKey) =>
+//   new Promise((resolve, reject) => {
+//     if (window.google?.maps?.places) return resolve(window.google);
+//     const s = document.createElement('script');
+//     s.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+//     s.async = true;
+//     s.onload = () => resolve(window.google);
+//     s.onerror = reject;
+//     document.head.appendChild(s);
+//   });
+
+// /* ─────────────────────────────────────────────
+//    Stars
+// ───────────────────────────────────────────── */
+// const Stars = ({ rating, size = 18 }) => {
+//   const r = Math.max(0, Math.min(5, Number(rating) || 0));
+//   return (
+//     <div className="flex gap-0.5">
+//       {[1, 2, 3, 4, 5].map((i) => (
+//         <Star
+//           key={i}
+//           size={size}
+//           className={
+//             i <= Math.floor(r)
+//               ? 'fill-yellow-400 text-yellow-400'
+//               : 'text-zinc-400'
+//           }
+//         />
+//       ))}
+//     </div>
+//   );
+// };
+
+// /* ─────────────────────────────────────────────
+//    Rating Bar
+// ───────────────────────────────────────────── */
+// const RatingBar = ({ label, count, total }) => {
+//   const pct = total ? (count / total) * 100 : 0;
+//   return (
+//     <div className="flex items-center gap-3 text-xs">
+//       <span className="w-2 text-right text-zinc-500">{label}</span>
+//       <div className="flex-1 h-1.5 bg-zinc-200 rounded-full overflow-hidden">
+//         <motion.div
+//           initial={{ width: 0 }}
+//           animate={{ width: `${pct}%` }}
+//           transition={{ duration: 1 }}
+//           className="h-full bg-yellow-400"
+//         />
+//       </div>
+//       <span className="w-6 text-right text-zinc-500 tabular-nums">
+//         {count}
+//       </span>
+//     </div>
+//   );
+// };
+
+// /* ─────────────────────────────────────────────
+//    Review Card
+// ───────────────────────────────────────────── */
+// const ReviewCard = ({ r }) => {
+//   const [open, setOpen] = useState(false);
+//   const text = r.text || '';
+//   const long = text.length > 150;
+
+//   return (
+//   <div className="
+//     min-w-[260px] max-w-[260px]
+//     sm:min-w-[300px] sm:max-w-[300px]
+//     lg:min-w-[340px] lg:max-w-[340px]
+//     bg-white rounded-3xl p-6 sm:p-8
+//     border border-gray-100
+//     flex flex-col gap-4"
+//   >  
+//       <div className="flex items-center gap-3">
+//         <img
+//           src={r.profile_photo_url}
+//           alt={r.author_name}
+//           className="w-12 h-12 rounded-full"
+//           onError={(e) =>
+//           (e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+//             r.author_name || 'A'
+//           )}`)
+//           }
+//         />
+//         <div className="min-w-0">
+//           <p className="font-semibold truncate">
+//             {r.author_name}
+//           </p>
+//           <Stars rating={r.rating} size={14} />
+//         </div>
+//       </div>
+
+//       <p className="text-sm text-[#424245] leading-relaxed">
+//         {long && !open ? `${text.slice(0, 150)}...` : text}
+//       </p>
+
+//       {long && (
+//         <button
+//           onClick={() => setOpen(!open)}
+//           className="text-xs text-[#0066cc] flex items-center gap-1 self-start"
+//         >
+//           {open ? 'Show less' : 'Read more'}
+//           <ArrowRight size={12} />
+//         </button>
+//       )}
+
+//       <span className="text-xs text-zinc-500">
+//         {r.relative_time_description}
+//       </span>
+//     </div>
+//   );
+// };
+
+// /* ─────────────────────────────────────────────
+//    Map
+// ───────────────────────────────────────────── */
+// const MapEmbed = ({ apiKey, placeId }) => (
+//   <div className="w-full h-full min-h-[420px] rounded-3xl overflow-hidden border">
+//     <iframe
+//       title="Map"
+//       src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=place_id:${placeId}`}
+//       className="w-full h-full grayscale hover:grayscale-0 transition"
+//       allowFullScreen
+//     />
+//     <div className="absolute bottom-6 left-6 bg-white px-5 py-4 rounded-2xl shadow flex gap-3 items-center">
+//       <MapPin size={18} />
+//       <span className="text-sm font-medium">
+//         Chakkalakkal Metro, near Petta, Kochi
+//       </span>
+//     </div>
+//   </div>
+// );
+
+// /* ─────────────────────────────────────────────
+//    Main Component
+// ───────────────────────────────────────────── */
 // export const Googlereview = () => {
-// const { data, isLoading, isFetching } = useQuery({
-//   queryFn: () => googlereviewAPI(),
-//   staleTime: Infinity,
-//   cacheTime: 1000 * 60 * 60,
-//   refetchOnWindowFocus: false,
-//   refetchOnReconnect: false,
-//   refetchOnMount: false,
-// });
+//   const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+//   const PLACE_ID = import.meta.env.VITE_GOOGLE_PLACE_ID;
 
-// // keep hooks in stable order: declare refs/hooks before any early returns
-// const scrollRef = useRef(null);
+//   const [reviews, setReviews] = useState([]);
+//   const [place, setPlace] = useState(null);
+//   const [status, setStatus] = useState('loading');
 
-// if (isLoading) return <div className="text-sm text-gray-400">Loading reviews…</div>;
+//   const scrollRef = useRef(null);
+//   const placesDiv = useRef(null);
+//   const [canLeft, setCanLeft] = useState(false);
+//   const [canRight, setCanRight] = useState(false);
 
-// const reviews = data?.data?.reviews || [];
+//   const fetchReviews = useCallback(async () => {
+//     const google = await loadGoogleScript(API_KEY);
+//     const svc = new google.maps.places.PlacesService(
+//       placesDiv.current
+//     );
 
-//   const scroll = (direction) => {
-//     const scrollAmount = 320; // each card width + gap
-//     if (scrollRef.current) {
-//       scrollRef.current.scrollBy({
-//         left: direction === "left" ? -scrollAmount : scrollAmount,
-//         behavior: "smooth",
-//       });
-//     }
-//   };
+//     svc.getDetails(
+//       {
+//         placeId: PLACE_ID,
+//         fields: [
+//           'rating',
+//           'user_ratings_total',
+//           'reviews',
+//           'url',
+//         ],
+//       },
+//       (p, s) => {
+//         if (s === 'OK') {
+//           setPlace(p);
+//           setReviews(p.reviews || []);
+//           setStatus('success');
+//         }
+//       }
+//     );
+//   }, [API_KEY, PLACE_ID]);
 
-//   const handleWriteGoogleReview = () => {
-//     // Replace with your actual Google Place ID
-//     const GOOGLE_PLACE_ID = import.meta.env.VITE_GOOGLE_PLACE_ID;
-//     const googleReviewUrl = `https://search.google.com/local/writereview?placeid=${GOOGLE_PLACE_ID}`;
-//     window.open(googleReviewUrl, '_blank');
+//   useEffect(() => {
+//     fetchReviews();
+//   }, [fetchReviews]);
+
+//   const metrics = useMemo(() => {
+//     const avg = place?.rating || 0;
+//     const total = place?.user_ratings_total || reviews.length;
+
+//     return {
+//       avg,
+//       total,
+//       stars: [5, 4, 3, 2, 1].map((n) => ({
+//         label: n,
+//         count: reviews.filter(
+//           (r) => Math.round(r.rating) === n
+//         ).length,
+//       })),
+//     };
+//   }, [place, reviews]);
+
+//   const checkScroll = () => {
+//     const el = scrollRef.current;
+//     if (!el) return;
+//     setCanLeft(el.scrollLeft > 20);
+//     setCanRight(
+//       el.scrollLeft + el.clientWidth <
+//       el.scrollWidth - 20
+//     );
 //   };
 
 //   return (
-//     <div className="w-full pt-12 bg-black pb-15">
-//       {/* Heading */}
-//       <div className="text-center mb-10">
-//         <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
-//   Reviews That Speak for Themselves
-// </h2>
-// <p className="text-gray-400 text-sm md:text-base">
-//   Honest opinions shared on our Google Business Profile
-// </p>
-        
-//         {/* Write a Review Button */}
-//         <button
-//           onClick={handleWriteGoogleReview}
-//           className="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold shadow-lg transition inline-flex items-center gap-2"
-//         >
-//           <i className="fab fa-google"></i>
-//           Write a Google Review
-//         </button>
-//       </div>
+//     <section className="bg-[#9E0B13] py-28">
+//       <div ref={placesDiv} className="hidden" />
 
-//       <div className="relative w-[95vw] md:w-full mb-5 max-w-6xl mx-auto flex justify-center">
-//         <style>{`.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}`}</style>
-//         {/* Scroll Buttons */}
-//       <button
-//         onClick={() => scroll("left")}
-//         className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 p-2 rounded-full z-10"
-//       >
-//         <i className="fas fa-chevron-left text-white"></i>
-//       </button>
-
-//       <button
-//         onClick={() => scroll("right")}
-//         className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 p-2 rounded-full z-10"
-//       >
-//         <i className="fas fa-chevron-right text-white"></i>
-//       </button>
-
-//       {/* Scrollable Row */}
-//       <div
-//         ref={scrollRef}
-//         className="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth px-10 pt-4"
-//       >
-//         {reviews.length === 0 && (
-//           <div className="text-sm text-gray-400">No public Google reviews found.</div>
-//         )}
-
-//         {reviews?.map((r, idx) => (
-//           <div
-//             key={idx}
-//             className="bg-[#111] text-white rounded-2xl p-5 min-w-[300px] max-w-[300px] shadow-lg relative flex-shrink-0"
-//           >
-//             {/* Review Stars */}
-//             <div className="flex mb-3">
-//               {Array.from({ length: r.rating }).map((_, i) => (
-//                 <span key={i} className="text-yellow-400 text-lg">★</span>
-//               ))}
-//             </div>
-
-//             {/* Review Text */}
-//             <p className="text-gray-200 text-sm leading-relaxed line-clamp-3">
-//               {r.text}
-//             </p>
-
-//             {/* Read more */}
-//             {r.text?.length > 100 && (
-//               <span className="text-red-400 text-sm mt-1 inline-block cursor-pointer">
-//                 Read more
+//       <div className="max-w-7xl mx-auto px-6 space-y-20">
+//         {/* Header */}
+//         <header className="flex justify-between items-end">
+//           <div>
+//             <h2 className="text-6xl font-bold tracking-tighter text-white">
+//               Google reviews
+//             </h2>
+//             <div className="flex items-center gap-3 mt-3 text-white">
+//               <Stars rating={metrics.avg} size={18} />
+//               <span className="text-lg font-medium">
+//                 {metrics.avg.toFixed(1)}
 //               </span>
-//             )}
-
-//             {/* Speech Bubble Tail */}
-//             <div className="absolute left-10 -bottom-3 w-6 h-6 bg-[#111] rotate-45"></div>
-
-//             {/* Reviewer Info */}
-//             <div className="flex items-center gap-3 mt-6">
-//               <img
-//                 src={r.profile_photo_url || '/default-avatar.png'}
-//                 alt={r.author_name}
-//                 className="w-8 h-8 rounded-full"
-//               />
-//               <div>
-//                 <div className="flex items-center gap-1">
-//                   <span className="font-semibold text-sm">{r.author_name || 'Anonymous'}</span>
-//                   <i className="fas fa-check-circle text-blue-400"></i>
-//                 </div>
-//                 <div className="text-xs text-gray-400">
-//                   {r.relative_time_description} on{' '}
-//                   <span className="text-blue-400">Google</span>
-//                 </div>
-//               </div>
+//               <span className="text-zinc-500">
+//                 ({metrics.total.toLocaleString()})
+//               </span>
 //             </div>
 //           </div>
-//         ))}
+//           <br/>
+//         <button
+//           onClick={() =>
+//             window.open(
+//               place?.url ||
+//               `https://search.google.com/local/writereview?placeid=${PLACE_ID}`,
+//               '_blank'
+//             )
+//           }
+//           className="
+//             bg-[#d8d8d8ff] text-black font-medium rounded-full
+//             px-5 py-3 text-sm
+//             sm:px-6 sm:py-3 sm:text-base
+//             lg:px-8 lg:py-4
+//             flex items-center gap-2
+//             whitespace-nowrap
+//           "
+//         >
+//           Write review
+//           <ExternalLink size={16} className="hidden sm:block" />
+//         </button>
+//         </header>
+
+//         {status === 'success' && (
+//           <>
+//             {/* Stats + Map */}
+//             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+//               <div className="lg:col-span-4 bg-white rounded-3xl p-8 border space-y-6">
+//                 <div>
+//                   <div className="text-7xl font-bold">
+//                     {metrics.avg.toFixed(1)}
+//                   </div>
+//                   <Stars rating={metrics.avg} size={20} />
+//                   <p className="text-sm text-zinc-500 mt-1">
+//                     {metrics.total.toLocaleString()} reviews
+//                   </p>
+//                 </div>
+
+//                 <div className="space-y-2">
+//                   {metrics.stars.map((s) => (
+//                     <RatingBar
+//                       key={s.label}
+//                       {...s}
+//                       total={reviews.length}
+//                     />
+//                   ))}
+//                 </div>
+
+//                 <div className="flex gap-2 text-xs text-zinc-500">
+//                   <Info size={12} /> Google verified data
+//                 </div>
+//               </div>
+
+//               <div className="lg:col-span-8 relative">
+//                 <MapEmbed
+//                   apiKey={API_KEY}
+//                   placeId={PLACE_ID}
+//                 />
+//               </div>
+//             </div>
+
+//             {/* Reviews */}
+//             <div>
+//               <div className="flex justify-between mb-6">
+//                 <h3 className="text-xl font-semibold text-white">
+//                   Recent reviews
+//                 </h3>
+//                 <div className="flex gap-2 text-white">
+//                   <button
+//                     onClick={() =>
+//                       scrollRef.current?.scrollBy({
+//                         left: -360,
+//                         behavior: 'smooth',
+//                       })
+//                     }
+//                     disabled={!canLeft}
+//                   >
+//                     <ChevronLeft />
+//                   </button>
+//                   <button
+//                     onClick={() =>
+//                       scrollRef.current?.scrollBy({
+//                         left: 360,
+//                         behavior: 'smooth',
+//                       })
+//                     }
+//                     disabled={!canRight}
+//                   >
+//                     <ChevronRight />
+//                   </button>
+//                 </div>
+//               </div>
+
+//               <div
+//                 ref={scrollRef}
+//                 onScroll={checkScroll}
+//                 className="flex gap-6 overflow-x-auto pb-6 no-scrollbar"
+//               >
+//                 {reviews.map((r, i) => (
+//                   <ReviewCard key={i} r={r} />
+//                 ))}
+//               </div>
+//             </div>
+//           </>
+//         )}
 //       </div>
-//       </div>
-//     </div>
+//     </section>
 //   );
-// }
+// };
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from 'react';
+import {
+  Star,
+  MapPin,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  Info,
+  ArrowRight,
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
+/* ─────────────────────────────────────────────
+   Load Google Maps SDK
+───────────────────────────────────────────── */
+const loadGoogleScript = (apiKey) =>
+  new Promise((resolve, reject) => {
+    if (window.google?.maps?.places) return resolve(window.google);
+    const s = document.createElement('script');
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+    s.async = true;
+    s.onload = () => resolve(window.google);
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
 
-import React, { useEffect, useRef, useState } from 'react'
-import { BASE_URL } from '../../utils/urls';
-import { useQuery } from '@tanstack/react-query';
-import { googlereviewAPI } from '../../services/reviewServices';
-import LoadingSpinner from './LoadingSpinner';
+/* ─────────────────────────────────────────────
+   Stars
+───────────────────────────────────────────── */
+const Stars = ({ rating, size = 18 }) => {
+  const r = Math.max(0, Math.min(5, Number(rating) || 0));
+  return (
+    <div className="flex gap-0.5">
+      {[1, 2, 3, 4, 5].map((i) => (
+        <Star
+          key={i}
+          size={size}
+          className={
+            i <= Math.floor(r)
+              ? 'fill-yellow-400 text-yellow-400'
+              : 'text-zinc-400'
+          }
+        />
+      ))}
+    </div>
+  );
+};
 
+/* ─────────────────────────────────────────────
+   Rating Bar
+───────────────────────────────────────────── */
+const RatingBar = ({ label, count, total }) => {
+  const pct = total ? (count / total) * 100 : 0;
+  return (
+    <div className="flex items-center gap-3 text-xs">
+      <span className="w-2 text-right text-zinc-500">{label}</span>
+      <div className="flex-1 h-1.5 bg-zinc-200 rounded-full overflow-hidden">
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${pct}%` }}
+          transition={{ duration: 1 }}
+          className="h-full bg-yellow-400"
+        />
+      </div>
+      <span className="w-6 text-right text-zinc-500 tabular-nums">
+        {count}
+      </span>
+    </div>
+  );
+};
+
+/* ─────────────────────────────────────────────
+   Review Card
+───────────────────────────────────────────── */
+const ReviewCard = ({ r }) => {
+  const [open, setOpen] = useState(false);
+  const text = r.text || '';
+  const long = text.length > 150;
+
+  return (
+    <div className="
+      min-w-[260px] max-w-[260px]
+      sm:min-w-[300px] sm:max-w-[300px]
+      lg:min-w-[340px] lg:max-w-[340px]
+      bg-white rounded-3xl p-6 sm:p-8
+      border border-gray-100
+      flex flex-col gap-4"
+    >
+      <div className="flex items-center gap-3">
+        <img
+          src={r.profile_photo_url}
+          alt={r.author_name}
+          className="w-12 h-12 rounded-full"
+          onError={(e) =>
+            (e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+              r.author_name || 'A'
+            )}`)
+          }
+        />
+        <div className="min-w-0">
+          <p className="font-semibold truncate">
+            {r.author_name}
+          </p>
+          <Stars rating={r.rating} size={14} />
+        </div>
+      </div>
+
+      <p className="text-sm text-[#424245] leading-relaxed">
+        {long && !open ? `${text.slice(0, 150)}...` : text}
+      </p>
+
+      {long && (
+        <button
+          onClick={() => setOpen(!open)}
+          className="text-xs text-[#0066cc] flex items-center gap-1 self-start"
+        >
+          {open ? 'Show less' : 'Read more'}
+          <ArrowRight size={12} />
+        </button>
+      )}
+
+      <span className="text-xs text-zinc-500">
+        {r.relative_time_description}
+      </span>
+    </div>
+  );
+};
+
+/* ─────────────────────────────────────────────
+   Map
+───────────────────────────────────────────── */
+const MapEmbed = ({ apiKey, placeId, location }) => (
+  <div className="w-full h-full min-h-[420px] rounded-3xl overflow-hidden border relative">
+    <iframe
+      title="Map"
+      src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=place_id:${placeId}`}
+      className="w-full h-full grayscale hover:grayscale-0 transition"
+      allowFullScreen
+    />
+    <div className="absolute bottom-6 left-6 bg-white px-5 py-4 rounded-2xl shadow flex gap-3 items-center">
+      <MapPin size={18} />
+      <span className="text-sm font-medium">
+        {location || 'Chakkalakkal Metro, near Petta, Kochi'}
+      </span>
+    </div>
+  </div>
+);
+
+/* ─────────────────────────────────────────────
+   Main Component
+───────────────────────────────────────────── */
 export const Googlereview = () => {
-const { data, isLoading, isFetching } = useQuery({
-  queryFn: () => googlereviewAPI(),
-  staleTime: Infinity,
-  cacheTime: 1000 * 60 * 60,
-  refetchOnWindowFocus: false,
-  refetchOnReconnect: false,
-  refetchOnMount: false,
-});
+  const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+  const PLACE_ID = import.meta.env.VITE_GOOGLE_PLACE_ID;
 
-// keep hooks in stable order: declare refs/hooks before any early returns
-const scrollRef = useRef(null);
+  const [reviews, setReviews] = useState([]);
+  const [place, setPlace] = useState(null);
+  const [status, setStatus] = useState('loading');
+  const [error, setError] = useState(null);
 
-if (isLoading) return <div className="text-sm text-gray-400">Loading reviews…</div>;
+  const scrollRef = useRef(null);
+  const placesDiv = useRef(null);
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(false);
 
-const reviews = data?.data?.reviews || [];
+  const fetchReviews = useCallback(async () => {
+    try {
+      const google = await loadGoogleScript(API_KEY);
+      const svc = new google.maps.places.PlacesService(
+        placesDiv.current
+      );
 
-  const scroll = (direction) => {
-    const scrollAmount = 320; // each card width + gap
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
+      svc.getDetails(
+        {
+          placeId: PLACE_ID,
+          fields: [
+            'rating',
+            'user_ratings_total',
+            'reviews',
+            'url',
+            'formatted_address',
+          ],
+        },
+        (p, s) => {
+          if (s === 'OK') {
+            setPlace(p);
+            setReviews(p.reviews || []);
+            setStatus('success');
+          } else {
+            setStatus('error');
+            setError('Failed to load reviews');
+          }
+        }
+      );
+    } catch (err) {
+      setStatus('error');
+      setError(err.message);
     }
-  };
+  }, [API_KEY, PLACE_ID]);
 
-  const handleWriteGoogleReview = () => {
-    // Replace with your actual Google Place ID
-    const GOOGLE_PLACE_ID = import.meta.env.VITE_GOOGLE_PLACE_ID;
-    const googleReviewUrl = `https://search.google.com/local/writereview?placeid=${GOOGLE_PLACE_ID}`;
-    window.open(googleReviewUrl, '_blank');
+  useEffect(() => {
+    fetchReviews();
+  }, [fetchReviews]);
+
+  useEffect(() => {
+    checkScroll();
+  }, [reviews]);
+
+  const metrics = useMemo(() => {
+    const avg = place?.rating || 0;
+    const total = place?.user_ratings_total || reviews.length;
+
+    return {
+      avg,
+      total,
+      stars: [5, 4, 3, 2, 1].map((n) => ({
+        label: n,
+        count: reviews.filter(
+          (r) => Math.round(r.rating) === n
+        ).length,
+      })),
+    };
+  }, [place, reviews]);
+
+  const checkScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanLeft(el.scrollLeft > 20);
+    setCanRight(
+      el.scrollLeft + el.clientWidth <
+      el.scrollWidth - 20
+    );
   };
 
   return (
-    <div className="w-full pt-12 bg-black pb-15">
-      {/* Heading */}
-      <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
-  Reviews That Speak for Themselves
-</h2>
-<p className="text-gray-400 text-sm md:text-base">
-  Honest opinions shared on our Google Business Profile
-</p>
-        
-        {/* Write a Review Button */}
-        <button
-          onClick={handleWriteGoogleReview}
-          className="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold shadow-lg transition inline-flex items-center gap-2"
-        >
-          <i className="fab fa-google"></i>
-          Write a Google Review
-        </button>
-      </div>
+    <section className="bg-[#9E0B13] py-20 sm:py-28">
+      <div ref={placesDiv} className="hidden" />
 
-      <div className="relative w-[95vw] md:w-full mb-5 max-w-6xl mx-auto flex justify-center">
-        <style>{`.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}`}</style>
-        {/* Scroll Buttons */}
-      <button
-        onClick={() => scroll("left")}
-        className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 p-2 rounded-full z-10"
-      >
-        <i className="fas fa-chevron-left text-white"></i>
-      </button>
-
-      <button
-        onClick={() => scroll("right")}
-        className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 p-2 rounded-full z-10"
-      >
-        <i className="fas fa-chevron-right text-white"></i>
-      </button>
-
-      {/* Scrollable Row */}
-      <div
-        ref={scrollRef}
-        className="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth px-10 pt-4"
-      >
-        {reviews.length === 0 && (
-          <div className="text-sm text-gray-400">No public Google reviews found.</div>
-        )}
-
-        {reviews?.map((r, idx) => (
-          <div
-            key={idx}
-            className="bg-[#111] text-white rounded-2xl p-5 min-w-[300px] max-w-[300px] shadow-lg relative flex-shrink-0"
-          >
-            {/* Review Stars */}
-            <div className="flex mb-3">
-              {Array.from({ length: r.rating }).map((_, i) => (
-                <span key={i} className="text-yellow-400 text-lg">★</span>
-              ))}
-            </div>
-
-            {/* Review Text */}
-            <p className="text-gray-200 text-sm leading-relaxed line-clamp-3">
-              {r.text}
-            </p>
-
-            {/* Read more */}
-            {r.text?.length > 100 && (
-              <span className="text-red-400 text-sm mt-1 inline-block cursor-pointer">
-                Read more
+      <div className="max-w-7xl mx-auto px-6 space-y-16 sm:space-y-20">
+        {/* Header */}
+        <header className="flex flex-col gap-6 sm:gap-0 sm:flex-row sm:justify-between sm:items-end">
+          <div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tighter text-white">
+              Google reviews
+            </h2>
+            <div className="flex items-center gap-3 mt-3 text-white">
+              <Stars rating={metrics.avg} size={18} />
+              <span className="text-lg font-medium">
+                {metrics.avg.toFixed(1)}
               </span>
-            )}
-
-            {/* Speech Bubble Tail */}
-            <div className="absolute left-10 -bottom-3 w-6 h-6 bg-[#111] rotate-45"></div>
-
-            {/* Reviewer Info */}
-            <div className="flex items-center gap-3 mt-6">
-              <img
-                src={r.profile_photo_url || '/default-avatar.png'}
-                alt={r.author_name}
-                className="w-8 h-8 rounded-full"
-              />
-              <div>
-                <div className="flex items-center gap-1">
-                  <span className="font-semibold text-sm">{r.author_name || 'Anonymous'}</span>
-                  <i className="fas fa-check-circle text-blue-400"></i>
-                </div>
-                <div className="text-xs text-gray-400">
-                  {r.relative_time_description} on{' '}
-                  <span className="text-blue-400">Google</span>
-                </div>
-              </div>
+              <span className="text-zinc-400">
+                ({metrics.total.toLocaleString()})
+              </span>
             </div>
           </div>
-        ))}
+
+          <button
+            onClick={() =>
+              window.open(
+                place?.url ||
+                `https://search.google.com/local/writereview?placeid=${PLACE_ID}`,
+                '_blank'
+              )
+            }
+            className="
+              bg-[#d8d8d8ff] text-black font-medium rounded-full
+              px-5 py-3 text-sm
+              sm:px-6 sm:py-3 sm:text-base
+              lg:px-8 lg:py-4
+              flex items-center justify-center sm:justify-start gap-2
+              whitespace-nowrap
+              hover:bg-gray-200
+              transition-colors
+              w-full sm:w-auto
+            "
+          >
+            Write review
+            <ExternalLink size={16} className="hidden sm:block" />
+          </button>
+        </header>
+
+        {status === 'loading' && (
+          <div className="flex items-center justify-center py-20">
+            <div className="text-white text-lg">Loading reviews...</div>
+          </div>
+        )}
+
+        {status === 'error' && (
+          <div className="flex items-center justify-center py-20">
+            <div className="text-white text-lg">
+              {error || 'Failed to load reviews. Please try again later.'}
+            </div>
+          </div>
+        )}
+
+        {status === 'success' && (
+          <>
+            {/* Stats + Map */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              <div className="lg:col-span-4 bg-white rounded-3xl p-6 sm:p-8 border space-y-6">
+                <div>
+                  <div className="text-6xl sm:text-7xl font-bold">
+                    {metrics.avg.toFixed(1)}
+                  </div>
+                  <Stars rating={metrics.avg} size={20} />
+                  <p className="text-sm text-zinc-500 mt-1">
+                    {metrics.total.toLocaleString()} reviews
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  {metrics.stars.map((s) => (
+                    <RatingBar
+                      key={s.label}
+                      {...s}
+                      total={reviews.length}
+                    />
+                  ))}
+                </div>
+
+                <div className="flex gap-2 text-xs text-zinc-500">
+                  <Info size={12} /> Google verified data
+                </div>
+              </div>
+
+              <div className="lg:col-span-8">
+                <MapEmbed
+                  apiKey={API_KEY}
+                  placeId={PLACE_ID}
+                  location={place?.formatted_address}
+                />
+              </div>
+            </div>
+
+            {/* Reviews */}
+            <div>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0 mb-6">
+                <h3 className="text-xl font-semibold text-white">
+                  Recent reviews
+                </h3>
+                <div className="flex gap-2 text-white">
+                  <button
+                    onClick={() =>
+                      scrollRef.current?.scrollBy({
+                        left: -360,
+                        behavior: 'smooth',
+                      })
+                    }
+                    disabled={!canLeft}
+                    className="p-2 hover:bg-white/10 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <ChevronLeft />
+                  </button>
+                  <button
+                    onClick={() =>
+                      scrollRef.current?.scrollBy({
+                        left: 360,
+                        behavior: 'smooth',
+                      })
+                    }
+                    disabled={!canRight}
+                    className="p-2 hover:bg-white/10 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <ChevronRight />
+                  </button>
+                </div>
+              </div>
+
+              <div
+                ref={scrollRef}
+                onScroll={checkScroll}
+                className="flex gap-6 overflow-x-auto pb-6 no-scrollbar"
+              >
+                {reviews.map((r, i) => (
+                  <ReviewCard key={`${r.author_name}-${i}`} r={r} />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
-      </div>
-    </div>
+    </section>
   );
-}
+};

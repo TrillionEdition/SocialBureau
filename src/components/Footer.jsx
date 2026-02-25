@@ -171,15 +171,15 @@ export default function Footer() {
                   LinkedIn
                 </a>
                 <a
-                  href="https://x.com/SocialBure23829"
+                  href="https://x.com/SocialBureau_in"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[12px] text-blue-600 hover:text-blue-700 transition-colors"
                 >
-                  Twitter
+                  X
                 </a>
                 <a
-                  href="https://www.instagram.com/socialbureau.in?igsh=NW4yd2lldzRpNXdj"
+                  href="https://www.instagram.com/socialbureau.in/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[12px] text-blue-600 hover:text-blue-700 transition-colors"
@@ -187,7 +187,7 @@ export default function Footer() {
                   Instagram
                 </a>
                 <a
-                  href="https://www.facebook.com/share/15yzVd5Qcw/"
+                  href="https://www.facebook.com/people/SocialBureau/61578149225125/#"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[12px] text-blue-600 hover:text-blue-700 transition-colors"

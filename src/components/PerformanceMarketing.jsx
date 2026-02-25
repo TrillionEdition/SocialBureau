@@ -321,7 +321,7 @@ const PerformanceMarketing = () => {
                     <div className="relative h-64 sm:h-80 md:h-96 flex items-center justify-center animate-fadeInUp mt-8 md:mt-0">
                         <div className="w-full h-full bg-gradient-to-br from-[rgba(230,126,60,0.1)] to-[rgba(74,155,158,0.1)] rounded-3xl overflow-hidden flex items-center justify-center p-4">
                             <img
-                                src="assets/performance-marketing.webp"
+                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579760/performance-marketing_1_oll9bz.jpg"
                                 alt="PERFORMANCE MARKETING IMAGE"
                                 className="w-full h-full object-cover rounded-2xl"
                                 loading="lazy"
@@ -367,7 +367,7 @@ const PerformanceMarketing = () => {
                 <div className="grid md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
                     <div className="h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-[rgba(230,126,60,0.1)] to-[rgba(74,155,158,0.1)] rounded-3xl flex items-center justify-center relative overflow-hidden p-4">
                         <img
-                            src="assets/performancemarketing3.webp"
+                            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579775/busy-manager-at-workplace-above-view-2026-01-08-06-22-51-utc_1_rau5yl.jpg"
                             alt="PERFORMANCE MARKETING IMAGE"
                             className="w-full h-full object-cover rounded-2xl"
                             loading="lazy"
@@ -397,7 +397,7 @@ const PerformanceMarketing = () => {
                         </p>
                         <div className="max-w-4xl mx-auto mb-12">
                             <img
-                                src="/assets/performancemarketing1.webp"
+                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579759/process-of-creating-an-interface-for-a-mobile-app-2026-01-07-01-03-00-utc_1_oktarr.jpg"
                                 alt="PERFORMANCE MARKETING IMAGE"
                                 className="w-full h-auto max-h-[400px] object-cover rounded-2xl shadow-lg"
                                 loading="lazy"

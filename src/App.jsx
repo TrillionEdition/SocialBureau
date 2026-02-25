@@ -81,6 +81,7 @@ import JobsList from "./components/HrForum/JobListing";
 import CandidateProfile from "./components/HrForum/CandidateProfile";
 import Sivaprasad from "./components/Sivaprasad";
 import ATSChecker from "./pages/ATSChecker";
+import Logout from "./components/Logout";
 
 function App() {
   const VoiceAsst = lazy(() => import("./pages/VoiceAsst"));
@@ -181,6 +182,7 @@ function App() {
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path='/login' element={<AuthPage />} />
+          <Route path="/logout" element={<Logout />} />
 
           <Route path="/api-marketing" element={<ApiMarketingPage />} />
           <Route path='/performance-marketing' element={<PerformanceMarketing />} />

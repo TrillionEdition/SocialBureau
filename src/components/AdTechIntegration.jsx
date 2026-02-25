@@ -10,7 +10,11 @@ import {
     CheckCircle,
     BarChart,
     Database,
-    Layers
+    Layers,
+    ChevronRight,
+    ArrowUp,
+    Plus,
+    X
 } from 'lucide-react';
 import Footer from './Footer';
 import Seo from './Seo';
@@ -18,7 +22,7 @@ import Seo from './Seo';
 const AdTechIntegration = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [activeFaq, setActiveFaq] = useState(null);
-    const [activeCaseStudy, setActiveCaseStudy] = useState(null);
+    const [activeCaseStudy, setActiveCaseStudy] = useState(0);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -34,10 +38,6 @@ const AdTechIntegration = () => {
 
     const toggleFaq = (index) => {
         setActiveFaq(activeFaq === index ? null : index);
-    };
-
-    const toggleCaseStudy = (index) => {
-        setActiveCaseStudy(activeCaseStudy === index ? null : index);
     };
 
     const CountUp = ({ end, duration = 1500, suffix = "" }) => {
@@ -92,7 +92,7 @@ const AdTechIntegration = () => {
         {
             icon: Settings,
             title: "Ad Infrastructure Setup",
-            description: "We configure enterprise-ready advertising systems that support scalability and long-term monetization. By implementing a reliable Ad Server such as Google Ad Manager, publishers gain structured control over inventory, demand sources, and delivery logic. We also support AdSense Services where required, ensuring smooth and compliant integration.",
+            description: "We configure enterprise-ready advertising systems that support scalability and long-term monetization. By implementing a reliable Ad Server such as Google Ad Manager, publishers gain structured control over inventory, demand sources, and delivery logic. We also support AdSense Services where required, ensuring smooth and compliant integration",
             features: [
                 "Structured ad inventory management",
                 "Scalable system architecture",
@@ -103,7 +103,7 @@ const AdTechIntegration = () => {
         {
             icon: TrendingUp,
             title: "Monetization Optimization",
-            description: "To improve revenue performance, we deploy advanced Header Bidding frameworks across premium inventory. By working with selected SSP and DSP partners and connecting to a secure Ad Exchange, we help publishers achieve better demand competition and more consistent yield.",
+            description: "Monetization Optimization To improve revenue performance, we deploy advanced Header Bidding frameworks across premium inventory. By working with selected SSP and DSP partners and connecting to a secure Ad Exchange, we help publishers achieve better demand competition and more consistent yield.",
             features: [
                 "Demand source diversification",
                 "Improved pricing efficiency",
@@ -114,7 +114,7 @@ const AdTechIntegration = () => {
             icon: DollarSign,
             title: "Revenue & Tracking Solutions",
             description: "We implement reliable Ad Solutions with accurate Ad Tracking Implementation to provide clear visibility into revenue performance. These systems help publishers identify opportunities and strengthen Publishers through data-driven decisions.",
-            features: [
+                        features: [
                 "Granular revenue insights",
                 "Performance-based optimization",
                 "Clear reporting structure"
@@ -123,8 +123,7 @@ const AdTechIntegration = () => {
         {
             icon: Smartphone,
             title: "Multi-Platform Ad Delivery",
-            description: "We support both Mobile Ad and Web Ad Integration to ensure consistent ad delivery across devices. Using structured Advertising Automation, we reduce manual effort while maintaining stable performance across all platforms.",
-            features: [
+            description: "We support both Mobile Ad and Web Ad Integration to ensure consistent ad delivery across devices. Using structured Advertising Automation, we reduce manual effort while maintaining stable performance across all platforms.",            features: [
                 "Cross-device consistency",
                 "Automated ad workflows",
                 "Reduced operational load"
@@ -143,7 +142,7 @@ const AdTechIntegration = () => {
         {
             icon: Shield,
             title: "Performance & Security",
-            description: "We enable Real-Time Bidding supported by First-Party Data Activation to improve efficiency and relevance. Engagement is enhanced through Dynamic Creative Optimization (DCO), while Ad Fraud Prevention and an Ad Verification Tool ensure brand safety and traffic quality.",
+            description: "We enable Real-Time Bidding supported by First-Party Data Activation to improve efficiency and relevance. Engagement is enhanced through Dynamic Creative Optimization (DCO), while Ad Fraud Prevention and an Ad Verification Tool ensure brand safety and traffic quality",
             features: [
                 "Secure ad delivery",
                 "Traffic quality control",
@@ -156,28 +155,28 @@ const AdTechIntegration = () => {
         {
             icon: Layers,
             title: "Advertising Ecosystem Expertise",
-            description: "We have a strong understanding of how today's advertising ecosystem functions, including the interaction between platforms, demand sources, and data layers. This allows us to design systems that are efficient, compliant, and adaptable to changing industry standards."
-        },
+            description: "We have a strong understanding of how today's advertising ecosystem functions, including the interaction between platforms, demand sources, and data layers. This allows us to design systems that are efficient, compliant, and adaptable to changing industry standards.",
+                },
         {
             icon: BarChart,
             title: "Structured Inventory Management",
-            description: "Our team specializes in managing ad inventory through well-structured delivery frameworks. By organizing placements, demand priorities, and delivery logic, we help publishers maintain control while ensuring consistent performance across all inventory."
-        },
+            description: "Our team specializes in managing ad inventory through well-structured delivery frameworks. By organizing placements, demand priorities, and delivery logic, we help publishers maintain control while ensuring consistent performance across all inventory.",
+                },
         {
             icon: TrendingUp,
             title: "Targeted Yield Optimization",
-            description: "We apply precision-focused strategies to audience targeting, ensuring ads reach the most relevant users. Combined with yield optimization techniques, this approach helps maximize revenue while maintaining a balanced user experience."
-        },
+            description: "We apply precision-focused strategies to audience targeting, ensuring ads reach the most relevant users. Combined with yield optimization techniques, this approach helps maximize revenue while maintaining a balanced user experience.",
+                },
         {
             icon: Database,
             title: "Data-Driven Strategy",
-            description: "Our decisions are guided by data rather than assumptions. By analyzing performance metrics and behavioral insights, we help businesses refine strategies, identify growth opportunities, and improve advertising outcomes through data-driven advertising practices."
-        },
+            description: "Our decisions are guided by data rather than assumptions. By analyzing performance metrics and behavioral insights, we help businesses refine strategies, identify growth opportunities, and improve advertising outcomes through data-driven advertising practices.",
+                },
         {
             icon: Monitor,
             title: "Cross-Platform Experience",
-            description: "We have hands-on experience managing advertising across multiple platforms and devices. This enables us to ensure consistency, performance, and scalability in cross-platform advertising environments, regardless of traffic volume or audience behavior."
-        }
+            description: "We have hands-on experience managing advertising across multiple platforms and devices. This enables us to ensure consistency, performance, and scalability in cross-platform advertising environments, regardless of traffic volume or audience behavior.",
+                }
     ];
 
     const caseStudies = [
@@ -185,11 +184,11 @@ const AdTechIntegration = () => {
             title: "Digital Publisher — Advertising Infrastructure Stabilization",
             type: "Digital Publisher",
             idealCustomer: "A mid-sized digital publisher with growing traffic, multiple ad placements, and increasing operational complexity.",
-            challenge: "The publisher’s advertising setup lacked structure. Inventory management was inconsistent, reporting was unclear, and daily ad operations required manual effort. As traffic increased, delivery stability became difficult to maintain.",
-            approach: "We implemented a reliable Ad Server and introduced structured ad inventory management. Placements, demand priorities, and delivery logic were aligned to create a controlled and scalable advertising environment. ",
+            challenge: "The publisher's advertising setup lacked structure. Inventory management was inconsistent, reporting was unclear, and daily ad operations required manual effort. As traffic increased, delivery stability became difficult to maintain.",
+            approach: "We implemented a reliable Ad Server and introduced structured ad inventory management. Placements, demand priorities, and delivery logic were aligned to create a controlled and scalable advertising environment.",
             results: [
                 { value: "33%", label: "Reporting accuracy improvement within 90 days" },
-                { value: "100%", label: "Ad delivery stabilization active inventory" },
+                { value: "100%", label: "Ad delivery stabilization across active inventory" },
                 { value: "25%", label: "Reduced daily operations effort" }
             ]
         },
@@ -201,7 +200,7 @@ const AdTechIntegration = () => {
             approach: "We deployed Header Bidding frameworks, connected selected SSP and DSP partners, and optimized bidding strategies through a secure Ad Exchange to improve demand competition.",
             results: [
                 { value: "26%", label: "Average yield increase over 60 days" },
-                { value: "Stable", label: "Pricing efficiency across premium inventory " },
+                { value: "Stable", label: "Pricing efficiency across premium inventory" },
                 { value: "Consistent", label: "Revenue during peak traffic" }
             ]
         },
@@ -213,7 +212,7 @@ const AdTechIntegration = () => {
             approach: "We aligned AdTech Solutions with Marketing Technology ecosystems and enabled secure data handling through a Data Management Platform to support scalability.",
             results: [
                 { value: "2", label: "Traffic growth support", suffix: "×" },
-                { value: "Reliable", label: "System during peak usage" },
+                { value: "Reliable", label: "System performance during peak usage" },
                 { value: "Flexible", label: "Long-term scalability" }
             ]
         }
@@ -278,179 +277,417 @@ const AdTechIntegration = () => {
     ];
 
     return (
-        <div className="font-['Inter'] bg-[#FFF8F0] text-[#1A1A1A] overflow-x-hidden at-page">
+        <div className="font-['SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif] bg-white text-[#1d1d1f] overflow-x-hidden antialiased">
             <Seo
                 title="AdTech Integration Agency in Kerala | Social Bureau"
                 description="Structured AdTech integrations that connect platforms, align data, and improve campaign performance without complexity or wasted spend."
-                keywords="AdTech Integration Agency in Kerala,AdTech Integration agency kochi,AdTech Integration Services,Marketing Technology Integration,Adtech expert,AdTech Integration Services in  kochi,Ad Infrastructure Setup,Monetization Optimization,Revenue & Tracking Solutions,Multi-Platform Ad Delivery,Advanced Technology Enablement, Performance & Security"
+                keywords="AdTech Integration Agency in Kerala,AdTech Integration agency kochi,AdTech Integration Services,Marketing Technology Integration,Adtech expert"
             />
+            
             <style dangerouslySetInnerHTML={{
                 __html: `
+                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+                
+                * {
+                    -webkit-font-smoothing: antialiased;
+                    -moz-osx-font-smoothing: grayscale;
+                }
+                
                 .at-page img {
                     max-width: 100%;
                     height: auto;
                 }
-                @keyframes fadeInUp {
+                
+                @keyframes fadeUp {
                     from {
                         opacity: 0;
-                        transform: translateY(30px);
+                        transform: translateY(20px);
                     }
                     to {
                         opacity: 1;
                         transform: translateY(0);
                     }
                 }
-                @keyframes float {
-                    0%, 100% {
-                        transform: translateY(0px);
+                
+                .animate-fadeUp {
+                    animation: fadeUp 0.8s ease-out forwards;
+                }
+                
+                .apple-section {
+                    opacity: 0;
+                    animation: fadeUp 0.8s ease-out forwards;
+                }
+                
+                .hover-scale {
+                    transition: transform 0.3s ease;
+                }
+                
+                .hover-scale:hover {
+                    transform: scale(1.02);
+                }
+                
+                .apple-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                    gap: 2rem;
+                }
+                
+                @media (max-width: 640px) {
+                    .apple-grid {
+                        grid-template-columns: 1fr;
+                        gap: 1.5rem;
                     }
-                    50% {
-                        transform: translateY(-20px);
-                    }
                 }
-                @keyframes pulse-slow {
-                    0%, 100% {
-                        opacity: 0.2;
-                    }
-                    50% {
-                        opacity: 0.4;
-                    }
+                
+                .apple-card {
+                    background: #ffffff;
+                    border-radius: 24px;
+                    padding: 2rem;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+                    transition: all 0.3s ease;
+                    border: 1px solid #f5f5f7;
                 }
-                .animate-fadeInUp {
-                    animation: fadeInUp 0.8s ease-out forwards;
+                
+                .apple-card:hover {
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+                    border-color: #e5e5e7;
                 }
-                .animate-float {
-                    animation: float 6s ease-in-out infinite;
+                
+                .apple-button-primary {
+                    background: #7E0A11;
+                    color: white;
+                    padding: 0.75rem 2rem;
+                    border-radius: 980px;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    transition: all 0.3s ease;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
                 }
-                .animate-pulse-slow {
-                    animation: pulse-slow 4s ease-in-out infinite;
+                
+                .apple-button-primary:hover {
+                    background: #63080d;
+                    transform: scale(1.02);
                 }
-                .clip-path-polygon {
-                    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+                
+                .apple-button-secondary {
+                    background: transparent;
+                    color: #7E0A11;
+                    padding: 0.75rem 2rem;
+                    border-radius: 980px;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    border: 1px solid #7E0A11;
+                    transition: all 0.3s ease;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+                
+                .apple-button-secondary:hover {
+                    background: rgba(126, 10, 17, 0.05);
+                }
+                
+                .apple-link {
+                    color: #7E0A11;
+                    font-weight: 500;
+                    transition: all 0.3s ease;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.25rem;
+                }
+                
+                .apple-link:hover {
+                    gap: 0.5rem;
+                }
+                
+                .apple-overline {
+                    font-size: 0.75rem;
+                    letter-spacing: 0.05em;
+                    text-transform: uppercase;
+                    color: #86868b;
+                    font-weight: 600;
+                }
+                
+                .apple-heading {
+                    font-size: clamp(2.5rem, 5vw, 3.5rem);
+                    font-weight: 600;
+                    line-height: 1.1;
+                    letter-spacing: -0.015em;
+                }
+                
+                .apple-subheading {
+                    font-size: clamp(1.25rem, 3vw, 1.5rem);
+                    font-weight: 500;
+                    line-height: 1.4;
+                    color: #1d1d1f;
+                }
+                
+                .apple-body {
+                    font-size: 1.125rem;
+                    line-height: 1.6;
+                    color: #515154;
+                }
+                
+                .apple-stat {
+                    font-size: 2.5rem;
+                    font-weight: 600;
+                    color: #7E0A11;
+                    line-height: 1;
+                }
+                
+                .apple-stat-label {
+                    font-size: 0.875rem;
+                    color: #86868b;
+                    margin-top: 0.5rem;
+                }
+                
+                .apple-faq-button {
+                    background: transparent;
+                    border: none;
+                    padding: 1.5rem;
+                    width: 100%;
+                    text-align: left;
+                    font-size: 1.125rem;
+                    font-weight: 500;
+                    color: #1d1d1f;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    transition: all 0.3s ease;
+                    border-bottom: 1px solid #f5f5f7;
+                }
+                
+                .apple-faq-button:hover {
+                    color: #7E0A11;
+                }
+                
+                .apple-faq-button.active {
+                    color: #7E0A11;
+                }
+                
+                .apple-faq-answer {
+                    padding: 0 1.5rem 1.5rem 1.5rem;
+                    color: #515154;
+                    line-height: 1.6;
+                }
+                
+                .scroll-progress {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    height: 3px;
+                    background: #7E0A11;
+                    z-index: 50;
+                    transition: width 0.1s ease;
+                }
+                
+                .sticky-nav {
+                    transition: all 0.3s ease;
+                }
+                
+                .sticky-nav.scrolled {
+                    background: rgba(255, 255, 255, 0.8);
+                    backdrop-filter: blur(20px);
+                    -webkit-backdrop-filter: blur(20px);
+                    border-bottom: 1px solid #f5f5f7;
                 }
             `}} />
 
             {/* Scroll Progress Bar */}
-            <div className="fixed top-0 left-0 h-1 bg-gradient-to-r from-[#FBBF24] to-[#1F2937] z-50" style={{ width: '0%' }}></div>
+            <div className="scroll-progress" style={{ width: '0%' }}></div>
 
             {/* Hero Section */}
-            <section className="min-h-screen flex items-center pt-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-full md:w-3/5 h-full bg-gradient-to-br from-[#FBBF24] to-[#1F2937] clip-path-polygon opacity-10 animate-float hidden md:block"></div>
-                <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10 px-4 sm:px-6">
-                    <div className="animate-fadeInUp">
-                        <h1 className="font-['Noto_Sans'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8">
+            <section className="min-h-screen flex items-center px-6 lg:px-8 relative overflow-hidden">
+                <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                    <div className="animate-fadeUp">
+                        <span className="apple-overline mb-4 block">AdTech Integration Agency</span>
+                        <h1 className="apple-heading mb-6">
                             AdTech Integration Agency
-                            <span className="block bg-gradient-to-br from-[#FBBF24] to-[#1F2937] bg-clip-text text-transparent mt-2">
-                                in Kerala
-                            </span>
+                            <span className="block text-[#7E0A11]">in Kerala</span>
                         </h1>
-                        <p className="font-['Noto_Sans'] text-base sm:text-lg text-[#4B5563] mb-8 lg:mb-12 max-w-2xl">
+                        <p className="apple-body text-[#515154] mb-10 max-w-2xl">
                             Transform your digital advertising revenue with India's leading advertising technology platform integration experts. Trusted by publishers, media houses, and app owners across India, our team delivers technology-focused solutions that balance monetization with user experience.
                         </p>
-                        <div className="flex flex-col sm:flex-row flex-wrap gap-4">
+                        <div className="flex flex-col sm:flex-row gap-4">
                             <a
-                                href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more+about+AdTech+Integration.&type=phone_number&app_absent=0"
-                                className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-br from-[#FBBF24] to-[#1F2937] text-white font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-xl transition-all text-sm sm:text-base"
+                                href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more+about+AdTech+Integration."
+                                className="apple-button-primary"
                             >
                                 Book a Strategy Call
+                                <ChevronRight className="w-4 h-4" />
                             </a>
                             <a
                                 href="#services"
-                                className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-white text-[#1F2937] font-semibold rounded-full border-2 border-[#1F2937] hover:bg-[#1F2937] hover:text-white hover:translate-y-[-3px] transition-all text-sm sm:text-base"
+                                className="apple-button-secondary"
                             >
                                 Explore Services
                             </a>
                         </div>
                     </div>
-                    <div className="relative h-64 sm:h-80 md:h-96 flex items-center justify-center animate-fadeInUp mt-8 md:mt-0">
-                        <div className="w-full h-full bg-gradient-to-br from-[rgba(251,191,36,0.1)] to-[rgba(31,41,55,0.1)] rounded-3xl overflow-hidden flex items-center justify-center p-4">
-                            <img
-                                src="/assets/adtech1.webp"
-                                alt="ADTECH INTEGRATION IMAGE"
-                                className="w-full h-full object-cover rounded-2xl"
-                                loading="lazy"
-                                onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23FBBF24' opacity='0.1'/%3E%3Ctext x='50%' y='50%' font-family='Arial' font-size='24' fill='%23FBBF24' text-anchor='middle'%3EAdTech Integration%3C/text%3E%3C/svg%3E"
-                                }}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* About Section */}
-            <section id="about" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#FBBF24] to-[#1F2937] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                        About AdTech Integration
-                    </span>
-                    <h2 className="font-['Noto_Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#1F2937]">Marketing Technology Integration</h2>
-                </div>
-                <div className="grid md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
-                    <div>
-                        <h3 className="font-['Noto_Sans'] text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-[#1F2937]">Structured Alignment of Digital Advertising</h3>
-                        <p className="font-['Noto_Sans'] text-[#4B5563] mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-                            AdTech integration refers to the structured alignment of tools, platforms, and workflows used to manage and optimize ads across digital channels. In today's competitive landscape, Digital Advertising success depends on how well systems communicate with each other.
-                        </p>
-                        <p className="font-['Noto_Sans'] text-[#4B5563] leading-relaxed text-sm sm:text-base">
-                            At <a href='/'>SocialBureau</a>, we focus on practical Marketing Technology Integration that supports publishers, media companies, and content platforms. By implementing secure API Integration, we enable seamless data flow between platforms, ensuring accuracy, speed, and long-term flexibility.
-                        </p>
-                    </div>
-                    <div className="h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-[rgba(251,191,36,0.1)] to-[rgba(31,41,55,0.1)] rounded-3xl flex items-center justify-center relative overflow-hidden p-4">
+                    <div className="relative h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
                         <img
-                            src="/assets/ad.webp"
-                            alt="ADTECH INTEGRATION IMAGE"
-                            className="w-full h-full object-cover rounded-2xl"
+                            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579759/in-the-vibrant-ambiance-of-a-modern-startup-office-2026-01-07-06-12-40-utc_1_sjrw1u.jpg"
+                            alt="AdTech Integration"
+                            className="w-full h-full object-cover"
                             loading="lazy"
-                            onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23FBBF24' opacity='0.1'/%3E%3Ctext x='50%' y='50%' font-family='Arial' font-size='24' fill='%23FBBF24' text-anchor='middle'%3EMarketing Technology%3C/text%3E%3C/svg%3E"
-                            }}
                         />
                     </div>
                 </div>
             </section>
 
+            {/* About Section */}
+            {/* <section id="about" className="py-24 px-6 lg:px-8 max-w-7xl mx-auto bg-[#7E0A11]">
+                <div className="text-center mb-16">
+                    <span className="apple-overline mb-4 block">About AdTech Integration</span>
+                    <h2 className="apple-heading text-4xl lg:text-5xl mb-6">Marketing Technology Integration</h2>
+                </div>
+                <div className="grid lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <h3 className="apple-subheading mb-6">Structured Alignment of Digital Advertising</h3>
+                        <p className="apple-body text-[#515154] mb-6">
+                            AdTech integration refers to the structured alignment of tools, platforms, and workflows used to manage and optimize ads across digital channels. In today's competitive landscape, Digital Advertising success depends on how well systems communicate with each other.
+                        </p>
+                        <p className="apple-body text-[#515154]">
+                            At SocialBureau, we focus on practical Marketing Technology Integration that supports publishers, media companies, and content platforms.
+                        </p>
+                    </div>
+                    <div className="h-96 rounded-2xl overflow-hidden shadow-xl">
+                        <img
+                            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579759/young-people-discussing-marketing-in-meeting-2026-01-08-07-22-10-utc_1_jawkhd.webp"
+                            alt="Marketing Technology"
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                        />
+                    </div>
+                </div>
+            </section> */}
+            <section
+            id="about"
+            className="min-h-screen w-full bg-black text-white flex items-center"
+            >
+            <div className="w-full px-6 lg:px-8 max-w-7xl mx-auto">
+                <div className="text-center mb-16">
+                <span className="apple-overline mb-4 block text-gray-400 mt-4">
+                    About AdTech Integration
+                </span>
+                <h2 className="apple-heading text-4xl lg:text-5xl mb-6">
+                    Marketing Technology Integration
+                </h2>
+                </div>
+
+                <div className="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h3 className="text-2xl mb-6 text-white/80">
+                    Structured Alignment of Digital Advertising
+                    </h3>
+
+                    <p className="text-white/80 mb-6">
+                    AdTech integration refers to the structured alignment of tools, platforms,
+                    and workflows used to manage and optimize ads across digital channels. In
+                    today's competitive landscape, Digital Advertising success depends on how
+                    well systems communicate with each other.
+                    </p>
+
+                    <p className="text-white/80">
+                    At SocialBureau, we focus on practical Marketing Technology Integration that supports publishers, media companies, and content platforms. By implementing secure API Integration, we enable seamless data flow between platforms, ensuring accuracy, speed, and long-term flexibility.
+                    </p>
+                </div>
+
+                <div className="h-96 lg:h-[28rem] rounded-2xl overflow-hidden shadow-2xl">
+                    <img
+                    src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579759/young-people-discussing-marketing-in-meeting-2026-01-08-07-22-10-utc_1_jawkhd.webp"
+                    alt="Marketing Technology"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    />
+                </div>
+                </div>
+            </div>
+            </section>
+
+        <section id="services" className="py-24 px-6 lg:px-8 bg-[#7E0A11]">
+            <div className="max-w-7xl mx-auto">
+
+                <div className="text-center mb-16">
+                <span className="apple-overline mb-4 block text-white/70">
+                    Our Services
+                </span>
+                <h2 className="apple-heading text-4xl lg:text-5xl mb-6 text-white">
+                    AdTech Integration Services in Kochi
+                </h2>
+                <p className="apple-body text-white/80 max-w-3xl mx-auto">
+                    We design and implement customized solutions based on real operational
+                    needs. Each service is delivered with precision, documentation, and
+                    performance validation.
+                </p>
+                </div>
+
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {services.map((service, index) => {
+                    const Icon = service.icon;
+                    return (
+                    <div
+                        key={index}
+                        className="rounded-3xl p-8 bg-[#6B080E] border border-white/10 text-white"
+                    >
+                        <div className="w-12 h-12 bg-[#7E0A11] rounded-xl flex items-center justify-center mb-6 transition-transform hover:scale-110">
+                        <Icon className="w-6 h-6 text-white" />
+                        </div>
+
+                        <h3 className="text-xl font-semibold mb-4 text-white">
+                        {service.title}
+                        </h3>
+
+                        <p className="mb-6 text-sm text-white/80 leading-relaxed">
+                        {service.description}
+                        </p>
+
+                        <ul className="space-y-2">
+                        {service.features.map((feature, idx) => (
+                            <li
+                            key={idx}
+                            className="text-sm text-white/80 flex items-start"
+                            >
+                            <CheckCircle className="w-4 h-4 text-white mr-2 mt-0.5" />
+                            <span>{feature}</span>
+                            </li>
+                        ))}
+                        </ul>
+                    </div>
+                    );
+                })}
+                </div>
+
+            </div>
+        </section>
+
             {/* Services Section */}
-            <section id="services" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-white">
+            <section id="services" className="py-24 px-6 lg:px-8 bg-[#fbfbfd]">
                 <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                        <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#FBBF24] to-[#1F2937] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                            Our Services
-                        </span>
-                        <h2 className="font-['Noto_Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#1F2937]">AdTech Integration Services in Kochi</h2>
-                        <p className="font-['Noto_Sans'] text-base sm:text-lg text-[#4B5563] max-w-3xl mx-auto px-4 mb-8">
+                    <div className="text-center mb-16">
+                        <span className="apple-overline mb-4 block">Our Services</span>
+                        <h2 className="apple-heading text-4xl lg:text-5xl mb-6">AdTech Integration Services in Kochi</h2>
+                        <p className="apple-body text-white max-w-3xl mx-auto">
                             We design and implement customized solutions based on real operational needs. Each service is delivered with precision, documentation, and performance validation.
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+                    
+                    <div className="apple-grid">
                         {services.map((service, index) => {
                             const Icon = service.icon;
-
                             return (
-                                <div
-                                    key={index}
-                                    className="bg-white p-4 sm:p-6 lg:p-8 rounded-3xl shadow-lg hover:shadow-2xl hover:translate-y-[-10px] transition-all duration-400 border-2 border-transparent hover:border-[#FBBF24] relative overflow-hidden group"
-                                >
-                                    <div className="absolute inset-0 bg-gradient-to-br from-[#FBBF24] to-[#1F2937] opacity-0 group-hover:opacity-5 transition-opacity z-0"></div>
-
-                                    <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-[#FBBF24] to-[#1F2937] rounded-xl flex items-center justify-center mb-4 sm:mb-6 relative z-10">
-                                        <Icon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
+                                <div key={index} className="apple-card group">
+                                    <div className="w-12 h-12 bg-[#7E0A11] rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                                        <Icon className="w-6 h-6 text-white" />
                                     </div>
-
-                                    <h3 className="font-['Noto_Sans'] text-lg sm:text-xl font-bold mb-3 sm:mb-4 relative z-10 text-[#1F2937]">
-                                        {service.title}
-                                    </h3>
-
-                                    <p className="font-['Noto_Sans'] text-[#4B5563] mb-4 sm:mb-6 relative z-10 text-sm sm:text-base">
-                                        {service.description}
-                                    </p>
-
-                                    <ul className="space-y-1 sm:space-y-2 relative z-10">
+                                    <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
+                                    <p className="text-[#515154] mb-6 text-sm leading-relaxed">{service.description}</p>
+                                    <ul className="space-y-2">
                                         {service.features.map((feature, idx) => (
-                                            <li key={idx} className="text-[#4B5563] flex items-start text-xs sm:text-sm font-['Noto_Sans']">
-                                                <CheckCircle className="w-4 h-4 text-[#FBBF24] mr-2 flex-shrink-0 mt-0.5" />
+                                            <li key={idx} className="text-sm text-[#515154] flex items-start">
+                                                <CheckCircle className="w-4 h-4 text-[#7E0A11] mr-2 flex-shrink-0 mt-0.5" />
                                                 <span>{feature}</span>
                                             </li>
                                         ))}
@@ -462,178 +699,266 @@ const AdTechIntegration = () => {
                 </div>
             </section>
 
-            {/* Why Choose Us */}
-            <section id="why-choose" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div className="mb-8 sm:mb-12 lg:mb-16">
-                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#FBBF24] to-[#1F2937] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                        Why Choose Us
-                    </span>
-                    <h2 className="font-['Noto_Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#1F2937]">Advertising Ecosystem Expertise</h2>
+            {/* why choose us */}
+            <section
+            id="why-choose"
+            className="py-24 px-6 lg:px-8 bg-[#7E0A11]"
+            >
+            <div className="max-w-7xl mx-auto">
+
+                <div className="text-center mb-16">
+                <span className="apple-overline mb-4 block text-white/70">
+                    Why Choose Us
+                </span>
+                <h2 className="apple-heading text-4xl lg:text-5xl text-white">
+                    Advertising Ecosystem Expertise
+                </h2>
                 </div>
 
-                <div className="grid lg:grid-cols-3 gap-8 lg:gap-12 items-start">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 sm:gap-6 lg:col-span-2">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
-                            {whyChooseUs.slice(0, 4).map((feature, index) => {
-                                const Icon = feature.icon;
-
-                                return (
-                                    <div
-                                        key={index}
-                                        className="bg-white p-6 sm:p-8 rounded-2xl text-center hover:shadow-lg hover:border-[#FBBF24] border-2 border-transparent transition-all duration-300 group"
-                                    >
-                                        <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#FBBF24] to-[#FBBF24] rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
-                                            <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                                        </div>
-                                        <h3 className="font-['Noto_Sans'] text-base sm:text-lg font-bold mb-3 sm:mb-4 text-[#1F2937]">{feature.title}</h3>
-                                        <p className="font-['Noto_Sans'] text-[#4B5563] leading-relaxed text-xs sm:text-sm">{feature.description}</p>
-                                    </div>
-                                );
-                            })}
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {whyChooseUs.map((feature, index) => {
+                    const Icon = feature.icon;
+                    return (
+                    <div
+                        key={index}
+                        className="rounded-3xl p-8 bg-[#6B080E] border border-white/10 text-center hover:border-white/30 transition"
+                    >
+                        <div className="w-14 h-14 bg-[#7E0A11] rounded-full flex items-center justify-center mx-auto mb-6">
+                        <Icon className="w-7 h-7 text-white" />
                         </div>
 
-                        <div className="sm:col-span-2 lg:col-span-1">
-                            <div className="bg-white p-6 sm:p-8 rounded-2xl text-center hover:shadow-lg hover:border-[#FBBF24] border-2 border-transparent transition-all duration-300 group h-full">
-                                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#FBBF24] to-[#FBBF24] rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
-                                    <Monitor className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                                </div>
-                                <h3 className="font-['Noto_Sans'] text-base sm:text-lg font-bold mb-3 sm:mb-4 text-[#1F2937]">{whyChooseUs[4].title}</h3>
-                                <p className="font-['Noto_Sans'] text-[#4B5563] leading-relaxed text-xs sm:text-sm">{whyChooseUs[4].description}</p>
-                            </div>
-                        </div>
+                        <h3 className="text-lg font-semibold mb-3 text-white">
+                        {feature.title}
+                        </h3>
+
+                        <p className="text-sm text-white/80 leading-relaxed">
+                        {feature.description}
+                        </p>
                     </div>
-
-                    <div className="flex items-center justify-center h-auto lg:col-span-1">
-                        <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg">
-                            <img
-                                src='/assets/seo.webp'
-                                alt="ADTECH EXPERT IN KERALA"
-                                className="w-full h-full object-cover rounded-2xl"
-                            />
-                        </div>
-                    </div>
+                    );
+                })}
                 </div>
+
+            </div>
             </section>
 
             {/* Case Studies */}
-            <section id="case-studies" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-white">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                        <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#FBBF24] to-[#1F2937] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                            Case Studies
+            <section id="case-studies" className="py-20 bg-[#fbfbfd]">
+            <div className="max-w-7xl mx-auto px-6 lg:px-8">
+
+                <div className="text-center mb-14">
+                <span className="apple-overline block mb-3">Case Studies</span>
+                <h2 className="apple-heading text-4xl lg:text-5xl">
+                    Proven Results with AdTech Integration
+                </h2>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+                {/* LEFT */}
+                <div className="lg:col-span-5 space-y-6">
+                    {caseStudies.map((study, index) => (
+                    <button
+                        key={index}
+                        onClick={() => setActiveCaseStudy(index)}
+                        className={`apple-card text-left w-full transition-all duration-300
+                        ${activeCaseStudy === index
+                            ? 'ring-2 ring-[#7E0A11] bg-white'
+                            : 'hover:bg-[#f5f5f7]'}
+                        `}
+                    >
+                        <span className="text-xs font-semibold text-[#7E0A11] bg-[#7E0A11]/5 px-3 py-1.5 rounded-full">
+                        {study.type}
                         </span>
-                        <h2 className="font-['Noto_Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#1F2937]">Proven Results with AdTech Integration</h2>
-                    </div>
-                    <div className="space-y-8 sm:space-y-12">
-                        {caseStudies.map((study, index) => (
-                            <div
-                                key={index}
-                                className="bg-white rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg relative overflow-hidden border-l-4 border-[#FBBF24] hover:shadow-xl transition-shadow"
-                            >
-                                <span className="inline-block px-3 py-1 sm:px-4 sm:py-2 bg-gradient-to-br from-[#FBBF24]/10 to-[#1F2937]/10 text-[#FBBF24] text-xs sm:text-sm font-semibold rounded-full mb-4 sm:mb-6">
-                                    {study.type}
-                                </span>
-                                <h3 className="font-['Noto_Sans'] text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-[#1F2937]">{study.title}</h3>
 
-                                <div className="mb-6 sm:mb-8">
-                                    <h4 className="font-['Noto_Sans'] text-base sm:text-lg font-semibold text-[#FBBF24] mb-2 sm:mb-3">Ideal Customer</h4>
-                                    <p className="font-['Noto_Sans'] text-[#4B5563] text-sm sm:text-base">{study.idealCustomer}</p>
-                                </div>
+                        <h3 className="text-lg font-semibold mt-3">
+                        {study.title}
+                        </h3>
 
-                                <div className="mb-6 sm:mb-8">
-                                    <h4 className="font-['Noto_Sans'] text-base sm:text-lg font-semibold text-[#FBBF24] mb-2 sm:mb-3">The Challenge (Before) </h4>
-                                    <p className="font-['Noto_Sans'] text-[#4B5563] text-sm sm:text-base">{study.challenge}</p>
-                                </div>
+                        <div className="apple-link text-sm mt-3">
+                        View details
+                        </div>
+                    </button>
+                    ))}
+                </div>
 
-                                <div className="mb-6 sm:mb-8">
-                                    <h4 className="font-['Noto_Sans'] text-base sm:text-lg font-semibold text-[#FBBF24] mb-2 sm:mb-3">The Approach</h4>
-                                    <p className="font-['Noto_Sans'] text-[#4B5563] text-sm sm:text-base">{study.approach}</p>
-                                </div>
+                {/* RIGHT */}
+                <div className="lg:col-span-7">
+                    <div className="apple-card sticky top-28 animate-fade-in">
 
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-8 bg-gradient-to-br from-[#FBBF24]/5 to-[#1F2937]/5 rounded-2xl">
-                                    {study.results.map((result, idx) => (
-                                        <div key={idx} className="text-center p-4">
-                                            <div className="font-['Noto_Sans'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#FBBF24] mb-1 sm:mb-2">
-                                                {result.value}
-                                            </div>
-                                            <div className="font-['Noto_Sans'] text-xs sm:text-sm text-[#4B5563]">{result.label}</div>
-                                        </div>
-                                    ))}
-                                </div>
+                    <h3 className="text-2xl font-semibold mb-6">
+                        {caseStudies[activeCaseStudy].title}
+                    </h3>
+
+                    <div className="space-y-5 text-sm">
+                        <div>
+                        <h4 className="font-semibold text-[#7E0A11] mb-1">
+                            Ideal Customer
+                        </h4>
+                        <p className="text-[#515154]">
+                            {caseStudies[activeCaseStudy].idealCustomer}
+                        </p>
+                        </div>
+
+                        <div>
+                        <h4 className="font-semibold text-[#7E0A11] mb-1">
+                            The Challenge
+                        </h4>
+                        <p className="text-[#515154]">
+                            {caseStudies[activeCaseStudy].challenge}
+                        </p>
+                        </div>
+
+                        <div>
+                        <h4 className="font-semibold text-[#7E0A11] mb-1">
+                            The Approach
+                        </h4>
+                        <p className="text-[#515154]">
+                            {caseStudies[activeCaseStudy].approach}
+                        </p>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-6 pt-6 border-t border-[#f5f5f7]">
+                        {caseStudies[activeCaseStudy].results.map((result, idx) => (
+                            <div key={idx} className="text-center">
+                            <div className="apple-stat">{result.value}</div>
+                            <div className="apple-stat-label">{result.label}</div>
                             </div>
                         ))}
+                        </div>
+                    </div>
+
                     </div>
                 </div>
+
+                </div>
+            </div>
+
+            <style jsx>{`
+                @keyframes fade-in {
+                from {
+                    opacity: 0;
+                    transform: translateY(8px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                }
+                .animate-fade-in {
+                animation: fade-in 0.4s ease-out;
+                }
+            `}</style>
             </section>
 
             {/* Testimonials */}
-            <section id="testimonials" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#FBBF24] to-[#1F2937] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                        Testimonials
-                    </span>
-                    <h2 className="font-['Noto_Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#1F2937]">Trusted by Publishers Across India</h2>
+            <section
+            id="testimonials"
+            className="py-24 px-6 lg:px-8 bg-[#7E0A11]"
+            >
+            <div className="max-w-7xl mx-auto">
+
+                <div className="text-center mb-16">
+                <span className="apple-overline mb-4 block text-white">
+                    Testimonials
+                </span>
+                <h2 className="apple-heading text-4xl lg:text-5xl text-white">
+                    Trusted by Publishers Across India
+                </h2>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-                    {testimonials.map((testimonial, index) => (
-                        <div key={index} className="bg-white p-6 sm:p-8 lg:p-10 rounded-3xl shadow-lg hover:translate-y-[-5px] transition-transform duration-300 group">
-                            <div className="text-4xl sm:text-5xl text-[#FBBF24] opacity-30 mb-3 sm:mb-4 group-hover:opacity-50 transition-opacity">❝</div>
-                            <p className="font-['Noto_Sans'] text-[#4B5563] italic leading-relaxed mb-4 sm:mb-6 text-sm sm:text-base">{testimonial.text}</p>
-                            <div className="font-['Noto_Sans'] font-semibold text-[#1F2937] text-sm sm:text-base">— {testimonial.author}</div>
-                        </div>
-                    ))}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {testimonials.map((testimonial, index) => (
+                    <div
+                    key={index}
+                    className="rounded-3xl p-8 bg-[#6B080E]"
+                    >
+                    <div className="text-6xl text-white mb-4 leading-none">
+                        “
+                    </div>
+
+                    <p className="text-white/80 italic mb-6 leading-relaxed">
+                        {testimonial.text}
+                    </p>
+
+                    <div className="font-semibold text-white">
+                        — {testimonial.author}
+                    </div>
+                    </div>
+                ))}
                 </div>
+
+            </div>
             </section>
 
             {/* FAQ Section */}
-            <section id="faq" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-                <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#FBBF24] to-[#1F2937] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                        FAQ
-                    </span>
-                    <h2 className="font-['Noto_Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#1F2937]">Frequently Asked Questions</h2>
+            <section id="faq" className="w-full max-w-3xl mx-auto px-4 lg:px-6 py-10">
+            
+            <div className="text-center mb-8">
+                <span className="apple-overline block mb-2">FAQ</span>
+                <h2 className="apple-heading text-3xl lg:text-4xl">
+                Frequently Asked Questions
+                </h2>
+            </div>
+
+            <div className="divide-y divide-[#2d2d2f]">
+                {faqItems.map((item, index) => (
+                <div key={index} className="py-4">
+                    <button
+                    onClick={() => toggleFaq(index)}
+                    className="w-full flex justify-between items-center text-left text-lg font-medium text-black"
+                    >
+                    <span>{item.question}</span>
+                    {activeFaq === index ? (
+                        <X className="w-4 h-4 text-[#7E0A11]" />
+                    ) : (
+                        <Plus className="w-4 h-4 text-[#141416]" />
+                    )}
+                    </button>
+
+                    {activeFaq === index && (
+                    <p className="mt-2 text-[#86868b] text-base">
+                        {item.answer}
+                    </p>
+                    )}
                 </div>
-                <div className="space-y-3 sm:space-y-4">
-                    {faqItems.map((item, index) => (
-                        <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                            <button
-                                className="w-full p-4 sm:p-6 text-left flex justify-between items-center font-['Noto_Sans'] font-semibold hover:text-[#FBBF24] transition-colors text-sm sm:text-base group text-[#1F2937]"
-                                onClick={() => toggleFaq(index)}
-                            >
-                                <span className="text-left pr-4">{item.question}</span>
-                                <span className={`text-xl sm:text-2xl transition-transform flex-shrink-0 ${activeFaq === index ? 'rotate-45 text-[#FBBF24]' : 'text-[#4B5563] group-hover:text-[#FBBF24]'}`}>+</span>
-                            </button>
-                            <div className={`overflow-hidden transition-all duration-300 ${activeFaq === index ? 'max-h-96' : 'max-h-0'}`}>
-                                <div className="p-4 sm:p-6 pt-0 font-['Noto_Sans'] text-[#4B5563] leading-relaxed text-sm sm:text-base">
-                                    {item.answer}
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                ))}
+            </div>
+
             </section>
 
             {/* CTA Section */}
-            <section id="contact" className="py-12 sm:py-16 lg:py-20 mx-4 sm:mx-6 lg:mx-8 my-8 sm:my-12 lg:my-16 bg-gradient-to-br from-[#1F2937] to-[#111827] text-white rounded-3xl text-center relative overflow-hidden">
-                <div className="absolute -top-1/2 -right-1/10 w-64 h-64 sm:w-96 sm:h-96 bg-radial-gradient(circle, rgba(251,191,36,0.2), transparent) rounded-full animate-pulse-slow hidden sm:block"></div>
-                <h2 className="font-['Noto_Sans'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 relative z-10 px-4">Ready to Transform Your Digital Advertising?</h2>
-                <p className="font-['Noto_Sans'] text-lg sm:text-xl mb-6 sm:mb-8 opacity-90 relative z-10 px-4">
-                    Let's discuss how AdTech integration can optimize your revenue and streamline your advertising operations.
+            <section id="contact" className="w-full px-4 lg:px-6">
+            <div className="bg-[#1d1d1f] text-white rounded-2xl py-10 px-6 lg:py-14 lg:px-16 text-center relative overflow-hidden w-full">
+                
+                {/* Background glow */}
+                <div className="absolute -top-20 -right-20 w-96 h-96 bg-[#7E0A11] opacity-10 rounded-full blur-3xl"></div>
+
+                <h2 className="apple-heading text-white mb-4">
+                Ready to Transform Your Digital Advertising?
+                </h2>
+
+                <p className="text-lg text-[#86868b] mb-6 max-w-3xl mx-auto">
+                Let’s discuss how AdTech integration can optimize your revenue and streamline your advertising operations.
                 </p>
+
                 <a
-                    href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+discuss+AdTech+Integration+for+my+business.&type=phone_number&app_absent=0"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-white text-[#1F2937] font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-[0_15px_40px_rgba(255,255,255,0.3)] transition-all relative z-10 text-sm sm:text-base"
+                href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+discuss+AdTech+Integration+for+my+business."
+                className="apple-button-primary bg-white text-[#1d1d1f] hover:bg-[#f5f5f7] inline-flex items-center gap-1"
                 >
-                    Book a Strategy Call
+                Book a Strategy Call
+                <ChevronRight className="w-4 h-4" />
                 </a>
+
+            </div>
             </section>
 
             {/* Scroll to Top Button */}
             <button
-                className={`fixed bottom-6 right-4 sm:bottom-8 sm:right-8 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#FBBF24] to-[#1F2937] text-white rounded-full flex items-center justify-center text-lg sm:text-xl shadow-lg hover:translate-y-[-5px] transition-all ${isScrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                className={`fixed bottom-8 right-8 w-12 h-12 bg-[#7E0A11] text-white rounded-full flex items-center justify-center shadow-lg hover:bg-[#63080d] transition-all ${isScrolled ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
                 onClick={scrollToTop}
             >
-                ↑
+                <ArrowUp className="w-5 h-5" />
             </button>
         </div>
     );

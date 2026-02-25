@@ -1,28 +1,27 @@
-import ApiMarketing from "../components/Home/ApiMarketing";
 import ServicesGrid from "../components/Home/ServicesGrid";
 import WebSection from "../components/Home/WebSection";
 import CareerSection from "../components/Home/CareerSection";
-import PartnershipTeamGrid, { PartnershipSection, TeamSection } from "../components/Home/PartnershipNTeam";
-import TestimonialsSection from "../components/Home/TestimonialsSection";
 import FAQSection from "../components/Home/FAQSection";
-import { Googlereview } from "../components/Googlereview";
 import AppleSection from "../components/Home/EntertainmentGrid";
-import Hero from "../components/Home/Hero";
+import { Googlereview } from "../components/Googlereview";
+import StaticServicesGrid from "../components/Home/BlogNTrillion";
+import ApiMarketingHero from "../components/Home/ApiMarketing";
+import ImageCarousel from "../components/Home/Hero";
 
 
 export const Home = () => {
   return (
     <>
-      <Hero />
-      <ApiMarketing />
-      <ServicesGrid />
+      <ImageCarousel/>
+      <ApiMarketingHero />
       <WebSection />
+      <ServicesGrid />
       <CareerSection />
-      <PartnershipTeamGrid />
+      <StaticServicesGrid />
       <AppleSection />
-      <TestimonialsSection />
       <Googlereview />
       <FAQSection />
+
     </>
   )
 }

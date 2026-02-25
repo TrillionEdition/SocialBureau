@@ -244,7 +244,7 @@ const ContentMarketing = () => {
                     </div>
                     <div className="relative h-64 sm:h-80 md:h-96 flex items-center justify-center animate-fadeInUp mt-8 md:mt-0">
                         <div className="w-full h-full bg-gradient-to-br from-[rgba(255,107,53,0.1)] to-[rgba(78,205,196,0.1)] rounded-3xl overflow-hidden">
-                            <img src="assets/content-marketing.webp" alt="content marketing image" />
+                            <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579760/asian-businessman-and-woman-people-meeting-in-offi-2026-01-09-10-30-28-utc_1_h71ena.jpg" alt="content marketing image" />
                             <div className="w-full h-full bg-gradient-to-br from-[#4ECDC4] to-[#FF6B35] opacity-20"></div>
                         </div>
                     </div>
@@ -262,7 +262,7 @@ const ContentMarketing = () => {
                 </div>
                 <div className="grid md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
                     <div className="h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-[rgba(255,107,53,0.1)] to-[rgba(78,205,196,0.1)] rounded-3xl flex items-center justify-center relative overflow-hidden">
-                        <img src="assets/contentmarketing2.webp" alt="content marketing image" />
+                        <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579760/laptop-with-content-marketing-lettering-on-screen-2026-01-06-00-42-16-utc_1_egkq7x.jpg" alt="content marketing image" />
                         <div className="w-full h-full bg-gradient-to-br from-[#4ECDC4] to-[#FF6B35] opacity-20"></div>
                     </div>
                     <div>

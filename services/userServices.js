@@ -106,3 +106,13 @@ export const updateProfileWithImagesAPI = async (userId, payload) => {
     throw error;
   }
 };
+
+export const logoutUser = async () => {
+  const response = await axios.post(
+    `${BASE_URL}/logout`,
+    {},
+    { withCredentials: true } // VERY important for cookies
+  )
+
+  return response.data
+}

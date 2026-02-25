@@ -391,7 +391,7 @@ const Niche = () => {
                         </div>
                     </div>
                     <div className="relative h-64 sm:h-80 md:h-96 flex items-center justify-center animate-fadeInRight mt-8 md:mt-0">
-                        <img src="assets/niche-marketing.webp" alt="niche-marketing" className="w-full h-full object-contain" />
+                        <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579774/niche-marketing-2026-01-08-05-39-07-utc_1_yjffjh.jpg" alt="niche-marketing" className="w-full h-full object-contain" />
                     </div>
                 </div>
             </section>
@@ -406,7 +406,7 @@ const Niche = () => {
                 </div>
                 <div className="grid md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
                     <div className="h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-[rgba(192,192,192,0.1)] to-[rgba(128,128,128,0.1)] rounded-3xl flex items-center justify-center relative overflow-hidden p-4 border border-[#333333]">
-                        <img src="/assets/niche2.webp" alt="niche marketing" className="w-full h-full object-contain" />
+                        <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579760/abstract-image-of-backlit-crowd-standing-on-chalkb-2026-01-11-08-37-11-utc_1_nrsxzz.jpg" alt="niche marketing" className="w-full h-full object-contain" />
                     </div>
                     <div className="animate-fadeInRight">
                         <h3 className="font-['Inter'] text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-white">Focus on Clarity & Relevance</h3>
