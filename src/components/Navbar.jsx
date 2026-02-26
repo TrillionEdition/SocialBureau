@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Search, Menu, X, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "../../utils/authUtils";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -10,6 +11,7 @@ export default function Navbar() {
   const [expandedMobileCategory, setExpandedMobileCategory] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const { canAccessDashboard } = useAuth();
 
   const navItems = [
     { label: "Home", href: "/" },
@@ -29,9 +31,7 @@ export default function Navbar() {
         },
         {
           title: "Design & Tech",
-          items: [
-            { label: "Web Development", href: "#" },
-          ],
+          items: [{ label: "Web Development", href: "#" }],
         },
       ],
     },
@@ -64,35 +64,55 @@ export default function Navbar() {
         {
           title: "Open Positions",
           items: [
-            { label: "Content Copywriter", href: "/careers/content-copywriter" },
-            { label: "Client Success Manager", href: "/careers/client-success-manager" },
-            { label: "Business Development", href: "/careers/business-development-manager" },
-            { label: "Front Desk Manager", href: "/careers/front-desk-manager" },
-            { label: "Digital Marketing Expert", href: "/careers/digital-marketing-expert" },
+            {
+              label: "Content Copywriter",
+              href: "/careers/content-copywriter",
+            },
+            {
+              label: "Client Success Manager",
+              href: "/careers/client-success-manager",
+            },
+            {
+              label: "Business Development",
+              href: "/careers/business-development-manager",
+            },
+            {
+              label: "Front Desk Manager",
+              href: "/careers/front-desk-manager",
+            },
+            {
+              label: "Digital Marketing Expert",
+              href: "/careers/digital-marketing-expert",
+            },
             { label: "Video Editor", href: "/careers/video-editor" },
             { label: "Web Developer", href: "#" },
-            { label: "Office Operations", href: "/careers/office-operations-manager" },
+            {
+              label: "Office Operations",
+              href: "/careers/office-operations-manager",
+            },
           ],
         },
         {
           title: "Explore",
-          items: [
-            { label: "All Careers", href: "/careers" },
-          ],
+          items: [{ label: "All Careers", href: "/careers" }],
         },
       ],
     },
     { label: "Contact", href: "/contact" },
+    ...(canAccessDashboard ? [{ label: "Dashboard", href: "/dashboard" }] : []),
     { label: "Login", href: "/login" },
     {
-      label: "Partnership", href: "/partners",
+      label: "Partnership",
+      href: "/partners",
 
       columns: [
         {
           title: "Partnership",
           items: [
             { label: "Partners", href: "/partners" },
-            { label: "Ranjit", href: "/Ranjit" },],
+            { label: "Ranjit", href: "/partnership/Ranjit" },
+            { label: "Sivaprasad", href: "/partnership/Sivaprasad" },
+          ],
         },
       ],
     },
@@ -114,22 +134,25 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 w-full z-[100] transition-all duration-300 border-b ${isScrolled || mobileMenuOpen
-          ? "bg-white/95 border-gray-200 shadow-sm"
-          : "bg-white/80 border-transparent"
-          } backdrop-blur-md`}
+        className={`fixed top-0 w-full z-[100] transition-all duration-300 border-b ${
+          isScrolled || mobileMenuOpen
+            ? "bg-white/95 border-gray-200 shadow-sm"
+            : "bg-white/80 border-transparent"
+        } backdrop-blur-md`}
         onMouseLeave={() => setActiveDropdown(null)}
       >
         <div className="max-w-[1300px] mx-auto px-6">
           <div className="flex items-center justify-between h-16">
-
             {/* Logo */}
-            <button onClick={() => handleNavClick("/")} className="z-50 shrink-0">
+            <button
+              onClick={() => handleNavClick("/")}
+              className="z-50 shrink-0"
+            >
               <img
                 src="/assets/socialbureau.webp"
                 alt="Logo"
                 className="h-8 lg:h-9 w-auto object-contain block"
-                style={{ minWidth: 'auto' }}
+                style={{ minWidth: "auto" }}
               />
             </button>
 
@@ -138,7 +161,9 @@ export default function Navbar() {
               {navItems.map((item) => (
                 <div key={item.label} className="relative">
                   <button
-                    onMouseEnter={() => item.columns && setActiveDropdown(item.label)}
+                    onMouseEnter={() =>
+                      item.columns && setActiveDropdown(item.label)
+                    }
                     onClick={() => !item.columns && handleNavClick(item.href)}
                     className="text-[14px] font-medium text-gray-700 hover:text-black transition-colors py-5"
                   >
@@ -210,11 +235,19 @@ export default function Navbar() {
                     {item.columns ? (
                       <>
                         <button
-                          onClick={() => setExpandedMobileCategory(expandedMobileCategory === item.label ? null : item.label)}
+                          onClick={() =>
+                            setExpandedMobileCategory(
+                              expandedMobileCategory === item.label
+                                ? null
+                                : item.label,
+                            )
+                          }
                           className="w-full flex justify-between items-center py-4 text-lg font-bold text-gray-900"
                         >
                           {item.label}
-                          <ChevronRight className={`transition-transform duration-300 ${expandedMobileCategory === item.label ? 'rotate-90' : ''}`} />
+                          <ChevronRight
+                            className={`transition-transform duration-300 ${expandedMobileCategory === item.label ? "rotate-90" : ""}`}
+                          />
                         </button>
                         <AnimatePresence>
                           {expandedMobileCategory === item.label && (
@@ -225,10 +258,18 @@ export default function Navbar() {
                             >
                               {item.columns.map((col) => (
                                 <div key={col.title}>
-                                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">{col.title}</p>
+                                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">
+                                    {col.title}
+                                  </p>
                                   <div className="flex flex-col gap-3">
-                                    {col.items.map(sub => (
-                                      <button key={sub.label} onClick={() => handleNavClick(sub.href)} className="text-left text-gray-700 font-semibold">{sub.label}</button>
+                                    {col.items.map((sub) => (
+                                      <button
+                                        key={sub.label}
+                                        onClick={() => handleNavClick(sub.href)}
+                                        className="text-left text-gray-700 font-semibold"
+                                      >
+                                        {sub.label}
+                                      </button>
                                     ))}
                                   </div>
                                 </div>
@@ -238,7 +279,10 @@ export default function Navbar() {
                         </AnimatePresence>
                       </>
                     ) : (
-                      <button onClick={() => handleNavClick(item.href)} className="w-full text-left py-4 text-lg font-bold text-gray-900">
+                      <button
+                        onClick={() => handleNavClick(item.href)}
+                        className="w-full text-left py-4 text-lg font-bold text-gray-900"
+                      >
                         {item.label}
                       </button>
                     )}
@@ -254,7 +298,3 @@ export default function Navbar() {
     </>
   );
 }
-
-
-
-
