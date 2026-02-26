@@ -1,65 +1,81 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const PartnershipTeamGrid = () => {
-    const items = [
-        {
-            title: "Partnerships",
-            subtitle: "Grow stronger, together",
-            image: "https://i.pinimg.com/736x/b7/ef/e1/b7efe1ebc308e1308e2290a3a2b6416a.jpg",
-            bg: "bg-neutral-100",
-            text: "text-black",
-            link: "/partners",
-        },
-        {
-            title: "Our Team",
-            subtitle: "People behind the product",
-            image: "/assets/home/team.png",
-            bg: "bg-black",
-            text: "text-white",
-            link: "/our-team",
-        },
-    ];
-
+export const PartnershipSection = () => {
     return (
-        <section className="h-screen w-full grid grid-cols-1 md:grid-cols-2">
-            {items.map((item, index) => (
-                <div
-                    key={index}
-                    className={`relative flex flex-col items-center justify-between ${item.bg} ${item.text} overflow-hidden`}
-                >
-                    <Link
-                        to={item.link}
-                        className="relative w-full h-full flex flex-col items-center justify-between"
-                    >
-                        {/* TEXT - Positioned at top */}
-                        <div className="relative z-10 text-center px-6 pt-8 sm:pt-12 lg:pt-16 max-w-lg">
-                            <span className="inline-block mb-4 px-4 py-1 text-xs uppercase tracking-[0.3em] rounded-full border border-current">
-                                {item.title === "Partnerships" ? "Partnerships" : "Team"}
-                            </span>
-
-                            <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3">
-                                {item.title}
-                            </h2>
-
-                            <p className="text-sm sm:text-base lg:text-lg opacity-70">
-                                {item.subtitle}
-                            </p>
-                        </div>
-
-                        {/* IMAGE - Positioned at bottom */}
-                        <img
-                            src={item.image}
-                            alt={item.title}
-                            className="relative w-full object-contain opacity-90 hover:scale-105 transition-transform duration-700"
-                            style={{
-                                objectPosition: 'center bottom'
-                            }}
-                        />
-                    </Link>
+        <section
+            className="relative w-full h-full min-h-[400px] md:min-h-[500px] flex flex-col items-center overflow-hidden"
+            style={{
+                backgroundImage: `url(/assets/home/connects.jpg)`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+            }}
+        >
+            <div className="absolute inset-0 bg-black/30" />
+            <Link
+                to="/partners"
+                className="relative z-10 w-full h-full flex flex-col text-white py-16 md:py-24"
+            >
+                <div className="text-center px-6 max-w-2xl mx-auto">
+                    <span className="inline-block mb-3 px-3 py-1 text-[10px] sm:text-xs uppercase tracking-[0.35em] rounded-full border border-white">
+                        Partnerships
+                    </span>
+                    <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
+                        Partnerships
+                    </h2>
+                    <p className="text-base sm:text-lg opacity-90">
+                        Grow stronger, together
+                    </p>
                 </div>
-            ))}
+            </Link>
         </section>
+    );
+};
+
+export const TeamSection = () => {
+    return (
+        <section className="relative w-full bg-white overflow-hidden">
+            <Link
+                to="/our-team"
+                className="relative z-10 w-full flex flex-col items-center text-black py-10 md:py-20"
+            >
+                <div className="text-center px-6 max-w-lg mx-auto mb-6 md:mb-10">
+                    <span className="inline-block mb-2 px-3 py-1 text-[10px] sm:text-xs uppercase tracking-[0.35em] rounded-full border border-black">
+                        Team
+                    </span>
+                    <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-2">
+                        Our Team
+                    </h2>
+                    <p className="text-base sm:text-lg opacity-80">
+                        People behind the product
+                    </p>
+                </div>
+
+                <div className="w-full flex justify-center">
+                    <img
+                        src="/assets/home/team.png"
+                        alt="Our Team"
+                        className="
+                            w-auto
+                            h-auto
+                            max-h-[300px]
+                            sm:max-h-[400px]
+                            md:max-h-[600px]
+                            object-contain
+                        "
+                    />
+                </div>
+            </Link>
+        </section>
+    );
+};
+
+const PartnershipTeamGrid = () => {
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 w-full h-full">
+            <PartnershipSection />
+            <TeamSection />
+        </div>
     );
 };
 

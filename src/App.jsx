@@ -1,14 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import "./App.css";
 import { Home } from "./pages/Home";
 import Navbar from "./components/Navbar";
-import {
-  BrowserRouter,
-  Route,
-  Router,
-  Routes,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { About } from "./pages/About";
 import { Services } from "./pages/Services";
 import { CaseStudy } from "./pages/CaseStudy";
@@ -24,7 +18,6 @@ import CompanyAchievements from "./pages/CompanyAchievements";
 import JohnSamuel from "./components/JohnSamuel";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { NotFound } from "./pages/NotFound";
-import React, { lazy, Suspense } from "react";
 import Service1 from "./pages/Service1";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import Disclaimer from "./components/Disclaimer";
@@ -64,14 +57,13 @@ import "react-toastify/dist/ReactToastify.css";
 // import ProofFlow from './pages/ProofFlow'
 import Landing from "./components/ExternalPortfolio";
 import Verification from "./pages/UserVerification";
-import ChooseCharacter from "./components/CardChoice";
+// import ChooseCharacter from "./components/CardChoice";
 import AdminCreateJob from "./pages/CreateJob";
 import Leaderboard from "./components/Leaderboard";
 import { ForgotPassword } from "./components/ForgetPassword";
 import { ResetPassword } from "./pages/ForgetPassword";
 import ApiMarketingPage from "./components/ApiMarketing";
-// import DashboardX from './pages/DashboardX'
-// import SocialBureauInsight from './pages/SocialBureauInsight'
+import SocialBureauInsight from "./pages/SocialBureauInsight";
 import EditUser from "./pages/EditUser";
 import DashboardX from "./pages/DashboardX";
 // import HorizontalScrollSection from './components/trail'
@@ -85,8 +77,18 @@ import ContentMarketing from "./components/ContentMarketing";
 import AdTechIntegration from "./components/AdTechIntegration";
 import Footer from "./components/Footer";
 import HeartCursor from "./components/Home/Curser";
+import HRForum from "./components/HrForum/Home";
+import AdminPanel from "./components/AdminPannel";
+import WebDevelopment from "./components/Home/WebDevelopment";
 import Niche from "./components/Niche";
+import ProfilePage from "./components/Profile";
+import JobPosting from "./components/HrForum/JobPosting";
+import JobDetails from "./components/HrForum/JobDetails";
+import JobsList from "./components/HrForum/JobListing";
+import CandidateProfile from "./components/HrForum/CandidateProfile";
 import Sivaprasad from "./components/Sivaprasad";
+import ATSChecker from "./pages/ATSChecker";
+import Logout from "./components/Logout";
 
 function ConditionalFooter() {
   const location = useLocation();
@@ -205,14 +207,12 @@ function App() {
           <Route path="/our-team" element={<OurTeam />} />
           <Route path="/our-works" element={<OurWork />} />
           <Route path="/achievements" element={<CompanyAchievements />} />
+          <Route path="/ats-checker" element={<ATSChecker />} />
           <Route path="/tool" element={<ScorePage />} />
 
-          <Route path="/clients" element={<Client />} />
           <Route path="/blogs/:slug" element={<BlogDetail />} />
           <Route path="/careers/:slug" element={<CareerDetail />} />
           <Route path="/qa-section" element={<QASection />} />
-          <Route path="/partnerships" element={<ClientPortfolios />} />
-          <Route path="/partners" element={<Partnership />} />
 
           <Route path="/services/branding" element={<BrandingService />} />
           <Route path="/services/experience-design" element={<XDService />} />
@@ -228,10 +228,13 @@ function App() {
           <Route path="/services/geo" element={<GEOService />} />
           <Route path="/services/seo" element={<SEOService />} />
           <Route path="/services/aeo" element={<AEOService />} />
-          <Route
-            path="/services/app-advertising"
-            element={<AppAdvertisingService />}
-          />
+
+          <Route path="/hr-forum" element={<HRForum />} />
+          <Route path="/appy-job" element={<JobPosting />} />
+          <Route path="/job-details" element={<JobDetails />} />
+          <Route path="/job-listing" element={<JobsList />} />
+          <Route path="/candidate-profile" element={<CandidateProfile />} />
+
           <Route path="/services/:serviceTitle" element={<Service1 />} />
           <Route path="/employee/:name" element={<StaffDashboard />} />
           <Route
@@ -242,25 +245,19 @@ function App() {
               </Suspense>
             }
           />
+
           {/* <Route path='/register' element={<Register />} /> */}
           {/* <Route path='/login' element={<Login />} />
           <Route path='/user-register' element={<UserRegister />} />
           <Route path='/pre' element={<ProofFlow />} /> */}
           <Route path="/proof" element={<Verification />} />
-          <Route path="/card" element={<ChooseCharacter />} />
 
-          <Route
-            path="/jobs/create"
-            element={
-              <AdminRoute>
-                <AdminCreateJob />
-              </AdminRoute>
-            }
-          />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/forget-password" element={<ForgotPassword />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/login" element={<AuthPage />} />
+          <Route path="/logout" element={<Logout />} />
 
           <Route path="/api-marketing" element={<ApiMarketingPage />} />
           <Route
@@ -270,16 +267,26 @@ function App() {
           <Route path="/niche-marketing" element={<Niche />} />
           <Route path="/content-marketing" element={<ContentMarketing />} />
           <Route path="/adTech-marketing" element={<AdTechIntegration />} />
+          <Route path="/web-development" element={<WebDevelopment />} />
+          <Route path="/dashboard" element={<DashboardX />} />
+          <Route path="/insights" element={<SocialBureauInsight />} />
+
           <Route
-            path="/dashboard"
+            path="/admin"
             element={
               <AdminRoute>
-                <DashboardX />
+                <AdminPanel />
               </AdminRoute>
             }
           />
-          {/* <Route path="/insights" element={<SocialBureauInsight />} /> */}
-
+          <Route
+            path="/jobs/create"
+            element={
+              <AdminRoute>
+                <AdminCreateJob />
+              </AdminRoute>
+            }
+          />
           <Route
             path="/edit-user/:id"
             element={
@@ -328,7 +335,6 @@ function App() {
             element={<ShaileshSivan />}
           />
           <Route path="/partnership/alen-jacob" element={<AlenJacob />} />
-          <Route path="/partnership/alen-jaco" element={<AlenJacob />} />
 
           <Route path="/*" element={<NotFound />} />
         </Routes>

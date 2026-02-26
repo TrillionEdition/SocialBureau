@@ -1,30 +1,27 @@
-import React from "react";
-import HeroSection from "../components/Home/Hero";
-import ApiMarketing from "../components/Home/ApiMarketing";
 import ServicesGrid from "../components/Home/ServicesGrid";
 import WebSection from "../components/Home/WebSection";
 import CareerSection from "../components/Home/CareerSection";
-import PartnershipTeamGrid from "../components/Home/PartnershipNTeam";
-import EntertainmentGrid from "../components/Home/EntertainmentGrid";
-import TestimonialsSection from "../components/Home/TestimonialsSection";
 import FAQSection from "../components/Home/FAQSection";
+import AppleSection from "../components/Home/EntertainmentGrid";
 import { Googlereview } from "../components/Googlereview";
+import StaticServicesGrid from "../components/Home/BlogNTrillion";
+import ApiMarketingHero from "../components/Home/ApiMarketing";
+import ImageCarousel from "../components/Home/Hero";
+
 
 export const Home = () => {
   return (
-    <div>
-      {/* <HeroSection /> */}
-      <ApiMarketing />
-      <ServicesGrid />
+    <>
+      <ImageCarousel/>
+      <ApiMarketingHero />
       <WebSection />
+      <ServicesGrid />
       <CareerSection />
-      <PartnershipTeamGrid />
-      {/* <EntertainmentGrid /> */}
-      <Googlereview/>
-      <TestimonialsSection />
+      <StaticServicesGrid />
+      <AppleSection />
+      <Googlereview />
       <FAQSection />
 
-
-    </div>
-  );
-};
+    </>
+  )
+}

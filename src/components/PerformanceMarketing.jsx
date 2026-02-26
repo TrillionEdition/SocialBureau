@@ -118,97 +118,133 @@ const PerformanceMarketing = () => {
         {
             icon: Target,
             title: "PPC Management",
-            description: "We plan and execute paid search programs built around relevance, budget efficiency, and measurable outcomes.",
+            description: "We plan and execute paid search programs built around relevance, budget efficiency, and measurable outcomes. Campaigns are continuously refined to improve efficiency without increasing risk. This approach helps maintain consistency even as competition and costs fluctuate.",
             features: ["Structured keyword and intent mapping", "Budget control with performance benchmarks", "Ongoing optimization based on results"]
         },
         {
             icon: Megaphone,
             title: "Paid Advertising",
-            description: "We develop structured advertising programs across digital platforms to support visibility and acquisition goals.",
+            description: "We develop structured advertising programs across digital platforms to support visibility and acquisition goals while maintaining cost discipline. Each campaign is aligned with a clear objective to avoid wasted spend.",
             features: ["Platform-aligned campaign structure", "Clear messaging for intent-based audiences", "Continuous performance monitoring"]
         },
         {
             icon: Users,
-            title: "Social Media Ads",
-            description: "Audience-focused social campaigns designed to support awareness, consideration, and action across different stages.",
+            title: "Meta Ads",
+            description: "Audience-focused social campaigns designed to support awareness, consideration, and action across different stages of the buying journey. Creative and targeting decisions are guided by performance signals rather than assumptions.",
             features: ["Creative aligned to audience behavior", "Funnel-based campaign planning", "Performance-driven iteration cycles"]
         },
         {
             icon: Search,
             title: "Google Ads",
-            description: "Search-led programs designed to capture demand at the right moment while maintaining efficiency.",
+            description: "Search-led programs designed to capture demand at the right moment while maintaining efficiency and relevance. Campaigns are reviewed regularly to adapt to changes in user behavior.",
             features: ["Intent-based campaign architecture", "Cost control through structured bidding", "Ongoing refinement for quality traffic"]
         },
         {
             icon: ShoppingCart,
-            title: "eCommerce Marketing",
-            description: "Product-focused performance systems designed to support discovery, trust, and transaction readiness.",
+            title: "E-Commerce Marketing",
+            description: "Product-focused performance systems designed to support discovery, trust, and transaction readiness across paid channels. This helps brands scale sales while maintaining predictable acquisition costs.",
             features: ["Catalog-driven campaign planning", "Audience refinement based on behavior", "Conversion-focused messaging alignment"]
         },
         {
             icon: BarChart3,
             title: "Marketing Analytics",
-            description: "Measurement frameworks built to provide clarity into what works and how results can be scaled responsibly.",
+            description: "Measurement frameworks built to provide clarity into what works, why it works, and how results can be scaled responsibly. Insights are used to guide both short-term adjustments and long-term planning.",
             features: ["Clear reporting structures", "Insight-driven decision making", "Continuous performance evaluation"]
         }
     ];
 
     const features = [
         {
-            number: "1",
+
             title: "ROI Driven Decision Making",
-            description: "Every recommendation is grounded in measurable outcomes rather than assumptions. Campaign decisions are guided by efficiency benchmarks, helping businesses protect budgets while improving results steadily over time."
+            description: "Every recommendation is grounded in measurable outcomes rather than assumptions. Campaign decisions are guided by efficiency benchmarks, helping businesses protect budgets while improving results steadily over time. This disciplined approach reduces volatility and supports predictable performance growth."
         },
         {
-            number: "2",
+
             title: "Data Driven Marketing Execution",
-            description: "Execution is guided by insights gathered from real user behavior and performance signals. Testing and refinement are ongoing, allowing campaigns to improve consistently."
+            description: "Execution is guided by insights gathered from real user behavior and performance signals. Testing and refinement are ongoing, allowing campaigns to improve consistently instead of relying on one-time optimizations. This method helps identify what truly contributes to results across channels."
         },
         {
-            number: "3",
+
             title: "Performance Strategy Built for Scale",
-            description: "Campaign structures are designed with future growth in mind. As demand increases, systems can be expanded without losing control, clarity, or efficiency."
+            description: "Campaign structures are designed with future growth in mind. As demand increases, systems can be expanded without losing control, clarity, or efficiency. This ensures scaling efforts remain sustainable and aligned with business capacity."
         },
         {
-            number: "4",
             title: "Channel-Specific Expertise",
-            description: "Each platform is managed based on its unique strengths and limitations. Strategies are adapted to audience behavior and platform dynamics."
+            description: "Each platform is managed based on its unique strengths and limitations. Strategies are adapted to audience behavior and platform dynamics rather than applying the same approach everywhere. This leads to better relevance and stronger engagement across channels."
         },
         {
-            number: "5",
             title: "Transparent Performance Reporting",
-            description: "Clear reporting provides visibility into spend, outcomes, and optimization actions. Stakeholders always understand how campaigns are performing."
+            description: "Clear reporting provides visibility into spend, outcomes, and optimization actions. Stakeholders always understand how campaigns are performing and what steps are being taken to improve results. This transparency builds confidence and supports informed decision-making."
         }
     ];
 
     const testimonials = [
         {
             text: "Performance marketing finally became clear for us. Every campaign had purpose, every number had meaning, and we could confidently see how our efforts were translating into real business growth.",
-            author: "Service Company Founder"
+            author: ""
         },
         {
             text: "What we valued most was the clarity and structure they brought. Decisions were data-backed but always aligned with our goals, which helped us scale without feeling uncertain or reactive.",
-            author: "eCommerce Brand Manager"
+            author: ""
         },
         {
             text: "Communication was consistent and transparent throughout. We always knew what was happening, why it mattered, and how it would impact results, which made the entire process stress-free.",
-            author: "B2B Marketing Head"
+            author: ""
         },
         {
             text: "This wasn't just about ads or traffic. They helped us build a system that continues to perform as our business grows, giving us confidence in our long-term acquisition strategy.",
-            author: "Startup Founder"
+            author: ""
         },
         {
             text: "We saw a clear improvement in lead quality within weeks. Sales conversations became more relevant, follow-ups were easier, and our team spent less time filtering low-intent enquiries.",
-            author: "B2B Sales Director"
+            author: ""
+        }
+    ];
+
+    const caseStudies = [
+        {
+            type: "CASE STUDY 1: SERVICE-BASED BUSINESS",
+            idealCustomer: "A service-focused company with strong offline credibility but limited visibility and inconsistent enquiries from digital channels.",
+            challenge: "The website attracted traffic, but visitors rarely converted. Messaging was broad, service pages lacked clarity, and enquiry forms generated leads that were poorly aligned with the sales team's expectations.",
+            approach: "We refined the website structure by clarifying service positioning and aligning content with high-intent user journeys. Pages were optimized to address real buyer concerns, supported by improved navigation and clearer conversion paths designed to guide users toward meaningful actions.",
+            results: [
+                "Qualified enquiries increased by 58% within 90 days",
+                "Bounce rate on key pages reduced by 34%",
+                "Sales conversations became shorter due to better-informed prospects"
+            ]
+        },
+        {
+            type: "CASE STUDY 2: eCOMMERCE BRAND",
+            idealCustomer: "An eCommerce brand experiencing steady traffic but struggling to convert visitors into repeat customers.",
+            challenge: "Despite consistent ad spend, conversion rates remained low. Product pages lacked persuasive elements, and customer drop-offs occurred before checkout. Marketing decisions were reactive rather than insight-led.",
+            approach: "We analyzed user behavior across the funnel and restructured product pages to improve clarity, trust, and usability. Conversion-focused improvements were introduced alongside performance tracking to identify friction points and refine messaging based on real customer behavior.",
+            results: [
+                "Conversion rate improved by 41% in three months",
+                "Cart abandonment reduced by 27%",
+                "Revenue per visitor increased significantly without increasing ad spend"
+            ]
+        },
+        {
+            type: "CASE STUDY 3: B2B LEAD GENERATION BRAND",
+            idealCustomer: "A B2B company offering specialized solutions and targeting decision-makers with longer buying cycles.",
+            challenge: "Leads were coming in, but most lacked intent or decision authority. The sales team spent time filtering enquiries that did not meet qualification standards, slowing down revenue growth.",
+            approach: "We aligned messaging with buyer-stage intent and optimized landing experiences to attract decision-ready prospects. Content was structured to educate, build credibility, and pre-qualify users before enquiry submission.",
+            results: [
+                "Lead quality improved by 46%",
+                "Sales-qualified leads increased within eight weeks",
+                "Sales team reported higher close rates and shorter deal cycles"
+            ]
         }
     ];
 
     return (
-        <div className="font-['Noto Sans'] bg-[#F5F1EB] text-[#2C2C2C] overflow-x-hidden pm-page">
+        <div className="font-['Inter'] bg-[#F5F1EB] text-[#2C2C2C] overflow-x-hidden pm-page">
+
             <Seo
                 title="Performance Marketing Agency in Kochi | Social Bureau"
-                description="Structured performance marketing in Kerala designed to turn data into clarity, optimize spend, and drive consistent, measurable growth"
+                description="Structured performance marketing in Kerala designed to turn data into clarity, optimize spend, and drive consistent, measurable growth."
+                keywords="performance marketing agency in KOCHI, performance marketing specialist,performance marketing services KERALA,PPC Management,Paid Advertising, Social media  Ads, Google Ads, eCommerce Marketing, Marketing Analytics"
             />
             {/* Add inline styles for animations */}
             <style dangerouslySetInnerHTML={{
@@ -260,14 +296,14 @@ const PerformanceMarketing = () => {
             {/* Scroll Progress Bar */}
             <div className="fixed top-0 left-0 h-1 bg-gradient-to-r from-[#D97634] to-[#B8956A] z-50" style={{ width: '0%' }}></div>
 
-            {/* Hero Section - FIXED */}
+            {/* Hero Section */}
             <section className="min-h-screen flex items-center pt-20 px-4 sm:px-6 lg:px-8 relative overflow-visible bg-gradient-to-br from-[#F5F1EB] to-[#F0E8E0]">
                 {/* Decorative background - adjusted to not overlap */}
                 <div className="absolute top-0 right-0 w-96 h-full bg-gradient-to-br from-[#B8956A] to-[#D97634] clip-path-polygon opacity-5 animate-float hidden lg:block -z-0"></div>
 
                 <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 lg:gap-16 items-center relative z-10">
                     <div className="animate-fadeInUp">
-                        <h1 className="font-['Noto Sans'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8 text-[#2C2C2C]">
+                        <h1 className="font-['Inter'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8 text-[#2C2C2C]">
                             Performance Marketing Agency in Kochi
                         </h1>
                         <p className="text-base sm:text-lg text-[#666666] mb-8 lg:mb-12 max-w-2xl">
@@ -285,7 +321,7 @@ const PerformanceMarketing = () => {
                     <div className="relative h-64 sm:h-80 md:h-96 flex items-center justify-center animate-fadeInUp mt-8 md:mt-0">
                         <div className="w-full h-full bg-gradient-to-br from-[rgba(230,126,60,0.1)] to-[rgba(74,155,158,0.1)] rounded-3xl overflow-hidden flex items-center justify-center p-4">
                             <img
-                                src="assets/performance-marketing.webp"
+                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579760/performance-marketing_1_oll9bz.jpg"
                                 alt="PERFORMANCE MARKETING IMAGE"
                                 className="w-full h-full object-cover rounded-2xl"
                                 loading="lazy"
@@ -306,7 +342,7 @@ const PerformanceMarketing = () => {
                             { number: '27%', label: 'Reduced Cart Abandonment' }
                         ].map((stat, index) => (
                             <div key={index} className="text-center p-4 sm:p-6 lg:p-8 hover:translate-y-[-5px] transition-transform relative after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-3/5 after:bg-gradient-to-b from-transparent via-[#CCCCCC] to-transparent after:opacity-20 last:after:hidden even:after:hidden md:even:after:block">
-                                <div className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-br from-[#D97634] to-[#B8956A] bg-clip-text text-transparent mb-2 sm:mb-3">
+                                <div className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-br from-[#D97634] to-[#B8956A] bg-clip-text text-transparent mb-2 sm:mb-3">
                                     <CountUp
                                         end={parseInt(stat.number)}
                                         suffix={stat.number.replace(/[0-9]/g, "")}
@@ -324,32 +360,25 @@ const PerformanceMarketing = () => {
             <section id="about" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                 <div className="text-center mb-8 sm:mb-12 lg:mb-16">
                     <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#B8956A] to-[#D97634] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                        About Us
+                        ABOUT SECTION
                     </span>
-                    <h2 className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">Performance Marketing Specialist</h2>
+                    <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">Performance Marketing Specialist</h2>
                 </div>
                 <div className="grid md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
                     <div className="h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-[rgba(230,126,60,0.1)] to-[rgba(74,155,158,0.1)] rounded-3xl flex items-center justify-center relative overflow-hidden p-4">
                         <img
-                            src="assets/performancemarketing3.webp"
+                            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579775/busy-manager-at-workplace-above-view-2026-01-08-06-22-51-utc_1_rau5yl.jpg"
                             alt="PERFORMANCE MARKETING IMAGE"
                             className="w-full h-full object-cover rounded-2xl"
                             loading="lazy"
                         />
                     </div>
                     <div>
-                        <h3 className="font-['Noto Sans'] text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-[#2C2C2C]">Results That Matter</h3>
                         <p className="text-[#666666] mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
                             Performance marketing is a results-oriented approach where every campaign is measured against clear outcomes such as enquiries, purchases, or qualified actions. Instead of focusing only on impressions, performance marketing prioritizes accountability, efficiency, and measurable returns.
                         </p>
-                        <p className="text-[#666666] leading-relaxed text-sm sm:text-base">
-                            <span At initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.8 }} className="text-gray-200 text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 sm:mb-10 font-light leading-relaxed">
-
-                                <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
-
-                                    Social<span className="text-[#ff0000]">B</span>ureau
-
-                                </a></span>, we work as a strategic partner, supporting brands with structured performance-led systems that align budgets, messaging, and targeting with real business objectives.
+                        <p className="text-[#666666] mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
+                            At <a href='https://socialbureau.in'>Social Bureau</a>, we work as a strategic partner, supporting brands with structured performance-led systems that align budgets, messaging, and targeting with real business objectives.
                         </p>
                     </div>
                 </div>
@@ -360,15 +389,15 @@ const PerformanceMarketing = () => {
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-8 sm:mb-12 lg:mb-16">
                         <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#B8956A] to-[#D97634] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                            Our Services
+                            OUR SERVICES
                         </span>
-                        <h2 className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">Performance Marketing Services Kerala</h2>
+                        <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">Performance Marketing Services Kerala</h2>
                         <p className="text-base sm:text-lg text-[#666666] max-w-3xl mx-auto px-4 mb-8">
-                            Our services are designed to support sustainable scaling by aligning paid channels with intent, data signals, and conversion-focused execution.
+                            Our services are designed to support sustainable scaling by aligning paid channels with intent, data signals, and conversion-focused execution. This ensures growth efforts remain efficient, controlled, and adaptable as performance requirements evolve over time.
                         </p>
                         <div className="max-w-4xl mx-auto mb-12">
                             <img
-                                src="/assets/performancemarketing1.webp"
+                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579759/process-of-creating-an-interface-for-a-mobile-app-2026-01-07-01-03-00-utc_1_oktarr.jpg"
                                 alt="PERFORMANCE MARKETING IMAGE"
                                 className="w-full h-auto max-h-[400px] object-cover rounded-2xl shadow-lg"
                                 loading="lazy"
@@ -390,7 +419,7 @@ const PerformanceMarketing = () => {
                                         <Icon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
                                     </div>
 
-                                    <h3 className="font-['Noto Sans'] text-lg sm:text-xl font-bold mb-3 sm:mb-4 relative z-10 text-[#2C2C2C]">
+                                    <h3 className="font-['Inter'] text-lg sm:text-xl font-bold mb-3 sm:mb-4 relative z-10 text-[#2C2C2C]">
                                         {service.title}
                                     </h3>
 
@@ -421,11 +450,11 @@ const PerformanceMarketing = () => {
                 {/* HEADER – full width */}
                 <div className="mb-12">
                     <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#B8956A] to-[#D97634] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4">
-                        Why Choose Us
+                        WHY CHOOSE US
                     </span>
 
-                    <h2 className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2C2C2C]">
-                        What Sets Us Apart
+                    <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2C2C2C]">
+                        Why Choose Social Bureau
                     </h2>
                 </div>
 
@@ -439,11 +468,8 @@ const PerformanceMarketing = () => {
                                 key={index}
                                 className="bg-white p-6 rounded-2xl border border-[#E5E5E5] hover:border-[#B8956A] hover:shadow-lg transition-all"
                             >
-                                <div className="w-9 h-9 bg-gradient-to-br from-[#D97634] to-[#B8956A] text-white rounded-full flex items-center justify-center font-['Noto Sans'] font-bold text-sm mb-4">
-                                    {feature.number}
-                                </div>
 
-                                <h3 className="font-['Noto Sans'] font-bold mb-2 text-base text-[#2C2C2C]">
+                                <h3 className="font-['Inter'] font-bold mb-2 text-base text-[#2C2C2C]">
                                     {feature.title}
                                 </h3>
 
@@ -459,7 +485,7 @@ const PerformanceMarketing = () => {
                         <div className="bg-gradient-to-br from-[rgba(230,126,60,0.1)] to-[rgba(74,155,158,0.1)] rounded-3xl p-4 max-w-[380px]">
                             <img
                                 src="assets/PMO.webp"
-                                alt="Performance Marketing Expert"
+                                alt="Social Bureau Performance Marketing"
                                 className="w-full max-h-[540px] object-contain rounded-2xl shadow-xl"
                                 loading="lazy"
                             />
@@ -474,41 +500,57 @@ const PerformanceMarketing = () => {
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-8 sm:mb-12 lg:mb-16">
                         <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#B8956A] to-[#D97634] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                            Case Studies
+                            CASE STUDIES
                         </span>
-                        <h2 className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">Proven Results</h2>
+                        <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">Proven Results</h2>
                     </div>
                     <div className="space-y-8 sm:space-y-12">
                         {/* Case Study 1 */}
                         <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg relative overflow-hidden border-l-4 border-[#E67E3C]">
                             <span className="inline-block px-3 py-1 sm:px-4 sm:py-2 bg-[#F8F4F0] text-[#E67E3C] text-xs sm:text-sm font-semibold rounded-full mb-4 sm:mb-6">
-                                Service-Based Business
+                                CASE STUDY 1: SERVICE-BASED BUSINESS
                             </span>
-                            <h3 className="font-['Noto Sans'] text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-[#2C2C2C]">Transforming Digital Visibility for Service Companies</h3>
-                            <div className="mb-6 sm:mb-8">
-                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2 sm:mb-3">The Challenge</h4>
-                                <p className="text-[#666666] text-sm sm:text-base">
-                                    A service-focused company with strong offline credibility but limited visibility and inconsistent enquiries from digital channels. The website attracted traffic, but visitors rarely converted.
-                                </p>
+                            <h3 className="font-['Inter'] text-xl sm:text-2xl font-bold mb-4 text-[#2C2C2C]">Ideal Customer</h3>
+                            <p className="text-[#666666] mb-6 text-sm sm:text-base">{caseStudies[0].idealCustomer}</p>
+
+                            <div className="mb-6">
+                                <h4 className="font-['Inter'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2">The Challenge (Before)</h4>
+                                <p className="text-[#666666] text-sm sm:text-base">{caseStudies[0].challenge}</p>
                             </div>
-                            <div className="mb-6 sm:mb-8">
-                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2 sm:mb-3">The Approach</h4>
-                                <p className="text-[#666666] text-sm sm:text-base">
-                                    We refined the website structure by clarifying service positioning and aligning content with high-intent user journeys. Pages were optimized to address real buyer concerns.
-                                </p>
+
+                            <div className="mb-6">
+                                <h4 className="font-['Inter'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2">The Approach</h4>
+                                <p className="text-[#666666] text-sm sm:text-base">{caseStudies[0].approach}</p>
                             </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-8 bg-[#F8F4F0] rounded-2xl">
-                                <div className="text-center p-4">
-                                    <div className="font-['Noto Sans'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#E67E3C] mb-1 sm:mb-2">+58%</div>
-                                    <div className="text-xs sm:text-sm text-[#666666]">Qualified Enquiries (90 days)</div>
-                                </div>
-                                <div className="text-center p-4">
-                                    <div className="font-['Noto Sans'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#E67E3C] mb-1 sm:mb-2">-34%</div>
-                                    <div className="text-xs sm:text-sm text-[#666666]">Bounce Rate Reduction</div>
-                                </div>
-                                <div className="text-center p-4">
-                                    <div className="font-['Noto Sans'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#E67E3C] mb-1 sm:mb-2">Shorter</div>
-                                    <div className="text-xs sm:text-sm text-[#666666]">Sales Conversations</div>
+
+                            <div className="mb-4">
+                                <h4 className="font-['Inter'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-3">The Results (After)</h4>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-8 bg-[#F8F4F0] rounded-2xl">
+                                    {caseStudies[0].results.map((result, idx) => {
+                                        const match = result.match(/(\d+)%/);
+                                        const percentage = match ? match[1] : null;
+                                        const text = result.replace(/(\d+%)/, '').trim();
+
+                                        if (percentage) {
+                                            return (
+                                                <div key={idx} className="text-center p-4">
+                                                    <div className="font-['Inter'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#E67E3C] mb-1 sm:mb-2">
+                                                        {result.includes('increased') ? '+' : '-'}{percentage}%
+                                                    </div>
+                                                    <div className="text-xs sm:text-sm text-[#666666]">{text}</div>
+                                                </div>
+                                            );
+                                        } else {
+                                            return (
+                                                <div key={idx} className="text-center p-4">
+                                                    <div className="font-['Inter'] text-lg sm:text-xl font-bold text-[#E67E3C] mb-1 sm:mb-2">
+                                                        ✓
+                                                    </div>
+                                                    <div className="text-xs sm:text-sm text-[#666666]">{result}</div>
+                                                </div>
+                                            );
+                                        }
+                                    })}
                                 </div>
                             </div>
                         </div>
@@ -516,33 +558,99 @@ const PerformanceMarketing = () => {
                         {/* Case Study 2 */}
                         <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg relative overflow-hidden border-l-4 border-[#E67E3C]">
                             <span className="inline-block px-3 py-1 sm:px-4 sm:py-2 bg-[#F8F4F0] text-[#E67E3C] text-xs sm:text-sm font-semibold rounded-full mb-4 sm:mb-6">
-                                eCommerce Brand
+                                CASE STUDY 2: eCOMMERCE BRAND
                             </span>
-                            <h3 className="font-['Noto Sans'] text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-[#2C2C2C]">Scaling Revenue for Online Retailers</h3>
-                            <div className="mb-6 sm:mb-8">
-                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2 sm:mb-3">The Challenge</h4>
-                                <p className="text-[#666666] text-sm sm:text-base">
-                                    An eCommerce brand experiencing steady traffic but struggling to convert visitors into repeat customers. Despite consistent ad spend, conversion rates remained low.
-                                </p>
+                            <h3 className="font-['Inter'] text-xl sm:text-2xl font-bold mb-4 text-[#2C2C2C]">Ideal Customer</h3>
+                            <p className="text-[#666666] mb-6 text-sm sm:text-base">{caseStudies[1].idealCustomer}</p>
+
+                            <div className="mb-6">
+                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2">The Challenge (Before)</h4>
+                                <p className="text-[#666666] text-sm sm:text-base">{caseStudies[1].challenge}</p>
                             </div>
-                            <div className="mb-6 sm:mb-8">
-                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2 sm:mb-3">The Approach</h4>
-                                <p className="text-[#666666] text-sm sm:text-base">
-                                    We analyzed user behavior across the funnel and restructured product pages to improve clarity, trust, and usability. Conversion-focused improvements were introduced.
-                                </p>
+
+                            <div className="mb-6">
+                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2">The Approach</h4>
+                                <p className="text-[#666666] text-sm sm:text-base">{caseStudies[1].approach}</p>
                             </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-8 bg-[#F8F4F0] rounded-2xl">
-                                <div className="text-center p-4">
-                                    <div className="font-['Noto Sans'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#E67E3C] mb-1 sm:mb-2">+41%</div>
-                                    <div className="text-xs sm:text-sm text-[#666666]">Conversion Rate (3 months)</div>
+
+                            <div className="mb-4">
+                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-3">The Results (After)</h4>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-8 bg-[#F8F4F0] rounded-2xl">
+                                    {caseStudies[1].results.map((result, idx) => {
+                                        const match = result.match(/(\d+)%/);
+                                        const percentage = match ? match[1] : null;
+                                        const text = result.replace(/(\d+%)/, '').trim();
+
+                                        if (percentage) {
+                                            return (
+                                                <div key={idx} className="text-center p-4">
+                                                    <div className="font-['Noto Sans'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#E67E3C] mb-1 sm:mb-2">
+                                                        {result.includes('improved') ? '+' : '-'}{percentage}%
+                                                    </div>
+                                                    <div className="text-xs sm:text-sm text-[#666666]">{text}</div>
+                                                </div>
+                                            );
+                                        } else {
+                                            return (
+                                                <div key={idx} className="text-center p-4">
+                                                    <div className="font-['Noto Sans'] text-lg sm:text-xl font-bold text-[#E67E3C] mb-1 sm:mb-2">
+                                                        ✓
+                                                    </div>
+                                                    <div className="text-xs sm:text-sm text-[#666666]">{result}</div>
+                                                </div>
+                                            );
+                                        }
+                                    })}
                                 </div>
-                                <div className="text-center p-4">
-                                    <div className="font-['Noto Sans'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#E67E3C] mb-1 sm:mb-2">-27%</div>
-                                    <div className="text-xs sm:text-sm text-[#666666]">Cart Abandonment</div>
-                                </div>
-                                <div className="text-center p-4">
-                                    <div className="font-['Noto Sans'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#E67E3C] mb-1 sm:mb-2">Higher</div>
-                                    <div className="text-xs sm:text-sm text-[#666666]">Revenue Per Visitor</div>
+                            </div>
+                        </div>
+
+                        {/* Case Study 3 */}
+                        <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg relative overflow-hidden border-l-4 border-[#E67E3C]">
+                            <span className="inline-block px-3 py-1 sm:px-4 sm:py-2 bg-[#F8F4F0] text-[#E67E3C] text-xs sm:text-sm font-semibold rounded-full mb-4 sm:mb-6">
+                                CASE STUDY 3: B2B LEAD GENERATION BRAND
+                            </span>
+                            <h3 className="font-['Noto Sans'] text-xl sm:text-2xl font-bold mb-4 text-[#2C2C2C]">Ideal Customer</h3>
+                            <p className="text-[#666666] mb-6 text-sm sm:text-base">{caseStudies[2].idealCustomer}</p>
+
+                            <div className="mb-6">
+                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2">The Challenge (Before)</h4>
+                                <p className="text-[#666666] text-sm sm:text-base">{caseStudies[2].challenge}</p>
+                            </div>
+
+                            <div className="mb-6">
+                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2">The Approach</h4>
+                                <p className="text-[#666666] text-sm sm:text-base">{caseStudies[2].approach}</p>
+                            </div>
+
+                            <div className="mb-4">
+                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-3">The Results (After)</h4>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-8 bg-[#F8F4F0] rounded-2xl">
+                                    {caseStudies[2].results.map((result, idx) => {
+                                        const match = result.match(/(\d+)%/);
+                                        const percentage = match ? match[1] : null;
+                                        const text = result.replace(/(\d+%)/, '').trim();
+
+                                        if (percentage) {
+                                            return (
+                                                <div key={idx} className="text-center p-4">
+                                                    <div className="font-['Noto Sans'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#E67E3C] mb-1 sm:mb-2">
+                                                        {result.includes('improved') ? '+' : '-'}{percentage}%
+                                                    </div>
+                                                    <div className="text-xs sm:text-sm text-[#666666]">{text}</div>
+                                                </div>
+                                            );
+                                        } else {
+                                            return (
+                                                <div key={idx} className="text-center p-4">
+                                                    <div className="font-['Noto Sans'] text-lg sm:text-xl font-bold text-[#E67E3C] mb-1 sm:mb-2">
+                                                        ✓
+                                                    </div>
+                                                    <div className="text-xs sm:text-sm text-[#666666]">{result}</div>
+                                                </div>
+                                            );
+                                        }
+                                    })}
                                 </div>
                             </div>
                         </div>
@@ -554,16 +662,16 @@ const PerformanceMarketing = () => {
             <section id="testimonials" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                 <div className="text-center mb-8 sm:mb-12 lg:mb-16">
                     <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#B8956A] to-[#D97634] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                        Testimonials
+                        TESTIMONIALS
                     </span>
-                    <h2 className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">What Our Clients Say</h2>
+                    <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">What Our Clients Say</h2>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
                     {testimonials.map((testimonial, index) => (
                         <div key={index} className="bg-white p-6 sm:p-8 lg:p-10 rounded-3xl shadow-lg hover:translate-y-[-5px] transition-transform duration-300">
                             <div className="text-4xl sm:text-5xl text-[#B8956A] opacity-30 mb-3 sm:mb-4">❝</div>
                             <p className="text-[#666666] italic leading-relaxed mb-4 sm:mb-6 text-sm sm:text-base">{testimonial.text}</p>
-                            <div className="font-semibold text-[#2C2C2C] text-sm sm:text-base">— {testimonial.author}</div>
+                            <div className="font-semibold text-[#2C2C2C] text-sm sm:text-base">{index + 1}.</div>
                         </div>
                     ))}
                 </div>
@@ -600,12 +708,12 @@ const PerformanceMarketing = () => {
             {/* CTA Section */}
             <section id="contact" className="py-12 sm:py-16 lg:py-20 mx-4 sm:mx-6 lg:mx-8 my-8 sm:my-12 lg:my-16 bg-gradient-to-br from-[#2C2C2C] to-[#3C3C3C] text-white rounded-3xl text-center relative overflow-hidden">
                 <div className="absolute -top-1/2 -right-1/10 w-64 h-64 sm:w-96 sm:h-96 bg-radial-gradient(circle, rgba(74,155,158,0.2), transparent) rounded-full animate-pulse-slow hidden sm:block"></div>
-                <h2 className="font-['Noto Sans'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 relative z-10 px-4">Ready to Scale Your Business?</h2>
+                <h2 className="font-['Inter'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 relative z-10 px-4">Connect With Us</h2>
                 <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-gray-200 relative z-10 px-4">
-                    Let's discuss how <a href='https://en.wikipedia.org/wiki/Performance-based_advertising' className='text-red-700'> performance marketing </a> can drive measurable growth for your business.
+                    Let's discuss how performance marketing can drive measurable growth for your business.
                 </p>
-                <a href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-[#E67E3C] to-[#D46E2F] text-white font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-[0_15px_40px_rgba(230,126,60,0.3)] transition-all relative z-10 text-sm sm:text-base">
-                    Connect With Us
+                <a href="https://api.whatsapp.com/send/?phone=918921840486&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-[#E67E3C] to-[#D46E2F] text-white font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-[0_15px_40px_rgba(230,126,60,0.3)] transition-all relative z-10 text-sm sm:text-base">
+                    Book a Strategy Call
                 </a>
             </section>
 

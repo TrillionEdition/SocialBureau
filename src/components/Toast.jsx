@@ -23,7 +23,7 @@ export default function Toast({ type = "info", message, onClose }) {
 
   return (
     <div
-      className={`fixed top-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-xl text-white ${styles[type]}`}
+      className={`fixed top-6 right-6 z-110 flex items-center gap-3 px-5 py-3 rounded-xl shadow-xl text-white ${styles[type]}`}
     >
       <span className="text-lg">{icons[type]}</span>
       <p className="text-sm font-medium">{message}</p>

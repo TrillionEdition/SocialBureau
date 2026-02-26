@@ -1,120 +1,70 @@
-// import React from "react";
-// import { useNavigate } from "react-router-dom";
-
-// const CareerSection = () => {
-//     const navigate = useNavigate();
-
-//     return (
-//         <section className="relative w-full bg-neutral-50 overflow-hidden">
-//             <div className="max-w-7xl mx-auto px-6 pt-24 pb-48 text-center">
-
-//                 {/* EYEBROW */}
-//                 <p className="text-xs font-semibold tracking-[0.3em] uppercase text-black mb-4">
-//                     Careers
-//                 </p>
-
-//                 {/* TITLE */}
-//                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-3">
-//                     Build Your Future With Us
-//                 </h1>
-
-//                 {/* SUBTITLE */}
-//                 <p className="text-sm sm:text-base text-black/60 max-w-xl mx-auto mb-6">
-//                     Join a team that values clarity, craftsmanship, and impact.
-//                     Work on meaningful products alongside people who care about doing things right.
-//                 </p>
-
-//                 {/* CTA */}
-//                 <div className="flex justify-center gap-4">
-//                     <button
-//                         onClick={() => navigate("/careers")}
-//                         className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-full"
-//                     >
-//                         View Open Roles
-//                     </button>
-
-//                     <button
-//                         onClick={() => navigate("/careers")}
-//                         className="px-6 py-2 border border-black/20 text-black text-sm font-medium rounded-full hover:bg-black hover:text-white transition"
-//                     >
-//                         Why Work With Us
-//                     </button>
-//                 </div>
-//             </div>
-
-//             {/* IMAGE */}
-//             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full flex justify-center">
-//                 <img
-//                     src="/assets/home/career.jpg"
-//                     alt="Careers at our company"
-//                     className="w-full max-w-4xl object-contain"
-//                 />
-//             </div>
-//         </section>
-//     );
-// };
-
-// export default CareerSection;
-
-
-
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import GridScan from "./Hyperspeed";
 
 const CareerSection = () => {
     const navigate = useNavigate();
 
     return (
-        <section className="relative w-full bg-neutral-50 overflow-hidden">
-            <div className="max-w-7xl mx-auto px-6 py-24">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <section className="relative w-full h-[85vh] min-h-[600px] overflow-hidden bg-black">
+            {/* GRIDSCAN BACKGROUND */}
+            <div className="absolute inset-0 w-full h-full z-0">
+                <GridScan
+                    sensitivity={0.8}
+                    lineThickness={1.5}
+                    linesColor="#392e4e"
+                    gridScale={0.12}
+                    scanColor="#FF9FFC"
+                    scanOpacity={0.5}
+                    enablePost={true}
+                    bloomIntensity={0.8}
+                    chromaticAberration={0.003}
+                    noiseIntensity={0.02}
+                    scanOnClick={true}
+                    scanDuration={1.5}
+                    scanDelay={1.0}
+                />
+            </div>
 
-                    {/* LEFT SIDE - TEXT */}
-                    <div className="text-left lg:text-left">
-                        {/* EYEBROW */}
-                        <p className="text-xs font-semibold tracking-[0.3em] uppercase text-black mb-4">
-                            Careers
-                        </p>
+            {/* APPLE-STYLE OVERLAY - Using pointer-events-none so mouse reaches the GridScan */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-black/60 pointer-events-none z-1" />
 
-                        {/* TITLE */}
-                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-6">
-                            Build Your Future With Us
-                        </h1>
+            {/* CONTENT */}
+            <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 pointer-events-none">
 
-                        {/* SUBTITLE */}
-                        <p className="text-sm sm:text-base text-black/60 mb-8 leading-relaxed">
-                            Join a team that values clarity, craftsmanship, and impact.
-                            Work on meaningful products alongside people who care about doing things right.
-                        </p>
+                {/* EYEBROW */}
+                <span className="text-white text-sm sm:text-base font-semibold tracking-tight mb-3">
+                    Careers
+                </span>
 
-                        {/* CTA */}
-                        <div className="flex flex-col sm:flex-row gap-4">
-                            <button
-                                onClick={() => navigate("/careers")}
-                                className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-full transition-colors"
-                            >
-                                View Open Roles
-                            </button>
+                {/* MAIN TITLE - Tight letter spacing, bold impact */}
+                <h2 className="text-white text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6">
+                    Build your future <br className="hidden sm:block" /> with us.
+                </h2>
 
-                            <button
-                                onClick={() => navigate("/careers")}
-                                className="px-6 py-3 border border-black/20 text-black text-sm font-medium rounded-full hover:bg-black hover:text-white transition-colors"
-                            >
-                                Why Work With Us
-                            </button>
-                        </div>
-                    </div>
+                {/* SUBTITLE - Subtle grey for hierarchy */}
+                <p className="text-[#A1A1A6] text-lg sm:text-xl lg:text-2xl font-medium max-w-2xl mx-auto mb-10">
+                    Join a team that values craftsmanship and impact. <br className="hidden md:block" />
+                    Work on products that matter.
+                </p>
 
-                    {/* RIGHT SIDE - IMAGE */}
-                    <div className="flex justify-center">
-                        <img
-                            src="/assets/home/career.jpg"
-                            alt="Careers at our company"
-                            className="w-full max-w-md lg:max-w-full h-auto object-cover rounded-lg shadow-lg"
-                        />
-                    </div>
+                {/* CTAs - Apple standard "Blue Button" and "Chevron Link" */}
+                <div className="flex flex-col sm:flex-row items-center gap-6 pointer-events-auto">
+                    <button
+                        onClick={() => navigate("/careers")}
+                        className="bg-[#642162] hover:bg-[#642162] text-white px-8 py-3 rounded-full text-lg font-normal transition-all duration-300 cursor-pointer"
+                    >
+                        View Open Roles
+                    </button>
                 </div>
             </div>
+
+            <p className="visually-hidden">Join a forward-thinking digital marketing and technology company focused on innovation,
+                performance, and long-term growth. We’re hiring talented professionals across web
+                development, SEO, performance marketing, AI-powered marketing solutions, and digital
+                strategy who want to build meaningful careers and work on impactful projects. Our culture
+                emphasizes collaboration, continuous learning, transparent communication, and delivering
+                measurable results for clients worldwide</p>
         </section>
     );
 };

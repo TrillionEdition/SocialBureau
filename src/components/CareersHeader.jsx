@@ -4,17 +4,17 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 export default function CareersHeader() {
   return (
     <div className=" text-white font-inter">
-      
+
       <section className="py-30 pt-40 px-6 text-center">
         <div className="max-w-[80vw] mx-auto">
           <h2 style={{ fontFamily: "Playfair Display, serif" }} className="text-6xl md:text-7xl font-bold mb-8 leading-tight">
             Build the Future of <span className="text-[#ff0000]">API Marketing</span>
           </h2>
           <p className="text-xl md:text-2xl font-light text-gray-300 mb-12">
-            Join the World’s First API Marketing Agency<br/> Be Part of the Next Marketing Revolution
+            Join the World’s First API Marketing Agency<br /> Be Part of the Next Marketing Revolution
           </p>
           <a
-            href="#positions"
+            href="#careers"
             className="inline-block border border-white rounded-full px-12 py-4 text-lg font-medium hover:bg-[#ff0000] hover:border-[#ff0000] transition"
           >
             Explore Opportunities
@@ -23,18 +23,18 @@ export default function CareersHeader() {
       </section>
       <section className="py-30 px-6 text-center">
         <div className="max-w-[80vw] mx-auto">
-          
+
           <p className="text-xl md:text-2xl font-light text-gray-300 mb-12">
             At <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
               Social<span className="text-[#ff0000]">B</span>ureau
             </a> (A Project by <a href="https://trillionedition.com"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="font-semibold cursor-pointer">TrillionEdition LLP</a>), we’re building the next generation of marketing powered by APIs, performance, data, and creativity.
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold cursor-pointer">TrillionEdition LLP</a>), we’re building the next generation of marketing powered by APIs, performance, data, and creativity.
 
- In the next 6 months, we’re expanding our team with 25+ new opportunities across creative, strategy, and technology departments.
+            In the next 6 months, we’re expanding our team with 25+ new opportunities across creative, strategy, and technology departments.
 
- If you’re passionate about redefining how digital marketing works, this is your place to grow.
+            If you’re passionate about redefining how digital marketing works, this is your place to grow.
           </p>
         </div>
       </section>

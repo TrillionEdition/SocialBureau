@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { FiSmartphone, FiPlay, FiTarget, FiTrendingUp, FiDownload } from 'react-icons/fi';
 
 import Seo from './Seo';
-import Footer from './Footer';
 
 export default function AppAdvertisingService() {
   const [activeFormat, setActiveFormat] = useState(0);

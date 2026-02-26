@@ -223,11 +223,11 @@ export default function SubmitBlog() {
                   value={formData.seoTitle}
                   onChange={handleInputChange}
                   placeholder="SEO optimized title (leave empty to use blog title)"
-                  maxLength={60}
+                  maxLength={200}
                   className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-lg focus:outline-none focus:border-red-600 text-white placeholder-gray-500"
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  {formData.seoTitle.length}/60 characters - Optimized for search engines
+                  {formData.seoTitle.length}/200 characters - Optimized for search engines
                 </p>
               </div>
 
@@ -242,11 +242,11 @@ export default function SubmitBlog() {
                   onChange={handleInputChange}
                   placeholder="SEO meta description (leave empty to use excerpt)"
                   rows={3}
-                  maxLength={160}
+                  maxLength={500}
                   className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-lg focus:outline-none focus:border-red-600 text-white placeholder-gray-500 resize-none"
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  {formData.seoDescription.length}/160 characters - Appears in search results
+                  {formData.seoDescription.length}/500 characters - Appears in search results
                 </p>
               </div>
 

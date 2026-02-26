@@ -1,8 +1,36 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Search, Menu, X, ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Menu, X, ChevronRight, Trophy, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useAuth } from "../../utils/authUtils";
+import Logout from "./Logout";
+
+const useAuth = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isPartnership, setIsPartnership] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const rawData =
+        localStorage.getItem("userData") || localStorage.getItem("user");
+      const userData = rawData ? JSON.parse(rawData) : null;
+      setIsLoggedIn(!!userData);
+      setIsAdmin(userData?.role?.toLowerCase() === "admin");
+      setIsPartnership(userData?.role?.toLowerCase() === "partnership");
+    };
+
+    checkAuth();
+    window.addEventListener("storage", checkAuth);
+    window.addEventListener("authChange", checkAuth);
+
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+      window.removeEventListener("authChange", checkAuth);
+    };
+  }, []);
+
+  return { isLoggedIn, isAdmin, isPartnership };
+};
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -10,8 +38,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [expandedMobileCategory, setExpandedMobileCategory] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation();
-  const { canAccessDashboard } = useAuth();
+  const { isLoggedIn, isAdmin, isPartnership } = useAuth();
 
   const navItems = [
     { label: "Home", href: "/" },
@@ -20,7 +47,7 @@ export default function Navbar() {
       href: "/services",
       columns: [
         {
-          title: "Marketing Services",
+          title: "API Marketing",
           items: [
             { label: "API Marketing", href: "/api-marketing" },
             { label: "Performance Marketing", href: "/performance-marketing" },
@@ -50,9 +77,7 @@ export default function Navbar() {
           title: "Community",
           items: [
             { label: "Blog", href: "/blog" },
-            { label: "Events", href: "/events" },
             { label: "Partners", href: "/partners" },
-            { label: "Leaderboard", href: "/leaderboard" },
           ],
         },
       ],
@@ -98,24 +123,82 @@ export default function Navbar() {
         },
       ],
     },
-    { label: "Contact", href: "/contact" },
-    ...(canAccessDashboard ? [{ label: "Dashboard", href: "/dashboard" }] : []),
-    { label: "Login", href: "/login" },
+    {
+      label: "Performance Marketing",
+      href: "/performance-marketing",
+      columns: [
+        {
+          title: "360 Performance Marketing",
+          items: [
+            {
+              label: "Paid Media Advertising",
+              href: "https://ads.google.com/home/",
+            },
+            { label: "Google Ads", href: "https://ads.google.com/home/" },
+            {
+              label: "Meta Ads (Facebook & Instagram)",
+              href: "https://www.facebook.com/business/ads",
+            },
+            {
+              label: "LinkedIn Ads",
+              href: "https://www.linkedin.com/marketing-solutions/ads",
+            },
+            {
+              label: "Programmatic Advertising",
+              href: "https://marketingplatform.google.com/about/display-video-360/",
+            },
+            {
+              label: "Lead Generation Campaigns",
+              href: "https://ads.google.com/intl/en_in/home/solutions/lead-generation/",
+            },
+          ],
+        },
+        {
+          title: "More Channels",
+          items: [
+            {
+              label: "Conversion & Sales Campaigns",
+              href: "https://support.google.com/google-ads/answer/6364",
+            },
+            {
+              label: "Retargeting & Remarketing",
+              href: "https://support.google.com/google-ads/answer/2453998",
+            },
+            {
+              label: "Affiliate Marketing",
+              href: "https://support.google.com/google-ads/answer/7644078",
+            },
+            {
+              label: "Landing Page & Funnel Optimization",
+              href: "https://support.google.com/analytics/answer/10089681",
+            },
+            {
+              label: "Conversion Rate Optimization (CRO)",
+              href: "https://support.google.com/optimize/answer/6211930",
+            },
+            {
+              label: "Marketing Automation",
+              href: "https://developers.google.com/business-communications/rcs-business-messaging",
+            },
+          ],
+        },
+      ],
+    },
     {
       label: "Partnership",
       href: "/partners",
-
       columns: [
         {
           title: "Partnership",
           items: [
             { label: "Partners", href: "/partners" },
-            { label: "Ranjit", href: "/partnership/Ranjit" },
-            { label: "Sivaprasad", href: "/partnership/Sivaprasad" },
+            { label: "Ranjit", href: "/Ranjit" },
           ],
         },
       ],
     },
+    { label: "Team", href: "/our-team" },
+    { label: "Support", href: "/contact" },
   ];
 
   useEffect(() => {
@@ -125,7 +208,12 @@ export default function Navbar() {
   }, []);
 
   const handleNavClick = (href) => {
-    navigate(href);
+    if (!href || href === "#") return;
+    if (href.startsWith("http://") || href.startsWith("https://")) {
+      window.open(href, "_blank", "noopener,noreferrer");
+    } else {
+      navigate(href);
+    }
     setMobileMenuOpen(false);
     setActiveDropdown(null);
     setExpandedMobileCategory(null);
@@ -134,80 +222,162 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 w-full z-[100] transition-all duration-300 border-b ${
-          isScrolled || mobileMenuOpen
-            ? "bg-white/95 border-gray-200 shadow-sm"
-            : "bg-white/80 border-transparent"
-        } backdrop-blur-md`}
         onMouseLeave={() => setActiveDropdown(null)}
+        className="fixed top-0 left-0 right-0 z-100 bg-[#161617]/80 backdrop-blur-xl transition-colors duration-500"
       >
-        <div className="max-w-[1300px] mx-auto px-6">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <button
-              onClick={() => handleNavClick("/")}
-              className="z-50 shrink-0"
+        {/* Top Bar */}
+        <div className="w-full px-4 flex items-center h-12">
+          {/* Desktop Nav - centered with logo */}
+          <div className="hidden md:flex items-center justify-center flex-1 min-w-0">
+            <a
+              style={{ fontFamily: "MyFont, sans-serif" }}
+              href="https://socialbureau.in"
+              className="text-white text-[17px] font-bold tracking-tight shrink-0 mr-10"
             >
-              <img
-                src="/assets/socialbureau.webp"
-                alt="Logo"
-                className="h-8 lg:h-9 w-auto object-contain block"
-                style={{ minWidth: "auto" }}
-              />
-            </button>
-
-            {/* Desktop Nav - Balanced Spacing */}
-            <div className="hidden lg:flex items-center justify-center flex-1 gap-8 xl:gap-10">
-              {navItems.map((item) => (
-                <div key={item.label} className="relative">
-                  <button
-                    onMouseEnter={() =>
-                      item.columns && setActiveDropdown(item.label)
-                    }
-                    onClick={() => !item.columns && handleNavClick(item.href)}
-                    className="text-[14px] font-medium text-gray-700 hover:text-black transition-colors py-5"
-                  >
-                    {item.label}
-                  </button>
-                </div>
-              ))}
-            </div>
-
-            {/* Right Icons */}
-            <div className="flex items-center gap-5 shrink-0">
-              <button
-                className="lg:hidden text-gray-600 hover:text-black"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a>
+            {navItems.map((item) => (
+              <div
+                key={item.label}
+                className="relative shrink-0"
+                onMouseEnter={() =>
+                  item.columns && setActiveDropdown(item.label)
+                }
               >
-                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                <button
+                  onClick={() => handleNavClick(item.href || "#")}
+                  className="text-[11px] font-normal text-[#f5f5f7]/80 hover:text-white transition-colors px-2 py-1 antialiased tracking-normal whitespace-nowrap cursor-pointer"
+                >
+                  {item.label}
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Far-right desktop actions - dropdown menu */}
+          <div className="hidden md:flex items-center shrink-0 pl-3 relative">
+            <div className="relative">
+              <button
+                onMouseEnter={() => setActiveDropdown("userMenu")}
+                className="flex items-center gap-1.5 text-[11px] font-semibold transition-all px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 cursor-pointer text-white hover:bg-white/10"
+              >
+                <User size={13} />
+                <span>{isLoggedIn ? "Profile" : "Login"}</span>
               </button>
+
+              {/* Dropdown Menu */}
+              <AnimatePresence>
+                {activeDropdown === "userMenu" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute right-0 top-full mt-2 bg-[#262627]/95 backdrop-blur-xl border border-white/10 rounded-lg overflow-hidden min-w-[180px] z-50"
+                  >
+                    <div className="flex flex-col">
+                      {(isAdmin || isPartnership) && (
+                        <>
+                          <button
+                            onClick={() => {
+                              handleNavClick("/dashboard");
+                              setActiveDropdown(null);
+                            }}
+                            className="text-[13px] font-medium text-[#f5f5f7]/80 hover:text-white hover:bg-white/10 px-4 py-3 text-left transition-colors flex items-center gap-2"
+                          >
+                            <User size={14} />
+                            Dashboard
+                          </button>
+                          <div className="h-px bg-white/10" />
+                        </>
+                      )}
+
+                      {isLoggedIn && (
+                        <>
+                          <button
+                            onClick={() => {
+                              handleNavClick("/leaderboard");
+                              setActiveDropdown(null);
+                            }}
+                            className="text-[13px] font-medium text-[#f5f5f7]/80 hover:text-white hover:bg-white/10 px-4 py-3 text-left transition-colors flex items-center gap-2"
+                          >
+                            <Trophy size={14} />
+                            Leaderboard
+                          </button>
+                          <div className="h-px bg-white/10" />
+                        </>
+                      )}
+
+                      <button
+                        onClick={() => {
+                          handleNavClick(isLoggedIn ? "/profile" : "/login");
+                          setActiveDropdown(null);
+                        }}
+                        className="text-[13px] font-medium text-[#f5f5f7]/80 hover:text-white hover:bg-white/10 px-4 py-3 text-left transition-colors flex items-center gap-2"
+                      >
+                        <User size={14} />
+                        {isLoggedIn ? "Profile" : "Login"}
+                      </button>
+
+                      {isLoggedIn && (
+                        <>
+                          <div className="h-px bg-white/10" />
+                          <div className="px-4 py-3">
+                            <Logout />
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
+
+          {/* Mobile Logo */}
+          <a
+            style={{ fontFamily: "MyFont, sans-serif" }}
+            href="https://socialbureau.in"
+            className="md:hidden text-white text-[17px] font-bold tracking-tight shrink-0"
+          >
+            Social<span className="text-[#ff0000]">B</span>ureau
+          </a>
+
+          {/* Mobile Toggle */}
+          <button
+            className="md:hidden text-white p-2 ml-auto"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
 
-        {/* Mega Dropdown - Clean White Design */}
+        {/* Mega Dropdown */}
         <AnimatePresence>
-          {activeDropdown && (
+          {activeDropdown && activeDropdown !== "userMenu" && (
             <motion.div
-              initial={{ opacity: 0, y: -4 }}
+              key="dropdown"
+              initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              className="hidden lg:block absolute w-full bg-white border-b border-gray-200 shadow-2xl"
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
+              className="hidden md:block border-t border-white/10 bg-[#161617]/95 backdrop-blur-xl"
             >
-              <div className="max-w-[1200px] mx-auto px-10 py-14 flex flex-row gap-20 justify-start">
+              <div className="max-w-[980px] mx-auto px-4 py-8 flex gap-12">
                 {navItems
                   .find((i) => i.label === activeDropdown)
                   ?.columns?.map((col, idx) => (
-                    <div key={idx} className="flex flex-col">
-                      <h3 className="text-[11px] text-gray-400 font-bold uppercase tracking-[1.5px] mb-6">
+                    <div key={idx} className="min-w-[160px]">
+                      <p className="text-[11px] font-semibold text-[#f5f5f7]/40 uppercase tracking-widest mb-3">
                         {col.title}
-                      </h3>
-                      <div className="flex flex-col space-y-1">
+                      </p>
+                      <div className="flex flex-col gap-2">
                         {col.items.map((subitem) => (
                           <button
                             key={subitem.label}
                             onClick={() => handleNavClick(subitem.href)}
-                            className="text-[15px] font-semibold text-gray-700 hover:text-black text-left py-2 px-3 -ml-3 rounded-lg hover:bg-gray-50 transition-all duration-200 whitespace-nowrap"
+                            className="text-[17px] font-semibold text-[#f5f5f7] hover:text-[#e20000] text-left transition-colors leading-tight"
                           >
                             {subitem.label}
                           </button>
@@ -219,82 +389,133 @@ export default function Navbar() {
             </motion.div>
           )}
         </AnimatePresence>
+      </nav>
 
-        {/* Mobile Menu - Vertical White List */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "100vh" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden fixed inset-0 top-[64px] bg-white z-40 overflow-y-auto px-6 py-4"
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="fixed inset-0 z-100 bg-[#000000ea] flex flex-col pt-16 px-6 pb-8 overflow-y-auto md:hidden relative"
+          >
+            <button
+              className="absolute top-4 right-4 text-white p-2"
+              onClick={() => setMobileMenuOpen(false)}
+              aria-label="Close menu"
             >
-              <div className="flex flex-col divide-y divide-gray-100">
-                {navItems.map((item) => (
-                  <div key={item.label} className="py-2">
-                    {item.columns ? (
-                      <>
-                        <button
-                          onClick={() =>
-                            setExpandedMobileCategory(
-                              expandedMobileCategory === item.label
-                                ? null
-                                : item.label,
-                            )
-                          }
-                          className="w-full flex justify-between items-center py-4 text-lg font-bold text-gray-900"
-                        >
-                          {item.label}
-                          <ChevronRight
-                            className={`transition-transform duration-300 ${expandedMobileCategory === item.label ? "rotate-90" : ""}`}
-                          />
-                        </button>
-                        <AnimatePresence>
-                          {expandedMobileCategory === item.label && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              className="bg-gray-50 rounded-2xl p-5 mb-4 space-y-6 overflow-hidden"
-                            >
-                              {item.columns.map((col) => (
-                                <div key={col.title}>
-                                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">
-                                    {col.title}
-                                  </p>
-                                  <div className="flex flex-col gap-3">
-                                    {col.items.map((sub) => (
-                                      <button
-                                        key={sub.label}
-                                        onClick={() => handleNavClick(sub.href)}
-                                        className="text-left text-gray-700 font-semibold"
-                                      >
-                                        {sub.label}
-                                      </button>
-                                    ))}
-                                  </div>
-                                </div>
-                              ))}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </>
-                    ) : (
-                      <button
-                        onClick={() => handleNavClick(item.href)}
-                        className="w-full text-left py-4 text-lg font-bold text-gray-900"
-                      >
-                        {item.label}
-                      </button>
+              <X size={22} />
+            </button>
+            <div className="flex flex-col gap-4 mt-4">
+              {navItems.map((item) => (
+                <div key={item.label}>
+                  <div className="flex items-center justify-between">
+                    <button
+                      onClick={() => {
+                        if (item.columns) {
+                          setExpandedMobileCategory(
+                            expandedMobileCategory === item.label
+                              ? null
+                              : item.label,
+                          );
+                        } else {
+                          handleNavClick(item.href);
+                        }
+                      }}
+                      className="text-[28px] font-semibold text-[#f5f5f7] active:text-[#0066cc] text-left transition-colors duration-200"
+                    >
+                      {item.label}
+                    </button>
+                    {item.columns && (
+                      <ChevronRight
+                        size={20}
+                        className={`text-white/40 transition-transform duration-200 ${
+                          expandedMobileCategory === item.label
+                            ? "rotate-90"
+                            : ""
+                        }`}
+                      />
                     )}
                   </div>
-                ))}
+
+                  <AnimatePresence>
+                    {item.columns && expandedMobileCategory === item.label && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-3 ml-2 flex flex-col gap-4">
+                          {item.columns.map((col, idx) => (
+                            <div key={idx}>
+                              <p className="text-[11px] font-semibold text-[#f5f5f7]/40 uppercase tracking-widest mb-2">
+                                {col.title}
+                              </p>
+                              <div className="flex flex-col gap-2">
+                                {col.items.map((subitem) => (
+                                  <button
+                                    key={subitem.label}
+                                    onClick={() => handleNavClick(subitem.href)}
+                                    className="text-[16px] font-medium text-[#f5f5f7]/80 hover:text-[#0066cc] text-left transition-colors"
+                                  >
+                                    {subitem.label}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ))}
+
+              {/* Mobile bottom actions */}
+              <div className="mt-6 pt-6 border-t border-white/10 flex flex-col gap-3">
+                {isLoggedIn && (
+                  <>
+                    {(isAdmin || isPartnership) && (
+                      <button
+                        onClick={() => handleNavClick("/dashboard")}
+                        className="flex items-center gap-2 text-[22px] font-semibold text-[#f5f5f7] active:text-[#ff0000] text-left transition-colors"
+                      >
+                        <User size={20} />
+                        Dashboard
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleNavClick("/leaderboard")}
+                      className="flex items-center gap-2 text-[22px] font-semibold text-[#f5f5f7] active:text-[#ff0000] text-left transition-colors"
+                    >
+                      <Trophy size={20} />
+                      Leaderboard
+                    </button>
+                    <Logout />
+                  </>
+                )}
+                <button
+                  onClick={() =>
+                    handleNavClick(isLoggedIn ? "/profile" : "/login")
+                  }
+                  className="flex items-center gap-2 text-[22px] font-semibold text-[#ff0000] text-left transition-colors"
+                >
+                  <User size={20} />
+                  {isLoggedIn ? "Profile" : "Login"}
+                </button>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
-      {/* Dynamic Spacer */}
-      <div className="h-16" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Spacer */}
+      <div className="h-12" />
     </>
   );
 }

@@ -1,13 +1,13 @@
-import React from 'react'
-import Footer from '../components/Footer'
-import ClientDetails from '../components/ClientDetails'
-import ClientTestimonials from '../components/ClientTestimonials'
+import React from "react";
+import Footer from "../components/Footer";
+import HomeIntro from "../components/HomeIntro";
+import Testimonials from "../components/Testimonials";
 
 export const Client = () => {
   return (
     <div>
-        <ClientDetails/>
-        <ClientTestimonials/>
+      <HomeIntro />
+      <Testimonials />
     </div>
-  )
-}
+  );
+};

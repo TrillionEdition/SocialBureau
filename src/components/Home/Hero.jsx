@@ -1,117 +1,79 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
-export default function Hero() {
-    const [burst, setBurst] = useState(false);
-    const [hearts, setHearts] = useState([]);
+export default function ImageCarousel() {
+    const images = [        
+        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1771995838/Artboard_1_1_1_l982re.webp",
+        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1771995838/Artboard_1_copy_2_mmmbkk.webp",
+        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772003206/Untitled-design-40.png_fuipcr.webp",
+        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772003206/Untitled-design-41.png_rblbxq.webp",
+        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1771995838/Artboard_1_copy_2_1_1_haxwde.webp",
+    ];
 
-    const handleBurst = () => {
-        setBurst(true);
+    const [active, setActive] = useState(0);
 
-        const rain = Array.from({ length: 70 }).map((_, i) => ({
-            id: i + Date.now(),
-            left: Math.random() * 100,
-            size: Math.random() * 24 + 12,
-            duration: Math.random() * 3 + 2,
-            delay: Math.random(),
-        }));
+    const sectionRef = useRef(null);
+    const currentAspect = useRef(16 / 9);
 
-        setHearts(rain);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setActive((prev) => (prev + 1) % images.length);
+        }, 4000);
 
-        setTimeout(() => {
-            setBurst(false);
-            setHearts([]);
-        }, 5000);
-    };
+        return () => clearInterval(interval);
+    }, [images.length]);
+
+    useEffect(() => {
+        function handleResize() {
+            if (!sectionRef.current) return;
+            const width = sectionRef.current.clientWidth;
+            const height = width * (currentAspect.current || 16 / 9);
+            sectionRef.current.style.height = `${height}px`;
+        }
+
+        window.addEventListener("resize", handleResize);
+        // initial calc in case image already loaded
+        handleResize();
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     return (
-        <section className="relative flex items-center justify-center h-screen overflow-hidden bg-gradient-to-br from-pink-100 to-red-200 cursor-default">
-
-            {/* CSS Animations */}
-            <style>{`
-                @keyframes pulseHeart {
-                    0%, 100% { transform: scale(1); }
-                    50% { transform: scale(1.05); }
-                }
-                @keyframes burstHeart {
-                    0% { transform: scale(1); opacity: 1; }
-                    100% { transform: scale(4); opacity: 0; }
-                }
-                @keyframes heartRain {
-                    0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-                    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-                }
-                @keyframes hintPulse {
-                    0%, 100% { opacity: 0.4; transform: translateY(0); }
-                    50% { opacity: 1; transform: translateY(-5px); }
-                }
-            `}</style>
-
-            <div className="relative flex items-center justify-center z-20">
-                {!burst && (
-                    <div className="relative flex items-center justify-center">
-
-                        {/* TEXT HINT AT THE TOP */}
-                        <p
-                            className="absolute -top-2 md:-top-2 text-[12px] md:text-[14px] tracking-[0.4em] font-black text-red-600 whitespace-nowrap pointer-events-none"
-                            style={{ animation: "hintPulse 2s ease-in-out infinite" }}
-                        >
-                            Click the Heart
-                        </p>
-
-                        {/* INVISIBLE CLICK ZONE - Explicitly setting cursor-pointer */}
-                        <button
-                            onClick={handleBurst}
-                            className="absolute inset-0 w-full h-full z-30 cursor-pointer rounded-full bg-transparent outline-none focus:outline-none"
-                            aria-label="Heart trigger"
-                        />
-
-                        {/* BIG HEART - Added select-none to prevent text-cursor glitch */}
-                        <span
-                            className="text-[350px] md:text-[500px] leading-none select-none drop-shadow-2xl pointer-events-none"
-                            style={{ animation: "pulseHeart 2s ease-in-out infinite" }}
-                        >
-                            ❤️
-                        </span>
-
-                        {/* LOGO */}
-                        <div className="absolute top-[42%] flex items-center justify-center pointer-events-none">
-                            <div className="w-40 h-24 md:w-40 md:h-40 flex items-center justify-center overflow-hidden">
-                                <img
-                                    src="/assets/logo.webp"
-                                    alt="logo"
-                                    className="w-[85%] h-auto object-contain drop-shadow-100"
-                                />
-                            </div>
-                        </div>
-
-                    </div>
-                )}
-
-                {/* BURST EFFECT */}
-                {burst && (
-                    <span
-                        className="absolute text-[350px] md:text-[500px] pointer-events-none select-none"
-                        style={{ animation: "burstHeart 0.8s ease-out forwards" }}
-                    >
-                        ❤️
-                    </span>
-                )}
-            </div>
-
-            {/* HEART RAIN */}
-            {hearts.map((heart) => (
-                <span
-                    key={heart.id}
-                    className="absolute top-[-10%] pointer-events-none select-none"
-                    style={{
-                        left: `${heart.left}%`,
-                        fontSize: `${heart.size}px`,
-                        animation: `heartRain ${heart.duration}s linear ${heart.delay}s forwards`,
+        <section ref={sectionRef} className="relative w-full overflow-hidden">
+            <p className="visually-hidden">SocialBureau, Kerala's first API-driven digital and performance marketing agency, helps niche brands scale smarter with data, automation, and precision</p>
+            {images.map((img, index) => (
+                <img
+                    key={index}
+                    src={img}
+                    alt={`Slide ${index + 1}`}
+                    onLoad={(e) => {
+                        // store aspect ratio of the most recently loaded image and set section height
+                        const iw = e.target.naturalWidth || 16;
+                        const ih = e.target.naturalHeight || 9;
+                        currentAspect.current = ih / iw;
+                        if (sectionRef.current) {
+                            const width = sectionRef.current.clientWidth;
+                            sectionRef.current.style.height = `${width * currentAspect.current}px`;
+                        }
                     }}
-                >
-                    ❤️
-                </span>
+                    className={`absolute inset-0 w-full h-full object-contain object-center md:object-cover md:object-top transition-opacity duration-1000 ${
+                        active === index ? "opacity-100" : "opacity-0"
+                    }`}
+                />
             ))}
+            {/* Smooth Scroll Indicator Dots */}
+            <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2 md:gap-3 z-10">
+                {images.map((_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => setActive(index)}
+                        className={`h-1.5 md:h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                            active === index
+                                ? "bg-white w-6 md:w-8"
+                                : "bg-white/50 w-1.5 md:w-2 hover:bg-white/70"
+                        }`}
+                        aria-label={`Go to slide ${index + 1}`}
+                    />
+                ))}
+            </div>
         </section>
     );
 }
