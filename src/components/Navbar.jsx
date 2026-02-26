@@ -6,11 +6,17 @@ import Logout from "./Logout";
 
 const useAuth = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isPartnership, setIsPartnership] = useState(false);
 
   useEffect(() => {
     const checkAuth = () => {
-      const userData = localStorage.getItem("userData") || localStorage.getItem("user");
+      const rawData =
+        localStorage.getItem("userData") || localStorage.getItem("user");
+      const userData = rawData ? JSON.parse(rawData) : null;
       setIsLoggedIn(!!userData);
+      setIsAdmin(userData?.role?.toLowerCase() === "admin");
+      setIsPartnership(userData?.role?.toLowerCase() === "partnership");
     };
 
     checkAuth();
@@ -23,7 +29,7 @@ const useAuth = () => {
     };
   }, []);
 
-  return { isLoggedIn };
+  return { isLoggedIn, isAdmin, isPartnership };
 };
 
 export default function Navbar() {
@@ -32,7 +38,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [expandedMobileCategory, setExpandedMobileCategory] = useState(null);
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isAdmin, isPartnership } = useAuth();
 
   const navItems = [
     { label: "Home", href: "/" },
@@ -64,7 +70,7 @@ export default function Navbar() {
           items: [
             { label: "About Us", href: "/about" },
             { label: "Our Team", href: "/our-team" },
-            { label: "Work", href: "/our-works" },
+            { label: "Work", href: "#" },
           ],
         },
         {
@@ -83,14 +89,32 @@ export default function Navbar() {
         {
           title: "Open Positions",
           items: [
-            { label: "Content Copywriter", href: "/careers/content-copywriter" },
-            { label: "Client Success Manager", href: "/careers/client-success-manager" },
-            { label: "Business Development", href: "/careers/business-development-manager" },
-            { label: "Front Desk Manager", href: "/careers/front-desk-manager" },
-            { label: "Digital Marketing Expert", href: "/careers/digital-marketing-expert" },
+            {
+              label: "Content Copywriter",
+              href: "/careers/content-copywriter",
+            },
+            {
+              label: "Client Success Manager",
+              href: "/careers/client-success-manager",
+            },
+            {
+              label: "Business Development",
+              href: "/careers/business-development-manager",
+            },
+            {
+              label: "Front Desk Manager",
+              href: "/careers/front-desk-manager",
+            },
+            {
+              label: "Digital Marketing Expert",
+              href: "/careers/digital-marketing-expert",
+            },
             { label: "Video Editor", href: "/careers/video-editor" },
             { label: "Web Developer", href: "#" },
-            { label: "Office Operations", href: "/careers/office-operations-manager" },
+            {
+              label: "Office Operations",
+              href: "/careers/office-operations-manager",
+            },
           ],
         },
         {
@@ -106,12 +130,27 @@ export default function Navbar() {
         {
           title: "360 Performance Marketing",
           items: [
-            { label: "Paid Media Advertising", href: "https://ads.google.com/home/" },
+            {
+              label: "Paid Media Advertising",
+              href: "https://ads.google.com/home/",
+            },
             { label: "Google Ads", href: "https://ads.google.com/home/" },
-            { label: "Meta Ads (Facebook & Instagram)", href: "https://www.facebook.com/business/ads" },
-            { label: "LinkedIn Ads", href: "https://www.linkedin.com/marketing-solutions/ads" },
-            { label: "Programmatic Advertising", href: "https://marketingplatform.google.com/about/display-video-360/" },
-            { label: "Lead Generation Campaigns", href: "https://ads.google.com/intl/en_in/home/solutions/lead-generation/" },
+            {
+              label: "Meta Ads (Facebook & Instagram)",
+              href: "https://www.facebook.com/business/ads",
+            },
+            {
+              label: "LinkedIn Ads",
+              href: "https://www.linkedin.com/marketing-solutions/ads",
+            },
+            {
+              label: "Programmatic Advertising",
+              href: "https://marketingplatform.google.com/about/display-video-360/",
+            },
+            {
+              label: "Lead Generation Campaigns",
+              href: "https://ads.google.com/intl/en_in/home/solutions/lead-generation/",
+            },
           ],
         },
         {
@@ -140,7 +179,6 @@ export default function Navbar() {
         },
       ],
     },
-    // { label: "Entertainment", href: "#" },
     { label: "Team", href: "/our-team" },
     { label: "Support", href: "/contact" },
   ];
@@ -171,7 +209,6 @@ export default function Navbar() {
       >
         {/* Top Bar */}
         <div className="w-full px-4 flex items-center h-12">
-
           {/* Desktop Nav - centered with logo */}
           <div className="hidden md:flex items-center justify-center flex-1 min-w-0">
             <a
@@ -185,7 +222,9 @@ export default function Navbar() {
               <div
                 key={item.label}
                 className="relative shrink-0"
-                onMouseEnter={() => item.columns && setActiveDropdown(item.label)}
+                onMouseEnter={() =>
+                  item.columns && setActiveDropdown(item.label)
+                }
               >
                 <button
                   onClick={() => handleNavClick(item.href || "#")}
@@ -219,6 +258,22 @@ export default function Navbar() {
                     className="absolute right-0 top-full mt-2 bg-[#262627]/95 backdrop-blur-xl border border-white/10 rounded-lg overflow-hidden min-w-[180px] z-50"
                   >
                     <div className="flex flex-col">
+                      {(isAdmin || isPartnership) && (
+                        <>
+                          <button
+                            onClick={() => {
+                              handleNavClick("/dashboard");
+                              setActiveDropdown(null);
+                            }}
+                            className="text-[13px] font-medium text-[#f5f5f7]/80 hover:text-white hover:bg-white/10 px-4 py-3 text-left transition-colors flex items-center gap-2"
+                          >
+                            <User size={14} />
+                            Dashboard
+                          </button>
+                          <div className="h-px bg-white/10" />
+                        </>
+                      )}
+
                       {isLoggedIn && (
                         <>
                           <button
@@ -344,7 +399,9 @@ export default function Navbar() {
                       onClick={() => {
                         if (item.columns) {
                           setExpandedMobileCategory(
-                            expandedMobileCategory === item.label ? null : item.label
+                            expandedMobileCategory === item.label
+                              ? null
+                              : item.label,
                           );
                         } else {
                           handleNavClick(item.href);
@@ -357,8 +414,11 @@ export default function Navbar() {
                     {item.columns && (
                       <ChevronRight
                         size={20}
-                        className={`text-white/40 transition-transform duration-200 ${expandedMobileCategory === item.label ? "rotate-90" : ""
-                          }`}
+                        className={`text-white/40 transition-transform duration-200 ${
+                          expandedMobileCategory === item.label
+                            ? "rotate-90"
+                            : ""
+                        }`}
                       />
                     )}
                   </div>
@@ -402,6 +462,15 @@ export default function Navbar() {
               <div className="mt-6 pt-6 border-t border-white/10 flex flex-col gap-3">
                 {isLoggedIn && (
                   <>
+                    {(isAdmin || isPartnership) && (
+                      <button
+                        onClick={() => handleNavClick("/dashboard")}
+                        className="flex items-center gap-2 text-[22px] font-semibold text-[#f5f5f7] active:text-[#ff0000] text-left transition-colors"
+                      >
+                        <User size={20} />
+                        Dashboard
+                      </button>
+                    )}
                     <button
                       onClick={() => handleNavClick("/leaderboard")}
                       className="flex items-center gap-2 text-[22px] font-semibold text-[#f5f5f7] active:text-[#ff0000] text-left transition-colors"
@@ -410,11 +479,12 @@ export default function Navbar() {
                       Leaderboard
                     </button>
                     <Logout />
-
                   </>
                 )}
                 <button
-                  onClick={() => handleNavClick(isLoggedIn ? "/profile" : "/login")}
+                  onClick={() =>
+                    handleNavClick(isLoggedIn ? "/profile" : "/login")
+                  }
                   className="flex items-center gap-2 text-[22px] font-semibold text-[#ff0000] text-left transition-colors"
                 >
                   <User size={20} />

@@ -58,9 +58,14 @@ export const isVerified = () => {
   return user?.isVerified === true;
 };
 
-export const isAdmin = () => {
+export const isPartner = () => {
   const user = getUserData();
-  return user?.role?.toLowerCase() === "admin";
+  const role = user?.role?.toLowerCase();
+  return role === "partnership";
+};
+
+export const canAccessDashboard = () => {
+  return isAdmin() || isPartner();
 };
 
 export const canAccessEmployeeDashboard = () => {
@@ -113,6 +118,12 @@ export const useAuth = () => {
     isAuthenticated: !!currentUser,
     isEmployee: currentUser?.isEmployee === true,
     isAdmin: currentUser?.role?.toLowerCase() === "admin",
+    isPartner:
+      currentUser?.role?.toLowerCase() === "partner" ||
+      currentUser?.role?.toLowerCase() === "partnership",
+    canAccessDashboard:
+      currentUser?.role?.toLowerCase() === "admin" ||
+      currentUser?.role?.toLowerCase() === "partnership",
     isVerified: currentUser?.isVerified === true,
     canAccessEmployeeDashboard:
       !!currentUser && currentUser?.isEmployee && currentUser?.isVerified,

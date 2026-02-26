@@ -159,7 +159,7 @@ const Service1 = () => {
         <Seo title={meta.title} description={meta.description} image={meta?.image || '/assets/socialbureau.png'} url={`https://www.socialbureau.in/services/${encodeURIComponent(decodedTitle)}`} />
         <SchemaMarkup data={generateServiceSchema({ title: data.title, meta }, [
           { name: 'Home', url: 'https://socialbureau.in' },
-          { name: 'Services', url: 'https://socialbureau.in/services' },
+          { name: 'Services', url: '#' },
           { name: data.title, url: `https://socialbureau.in/services/${encodeURIComponent(decodedTitle)}` }
         ])} />
 
