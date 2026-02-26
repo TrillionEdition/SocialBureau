@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function ImageCarousel() {
     const images = [        
@@ -11,6 +11,9 @@ export default function ImageCarousel() {
 
     const [active, setActive] = useState(0);
 
+    const sectionRef = useRef(null);
+    const currentAspect = useRef(16 / 9);
+
     useEffect(() => {
         const interval = setInterval(() => {
             setActive((prev) => (prev + 1) % images.length);
@@ -19,15 +22,39 @@ export default function ImageCarousel() {
         return () => clearInterval(interval);
     }, [images.length]);
 
+    useEffect(() => {
+        function handleResize() {
+            if (!sectionRef.current) return;
+            const width = sectionRef.current.clientWidth;
+            const height = width * (currentAspect.current || 16 / 9);
+            sectionRef.current.style.height = `${height}px`;
+        }
+
+        window.addEventListener("resize", handleResize);
+        // initial calc in case image already loaded
+        handleResize();
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     return (
-        <section className="relative w-full h-[40vh] sm:h-[50vh] md:h-[80vh] lg:h-[110vh] overflow-hidden">
+        <section ref={sectionRef} className="relative w-full overflow-hidden">
             <p className="visually-hidden">SocialBureau, Kerala's first API-driven digital and performance marketing agency, helps niche brands scale smarter with data, automation, and precision</p>
             {images.map((img, index) => (
                 <img
                     key={index}
                     src={img}
                     alt={`Slide ${index + 1}`}
-                    className={`absolute inset-0 w-full h-full object-cover object-center md:object-top transition-opacity duration-1000 ${
+                    onLoad={(e) => {
+                        // store aspect ratio of the most recently loaded image and set section height
+                        const iw = e.target.naturalWidth || 16;
+                        const ih = e.target.naturalHeight || 9;
+                        currentAspect.current = ih / iw;
+                        if (sectionRef.current) {
+                            const width = sectionRef.current.clientWidth;
+                            sectionRef.current.style.height = `${width * currentAspect.current}px`;
+                        }
+                    }}
+                    className={`absolute inset-0 w-full h-full object-contain object-center md:object-cover md:object-top transition-opacity duration-1000 ${
                         active === index ? "opacity-100" : "opacity-0"
                     }`}
                 />
