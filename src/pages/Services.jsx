@@ -157,12 +157,7 @@ const [isMobile, setIsMobile] = useState(false);
               {svc.cta}
             </a>
 
-            {/* SEO schema in DOM */}
-            <div className="hidden" itemScope itemType="https://schema.org/Service">
-              <meta itemProp="serviceType" content={svc.title} />
-              <meta itemProp="description" content={svc.description} />
-              <meta itemProp="keywords" content={svc.seoKeywords} />
-            </div>
+            {/* legacy microdata removed; use SchemaMarkup with centralized schemas */}
           </motion.div>
         ))}
       </div>

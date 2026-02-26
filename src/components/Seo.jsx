@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
-export default function Seo({ title, description, keywords, image, url, jsonLd }) {
+export default function Seo({ title, description, keywords, image, url }) {
   return (
     <Helmet>
       <title>{title}</title>
@@ -18,10 +18,6 @@ export default function Seo({ title, description, keywords, image, url, jsonLd }
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
-
-      {jsonLd && (
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-      )}
     </Helmet>
   );
 }

@@ -38,7 +38,7 @@ export default function Navbar() {
     { label: "Home", href: "/" },
     {
       label: "Services",
-      href: "/services",
+      href: "#",
       columns: [
         {
           title: "API Marketing",
@@ -117,12 +117,12 @@ export default function Navbar() {
         {
           title: "More Channels",
           items: [
-            { label: "Conversion & Sales Campaigns", href: "https://support.google.com/google-ads/answer/6364" },
-            { label: "Retargeting & Remarketing", href: "https://support.google.com/google-ads/answer/2453998" },
-            { label: "Affiliate Marketing", href: "https://support.google.com/google-ads/answer/7644078" },
-            { label: "Landing Page & Funnel Optimization", href: "https://support.google.com/analytics/answer/10089681" },
-            { label: "Conversion Rate Optimization (CRO)", href: "https://support.google.com/optimize/answer/6211930" },
-            { label: "Marketing Automation", href: "https://developers.google.com/business-communications/rcs-business-messaging" },
+            { label: "Conversion & Sales Campaigns", href: "#" },
+            { label: "Retargeting & Remarketing", href: "#" },
+            { label: "Affiliate Marketing", href: "#" },
+            { label: "Landing Page & Funnel Optimization", href: "#" },
+            { label: "Conversion Rate Optimization (CRO)", href: "#" },
+            { label: "Marketing Automation", href: "#" },
           ],
         },
       ],
