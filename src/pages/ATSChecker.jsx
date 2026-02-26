@@ -10,9 +10,21 @@ import {
     Trash2,
     Copy,
     Check,
-    History as HistoryIcon
+    History as HistoryIcon,
+    Briefcase,
+    Zap,
+    ExternalLink
 } from 'lucide-react';
 import { fetchHistory, analyzeResume, deleteScan } from '../../services/atsService';
+
+const ROLE_TEMPLATES = {
+    "Content Creator": "Video Editing, Script Writing, Adobe Premiere Pro, Storytelling, Social Media Trends, Engagement Metrics, Content Strategy, YouTube SEO, Canva, CapCut, Thumbnail Design.",
+    "Digital Marketer": "Facebook Ads, Google Ads, Campaign Management, Lead Generation, Content Marketing, Analytics, Copywriting, Marketing Automation, CRM, Brand Strategy.",
+    "SEO Specialist": "Keyword Research, On-page SEO, Technical SEO, Backlink Building, Google Search Console, Ahrefs, SEMrush, Google Analytics, Content Optimization, Site Audits.",
+    "Graphic Designer": "Adobe Photoshop, Illustrator, InDesign, Branding, Typography, Layout Design, UI/UX Design, Figma, Logo Creation, Print Media, Vector Graphics.",
+    "Photographer": "Portrait Photography, Adobe Lightroom, Image Editing, Composition, Lighting Setup, Color Grading, Event Photography, Commercial Photography, Portfolio Management.",
+    "HR Specialist": "Talent Acquisition, Recruitment, Employee Engagement, Onboarding, Payroll Management, Interviewing Skills, Policy Development, Conflict Resolution, HRIS."
+};
 
 const ATSChecker = () => {
     const [clientId, setClientId] = useState('');
@@ -23,6 +35,7 @@ const ATSChecker = () => {
     const [result, setResult] = useState(null);
     const [history, setHistory] = useState([]);
     const [copied, setCopied] = useState(false);
+    const [selectedRole, setSelectedRole] = useState('');
 
     // Initial setup for clientId
     useEffect(() => {
@@ -41,6 +54,13 @@ const ATSChecker = () => {
             setHistory(data);
         } catch (err) {
             console.error('Error fetching history:', err);
+        }
+    };
+
+    const handleTemplateSelect = (role) => {
+        setSelectedRole(role);
+        if (role && ROLE_TEMPLATES[role]) {
+            setJobDescription(ROLE_TEMPLATES[role]);
         }
     };
 
@@ -68,7 +88,14 @@ const ATSChecker = () => {
     };
 
     const handleAnalyze = async () => {
-        if (!file || jobDescription.length < 100) return;
+        // Reduced character requirement if it looks like a keyword list
+        const minChars = jobDescription.split(',').length > 5 ? 50 : 100;
+        if (!file || jobDescription.length < minChars) {
+            if (jobDescription.length < minChars) {
+                setError(`Please provide a more detailed description or at least 5-10 keywords.`);
+            }
+            return;
+        }
 
         setLoading(true);
         setError('');
@@ -115,7 +142,7 @@ const ATSChecker = () => {
                         ATS Resume <span className="text-blue-500">Score Checker</span>
                     </h1>
                     <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-                        Optimize your resume for applicant tracking systems with our expert analysis.
+                        Creative-friendly analysis for designers, creators, marketers, and professionals.
                     </p>
                 </header>
 
@@ -180,21 +207,37 @@ const ATSChecker = () => {
                                 )}
                             </div>
 
-                            {/* Job Description */}
+                            {/* Role Selection & Job Description */}
                             <div className="mt-8">
+                                <div className="flex justify-between items-center mb-4">
+                                    <div className="flex items-center gap-2">
+                                        <Briefcase className="w-4 h-4 text-gray-400" />
+                                        <label className="text-sm font-medium text-gray-400">Target Role (Optional)</label>
+                                    </div>
+                                    <select
+                                        value={selectedRole}
+                                        onChange={(e) => handleTemplateSelect(e.target.value)}
+                                        className="bg-gray-800 border border-gray-700 rounded-lg text-xs px-3 py-1 outline-none text-blue-400 focus:ring-1 focus:ring-blue-500"
+                                    >
+                                        <option value="">Select a Professional Persona</option>
+                                        {Object.keys(ROLE_TEMPLATES).map(role => (
+                                            <option key={role} value={role}>{role}</option>
+                                        ))}
+                                    </select>
+                                </div>
                                 <div className="flex justify-between items-center mb-2">
-                                    <label className="text-sm font-medium text-gray-400">Job Description</label>
+                                    <label className="text-sm font-medium text-gray-400">Job Description / Keywords</label>
                                     <span className="text-xs text-gray-500">{jobDescription.length} characters</span>
                                 </div>
                                 <textarea
                                     value={jobDescription}
                                     onChange={(e) => setJobDescription(e.target.value)}
-                                    placeholder="Paste the job description here..."
+                                    placeholder="Paste the job description or enter specific keywords separated by commas..."
                                     className="w-full h-48 bg-gray-800 border border-gray-700 rounded-xl p-4 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none resize-none"
                                 />
-                                {jobDescription.length > 0 && jobDescription.length < 100 && (
-                                    <p className="text-red-400 text-xs mt-2 flex items-center gap-1">
-                                        <AlertCircle className="w-3 h-3" /> Still needs {100 - jobDescription.length} more characters
+                                {jobDescription.length > 0 && jobDescription.length < 50 && (
+                                    <p className="text-yellow-400 text-xs mt-2 flex items-center gap-1">
+                                        <Zap className="w-3 h-3" /> Tip: Add more detailed keywords for better accuracy
                                     </p>
                                 )}
                             </div>
@@ -208,7 +251,7 @@ const ATSChecker = () => {
 
                             <button
                                 onClick={handleAnalyze}
-                                disabled={loading || !file || jobDescription.length < 100}
+                                disabled={loading || !file || jobDescription.length < 10}
                                 className="w-full mt-8 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-800 disabled:text-gray-500 text-white font-bold py-4 rounded-xl transition-all duration-300 shadow-lg shadow-blue-500/20 flex items-center justify-center gap-3"
                             >
                                 {loading ? (
@@ -233,19 +276,40 @@ const ATSChecker = () => {
                                 <div className="text-gray-400 font-medium uppercase tracking-widest text-sm">
                                     Overall Match Score
                                 </div>
+                                {result?.hasPortfolio && (
+                                    <div className="mt-4 px-4 py-1.5 bg-green-500/10 text-green-400 border border-green-500/20 rounded-full text-xs font-bold flex items-center gap-2">
+                                        <ExternalLink className="w-3 h-3" /> Portfolio Detected (+15%)
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Advanced Metrics Badges */}
+                            <div className="flex flex-wrap gap-3 mb-8 justify-center">
+                                {result?.contactInfo?.email && result?.contactInfo?.phone ? (
+                                    <span className="px-3 py-1 bg-green-500/10 text-green-400 border border-green-500/20 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                                        <CheckCircle2 className="w-3 h-3" /> Contact Info Verified
+                                    </span>
+                                ) : (
+                                    <span className="px-3 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                                        <AlertCircle className="w-3 h-3" /> Contact Info Missing
+                                    </span>
+                                )}
+                                <span className="px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                                    <Zap className="w-3 h-3" /> {result?.actionVerbCount || 0} Action Verbs
+                                </span>
                             </div>
 
                             {/* Sub-scores */}
                             <div className="space-y-6 mb-10">
                                 {result?.subScores && Object.entries(result.subScores).map(([key, val]) => (
                                     <div key={key}>
-                                        <div className="flex justify-between text-sm mb-2">
-                                            <span className="text-gray-400 capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
+                                        <div className="flex justify-between text-xs mb-2">
+                                            <span className="text-gray-400 font-medium uppercase tracking-wider">{key.replace(/([A-Z])/g, ' $1')}</span>
                                             <span className="font-bold">{val}%</span>
                                         </div>
-                                        <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                        <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden">
                                             <div
-                                                className="h-full bg-blue-500 transition-all duration-1000 ease-out"
+                                                className="h-full bg-gradient-to-r from-blue-600 to-blue-400 transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(59,130,246,0.5)]"
                                                 style={{ width: `${val}%` }}
                                             />
                                         </div>
@@ -253,72 +317,105 @@ const ATSChecker = () => {
                                 ))}
                             </div>
 
-                            {/* Section Checklist */}
-                            <div className="mb-10">
-                                <h3 className="text-sm font-semibold text-gray-400 mb-4 uppercase tracking-wider">Structure Check</h3>
-                                <div className="grid grid-cols-2 gap-4">
+                            {/* Section Checklist & Badges */}
+                            <div className="mb-10 bg-gray-800/30 p-6 rounded-2xl border border-gray-800">
+                                <h3 className="text-xs font-bold text-gray-400 mb-6 uppercase tracking-[0.2em] text-center">Professional Aura</h3>
+                                <div className="grid grid-cols-2 gap-y-4 gap-x-6">
                                     {result?.sectionChecklist && Object.entries(result.sectionChecklist).map(([section, found]) => (
                                         <div key={section} className="flex items-center gap-2 text-sm">
                                             {found ? (
-                                                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                                                <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
                                             ) : (
-                                                <XCircle className="w-4 h-4 text-red-500" />
+                                                <div className="w-2 h-2 rounded-full bg-gray-700" />
                                             )}
-                                            <span className={found ? 'text-gray-200' : 'text-gray-500 line-through'}>{section}</span>
+                                            <span className={found ? 'text-gray-200' : 'text-gray-600'}>{section}</span>
                                         </div>
                                     ))}
+                                    <div className="flex items-center gap-2 text-sm">
+                                        {result?.experienceYears > 0 ? (
+                                            <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
+                                        ) : (
+                                            <div className="w-2 h-2 rounded-full bg-amber-500" />
+                                        )}
+                                        <span className={result?.experienceYears > 0 ? 'text-gray-200' : 'text-gray-500'}>
+                                            Exp: {result?.experienceYears || 0} yrs
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-sm">
+                                        {result?.internships?.length > 0 ? (
+                                            <div className="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
+                                        ) : (
+                                            <div className="w-2 h-2 rounded-full bg-gray-700" />
+                                        )}
+                                        <span className={result?.internships?.length > 0 ? 'text-gray-200' : 'text-gray-600'}>
+                                            Internship
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 
-                            {/* Keywords */}
-                            <div className="mb-10">
-                                <h3 className="text-sm font-semibold text-gray-400 mb-4 uppercase tracking-wider">Critical Keywords</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {result?.matchedKeywords?.map(kw => (
-                                        <span key={kw} className="px-3 py-1 bg-green-500/10 text-green-400 border border-green-500/20 rounded-full text-xs font-medium">
-                                            {kw}
-                                        </span>
-                                    ))}
-                                    {result?.missingKeywords?.map(kw => (
-                                        <span key={kw} className="px-3 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-full text-xs font-medium">
-                                            {kw}
-                                        </span>
-                                    ))}
+                            {/* Keywords & Skills Grid */}
+                            <div className="grid grid-cols-1 gap-6 mb-10">
+                                <div className="bg-gray-800/20 p-5 rounded-2xl border border-gray-800/50">
+                                    <h3 className="text-[10px] font-black text-gray-500 mb-4 uppercase tracking-[0.2em]">Target Keywords Match</h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        {result?.matchedKeywords?.map(kw => (
+                                            <span key={kw} className="px-2 py-1 bg-green-500/5 text-green-400/80 border border-green-500/10 rounded-md text-[10px] font-medium">
+                                                {kw}
+                                            </span>
+                                        ))}
+                                        {result?.missingKeywords?.map(kw => (
+                                            <span key={kw} className="px-2 py-1 bg-red-500/5 text-red-400/80 border border-red-500/10 rounded-md text-[10px] font-medium">
+                                                {kw}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="bg-gray-800/20 p-5 rounded-2xl border border-gray-800/50">
+                                    <h3 className="text-[10px] font-black text-gray-500 mb-4 uppercase tracking-[0.2em]">Soft Skills Calibration</h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        {result?.softSkillsMatch?.map(skill => (
+                                            <span key={skill} className="px-2 py-1 bg-blue-500/5 text-blue-400/80 border border-blue-500/10 rounded-md text-[10px] font-medium">
+                                                {skill}
+                                            </span>
+                                        ))}
+                                        {result?.softSkillsMissing?.map(skill => (
+                                            <span key={skill} className="px-2 py-1 bg-gray-800 text-gray-500 border border-gray-700 rounded-md text-[10px] font-medium">
+                                                {skill}
+                                            </span>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
 
-                            {/* Skill Gaps */}
-                            <div className="mb-10">
-                                <h3 className="text-sm font-semibold text-gray-400 mb-4 uppercase tracking-wider text-amber-500/80">Skill Gaps</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {result?.skillGaps?.map(skill => (
-                                        <span key={skill} className="px-3 py-1 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-full text-xs font-medium">
-                                            {skill}
-                                        </span>
-                                    ))}
-                                    {(!result?.skillGaps || result.skillGaps.length === 0) && (
-                                        <p className="text-xs text-gray-500 italic">No significant skill gaps detected.</p>
-                                    )}
+                            {/* Impact Analysis */}
+                            {result?.topActionVerbs?.length > 0 && (
+                                <div className="mb-10 p-5 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-2xl border border-blue-500/10">
+                                    <h3 className="text-[10px] font-black text-blue-400 mb-3 uppercase tracking-[0.2em]">High-Impact Action Verbs</h3>
+                                    <div className="flex flex-wrap gap-2 text-xs text-gray-400 italic">
+                                        {result.topActionVerbs.join(' • ')}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
 
                             {/* Suggestions */}
-                            <div className="relative p-6 bg-gray-800/50 rounded-xl border border-gray-800">
-                                <div className="flex justify-between items-center mb-4">
-                                    <h3 className="text-sm font-semibold text-gray-200">Improvement Steps</h3>
+                            <div className="relative p-6 bg-gray-950 rounded-2xl border border-blue-500/20 shadow-[0_0_20px_rgba(59,130,246,0.1)]">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h3 className="text-xs font-bold text-blue-400 uppercase tracking-widest">Growth Roadmap</h3>
                                     <button
                                         onClick={copySuggestions}
-                                        className="text-gray-400 hover:text-white transition-colors flex items-center gap-1 text-xs"
+                                        className="text-gray-500 hover:text-white transition-colors flex items-center gap-1 text-[10px] uppercase font-bold"
                                     >
                                         {copied ? <Check className="w-3 h-3 text-green-500" /> : <Copy className="w-3 h-3" />}
-                                        {copied ? 'Copied!' : 'Copy All'}
+                                        {copied ? 'Captured' : 'Export'}
                                     </button>
                                 </div>
-                                <ol className="space-y-3 text-sm text-gray-400">
+                                <ol className="space-y-4 text-xs text-gray-400">
                                     {result?.suggestions?.map((s, idx) => (
-                                        <li key={idx} className="flex gap-3">
-                                            <span className="text-blue-500 font-bold">{idx + 1}.</span>
-                                            {s}
+                                        <li key={idx} className="flex gap-4 group">
+                                            <span className="text-blue-500/50 font-black group-hover:text-blue-400 transition-colors">{String(idx + 1).padStart(2, '0')}</span>
+                                            <span className="leading-relaxed group-hover:text-gray-200 transition-colors">{s}</span>
                                         </li>
                                     ))}
                                 </ol>

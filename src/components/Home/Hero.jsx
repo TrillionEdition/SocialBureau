@@ -22,15 +22,15 @@ export default function ImageCarousel() {
 
     return (
         <section className="relative w-full h-[40vh] sm:h-[50vh] md:h-[80vh] lg:h-[110vh] overflow-hidden">
+            <h1 className="visually-hidden">API MARKETING AGENCY IN KOCHI</h1>
             <p className="visually-hidden">SocialBureau, Kerala's first API-driven digital and performance marketing agency, helps niche brands scale smarter with data, automation, and precision</p>
             {images.map((img, index) => (
                 <img
                     key={index}
                     src={img}
-                    alt={`Slide ${index + 1}`}
-                    className={`absolute inset-0 w-full h-full object-cover object-center md:object-top transition-opacity duration-1000 ${
-                        active === index ? "opacity-100" : "opacity-0"
-                    }`}
+                    alt={`SocialBureau Digital Marketing Strategy Slide ${index + 1}`}
+                    className={`absolute inset-0 w-full h-full object-cover object-center md:object-top transition-opacity duration-1000 ${active === index ? "opacity-100" : "opacity-0"
+                        }`}
                 />
             ))}
             {/* Smooth Scroll Indicator Dots */}
@@ -39,11 +39,10 @@ export default function ImageCarousel() {
                     <button
                         key={index}
                         onClick={() => setActive(index)}
-                        className={`h-1.5 md:h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                            active === index
-                                ? "bg-white w-6 md:w-8"
-                                : "bg-white/50 w-1.5 md:w-2 hover:bg-white/70"
-                        }`}
+                        className={`h-1.5 md:h-2 rounded-full transition-all duration-300 cursor-pointer ${active === index
+                            ? "bg-white w-6 md:w-8"
+                            : "bg-white/50 w-1.5 md:w-2 hover:bg-white/70"
+                            }`}
                         aria-label={`Go to slide ${index + 1}`}
                     />
                 ))}

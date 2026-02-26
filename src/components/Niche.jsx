@@ -1,16 +1,24 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { BarChart3, Megaphone, Search, ShoppingCart, Target, Users, TrendingUp, Award, Zap, Lightbulb, Compass, Layers } from 'lucide-react';
-import Footer from './Footer';
+import React, { useState, useEffect } from 'react';
+import { Target, Search, Users, BarChart, Shield, Zap, ChevronRight, ArrowUp, Plus, X, CheckCircle, Layers, Settings, Smartphone, Compass, Sliders, TrendingUp, ShieldCheck, MapPin } from 'lucide-react';
 import Seo from './Seo';
 
 const Niche = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [activeFaq, setActiveFaq] = useState(null);
+    const [activeCaseStudy, setActiveCaseStudy] = useState(0);
 
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 50);
+
+            // Update scroll progress bar
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            const progressBar = document.querySelector('.scroll-progress-bar');
+            if (progressBar) {
+                progressBar.style.width = scrolled + '%';
+            }
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
@@ -24,62 +32,13 @@ const Niche = () => {
         setActiveFaq(activeFaq === index ? null : index);
     };
 
-    const CountUp = ({ end, duration = 1500, suffix = "", prefix = "" }) => {
-        const [value, setValue] = useState(0);
-        const ref = useRef(null);
-        const hasAnimated = useRef(false);
-
-        useEffect(() => {
-            const element = ref.current;
-            if (!element) return;
-
-            const observer = new IntersectionObserver(
-                ([entry]) => {
-                    if (entry.isIntersecting && !hasAnimated.current) {
-                        hasAnimated.current = true;
-
-                        const startTime = performance.now();
-
-                        const animate = (time) => {
-                            const progress = Math.min((time - startTime) / duration, 1);
-                            const eased = 1 - Math.pow(1 - progress, 3);
-                            const current = Math.floor(eased * end);
-
-                            setValue(current);
-
-                            if (progress < 1) {
-                                requestAnimationFrame(animate);
-                            } else {
-                                setValue(end);
-                            }
-                        };
-
-                        requestAnimationFrame(animate);
-                    }
-                },
-                { threshold: 0.4 }
-            );
-
-            observer.observe(element);
-            return () => observer.disconnect();
-        }, [end, duration]);
-
-        return (
-            <span ref={ref}>
-                {prefix}
-                {value}
-                {suffix}
-            </span>
-        );
-    };
-
     const faqItems = [
         {
             question: "What is niche marketing and how does it work?",
             answer: "Niche marketing focuses on serving a clearly defined group of customers with specific needs. Instead of appealing to everyone, businesses tailor their messaging, offers, and channels to a smaller audience where relevance and engagement are higher."
         },
         {
-            question: "What is the difference from broad marketing approaches?",
+            question: "What is the different from broad marketing approaches?",
             answer: "Broad marketing aims for reach, while niche marketing prioritizes precision. By narrowing the audience, businesses reduce competition, improve message clarity, and connect more effectively with people who are actively searching for specific solutions."
         },
         {
@@ -88,7 +47,7 @@ const Niche = () => {
         },
         {
             question: "How do you identify the right niche for a business?",
-            answer: "The process involves understanding customer needs, analyzing demand patterns, studying competitors, and evaluating long-term growth potential. The right niche balances market opportunity with a brand's strengths."
+            answer: "The process involves understanding customer needs, analyzing demand patterns, studying competitors, and evaluating long-term growth potential. The right niche balances market opportunity with a brand’s strengths."
         },
         {
             question: "How long does it take to see results from a niche-focused strategy?",
@@ -108,585 +67,672 @@ const Niche = () => {
         }
     ];
 
-    const services = [
+    const processSections = [
         {
-            icon: Search,
             title: "Market Intelligence & Research",
-            description: "Understanding a market deeply is the foundation of successful growth. We study demand patterns, buyer expectations, and competitive gaps to uncover opportunities.",
-            features: ["Target market segmentation by intent", "Audience behavior analysis", "Vertical market analysis"]
+            content: "Understanding a market deeply is the foundation of successful growth. Our process begins with niche market analysis, where we study demand patterns, buyer expectations, and competitive gaps to uncover opportunities that broad, generic campaigns often miss.",
+            points: [
+                "Target market segmentation based on intent and relevance",
+                "Audience behavior analysis using real interaction data",
+                "Vertical market analysis to understand industry-specific dynamics"
+            ]
         },
         {
-            icon: Target,
             title: "Strategic Positioning & Planning",
-            description: "We develop a structured strategy that aligns the brand with a clearly defined space, shaping how the business is perceived and why it stands out.",
-            features: ["Market segmentation strategy", "Target market identification", "Market positioning clarity"]
+            content: "Once the market is clearly understood, we develop a structured niche marketing strategy that defines where the brand fits and why it stands out. This phase shapes perception, positioning, and messaging through clear strategic direction.",
+            points: [
+                "Market segmentation for focused communication",
+                "Target market identification aligned with business objectives",
+                "Market positioning that differentiates the brand clearly"
+            ]
         },
         {
-            icon: Users,
             title: "Audience-Focused Execution",
-            description: "Execution built around relevance. We help brands communicate with people most likely to engage, enquire, and convert at the right moment.",
-            features: ["Buyer persona optimization", "Defined customer personas", "Narrow target messaging"]
+            content: "Execution is built around relevance. Through target audience marketing, we help brands communicate with people who are most likely to engage, enquire, and convert. Our campaigns are designed to meet users at the right moment in their decision-making process, leveraging insights from behavioral data and audience segmentation.",
+            points: [
+                "Buyer persona optimization based on real data",
+                "Clearly defined customer personas",
+                "Messaging designed for a narrow target audience"
+            ]
         },
         {
-            icon: Megaphone,
             title: "Personalized & Product-Led Campaigns",
-            description: "For businesses offering specialized solutions, personalization becomes a growth driver. We design hyper-personalized campaigns aligned with user context.",
-            features: ["Niche product marketing", "Micro niche segmentation", "Funnel alignment"]
+            content: "For businesses offering specialized solutions, personalization becomes a key growth driver. We design campaigns using hyper-personalized marketing principles to align communication with user context, intent, and expectations across the customer journey.",
+            points: [
+                "Niche product marketing for focused offerings",
+                "Micro-niche marketing for highly specific audience segments",
+                "Funnel alignment with a clear niche business model"
+            ]
         },
         {
-            icon: TrendingUp,
             title: "Growth & Retention Optimization",
-            description: "We continuously evaluate performance and apply structured improvements to support long-term value through continuous refinement.",
-            features: ["Competitor analysis", "Funnel optimization", "Customer retention strategies"]
+            content: "Marketing success depends on continuous refinement. We continuously evaluate performance and apply structured improvements to support long-term value.By analyzing the outcomes of campaigns, tracking customer behavior, and refining messaging, we help businesses maintain a competitive edge.",
+            points: [
+                "Niche competitor analysis to refine positioning",
+                "Funnel alignment through a niche sales funnel",
+                "Long-term customer retention strategies"
+            ]
         },
         {
-            icon: Zap,
             title: "Demand Activation & Scalable Growth",
-            description: "Once a niche is defined, we focus on generating consistent demand without diluting positioning, ensuring sustainable growth.",
-            features: ["High-intent traffic generation", "Channel selection strategy", "Controlled expansion"]
-        }
-    ];
-
-    const features = [
-        {
-            icon: Award,
-            title: "Specialized Marketing Focus",
-            description: "We partner with brands that prefer clarity over volume and depth over noise. Our approach focuses on understanding specific market segments and aligning messaging to well-defined audiences for stronger engagement."
-        },
-        {
-            icon: TrendingUp,
-            title: "Authority-Driven Approach",
-            description: "Authority is built through consistency, insight, and relevance. We position brands as reliable sources within their niche by aligning messaging with real customer needs and market expectations."
-        },
-        {
-            icon: Target,
-            title: "Clear Niche Positioning",
-            description: "Strong positioning starts with clarity. We help businesses define who they serve, what problem they solve, and why their offering matters within a specific segment."
-        },
-        {
-            icon: BarChart3,
-            title: "Data-Led Decisions",
-            description: "Every strategic decision is informed by research, performance signals, and audience behavior. We rely on measurable insights to guide planning and ensure campaigns adapt to market realities."
-        },
-        {
-            icon: Search,
-            title: "Local Expertise",
-            description: "With hands-on experience in Kochi and across Kerala, we understand regional business dynamics, customer behavior, and market nuances for relevant, scalable growth."
+            content: "Once a niche is clearly defined and campaigns are optimized, the focus shifts to generating consistent demand without diluting positioning. Growth is activated within clear audience boundaries to preserve relevance while expanding reach.",
+            points: [
+                "High-intent traffic generation aligned with niche-specific queries",
+                "Channel selection based on proven audience response patterns",
+                "Controlled expansion that supports sustainable niche growth hacking"
+            ]
         }
     ];
 
     const strategies = [
         {
+            icon: Target,
+            title: "Specialized Marketing Focus",
+            description: "We partner with brands that prefer clarity over volume and depth over noise. Instead of chasing broad visibility, we focus on understanding specific market segments and aligning messaging to well-defined audiences. This approach helps brands communicate with relevance, reduce wasted effort, and achieve stronger engagement within clearly identified niches."
+        },
+        {
+            icon: ShieldCheck,
+            title: "Authority-Driven Approach",
+            description: "Authority is built through consistency, insight, and relevance. Our approach focuses on positioning brands as reliable sources within their niche by aligning messaging with real customer needs and market expectations. Over time, this builds credibility, strengthens trust, and supports long-term brand recognition within focused markets."
+        },
+        {
             icon: Compass,
-            title: "Identify & Define Your Niche",
-            number: "01",
-            description: "Start by understanding who you serve and why. We conduct deep market analysis to identify high-demand segments where your strengths create genuine competitive advantage.",
-            steps: [
-                "Analyze customer pain points and unmet needs",
-                "Study competitor positioning and gaps",
-                "Define your unique value proposition",
-                "Validate market demand and size"
-            ]
+            title: "Clear Niche Positioning",
+            description: "Strong positioning starts with clarity. We help businesses define who they serve, what problem they solve, and why their offering matters within a specific segment. This clarity improves communication across channels, reduces confusion for customers, and creates a distinct identity that separates the brand from general competitors."
         },
         {
-            icon: Lightbulb,
-            title: "Build Authority Through Relevance",
-            number: "02",
-            description: "Once your niche is clear, establish yourself as a trusted resource. We develop messaging, content, and positioning that directly address your audience's specific needs and expectations.",
-            steps: [
-                "Create niche-focused messaging framework",
-                "Develop authority content and resources",
-                "Build reputation in target segment",
-                "Establish thought leadership position"
-            ]
+            icon: BarChart,
+            title: "Data-Led Decisions",
+            description: "Every strategic decision is informed by research, performance signals, and audience behavior. Instead of assumptions, we rely on measurable insights to guide planning and optimization. This ensures campaigns remain aligned with market realities, adapt to changes, and consistently improve results through informed adjustments."
         },
         {
-            icon: Layers,
-            title: "Scale Systematically Within Your Niche",
-            number: "03",
-            description: "Growth doesn't mean abandoning your focus. We help you scale demand generation, optimize conversions, and expand into adjacent markets while maintaining niche authority.",
-            steps: [
-                "Generate high-intent qualified leads",
-                "Optimize funnel for your audience",
-                "Build sustainable growth systems",
-                "Expand to adjacent niches strategically"
-            ]
-        }
-    ];
-
-    const testimonials = [
-        {
-            text: "Working with the team helped us bring clarity to our marketing. Instead of chasing volume, we started attracting enquiries that actually matched our services. The difference in lead quality was noticeable within a few months.",
-            author: "Service Business Owner"
-        },
-        {
-            text: "What stood out was their understanding of our market. The strategy wasn't generic and felt well thought out. Our messaging became more focused, and customer engagement improved steadily over time.",
-            author: "Founder, Product-Based Brand"
-        },
-        {
-            text: "They took the time to understand how our audience thinks and searches. The changes made to positioning and campaigns helped us convert existing traffic more effectively without increasing spend.",
-            author: "Marketing Lead"
-        },
-        {
-            text: "Our brand finally feels differentiated. Earlier, we struggled to explain why we were different. Now the messaging is clear, consistent, and resonates with the right customers.",
-            author: "Operations Manager"
-        },
-        {
-            text: "The process was transparent and structured. We always knew what was being done and why. The results came gradually, but they were stable and sustainable.",
-            author: "Business Consultant"
+            icon: MapPin,
+            title: "Local Expertise",
+            description: "With hands-on experience in Kochi and across Kerala, we understand regional business dynamics, customer behavior, and market nuances. This local insight allows us to design niche strategies that feel relevant on the ground while remaining scalable for wider growth and long-term expansion."
         }
     ];
 
     const caseStudies = [
         {
-            title: "Service-Based Brand — Qualified Lead Improvement",
-            category: "Service-Based Business",
-            challenge: "The brand relied on broad messaging and generic campaigns. While traffic was steady, enquiries lacked relevance and sales teams spent excessive time filtering unqualified leads.",
-            approach: "We conducted niche market analysis and refined target market segmentation to identify high-intent user groups. Messaging was realigned through strategic positioning.",
+            title: "Service-Based Brand — Qualified Lead Improvement through Niche Focus",
+            type: "Service",
+            idealCustomer: "A professional service business offering specialized solutions and seeking higher-quality enquiries rather than high-volume traffic.",
+            challenge: "The brand relied on broad messaging and generic campaigns. While traffic levels were steady, enquiries lacked relevance. Sales teams spent excessive time filtering unqualified leads, and brand differentiation was weak within the market.",
+            approach: "We conducted niche market analysis and refined target market segmentation to identify high-intent user groups. Messaging was realigned through strategic positioning and focused niche branding, ensuring communication addressed specific customer needs rather than general use cases.",
             results: [
-                { stat: "+34%", label: "Qualified Enquiries" },
-                { stat: "+41%", label: "Lead Relevance" },
-                { stat: "-22%", label: "Follow-up Time" }
+                { value: "34%", label: "Qualified enquiries increased" },
+                { value: "41%", label: "Lead-to-enquiry relevance improved" },
+                { value: "22%", label: "Sales team follow-up time reduced" }
             ]
         },
         {
-            title: "Product-Focused Brand — Conversion Growth",
-            category: "Product-Based Business",
-            challenge: "The website attracted traffic from multiple sources, but conversions remained low. Visitors lacked clear intent alignment, resulting in high bounce rates.",
-            approach: "We restructured the niche sales funnel using audience behavior analysis and implemented personalized campaign execution focused on high-intent traffic.",
+            title: "Product-Focused Brand — Conversion Growth through Audience Alignment",
+            type: "Product",
+            idealCustomer: "A product-based business targeting users actively searching for specific solutions within a defined category.",
+            challenge: "The website attracted traffic from multiple sources, but conversions remained low. Visitors lacked clear intent alignment, resulting in high bounce rates and inefficient acquisition costs.",
+            approach: "We restructured the niche sales funnel using audience behavior analysis and implemented personalized campaign execution. Efforts were focused on high-intent traffic generation, aligning product messaging with specific user expectations and decision stages.",
             results: [
-                { stat: "+29%", label: "Conversion Rate" },
-                { stat: "-24%", label: "Bounce Rate" },
-                { stat: "-18%", label: "Cost Per Acquisition" }
+                { value: "29%", label: "Conversion rate increased" },
+                { value: "24%", label: "Bounce rate reduced" },
+                { value: "18%", label: "Cost per acquisition lowered" }
             ]
         },
         {
-            title: "Local Business in Kochi — Niche Positioning",
-            category: "Local Business Growth",
-            challenge: "The business blended into a competitive local market with similar messaging to competitors. Visibility existed, but differentiation was minimal.",
-            approach: "We applied vertical market analysis and refined niche positioning to clarify the brand's specialization. Outreach and messaging were localized for regional relevance.",
+            title: "Local Business in Kochi — Niche Positioning for Regional Growth",
+            type: "Local",
+            idealCustomer: "A Kochi-based local business serving location-driven customers with clear service intent.",
+            challenge: "The business blended into a competitive local market with similar messaging to competitors. Visibility existed, but differentiation was minimal, resulting in inconsistent lead quality and weak customer loyalty.",
+            approach: "We applied vertical market analysis and refined niche positioning to clarify the brand’s specialization. Outreach and messaging were localized, emphasizing relevance and authority within the regional market rather than broad appeal.",
             results: [
-                { stat: "+37%", label: "Qualified Local Leads" },
-                { stat: "+21%", label: "Repeat Customer Rate" },
-                { stat: "↑", label: "Brand Recall" }
+                { value: "37%", label: "Qualified local leads grew" },
+                { value: "21%", label: "Repeat customer rate improved" },
+                { value: "Measurable", label: "Brand recall increase" }
             ]
         }
     ];
 
     return (
-        <div className="font-['Inter'] bg-[#0F0F0F] text-[#F5F5F5] overflow-x-hidden nm-page">
+        <div className="font-['SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif] bg-white text-[#1d1d1f] overflow-x-hidden antialiased relative">
             <Seo
-                title="Best Niche Marketing Agency in Kerala | Social Bureau"
-                description="Niche Marketing Agency in Kerala helping brands dominate their niche through data driven strategy, stronger conversions, and long term business growth"
-                keywords="Niche Marketing Agency, Marketing Agency, Niche marketing services in Kochi"
+                title="Niche Marketing Agency in Kerala | SocialBureau"
+                description="Partner with a niche marketing agency that understands your audience and drives results through precision marketing"
+                keywords="niche marketing, specialized marketing, kerala, Kochi, audience targeting,NICHE MARKETING AGENCY,NICHE MARKETING STRATEGIST,GROWTH STRATEGIES"
+                canonicalUrl="https://www.socialbureau.in/niche-marketing"
             />
 
-            {/* Animations */}
             <style dangerouslySetInnerHTML={{
                 __html: `
-                .nm-page img {
-                    max-width: 100%;
-                    height: auto;
+                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+                
+                * {
+                    -webkit-font-smoothing: antialiased;
+                    -moz-osx-font-smoothing: grayscale;
                 }
-                @keyframes fadeInUp {
-                    from {
-                        opacity: 0;
-                        transform: translateY(30px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
+                
+                .apple-overline {
+                    font-size: 0.75rem;
+                    letter-spacing: 0.05em;
+                    text-transform: uppercase;
+                    color: #86868b;
+                    font-weight: 600;
                 }
-                @keyframes fadeInLeft {
-                    from {
-                        opacity: 0;
-                        transform: translateX(-30px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateX(0);
-                    }
+                
+                .apple-heading {
+                    font-size: clamp(2.5rem, 5vw, 3.5rem);
+                    font-weight: 600;
+                    line-height: 1.1;
+                    letter-spacing: -0.015em;
                 }
-                @keyframes fadeInRight {
-                    from {
-                        opacity: 0;
-                        transform: translateX(30px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateX(0);
-                    }
+                
+                .apple-card {
+                    background: #ffffff;
+                    border-radius: 24px;
+                    padding: 2rem;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+                    transition: all 0.3s ease;
+                    border: 1px solid #f5f5f7;
                 }
-                @keyframes float {
-                    0%, 100% {
-                        transform: translateY(0px);
-                    }
-                    50% {
-                        transform: translateY(-20px);
-                    }
+                
+                .apple-card:hover {
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+                    border-color: #e5e5e7;
                 }
-                @keyframes pulse-slow {
-                    0%, 100% {
-                        opacity: 0.2;
-                    }
-                    50% {
-                        opacity: 0.4;
-                    }
+                
+                .apple-button-primary {
+                    background: #920F17;
+                    color: white;
+                    padding: 0.75rem 2rem;
+                    border-radius: 980px;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    transition: all 0.3s ease;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
                 }
-                @keyframes scaleIn {
-                    from {
-                        opacity: 0;
-                        transform: scale(0.95);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: scale(1);
-                    }
+                
+                .apple-button-primary:hover {
+                    background: #6B080E;
+                    transform: scale(1.02);
                 }
-                .animate-fadeInUp {
-                    animation: fadeInUp 0.8s ease-out forwards;
+                
+                .apple-button-secondary {
+                    background: transparent;
+                    color: #920F17;
+                    padding: 0.75rem 2rem;
+                    border-radius: 980px;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    border: 1px solid #920F17;
+                    transition: all 0.3s ease;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
                 }
-                .animate-fadeInLeft {
-                    animation: fadeInLeft 0.8s ease-out forwards;
+                
+                .apple-button-secondary:hover {
+                    background: rgba(146, 15, 23, 0.05);
                 }
-                .animate-fadeInRight {
-                    animation: fadeInRight 0.8s ease-out forwards;
+                
+                .apple-stat {
+                    font-size: 2.5rem;
+                    font-weight: 600;
+                    color: #920F17;
+                    line-height: 1;
                 }
-                .animate-float {
-                    animation: float 6s ease-in-out infinite;
+                
+                .apple-stat-label {
+                    font-size: 0.875rem;
+                    color: #86868b;
+                    margin-top: 0.5rem;
                 }
-                .animate-pulse-slow {
-                    animation: pulse-slow 4s ease-in-out infinite;
+                
+                .scroll-progress-bar {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    height: 3px;
+                    background: #920F17;
+                    z-index: 1000;
+                    transition: width 0.1s ease;
                 }
-                .animate-scaleIn {
-                    animation: scaleIn 0.6s ease-out forwards;
+                
+                .stack-layer {
+                    position: sticky;
+                    top: 0;
+                    box-shadow: 0 -20px 40px rgba(0,0,0,0.05);
                 }
-                .clip-path-polygon {
-                    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+
+                @keyframes fadeUp {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
                 }
-                .service-card-hover:hover {
-                    box-shadow: 0 20px 40px rgba(192, 192, 192, 0.2);
+                .animate-fadeUp {
+                    animation: fadeUp 0.8s ease-out forwards;
                 }
-            `}} />
+                `
+            }} />
+
+            <div className="scroll-progress-bar" style={{ width: '0%' }}></div>
 
             {/* Hero Section */}
-            <section className="min-h-screen flex items-center pt-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-b from-[#1A1A1A] to-[#0F0F0F] pb-0">
-                <div className="absolute top-32 right-0 w-full md:w-3/5 h-full bg-gradient-to-br from-[#C0C0C0] to-[#808080] clip-path-polygon opacity-5 animate-float hidden md:block"></div>
-                <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10 px-4 sm:px-6 pb-20 sm:pb-24 lg:pb-32">
-                    <div className="animate-fadeInUp">
-                        <h1 className="font-['Inter'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8 text-white">
-                            Niche Marketing Agency in Kerala
+            <section className="min-h-screen flex items-center px-6 lg:px-8 relative overflow-hidden bg-white stack-layer" style={{ zIndex: 10 }}>
+                <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                    <div className="animate-fadeUp">
+                        <span className="apple-overline mb-4 block">Niche Marketing Agency</span>
+                        <h1 className="apple-heading mb-6">
+                            Niche Marketing Agency
+                            <span className="block text-[#920F17]">in Kerala</span>
                         </h1>
-                        <p className="text-base sm:text-lg text-[#BFBFBF] mb-8 lg:mb-12 max-w-2xl">
-                            Transform business growth by focusing on clarity, relevance, and specialization. We help brands reach audiences that actually convert—through carefully structured niche-focused strategies designed for long-term authority and sustainable results.
-                        </p>
-                        <div className="flex flex-col sm:flex-row flex-wrap gap-4">
-                            <a href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-[#C0C0C0] to-[#A9A9A9] text-[#0F0F0F] font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-2xl hover:shadow-[#808080]/40 transition-all text-sm sm:text-base">
-                                Book a Strategy Call
+                        <p className="apple-body text-[#515154] mb-10 max-w-2xl leading-relaxed text-lg">
+                            Transform business growth by focusing on clarity, relevance, and specialization. Social Bureau
+                            helps brands grow by reaching audiences that actually convert—through carefully structured
+                            niche-focused strategies designed for long-term authority and sustainable results.                        </p>
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            <a href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more." className="apple-button-primary">
+                                Find Your Niche
+                                <ChevronRight className="w-4 h-4" />
                             </a>
-                            <a href="#services" className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-transparent text-white font-semibold rounded-full border-2 border-[#808080] hover:bg-[#1A1A1A] hover:border-[#C0C0C0] hover:translate-y-[-3px] transition-all text-sm sm:text-base">
+                            <a href="#services" className="apple-button-secondary">
                                 Explore Services
                             </a>
                         </div>
                     </div>
-                    <div className="relative h-64 sm:h-80 md:h-96 flex items-center justify-center animate-fadeInRight mt-8 md:mt-0">
-                        <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579774/niche-marketing-2026-01-08-05-39-07-utc_1_yjffjh.jpg" alt="niche-marketing" className="w-full h-full object-contain" />
+                    <div className="relative h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+                        <img
+                            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086611/EARN_CASH_THROUGH_ONLINE_REVENUE_lrvrf0.webp"
+                            alt="Niche Marketing Hero"
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                        />
                     </div>
                 </div>
             </section>
 
             {/* About Section */}
-            <section id="about" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-r from-[#C0C0C0] to-[#808080] text-[#0F0F0F] text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                        About Us
-                    </span>
-                    <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white">Niche Marketing Strategy</h2>
-                </div>
-                <div className="grid md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
-                    <div className="h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-[rgba(192,192,192,0.1)] to-[rgba(128,128,128,0.1)] rounded-3xl flex items-center justify-center relative overflow-hidden p-4 border border-[#333333]">
-                        <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579760/abstract-image-of-backlit-crowd-standing-on-chalkb-2026-01-11-08-37-11-utc_1_nrsxzz.jpg" alt="niche marketing" className="w-full h-full object-contain" />
+            <section id="about" className="min-h-screen w-full bg-[#1d1d1f] text-white flex items-center stack-layer" style={{ zIndex: 20 }}>
+                <div className="w-full px-6 lg:px-8 max-w-7xl mx-auto py-24">
+                    <div className="text-center mb-16">
+                        <span className="apple-overline mb-4 block text-gray-400">About</span>
+                        <h2 className="apple-heading text-4xl lg:text-5xl mb-6">Move Beyond The Mainstream</h2>
                     </div>
-                    <div className="animate-fadeInRight">
-                        <h3 className="font-['Inter'] text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-white">Focus on Clarity & Relevance</h3>
-                        <p className="text-[#BFBFBF] mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-                            Niche marketing is the process of identifying a clearly defined market segment and building communication, positioning, and messaging around that audience's specific needs. Unlike broad campaigns, this approach prioritizes relevance over reach and depth over volume.
-                        </p>
-                        <p className="text-[#BFBFBF] mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-                            At Social Bureau, a Kochi-based marketing agency, we work with businesses that want to grow through specialization. Our team studies how audiences think, search, and make decisions, then builds structured marketing systems that support long-term positioning and consistent demand.
-                        </p>
-                        <div className="space-y-2">
-                            <div className="flex items-start gap-3">
-                                <span className="text-[#C0C0C0] font-bold text-lg">✓</span>
-                                <span className="text-[#BFBFBF] text-sm sm:text-base">Research-backed planning and execution</span>
-                            </div>
-                            <div className="flex items-start gap-3">
-                                <span className="text-[#C0C0C0] font-bold text-lg">✓</span>
-                                <span className="text-[#BFBFBF] text-sm sm:text-base">Structured approach to positioning</span>
-                            </div>
-                            <div className="flex items-start gap-3">
-                                <span className="text-[#C0C0C0] font-bold text-lg">✓</span>
-                                <span className="text-[#BFBFBF] text-sm sm:text-base">Measurable outcomes and growth</span>
-                            </div>
+                    <div className="grid lg:grid-cols-2 gap-16 items-center">
+                        <div>
+                            <h2 className="text-2xl mb-6 text-white/80 font-medium">Niche Marketing Strategy</h2>
+                            <p className="text-white/80 mb-6 leading-relaxed text-lg">
+                                <a href='https://socialbureau.in/blogs/niche-marketing-for-startups' title="Learn more about Niche Marketing on Wikipedia">Niche marketing</a> is the process of identifying a
+                                clearly defined market segment and building
+                                communication, positioning, and messaging
+                                around that audience’s specific needs. Unlike
+                                broad campaigns, this approach prioritizes
+                                relevance over reach and depth over volume                            </p>
+                            <p className="text-white/80 leading-relaxed text-lg">
+                                At<a href='https://socialbureau.in' title="Visit SocialBureau Official Website"> Social Bureau</a>, a Kochi-based marketing
+                                agency, we work with businesses that want to
+                                grow through specialization. Our team studies
+                                how audiences think, search, and make
+                                decisions, then builds structured marketing
+                                systems that support long-term positioning
+                                and consistent demand.
+                            </p>
+                        </div>
+                        <div className="h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+                            <img
+                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/Luminuce_-_Brand_sgp6th.webp"
+                                className="w-full h-full object-cover"
+                                loading="lazy"
+                            />
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Services Section */}
-            <section id="services" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#1A1A1A]">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                        <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-r from-[#C0C0C0] to-[#808080] text-[#0F0F0F] text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
+            <section
+                id="services"
+                className="min-h-screen py-24 px-6 lg:px-8 bg-[#920F17] text-white stack-layer relative overflow-hidden"
+                style={{ zIndex: 30 }}
+            >
+                {/* Decorative background depth */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                    <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-white/[0.03] rounded-full blur-[120px]"></div>
+                    <div className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-black/[0.05] rounded-full blur-[120px]"></div>
+                </div>
+
+                <div className="max-w-7xl mx-auto relative z-10">
+
+                    {/* Header */}
+                    <div className="text-center mb-20 animate-fadeUp">
+                        <span className="apple-overline mb-4 block text-white/50 tracking-[0.2em]">
                             Our Services
                         </span>
-                        <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white">Niche marketing services</h2>
-                        <p className="text-base sm:text-lg text-[#BFBFBF] max-w-3xl mx-auto px-4">
-                            We design and implement marketing solutions built around precision rather than assumptions. Each service is delivered with research-backed planning, structured execution, and measurable outcomes.
+                        <h2 className="apple-heading text-4xl lg:text-6xl mb-8 text-white">
+                            Niche marketing service
+                        </h2>
+                        <p className="apple-body text-white/70 max-w-2xl mx-auto mb-12 text-lg leading-relaxed">
+                            We design and implement marketing solutions that are built around precision
+                            rather than assumptions. Each service is delivered with research-backed
+                            planning, structured execution, and measurable outcomes
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-                        {services.map((service, index) => {
-                            const Icon = service.icon;
-                            return (
+
+                    {/* TOP SECTION — Image + 3 stacked cards */}
+                    <div className="grid lg:grid-cols-2 gap-16 items-start mb-20">
+
+                        {/* Image Container */}
+                        <div className="relative group order-2 lg:order-1">
+                            <div className="absolute -inset-4 bg-white/[0.05] rounded-[2.5rem] blur-2xl group-hover:bg-white/[0.08] transition-all duration-700"></div>
+                            <div className="relative h-[28rem] lg:h-[42rem] rounded-[2rem] overflow-hidden shadow-2xl bg-white/5 border border-white/10">
+                                <img
+                                    src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772026002/download_7__converted_l1147x.webp"
+                                    alt="Nichemarketing Services"
+                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                    loading="lazy"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#920F17]/30 to-transparent"></div>
+                            </div>
+                        </div>
+
+                        {/* Stacked cards (first 3 items) */}
+                        <div className="grid grid-cols-1 gap-8 order-1 lg:order-2">
+                            {processSections.slice(0, 3).map((section, index) => (
                                 <div
                                     key={index}
-                                    className="bg-[#252525] p-4 sm:p-6 lg:p-8 rounded-3xl shadow-lg hover:shadow-2xl hover:translate-y-[-10px] transition-all duration-400 border border-[#333333] hover:border-[#666666] relative overflow-hidden group service-card-hover"
-                                    style={{ animationDelay: `${index * 0.1}s` }}
+                                    className="group rounded-3xl p-8 bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-xl hover:bg-white/[0.07] hover:border-white/30 transition-all duration-500 hover:-translate-y-1"
                                 >
-                                    <div className="absolute inset-0 bg-gradient-to-br from-[#C0C0C0] to-[#808080] opacity-0 group-hover:opacity-5 transition-opacity z-0"></div>
-                                    <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-[#C0C0C0] to-[#808080] rounded-xl flex items-center justify-center mb-4 sm:mb-6 relative z-10">
-                                        <Icon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-[#0F0F0F]" />
+                                    <div className="flex items-start gap-6">
+                                        <div className="flex-shrink-0 text-white/20 text-4xl font-bold font-mono leading-none">
+                                            0{index + 1}
+                                        </div>
+                                        <div>
+                                            <h3 className="text-xl font-semibold mb-3 text-white tracking-tight">
+                                                {section.title}
+                                            </h3>
+                                            <p className="text-sm text-white/60 leading-relaxed mb-6 group-hover:text-white/80 transition-colors">
+                                                {section.content}
+                                            </p>
+                                            <ul className="space-y-3">
+                                                {section.points.map((point, i) => (
+                                                    <li key={i} className="flex items-start gap-3 text-white/70 text-sm">
+                                                        <div className="w-1.5 h-1.5 rounded-full bg-white/30 mt-1.5 flex-shrink-0"></div>
+                                                        <span>{point}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <h3 className="font-['Inter'] text-lg sm:text-xl font-bold mb-3 sm:mb-4 relative z-10 text-white">
-                                        {service.title}
-                                    </h3>
-                                    <p className="text-[#BFBFBF] mb-4 sm:mb-6 relative z-10 text-sm sm:text-base">
-                                        {service.description}
-                                    </p>
-                                    <ul className="space-y-1 sm:space-y-2 relative z-10">
-                                        {service.features.map((feature, idx) => (
-                                            <li key={idx} className="text-[#BFBFBF] flex items-start text-xs sm:text-sm">
-                                                <span className="text-[#C0C0C0] font-bold mr-2">✓</span>
-                                                {feature}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* BOTTOM GRID — Remaining cards */}
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {processSections.slice(3).map((section, index) => (
+                            <div
+                                key={index}
+                                className="group rounded-[2.5rem] p-10 bg-white/[0.03] backdrop-blur-xl border border-white/10 hover:border-white/40 transition-all duration-500 hover:-translate-y-2 shadow-2xl flex flex-col"
+                            >
+                                <div className="flex justify-between items-start mb-8">
+                                    <span className="text-white/10 text-5xl font-bold font-mono leading-none">0{index + 4}</span>
+                                    <div className="w-12 h-12 rounded-2xl bg-white/[0.05] border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/10 transition-all duration-500">
+                                        <Plus className="w-5 h-5 text-white/30 group-hover:text-white" />
+                                    </div>
+                                </div>
+                                <h3 className="text-2xl font-semibold mb-4 text-white tracking-tight">
+                                    {section.title}
+                                </h3>
+                                <p className="text-white/60 mb-8 text-sm leading-relaxed group-hover:text-white/80 transition-colors">
+                                    {section.content}
+                                </p>
+                                <div className="mt-auto pt-8 border-t border-white/10">
+                                    <ul className="space-y-4">
+                                        {section.points.map((point, i) => (
+                                            <li key={i} className="flex items-start gap-3 text-white/70 text-sm group-hover:text-white/90 transition-colors">
+                                                <CheckCircle className="w-4 h-4 text-white/20 mt-0.5 flex-shrink-0 group-hover:text-white/40 transition-colors" />
+                                                <span>{point}</span>
                                             </li>
                                         ))}
                                     </ul>
                                 </div>
-                            );
-                        })}
+                            </div>
+                        ))}
                     </div>
+
                 </div>
             </section>
 
-            {/* Strategies Section - NEW */}
-            <section id="strategies" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-r from-[#C0C0C0] to-[#808080] text-[#0F0F0F] text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                        Our Approach
-                    </span>
-                    <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white">Three-Step Niche Strategy</h2>
-                    <p className="text-base sm:text-lg text-[#BFBFBF] max-w-3xl mx-auto">
-                        Build sustainable growth by starting small, establishing authority, and scaling strategically within your market segment.
-                    </p>
-                </div>
+            {/* Strategies Section */}
+            <section id="strategies" className="py-24 px-6 lg:px-8 bg-white text-black stack-layer" style={{ zIndex: 40 }}>
+                <div className="max-w-7xl mx-auto">
+                    <div className="grid lg:grid-cols-2 gap-16 items-center">
+                        <div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
-                    {strategies.map((strategy, index) => {
-                        const Icon = strategy.icon;
-                        return (
-                            <div
-                                key={index}
-                                className="relative bg-gradient-to-br from-[#1A1A1A] to-[#0F0F0F] border-2 border-[#333333] rounded-3xl p-6 sm:p-8 lg:p-10 hover:border-[#C0C0C0] transition-all duration-300 group"
-                                style={{ animationDelay: `${index * 0.15}s` }}
-                            >
+                            <h2 className="apple-heading text-4xl lg:text-5xl mb-10 text-black">Why Choose Us</h2>
 
-                                {/* Icon */}
-                                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#C0C0C0] to-[#808080] rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:shadow-lg transition-shadow">
-                                    <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-[#0F0F0F]" />
-                                </div>
-
-                                {/* Title */}
-                                <h3 className="font-['Inter'] text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4 pr-12">
-                                    {strategy.title}
-                                </h3>
-
-                                {/* Description */}
-                                <p className="text-[#BFBFBF] text-sm sm:text-base mb-6 sm:mb-8 leading-relaxed">
-                                    {strategy.description}
-                                </p>
-
-                                {/* Steps */}
-                                <div className="space-y-3">
-                                    {strategy.steps.map((step, stepIdx) => (
-                                        <div key={stepIdx} className="flex items-start gap-3">
-                                            <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#333333] flex items-center justify-center flex-shrink-0 mt-0.5">
-                                                <span className="text-[#C0C0C0] text-xs font-bold">{stepIdx + 1}</span>
+                            <div className="space-y-8">
+                                {strategies.map((strategy, index) => {
+                                    const Icon = strategy.icon;
+                                    return (
+                                        <div key={index} className="flex gap-6">
+                                            <div className="flex-shrink-0 w-12 h-12 bg-[#920F17]/5 rounded-xl flex items-center justify-center">
+                                                <Icon className="w-6 h-6 text-[#920F17]" />
                                             </div>
-                                            <span className="text-[#BFBFBF] text-xs sm:text-sm leading-snug">{step}</span>
+                                            <div>
+                                                <h3 className="text-xl font-semibold mb-2">{strategy.title}</h3>
+                                                <p className="text-[#515154] leading-relaxed">{strategy.description}</p>
+                                            </div>
                                         </div>
-                                    ))}
-                                </div>
+                                    );
+                                })}
                             </div>
-                        );
-                    })}
-                </div>
-            </section>
-
-            {/* Why Choose Section */}
-            <section
-                id="why-choose"
-                className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
-            >
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-12 lg:mb-16">
-                    <div className="text-center lg:text-left">
-                        <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-r from-[#C0C0C0] to-[#808080] text-[#0F0F0F] text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                            Why Choose Us
-                        </span>
-                        <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white">
-                            What Sets Us Apart
-                        </h2>
-                        <p className="text-[#BFBFBF] max-w-xl">
-                            We blend creativity, technology, and strategy to deliver experiences that truly stand out and drive results.
-                        </p>
+                        </div>
+                        <div className="h-[400px] lg:h-[600px] rounded-[2rem] overflow-hidden shadow-2xl relative group">
+                            <img
+                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772088857/DSC04857_1_2_vksgod.webp"
+                                alt="Professionals working at SocialBureau"
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                        </div>
                     </div>
-
-                    <div className="w-full flex justify-center lg:justify-end">
-                        <img
-                            src="assets/hajira2.webp"
-                            alt="niche marketing expert"
-                            className="w-200px h-150px object-contain rounded-2xl"
-                        />
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-                    {features.map((feature, index) => {
-                        const Icon = feature.icon;
-                        return (
-                            <div
-                                key={index}
-                                className="bg-[#1A1A1A] p-6 sm:p-8 lg:p-10 rounded-2xl text-center hover:scale-105 border-2 border-[#333333] hover:border-[#666666] transition-all duration-300"
-                            >
-                                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#C0C0C0] to-[#808080] text-[#0F0F0F] rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                                    <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
-                                </div>
-                                <h3 className="font-['Inter'] text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-white">
-                                    {feature.title}
-                                </h3>
-                                <p className="text-[#BFBFBF] leading-relaxed text-sm sm:text-base">
-                                    {feature.description}
-                                </p>
-                            </div>
-                        );
-                    })}
                 </div>
             </section>
 
             {/* Case Studies */}
-            <section id="case-studies" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#1A1A1A]">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                        <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-r from-[#C0C0C0] to-[#808080] text-[#0F0F0F] text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                            Case Studies
-                        </span>
-                        <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white">Proven Results</h2>
+            <section id="case-studies" className="py-24 bg-[#fbfbfd] stack-layer" style={{ zIndex: 50 }}>
+                <div className="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div className="text-center mb-14">
+                        <span className="apple-overline block mb-3">Case Studies</span>
+                        <h2 className="apple-heading text-4xl lg:text-5xl">Success in Specialization</h2>
                     </div>
-                    <div className="space-y-8 sm:space-y-12">
-                        {caseStudies.map((study, index) => (
-                            <div key={index} className="bg-[#252525] rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg relative overflow-hidden border-l-4 border-[#C0C0C0] animate-fadeInUp" style={{ animationDelay: `${index * 0.15}s` }}>
-                                <span className="inline-block px-3 py-1 sm:px-4 sm:py-2 bg-[#333333] text-[#C0C0C0] text-xs sm:text-sm font-semibold rounded-full mb-4 sm:mb-6">
-                                    {study.category}
-                                </span>
-                                <h3 className="font-['Inter'] text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-white">{study.title}</h3>
-                                <div className="mb-6 sm:mb-8">
-                                    <h4 className="font-['Inter'] text-base sm:text-lg font-semibold text-[#C0C0C0] mb-2 sm:mb-3">The Challenge</h4>
-                                    <p className="text-[#BFBFBF] text-sm sm:text-base">{study.challenge}</p>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                        {/* LEFT list */}
+                        <div className="lg:col-span-5 space-y-6">
+                            {caseStudies.map((study, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setActiveCaseStudy(index)}
+                                    className={`apple-card text-left w-full transition-all duration-300 ${activeCaseStudy === index ? 'ring-2 ring-[#920F17] bg-white' : 'hover:bg-[#f5f5f7]'}`}
+                                >
+                                    <span className="text-xs font-semibold text-[#920F17] bg-[#920F17]/5 px-3 py-1.5 rounded-full uppercase tracking-wider">
+                                        {study.type}
+                                    </span>
+                                    <h3 className="text-lg font-semibold mt-3 text-black">{study.title}</h3>
+                                    <div className="text-[#920F17] text-sm mt-3 flex items-center gap-1 font-medium">
+                                        View details <ChevronRight className="w-4 h-4" />
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* RIGHT details */}
+                        <div className="lg:col-span-7">
+                            <div className="apple-card sticky top-28">
+                                <h3 className="text-2xl font-semibold mb-6 text-black">{caseStudies[activeCaseStudy].title}</h3>
+                                <div className="space-y-6 text-sm lg:text-base">
+                                    <div>
+                                        <h4 className="font-semibold text-[#920F17] mb-1">Ideal Customer</h4>
+                                        <p className="text-[#515154]">{caseStudies[activeCaseStudy].idealCustomer}</p>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-[#920F17] mb-1">The Challenge</h4>
+                                        <p className="text-[#515154]">{caseStudies[activeCaseStudy].challenge}</p>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-[#920F17] mb-1">The Approach</h4>
+                                        <p className="text-[#515154]">{caseStudies[activeCaseStudy].approach}</p>
+                                    </div>
+                                    <div className="grid grid-cols-3 gap-6 pt-6 border-t border-[#f5f5f7]">
+                                        {caseStudies[activeCaseStudy].results.map((result, idx) => (
+                                            <div key={idx} className="text-center">
+                                                <div className="apple-stat">{result.value}</div>
+                                                <div className="apple-stat-label capitalize">{result.label}</div>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div className="mb-6 sm:mb-8">
-                                    <h4 className="font-['Inter'] text-base sm:text-lg font-semibold text-[#C0C0C0] mb-2 sm:mb-3">The Approach</h4>
-                                    <p className="text-[#BFBFBF] text-sm sm:text-base">{study.approach}</p>
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-8 bg-[#333333] rounded-2xl">
-                                    {study.results.map((result, idx) => (
-                                        <div key={idx} className="text-center p-4">
-                                            <div className="font-['Inter'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#C0C0C0] mb-1 sm:mb-2">{result.stat}</div>
-                                            <div className="text-xs sm:text-sm text-[#999999]">{result.label}</div>
-                                        </div>
-                                    ))}
-                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Testimonials Section */}
+            <section
+                id="testimonials"
+                className="py-24 px-6 lg:px-8 bg-[#1d1d1f] text-white stack-layer"
+                style={{ zIndex: 60 }}
+            >
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-16">
+                        <span className="apple-overline mb-4 block text-white/70">
+                            Testimonials
+                        </span>
+                        <h2 className="apple-heading text-4xl lg:text-5xl text-white">
+                            Trusted by Specialists
+                        </h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                        <div className="rounded-3xl p-8 bg-white/5 border border-white/10">
+                            <div className="text-6xl text-white opacity-20 mb-4 leading-none font-serif">“</div>
+                            <p className="text-white/80 italic mb-6 leading-relaxed text-lg">
+                                Working with the team helped us bring clarity to our marketing. Instead of chasing volume,
+                                we started attracting enquiries that actually matched our services. The difference in lead
+                                quality was noticeable within a few months.
+                            </p>
+                            <div className="font-semibold text-white">
+                                — Service Business Owner
+                            </div>
+                        </div>
+
+                        <div className="rounded-3xl p-8 bg-white/5 border border-white/10">
+                            <div className="text-6xl text-white opacity-20 mb-4 leading-none font-serif">“</div>
+                            <p className="text-white/80 italic mb-6 leading-relaxed text-lg">
+                                What stood out was their understanding of our market. The strategy wasn’t generic and felt
+                                well thought out. Our messaging became more focused, and customer engagement improved
+                                steadily over time.
+                            </p>
+                            <div className="font-semibold text-white">
+                                — Founder, Product-Based Brand
+                            </div>
+                        </div>
+
+                        <div className="rounded-3xl p-8 bg-white/5 border border-white/10">
+                            <div className="text-6xl text-white opacity-20 mb-4 leading-none font-serif">“</div>
+                            <p className="text-white/80 italic mb-6 leading-relaxed text-lg">
+                                They took the time to understand how our audience thinks and searches. The changes made
+                                to positioning and campaigns helped us convert existing traffic more effectively without
+                                increasing spend.
+                            </p>
+                            <div className="font-semibold text-white">
+                                — Marketing Lead
+                            </div>
+                        </div>
+
+                        <div className="rounded-3xl p-8 bg-white/5 border border-white/10">
+                            <div className="text-6xl text-white opacity-20 mb-4 leading-none font-serif">“</div>
+                            <p className="text-white/80 italic mb-6 leading-relaxed text-lg">
+                                Our brand finally feels differentiated. Earlier, we struggled to explain why we were
+                                different. Now the messaging is clear, consistent, and resonates with the right customers.
+                            </p>
+                            <div className="font-semibold text-white">
+                                — Operations Manager
+                            </div>
+                        </div>
+
+                        <div className="rounded-3xl p-8 bg-white/5 border border-white/10 md:col-span-2">
+                            <div className="text-6xl text-white opacity-20 mb-4 leading-none font-serif">“</div>
+                            <p className="text-white/80 italic mb-6 leading-relaxed text-lg">
+                                The process was transparent and structured. We always knew what was being done and why.
+                                The results came gradually, but they were stable and sustainable, which is exactly what
+                                we were looking for.
+                            </p>
+                            <div className="font-semibold text-white">
+                                — Business Consultant
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* FAQ Section */}
+            <section id="faq" className="w-full bg-white stack-layer" style={{ zIndex: 70 }}>
+                <div className="max-w-3xl mx-auto px-6 py-24">
+                    <div className="text-center mb-12">
+                        <span className="apple-overline block mb-3 text-gray-500">FAQ</span>
+                        <h2 className="apple-heading text-3xl lg:text-4xl text-black">Frequently Asked Questions</h2>
+                    </div>
+                    <div className="divide-y divide-gray-100">
+                        {faqItems.map((item, index) => (
+                            <div key={index} className="py-6">
+                                <button
+                                    onClick={() => toggleFaq(index)}
+                                    className="w-full flex justify-between items-center text-left text-lg font-medium text-black hover:text-[#920F17] transition"
+                                >
+                                    <span>{item.question}</span>
+                                    {activeFaq === index ? (
+                                        <X className="w-4 h-4 text-[#920F17]" />
+                                    ) : (
+                                        <Plus className="w-4 h-4 text-gray-400" />
+                                    )}
+                                </button>
+                                {activeFaq === index && (
+                                    <div className="mt-4 text-[#515154] text-base leading-relaxed animate-fadeUp">
+                                        {item.answer}
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* Testimonials */}
-            <section id="testimonials" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-r from-[#C0C0C0] to-[#808080] text-[#0F0F0F] text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                        Testimonials
-                    </span>
-                    <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white">What Our Clients Say</h2>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-                    {testimonials.map((testimonial, index) => (
-                        <div key={index} className="bg-[#1A1A1A] p-6 sm:p-8 lg:p-10 rounded-3xl shadow-lg hover:translate-y-[-5px] transition-transform duration-300 border border-[#333333] animate-scaleIn" style={{ animationDelay: `${index * 0.1}s` }}>
-                            <div className="text-4xl sm:text-5xl text-[#666666] opacity-50 mb-3 sm:mb-4">❝</div>
-                            <p className="text-[#BFBFBF] italic leading-relaxed mb-4 sm:mb-6 text-sm sm:text-base">{testimonial.text}</p>
-                            <div className="font-semibold text-[#E8E8E8] text-sm sm:text-base">— {testimonial.author}</div>
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* FAQ Section */}
-            <section id="faq" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-                <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-r from-[#C0C0C0] to-[#808080] text-[#0F0F0F] text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                        FAQ
-                    </span>
-                    <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white">Frequently Asked Questions</h2>
-                </div>
-                <div className="space-y-3 sm:space-y-4">
-                    {faqItems.map((item, index) => (
-                        <div key={index} className="bg-[#1A1A1A] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-[#333333]">
-                            <button
-                                className="w-full p-4 sm:p-6 text-left flex justify-between items-center font-['Inter'] font-semibold hover:text-[#C0C0C0] transition-colors text-sm sm:text-base text-white"
-                                onClick={() => toggleFaq(index)}
-                            >
-                                <span className="text-left pr-4">{item.question}</span>
-                                <span className={`text-xl sm:text-2xl transition-transform flex-shrink-0 text-[#C0C0C0] ${activeFaq === index ? 'rotate-45' : ''}`}>+</span>
-                            </button>
-                            <div className={`overflow-hidden transition-all duration-300 ${activeFaq === index ? 'max-h-96' : 'max-h-0'}`}>
-                                <div className="p-4 sm:p-6 pt-0 text-[#BFBFBF] leading-relaxed text-sm sm:text-base">
-                                    {item.answer}
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </section>
-
             {/* CTA Section */}
-            <section id="contact" className="py-12 sm:py-16 lg:py-20 mx-4 sm:mx-6 lg:mx-8 my-8 sm:my-12 lg:my-16 bg-gradient-to-br from-[#1A1A1A] to-[#0F0F0F] text-white rounded-3xl text-center relative overflow-hidden border border-[#333333]">
-                <div className="absolute -top-1/2 -right-1/10 w-64 h-64 sm:w-96 sm:h-96 bg-radial-gradient(circle, rgba(192,192,192,0.1), transparent) rounded-full animate-pulse-slow hidden sm:block"></div>
-                <h2 className="font-['Inter'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 relative z-10 px-4 text-white">Ready to Build Authority in Your Niche?</h2>
-                <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-[#BFBFBF] relative z-10 px-4">
-                    Let's discuss how niche marketing can drive sustainable growth and establish clear positioning for your business.
-                </p>
-                <a href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-[#C0C0C0] to-[#A9A9A9] text-[#0F0F0F] font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-[0_15px_40px_rgba(192,192,192,0.3)] transition-all relative z-10 text-sm sm:text-base">
-                    Connect With Us
-                </a>
+            <section id="contact" className="w-full px-6 py-24 bg-[#fbfbfd] stack-layer" style={{ zIndex: 80 }}>
+                <div className="bg-[#1d1d1f] text-white rounded-[2rem] py-20 px-6 lg:px-16 text-center relative overflow-hidden max-w-7xl mx-auto shadow-2xl">
+                    <div className="absolute -top-20 -right-20 w-96 h-96 bg-[#920F17] opacity-20 rounded-full blur-3xl"></div>
+                    <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-[#920F17] opacity-10 rounded-full blur-3xl"></div>
+                    <h2 className="apple-heading text-white mb-6">Dominate Your Segment</h2>
+                    <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
+                        Let's discuss how focused <a href='https://en.wikipedia.org/wiki/Niche_market' title="Learn more about Niche Marketing on Wikipedia"> niche marketing</a> can drive measurable results and authority for your brand.
+                    </p>
+                    <a href="/contact" className="apple-button-primary bg-white text-black hover:bg-gray-100 hover:scale-105 transition-all text-lg py-4 px-10">
+                        Book a Strategy Call
+                        <ChevronRight className="w-5 h-5 ml-1" />
+                    </a>
+                </div>
             </section>
 
-            {/* Scroll to Top Button */}
+            {/* Scroll to Top */}
             <button
-                className={`fixed bottom-6 right-4 sm:bottom-8 sm:right-8 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#C0C0C0] to-[#808080] text-[#0F0F0F] rounded-full flex items-center justify-center text-lg sm:text-xl shadow-lg hover:translate-y-[-5px] transition-all font-bold ${isScrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                className={`fixed bottom-8 right-8 w-14 h-14 bg-[#920F17] text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-[#6B080E] hover:scale-110 active:scale-95 transition-all z-[1001] ${isScrolled ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
                 onClick={scrollToTop}
             >
-                ↑
+                <ArrowUp className="w-6 h-6" />
             </button>
         </div>
     );

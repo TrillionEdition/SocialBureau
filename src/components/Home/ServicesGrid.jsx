@@ -456,7 +456,7 @@ const RotatingStackedImages = ({ images }) => {
                     transition: "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
                 }}
             >
-                <img src={leftImg} alt="left" className="w-full h-full object-cover" />
+                <img src={leftImg} alt="Partnership and collaboration background" className="w-full h-full object-cover" />
             </div>
 
             {/* RIGHT IMAGE (Behind) */}
@@ -474,7 +474,7 @@ const RotatingStackedImages = ({ images }) => {
                     transition: "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
                 }}
             >
-                <img src={rightImg} alt="right" className="w-full h-full object-cover" />
+                <img src={rightImg} alt="SocialBureau team collaboration" className="w-full h-full object-cover" />
             </div>
 
             {/* FRONT IMAGE (The Clear One) */}
@@ -491,7 +491,7 @@ const RotatingStackedImages = ({ images }) => {
                     transition: "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
                 }}
             >
-                <img src={frontImg} alt="front" className="w-full h-full object-cover" />
+                <img src={frontImg} alt="Active partner success stories" className="w-full h-full object-cover" />
             </div>
 
         </div>
@@ -534,6 +534,14 @@ const CombinedServicesGrid = () => {
             link: "/niche-marketing",
         },
         {
+            title: "Our Team",
+            subtitle: "People behind the product",
+            image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772021150/image-gen_33__converted_jzbrvu.webp",
+            bg: "bg-[#000000]",
+            text: "text-white",
+            link: "/our-team",
+        },
+        {
             title: "Partnerships",
             subtitle: "Grow stronger, together",
             images: [
@@ -546,14 +554,7 @@ const CombinedServicesGrid = () => {
             link: "/partners",
             isRotatingStack: true,
         },
-        {
-            title: "Our Team",
-            subtitle: "People behind the product",
-            image: "/assets/home/team.png",
-            bg: "bg-[#000000]",
-            text: "text-white",
-            link: "/our-team",
-        },
+
     ];
 
     return (
@@ -574,6 +575,7 @@ const CombinedServicesGrid = () => {
                                     autoPlay
                                     muted
                                     loop
+                                    title={`${item.title} background video`}
                                     className="w-full h-full object-cover"
                                 />
                             </div>
@@ -621,13 +623,14 @@ const CombinedServicesGrid = () => {
                                             autoPlay
                                             muted
                                             loop
+                                            title={`${item.title} preview video`}
                                             className="w-[110%] sm:w-[110%] h-auto max-h-[110%] object-cover mx-auto drop-shadow-2xl scale-110"
                                         />
                                     ) : (
                                         item.image && (
                                             <img
                                                 src={item.image}
-                                                alt={item.title}
+                                                alt={`${item.title} - ${item.subtitle}`}
                                                 className="w-[110%] sm:w-[110%] h-auto max-h-[110%] object-contain mx-auto scale-110"
                                             />
                                         )

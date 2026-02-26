@@ -233,7 +233,7 @@ const WhoWeAre = () => {
               className="space-y-6"
             >
               <p className="text-[#8D0F16] font-bold text-[14px] sm:text-[16px] tracking-[0.2em] uppercase">
-                Who we are
+                API MARKETING AGENCY
               </p>
               <h2 className="text-[24px] sm:text-[32px] md:text-[48px] font-black tracking-[-0.03em] leading-[1.05] text-black">
                 Social Bureau is a <span className="text-[#8D0F16]">results-driven</span> digital and API marketing agency
@@ -257,7 +257,7 @@ const WhoWeAre = () => {
               >
                 <p className="text-[18px] md:text-[22px] text-gray-800 leading-[1.6]">
                   With over <span className="text-[#8D0F16] font-bold">2+ years</span> of hands-on online marketing experience, our
-                  team brings deep expertise in API marketing, niche marketing,
+                  team brings deep expertise in <a href='https://www.socialbureau.in/api-marketing' target='_blank' title="Learn more about API Marketing on Wikipedia">API marketing</a>, <a href='https://en.wikipedia.org/wiki/Niche_marketing' target='_blank' title="Learn more about Niche Marketing on Wikipedia">niche marketing</a>,
                   content marketing, AdTech integration, and performance marketing.
                 </p>
                 <p className="text-[18px] md:text-[22px] text-gray-500 leading-[1.6] italic border-l-4 border-[#8D0F16] pl-6">

@@ -410,6 +410,7 @@ const WebSection = () => {
                             loop
                             muted
                             playsInline
+                            title="Web development and design process"
                         >
                             <source
                                 src="https://res.cloudinary.com/dtwcgfmar/video/upload/v1771577680/From_KlickPin_CF_Pin_by_Craig_Gittins_on_Websites___Web_development_design_Web_ui_design_Web_graphic_design_qg3k8t.webm"

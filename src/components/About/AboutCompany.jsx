@@ -417,6 +417,9 @@ export const AboutCompany = () => {
           </motion.div>
         ))}
       </div>
+      <a href='/blog'>
+        <button className='bg-[#8D0F16] text-white pt-3 px-5 py-3 rounded-full' style={{ marginLeft: '50%' }}>OUR BLOG</button></a>
+
     </section>
   );
 };
