@@ -47,7 +47,7 @@ export default function AEOService() {
                 >
                   Make My Brand Answer-Ready
                 </a>
-                <a href="/services" className="bg-gray-900 px-4 py-3 border border-zinc-800 rounded-full text-sm text-gray-300 hover:bg-zinc-800 transition">
+                <a href="#" className="bg-gray-900 px-4 py-3 border border-zinc-800 rounded-full text-sm text-gray-300 hover:bg-zinc-800 transition">
                   See Services
                 </a>
               </div>

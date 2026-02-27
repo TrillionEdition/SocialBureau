@@ -324,6 +324,128 @@ const PerformanceMarketing = () => {
                 .animate-fadeUp {
                     animation: fadeUp 0.8s ease-out forwards;
                 }
+
+                /* CASE STUDIES RESULTS MOBILE RESPONSIVENESS */
+                @media (max-width: 768px) {
+                    .grid.grid-cols-3 {
+                        grid-template-columns: 1fr !important;
+                        gap: 1rem !important;
+                    }
+
+                    .apple-stat {
+                        font-size: 1.75rem !important;
+                    }
+
+                    .apple-stat-label {
+                        font-size: 0.75rem !important;
+                        margin-top: 0.375rem !important;
+                        word-break: break-word;
+                        line-height: 1.2;
+                    }
+                }
+
+                @media (max-width: 640px) {
+                    .grid.grid-cols-3 {
+                        grid-template-columns: 1fr !important;
+                        gap: 0.75rem !important;
+                        padding-top: 0.75rem !important;
+                        padding-bottom: 0.75rem !important;
+                    }
+
+                    .apple-stat {
+                        font-size: 1.5rem !important;
+                    }
+
+                    .apple-stat-label {
+                        font-size: 0.65rem !important;
+                        word-break: break-word;
+                        line-height: 1.1;
+                        margin-top: 0.25rem !important;
+                    }
+                }
+
+                /* CASE STUDY CARD MOBILE */
+                @media (max-width: 768px) {
+                    .apple-card.sticky {
+                        position: relative !important;
+                        top: 0 !important;
+                    }
+
+                    .apple-card {
+                        padding: 1.5rem !important;
+                    }
+
+                    .apple-card h3 {
+                        font-size: 1.25rem !important;
+                    }
+
+                    .apple-card h4 {
+                        font-size: 0.95rem !important;
+                    }
+
+                    .apple-card p {
+                        font-size: 0.9rem !important;
+                    }
+                }
+
+                @media (max-width: 640px) {
+                    .apple-card {
+                        padding: 1rem !important;
+                        border-radius: 12px !important;
+                    }
+
+                    .apple-card h3 {
+                        font-size: 1.1rem !important;
+                    }
+
+                    .apple-card h4 {
+                        font-size: 0.85rem !important;
+                    }
+
+                    .apple-card p {
+                        font-size: 0.8rem !important;
+                    }
+
+                    [class*="space-y-6"] {
+                        gap: 1rem !important;
+                    }
+
+                    [class*="border-t"] {
+                        margin-top: 0.75rem !important;
+                        padding-top: 0.75rem !important;
+                    }
+                }
+
+                /* CASE STUDY LIST MOBILE */
+                @media (max-width: 768px) {
+                    .lg\:col-span-5 {
+                        grid-column: span 1 !important;
+                    }
+
+                    .lg\:col-span-7 {
+                        grid-column: span 1 !important;
+                    }
+
+                    .space-y-6 {
+                        gap: 1rem !important;
+                    }
+                }
+
+                /* GENERAL RESULTS SECTION FIX */
+                @media (max-width: 640px) {
+                    .text-center {
+                        text-align: center;
+                    }
+
+                    .grid {
+                        width: 100%;
+                        overflow: visible;
+                    }
+
+                    div[class*="text-center"] {
+                        padding: 0.5rem;
+                    }
+                }
                 `
             }} />
 
@@ -405,7 +527,7 @@ const PerformanceMarketing = () => {
                     <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
                         <div className="h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl order-2 lg:order-1">
                             <img
-                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772026003/worker-from-home-have-a-break-with-coffee-and-stra-2026-01-05-23-28-30-utc_converted_qzti2g.webp"
+                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772183939/Red_stock_martket_chart_p4hejw.webp"
                                 alt="Performance Services"
                                 className="w-full h-full object-cover"
                                 loading="lazy"

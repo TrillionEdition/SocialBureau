@@ -132,7 +132,7 @@ export default function BlogPosts() {
           </div>
         ) : (
           paginatedPosts.map((post) => (
-            <div
+            <div onClick={() => navigate(`/blogs/${post.slug}`)}
               key={post._id}
               className="rounded-lg border border-none shadow-sm overflow-hidden flex flex-col hover:border-[#ff0000] hover:scale-105 transition"
             >

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-
+import { X } from "lucide-react";
 const inlineStyles = `
 /* Small supplemental styles not covered by Tailwind */
 .noise { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); opacity: .03; }
@@ -103,6 +103,46 @@ export default function Sivaprasad() {
   const videoRefs = useRef([]);
   const collageSources = Array.from({ length: 10 }, (_, i) => `/assets/sivaprasad/image${i + 1}.webp`);
   const [collageStart, setCollageStart] = useState(0);
+    const [isOpen, setIsOpen] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Create WhatsApp message
+    const whatsappMessage = `
+New Project Inquiry
+
+Client Details:
+• Name: ${form.name}
+• Email: ${form.email}
+
+Message:
+${form.message}
+
+--- 
+Submitted via: Sivaprasad portfolio
+    `.trim();
+
+    // URL encode and open WhatsApp
+    const encodedMessage = encodeURIComponent(whatsappMessage);
+    window.open(`https://wa.me/918714952665?text=${encodedMessage}`, "_blank");
+
+    // Reset form
+    setForm({
+      name: "",
+      email: "",
+      message: "",
+    });
+    setIsOpen(false);
+  };
 
   useEffect(() => {
     // Smooth anchor scrolling
@@ -368,13 +408,95 @@ export default function Sivaprasad() {
       </section>
 
       {/* Contact */}
-      <section id="contact" className="contact bg-gray-800 py-20 text-center">
+      {/* <section id="contact" className="contact bg-gray-800 py-20 text-center">
         <div className="container mx-auto px-6">
           <h2 className="text-5xl font-playfair bg-clip-text text-transparent bg-gradient-to-br from-yellow-400 to-yellow-200">Let's Connect</h2>
           <p className="text-gray-400 mt-4">Interested in collaboration or want to discuss opportunities?</p>
           <a className="contact-btn inline-block mt-6 px-8 py-3 rounded-full border border-yellow-500 text-yellow-300 hover:bg-yellow-400 hover:text-black transition" href="mailto:siva@sivaprasad.in">Get In Touch</a>
         </div>
+      </section> */}
+
+
+      {/* Contact Section */}
+      <section id="contact" className="contact bg-gray-800 py-20 text-center">
+        <div className="container mx-auto px-6">
+          <h2 className="text-5xl font-playfair bg-clip-text text-transparent bg-gradient-to-br from-yellow-400 to-yellow-200">
+            Let's Connect
+          </h2>
+          <p className="text-gray-400 mt-4">
+            Interested in collaboration or want to discuss opportunities?
+          </p>
+          <button
+            onClick={() => setIsOpen(true)}
+            className="contact-btn inline-block mt-6 px-8 py-3 rounded-full border border-yellow-500 text-yellow-300 hover:bg-yellow-400 hover:text-black transition"
+          >
+            Get In Touch
+          </button>
+        </div>
       </section>
+
+      {/* Popup Modal */}
+      {isOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900 rounded-2xl p-8 max-w-md w-full border border-yellow-500/20">
+            {/* Close Button */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white transition"
+            >
+              <X size={24} />
+            </button>
+
+            {/* Form Header */}
+            <h3 className="text-2xl font-playfair text-yellow-300 mb-2">
+              Get In Touch
+            </h3>
+            <p className="text-gray-400 text-sm mb-6">
+              Tell us about your project and we'll be in touch soon.
+            </p>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                value={form.name}
+                onChange={handleChange}
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                required
+              />
+
+              <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                value={form.email}
+                onChange={handleChange}
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                required
+              />
+
+              <textarea
+                name="message"
+                rows={4}
+                placeholder="Tell us about your project..."
+                value={form.message}
+                onChange={handleChange}
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white placeholder:text-gray-500 resize-none focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              />
+
+              <button
+                type="submit"
+                className="w-full bg-yellow-500 text-black font-semibold py-2 rounded-lg hover:bg-yellow-400 transition"
+              >
+                Send via WhatsApp
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

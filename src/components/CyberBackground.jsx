@@ -39,13 +39,13 @@ export function CyberBackground() {
 
           <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
             <button
-              onClick={() => navigate("/services")}
+              // onClick={() => navigate("/services")}
               className="text-white hover:text-white/70 font-bold text-sm uppercase tracking-[0.2em] transition-all"
             >
               Get Started
             </button>
             <button
-              onClick={() => navigate("/services")}
+              // onClick={() => navigate("/services")}
               className="px-10 py-4 bg-transparent border border-white/20 hover:border-white/60 text-white rounded-full font-bold text-xs uppercase tracking-[0.2em] transition-all backdrop-blur-sm"
             >
               Explore Our Solutions

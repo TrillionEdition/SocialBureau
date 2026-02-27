@@ -14,7 +14,7 @@ const StaticServicesGrid = () => {
             decorStyle: "left",
         },
         {
-            title: "Trillion Edition",
+            title: "TrillionEdition",
             subtitle: "The next level awaits",
             image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772003207/Untitled-design-44.png_uc4y4m.webp", // replace with your image
             bg: "bg-[#000000]",

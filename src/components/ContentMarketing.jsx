@@ -323,6 +323,90 @@ const ContentMarketing = () => {
                 .animate-fadeUp {
                     animation: fadeUp 0.8s ease-out forwards;
                 }
+
+                /* CASE STUDIES RESULTS MOBILE RESPONSIVENESS */
+                @media (max-width: 768px) {
+                    .grid.grid-cols-3 {
+                        grid-template-columns: 1fr !important;
+                        gap: 1rem !important;
+                    }
+
+                    .apple-stat {
+                        font-size: 1.75rem !important;
+                    }
+
+                    .apple-stat-label {
+                        font-size: 0.75rem !important;
+                        margin-top: 0.375rem !important;
+                    }
+                }
+
+                @media (max-width: 640px) {
+                    .grid.grid-cols-3 {
+                        grid-template-columns: 1fr !important;
+                        gap: 0.75rem !important;
+                        padding-top: 1rem !important;
+                    }
+
+                    .apple-stat {
+                        font-size: 1.5rem !important;
+                    }
+
+                    .apple-stat-label {
+                        font-size: 0.7rem !important;
+                    }
+                }
+
+                /* CASE STUDY CARD MOBILE */
+                @media (max-width: 768px) {
+                    .apple-card.sticky {
+                        position: relative !important;
+                        top: 0 !important;
+                    }
+
+                    .apple-card {
+                        padding: 1.5rem !important;
+                    }
+                }
+
+                @media (max-width: 640px) {
+                    .apple-card {
+                        padding: 1rem !important;
+                        border-radius: 12px !important;
+                    }
+
+                    .apple-card h3 {
+                        font-size: 1.125rem !important;
+                    }
+
+                    .apple-card h4 {
+                        font-size: 0.9rem !important;
+                    }
+
+                    .apple-card p {
+                        font-size: 0.8rem !important;
+                    }
+
+                    [class*="space-y-"] {
+                        gap: 0.75rem !important;
+                    }
+                }
+
+                /* GENERAL MOBILE GRID FIXES */
+                @media (max-width: 768px) {
+                    [class*="grid.grid-cols-"] {
+                        grid-template-columns: 1fr !important;
+                    }
+
+                    [class*="lg:grid-cols-"] {
+                        grid-template-columns: 1fr !important;
+                    }
+
+                    section {
+                        padding-left: 1rem !important;
+                        padding-right: 1rem !important;
+                    }
+                }
                 `
             }} />
 
@@ -391,7 +475,7 @@ const ContentMarketing = () => {
             </section>
 
             {/* Services Section */}
-            <section id="services" className="min-h-screen py-24 px-6 lg:px-8 bg-[#920F17] text-white stack-layer" style={{ zIndex: 30 }}>
+<section id="services" className="min-h-screen py-24 px-6 lg:px-8 bg-[#920F17] text-white stack-layer" style={{ zIndex: 30 }}>
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
                         <span className="apple-overline mb-4 block text-white/70">Our Services</span>
@@ -403,8 +487,10 @@ const ContentMarketing = () => {
                         </p>
                     </div>
 
-                    <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-                        <div className="h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl order-2 lg:order-1">
+                    {/* Image + 1 Card Side by Side */}
+                    <div className="grid lg:grid-cols-3 gap-8 mb-16">
+                        {/* Image on left - spans 2 columns */}
+                        <div className="lg:col-span-2 h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl">
                             <img
                                 src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/alarm-clock-top-laptop-with-copy-space_fl8wmq.webp"
                                 alt="Creation Services"
@@ -412,13 +498,38 @@ const ContentMarketing = () => {
                                 loading="lazy"
                             />
                         </div>
+
+                        {/* First card on right */}
+                        {services.length > 0 && (
+                            <div className="rounded-3xl p-8 bg-[#7B0C13] border border-white/10 hover:border-white/30 transition h-fit">
+                                {services[0].icon && (
+                                    <div className="w-12 h-12 bg-[#920F17] rounded-xl flex items-center justify-center mb-6">
+                                        {(() => {
+                                            const IconComponent = services[0].icon;
+                                            return <IconComponent className="w-6 h-6 text-white" />;
+                                        })()}
+                                    </div>
+                                )}
+                                <h3 className="text-xl font-semibold mb-4">{services[0].title}</h3>
+                                <p className="text-white/80 mb-6 text-sm leading-relaxed">{services[0].description}</p>
+                                <ul className="space-y-2">
+                                    {services[0].features.map((feature, idx) => (
+                                        <li key={idx} className="text-sm text-white/80 flex items-start">
+                                            <CheckCircle className="w-4 h-4 text-white mr-2 mt-0.5" />
+                                            <span>{feature}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
                     </div>
 
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {services.map((service, index) => {
+                    {/* 3 cards below image */}
+                    <div className="grid md:grid-cols-3 gap-8 mb-8">
+                        {services.slice(1, 4).map((service, index) => {
                             const Icon = service.icon;
                             return (
-                                <div key={index} className="rounded-3xl p-8 bg-[#7B0C13] border border-white/10 hover:border-white/30 transition">
+                                <div key={index + 1} className="rounded-3xl p-8 bg-[#7B0C13] border border-white/10 hover:border-white/30 transition">
                                     <div className="w-12 h-12 bg-[#920F17] rounded-xl flex items-center justify-center mb-6">
                                         <Icon className="w-6 h-6 text-white" />
                                     </div>
@@ -436,6 +547,30 @@ const ContentMarketing = () => {
                             );
                         })}
                     </div>
+
+                    {/* 2 cards at bottom - full width 50/50 */}
+<div className="grid md:grid-cols-2 gap-8 w-full">
+    {services.slice(4, 6).map((service, index) => {
+        const Icon = service.icon;
+        return (
+            <div key={index + 4} className="rounded-3xl p-8 bg-[#7B0C13] border border-white/10 hover:border-white/30 transition">
+                <div className="w-12 h-12 bg-[#920F17] rounded-xl flex items-center justify-center mb-6">
+                    <Icon className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
+                <p className="text-white/80 mb-6 text-sm leading-relaxed">{service.description}</p>
+                <ul className="space-y-2">
+                    {service.features.map((feature, idx) => (
+                        <li key={idx} className="text-sm text-white/80 flex items-start">
+                            <CheckCircle className="w-4 h-4 text-white mr-2 mt-0.5" />
+                            <span>{feature}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        );
+    })}
+</div>
                 </div>
             </section>
 
@@ -445,7 +580,7 @@ const ContentMarketing = () => {
                     <div className="grid lg:grid-cols-2 gap-16 items-center">
                         <div className="order-2 lg:order-1">
                             <span className="apple-overline mb-4 block text-gray-500">Why Choose Us</span>
-                            <h2 className="apple-heading text-4xl lg:text-5xl mb-10 text-black">Authority-First Strategy</h2>
+                            <h2 className="apple-heading text-4xl lg:text-5xl mb-10 text-black">Content Marketing agency in Kochi</h2>
 
                             <div className="space-y-8">
                                 {whyChooseUs.map((feature, index) => {

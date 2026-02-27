@@ -445,7 +445,7 @@ const ReviewCard = ({ r }) => {
   return (
     <div className="
       min-w-[260px] max-w-[260px]
-      sm:min-w-[300px] sm:max-w-[300px]
+      sm:w-[300px]
       lg:min-w-[340px] lg:max-w-[340px]
       bg-white rounded-3xl p-6 sm:p-8
       border border-gray-100

@@ -89,7 +89,6 @@ select {
 }
 
 @keyframes move1 {
-
   0%,
   100% {
     transform: translate(-30%, -30%);
@@ -101,7 +100,6 @@ select {
 }
 
 @keyframes move2 {
-
   0%,
   100% {
     transform: translate(30%, -20%);
@@ -209,6 +207,37 @@ html.lenis body {
   pointer-events: none;
 }
 
+/* Portfolio Specific Utilities */
+.bg-grid {
+  background-size: 50px 50px;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+}
+
+.bg-grid-white {
+  background-size: 50px 50px;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+.blob {
+  position: absolute;
+  filter: blur(80px);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.text-reveal-mask {
+  overflow: hidden;
+  display: block;
+}
+
+.font-display {
+  font-family: inherit; /* Falling back to system sans for now, but keeping class for styling hook */
+}
 /* to hide */
 .visually-hidden {
   position: absolute !important;
