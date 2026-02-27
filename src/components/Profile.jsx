@@ -4,7 +4,7 @@ import {
     getUserProfileAPI,
     updateUserProfileAPI,
     updateProfileWithImagesAPI
-} from '../../services/userServices';
+} from '../..userServices';
 import { getUserData, setUserData as setLocalUserData } from '../../utils/authUtils';
 
 const ProfilePage = () => {

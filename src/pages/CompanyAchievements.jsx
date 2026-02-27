@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
 import AchievementCard from '../components/AchievementCard';
 import AddAchievementForm from '../components/AddAchievementForm';
-import { getAllCompanyAchievementsAPI } from '../../services/companyAchievementService';
+import { getAllCompanyAchievementsAPI } from '../..companyAchievementService';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const CompanyAchievements = () => {

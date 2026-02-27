@@ -156,11 +156,11 @@ const Service1 = () => {
           transition={{ duration: 1.5 }}
           className="fixed left-1/2 top-0 w-[1px] bg-red-500/10"
         ></motion.div>
-        <Seo title={meta.title} description={meta.description} image={meta?.image || '/assets/socialbureau.png'} url={`https://www.socialbureau.in/services/${encodeURIComponent(decodedTitle)}` } canonicalUrl={`https://www.socialbureau.in/services/${encodeURIComponent(decodedTitle)}`} />
+        <Seo title={meta.title} description={meta.description} image={meta?.image || '/assets/socialbureau.png'} url={`https://www.socialbureau.in${encodeURIComponent(decodedTitle)}` } canonicalUrl={`https://www.socialbureau.in${encodeURIComponent(decodedTitle)}`} />
         <SchemaMarkup data={generateServiceSchema({ title: data.title, meta }, [
           { name: 'Home', url: 'https://socialbureau.in' },
           { name: 'Services', url: '#' },
-          { name: data.title, url: `https://socialbureau.in/services/${encodeURIComponent(decodedTitle)}` }
+          { name: data.title, url: `https://socialbureau.in${encodeURIComponent(decodedTitle)}` }
         ])} />
 
         {/* HERO SECTION — PREMIUM, INTERACTIVE, ANIMATED */}
@@ -336,7 +336,7 @@ const Service1 = () => {
         <div className="flex justify-between items-center py-10 px-6 max-w-6xl mx-auto text-white">
           {prevService ? (
             <Link
-              to={`/services/${encodeURIComponent(prevService)}`}
+              to={`${encodeURIComponent(prevService)}`}
               className="text-[#ff0000] border-3 border-[#ff0000]/30 hover:scale-110 hover:border-[#ff0000] transition-all duration-200 px-5 py-3 rounded-md text-sm md:text-base backdrop-blur-sm bg-black/20"
             >
               <FaArrowLeft className="text-sm text-[#ff0000]" />
@@ -345,7 +345,7 @@ const Service1 = () => {
 
           {nextService ? (
             <Link
-              to={`/services/${encodeURIComponent(nextService)}`}
+              to={`${encodeURIComponent(nextService)}`}
               className="hover:scale-110 transition-all duration-200 px-5 py-3 rounded-md text-sm md:text-base text-[#ff0000] border-3 border-[#ff0000]/30 hover:border-[#ff0000] backdrop-blur-sm bg-black/20"
             >
               <FaArrowRight className="text-sm text-[#ff0000]" />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { jobService } from "../../services/jobService";
+import { jobService } from "../..jobService";
 
 export default function CareersPost() {
   const [jobs, setJobs] = useState([]);

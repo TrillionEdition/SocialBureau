@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { blogAPI } from "../../services/blogServices";
+import { blogAPI } from "../..blogServices";
 import { FaHeart, FaCalendarAlt, FaUser, FaTag, FaTrashAlt } from "react-icons/fa";
 import Footer from "./Footer";
 import Seo from "./Seo";
@@ -17,7 +17,7 @@ import {
   FaChevronRight,
   FaArrowLeft
 } from "react-icons/fa";
-import { subscribeNewsletter } from "../../services/newsLetterServices";
+import { subscribeNewsletter } from "../..newsLetterServices";
 
 // Table of Contents Component
 function TableOfContents({ headings }) {

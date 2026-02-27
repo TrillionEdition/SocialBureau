@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getEventsAPI, addToGoogleCalendar, downloadCalendarFile, registerForEventAPI } from '../../services/eventServices';
+import { getEventsAPI, addToGoogleCalendar, downloadCalendarFile, registerForEventAPI } from '../..eventServices';
 import { useQueryClient } from '@tanstack/react-query';
 import Footer from './Footer';
 import { FaCalendarAlt, FaMapMarkerAlt, FaClock, FaDownload, FaExternalLinkAlt, FaPlus } from 'react-icons/fa';

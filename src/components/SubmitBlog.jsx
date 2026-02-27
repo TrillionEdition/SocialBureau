@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { blogAPI } from "../../services/blogServices";
+import { blogAPI } from "../..blogServices";
 import Footer from "./Footer";
 import Toast from "./Toast";
 import { useNavigate, useLocation } from "react-router-dom";

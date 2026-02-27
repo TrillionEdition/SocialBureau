@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { blogAPI } from "../../services/blogServices";
+import { blogAPI } from "../..blogServices";
 
 const categories = [
   "All Posts",

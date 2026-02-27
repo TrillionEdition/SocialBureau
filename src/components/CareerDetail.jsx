@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Footer from "./Footer";
-import { jobService } from "../../services/jobService";
+import { jobService } from "../..jobService";
 
 export default function CareerDetail() {
   const { slug } = useParams();

@@ -61,7 +61,7 @@ const navigate=useNavigate();
       `}</style>
 
       <div className="grid-layout">
-        <Link to={`/services/Full-Funnel Performance Marketing`}>
+        <Link to={`Full-Funnel Performance Marketing`}>
   <FloatingCard card={cards[0]} index={0} delay={0}
     gridArea="card0"
     isHovered={hoveredIndex === 0}
@@ -74,7 +74,7 @@ const navigate=useNavigate();
     isHovered={hoveredIndex === 1}
     dimOthers={hoveredIndex !== null && hoveredIndex !== 1}
     onHover={() => setHoveredIndex(1)}
-    onClick={() => navigate(`/services/API-Driven%20Growth%20%26%20Automated%20Distribution`)}
+    onClick={() => navigate(`API-Driven%20Growth%20%26%20Automated%20Distribution`)}
     onLeave={() => setHoveredIndex(null)} />
 
   <FloatingCard card={cards[2]} index={2} delay={0.4}
@@ -82,21 +82,21 @@ const navigate=useNavigate();
     isHovered={hoveredIndex === 2}
     dimOthers={hoveredIndex !== null && hoveredIndex !== 2}
     onHover={() => setHoveredIndex(2)}
-    onClick={() => navigate(`/services/Niche%20Market%20Penetration%20Strategy`)}
+    onClick={() => navigate(`Niche%20Market%20Penetration%20Strategy`)}
     onLeave={() => setHoveredIndex(null)} />
 
   <FloatingCard card={cards[3]} index={3} delay={0.6}
     gridArea="card3"
     isHovered={hoveredIndex === 3}
     dimOthers={hoveredIndex !== null && hoveredIndex !== 3}
-    onClick={() => navigate(`/services/Conversion%20Rate%20Optimization%20%26%20Landing%20Systems`)}
+    onClick={() => navigate(`Conversion%20Rate%20Optimization%20%26%20Landing%20Systems`)}
     onHover={() => setHoveredIndex(3)}
     onLeave={() => setHoveredIndex(null)} />
 
   <FloatingCard card={cards[4]} index={4} delay={0.8}
     gridArea="card4"
     isHovered={hoveredIndex === 4}
-    onClick={() => navigate(`/services/Lifecycle%20%26%20Email%20Automation%20Strategy`)}
+    onClick={() => navigate(`Lifecycle%20%26%20Email%20Automation%20Strategy`)}
     dimOthers={hoveredIndex !== null && hoveredIndex !== 4}
     onHover={() => setHoveredIndex(4)}
     onLeave={() => setHoveredIndex(null)} />

@@ -57,7 +57,7 @@
 //                 className="text-sm opacity-90 p-0 m-0"
                 
 //               >
-//                 <Link to={`/services/${encodeURIComponent(card.title)}`}>
+//                 <Link to={`${encodeURIComponent(card.title)}`}>
 //                 <img src={card.image} alt="img" className='min-w-[300px]'/>
 //                 <p className="text-xl font-bold px-2">{card.title}</p>
 //                 <p className='px-2 py-2'>{card.content}</p>
@@ -167,7 +167,7 @@ export default function ViewServices() {
               key={card.title}
               className={`flex ${alignClass} w-full ${randomOffset} relative`}
             >
-              <Link to={`/services/${encodeURIComponent(card.title)}`}>
+              <Link to={`${encodeURIComponent(card.title)}`}>
               <div
                 className={`
                   group rounded-full

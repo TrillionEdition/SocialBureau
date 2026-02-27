@@ -126,7 +126,7 @@ export function generateBlogPostingSchema(post = {}) {
 }
 
 export function generateServiceSchema(service = {}, breadcrumbs = []) {
-  const url = service.url || `${SITE_URL}/services/${encodeURIComponent(service.slug || service.title || '')}`;
+  const url = service.url || `${SITE_URL}${encodeURIComponent(service.slug || service.title || '')}`;
 
   const serviceSchema = {
     '@context': 'https://schema.org',

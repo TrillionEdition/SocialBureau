@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { jobService } from "../../../services/jobService";
+import { jobService } from "../../..jobService";
 import localJobs from "../../data/jobs";
 
 export default function HRForum() {

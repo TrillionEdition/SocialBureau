@@ -29,7 +29,7 @@
 //       color: "amber",
 //       description: "Hyper-targeted campaigns tailored for specific industries and audiences.",
 //       particleColor: "#f59e0b",
-//       path: "/services/Content-Niche-Marketing"
+//       path: "Content-Niche-Marketing"
 //     },
 //     {
 //       icon: "fas fa-comments",
@@ -37,7 +37,7 @@
 //       color: "indigo",
 //       description: "Data-backed storytelling that increases brand awareness and engagement.",
 //       particleColor: "#6366f1",
-//       path: "/services/Content-Niche-Marketing"
+//       path: "Content-Niche-Marketing"
 //     },
 //     {
 //       icon: "fas fa-globe",
@@ -45,7 +45,7 @@
 //       color: "rose",
 //       description: "Seamless connection between social, analytics, and CRM platforms.",
 //       particleColor: "#ec4899",
-//       path: "/services/MarTech"
+//       path: "MarTech"
 //     },
 //     {
 //       icon: "fas fa-chart-line",
@@ -53,7 +53,7 @@
 //       color: "teal",
 //       description: "ROI-driven strategies to boost leads, sales, and visibility.",
 //       particleColor: "#14b8a6",
-//       path: "/services/Performance-Marketing"
+//       path: "Performance-Marketing"
 //     },
 //   ];
 
@@ -393,7 +393,7 @@ export default function HomeServices() {
       description:
         "Hyper-targeted campaigns tailored for specific industries and audiences.",
       particleColor: "#f59e0b",
-      path: "/services/Content-Niche-Marketing",
+      path: "Content-Niche-Marketing",
     },
     {
       icon: "fas fa-comments",
@@ -402,7 +402,7 @@ export default function HomeServices() {
       description:
         "Data-backed storytelling that increases brand awareness and engagement.",
       particleColor: "#6366f1",
-      path: "/services/Content-Niche-Marketing",
+      path: "Content-Niche-Marketing",
     },
     {
       icon: "fas fa-globe",
@@ -411,7 +411,7 @@ export default function HomeServices() {
       description:
         "Seamless connection between social, analytics, and CRM platforms.",
       particleColor: "#ec4899",
-      path: "/services/MarTech",
+      path: "MarTech",
     },
     {
       icon: "fas fa-chart-line",
@@ -420,7 +420,7 @@ export default function HomeServices() {
       description:
         "ROI-driven strategies to boost leads, sales, and visibility.",
       particleColor: "#14b8a6",
-      path: "/services/Performance-Marketing",
+      path: "Performance-Marketing",
     },
   ];
 

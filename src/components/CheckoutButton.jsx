@@ -1,5 +1,5 @@
 import loadRazorpay from "../utils/loadRazorpay";
-import { createOrder, verifyPayment } from "../services/payment.service";
+import { createOrder, verifyPayment } from "..payment.service";
 
 const CheckoutButton = () => {
     const handlePayment = async () => {
