@@ -468,6 +468,7 @@ export default function BlogDetail() {
         keywords={post.keywords?.join(", ") || ""}
         image={post.image}
         url={`https://www.socialbureau.in/blogs/${post.slug}`}
+        canonicalUrl={`https://www.socialbureau.in/blogs/${post.slug}`}
       />
 
       <SchemaMarkup data={generateBlogPostingSchema(post)} />

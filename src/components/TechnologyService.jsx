@@ -37,7 +37,8 @@ export default function TechnologyService() {
             description="SocialBureau Tech helps brands automate and scale using marketing technology, API integrations, CRM setup, data tracking, Next.js websites, digital transformation workflows, and custom marketing dashboards. Power your growth with seamless automation and advanced marketing tech."
             keywords="branding agency india, socialbureau branding, brand identity design, visual branding, brand strategy, rebranding, brand guidelines, logo design, brand positioning, digital brand presence"
             image="/assets/socialbureau.png"
-            url="https://www.socialbureau.in/services/branding"
+            url="https://www.socialbureau.in/services/technology"
+        canonicalUrl="https://www.socialbureau.in/services/technology"
           />
     <div className="min-h-screen bg-gradient-to-b from-[#071022] to-[#02030a] text-slate-100 p-6">
       <div className="max-w-6xl mx-auto">

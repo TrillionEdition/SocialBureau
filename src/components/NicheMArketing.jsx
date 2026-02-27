@@ -300,6 +300,8 @@ const NicheMarketing = () => {
     <div className="font-['Inter'] bg-[#0F0F0F] text-[#F5F5F5] overflow-x-hidden nm-page">
       <Seo
         title="Best Niche Marketing Agency in Kerala | Social Bureau"
+        url="https://www.socialbureau.in/services/niche-marketing"
+        canonicalUrl="https://www.socialbureau.in/services/niche-marketing"
         description="Niche Marketing Agency in Kerala helping brands dominate their niche through data driven strategy, stronger conversions, and long term business growth"
         keywords="niche marketing agency in kerala, niche marketing Kochi, Niche marketing service, niche marketing strategy, target audience marketing, hyper personalized marketing, Niche product marketing, Micro niche marketing, Niche market analysis"
       />

@@ -211,6 +211,7 @@ const PerformanceMarketing = () => {
                 description="Drive measurable results with SocialBureau’s performance marketing. Boost conversions, optimize campaigns, and maximize ROI with data-driven strategies"
                 keywords="performance marketing agency, kochi, kerala, PPC, Google Ads, Meta Ads,PERFORMANCE MARKETING AGENCY IN KOCHI, PERFORMANCE MARKETING STRATEGY, PPC Management, ROI Driven Decision Making"
                 canonicalUrl="https://www.socialbureau.in/performance-marketing"
+                url="https://www.socialbureau.in/performance-marketing"
             />
 
             <style dangerouslySetInnerHTML={{

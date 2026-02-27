@@ -209,6 +209,8 @@ const ContentMarketing = () => {
         <div className="font-['SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif] bg-white text-[#1d1d1f] overflow-x-hidden antialiased relative">
             <Seo
                 title="Content Marketing Agency in Kerala | SocialBureau"
+                url="https://www.socialbureau.in/services/content-marketing"
+                canonicalUrl="https://www.socialbureau.in/services/content-marketing"
                 description="Create compelling content with SocialBureau. Our content marketing strategies attract traffic, generate leads, and grow your brand"
                 keywords="content marketing, seo writing, social media management, kerala, kochi,CONTENT MARKETING AGENCY IN KOCHI,CONTENT OPTIMISATION,CONTENT MARKETING STRATEGIES"
             />

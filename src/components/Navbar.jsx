@@ -395,7 +395,7 @@ export default function Navbar() {
             >
               <X size={22} />
             </button>
-            <div className="flex flex-col gap-4 mt-4">
+            <div className="flex flex-col gap-2 mt-4">
               {navItems.map((item) => (
                 <div key={item.label}>
                   <div className="flex items-center justify-between">
@@ -411,20 +411,19 @@ export default function Navbar() {
                           handleNavClick(item.href);
                         }
                       }}
-                      className="text-[28px] font-semibold text-[#f5f5f7] active:text-[#0066cc] text-left transition-colors duration-200"
+                      className="w-full flex items-center justify-between text-[28px] font-semibold text-[#f5f5f7] active:text-[#0066cc] text-left transition-colors duration-200"
                     >
-                      {item.label}
+                      <span className="flex-1">{item.label}</span>
+
+                      {item.columns && (
+                        <ChevronRight
+                          size={20}
+                          className={`text-white/40 transition-transform duration-200 ${
+                            expandedMobileCategory === item.label ? "rotate-90" : ""
+                          }`}
+                        />
+                      )}
                     </button>
-                    {item.columns && (
-                      <ChevronRight
-                        size={20}
-                        className={`text-white/40 transition-transform duration-200 ${
-                          expandedMobileCategory === item.label
-                            ? "rotate-90"
-                            : ""
-                        }`}
-                      />
-                    )}
                   </div>
 
                   <AnimatePresence>

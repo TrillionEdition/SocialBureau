@@ -113,6 +113,7 @@ const [isMobile, setIsMobile] = useState(false);
           marketing technology, api marketing, automation agency, socialbureau tech, marketing api integration, nextjs website agency, data tracking setup, crm integration, digital transformation, marketing dashboard"
         image="/assets/socialbureau.png"
         url="https://www.socialbureau.in/services"
+        canonicalUrl="https://www.socialbureau.in/services"
       />
 
       <ServicesHeader onArrowClick={handleArrowClick} />

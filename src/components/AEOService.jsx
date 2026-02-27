@@ -21,6 +21,7 @@ export default function AEOService() {
         keywords="AEO, answer engine optimization, AI search, schema markup, knowledge graph, conversational SEO, LLM optimization"
         image="/assets/socialbureau.png"
         url="https://www.socialbureau.in/services/aeo"
+        canonicalUrl="https://www.socialbureau.in/services/aeo"
       />
 
       <header className="bg-gradient-to-b from-black via-zinc-900 to-black text-white py-24">

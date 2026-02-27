@@ -156,7 +156,7 @@ const Service1 = () => {
           transition={{ duration: 1.5 }}
           className="fixed left-1/2 top-0 w-[1px] bg-red-500/10"
         ></motion.div>
-        <Seo title={meta.title} description={meta.description} image={meta?.image || '/assets/socialbureau.png'} url={`https://www.socialbureau.in/services/${encodeURIComponent(decodedTitle)}`} />
+        <Seo title={meta.title} description={meta.description} image={meta?.image || '/assets/socialbureau.png'} url={`https://www.socialbureau.in/services/${encodeURIComponent(decodedTitle)}` } canonicalUrl={`https://www.socialbureau.in/services/${encodeURIComponent(decodedTitle)}`} />
         <SchemaMarkup data={generateServiceSchema({ title: data.title, meta }, [
           { name: 'Home', url: 'https://socialbureau.in' },
           { name: 'Services', url: '#' },

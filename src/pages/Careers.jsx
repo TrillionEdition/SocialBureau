@@ -15,6 +15,7 @@ export const Careers = () => {
               keywords="socialbureau careers, trillionedition llp jobs, api marketing jobs, digital marketing career, seo expert jobs india, creative agency hiring, video editor hiring, content writer jobs, performance marketing openings, join socialbureau"
               image="/assets/socialbureau.png"
               url="https://www.socialbureau.in/careers"
+              canonicalUrl="https://www.socialbureau.in/careers"
             />
         <CareersHeader/>
         <CareersContent/>
