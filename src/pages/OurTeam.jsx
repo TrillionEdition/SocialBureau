@@ -16,6 +16,7 @@ export const OurTeam = () => {
         description="Meet the SocialBureau team and TrillionEdition LLP management, a powerhouse of creative agency leadership, content production experts, performance marketing, and API-driven digital innovation."
         keywords="socialbureau team, trillionedition llp management, marketing agency india team, creative agency leadership, content production experts, performance marketing team, api marketing professionals, digital marketing agency staff, socialbureau directors, marketing innovators india"
         image="/assets/socialbureau.png"
+        canonicalUrl="https://www.socialbureau.in/our-team"
         url="https://www.socialbureau.in/our-team"
       />
         <TeamHeader/>

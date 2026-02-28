@@ -138,6 +138,7 @@ export const About = () => {
         description="Discover our API-first digital marketing agency built on data, innovation, and measurable growth to help modern brands scale sustainably."
         keywords="api marketing agency, marketing automation api, digital marketing agency india, performance marketing company, niche marketing services, content marketing experts, adtech automation, api-based advertising, ai marketing agency, socialbureau, trillionedition llp, data-driven marketing company, PERFORMANCE MARKETING AGENCY IN KOCHI, API MARKETING AGENCY IN KOCHI, NICHE MARKETING AGENCY, ADTECH AGENCY IN KOCHI, CONTENT MARKETING AGENCY IN KOCHI, "
         canonicalUrl="https://www.socialbureau.in/about"
+        url="https://www.socialbureau.in/about"
       />
 
       {sections.map((section, index) => {

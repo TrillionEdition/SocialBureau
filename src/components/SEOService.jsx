@@ -21,6 +21,7 @@ export default function SEOService() {
         keywords="SEO, technical SEO, on-page SEO, off-page SEO, backlink building, content optimization, site audits, organic traffic, search engine optimization"
         image="/assets/socialbureau.png"
         url="https://www.socialbureau.in/services/seo"
+        canonicalUrl="https://www.socialbureau.in/services/seo"
       />
 
       <header className="bg-gradient-to-b from-black via-zinc-900 to-black text-white py-24">

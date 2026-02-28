@@ -194,9 +194,11 @@ const Niche = () => {
         <div className="font-['SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif] bg-white text-[#1d1d1f] overflow-x-hidden antialiased relative">
             <Seo
                 title="Niche Marketing Agency in Kerala | SocialBureau"
+                url="https://www.socialbureau.in/services/niche-marketing"
+                canonicalUrl="https://www.socialbureau.in/services/niche-marketing"
                 description="Partner with a niche marketing agency that understands your audience and drives results through precision marketing"
                 keywords="niche marketing, specialized marketing, kerala, Kochi, audience targeting,NICHE MARKETING AGENCY,NICHE MARKETING STRATEGIST,GROWTH STRATEGIES"
-                canonicalUrl="https://www.socialbureau.in/niche-marketing"
+                
             />
 
             <style dangerouslySetInnerHTML={{

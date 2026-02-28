@@ -22,6 +22,7 @@ export default function GEOService() {
         keywords="local SEO, Google Business Profile, Google Maps ranking, AI review management, AEO, GEO, multi-location SEO"
         image="/assets/socialbureau.png"
         url="https://www.socialbureau.in/services/geo"
+        canonicalUrl="https://www.socialbureau.in/services/geo"
       />
 
       <header className="bg-gradient-to-b from-black via-gray-900 to-black text-white py-24">

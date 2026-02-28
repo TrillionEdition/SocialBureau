@@ -60,6 +60,7 @@ export default function AppAdvertisingService() {
         keywords="app advertising, mobile app marketing, in-app advertising, app sdk ads, unity ads agency, ironSource ads, inmobi advertising, programmatic mobile ads, api app marketing, game ads network, 3rd party app advertising, rewarded video ads, mobile dsp, app marketing automation, socialbureau, trillionedition llp"
         image="/assets/socialbureau.png"
         url="https://www.socialbureau.in/services/app-advertising"
+        canonicalUrl="https://www.socialbureau.in/services/app-advertising"
       />
         <style>{`.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}`}</style>
       <div className="min-h-screen bg-gradient-to-b from-[#0a0118] via-[#1a0b2e] to-[#16213e] text-slate-100 p-6">
