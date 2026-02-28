@@ -1,5 +1,5 @@
 // // import React, { useState } from 'react';
-// // import { addCompanyAchievementAPI } from '../..companyAchievementService';
+// // import { addCompanyAchievementAPI } from '../../services/companyAchievementService';
 
 // // const AddAchievementForm = ({ onAchievementAdded }) => {
 // //     const [formData, setFormData] = useState({
@@ -127,7 +127,7 @@
 
 
 // import React, { useState } from 'react';
-// import { addCompanyAchievementAPI } from '../..companyAchievementService';
+// import { addCompanyAchievementAPI } from '../../services/companyAchievementService';
 
 // const AddAchievementForm = ({ onAchievementAdded }) => {
 //     const [formData, setFormData] = useState({
@@ -255,7 +255,7 @@
 // export default AddAchievementForm;
 
 import React, { useState } from 'react';
-import { addCompanyAchievementAPI } from '../..companyAchievementService';
+import { addCompanyAchievementAPI } from '../../services/companyAchievementService';
 import { CheckCircle, Award } from 'lucide-react';
 import Footer from './Footer';
 

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useContext } from 'react';
-import subscriptionService from '..subscriptionService';
+import subscriptionService from '../services/subscriptionService';
 import { SubscriptionContext } from '../context/SubscriptionContext';
 import './SubscriptionHistory.css';
 

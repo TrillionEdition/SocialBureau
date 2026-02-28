@@ -24,7 +24,7 @@ export const Home = () => {
                   canonicalUrl="https://www.socialbureau.in"
                 />
       <SchemaMarkup data={homepageSchemas} />
-      <ImageCarousel/>
+      {/* <ImageCarousel/> */}
       <ApiMarketingHero />
       <WebSection />
       <ServicesGrid />

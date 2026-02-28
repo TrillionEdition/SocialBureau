@@ -205,7 +205,7 @@ export default function Liquid() {
       <StyleBlock />
       <div className="max-w-6xl w-full grid grid-cols-1 sm:grid-cols-3 gap-6">
         {cards?.map((card, i) => (
-          <a key={card.slug} href={`${encodeURIComponent(card.slug)}`}>
+          <a key={card.slug} href={`/services/${encodeURIComponent(card.slug)}`}>
             <LiquidCard
               title={card.title}
               className="h-[350px] flex flex-col justify-between"

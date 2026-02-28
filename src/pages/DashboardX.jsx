@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { blogAPI } from "../..blogServices";
-import { analyticsAPI } from "../..analyticsServices";
-import { getTeamAPI } from "../..userServices";
-import { partnershipAPI } from "../..partnershipServices";
+import { blogAPI } from "../../services/blogServices";
+import { analyticsAPI } from "../../services/analyticsServices";
+import { getTeamAPI } from "../../services/userServices";
+import { partnershipAPI } from "../../services/partnershipServices";
 import { toast } from "react-toastify";
 import {
   AreaChart,

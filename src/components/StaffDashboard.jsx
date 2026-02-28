@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FaCrown, FaDownload, FaGem, FaLeaf, FaMapMarkerAlt, FaMedal, FaPiggyBank, FaRocket, FaStar, FaUserGraduate } from "react-icons/fa";
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { userDetailsAPI } from "../..clickupServices";
+import { userDetailsAPI } from "../../services/clickupServices";
 import { BASE_URL } from "../../utils/urls";
 
 const LEVELS = [

@@ -89,7 +89,7 @@ const ServicesList = forwardRef(function ServicesList(_, ref) {
             <div className="p-5 py-10" tabIndex={0} key={card.title}>
               <div className="flip-inner">
                 <div className="flip-front flex flex-col gap-4 p-6 sm:p-8 shadow-lg">
-                  <a href={`${encodeURIComponent(card.title)}`}>
+                  <a href={`/services/${encodeURIComponent(card.title)}`}>
                   <div className="flex items-center justify-between">                    
                     {icons[idx]}
                     <span className="text-neutral-400">

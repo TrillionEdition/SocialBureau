@@ -214,20 +214,20 @@ function App() {
           <Route path="/careers/:slug" element={<CareerDetail />} />
           <Route path="/qa-section" element={<QASection />} />
 
-          <Route path="branding" element={<BrandingService />} />
-          <Route path="experience-design" element={<XDService />} />
-          <Route path="technology" element={<TechnologyService />} />
+          <Route path="/services/branding" element={<BrandingService />} />
+          <Route path="/services/experience-design" element={<XDService />} />
+          <Route path="/services/technology" element={<TechnologyService />} />
           <Route
-            path="global-marketing"
+            path="/services/global-marketing"
             element={<GlobalMarketingService />}
           />
           <Route
-            path="google-marketing"
+            path="/services/google-marketing"
             element={<GoogleMarketingService />}
           />
-          <Route path="geo" element={<GEOService />} />
-          <Route path="seo" element={<SEOService />} />
-          <Route path="aeo" element={<AEOService />} />
+          <Route path="/services/geo" element={<GEOService />} />
+          <Route path="/services/seo" element={<SEOService />} />
+          <Route path="/services/aeo" element={<AEOService />} />
 
           <Route path="/hr-forum" element={<HRForum />} />
           <Route path="/appy-job" element={<JobPosting />} />
@@ -235,7 +235,7 @@ function App() {
           <Route path="/job-listing" element={<JobsList />} />
           <Route path="/candidate-profile" element={<CandidateProfile />} />
 
-          <Route path=":serviceTitle" element={<Service1 />} />
+          <Route path="/services/:serviceTitle" element={<Service1 />} />
           <Route path="/employee/:name" element={<StaffDashboard />} />
           <Route
             path="/voice"

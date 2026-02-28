@@ -95,8 +95,8 @@ export default function GoogleMarketingService() {
         description="Master Google's 2025 marketing tools with SocialBureau. We specialize in AI Max Search, Performance Max, Google Ads automation, YouTube shoppable ads, Google Analytics Agentic AI, Meridian MMM, and advanced measurement solutions for global campaigns."
         keywords="google marketing tools 2025, ai max search google, performance max channel reporting, google ads generative creative, google measurement mix model meridian, youtube shoppable ads, google shopping ai tools, google ads automation, google analytics agentic ai, socialbureau google marketing services"
         image="/assets/socialbureau.png"
-        url="https://www.socialbureau.ingoogle-marketing"
-        canonicalUrl="https://www.socialbureau.ingoogle-marketing"
+        url="https://www.socialbureau.in/services/google-marketing"
+        canonicalUrl="https://www.socialbureau.in/services/google-marketing"
       />
 
       <div className="min-h-screen bg-gradient-to-b from-[#0a0f1e] via-[#1a1f2e] to-[#0f1419] text-slate-100 p-6">

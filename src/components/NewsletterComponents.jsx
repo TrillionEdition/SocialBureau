@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { subscribeNewsletter } from "..newsletterService";
+import { subscribeNewsletter } from "../services/newsletterService";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");

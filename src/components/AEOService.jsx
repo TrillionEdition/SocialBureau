@@ -20,8 +20,8 @@ export default function AEOService() {
         description="Be the default answer across AI assistants and chatbots through AEO: AI-Optimised content, schema & entity tuning, and knowledge-graph enhancements."
         keywords="AEO, answer engine optimization, AI search, schema markup, knowledge graph, conversational SEO, LLM optimization"
         image="/assets/socialbureau.png"
-        url="https://www.socialbureau.inaeo"
-        canonicalUrl="https://www.socialbureau.inaeo"
+        url="https://www.socialbureau.in/services/aeo"
+        canonicalUrl="https://www.socialbureau.in/services/aeo"
       />
 
       <header className="bg-gradient-to-b from-black via-zinc-900 to-black text-white py-24">

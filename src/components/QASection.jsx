@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { qaAPI } from "../..qaServices";
+import { qaAPI } from "../../services/qaServices";
 import { FaThumbsUp } from "react-icons/fa";
 import Footer from "./Footer";
 

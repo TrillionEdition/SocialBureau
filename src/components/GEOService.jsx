@@ -21,8 +21,8 @@ export default function GEOService() {
         description="Increase your local & global visibility on Google with GEO: API-driven GBP, Maps ranking, AI review management, location keyword targeting and multi-location automation."
         keywords="local SEO, Google Business Profile, Google Maps ranking, AI review management, AEO, GEO, multi-location SEO"
         image="/assets/socialbureau.png"
-        url="https://www.socialbureau.ingeo"
-        canonicalUrl="https://www.socialbureau.ingeo"
+        url="https://www.socialbureau.in/services/geo"
+        canonicalUrl="https://www.socialbureau.in/services/geo"
       />
 
       <header className="bg-gradient-to-b from-black via-gray-900 to-black text-white py-24">

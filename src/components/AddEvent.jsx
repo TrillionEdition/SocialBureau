@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createEventAPI } from '../..eventServices';
+import { createEventAPI } from '../../services/eventServices';
 import Footer from './Footer';
 import { FaCalendarPlus, FaImage, FaMapMarkerAlt, FaUsers } from 'react-icons/fa';
 

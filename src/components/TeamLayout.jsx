@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { usersAPI } from "../..userServices";
+import { usersAPI } from "../../services/userServices";
 import { useQuery } from "@tanstack/react-query";
 
 export default function TeamLayout() {

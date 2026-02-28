@@ -45,8 +45,8 @@ export default function XDService() {
 description="SocialBureau specializes in human-centered experience design, UI/UX strategy, CRO, and digital experience optimization. From UX research to XD design and conversion-focused interfaces, we craft high-performing websites and digital products that deliver results."
 keywords="experience design, ui ux design agency, xd design, conversion optimization, website experience design, human centered design, ux research, cro agency, digital experience, socialbureau design"
 image="/assets/socialbureau.png"
-                    url="https://www.socialbureau.inexperience-design"
-                    canonicalUrl="https://www.socialbureau.inexperience-design"
+                    url="https://www.socialbureau.in/services/experience-design"
+                    canonicalUrl="https://www.socialbureau.in/services/experience-design"
                   />
     <div className="min-h-screen bg-gradient-to-b from-[#071025] via-[#071029] to-[#04050a] text-slate-100 p-6">
       <div className="max-w-6xl mx-auto">

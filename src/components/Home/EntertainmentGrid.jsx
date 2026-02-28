@@ -179,7 +179,7 @@ const AppleSection = () => {
 
     return (
         <div className="bg-white py-8 md:py-12 overflow-hidden select-none">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 md:mb-10 px-4">Endless entertainment</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 md:mb-10 px-4">Endless Entertainment</h2>
 
             {/* Main Large Carousel - Continuous infinite scroll */}
             <div

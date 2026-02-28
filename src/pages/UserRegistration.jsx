@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Lock, User, Phone, Eye, EyeOff, CheckCircle2, AlertCircle, ArrowLeft } from "lucide-react";
 import { BASE_URL } from "../../utils/urls";
 import { setUserData } from "../../utils/authUtils";
-import { registerUserAPI } from "../..userServices";
+import { registerUserAPI } from "../../services/userServices";
 
 export const AuthPage = () => {
   const navigate = useNavigate();

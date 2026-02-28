@@ -15,7 +15,7 @@ import {
     Zap,
     ExternalLink
 } from 'lucide-react';
-import { fetchHistory, analyzeResume, deleteScan } from '../..atsService';
+import { fetchHistory, analyzeResume, deleteScan } from '../../services/atsService';
 
 const ROLE_TEMPLATES = {
     "Content Creator": "Video Editing, Script Writing, Adobe Premiere Pro, Storytelling, Social Media Trends, Engagement Metrics, Content Strategy, YouTube SEO, Canva, CapCut, Thumbnail Design.",
