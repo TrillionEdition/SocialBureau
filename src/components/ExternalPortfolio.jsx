@@ -440,24 +440,17 @@ const blogs = [
     image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769158815/kochi1_hc2ymq.jpg",
     link: "https://looplogik.wordpress.com/2025/06/25/historical-consequences-of-maritime-trade-in-kochi",
   },
-  // {
-  //   id: 9,
-  //   title: "The best things in life are free",
-  //   category: "UI Interface",
-  //   image: "/assets/happy.jpg",
-  //   link: "https://looplogik.wordpress.com/2025/07/19/the-best-things-in-life-are-free-2",
-  // },
   {
     id: 9,
     title: "Backyard Musings- A life the world forgot",
     category: "UI Interface",
-    image: "/assets/yard.png",
+    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772255541/yard_1_bgjdbk.webp",
     link: "https://looplogik.wordpress.com/2026/01/05/backyard-musings-a-life-the-world-forgot",
   }, {
     id: 10,
     title: "B.Arch – DC School of Architecture and Design",
     category: "UI Interface",
-    image: "/assets/dcschool.webp",
+    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772255541/dcschool_q8uxtf.webp",
     link: "https://looplogik.wordpress.com/2025/05/13/b-arch-dc-school-of-architecture-and-design-blog-post",
   },
   {
@@ -1110,7 +1103,7 @@ const videosData = [
     title: "Ramayana Patashala from Ranjit Chettur",
     youtubeId: "https://www.youtube.com/embed/516Ku0G_1EE?si=y433VXgwVukg9R5j",
     category: "Design Process",
-    youtube_img:"assets/UtubeRanjith1.png",
+    youtube_img:"https://res.cloudinary.com/dtwcgfmar/image/upload/v1772255541/UtubeRanjith1_pb3tlt.webp",
   },
   {
     id: 2,

@@ -58,7 +58,7 @@ export default function Navbar() {
         },
         {
           title: "Design & Tech",
-          items: [{ label: "Web Development", href: "#" }],
+          items: [{ label: "Web Development", href: "/web-development" }],
         },
       ],
     },
@@ -175,7 +175,7 @@ export default function Navbar() {
           items: [
             { label: "Partners", href: "/partners" },
             { label: "Ranjit", href: "/partnership/Ranjit" },
-            { label:'Sivaprasad' , href: '/partnership/Sivaprasad'},
+            { label: 'Sivaprasad', href: '/partnership/Sivaprasad' },
           ],
         },
       ],
@@ -190,6 +190,18 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
 
   const handleNavClick = (href) => {
     if (!href || href === "#") return;
@@ -259,6 +271,8 @@ export default function Navbar() {
                       exit={{ opacity: 0, y: -8 }}
                       transition={{ duration: 0.2 }}
                       className="absolute right-0 top-full mt-2 bg-[#262627]/95 backdrop-blur-xl border border-white/10 rounded-lg overflow-hidden min-w-[180px] z-50"
+                      onMouseEnter={() => setActiveDropdown("userMenu")}
+                      onMouseLeave={() => setActiveDropdown(null)}
                     >
                       <div className="flex flex-col">
                         {(isAdmin || isPartnership) && (
@@ -386,7 +400,7 @@ export default function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 z-100 bg-[#000000ea] flex flex-col pt-16 px-6 pb-8 overflow-y-auto md:hidden relative"
+            className="fixed inset-0 z-50 bg-[#000000ea] flex flex-col pt-16 px-6 pb-8 overflow-y-auto md:hidden"
           >
             <button
               className="absolute top-4 right-4 text-white p-2"
@@ -418,11 +432,10 @@ export default function Navbar() {
                     {item.columns && (
                       <ChevronRight
                         size={20}
-                        className={`text-white/40 transition-transform duration-200 ${
-                          expandedMobileCategory === item.label
-                            ? "rotate-90"
-                            : ""
-                        }`}
+                        className={`text-white/40 transition-transform duration-200 ${expandedMobileCategory === item.label
+                          ? "rotate-90"
+                          : ""
+                          }`}
                       />
                     )}
                   </div>

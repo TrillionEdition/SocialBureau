@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { BarChart3, Megaphone, Search, ShoppingCart, Target, Users, ChevronRight, ArrowUp, Plus, X, CheckCircle, BarChart, Settings, Smartphone, Layers, Shield } from 'lucide-react';
 import Seo from './Seo';
+import { getOptimizedCloudinaryUrl } from '../utils/cloudinary';
 
 const PerformanceMarketing = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -8,20 +9,28 @@ const PerformanceMarketing = () => {
     const [activeCaseStudy, setActiveCaseStudy] = useState(0);
 
     useEffect(() => {
+        let rafId;
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
+            const update = () => {
+                setIsScrolled(window.scrollY > 50);
 
-            // Update scroll progress bar
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            const progressBar = document.querySelector('.scroll-progress-bar');
-            if (progressBar) {
-                progressBar.style.width = scrolled + '%';
-            }
+                // Update scroll progress bar
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                const progressBar = document.querySelector('.scroll-progress-bar');
+                if (progressBar) {
+                    progressBar.style.transform = `scaleX(${winScroll / height})`;
+                }
+            };
+            cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(update);
         };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            cancelAnimationFrame(rafId);
+        };
     }, []);
 
     const scrollToTop = () => {
@@ -215,8 +224,6 @@ const PerformanceMarketing = () => {
 
             <style dangerouslySetInnerHTML={{
                 __html: `
-                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-                
                 * {
                     -webkit-font-smoothing: antialiased;
                     -moz-osx-font-smoothing: grayscale;
@@ -305,9 +312,13 @@ const PerformanceMarketing = () => {
                     top: 0;
                     left: 0;
                     height: 3px;
+                    width: 100%;
                     background: #7E0A11;
                     z-index: 1000;
-                    transition: width 0.1s ease;
+                    transform: scaleX(0);
+                    transform-origin: left;
+                    will-change: transform;
+                    transition: transform 0.1s ease;
                 }
                 
                 .stack-layer {
@@ -475,10 +486,11 @@ const PerformanceMarketing = () => {
                     </div>
                     <div className="relative h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
                         <img
-                            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086611/Digital_Marketing_Made_Simple__Strategy_Growth_cmfbtw.webp"
-                            alt="Performance Marketing"
+                            src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086611/Digital_Marketing_Made_Simple__Strategy_Growth_cmfbtw.webp", 1200)}
+                            alt="Performance Marketing Strategy Hero"
                             className="w-full h-full object-cover"
                             loading="lazy"
+                            decoding="async"
                         />
                     </div>
                 </div>
@@ -501,10 +513,11 @@ const PerformanceMarketing = () => {
                         </div>
                         <div className="h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl">
                             <img
-                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/SMM_PHOTOSHOOT_xdkcl5.webp"
+                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/SMM_PHOTOSHOOT_xdkcl5.webp", 1000)}
                                 className="w-full h-full object-cover"
-                                alt='performance marketing'
+                                alt="Result driven performance marketing team at work"
                                 loading="lazy"
+                                decoding="async"
                             />
                         </div>
                     </div>
@@ -527,10 +540,11 @@ const PerformanceMarketing = () => {
                     <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
                         <div className="h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl order-2 lg:order-1">
                             <img
-                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772183939/Red_stock_martket_chart_p4hejw.webp"
-                                alt="Performance Services"
+                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772183939/Red_stock_martket_chart_p4hejw.webp", 1000)}
+                                alt="Data-driven marketing charts and analytics"
                                 className="w-full h-full object-cover"
                                 loading="lazy"
+                                decoding="async"
                             />
                         </div>
                         <div className="grid grid-cols-1 gap-6 order-1 lg:order-2">
@@ -601,10 +615,11 @@ const PerformanceMarketing = () => {
                         </div>
                         <div className="order-1 lg:order-2 h-[400px] lg:h-[600px] rounded-[2rem] overflow-hidden shadow-2xl relative group">
                             <img
-                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772022966/PMO_converted_yhchbh.webp"
+                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772022966/PMO_converted_yhchbh.webp", 1000)}
                                 className="w-full h-full object-cover object-[50%_0%] origin-top transition-transform duration-700"
                                 loading="lazy"
-                                alt="performance-marketing"
+                                decoding="async"
+                                alt="SocialBureau performance marketing results showcase"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                         </div>

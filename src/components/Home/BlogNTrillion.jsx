@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { getOptimizedCloudinaryUrl } from "../../utils/cloudinary";
 
 const StaticServicesGrid = () => {
     const items = [
@@ -70,8 +71,9 @@ const StaticServicesGrid = () => {
                         <div className="w-full">
                             {item.image && (
                                 <img
-                                    src={item.image}
+                                    src={getOptimizedCloudinaryUrl(item.image, 600)}
                                     alt={`${item.title} - ${item.subtitle}`}
+                                    loading="lazy"
                                     className="w-[90%] max-w-[450px] h-auto object-contain mx-auto"
                                 />
                             )}

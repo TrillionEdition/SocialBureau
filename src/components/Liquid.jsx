@@ -1,15 +1,5 @@
 import React, { useRef, useEffect } from "react";
 
-/**
- * LiquidCards.jsx
- *
- * Self-contained React + Tailwind component that renders 3 cards in a row.
- * All non-Tailwind CSS is injected inline (no external CSS file required).
- *
- * Usage:
- *  - Place this file in src/components and import: import LiquidCards from './components/LiquidCards'
- *  - Tailwind must be configured in your project (the component uses Tailwind for layout/spacing/typography).
- */
 
 function useLiquidPointer(ref) {
   useEffect(() => {

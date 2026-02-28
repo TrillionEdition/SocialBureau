@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Share2, PenTool, MessageSquare, Video, ShoppingBag, ChevronRight, ArrowUp, Plus, X, CheckCircle, Target, RefreshCw, FileText, TrendingUp } from 'lucide-react';
 import Seo from './Seo';
+import { getOptimizedCloudinaryUrl } from '../utils/cloudinary';
 
 const ContentMarketing = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -8,20 +9,27 @@ const ContentMarketing = () => {
     const [activeCaseStudy, setActiveCaseStudy] = useState(0);
 
     useEffect(() => {
+        let rafId;
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
+            const update = () => {
+                setIsScrolled(window.scrollY > 50);
 
-            // Update scroll progress bar
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            const progressBar = document.querySelector('.scroll-progress-bar');
-            if (progressBar) {
-                progressBar.style.width = scrolled + '%';
-            }
+                // Update scroll progress bar
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const progressBar = document.querySelector('.scroll-progress-bar');
+                if (progressBar) {
+                    progressBar.style.transform = `scaleX(${winScroll / height})`;
+                }
+            };
+            cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(update);
         };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            cancelAnimationFrame(rafId);
+        };
     }, []);
 
     const scrollToTop = () => {
@@ -215,8 +223,6 @@ const ContentMarketing = () => {
 
             <style dangerouslySetInnerHTML={{
                 __html: `
-                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-                
                 * {
                     -webkit-font-smoothing: antialiased;
                     -moz-osx-font-smoothing: grayscale;
@@ -305,9 +311,13 @@ const ContentMarketing = () => {
                     top: 0;
                     left: 0;
                     height: 3px;
+                    width: 100%;
                     background: #920F17;
                     z-index: 1000;
-                    transition: width 0.1s ease;
+                    transform: scaleX(0);
+                    transform-origin: left;
+                    will-change: transform;
+                    transition: transform 0.1s ease;
                 }
                 
                 .stack-layer {
@@ -436,10 +446,11 @@ const ContentMarketing = () => {
                     </div>
                     <div className="relative h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
                         <img
-                            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086614/cup-coffee-with-headphones-notebook-red-background_up2ufi.webp"
+                            src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086614/cup-coffee-with-headphones-notebook-red-background_up2ufi.webp", 1200)}
                             alt="Content Marketing Hero"
                             className="w-full h-full object-cover"
                             loading="lazy"
+                            decoding="async"
                         />
                     </div>
                 </div>
@@ -464,10 +475,11 @@ const ContentMarketing = () => {
                         </div>
                         <div className="h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
                             <img
-                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086611/Fastion_sg9hqc.webp"
-                                alt="Strategic Content"
+                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086611/Fastion_sg9hqc.webp", 1000)}
+                                alt="Strategic Content Creation and Planning"
                                 className="w-full h-full object-cover"
                                 loading="lazy"
+                                decoding="async"
                             />
                         </div>
                     </div>
@@ -475,7 +487,7 @@ const ContentMarketing = () => {
             </section>
 
             {/* Services Section */}
-<section id="services" className="min-h-screen py-24 px-6 lg:px-8 bg-[#920F17] text-white stack-layer" style={{ zIndex: 30 }}>
+            <section id="services" className="min-h-screen py-24 px-6 lg:px-8 bg-[#920F17] text-white stack-layer" style={{ zIndex: 30 }}>
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
                         <span className="apple-overline mb-4 block text-white/70">Our Services</span>
@@ -492,10 +504,11 @@ const ContentMarketing = () => {
                         {/* Image on left - spans 2 columns */}
                         <div className="lg:col-span-2 h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl">
                             <img
-                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/alarm-clock-top-laptop-with-copy-space_fl8wmq.webp"
-                                alt="Creation Services"
+                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/alarm-clock-top-laptop-with-copy-space_fl8wmq.webp", 1200)}
+                                alt="Content Creation Services and productivity"
                                 className="w-full h-full object-cover"
                                 loading="lazy"
+                                decoding="async"
                             />
                         </div>
 
@@ -549,28 +562,28 @@ const ContentMarketing = () => {
                     </div>
 
                     {/* 2 cards at bottom - full width 50/50 */}
-<div className="grid md:grid-cols-2 gap-8 w-full">
-    {services.slice(4, 6).map((service, index) => {
-        const Icon = service.icon;
-        return (
-            <div key={index + 4} className="rounded-3xl p-8 bg-[#7B0C13] border border-white/10 hover:border-white/30 transition">
-                <div className="w-12 h-12 bg-[#920F17] rounded-xl flex items-center justify-center mb-6">
-                    <Icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
-                <p className="text-white/80 mb-6 text-sm leading-relaxed">{service.description}</p>
-                <ul className="space-y-2">
-                    {service.features.map((feature, idx) => (
-                        <li key={idx} className="text-sm text-white/80 flex items-start">
-                            <CheckCircle className="w-4 h-4 text-white mr-2 mt-0.5" />
-                            <span>{feature}</span>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        );
-    })}
-</div>
+                    <div className="grid md:grid-cols-2 gap-8 w-full">
+                        {services.slice(4, 6).map((service, index) => {
+                            const Icon = service.icon;
+                            return (
+                                <div key={index + 4} className="rounded-3xl p-8 bg-[#7B0C13] border border-white/10 hover:border-white/30 transition">
+                                    <div className="w-12 h-12 bg-[#920F17] rounded-xl flex items-center justify-center mb-6">
+                                        <Icon className="w-6 h-6 text-white" />
+                                    </div>
+                                    <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
+                                    <p className="text-white/80 mb-6 text-sm leading-relaxed">{service.description}</p>
+                                    <ul className="space-y-2">
+                                        {service.features.map((feature, idx) => (
+                                            <li key={idx} className="text-sm text-white/80 flex items-start">
+                                                <CheckCircle className="w-4 h-4 text-white mr-2 mt-0.5" />
+                                                <span>{feature}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             </section>
 
@@ -601,10 +614,11 @@ const ContentMarketing = () => {
                         </div>
                         <div className="order-1 lg:order-2 h-[400px] lg:h-[600px] rounded-[2rem] overflow-hidden shadow-2xl relative group">
                             <img
-                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1770978614/Picsart_26-02-10_22-36-15-902_yehobf.jpg"
+                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1770978614/Picsart_26-02-10_22-36-15-902_yehobf.jpg", 1000)}
                                 alt="Content professional working at SocialBureau"
                                 className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                                 loading="lazy"
+                                decoding="async"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                         </div>

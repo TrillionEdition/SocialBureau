@@ -6,7 +6,7 @@ import AppleSection from "../components/Home/EntertainmentGrid";
 import { Googlereview } from "../components/Googlereview";
 import StaticServicesGrid from "../components/Home/BlogNTrillion";
 import ApiMarketingHero from "../components/Home/ApiMarketing";
-import ImageCarousel from "../components/Home/Hero";
+// import ImageCarousel from "../components/Home/Hero";
 import SchemaMarkup from "../components/SchemaMarkup";
 import { generateHomepageSchemas } from "../utils/schema";
 
@@ -16,7 +16,7 @@ export const Home = () => {
   return (
     <>
       <SchemaMarkup data={homepageSchemas} />
-      <ImageCarousel/>
+      {/* <ImageCarousel/> */}
       <ApiMarketingHero />
       <WebSection />
       <ServicesGrid />

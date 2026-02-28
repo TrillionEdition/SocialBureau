@@ -1,5 +1,5 @@
-
 import React, { useRef, useState, useEffect } from 'react';
+import { getOptimizedCloudinaryUrl } from '../../utils/cloudinary';
 
 const mainMovies = [
     { id: 1, title: "API Marketing", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1771850532/imwv5sirhwgvtehpgb6h_n33iwu.webp", tag: "Marketing", link: "https://www.youtube.com/watch?v=UU-AeatnaEI", desc: "API Marketing" },
@@ -40,17 +40,15 @@ const MovieCard = ({ movie }) => (
         className="flex-none w-[90vw] md:w-[70vw] relative aspect-[21/9] rounded-xl overflow-hidden shadow-lg cursor-pointer group"
     >
         <img
-            src={movie.img}
+            src={getOptimizedCloudinaryUrl(movie.img, 1200)}
+            loading="lazy"
+            decoding="async"
             className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             alt={`${movie.title} - ${movie.tag} Video Thumbnail`}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex flex-col justify-end p-4 md:p-8 text-white">
             <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3">
                 <button
-                    onClick={(e) => {
-                        e.preventDefault();
-                        window.open(movie.link, '_blank');
-                    }}
                     className="bg-white text-black px-4 md:px-6 py-2 rounded-full font-bold text-xs md:text-sm hover:bg-gray-200 transition-colors active:scale-95 w-fit"
                 >
                     Stream now
@@ -71,7 +69,9 @@ const SubItemCard = ({ item }) => (
         className="flex-none w-[140px] md:w-[280px] aspect-video relative rounded-lg overflow-hidden group bg-gray-100 cursor-pointer"
     >
         <img
-            src={item.img}
+            src={getOptimizedCloudinaryUrl(item.img, 600)}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             alt={`${item.title} - ${item.category || ''} Thumbnail`}
         />
@@ -82,10 +82,6 @@ const SubItemCard = ({ item }) => (
                 </p>
                 {item.link && (
                     <button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            window.open(item.link, '_blank');
-                        }}
                         className="bg-white/90 text-black px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[8px] md:text-[10px] font-bold hover:bg-white transition-colors active:scale-95 w-fit"
                     >
                         Play now
@@ -102,9 +98,7 @@ const AppleSection = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const autoRotateTimerRef = useRef(null);
     const isAutoScrollRef = useRef(true);
-    const scrollPositionRef = useRef(0);
 
-    // Auto-rotate carousel - continuous infinite forward scroll
     useEffect(() => {
         const startAutoRotate = () => {
             autoRotateTimerRef.current = setInterval(() => {
@@ -129,9 +123,8 @@ const AppleSection = () => {
 
     const scrollToIndex = (index) => {
         if (mainScrollRef.current && subScrollRef.current) {
-            // Calculate scroll position for main cards
-            const mainCardWidth = mainScrollRef.current.offsetWidth * 0.85; // Approximate card width
-            const mainGap = 12; // Gap between cards in pixels
+            const mainCardWidth = mainScrollRef.current.offsetWidth * 0.85;
+            const mainGap = 12;
             const mainScrollLeft = index * (mainCardWidth + mainGap);
 
             mainScrollRef.current.scrollTo({
@@ -139,8 +132,7 @@ const AppleSection = () => {
                 behavior: 'smooth'
             });
 
-            // Calculate scroll position for sub items
-            const subCardWidth = subScrollRef.current.offsetWidth / 3; // Show ~3 items
+            const subCardWidth = subScrollRef.current.offsetWidth / 3;
             const subGap = 8;
             const subScrollLeft = index * (subCardWidth + subGap);
 
@@ -156,12 +148,10 @@ const AppleSection = () => {
         isAutoScrollRef.current = false;
         scrollToIndex(index);
 
-        // Resume auto-rotation after user interaction
         if (autoRotateTimerRef.current) {
             clearInterval(autoRotateTimerRef.current);
         }
 
-        // Auto-resume after 6 seconds of inactivity
         setTimeout(() => {
             isAutoScrollRef.current = true;
         }, 6000);
@@ -181,7 +171,6 @@ const AppleSection = () => {
         <div className="bg-white py-8 md:py-12 overflow-hidden select-none">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 md:mb-10 px-4">Endless entertainment</h2>
 
-            {/* Main Large Carousel - Continuous infinite scroll */}
             <div
                 ref={mainScrollRef}
                 className={`flex gap-3 md:gap-4 px-[2.5%] md:px-[15%] overflow-x-auto scroll-smooth ${hideScrollbarClass}`}
@@ -191,7 +180,6 @@ const AppleSection = () => {
                 ))}
             </div>
 
-            {/* Small Bottom Row - Scrolls with main carousel */}
             <div
                 ref={subScrollRef}
                 className={`mt-6 md:mt-8 flex gap-2 md:gap-3 px-[2.5%] overflow-x-auto scroll-smooth ${hideScrollbarClass}`}
@@ -201,18 +189,24 @@ const AppleSection = () => {
                 ))}
             </div>
 
-            {/* Navigation Dots */}
             <div className="flex justify-center items-center gap-2 md:gap-3 mt-8 md:mt-10">
                 {mainMovies.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => handleDotClick(index)}
-                        className={`h-1.5 md:h-2 rounded-full transition-all duration-500 ease-in-out cursor-pointer hover:scale-110 ${activeIndex === index
-                                ? "w-8 md:w-10 bg-gray-900"
-                                : "w-1.5 md:w-2 bg-gray-300 hover:bg-gray-400"
-                            }`}
+                        className="h-4 w-10 md:w-12 flex items-center justify-center cursor-pointer group outline-none"
                         aria-label={`Go to section ${index + 1}`}
-                    />
+                    >
+                        <div
+                            className="h-1.5 md:h-2 rounded-full bg-gray-900 transition-all duration-500 ease-in-out"
+                            style={{
+                                width: "8px",
+                                transform: activeIndex === index ? "scaleX(5.0)" : "scaleX(1.0)",
+                                opacity: activeIndex === index ? 1 : 0.2,
+                                willChange: "transform, opacity"
+                            }}
+                        />
+                    </button>
                 ))}
             </div>
         </div>

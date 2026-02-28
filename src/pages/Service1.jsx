@@ -30,6 +30,7 @@ const InteractiveBackground = () => {
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
+    let resizeRafId = null;
 
     const initGrid = () => {
       gridRef.current = [];
@@ -55,7 +56,16 @@ const InteractiveBackground = () => {
     };
 
     resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    
+    const handleCanvasResize = () => {
+      if (resizeRafId) return;
+      resizeRafId = requestAnimationFrame(() => {
+        resizeCanvas();
+        resizeRafId = null;
+      });
+    };
+    
+    window.addEventListener('resize', handleCanvasResize);
 
     const initWaves = () => {
       wavesRef.current = [];
@@ -99,9 +109,10 @@ const InteractiveBackground = () => {
     animate();
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('resize', handleCanvasResize);
       window.removeEventListener('mousemove', handleMouseMove);
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
+      if (resizeRafId) cancelAnimationFrame(resizeRafId);
     };
   }, [isMobile]);
 
