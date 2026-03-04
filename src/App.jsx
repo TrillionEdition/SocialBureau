@@ -12,6 +12,7 @@ import "lenis/dist/lenis.css";
 import Partner1 from "./pages/Partnerships/partner1";
 import ShaileshSivan from "./pages/Partnerships/shaileshsivan";
 import AlenJacob from "./pages/Partnerships/alenJacob";
+import CheriyanPage from "./pages/Partnerships/cheriyan";
 import { Blog } from "./pages/Blog";
 import { Contact } from "./pages/Contact";
 import CompanyAchievements from "./pages/CompanyAchievements";
@@ -96,6 +97,7 @@ function ConditionalFooter() {
     "/partnership/partner-1",
     "/partnership/shailesh-sivan",
     "/partnership/alen-jacob",
+    "/partnership/cheriyan",
     "/dashboard",
     "/user-management",
     "/analytics",
@@ -335,6 +337,7 @@ function App() {
             element={<ShaileshSivan />}
           />
           <Route path="/partnership/alen-jacob" element={<AlenJacob />} />
+          <Route path="/partnership/cheriyan" element={<CheriyanPage />} />
 
           <Route path="/*" element={<NotFound />} />
         </Routes>
