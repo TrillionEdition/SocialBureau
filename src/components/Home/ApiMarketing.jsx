@@ -30,9 +30,7 @@ const ApiMarketing = () => {
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4">
-                        <button
-                            onClick={() => navigate("/services")}
-                            className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold text-xs uppercase tracking-[0.2em]"
+                        <button onClick={() => navigate("/services")} className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold text-xs uppercase tracking-[0.2em]"
                         >
                             Get Started
                         </button>
