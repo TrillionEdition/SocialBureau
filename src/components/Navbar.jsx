@@ -49,7 +49,7 @@ export default function Navbar() {
         {
           title: "API Marketing",
           items: [
-            { label: "API Marketing", href: "/api-marketing" },
+            { label: "API Marketing", href: "/api-marketing-agency-in-kochi" },
             { label: "Performance Marketing", href: "/performance-marketing-agency-in-kochi" },
             { label: "Niche Marketing", href: "/niche-marketing-agency-in-kochi" },
             { label: "Content Marketing", href: "/content-marketing-agency-in-kochi" },
