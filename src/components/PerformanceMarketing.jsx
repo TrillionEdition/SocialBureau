@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { BarChart3, Megaphone, Search, ShoppingCart, Target, Users, ChevronRight, ArrowUp, Plus, X, CheckCircle, BarChart, Settings, Smartphone, Layers, Shield } from 'lucide-react';
 import Seo from './Seo';
-import { getOptimizedCloudinaryUrl } from '../utils/cloudinary';
+import { getOptimizedCloudinaryUrl } from '../../utils/cloudinary';
 
 const PerformanceMarketing = () => {
     const [isScrolled, setIsScrolled] = useState(false);

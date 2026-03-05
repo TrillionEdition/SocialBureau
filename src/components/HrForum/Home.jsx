@@ -1,6 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
-import { jobService } from "../../../services/jobService";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import localJobs from "../../data/jobs";
+import { getUserData } from "../../../utils/authUtils";
+import { getUserApplicationsAPI, getUserSavedJobsAPI } from "../../../services/userServices";
+import { Briefcase, Bookmark, CheckCircle, ExternalLink, Loader, Send, BookmarkCheck, Info, Zap } from "lucide-react";
+import { BASE_URL } from "../../../utils/urls";
 
 export default function HRForum() {
     const [jobs, setJobs] = useState([]);
@@ -10,40 +15,93 @@ export default function HRForum() {
     const [searchTerm, setSearchTerm] = useState("");
     const [locationTerm, setLocationTerm] = useState("");
 
+    // Auth & Activity State
+    const [currentUser, setCurrentUser] = useState(null);
+    const [userApplications, setUserApplications] = useState([]);
+    const [savedJobIds, setSavedJobIds] = useState([]);
+    const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+
     // Refs for smooth scrolling
     const jobListRef = useRef(null);
     const jobDetailsRef = useRef(null);
     const selectedJobRef = useRef(null);
 
     useEffect(() => {
-        setLoading(true);
-        jobService
-            .getJobs()
-            .then((data) => {
-                if (data && data.length > 0) {
-                    setJobs(data);
-                    setSelectedJob(data[0]);
-                } else {
-                    // Fallback to local data if API is empty
-                    setJobs(localJobs);
-                    if (localJobs.length > 0) {
-                        setSelectedJob(localJobs[0]);
-                    }
+        const fetchUserData = async () => {
+            const user = getUserData();
+            if (user) {
+                setCurrentUser(user);
+                try {
+                    const userId = user._id || user.id;
+                    const [apps, saved] = await Promise.all([
+                        getUserApplicationsAPI(userId),
+                        getUserSavedJobsAPI(userId)
+                    ]);
+                    setUserApplications(apps);
+                    setSavedJobIds(saved ? saved.map(j => j._id || j.id) : []);
+                } catch (err) {
+                    console.error("Error fetching user activity:", err);
                 }
+            }
+        };
+
+        const fetchJobs = async () => {
+            setLoading(true);
+            try {
+                const response = await axios.get(`${BASE_URL}/hr-jobs`);
+                const apiJobs = response.data || [];
+
+                // Map backend fields to the format used in Home.jsx
+                const mappedApiJobs = apiJobs.map(j => ({
+                    id: j._id,
+                    title: j.jobTitle,
+                    company: j.companyName,
+                    location: j.location,
+                    description: j.description,
+                    salary: j.payRange ? `₹${j.payRange.min.toLocaleString()} - ₹${j.payRange.max.toLocaleString()} / ${j.payRange.period}` : "Competitive",
+                    posted: new Date(j.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                    department: j.jobTypes?.length > 0 ? j.jobTypes[0] : "General",
+                    roleSummary: [j.description.substring(0, 150) + "..."],
+                    responsibilities: j.benefits || [],
+                    qualifications: [],
+                    experience: [],
+                    about: `About ${j.companyName}`,
+                    link: j.applicationLink || j.companyWebsite || "#",
+                    applicationLink: j.applicationLink,
+                    status: j.status,
+                    isBackend: true,
+                    badge: "New"
+                }));
+
+                const mappedLocalJobs = localJobs.map(j => ({
+                    ...j,
+                    id: j.slug,
+                    isBackend: false
+                }));
+
+                // Combine: Backend jobs first, then Static jobs
+                const combinedJobs = [...mappedApiJobs, ...mappedLocalJobs];
+                setJobs(combinedJobs);
+
+                if (combinedJobs.length > 0) {
+                    setSelectedJob(combinedJobs[0]);
+                }
+            } catch (err) {
+                console.error("Error fetching jobs from HR API:", err);
+                const mappedLocalJobs = localJobs.map(j => ({
+                    ...j,
+                    id: j.slug,
+                    isBackend: false
+                }));
+                setJobs(mappedLocalJobs);
+                if (mappedLocalJobs.length > 0) setSelectedJob(mappedLocalJobs[0]);
+            } finally {
                 setLoading(false);
-            })
-            .catch((err) => {
-                console.error(err);
-                // Even on error, try to show local jobs
-                setJobs(localJobs);
-                if (localJobs.length > 0) {
-                    setSelectedJob(localJobs[0]);
-                    setLoading(false);
-                } else {
-                    setError("Failed to load jobs. Please try again later.");
-                    setLoading(false);
-                }
-            });
+            }
+        };
+
+        fetchUserData();
+        fetchJobs();
     }, []);
 
     // Smooth scroll to selected job in list
@@ -207,45 +265,71 @@ export default function HRForum() {
                                 </div>
                             </div>
                         ) : (
-                            filteredJobs.map((job) => (
-                                <div
-                                    key={job.slug || job.id}
-                                    ref={selectedJob?.id === job.id ? selectedJobRef : null}
-                                    onClick={() => handleJobSelect(job)}
-                                    className={`p-5 cursor-pointer transition-all duration-300 ${selectedJob?.id === job.id
-                                        ? 'bg-[#E8F0FE] border-l-4 border-[#2557a0] shadow-md'
-                                        : 'hover:bg-gray-50 border-l-4 border-transparent hover:border-l-4 hover:border-gray-300'
-                                        }`}
-                                >
-                                    <div className="flex justify-between items-start">
-                                        <div>
-                                            <h3 className="font-semibold text-lg text-[#0099a7d7]">
-                                                {job.title}
-                                            </h3>
-                                            <p className="text-sm text-gray-700 font-medium mt-0.5">
-                                                {job.company} · {job.location}
-                                            </p>
+                            filteredJobs.map((job) => {
+                                const isApplied = userApplications.some(app =>
+                                    (app.jobId?._id === job.id) || (app.jobId === job.id)
+                                );
+                                const isSaved = savedJobIds.includes(job.id);
+                                const application = userApplications.find(app => (app.jobId?._id === job.id) || (app.jobId === job.id));
+
+                                return (
+                                    <div
+                                        key={job.id}
+                                        ref={selectedJob?.id === job.id ? selectedJobRef : null}
+                                        onClick={() => handleJobSelect(job)}
+                                        className={`p-5 cursor-pointer transition-all duration-300 relative ${selectedJob?.id === job.id
+                                            ? 'bg-[#E8F0FE] border-l-4 border-[#2557a0] shadow-md'
+                                            : 'hover:bg-gray-50 border-l-4 border-transparent hover:border-l-4 hover:border-gray-300'
+                                            }`}
+                                    >
+                                        {/* Status Indicators */}
+                                        <div className="absolute top-4 right-4 flex gap-2">
+                                            {isApplied && (
+                                                <div className="bg-green-100 text-green-700 p-1 rounded-full" title={`Applied status: ${application?.status}`}>
+                                                    <CheckCircle size={14} />
+                                                </div>
+                                            )}
+                                            {isSaved && (
+                                                <div className="bg-amber-100 text-amber-700 p-1 rounded-full" title="Saved">
+                                                    <BookmarkCheck size={14} />
+                                                </div>
+                                            )}
                                         </div>
-                                        {job.badge && (
-                                            <span className="bg-[#FFC107] text-xs px-2 py-0.5 rounded-full font-bold text-gray-800">
-                                                {job.badge}
-                                            </span>
+                                        <div className="flex justify-between items-start">
+                                            <div>
+                                                <h3 className="font-semibold text-lg text-[#0099a7d7]">
+                                                    {job.title}
+                                                </h3>
+                                                <p className="text-sm text-gray-700 font-medium mt-0.5">
+                                                    {job.company} · {job.location}
+                                                </p>
+                                            </div>
+                                            {job.badge && (
+                                                <span className="bg-[#FFC107] text-xs px-2 py-0.5 rounded-full font-bold text-gray-800">
+                                                    {job.badge}
+                                                </span>
+                                            )}
+                                            {!job.isLocal && (
+                                                <span className="bg-blue-50 text-blue-600 text-[10px] px-2 py-0.5 rounded-full font-black border border-blue-100 flex items-center gap-1">
+                                                    <Zap size={10} /> SCORING ACTIVE
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        {/* Icon from backend if exists */}
+                                        {job.icon && (
+                                            <i className={`${job.icon} text-red-600 text-sm inline-block mt-2`} />
                                         )}
+
+                                        <p className="text-xs text-emerald-700 font-semibold mt-2">
+                                            {job.salary}
+                                        </p>
+                                        <p className="text-sm text-gray-600 mt-2 line-clamp-2">
+                                            {job.description}
+                                        </p>
                                     </div>
-
-                                    {/* Icon from backend if exists */}
-                                    {job.icon && (
-                                        <i className={`${job.icon} text-red-600 text-sm inline-block mt-2`} />
-                                    )}
-
-                                    <p className="text-xs text-emerald-700 font-semibold mt-2">
-                                        {job.salary}
-                                    </p>
-                                    <p className="text-sm text-gray-600 mt-2 line-clamp-2">
-                                        {job.description}
-                                    </p>
-                                </div>
-                            ))
+                                );
+                            })
                         )}
                     </div>
                 </div>
@@ -292,20 +376,60 @@ export default function HRForum() {
 
                                 {/* Action Buttons */}
                                 <div className="flex mt-5 space-x-3">
+                                    {selectedJob.applicationLink ? (
+                                        <a
+                                            href={selectedJob.applicationLink}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-2.5 rounded-md text-sm shadow-lg transition transform hover:scale-105 flex items-center gap-2"
+                                        >
+                                            <span>Apply on Website</span>
+                                            <ExternalLink className="w-4 h-4" />
+                                        </a>
+                                    ) : (
+                                        <button
+                                            onClick={() => {
+                                                if (!currentUser) {
+                                                    setShowLoginPrompt(true);
+                                                    return;
+                                                }
+                                                window.location.href = `/job-details/${selectedJob.id}`;
+                                            }}
+                                            className="bg-[#0099a7d7] hover:bg-[#1e4682] text-white font-semibold px-8 py-2.5 rounded-md text-sm shadow-lg transition transform hover:scale-105 flex items-center gap-2"
+                                        >
+                                            <span>Apply now</span>
+                                            <Send className="w-4 h-4" />
+                                        </button>
+                                    )}
+
                                     <button
-                                        onClick={() => {
-                                            const url = selectedJob?.link || getLinkedInUrl(selectedJob);
-                                            window.open(url, "_blank");
+                                        onClick={async () => {
+                                            if (!currentUser) {
+                                                setShowLoginPrompt(true);
+                                                return;
+                                            }
+                                            try {
+                                                const userId = currentUser._id || currentUser.id;
+                                                await axios.post(`${BASE_URL}/hr-applications/save`, {
+                                                    userId,
+                                                    jobId: selectedJob.id
+                                                });
+                                                setSavedJobIds(prev =>
+                                                    prev.includes(selectedJob.id)
+                                                        ? prev.filter(id => id !== selectedJob.id)
+                                                        : [...prev, selectedJob.id]
+                                                );
+                                            } catch (err) {
+                                                console.error("Save error:", err);
+                                            }
                                         }}
-                                        className="bg-[#0099a7d7] hover:bg-[#1e4682] text-white font-semibold px-8 py-2.5 rounded-md text-sm shadow-lg transition transform hover:scale-105 flex items-center gap-2"
+                                        className={`border px-6 py-2.5 rounded-md text-sm font-semibold transition transform hover:scale-105 flex items-center gap-2 ${savedJobIds.includes(selectedJob.id)
+                                            ? "bg-amber-50 border-amber-200 text-amber-700 font-bold"
+                                            : "bg-white border-gray-300 text-gray-700 hover:bg-gray-100"
+                                            }`}
                                     >
-                                        <span>Apply now</span>
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                        </svg>
-                                    </button>
-                                    <button className="border border-gray-300 bg-white hover:bg-gray-100 px-6 py-2.5 rounded-md text-sm font-semibold text-gray-700 transition transform hover:scale-105">
-                                        Save
+                                        <Bookmark size={16} className={savedJobIds.includes(selectedJob.id) ? "fill-amber-500 text-amber-500" : ""} />
+                                        {savedJobIds.includes(selectedJob.id) ? "Saved" : "Save"}
                                     </button>
 
                                     {/* External Links in Job Details */}
@@ -445,6 +569,33 @@ export default function HRForum() {
                     )}
                 </div>
             </div>
+
+            {/* Login Prompt Modal */}
+            {showLoginPrompt && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+                    <div className="bg-white rounded-[2rem] p-10 max-w-sm w-full shadow-2xl text-center animate-in zoom-in-95 duration-200">
+                        <div className="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                            <Info size={40} />
+                        </div>
+                        <h2 className="text-2xl font-black text-slate-900 mb-2">Authenticaton Required</h2>
+                        <p className="text-slate-500 font-medium mb-8">Please login to your account to apply for jobs and track your progress.</p>
+                        <div className="flex flex-col gap-3">
+                            <Link
+                                to="/login"
+                                className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200"
+                            >
+                                Login Now
+                            </Link>
+                            <button
+                                onClick={() => setShowLoginPrompt(false)}
+                                className="w-full py-4 bg-slate-100 text-slate-600 rounded-2xl font-black uppercase tracking-widest hover:bg-slate-200 transition-all"
+                            >
+                                Maybe Later
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Add custom animation styles */}
             <style jsx>{`

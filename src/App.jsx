@@ -35,6 +35,7 @@ const ScorePage = lazy(() => import("./pages/ScorePage").then(module => ({ defau
 const Client = lazy(() => import("./pages/Client").then(module => ({ default: module.Client })));
 const Team = lazy(() => import("./pages/Team").then(module => ({ default: module.Team })));
 const ATSChecker = lazy(() => import("./pages/ATSChecker"));
+const ResumeGenerator = lazy(() => import("./pages/ResumeGenerator"));
 const AuthPage = lazy(() => import("./pages/UserRegistration"));
 const Verification = lazy(() => import("./pages/UserVerification"));
 const AdminCreateJob = lazy(() => import("./pages/CreateJob"));
@@ -44,6 +45,7 @@ const DashboardX = lazy(() => import("./pages/DashboardX"));
 const UserManagement = lazy(() => import("./pages/UserManagement"));
 const ResetPassword = lazy(() => import("./pages/ForgetPassword").then(module => ({ default: module.ResetPassword })));
 const VoiceAsst = lazy(() => import("./pages/VoiceAsst"));
+const CandidateProfilePage = lazy(() => import("./pages/CandidateProfilePage"));
 
 // Lazy-loaded Components
 const AddAchievementForm = lazy(() => import("./components/AddAchievementForm"));
@@ -201,6 +203,7 @@ function App() {
             <Route path="/our-works" element={<OurWork />} />
             <Route path="/achievements" element={<CompanyAchievements />} />
             <Route path="/ats-checker" element={<ATSChecker />} />
+            <Route path="/resume-generator" element={<ResumeGenerator />} />
             <Route path="/tool" element={<ScorePage />} />
 
             <Route path="/blogs/:slug" element={<BlogDetail />} />
@@ -225,9 +228,10 @@ function App() {
 
             <Route path="/hr-forum" element={<HRForum />} />
             <Route path="/appy-job" element={<JobPosting />} />
-            <Route path="/job-details" element={<JobDetails />} />
+            <Route path="/job-details/:id" element={<JobDetails />} />
             <Route path="/job-listing" element={<JobsList />} />
             <Route path="/candidate-profile" element={<CandidateProfile />} />
+            <Route path="/candidate-profile/:applicationId" element={<CandidateProfilePage />} />
 
             <Route path="/services/:serviceTitle" element={<Service1 />} />
             <Route path="/employee/:name" element={<StaffDashboard />} />

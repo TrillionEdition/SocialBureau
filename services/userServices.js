@@ -116,3 +116,14 @@ export const logoutUser = async () => {
 
   return response.data
 }
+
+// HR FORUM ACTIVITY
+export const getUserApplicationsAPI = async (userId) => {
+  const { data } = await axios.get(`${BASE_URL}/hr-applications/user-applications/${userId}`);
+  return data;
+};
+
+export const getUserSavedJobsAPI = async (userId) => {
+  const { data } = await axios.get(`${BASE_URL}/hr-applications/user-saved-jobs/${userId}`);
+  return data;
+};

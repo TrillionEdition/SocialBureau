@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Share2, PenTool, MessageSquare, Video, ShoppingBag, ChevronRight, ArrowUp, Plus, X, CheckCircle, Target, RefreshCw, FileText, TrendingUp } from 'lucide-react';
 import Seo from './Seo';
-import { getOptimizedCloudinaryUrl } from '../utils/cloudinary';
+import { getOptimizedCloudinaryUrl } from '../../utils/cloudinary';
 
 const ContentMarketing = () => {
     const [isScrolled, setIsScrolled] = useState(false);

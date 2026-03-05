@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { getOptimizedCloudinaryUrl } from "../../utils/cloudinary";
+import { getOptimizedCloudinaryUrl } from "../../../utils/cloudinary";
 
 const WebSection = () => {
     const navigate = useNavigate();

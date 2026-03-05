@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { getOptimizedCloudinaryUrl } from "../../utils/cloudinary";
+import { getOptimizedCloudinaryUrl } from "../../../utils/cloudinary";
 
 const StaticServicesGrid = () => {
     const items = [

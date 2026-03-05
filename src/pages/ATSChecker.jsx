@@ -13,9 +13,13 @@ import {
     History as HistoryIcon,
     Briefcase,
     Zap,
-    ExternalLink
+    ExternalLink,
+    Sparkles,
+    Wand2
 } from 'lucide-react';
-import { fetchHistory, analyzeResume, deleteScan } from '../../services/atsService';
+import { useNavigate } from 'react-router-dom';
+import { fetchHistory, analyzeResume, deleteScan, generateResume } from '../../services/atsService';
+import ResumeModal from '../components/ResumeModal';
 
 const ROLE_TEMPLATES = {
     "Content Creator": "Video Editing, Script Writing, Adobe Premiere Pro, Storytelling, Social Media Trends, Engagement Metrics, Content Strategy, YouTube SEO, Canva, CapCut, Thumbnail Design.",
@@ -27,6 +31,7 @@ const ROLE_TEMPLATES = {
 };
 
 const ATSChecker = () => {
+    const navigate = useNavigate();
     const [clientId, setClientId] = useState('');
     const [file, setFile] = useState(null);
     const [jobDescription, setJobDescription] = useState('');
@@ -36,6 +41,10 @@ const ATSChecker = () => {
     const [history, setHistory] = useState([]);
     const [copied, setCopied] = useState(false);
     const [selectedRole, setSelectedRole] = useState('');
+    const [generatedResume, setGeneratedResume] = useState(null);
+    const [generatingResume, setGeneratingResume] = useState(false);
+    const [showResumeModal, setShowResumeModal] = useState(false);
+    const [generateError, setGenerateError] = useState('');
 
     // Initial setup for clientId
     useEffect(() => {
@@ -88,12 +97,8 @@ const ATSChecker = () => {
     };
 
     const handleAnalyze = async () => {
-        // Reduced character requirement if it looks like a keyword list
-        const minChars = jobDescription.split(',').length > 5 ? 50 : 100;
-        if (!file || jobDescription.length < minChars) {
-            if (jobDescription.length < minChars) {
-                setError(`Please provide a more detailed description or at least 5-10 keywords.`);
-            }
+        if (!file) {
+            setError('Please upload a PDF resume first.');
             return;
         }
 
@@ -128,6 +133,21 @@ const ATSChecker = () => {
         setTimeout(() => setCopied(false), 2000);
     };
 
+    const handleGenerateResume = async () => {
+        if (!file) return;
+        setGeneratingResume(true);
+        setGenerateError('');
+        try {
+            const data = await generateResume(clientId, file, jobDescription);
+            setGeneratedResume(data);
+            setShowResumeModal(true);
+        } catch (err) {
+            setGenerateError('Could not generate resume. Please try again.');
+        } finally {
+            setGeneratingResume(false);
+        }
+    };
+
     const getScoreColor = (score) => {
         if (score >= 75) return 'text-green-500';
         if (score >= 50) return 'text-yellow-500';
@@ -141,9 +161,25 @@ const ATSChecker = () => {
                     <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl mb-4">
                         ATS Resume <span className="text-blue-500">Score Checker</span>
                     </h1>
-                    <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+                    <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-6">
                         Creative-friendly analysis for designers, creators, marketers, and professionals.
                     </p>
+                    <div className="flex gap-4 justify-center flex-wrap">
+                        <button
+                            onClick={() => navigate('/resume-generator')}
+                            className="px-6 py-3 bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-700 hover:to-cyan-700 text-white font-bold rounded-lg transition-all duration-300 shadow-lg shadow-blue-500/20 flex items-center gap-2"
+                        >
+                            <Wand2 className="w-5 h-5" />
+                            ✨ Build Your Resume
+                        </button>
+                        <button
+                            onClick={() => document.getElementById('file-upload').click()}
+                            className="px-6 py-3 border border-blue-600 text-blue-400 hover:bg-blue-600/10 font-bold rounded-lg transition-all duration-300 flex items-center gap-2"
+                        >
+                            <FileText className="w-5 h-5" />
+                            Check Score
+                        </button>
+                    </div>
                 </header>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
@@ -232,7 +268,7 @@ const ATSChecker = () => {
                                 <textarea
                                     value={jobDescription}
                                     onChange={(e) => setJobDescription(e.target.value)}
-                                    placeholder="Paste the job description or enter specific keywords separated by commas..."
+                                    placeholder="Paste the full job description OR type comma-separated keywords (e.g. Figma, UI Design, Branding)..."
                                     className="w-full h-48 bg-gray-800 border border-gray-700 rounded-xl p-4 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none resize-none"
                                 />
                                 {jobDescription.length > 0 && jobDescription.length < 50 && (
@@ -251,7 +287,7 @@ const ATSChecker = () => {
 
                             <button
                                 onClick={handleAnalyze}
-                                disabled={loading || !file || jobDescription.length < 10}
+                                disabled={loading || !file}
                                 className="w-full mt-8 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-800 disabled:text-gray-500 text-white font-bold py-4 rounded-xl transition-all duration-300 shadow-lg shadow-blue-500/20 flex items-center justify-center gap-3"
                             >
                                 {loading ? (
@@ -260,7 +296,7 @@ const ATSChecker = () => {
                                         Analyzing...
                                     </>
                                 ) : (
-                                    'Run Analysis'
+                                    jobDescription.trim() ? 'Run ATS Analysis' : 'Check Resume Quality'
                                 )}
                             </button>
                         </div>
@@ -269,19 +305,80 @@ const ATSChecker = () => {
                     {/* Right Panel: Result */}
                     <div className={`${!result ? 'hidden' : 'block'}`}>
                         <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800 shadow-2xl sticky top-8">
-                            <div className="flex flex-col items-center text-center mb-10">
+                            <div className="flex flex-col items-center text-center mb-8">
                                 <div className={`text-7xl font-black mb-2 ${getScoreColor(result?.score)}`}>
                                     {result?.score}
                                 </div>
                                 <div className="text-gray-400 font-medium uppercase tracking-widest text-sm">
-                                    Overall Match Score
+                                    {jobDescription.trim() ? 'ATS Match Score' : 'Resume Quality Score'}
                                 </div>
                                 {result?.hasPortfolio && (
                                     <div className="mt-4 px-4 py-1.5 bg-green-500/10 text-green-400 border border-green-500/20 rounded-full text-xs font-bold flex items-center gap-2">
-                                        <ExternalLink className="w-3 h-3" /> Portfolio Detected (+15%)
+                                        <ExternalLink className="w-3 h-3" /> Portfolio Detected (+10pts)
                                     </div>
                                 )}
                             </div>
+
+                            {/* ── Contact Links Card ───────────────────── */}
+                            {result?.contactInfo && (
+                                <div className="mb-8 p-4 bg-gray-800/40 rounded-2xl border border-gray-700/50">
+                                    <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-[0.18em] mb-3">Detected Contacts & Links</h3>
+                                    <div className="space-y-2">
+                                        {result.contactInfo.email && (
+                                            <a href={`mailto:${result.contactInfo.email}`}
+                                                className="flex items-center gap-2.5 text-xs text-blue-400 hover:text-blue-300 transition-colors group"
+                                                target="_blank" rel="noreferrer">
+                                                <span className="w-6 h-6 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-500/20 transition-colors">✉</span>
+                                                <span className="truncate">{result.contactInfo.email}</span>
+                                            </a>
+                                        )}
+                                        {result.contactInfo.phone && (
+                                            <a href={`tel:${result.contactInfo.phone}`}
+                                                className="flex items-center gap-2.5 text-xs text-emerald-400 hover:text-emerald-300 transition-colors group">
+                                                <span className="w-6 h-6 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-500/20 transition-colors">📞</span>
+                                                <span>{result.contactInfo.phone}</span>
+                                            </a>
+                                        )}
+                                        {result.contactInfo.linkedin && (
+                                            <a href={result.contactInfo.linkedin}
+                                                className="flex items-center gap-2.5 text-xs text-sky-400 hover:text-sky-300 transition-colors group"
+                                                target="_blank" rel="noreferrer">
+                                                <span className="w-6 h-6 rounded-lg bg-sky-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-sky-500/20 transition-colors">in</span>
+                                                <span className="truncate">{result.contactInfo.linkedin.replace('https://', '')}</span>
+                                            </a>
+                                        )}
+                                        {result.contactInfo.github && (
+                                            <a href={result.contactInfo.github}
+                                                className="flex items-center gap-2.5 text-xs text-purple-400 hover:text-purple-300 transition-colors group"
+                                                target="_blank" rel="noreferrer">
+                                                <span className="w-6 h-6 rounded-lg bg-purple-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-purple-500/20 transition-colors">⌥</span>
+                                                <span className="truncate">{result.contactInfo.github.replace('https://', '')}</span>
+                                            </a>
+                                        )}
+                                        {result.contactInfo.portfolio && (
+                                            <a href={result.contactInfo.portfolio.startsWith('http') ? result.contactInfo.portfolio : `https://${result.contactInfo.portfolio}`}
+                                                className="flex items-center gap-2.5 text-xs text-orange-400 hover:text-orange-300 transition-colors group"
+                                                target="_blank" rel="noreferrer">
+                                                <span className="w-6 h-6 rounded-lg bg-orange-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/20 transition-colors">🌐</span>
+                                                <span className="truncate">{result.contactInfo.portfolio.replace(/^https?:\/\//, '')}</span>
+                                            </a>
+                                        )}
+                                        {/* Missing links hint */}
+                                        {!result.contactInfo.linkedin && (
+                                            <p className="flex items-center gap-2.5 text-xs text-gray-600">
+                                                <span className="w-6 h-6 rounded-lg bg-gray-800 flex items-center justify-center flex-shrink-0">in</span>
+                                                <span>LinkedIn not detected — add it</span>
+                                            </p>
+                                        )}
+                                        {!result.contactInfo.portfolio && !result.contactInfo.github && (
+                                            <p className="flex items-center gap-2.5 text-xs text-gray-600">
+                                                <span className="w-6 h-6 rounded-lg bg-gray-800 flex items-center justify-center flex-shrink-0">🌐</span>
+                                                <span>No portfolio/website detected</span>
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Advanced Metrics Badges */}
                             <div className="flex flex-wrap gap-3 mb-8 justify-center">
@@ -332,13 +429,13 @@ const ATSChecker = () => {
                                         </div>
                                     ))}
                                     <div className="flex items-center gap-2 text-sm">
-                                        {result?.experienceYears > 0 ? (
+                                        {result?.projectCount > 0 ? (
                                             <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
                                         ) : (
-                                            <div className="w-2 h-2 rounded-full bg-amber-500" />
+                                            <div className="w-2 h-2 rounded-full bg-gray-700" />
                                         )}
-                                        <span className={result?.experienceYears > 0 ? 'text-gray-200' : 'text-gray-500'}>
-                                            Exp: {result?.experienceYears || 0} yrs
+                                        <span className={result?.projectCount > 0 ? 'text-gray-200' : 'text-gray-500'}>
+                                            📁 {result?.projectCount || 0} Project{result?.projectCount === 1 ? '' : 's'}
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-2 text-sm">
@@ -347,47 +444,84 @@ const ATSChecker = () => {
                                         ) : (
                                             <div className="w-2 h-2 rounded-full bg-gray-700" />
                                         )}
-                                        <span className={result?.internships?.length > 0 ? 'text-gray-200' : 'text-gray-600'}>
-                                            Internship
-                                        </span>
+                                        <div className="flex flex-col">
+                                            <span className={result?.internships?.length > 0 ? 'text-gray-200' : 'text-gray-600'}>
+                                                Internships
+                                            </span>
+                                            {result?.internships?.length > 0 && (
+                                                <span className="text-[10px] text-purple-400 truncate max-w-[120px]">
+                                                    {result.internships.join(', ')}
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Keywords & Skills Grid */}
-                            <div className="grid grid-cols-1 gap-6 mb-10">
-                                <div className="bg-gray-800/20 p-5 rounded-2xl border border-gray-800/50">
-                                    <h3 className="text-[10px] font-black text-gray-500 mb-4 uppercase tracking-[0.2em]">Target Keywords Match</h3>
-                                    <div className="flex flex-wrap gap-2">
-                                        {result?.matchedKeywords?.map(kw => (
-                                            <span key={kw} className="px-2 py-1 bg-green-500/5 text-green-400/80 border border-green-500/10 rounded-md text-[10px] font-medium">
-                                                {kw}
-                                            </span>
-                                        ))}
-                                        {result?.missingKeywords?.map(kw => (
-                                            <span key={kw} className="px-2 py-1 bg-red-500/5 text-red-400/80 border border-red-500/10 rounded-md text-[10px] font-medium">
-                                                {kw}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
+                            {/* ── Keywords & Skills Grid ─────────────────── */}
+                            {(result?.matchedKeywords?.length > 0 || result?.missingKeywords?.length > 0 ||
+                                result?.skillGaps?.length > 0 || result?.matchedSkills?.length > 0) && (
+                                    <div className="mb-10">
+                                        <h3 className="text-[10px] font-black text-gray-500 mb-4 uppercase tracking-[0.2em]">Keyword & Skill Comparison</h3>
 
-                                <div className="bg-gray-800/20 p-5 rounded-2xl border border-gray-800/50">
-                                    <h3 className="text-[10px] font-black text-gray-500 mb-4 uppercase tracking-[0.2em]">Soft Skills Calibration</h3>
-                                    <div className="flex flex-wrap gap-2">
-                                        {result?.softSkillsMatch?.map(skill => (
-                                            <span key={skill} className="px-2 py-1 bg-blue-500/5 text-blue-400/80 border border-blue-500/10 rounded-md text-[10px] font-medium">
-                                                {skill}
-                                            </span>
-                                        ))}
-                                        {result?.softSkillsMissing?.map(skill => (
-                                            <span key={skill} className="px-2 py-1 bg-gray-800 text-gray-500 border border-gray-700 rounded-md text-[10px] font-medium">
-                                                {skill}
-                                            </span>
-                                        ))}
+                                        {/* Matched */}
+                                        {(result?.matchedKeywords?.length > 0 || result?.matchedSkills?.length > 0) && (
+                                            <div className="mb-3">
+                                                <p className="text-[9px] text-green-500 font-bold uppercase tracking-widest mb-2">✓ Found in Your Resume</p>
+                                                <div className="flex flex-wrap gap-1.5">
+                                                    {[...new Set([...(result.matchedSkills || []), ...(result.matchedKeywords || [])])].slice(0, 18).map(kw => (
+                                                        <span key={kw} className="px-2 py-1 bg-green-500/10 text-green-400 border border-green-500/20 rounded-md text-[10px] font-medium">
+                                                            {kw}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Hard-missing required skills */}
+                                        {result?.requiredSkillGaps?.length > 0 && (
+                                            <div className="mb-3">
+                                                <p className="text-[9px] text-red-500 font-bold uppercase tracking-widest mb-2">✗ Critical — Required but Missing</p>
+                                                <div className="flex flex-wrap gap-1.5">
+                                                    {result.requiredSkillGaps.map(kw => (
+                                                        <span key={kw} className="px-2 py-1 bg-red-500/10 text-red-400 border border-red-500/30 rounded-md text-[10px] font-bold flex items-center gap-1">
+                                                            <AlertCircle className="w-2.5 h-2.5" /> {kw}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Preferred / nice-to-have */}
+                                        {(result?.preferredSkillGaps?.length > 0 || result?.skillGaps?.length > 0) && (
+                                            <div className="mb-3">
+                                                <p className="text-[9px] text-amber-500 font-bold uppercase tracking-widest mb-2">⚡ Skills to Add</p>
+                                                <div className="flex flex-wrap gap-1.5">
+                                                    {[...new Set([...(result.preferredSkillGaps || []), ...(result.skillGaps || [])])].slice(0, 15).map(kw => (
+                                                        <span key={kw} className="px-2 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-md text-[10px] font-medium">
+                                                            {kw}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Soft skills */}
+                                        {(result?.softSkillsMatch?.length > 0 || result?.softSkillsMissing?.length > 0) && (
+                                            <div>
+                                                <p className="text-[9px] text-blue-500 font-bold uppercase tracking-widest mb-2">◈ Soft Skills</p>
+                                                <div className="flex flex-wrap gap-1.5">
+                                                    {result.softSkillsMatch?.map(s => (
+                                                        <span key={s} className="px-2 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-md text-[10px] font-medium">{s}</span>
+                                                    ))}
+                                                    {result.softSkillsMissing?.map(s => (
+                                                        <span key={s} className="px-2 py-1 bg-gray-800/50 text-gray-600 border border-gray-700/30 rounded-md text-[10px] line-through">{s}</span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
-                                </div>
-                            </div>
+                                )}
 
                             {/* Impact Analysis */}
                             {result?.topActionVerbs?.length > 0 && (
@@ -419,6 +553,36 @@ const ATSChecker = () => {
                                         </li>
                                     ))}
                                 </ol>
+                            </div>
+
+                            {/* Generate Resume Button */}
+                            <div className="mt-6">
+                                {generateError && (
+                                    <p className="text-red-400 text-xs mb-3 flex items-center gap-2">
+                                        <AlertCircle className="w-3.5 h-3.5" />{generateError}
+                                    </p>
+                                )}
+                                <button
+                                    onClick={handleGenerateResume}
+                                    disabled={generatingResume || !file}
+                                    className="w-full group relative flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-bold text-sm transition-all duration-300 overflow-hidden
+                                        bg-gradient-to-r from-violet-600 via-blue-600 to-cyan-600
+                                        hover:from-violet-500 hover:via-blue-500 hover:to-cyan-500
+                                        disabled:opacity-50 disabled:cursor-not-allowed
+                                        shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02]
+                                        text-white"
+                                >
+                                    {/* Animated shimmer */}
+                                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                                    {generatingResume ? (
+                                        <><Loader2 className="w-5 h-5 animate-spin" />Building Your Resume...</>
+                                    ) : (
+                                        <><Sparkles className="w-5 h-5" />✨ Generate Your Own Resume</>
+                                    )}
+                                </button>
+                                <p className="text-center text-[10px] text-gray-500 mt-2 tracking-wide">
+                                    Creates a fresh, ATS-optimised resume from your uploaded PDF
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -467,6 +631,14 @@ const ATSChecker = () => {
                     )}
                 </div>
             </div>
+
+            {/* Resume Generator Modal */}
+            {showResumeModal && generatedResume && (
+                <ResumeModal
+                    data={generatedResume}
+                    onClose={() => setShowResumeModal(false)}
+                />
+            )}
         </div>
     );
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Target, Search, Users, BarChart, Shield, Zap, ChevronRight, ArrowUp, Plus, X, CheckCircle, Layers, Settings, Smartphone, Compass, Sliders, TrendingUp, ShieldCheck, MapPin } from 'lucide-react';
 import Seo from './Seo';
-import { getOptimizedCloudinaryUrl } from '../utils/cloudinary';
+import { getOptimizedCloudinaryUrl } from '../../utils/cloudinary';
 
 const Niche = () => {
     const [isScrolled, setIsScrolled] = useState(false);
