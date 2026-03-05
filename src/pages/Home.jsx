@@ -16,13 +16,13 @@ export const Home = () => {
   const homepageSchemas = generateHomepageSchemas();
   return (
     <>
-      <Seo
-        title="SocialBureau Careers | Join India’s Fastest-Growing Creative & Digital Agency"
-        description="Explore exciting career opportunities at SocialBureau. Join our team of designers, marketers, developers, and creators shaping the future of digital experiences."
-        keywords="socialbureau careers, trillionedition llp jobs, api marketing jobs, digital marketing career, seo expert jobs india, creative agency hiring, video editor hiring, content writer jobs, performance marketing openings, join socialbureau"
-        image="/assets/socialbureau.png"
-        canonicalUrl="https://www.socialbureau.in"
-      />
+    <Seo
+                  title="SocialBureau Careers | Join India’s Fastest-Growing Creative & Digital Agency"
+                  description="Explore exciting career opportunities at SocialBureau. Join our team of designers, marketers, developers, and creators shaping the future of digital experiences."
+                  keywords="socialbureau careers, trillionedition llp jobs, api marketing jobs, digital marketing career, seo expert jobs india, creative agency hiring, video editor hiring, content writer jobs, performance marketing openings, join socialbureau, niche marketing agency, adtech agency in kochi, content marketing agency in kochi, api marketing agency in kochi, performance marketing agency in kochi"
+                  image="/assets/socialbureau.png"
+                  canonicalUrl="https://www.socialbureau.in"
+                />
       <SchemaMarkup data={homepageSchemas} />
       {/* <ImageCarousel/> */}
       <ApiMarketing />

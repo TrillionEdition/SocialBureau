@@ -17,7 +17,7 @@ export default function HomeServices() {
       description:
         "Integrate your ad platforms and automate campaign delivery through advanced APIs.",
       particleColor: "#a855f7",
-      path: "/api-marketing",
+      path: "/api-marketing-agency-in-kochi",
     },
     {
       icon: "fas fa-bullseye",
@@ -53,7 +53,7 @@ export default function HomeServices() {
       description:
         "ROI-driven strategies to boost leads, sales, and visibility.",
       particleColor: "#14b8a6",
-      path: "/services/Performance-Marketing",
+      path: "/services/Performance-Marketing-agency-in-kochi",
     },
   ];
 

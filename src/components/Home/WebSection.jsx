@@ -49,7 +49,7 @@ const WebSection = () => {
 
                         <div className="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-end">
                             <button
-                                onClick={() => navigate("/web-development")}
+                                onClick={() => navigate("/web-development-agency-in-kochi")}
                                 className="px-8 py-2.5 bg-white text-[#920F17] rounded-full font-medium hover:bg-gray-100 transition-all text-[15px] md:text-[16px] w-full sm:w-auto min-w-[150px]"
                             >
                                 Learn more

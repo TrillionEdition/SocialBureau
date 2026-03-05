@@ -90,7 +90,7 @@ const CombinedServicesGrid = () => {
             video: "https://res.cloudinary.com/dtwcgfmar/video/upload/v1771998115/freepik_create-a-video_kling_1080p_1-1_24fps_94469_1_twifv9.webm",
             bg: "bg-white",
             text: "text-black",
-            link: "/adTech-marketing",
+            link: "/adTech-marketing-agency-in-kochi",
             isFullScreenVideo: true,
         },
         {
@@ -99,7 +99,7 @@ const CombinedServicesGrid = () => {
             image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772278109/Untitled_design_45_sgdfbg.webp",
             bg: "bg-[#FBFBFD]",
             text: "text-[#1D1D1F]",
-            link: "/performance-marketing",
+            link: "/performance-marketing-agency-in-kochi",
         },
         {
             title: "Content Marketing",
@@ -107,7 +107,7 @@ const CombinedServicesGrid = () => {
             image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772003206/Untitled-design-42.png_h65wfd.webp",
             bg: "bg-[#A22323]",
             text: "text-white",
-            link: "/content-marketing",
+            link: "/content-marketing-agency-in-kochi",
         },
         {
             title: "Niche Marketing",
@@ -116,7 +116,7 @@ const CombinedServicesGrid = () => {
             image: "/assets/home/hajira.png",
             bg: "bg-[#000000]",
             text: "text-white",
-            link: "/niche-marketing",
+            link: "/niche-marketing-agency-in-kochi",
         },
         {
             title: "Our Team",

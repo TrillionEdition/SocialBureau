@@ -34,8 +34,8 @@ const OurWork = lazy(() => import("./pages/OurWork").then(module => ({ default: 
 const ScorePage = lazy(() => import("./pages/ScorePage").then(module => ({ default: module.ScorePage })));
 const Client = lazy(() => import("./pages/Client").then(module => ({ default: module.Client })));
 const Team = lazy(() => import("./pages/Team").then(module => ({ default: module.Team })));
-const ATSChecker = lazy(() => import("./pages/ATSChecker"));
-const ResumeGenerator = lazy(() => import("./pages/ResumeGenerator"));
+// const ATSChecker = lazy(() => import("./pages/ATSChecker"));
+// const ResumeGenerator = lazy(() => import("./pages/ResumeGenerator"));
 const AuthPage = lazy(() => import("./pages/UserRegistration"));
 const Verification = lazy(() => import("./pages/UserVerification"));
 const AdminCreateJob = lazy(() => import("./pages/CreateJob"));
@@ -202,8 +202,8 @@ function App() {
             <Route path="/our-team" element={<OurTeam />} />
             <Route path="/our-works" element={<OurWork />} />
             <Route path="/achievements" element={<CompanyAchievements />} />
-            <Route path="/ats-checker" element={<ATSChecker />} />
-            <Route path="/resume-generator" element={<ResumeGenerator />} />
+            {/* <Route path="/ats-checker" element={<ATSChecker />} /> */}
+            {/* <Route path="/resume-generator" element={<ResumeGenerator />} /> */}
             <Route path="/tool" element={<ScorePage />} />
 
             <Route path="/blogs/:slug" element={<BlogDetail />} />
@@ -253,15 +253,15 @@ function App() {
             <Route path="/login" element={<AuthPage />} />
             <Route path="/logout" element={<Logout />} />
 
-            <Route path="/api-marketing" element={<ApiMarketingPage />} />
+            <Route path="/api-marketing-agency-in-kochi" element={<ApiMarketingPage />} />
             <Route
-              path="/performance-marketing"
+              path="/performance-marketing-agency-in-kochi"
               element={<PerformanceMarketing />}
             />
-            <Route path="/niche-marketing" element={<Niche />} />
-            <Route path="/content-marketing" element={<ContentMarketing />} />
-            <Route path="/adTech-marketing" element={<AdTechIntegration />} />
-            <Route path="/web-development" element={<WebDevelopment />} />
+            <Route path="/niche-marketing-agency-in-kochi" element={<Niche />} />
+            <Route path="/content-marketing-agency-in-kochi" element={<ContentMarketing />} />
+            <Route path="/adTech-marketing-agency-in-kochi" element={<AdTechIntegration />} />
+            <Route path="/web-development-agency-in-kochi" element={<WebDevelopment />} />
             <Route path="/dashboard" element={<DashboardX />} />
             <Route path="/insights" element={<SocialBureauInsight />} />
 
