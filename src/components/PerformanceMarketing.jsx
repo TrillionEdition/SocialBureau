@@ -1,5 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { BarChart3, Megaphone, Search, ShoppingCart, Target, Users, ChevronRight, ArrowUp, Plus, X, CheckCircle, BarChart, Settings, Smartphone, Layers, Shield } from 'lucide-react';
+import {
+    BarChart3, Megaphone, Search, ShoppingCart, Target, Users,
+    ChevronRight, ArrowUp, Plus, X, CheckCircle, BarChart,
+    Settings, Smartphone, Layers, Shield
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Seo from './Seo';
 import { getOptimizedCloudinaryUrl } from '../../utils/cloudinary';
 
@@ -9,28 +14,11 @@ const PerformanceMarketing = () => {
     const [activeCaseStudy, setActiveCaseStudy] = useState(0);
 
     useEffect(() => {
-        let rafId;
         const handleScroll = () => {
-            const update = () => {
-                setIsScrolled(window.scrollY > 50);
-
-                // Update scroll progress bar
-                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrolled = (winScroll / height) * 100;
-                const progressBar = document.querySelector('.scroll-progress-bar');
-                if (progressBar) {
-                    progressBar.style.transform = `scaleX(${winScroll / height})`;
-                }
-            };
-            cancelAnimationFrame(rafId);
-            rafId = requestAnimationFrame(update);
+            setIsScrolled(window.scrollY > 50);
         };
         window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            cancelAnimationFrame(rafId);
-        };
+        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     const scrollToTop = () => {
@@ -64,7 +52,7 @@ const PerformanceMarketing = () => {
         },
         {
             question: "Can performance marketing support long-term business growth?",
-            answer: "Yes, when executed correctly, performance marketing helps build scalable systems rather than short-term gains. Over time, insights improve predictability, efficiency, and planning, supporting sustainable and controlled growth."
+            answer: "Yes, when executed correctly, performance marketing agency in Kochi, Kerala helps build scalable systems rather than short-term gains. Over time, insights improve predictability, efficiency, and planning, supporting sustainable and controlled growth."
         },
         {
             question: "Does this approach work across different industries?",
@@ -88,7 +76,7 @@ const PerformanceMarketing = () => {
         {
             icon: Target,
             title: "PPC Management",
-            description: "We plan and execute paid search programs built around relevance, budget efficiency, and measurable outcomes. Campaigns are continuously refined to improve efficiency without increasing risk. This approach helps maintain consistency even as competition and costs fluctuate",
+            description: "We plan and execute paid search programs built around relevance, budget efficiency, and measurable outcomes. As a performance marketing agency in Kochi, Kerala, campaigns are continuously refined to improve efficiency without increasing risk. This approach helps maintain consistency even as competition and costs fluctuate",
             features: ["Structured keyword mapping", "Budget control benchmarks", "Ongoing optimization"]
         },
         {
@@ -137,7 +125,7 @@ const PerformanceMarketing = () => {
         {
             icon: Target,
             title: "Performance Strategy Built for Scale",
-            description: "Campaign structures are designed with future growth in mind, allowing systems to scale smoothly without losing control, clarity, or operational efficiency."
+            description: "Campaign structures are designed with future growth in mind. As a performance marketing agency in Kochi, Kerala, we build scalable campaign systems that allow businesses to expand without losing control, clarity, or operational efficiency"
         },
         {
             icon: Settings,
@@ -214,525 +202,379 @@ const PerformanceMarketing = () => {
     ];
 
     return (
-        <div className="font-['SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif] bg-white text-[#1d1d1f] overflow-x-hidden antialiased relative">
+        <div className="font-['Outfit',_sans-serif] bg-white text-[#1d1d1f] overflow-x-hidden antialiased">
             <Seo
-                title="Performance Marketing Agency in Kochi | SocialBureau"
+                title="Performance Marketing Agency in Kochi, Kerala | SocialBureau"
                 description="Drive measurable results with SocialBureau’s performance marketing. Boost conversions, optimize campaigns, and maximize ROI with data-driven strategies"
                 keywords="performance marketing agency, kochi, kerala, PPC, Google Ads, Meta Ads,PERFORMANCE MARKETING AGENCY IN KOCHI, PERFORMANCE MARKETING STRATEGY, PPC Management, ROI Driven Decision Making"
                 canonicalUrl="https://www.socialbureau.in/performance-marketing-agency-in-kochi"
                 url="https://www.socialbureau.in/performance-marketing-agency-in-kochi"
             />
 
-            <style dangerouslySetInnerHTML={{
-                __html: `
-                * {
-                    -webkit-font-smoothing: antialiased;
-                    -moz-osx-font-smoothing: grayscale;
-                }
-                
-                .apple-overline {
-                    font-size: 0.75rem;
-                    letter-spacing: 0.05em;
-                    text-transform: uppercase;
-                    color: #86868b;
-                    font-weight: 600;
-                }
-                
-                .apple-heading {
-                    font-size: clamp(2.5rem, 5vw, 3.5rem);
-                    font-weight: 600;
-                    line-height: 1.1;
-                    letter-spacing: -0.015em;
-                }
-                
-                .apple-card {
-                    background: #ffffff;
-                    border-radius: 24px;
-                    padding: 2rem;
-                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-                    transition: all 0.3s ease;
-                    border: 1px solid #f5f5f7;
-                }
-                
-                .apple-card:hover {
-                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
-                    border-color: #e5e5e7;
-                }
-                
-                .apple-button-primary {
-                    background: #7E0A11;
-                    color: white;
-                    padding: 0.75rem 2rem;
-                    border-radius: 980px;
-                    font-size: 1rem;
-                    font-weight: 500;
-                    transition: all 0.3s ease;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                }
-                
-                .apple-button-primary:hover {
-                    background: #63080d;
-                    transform: scale(1.02);
-                }
-                
-                .apple-button-secondary {
-                    background: transparent;
-                    color: #7E0A11;
-                    padding: 0.75rem 2rem;
-                    border-radius: 980px;
-                    font-size: 1rem;
-                    font-weight: 500;
-                    border: 1px solid #7E0A11;
-                    transition: all 0.3s ease;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                }
-                
-                .apple-button-secondary:hover {
-                    background: rgba(126, 10, 17, 0.05);
-                }
-                
-                .apple-stat {
-                    font-size: 2.5rem;
-                    font-weight: 600;
-                    color: #7E0A11;
-                    line-height: 1;
-                }
-                
-                .apple-stat-label {
-                    font-size: 0.875rem;
-                    color: #86868b;
-                    margin-top: 0.5rem;
-                }
-                
-                .scroll-progress-bar {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    height: 3px;
-                    width: 100%;
-                    background: #7E0A11;
-                    z-index: 1000;
-                    transform: scaleX(0);
-                    transform-origin: left;
-                    will-change: transform;
-                    transition: transform 0.1s ease;
-                }
-                
-                .stack-layer {
-                    position: sticky;
-                    top: 0;
-                    z-index: 1;
-                    box-shadow: 0 -20px 40px rgba(0,0,0,0.05);
-                }
-                
-                @keyframes fadeUp {
-                    from { opacity: 0; transform: translateY(20px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                .animate-fadeUp {
-                    animation: fadeUp 0.8s ease-out forwards;
-                }
-
-                /* CASE STUDIES RESULTS MOBILE RESPONSIVENESS */
-                @media (max-width: 768px) {
-                    .grid.grid-cols-3 {
-                        grid-template-columns: 1fr !important;
-                        gap: 1rem !important;
-                    }
-
-                    .apple-stat {
-                        font-size: 1.75rem !important;
-                    }
-
-                    .apple-stat-label {
-                        font-size: 0.75rem !important;
-                        margin-top: 0.375rem !important;
-                        word-break: break-word;
-                        line-height: 1.2;
-                    }
-                }
-
-                @media (max-width: 640px) {
-                    .grid.grid-cols-3 {
-                        grid-template-columns: 1fr !important;
-                        gap: 0.75rem !important;
-                        padding-top: 0.75rem !important;
-                        padding-bottom: 0.75rem !important;
-                    }
-
-                    .apple-stat {
-                        font-size: 1.5rem !important;
-                    }
-
-                    .apple-stat-label {
-                        font-size: 0.65rem !important;
-                        word-break: break-word;
-                        line-height: 1.1;
-                        margin-top: 0.25rem !important;
-                    }
-                }
-
-                /* CASE STUDY CARD MOBILE */
-                @media (max-width: 768px) {
-                    .apple-card.sticky {
-                        position: relative !important;
-                        top: 0 !important;
-                    }
-
-                    .apple-card {
-                        padding: 1.5rem !important;
-                    }
-
-                    .apple-card h3 {
-                        font-size: 1.25rem !important;
-                    }
-
-                    .apple-card h4 {
-                        font-size: 0.95rem !important;
-                    }
-
-                    .apple-card p {
-                        font-size: 0.9rem !important;
-                    }
-                }
-
-                @media (max-width: 640px) {
-                    .apple-card {
-                        padding: 1rem !important;
-                        border-radius: 12px !important;
-                    }
-
-                    .apple-card h3 {
-                        font-size: 1.1rem !important;
-                    }
-
-                    .apple-card h4 {
-                        font-size: 0.85rem !important;
-                    }
-
-                    .apple-card p {
-                        font-size: 0.8rem !important;
-                    }
-
-                    [class*="space-y-6"] {
-                        gap: 1rem !important;
-                    }
-
-                    [class*="border-t"] {
-                        margin-top: 0.75rem !important;
-                        padding-top: 0.75rem !important;
-                    }
-                }
-
-                /* CASE STUDY LIST MOBILE */
-                @media (max-width: 768px) {
-                    .lg\:col-span-5 {
-                        grid-column: span 1 !important;
-                    }
-
-                    .lg\:col-span-7 {
-                        grid-column: span 1 !important;
-                    }
-
-                    .space-y-6 {
-                        gap: 1rem !important;
-                    }
-                }
-
-                /* GENERAL RESULTS SECTION FIX */
-                @media (max-width: 640px) {
-                    .text-center {
-                        text-align: center;
-                    }
-
-                    .grid {
-                        width: 100%;
-                        overflow: visible;
-                    }
-
-                    div[class*="text-center"] {
-                        padding: 0.5rem;
-                    }
-                }
-                `
-            }} />
-
-            <div className="scroll-progress-bar" style={{ width: '0%' }}></div>
+            {/* Scroll Progress Bar */}
+            <motion.div
+                className="fixed top-0 left-0 h-1 bg-[#7E0A11] z-[1000] origin-left"
+                style={{ scaleX: 0 }}
+                animate={{ scaleX: isScrolled ? 1 : 0 }}
+            />
 
             {/* Hero Section */}
-            <section className="min-h-screen flex items-center px-6 lg:px-8 relative overflow-hidden bg-white stack-layer" style={{ zIndex: 10 }}>
-                <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-                    <div className="animate-fadeUp">
-                        <span className="apple-overline mb-4 block">Performance Marketing Agency</span>
-                        <h1 className="apple-heading mb-6">
+            <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-white">
+                <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#7E0A11]/5 to-transparent -z-10"></div>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid lg:grid-cols-2 gap-12 items-center">
+                    <motion.div
+                        initial={{ opacity: 0, x: -50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <span className="text-[#7E0A11] text-sm md:text-base font-bold uppercase tracking-widest mb-4 block">
                             Performance Marketing Agency
-                            <span className="block text-[#7E0A11]">in Kochi</span>
+                        </span>
+                        <h1 className="text-4xl md:text-6xl font-bold text-[#1d1d1f] leading-tight mb-6">
+                            Performance Marketing Agency
+                            <span className="block text-[#7E0A11]">in Kochi, Kerala</span>
                         </h1>
-                        <p className="apple-body text-[#515154] mb-10 max-w-2xl leading-relaxed text-lg">
+                        <p className="text-gray-600 text-lg md:text-xl mb-10 max-w-xl leading-relaxed">
                             We help businesses scale visibility, enquiries, and revenue through outcome-focused advertising systems designed for measurable growth across modern digital platforms.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <a href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more." className="apple-button-primary">
+                            <a
+                                href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more."
+                                className="bg-[#7E0A11] text-white px-8 py-4 rounded-full font-bold hover:bg-[#63080d] transition-all flex items-center justify-center gap-2 group shadow-lg shadow-[#7E0A11]/20"
+                            >
                                 Book a Strategy Call
-                                <ChevronRight className="w-4 h-4" />
+                                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </a>
-                            <a href="#services" className="apple-button-secondary">
+                            <a
+                                href="#services"
+                                className="border-2 border-[#7E0A11] text-[#7E0A11] px-8 py-4 rounded-full font-bold hover:bg-[#7E0A11]/5 transition-all text-center"
+                            >
                                 Explore Services
                             </a>
                         </div>
-                    </div>
-                    <div className="relative h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
-                        <img
-                            src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086611/Digital_Marketing_Made_Simple__Strategy_Growth_cmfbtw.webp", 1200)}
-                            alt="Performance Marketing Strategy Hero"
-                            className="w-full h-full object-cover"
-                            loading="lazy"
-                            decoding="async"
-                        />
-                    </div>
+                    </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1 }}
+                        className="relative"
+                    >
+                        <div className="absolute -inset-4 bg-[#7E0A11]/10 blur-3xl rounded-full"></div>
+                        <div className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-gray-50">
+                            <img
+                                src="/performance_dashboard.png"
+                                alt="Performance Marketing Agency"
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                    </motion.div>
                 </div>
             </section>
 
             {/* About Section */}
-            <section id="about" className="min-h-screen w-full bg-[#fbfbfd] text-black flex items-center stack-layer" style={{ zIndex: 20 }}>
-                <div className="w-full px-6 lg:px-8 max-w-7xl mx-auto py-24">
-                    <div className="text-center mb-16">
-                        <span className="apple-overline mb-4 block text-gray-500">About Our Approach</span>
-                        <h2 className="apple-heading text-4xl lg:text-5xl mb-6">Results-Oriented Marketing Strategy</h2>
+            <section id="about" className="py-24 bg-gray-50 relative overflow-hidden">
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#7E0A11]/5 blur-[100px] rounded-full -translate-x-1/2 translate-y-1/2"></div>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="text-center mb-20">
+                        <motion.span
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            className="text-[#7E0A11] text-sm font-bold uppercase tracking-widest mb-4 block"
+                        >
+                            About Our Approach
+                        </motion.span>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            className="text-3xl md:text-5xl font-bold text-[#1d1d1f]"
+                        >
+                            Results-Oriented Marketing Strategy
+                        </motion.h2>
                     </div>
                     <div className="grid lg:grid-cols-2 gap-16 items-center">
-                        <div>
-                            <h3 className="text-2xl mb-6 text-[#1d1d1f] font-semibold">Accountability, Efficiency, and Measurable Returns</h3>
-                            <p className="text-[#515154] mb-6 leading-relaxed text-lg">
-                                <a href='https://en.wikipedia.org/wiki/Performance-based_advertising' target='_blank' title="Learn more about Performance-based advertising on Wikipedia">Performance marketing</a> is a results-oriented approach where every campaign is measured against clear outcomes such as enquiries, purchases, or qualified actions. Instead of focusing only on impressions, performance marketing prioritizes accountability, efficiency, and measurable returns                            </p>
-                            <p className="text-[#515154] leading-relaxed text-lg">
-                                At <a href='https://socialbureau.in' title="Visit SocialBureau Official Website"> SocialBureau</a>, we work as a strategic partner, supporting brands with structured performance-led systems that align budgets, messaging, and targeting with real business objectives                            </p>
-                        </div>
-                        <div className="h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl">
+                        <motion.div
+                            initial={{ opacity: 0, x: -30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                        >
+                            <h3 className="text-2xl font-bold text-[#1d1d1f] mb-6">Accountability, Efficiency, and Measurable Returns</h3>
+                            <p className="text-gray-600 text-lg leading-relaxed mb-6">
+                                <a href='https://en.wikipedia.org/wiki/Performance-based_advertising' target='_blank' rel="noopener noreferrer" className="text-[#7E0A11] font-medium border-b border-[#7E0A11]/20 hover:border-[#7E0A11] transition-all">Performance marketing</a> is a results-oriented approach where every campaign is measured against clear outcomes such as enquiries, purchases, or qualified actions. As a performance marketing agency in Kochi, Kerala, we focus on accountability, efficiency, and measurable returns instead of relying only on impressions.
+                            </p>
+                            <p className="text-gray-600 text-lg leading-relaxed">
+                                At <a href='https://socialbureau.in' className="font-semibold text-[#1d1d1f]">SocialBureau</a>, we work as a strategic partner, supporting brands with structured performance-led systems that align budgets, messaging, and targeting with real business objectives.
+                            </p>
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, x: 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            className="rounded-3xl overflow-hidden shadow-xl"
+                        >
                             <img
                                 src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/SMM_PHOTOSHOOT_xdkcl5.webp", 1000)}
-                                className="w-full h-full object-cover"
-                                alt="Result driven performance marketing team at work"
-                                loading="lazy"
-                                decoding="async"
+                                alt="Our Approach"
+                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                             />
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
             </section>
 
             {/* Services Section */}
-            <section id="services" className="min-h-screen py-24 px-6 lg:px-8 bg-[#7E0A11] text-white stack-layer" style={{ zIndex: 30 }}>
-                <div className="max-w-7xl mx-auto">
+            <section id="services" className="py-24 bg-[#7E0A11] text-white overflow-hidden relative">
+                <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="text-center mb-16">
-                        <span className="apple-overline mb-4 block text-white/70">Our Services</span>
-                        <h2 className="apple-heading text-4xl lg:text-5xl mb-6 text-white">Performance Marketing Services Kerala</h2>
-                        <p className="apple-body text-white/80 max-w-3xl mx-auto mb-12">
-                            Our services are designed to support sustainable scaling by aligning paid channels with intent,
-                            data signals, and conversion-focused execution. This ensures growth efforts remain efficient,
-                            controlled, and adaptable as performance requirements evolve over time.
+                        <motion.span
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            className="text-white/70 text-sm font-bold uppercase tracking-widest mb-4 block"
+                        >
+                            Our Services
+                        </motion.span>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            className="text-3xl md:text-5xl font-bold mb-6"
+                        >
+                            Performance Marketing Services Kochi, Kerala
+                        </motion.h2>
+                        <p className="text-white/80 text-lg max-w-3xl mx-auto">
+                            Our services are designed to support sustainable scaling by aligning paid channels with intent, data signals, and conversion-focused execution.
                         </p>
                     </div>
 
-                    <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-                        <div className="h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl order-2 lg:order-1">
-                            <img
-                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772183939/Red_stock_martket_chart_p4hejw.webp", 1000)}
-                                alt="Data-driven marketing charts and analytics"
-                                className="w-full h-full object-cover"
-                                loading="lazy"
-                                decoding="async"
-                            />
-                        </div>
-                        <div className="grid grid-cols-1 gap-6 order-1 lg:order-2">
-                            {services.slice(0, 3).map((service, index) => {
-                                const Icon = service.icon;
-                                return (
-                                    <div key={index} className="rounded-2xl p-6 bg-[#63080d] border border-white/10">
-                                        <div className="w-10 h-10 bg-[#7E0A11] rounded-xl flex items-center justify-center mb-4">
-                                            <Icon className="w-5 h-5 text-white" />
-                                        </div>
-                                        <h3 className="text-lg font-semibold mb-2">{service.title}</h3>
-                                        <p className="text-sm text-white/80 leading-relaxed">{service.description}</p>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {services.slice(3).map((service, index) => {
-                            const Icon = service.icon;
-                            return (
-                                <div key={index} className="rounded-3xl p-8 bg-[#63080d] border border-white/10 hover:border-white/30 transition">
-                                    <div className="w-12 h-12 bg-[#7E0A11] rounded-xl flex items-center justify-center mb-6">
-                                        <Icon className="w-6 h-6 text-white" />
-                                    </div>
-                                    <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
-                                    <p className="text-white/80 mb-6 text-sm leading-relaxed">{service.description}</p>
-                                    <ul className="space-y-2">
-                                        {service.features.map((feature, idx) => (
-                                            <li key={idx} className="text-sm text-white/80 flex items-start">
-                                                <CheckCircle className="w-4 h-4 text-white mr-2 mt-0.5" />
-                                                <span>{feature}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
+                        {services.map((service, index) => (
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                                className="bg-white/5 border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-all group"
+                            >
+                                <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#7E0A11] transition-all">
+                                    <service.icon className="w-7 h-7 text-white" />
                                 </div>
-                            );
-                        })}
+                                <h3 className="text-xl font-bold mb-4">{service.title}</h3>
+                                <p className="text-white/70 mb-6 text-sm leading-relaxed">
+                                    {service.description}
+                                </p>
+                                <ul className="space-y-3">
+                                    {service.features.map((feature, idx) => (
+                                        <li key={idx} className="flex items-center text-sm text-white/60">
+                                            <CheckCircle className="w-4 h-4 mr-2 text-white/40" />
+                                            {feature}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </motion.div>
+                        ))}
                     </div>
                 </div>
             </section>
 
             {/* Why Choose Us */}
-            <section id="why-choose" className="py-24 px-6 lg:px-8 bg-white text-black stack-layer" style={{ zIndex: 40 }}>
-                <div className="max-w-7xl mx-auto">
+            <section id="why-choose" className="py-24 bg-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid lg:grid-cols-2 gap-16 items-center">
-                        <div className="order-2 lg:order-1">
-                            <span className="apple-overline mb-4 block text-gray-500">Why Choose Us</span>
-                            <h2 className="apple-heading text-4xl lg:text-5xl mb-10 text-black">Data-Led Growth Partners</h2>
-
+                        <motion.div
+                            initial={{ opacity: 0, x: -30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                        >
+                            <span className="text-[#7E0A11] text-sm font-bold uppercase tracking-widest mb-4 block">Why Choose Us</span>
+                            <h2 className="text-3xl md:text-5xl font-bold text-[#1d1d1f] mb-10">Data-Led Growth Partners</h2>
                             <div className="space-y-8">
-                                {whyChooseUs.map((feature, index) => {
-                                    const Icon = feature.icon;
-                                    return (
-                                        <div key={index} className="flex gap-6">
-                                            <div className="flex-shrink-0 w-12 h-12 bg-[#7E0A11]/5 rounded-xl flex items-center justify-center">
-                                                <Icon className="w-6 h-6 text-[#7E0A11]" />
-                                            </div>
-                                            <div>
-                                                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                                                <p className="text-[#515154] leading-relaxed">{feature.description}</p>
-                                            </div>
+                                {whyChooseUs.map((feature, index) => (
+                                    <div key={index} className="flex gap-6 group">
+                                        <div className="flex-shrink-0 w-12 h-12 bg-[#7E0A11]/5 rounded-xl flex items-center justify-center group-hover:bg-[#7E0A11] transition-all">
+                                            <feature.icon className="w-6 h-6 text-[#7E0A11] group-hover:text-white transition-all" />
                                         </div>
-                                    );
-                                })}
+                                        <div>
+                                            <h3 className="text-xl font-bold text-[#1d1d1f] mb-2">{feature.title}</h3>
+                                            <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        </div>
-                        <div className="order-1 lg:order-2 h-[400px] lg:h-[600px] rounded-[2rem] overflow-hidden shadow-2xl relative group">
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            className="relative h-[400px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl"
+                        >
                             <img
                                 src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772022966/PMO_converted_yhchbh.webp", 1000)}
-                                className="w-full h-full object-cover object-[50%_0%] origin-top transition-transform duration-700"
-                                loading="lazy"
-                                decoding="async"
-                                alt="SocialBureau performance marketing results showcase"
+                                alt="Performance Growth"
+                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                        </div>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                            <div className="absolute bottom-10 left-10 text-white">
+                                <p className="text-4xl font-bold">100%</p>
+                                <p className="text-sm uppercase tracking-widest opacity-80">Data-Driven Approach</p>
+                            </div>
+                        </motion.div>
                     </div>
                 </div>
             </section>
 
             {/* Case Studies */}
-            <section id="case-studies" className="py-24 bg-[#fbfbfd] stack-layer" style={{ zIndex: 50 }}>
-                <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div className="text-center mb-14">
-                        <span className="apple-overline block mb-3">Case Studies</span>
-                        <h2 className="apple-heading text-4xl lg:text-5xl">Proven Results in Performance</h2>
+            <section id="case-studies" className="py-24 bg-gray-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-16">
+                        <motion.span
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            className="text-[#7E0A11] text-sm font-bold uppercase tracking-widest mb-4 block"
+                        >
+                            Case Studies
+                        </motion.span>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            className="text-3xl md:text-5xl font-bold text-[#1d1d1f]"
+                        >
+                            Proven Results in Performance
+                        </motion.h2>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-                        {/* LEFT list */}
-                        <div className="lg:col-span-5 space-y-6">
+                    <div className="grid lg:grid-cols-12 gap-8">
+                        {/* Selector */}
+                        <div className="lg:col-span-5 space-y-4">
                             {caseStudies.map((study, index) => (
-                                <button
+                                <motion.button
                                     key={index}
+                                    whileHover={{ x: 10 }}
                                     onClick={() => setActiveCaseStudy(index)}
-                                    className={`apple-card text-left w-full transition-all duration-300 ${activeCaseStudy === index ? 'ring-2 ring-[#7E0A11] bg-white' : 'hover:bg-[#f5f5f7]'}`}
+                                    className={`w-full text-left p-6 rounded-2xl transition-all ${activeCaseStudy === index
+                                            ? 'bg-[#7E0A11] text-white shadow-xl shadow-[#7E0A11]/20'
+                                            : 'bg-white text-[#1d1d1f] hover:bg-gray-100'
+                                        }`}
                                 >
-                                    <span className="text-xs font-semibold text-[#7E0A11] bg-[#7E0A11]/5 px-3 py-1.5 rounded-full uppercase tracking-wider">
+                                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md mb-2 inline-block ${activeCaseStudy === index ? 'bg-white/20 text-white' : 'bg-gray-100 text-[#7E0A11]'
+                                        }`}>
                                         {study.type}
                                     </span>
-                                    <h3 className="text-lg font-semibold mt-3 text-black">{study.title}</h3>
-                                    <div className="text-[#7E0A11] text-sm mt-3 flex items-center gap-1 font-medium">
-                                        View details <ChevronRight className="w-4 h-4" />
-                                    </div>
-                                </button>
+                                    <h3 className="text-lg font-bold block">{study.title}</h3>
+                                </motion.button>
                             ))}
                         </div>
 
-                        {/* RIGHT details */}
+                        {/* Details */}
                         <div className="lg:col-span-7">
-                            <div className="apple-card sticky top-28">
-                                <h3 className="text-2xl font-semibold mb-6 text-black">{caseStudies[activeCaseStudy].title}</h3>
-                                <div className="space-y-6 text-sm lg:text-base">
-                                    <div>
-                                        <h4 className="font-semibold text-[#7E0A11] mb-1">Ideal Customer</h4>
-                                        <p className="text-[#515154]">{caseStudies[activeCaseStudy].idealCustomer}</p>
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={activeCaseStudy}
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    className="bg-white p-8 md:p-12 rounded-3xl shadow-xl h-full border border-gray-100"
+                                >
+                                    <h3 className="text-2xl font-bold mb-8 text-[#1d1d1f]">
+                                        {caseStudies[activeCaseStudy].title}
+                                    </h3>
+                                    <div className="space-y-8">
+                                        <div>
+                                            <h4 className="text-[#7E0A11] text-xs font-bold uppercase tracking-widest mb-2">Ideal Customer</h4>
+                                            <p className="text-gray-600 leading-relaxed">{caseStudies[activeCaseStudy].idealCustomer}</p>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-[#7E0A11] text-xs font-bold uppercase tracking-widest mb-2">The Challenge</h4>
+                                            <p className="text-gray-600 leading-relaxed">{caseStudies[activeCaseStudy].challenge}</p>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-[#7E0A11] text-xs font-bold uppercase tracking-widest mb-2">The Approach</h4>
+                                            <p className="text-gray-600 leading-relaxed">{caseStudies[activeCaseStudy].approach}</p>
+                                        </div>
+                                        <div className="grid grid-cols-3 gap-4 pt-8 border-t border-gray-100">
+                                            {caseStudies[activeCaseStudy].results.map((result, idx) => (
+                                                <div key={idx} className="text-center">
+                                                    <div className="text-2xl md:text-3xl font-bold text-[#7E0A11]">{result.value}</div>
+                                                    <div className="text-[10px] uppercase text-gray-400 font-bold tracking-tighter">{result.label}</div>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h4 className="font-semibold text-[#7E0A11] mb-1">The Challenge</h4>
-                                        <p className="text-[#515154]">{caseStudies[activeCaseStudy].challenge}</p>
-                                    </div>
-                                    <div>
-                                        <h4 className="font-semibold text-[#7E0A11] mb-1">The Approach</h4>
-                                        <p className="text-[#515154]">{caseStudies[activeCaseStudy].approach}</p>
-                                    </div>
-                                    <div className="grid grid-cols-3 gap-6 pt-6 border-t border-[#f5f5f7]">
-                                        {caseStudies[activeCaseStudy].results.map((result, idx) => (
-                                            <div key={idx} className="text-center">
-                                                <div className="apple-stat">{result.value}</div>
-                                                <div className="apple-stat-label capitalize">{result.label}</div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
+                                </motion.div>
+                            </AnimatePresence>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Testimonials */}
-            <section id="testimonials" className="py-24 px-6 lg:px-8 bg-[#1d1d1f] text-white stack-layer" style={{ zIndex: 60 }}>
-                <div className="max-w-7xl mx-auto">
+            <section className="py-24 bg-[#1d1d1f] relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-[#7E0A11]/10 blur-[150px] rounded-full"></div>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="text-center mb-16">
-                        <span className="apple-overline mb-4 block text-white/70">Testimonials</span>
-                        <h2 className="apple-heading text-4xl lg:text-5xl text-white">Client Success Stories</h2>
+                        <span className="text-white/50 text-sm font-bold uppercase tracking-widest mb-4 block">Testimonials</span>
+                        <h2 className="text-3xl md:text-5xl font-bold text-white">Client Success Stories</h2>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {testimonials.map((testimonial, index) => (
-                            <div key={index} className="rounded-3xl p-8 bg-white/5 border border-white/10">
-                                <div className="text-6xl text-white opacity-20 mb-4 leading-none font-serif">“</div>
-                                <p className="text-white/80 italic mb-6 leading-relaxed text-lg">{testimonial.text}</p>
-                                <div className="font-semibold text-white">— {testimonial.author}</div>
-                            </div>
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                                className="bg-white/5 border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-all"
+                            >
+                                <div className="text-4xl text-[#7E0A11] mb-6 font-serif">“</div>
+                                <p className="text-white/80 italic text-lg leading-relaxed mb-8">
+                                    {testimonial.text}
+                                </p>
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-1 bg-[#7E0A11]"></div>
+                                    <span className="text-white font-bold">{testimonial.author}</span>
+                                </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
             {/* FAQ Section */}
-            <section id="faq" className="w-full bg-white stack-layer" style={{ zIndex: 70 }}>
-                <div className="max-w-3xl mx-auto px-6 py-24">
-                    <div className="text-center mb-12">
-                        <span className="apple-overline block mb-3 text-gray-500">FAQ</span>
-                        <h2 className="apple-heading text-3xl lg:text-4xl text-black">Frequently Asked Questions</h2>
+            <section className="py-24 bg-white">
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-16">
+                        <span className="text-[#7E0A11] text-sm font-bold uppercase tracking-widest mb-4 block">FAQ</span>
+                        <h2 className="text-3xl md:text-5xl font-bold text-[#1d1d1f]">Frequently Asked Questions</h2>
                     </div>
-                    <div className="divide-y divide-gray-100">
+                    <div className="space-y-4">
                         {faqItems.map((item, index) => (
-                            <div key={index} className="py-6">
+                            <div key={index} className="border-b border-gray-100 last:border-0">
                                 <button
                                     onClick={() => toggleFaq(index)}
-                                    className="w-full flex justify-between items-center text-left text-lg font-medium text-black hover:text-[#7E0A11] transition"
+                                    className="w-full flex justify-between items-center py-6 text-left group"
                                 >
-                                    <span>{item.question}</span>
-                                    {activeFaq === index ? (
-                                        <X className="w-4 h-4 text-[#7E0A11]" />
-                                    ) : (
-                                        <Plus className="w-4 h-4 text-gray-400" />
-                                    )}
-                                </button>
-                                {activeFaq === index && (
-                                    <div className="mt-4 text-[#515154] text-base leading-relaxed animate-fadeUp">
-                                        {item.answer}
+                                    <span className="text-lg font-bold text-[#1d1d1f] group-hover:text-[#7E0A11] transition-all">
+                                        {item.question}
+                                    </span>
+                                    <div className={`transition-transform duration-300 ${activeFaq === index ? 'rotate-45' : ''}`}>
+                                        <Plus className={`w-6 h-6 ${activeFaq === index ? 'text-[#7E0A11]' : 'text-gray-300'}`} />
                                     </div>
-                                )}
+                                </button>
+                                <AnimatePresence>
+                                    {activeFaq === index && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            className="overflow-hidden"
+                                        >
+                                            <p className="pb-6 text-gray-600 leading-relaxed">
+                                                {item.answer}
+                                            </p>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                             </div>
                         ))}
                     </div>
@@ -740,28 +582,53 @@ const PerformanceMarketing = () => {
             </section>
 
             {/* CTA Section */}
-            <section id="contact" className="w-full px-6 py-24 bg-[#fbfbfd] stack-layer" style={{ zIndex: 80 }}>
-                <div className="bg-[#1d1d1f] text-white rounded-[2rem] py-20 px-6 lg:px-16 text-center relative overflow-hidden max-w-7xl mx-auto shadow-2xl">
-                    <div className="absolute -top-20 -right-20 w-96 h-96 bg-[#7E0A11] opacity-20 rounded-full blur-3xl"></div>
-                    <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-[#7E0A11] opacity-10 rounded-full blur-3xl"></div>
-                    <h2 className="apple-heading text-white mb-6">Scale Your Growth With Strategy</h2>
-                    <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
-                        Let's discuss how <a href='https://socialbureau.in//blogs/where-roi-meets-creative-flow' target='_blank' title="Learn more about Performance Marketing">performance marketing</a> can drive measurable growth and clarity for your business.
-                    </p>
-                    <a href="/contact" className="apple-button-primary bg-white text-black hover:bg-gray-100 hover:scale-105 transition-all text-lg py-4 px-10">
+            <section className="py-24 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto bg-[#1d1d1f] rounded-[3rem] p-8 md:p-20 text-center relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')] opacity-20"></div>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-gradient-to-tr from-[#7E0A11]/20 via-transparent to-[#7E0A11]/10 blur-[120px] -z-10"></div>
+
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-3xl md:text-6xl font-bold text-white mb-8 relative z-10"
+                    >
+                        Scale Your Growth With Strategy
+                    </motion.h2>
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 relative z-10"
+                    >
+                        Let's discuss how <a href='https://socialbureau.in/blogs/where-roi-meets-creative-flow' target='_blank' rel="noopener noreferrer" className="text-[#7E0A11] font-semibold underline decoration-[#7E0A11]/30 hover:decoration-[#7E0A11] transition-all">performance marketing</a> can drive measurable growth and clarity for your business.
+                    </motion.p>
+                    <motion.a
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        href="/contact"
+                        className="inline-flex items-center gap-3 bg-white text-[#1d1d1f] px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-100 transition-all shadow-2xl relative z-10"
+                    >
                         Book a Strategy Call
-                        <ChevronRight className="w-5 h-5 ml-1" />
-                    </a>
+                        <ChevronRight className="w-5 h-5" />
+                    </motion.a>
                 </div>
             </section>
 
             {/* Scroll to Top */}
-            <button
-                className={`fixed bottom-8 right-8 w-14 h-14 bg-[#7E0A11] text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-[#63080d] hover:scale-110 active:scale-95 transition-all z-[1001] ${isScrolled ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
-                onClick={scrollToTop}
-            >
-                <ArrowUp className="w-6 h-6" />
-            </button>
+            <AnimatePresence>
+                {isScrolled && (
+                    <motion.button
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        onClick={scrollToTop}
+                        className="fixed bottom-10 right-10 w-14 h-14 bg-[#7E0A11] text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-[#63080d] transition-all z-[1000]"
+                    >
+                        <ArrowUp className="w-6 h-6" />
+                    </motion.button>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

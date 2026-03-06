@@ -14,6 +14,7 @@ import LoadingSpinner from "./components/LoadingSpinner";
 import AdminRoute from "./components/AdminRoute";
 import CookieConsent from "./components/CookieConsent";
 import { ToastContainer } from "react-toastify";
+// import ResumeGenerator from "./pages/Resume/ResumeGenerator";
 
 // Lazy-loaded Pages
 const Home = lazy(() => import("./pages/Home").then(module => ({ default: module.Home })));
@@ -33,9 +34,8 @@ const OurTeam = lazy(() => import("./pages/OurTeam").then(module => ({ default: 
 const OurWork = lazy(() => import("./pages/OurWork").then(module => ({ default: module.OurWork })));
 const ScorePage = lazy(() => import("./pages/ScorePage").then(module => ({ default: module.ScorePage })));
 const Client = lazy(() => import("./pages/Client").then(module => ({ default: module.Client })));
-const Team = lazy(() => import("./pages/Team").then(module => ({ default: module.Team })));
-// const ATSChecker = lazy(() => import("./pages/ATSChecker"));
-// const ResumeGenerator = lazy(() => import("./pages/ResumeGenerator"));
+// const Team = lazy(() => import("./pages/Team").then(module => ({ default: module.Team })));
+// const ATSChecker = lazy(() => import("./pages/Resume/ATSChecker"));
 const AuthPage = lazy(() => import("./pages/UserRegistration"));
 const Verification = lazy(() => import("./pages/UserVerification"));
 const AdminCreateJob = lazy(() => import("./pages/CreateJob"));
@@ -45,7 +45,6 @@ const DashboardX = lazy(() => import("./pages/DashboardX"));
 const UserManagement = lazy(() => import("./pages/UserManagement"));
 const ResetPassword = lazy(() => import("./pages/ForgetPassword").then(module => ({ default: module.ResetPassword })));
 const VoiceAsst = lazy(() => import("./pages/VoiceAsst"));
-const CandidateProfilePage = lazy(() => import("./pages/CandidateProfilePage"));
 
 // Lazy-loaded Components
 const AddAchievementForm = lazy(() => import("./components/AddAchievementForm"));
@@ -203,7 +202,7 @@ function App() {
             <Route path="/our-works" element={<OurWork />} />
             <Route path="/achievements" element={<CompanyAchievements />} />
             {/* <Route path="/ats-checker" element={<ATSChecker />} /> */}
-            {/* <Route path="/resume-generator" element={<ResumeGenerator />} /> */}
+            {/* <Route path="/resume-generator" element={<ResumeGenerator  />} /> */}
             <Route path="/tool" element={<ScorePage />} />
 
             <Route path="/blogs/:slug" element={<BlogDetail />} />
@@ -231,7 +230,6 @@ function App() {
             <Route path="/job-details/:id" element={<JobDetails />} />
             <Route path="/job-listing" element={<JobsList />} />
             <Route path="/candidate-profile" element={<CandidateProfile />} />
-            <Route path="/candidate-profile/:applicationId" element={<CandidateProfilePage />} />
 
             <Route path="/services/:serviceTitle" element={<Service1 />} />
             <Route path="/employee/:name" element={<StaffDashboard />} />
@@ -261,7 +259,7 @@ function App() {
             <Route path="/niche-marketing-agency-in-kochi" element={<Niche />} />
             <Route path="/content-marketing-agency-in-kochi" element={<ContentMarketing />} />
             <Route path="/adTech-marketing-agency-in-kochi" element={<AdTechIntegration />} />
-            <Route path="/web-development-agency-in-kochi" element={<WebDevelopment />} />
+            <Route path="/web-development" element={<WebDevelopment />} />
             <Route path="/dashboard" element={<DashboardX />} />
             <Route path="/insights" element={<SocialBureauInsight />} />
 

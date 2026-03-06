@@ -85,7 +85,7 @@ const RotatingStackedImages = ({ images }) => {
 const CombinedServicesGrid = () => {
     const items = [
         {
-            title: "AdTech Integration",
+            title: "AdTech Marketing",
             subtitle: "Engineered for rankings",
             video: "https://res.cloudinary.com/dtwcgfmar/video/upload/v1771998115/freepik_create-a-video_kling_1080p_1-1_24fps_94469_1_twifv9.webm",
             bg: "bg-white",

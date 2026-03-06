@@ -273,3 +273,24 @@ export const analyzeSEOMatch = async (resumeData, jobDescription) => {
     throw new Error('Could not analyze SEO match');
   }
 };
+
+/**
+ * Generate multiple AI suggestions for a specific resume section.
+ */
+export const generateAISuggestions = async (sectionType, currentContent, context = {}) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/resume/generate-suggestions`,
+      { sectionType, currentContent, context }
+    );
+
+    if (response.data.success) {
+      return response.data.data;
+    } else {
+      throw new Error(response.data.message || 'Failed to generate AI suggestions');
+    }
+  } catch (error) {
+    console.error('AI suggestion generation error:', error);
+    throw new Error('Could not generate AI suggestions. Please try again.');
+  }
+};

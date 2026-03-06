@@ -10,16 +10,20 @@
 //     Loader2,
 //     Settings,
 //     RotateCcw,
-//     Zap
+//     Zap,
+//     FileText,
+//     FileDown
 // } from 'lucide-react';
-// import TemplateSelector from '../components/TemplateSelector';
-// import PDFExtractor from '../components/PDFExtractor';
-// import ResumeForm from '../components/ResumeForm';
-// import ResumePreview from '../components/ResumePreview';
-// import ATSOptimizer from '../components/ATSOptimizer';
-// import { downloadResumeSinglePage } from "../../utils/singlePagePdfGenerator.js";
-// import { getAIResumeImprovements, checkResumeQuality } from "../../services/aiResumeService.js";
-// import AIResumeGenerator from '../components/AIResumeGenerator';
+// import TemplateSelector from '../../components/TemplateSelector';
+// import PDFExtractor from '../../components/PDFExtractor';
+// import ResumeForm from '../../components/ResumeForm';
+// import ResumePreview from '../../components/ResumePreview';
+
+// import { downloadResumeSinglePage } from "../../../utils/singlePagePdfGenerator.js";
+// import { getAIResumeImprovements, checkResumeQuality, generateAISuggestions } from "../../../services/aiResumeService.js";
+// import AIResumeGenerator from '../../components/AIResumeGenerator';
+// import AICompanionModal from '../../components/AICompanionModal'; // Import the new component
+// import { downloadResumeAsWord } from "../../../utils/wordGenerator.js";
 
 // const RESUME_TEMPLATES = {
 //     modern: {
@@ -54,25 +58,6 @@
 //     const [method, setMethod] = useState(null); // 'pdf' | 'form' | 'fresh'
 //     const [selectedTemplate, setSelectedTemplate] = useState('modern');
 //     const [resumeData, setResumeData] = useState({
-//         personalInfo: {
-//             fullName: '',
-//             email: '',
-//             phone: '',
-//             location: '',
-//             linkedin: '',
-//             portfolio: '',
-//             summary: '',
-//             title: ''
-//         },
-//         experience: [],
-//         education: [],
-//         skills: [],
-//         projects: [],
-//         certifications: [],
-//         languages: []
-//     });
-//     const [atsScore, setAtsScore] = useState(null);
-//     const [atsEnabled, setAtsEnabled] = useState(true);
 //     const [loading, setLoading] = useState(false);
 //     const [error, setError] = useState('');
 //     const [pdfLoading, setPdfLoading] = useState(false);
@@ -80,6 +65,8 @@
 //     const [aiLoading, setAiLoading] = useState(false);
 //     const [qualityScore, setQualityScore] = useState(null);
 //     const [showAIPanel, setShowAIPanel] = useState(false);
+//     const [isCompanionOpen, setIsCompanionOpen] = useState(false);
+//     const [companionSection, setCompanionSection] = useState(null);
 
 //     useEffect(() => {
 //         // Load from localStorage if exists
@@ -107,7 +94,7 @@
 
 //         setPdfLoading(true);
 //         try {
-//             const element = document.getElementById('resume-preview-content');
+//             const element = document.getElementById('resume-to-download');
 //             if (!element) {
 //                 setError('Resume preview not found');
 //                 return;
@@ -128,6 +115,32 @@
 //         }
 //     };
 
+//     const handleOpenAICompanion = (section) => {
+//         setCompanionSection(section);
+//         setIsCompanionOpen(true);
+//     };
+
+//     const handleDownloadWord = () => {
+//         if (!resumeData.personalInfo?.fullName) {
+//             setError('Please add your name before downloading');
+//             return;
+//         }
+
+//         try {
+//             const element = document.getElementById('resume-to-download');
+//             if (!element) {
+//                 setError('Resume preview not found');
+//                 return;
+//             }
+
+//             downloadResumeAsWord(element, resumeData.personalInfo.fullName);
+//             setError('');
+//         } catch (err) {
+//             console.error('Word generation error:', err);
+//             setError('Failed to generate Word document. Please try again.');
+//         }
+//     };
+
 //     const handleGetAISuggestions = async () => {
 //         setAiLoading(true);
 //         try {
@@ -142,6 +155,21 @@
 //             setError('Failed to get AI suggestions. Please try again.');
 //         } finally {
 //             setAiLoading(false);
+//         }
+//     };
+
+//     const handleGetSuggestions = async (sectionType, currentContent) => {
+//         setSuggestionSection(sectionType);
+//         setSuggestionsLoading(true);
+//         setSuggestions([]);
+//         try {
+//             const result = await generateAISuggestions(sectionType, currentContent, { jobTitle: resumeData.personalInfo.title });
+//             setSuggestions(result.suggestions);
+//         } catch (err) {
+//             console.error('AI suggestion error:', err);
+//             setError('Failed to get AI suggestions. Please try again.');
+//         } finally {
+//             setSuggestionsLoading(false);
 //         }
 //     };
 
@@ -170,6 +198,27 @@
 //                         Create a professional, ATS-friendly resume in minutes. Choose your method, pick a template, and stand out.
 //                     </p>
 //                 </header>
+
+//                 {isCompanionOpen && companionSection && (
+//                     <AICompanionModal
+//                         isOpen={isCompanionOpen}
+//                         onClose={() => setIsCompanionOpen(false)}
+//                         section={companionSection.split('.').pop()}
+//                         currentContent={companionSection.split('.').reduce((o, i) => o[i], resumeData)}
+//                         onGenerate={generateAISuggestions}
+//                         onApply={(suggestion) => {
+//                             const keys = companionSection.split('.');
+//                             let updatedData = { ...resumeData };
+//                             let current = updatedData;
+//                             for (let i = 0; i < keys.length - 1; i++) {
+//                                 current = current[keys[i]];
+//                             }
+//                             current[keys[keys.length - 1]] = suggestion;
+//                             setResumeData(updatedData);
+//                             setIsCompanionOpen(false);
+//                         }}
+//                     />
+//                 )}
 
 //                 {/* Step Indicator */}
 //                 <div className="mb-12 flex justify-center gap-3">
@@ -257,14 +306,23 @@
 
 //                                     {step === 'preview' && (
 //                                         <div className="pt-4 border-t border-gray-700 space-y-3">
-//                                             <button
-//                                                 onClick={handleDownloadPDF}
-//                                                 disabled={pdfLoading}
-//                                                 className="w-full btn-primary flex items-center justify-center gap-2 py-2 disabled:opacity-50"
-//                                             >
-//                                                 {pdfLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-//                                                 {pdfLoading ? 'Generating...' : 'Download PDF (Single Page)'}
-//                                             </button>
+//                                             <div className="grid grid-cols-2 gap-2">
+//                                                 <button
+//                                                     onClick={handleDownloadPDF}
+//                                                     disabled={pdfLoading}
+//                                                     className="btn-primary flex items-center justify-center gap-2 py-2 disabled:opacity-50 text-xs"
+//                                                 >
+//                                                     {pdfLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+//                                                     PDF
+//                                                 </button>
+//                                                 <button
+//                                                     onClick={handleDownloadWord}
+//                                                     className="bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2 py-2 rounded-lg transition-colors font-medium text-xs"
+//                                                 >
+//                                                     <FileText className="w-4 h-4" />
+//                                                     Word
+//                                                 </button>
+//                                             </div>
 //                                             <button
 //                                                 onClick={handleGetAISuggestions}
 //                                                 disabled={aiLoading}
@@ -348,13 +406,23 @@
 //                                     <p className="text-sm text-gray-400">Your resume is ready. Download, preview, or edit further.</p>
 
 //                                     <div className="space-y-3">
-//                                         <button
-//                                             onClick={handleDownloadPDF}
-//                                             className="w-full btn-primary flex items-center justify-center gap-2 py-3"
-//                                         >
-//                                             <Download className="w-4 h-4" />
-//                                             Download PDF
-//                                         </button>
+//                                         <div className="grid grid-cols-2 gap-3">
+//                                             <button
+//                                                 onClick={handleDownloadPDF}
+//                                                 disabled={pdfLoading}
+//                                                 className="btn-primary flex items-center justify-center gap-2 py-3 disabled:opacity-50"
+//                                             >
+//                                                 {pdfLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+//                                                 PDF Format
+//                                             </button>
+//                                             <button
+//                                                 onClick={handleDownloadWord}
+//                                                 className="bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2 py-3 rounded-xl transition-colors font-medium shadow-lg hover:shadow-blue-500/20"
+//                                             >
+//                                                 <FileText className="w-4 h-4" />
+//                                                 Word Format
+//                                             </button>
+//                                         </div>
 //                                         <button
 //                                             onClick={() => setStep('input')}
 //                                             className="w-full border border-gray-700 text-gray-400 hover:text-white py-2 rounded-lg transition-colors font-medium text-sm"
@@ -408,6 +476,7 @@
 //                                 data={resumeData}
 //                                 onChange={setResumeData}
 //                                 template={selectedTemplate}
+//                                 onGetSuggestions={handleOpenAICompanion}
 //                             />
 //                         )}
 
@@ -417,103 +486,12 @@
 //                                 <ResumePreview
 //                                     data={resumeData}
 //                                     template={selectedTemplate}
-//                                     onATSScoreChange={setAtsScore}
 //                                 />
-//                                 {atsEnabled && (
-//                                     <ATSOptimizer
-//                                         resumeData={resumeData}
-//                                         onUpdate={setResumeData}
-//                                     />
-//                                 )}
-
-//                                 {/* AI Suggestions Panel */}
-//                                 {showAIPanel && aiSuggestions && (
-//                                     <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 border border-purple-500/20 rounded-2xl p-6 space-y-4 mt-8">
-//                                         <div className="flex items-center justify-between">
-//                                             <h3 className="text-xl font-bold flex items-center gap-2">
-//                                                 <Zap className="w-5 h-5 text-purple-400" />
-//                                                 AI Improvement Suggestions
-//                                             </h3>
-//                                             <button
-//                                                 onClick={() => setShowAIPanel(false)}
-//                                                 className="text-gray-400 hover:text-white text-2xl"
-//                                             >
-//                                                 ×
-//                                             </button>
-//                                         </div>
-
-//                                         {qualityScore && (
-//                                             <div className="bg-gray-800/50 rounded-lg p-4">
-//                                                 <div className="flex justify-between items-center mb-2">
-//                                                     <span className="text-sm font-semibold">Resume Quality Score</span>
-//                                                     <span className={`text-2xl font-bold ${
-//                                                         qualityScore.overallScore >= 80 ? 'text-green-400' :
-//                                                         qualityScore.overallScore >= 60 ? 'text-yellow-400' :
-//                                                         'text-red-400'
-//                                                     }`}>
-//                                                         {Math.round(qualityScore.overallScore)}/100
-//                                                     </span>
-//                                                 </div>
-//                                                 <div className="w-full bg-gray-700 rounded-full h-2">
-//                                                     <div
-//                                                         className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all"
-//                                                         style={{ width: `${Math.min(qualityScore.overallScore, 100)}%` }}
-//                                                     />
-//                                                 </div>
-//                                             </div>
-//                                         )}
-
-//                                         <div className="space-y-3">
-//                                             <h4 className="text-sm font-bold text-purple-300">Suggestions:</h4>
-//                                             {aiSuggestions.improvements?.map((suggestion, idx) => (
-//                                                 <div key={idx} className="bg-gray-800/30 rounded-lg p-3 border border-gray-700/50">
-//                                                     <div className="flex items-start gap-3">
-//                                                         <AlertCircle className="w-4 h-4 text-purple-400 mt-0.5 flex-shrink-0" />
-//                                                         <div className="flex-1">
-//                                                             <p className="font-semibold text-sm text-white mb-1">{suggestion.title}</p>
-//                                                             <p className="text-xs text-gray-400 mb-2">{suggestion.description}</p>
-//                                                             {suggestion.examples && suggestion.examples.length > 0 && (
-//                                                                 <button
-//                                                                     onClick={() => applyAISuggestion(suggestion)}
-//                                                                     className="text-xs bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded transition-colors"
-//                                                                 >
-//                                                                     Apply Suggestion
-//                                                                 </button>
-//                                                             )}
-//                                                         </div>
-//                                                     </div>
-//                                                 </div>
-//                                             ))}
-//                                         </div>
-
-//                                         {aiSuggestions.strengths && aiSuggestions.strengths.length > 0 && (
-//                                             <div className="space-y-2 pt-4 border-t border-gray-700">
-//                                                 <h4 className="text-sm font-bold text-green-300">Strengths:</h4>
-//                                                 {aiSuggestions.strengths.map((strength, idx) => (
-//                                                     <div key={idx} className="flex items-center gap-2 text-xs text-green-300">
-//                                                         <CheckCircle2 className="w-4 h-4" />
-//                                                         {strength}
-//                                                     </div>
-//                                                 ))}
-//                                             </div>
-//                                         )}
-//                                     </div>
-//                                 )}
 //                             </div>
 //                         )}
 //                     </div>
 //                 </div>
 //             </div>
-
-//             {/* Custom CSS */}
-//             <style jsx>{`
-//                 .btn-primary {
-//                     @apply bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-lg font-semibold transition-all duration-300 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:scale-105;
-//                 }
-//                 .btn-secondary {
-//                     @apply border border-blue-600 text-blue-400 hover:bg-blue-600/10 rounded-lg font-semibold transition-all duration-300;
-//                 }
-//             `}</style>
 //         </div>
 //     );
 // };
