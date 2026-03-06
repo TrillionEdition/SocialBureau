@@ -113,6 +113,7 @@ const [isMobile, setIsMobile] = useState(false);
           marketing technology, api marketing, automation agency, socialbureau tech, marketing api integration, nextjs website agency, data tracking setup, crm integration, digital transformation, marketing dashboard"
         image="/assets/socialbureau.png"
         url="https://www.socialbureau.in/services"
+        canonicalUrl="https://www.socialbureau.in/services"
       />
 
       <ServicesHeader onArrowClick={handleArrowClick} />
@@ -157,12 +158,7 @@ const [isMobile, setIsMobile] = useState(false);
               {svc.cta}
             </a>
 
-            {/* SEO schema in DOM */}
-            <div className="hidden" itemScope itemType="https://schema.org/Service">
-              <meta itemProp="serviceType" content={svc.title} />
-              <meta itemProp="description" content={svc.description} />
-              <meta itemProp="keywords" content={svc.seoKeywords} />
-            </div>
+            {/* legacy microdata removed; use SchemaMarkup with centralized schemas */}
           </motion.div>
         ))}
       </div>

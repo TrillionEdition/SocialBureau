@@ -108,7 +108,14 @@ const DashboardX = () => {
     queryFn: partnershipAPI.getPartners,
   });
 
+  const { data: partnersSummaryData, isLoading: summaryLoading } = useQuery({
+    queryKey: ["partnersSummary", range],
+    queryFn: () => analyticsAPI.getSummary(range),
+    enabled: user?.role === "admin",
+  });
+
   const partners = partnersData?.data || [];
+  const partnersSummary = partnersSummaryData?.data || [];
 
   // Update selectedPartnerParam when partners or user loads
   useEffect(() => {
@@ -741,6 +748,123 @@ const DashboardX = () => {
               </table>
             </div>
           </div>
+
+          {/* Partners Performance Table - Only for Admin */}
+          {user?.role === "admin" && (
+            <div className="bg-[#0F1117] border border-slate-800/50 rounded-[2.5rem] overflow-hidden group shadow-2xl">
+              <div className="p-8 border-b border-slate-800/50 flex items-center justify-between">
+                <h4 className="font-bold flex items-center gap-2">
+                  <Users className="w-4 h-4 text-purple-500" />
+                  Partners Performance Summary
+                </h4>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-slate-900/30">
+                      <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none">
+                        Partner
+                      </th>
+                      <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none text-center">
+                        Active Users
+                      </th>
+                      <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none text-center">
+                        Events
+                      </th>
+                      <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none text-center">
+                        New Users
+                      </th>
+                      <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {summaryLoading ? (
+                      <tr>
+                        <td
+                          colSpan="5"
+                          className="px-8 py-10 text-center text-slate-500"
+                        >
+                          Fetching partner analytics...
+                        </td>
+                      </tr>
+                    ) : partnersSummary.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan="5"
+                          className="px-8 py-10 text-center text-slate-500"
+                        >
+                          No partner data found for this range
+                        </td>
+                      </tr>
+                    ) : (
+                      partnersSummary.map((ps) => {
+                        const partner = partners.find(
+                          (p) => p.param === ps.param,
+                        );
+                        return (
+                          <tr
+                            key={ps.param}
+                            className="border-t border-slate-800/30 hover:bg-white/5 transition-colors group/row"
+                          >
+                            <td className="px-8 py-5">
+                              <div className="flex items-center gap-3">
+                                {partner?.coverImage ? (
+                                  <img
+                                    src={partner.coverImage}
+                                    className="w-10 h-10 rounded-full object-cover border border-slate-700"
+                                    alt=""
+                                  />
+                                ) : (
+                                  <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center border border-slate-700">
+                                    <Users className="w-5 h-5 text-slate-600" />
+                                  </div>
+                                )}
+                                <div>
+                                  <p className="font-bold text-sm text-slate-100 group-hover/row:text-purple-400 transition-colors">
+                                    {partner?.name || ps.param}
+                                  </p>
+                                  <p className="text-[10px] text-slate-500 mt-1 uppercase tracking-wider font-bold">
+                                    {partner?.category || "Partnership"}
+                                  </p>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-8 py-5 text-center">
+                              <span className="text-sm font-black text-slate-200">
+                                {ps.activeUsers}
+                              </span>
+                            </td>
+                            <td className="px-8 py-5 text-center">
+                              <span className="text-sm font-black text-slate-200">
+                                {ps.eventCount}
+                              </span>
+                            </td>
+                            <td className="px-8 py-5 text-center">
+                              <span className="text-sm font-black text-slate-200">
+                                {ps.newUsers}
+                              </span>
+                            </td>
+                            <td className="px-8 py-5">
+                              <button
+                                onClick={() =>
+                                  setSelectedPartnerParam(ps.param)
+                                }
+                                className="p-2 hover:bg-purple-500/10 rounded-lg text-purple-500 transition-colors inline-block"
+                              >
+                                View Details
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { getOptimizedCloudinaryUrl } from "../../utils/cloudinary";
 
 const StaticServicesGrid = () => {
     const items = [
@@ -7,7 +8,7 @@ const StaticServicesGrid = () => {
             title: "Blog",
             subtitle: "Insights worth reading",
             image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772003206/Untitled-design-43.png_kr4ij5.webp",
-                bg: "bg-white",
+            bg: "bg-white",
             text: "text-[#1D1D1F]",
             link: "/blog",
             accent: "#0071E3",
@@ -70,8 +71,9 @@ const StaticServicesGrid = () => {
                         <div className="w-full">
                             {item.image && (
                                 <img
-                                    src={item.image}
-                                    alt={item.title}
+                                    src={getOptimizedCloudinaryUrl(item.image, 600)}
+                                    alt={`${item.title} - ${item.subtitle}`}
+                                    loading="lazy"
                                     className="w-[90%] max-w-[450px] h-auto object-contain mx-auto"
                                 />
                             )}

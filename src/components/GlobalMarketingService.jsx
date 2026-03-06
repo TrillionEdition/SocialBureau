@@ -86,6 +86,7 @@ export default function GlobalMarketingService() {
         keywords="global marketing agency, api marketing agency, platform prompting, ai marketing, multi-platform ad agency, meta ads, google ads api, tiktok marketing experts, snapchat ads, taboola marketing, programmatic dsp agency, content marketing, seo agency, performance marketing, global media buying, marketing automation api, adtech platform, socialbureau, trillionedition llp"
         image="/assets/socialbureau.png"
         url="https://www.socialbureau.in/services/global-marketing"
+        canonicalUrl="https://www.socialbureau.in/services/global-marketing"
       />
 
       <div className="min-h-screen bg-gradient-to-b from-[#020817] via-[#0f172a] to-[#1e293b] text-slate-100 p-6">

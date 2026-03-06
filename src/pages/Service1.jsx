@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Seo from '../components/Seo';
+import SchemaMarkup from '../components/SchemaMarkup';
+import { generateServiceSchema } from '../utils/schema';
 import { motion } from 'framer-motion';
 import Footer from '../components/Footer';
 import servicesData from '../data/services';
@@ -28,6 +30,7 @@ const InteractiveBackground = () => {
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
+    let resizeRafId = null;
 
     const initGrid = () => {
       gridRef.current = [];
@@ -53,7 +56,16 @@ const InteractiveBackground = () => {
     };
 
     resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    
+    const handleCanvasResize = () => {
+      if (resizeRafId) return;
+      resizeRafId = requestAnimationFrame(() => {
+        resizeCanvas();
+        resizeRafId = null;
+      });
+    };
+    
+    window.addEventListener('resize', handleCanvasResize);
 
     const initWaves = () => {
       wavesRef.current = [];
@@ -97,9 +109,10 @@ const InteractiveBackground = () => {
     animate();
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('resize', handleCanvasResize);
       window.removeEventListener('mousemove', handleMouseMove);
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
+      if (resizeRafId) cancelAnimationFrame(resizeRafId);
     };
   }, [isMobile]);
 
@@ -154,7 +167,12 @@ const Service1 = () => {
           transition={{ duration: 1.5 }}
           className="fixed left-1/2 top-0 w-[1px] bg-red-500/10"
         ></motion.div>
-        <Seo title={meta.title} description={meta.description} image={meta?.image || '/assets/socialbureau.png'} url={`https://www.socialbureau.in/services/${encodeURIComponent(decodedTitle)}`} />
+        <Seo title={meta.title} description={meta.description} image={meta?.image || '/assets/socialbureau.png'} url={`https://www.socialbureau.in/services/${encodeURIComponent(decodedTitle)}` } canonicalUrl={`https://www.socialbureau.in/services/${encodeURIComponent(decodedTitle)}`} />
+        <SchemaMarkup data={generateServiceSchema({ title: data.title, meta }, [
+          { name: 'Home', url: 'https://socialbureau.in' },
+          { name: 'Services', url: '#' },
+          { name: data.title, url: `https://socialbureau.in/services/${encodeURIComponent(decodedTitle)}` }
+        ])} />
 
         {/* HERO SECTION — PREMIUM, INTERACTIVE, ANIMATED */}
         <header className="relative min-h-[70vh] md:min-h-[90vh] flex items-center overflow-hidden">

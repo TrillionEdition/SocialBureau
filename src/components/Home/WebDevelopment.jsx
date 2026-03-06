@@ -316,16 +316,16 @@ const WebDevelopment = () => {
             `}} />
 
             {/* Scroll Progress Bar */}
-            <div className="fixed top-0 left-0 h-1 bg-gradient-to-r from-[#3B82F6] to-[#10B981] z-50" style={{ width: '0%' }}></div>
+            <div className="fixed top-0 left-0 h-1 bg-gradient-to-r from-[#0062ff] to-[#00734d] z-50" style={{ width: '0%' }}></div>
 
             {/* Hero Section */}
             <section className="min-h-screen flex items-center pt-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-full md:w-3/5 h-full bg-gradient-to-br from-[#3B82F6] to-[#10B981] clip-path-polygon opacity-10 animate-float hidden md:block"></div>
+                <div className="absolute top-0 right-0 w-full md:w-3/5 h-full bg-gradient-to-br from-[#0062ff] to-[#00734d] clip-path-polygon opacity-10 animate-float hidden md:block"></div>
                 <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10 px-4 sm:px-6">
                     <div className="animate-fadeInUp">
                         <h1 className="font-['Noto_Sans'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8">
                             Web Development Agency
-                            <span className="block bg-gradient-to-br from-[#3B82F6] to-[#10B981] bg-clip-text text-transparent mt-2">
+                            <span className="block bg-gradient-to-br from-[#0062ff] to-[#00734d] bg-clip-text text-transparent mt-2">
                                 in Kerala
                             </span>
                         </h1>
@@ -335,7 +335,7 @@ const WebDevelopment = () => {
                         <div className="flex flex-col sm:flex-row flex-wrap gap-4">
                             <a
                                 href="https://api.whatsapp.com/send/?phone=918921840486&text=Hello%2C+I+would+like+to+learn+more+about+Web+Development.&type=phone_number&app_absent=0"
-                                className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-br from-[#3B82F6] to-[#10B981] text-white font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-xl transition-all text-sm sm:text-base"
+                                className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-br from-[#0062ff] to-[#00734d] text-white font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-xl transition-all text-sm sm:text-base"
                             >
                                 Book a Strategy Call
                             </a>
@@ -356,7 +356,7 @@ const WebDevelopment = () => {
                                 loading="lazy"
                                 onError={(e) => {
                                     e.target.onerror = null;
-                                    e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%233B82F6' opacity='0.1'/%3E%3Ctext x='50%' y='50%' font-family='Arial' font-size='24' fill='%233B82F6' text-anchor='middle'%3EWeb Development%3C/text%3E%3C/svg%3E"
+                                    e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%230062ff' opacity='0.1'/%3E%3Ctext x='50%' y='50%' font-family='Arial' font-size='24' fill='%230062ff' text-anchor='middle'%3EWeb Development%3C/text%3E%3C/svg%3E"
                                 }}
                             />
                         </div>
@@ -367,7 +367,7 @@ const WebDevelopment = () => {
             {/* About Section */}
             <section id="about" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                 <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#3B82F6] to-[#10B981] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
+                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#0062ff] to-[#00734d] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                         About Web Development
                     </span>
                     <h2 className="font-['Noto_Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#1F2937]">Building Digital Solutions</h2>
@@ -393,7 +393,7 @@ const WebDevelopment = () => {
                             loading="lazy"
                             onError={(e) => {
                                 e.target.onerror = null;
-                                e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%2310B981' opacity='0.1'/%3E%3Ctext x='50%' y='50%' font-family='Arial' font-size='24' fill='%2310B981' text-anchor='middle'%3EWeb Solutions%3C/text%3E%3C/svg%3E"
+                                e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%2300734d' opacity='0.1'/%3E%3Ctext x='50%' y='50%' font-family='Arial' font-size='24' fill='%2300734d' text-anchor='middle'%3EWeb Solutions%3C/text%3E%3C/svg%3E"
                             }}
                         />
                     </div>
@@ -404,7 +404,7 @@ const WebDevelopment = () => {
             <section id="services" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-white">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                        <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#3B82F6] to-[#10B981] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
+                        <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#0062ff] to-[#00734d] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                             Our Services
                         </span>
                         <h2 className="font-['Noto_Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#1F2937]">Web Development Services in Kerala</h2>
@@ -419,11 +419,11 @@ const WebDevelopment = () => {
                             return (
                                 <div
                                     key={index}
-                                    className="bg-white p-4 sm:p-6 lg:p-8 rounded-3xl shadow-lg hover:shadow-2xl hover:translate-y-[-10px] transition-all duration-400 border-2 border-transparent hover:border-[#3B82F6] relative overflow-hidden group"
+                                    className="bg-white p-4 sm:p-6 lg:p-8 rounded-3xl shadow-lg hover:shadow-2xl hover:translate-y-[-10px] transition-all duration-400 border-2 border-transparent hover:border-[#0062ff] relative overflow-hidden group"
                                 >
-                                    <div className="absolute inset-0 bg-gradient-to-br from-[#3B82F6] to-[#10B981] opacity-0 group-hover:opacity-5 transition-opacity z-0"></div>
+                                    <div className="absolute inset-0 bg-gradient-to-br from-[#0062ff] to-[#00734d] opacity-0 group-hover:opacity-5 transition-opacity z-0"></div>
 
-                                    <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-[#3B82F6] to-[#10B981] rounded-xl flex items-center justify-center mb-4 sm:mb-6 relative z-10">
+                                    <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-[#0062ff] to-[#00734d] rounded-xl flex items-center justify-center mb-4 sm:mb-6 relative z-10">
                                         <Icon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
                                     </div>
 
@@ -438,7 +438,7 @@ const WebDevelopment = () => {
                                     <ul className="space-y-1 sm:space-y-2 relative z-10">
                                         {service.features.map((feature, idx) => (
                                             <li key={idx} className="text-[#4B5563] flex items-start text-xs sm:text-sm font-['Noto_Sans']">
-                                                <CheckCircle className="w-4 h-4 text-[#10B981] mr-2 flex-shrink-0 mt-0.5" />
+                                                <CheckCircle className="w-4 h-4 text-[#00734d] mr-2 flex-shrink-0 mt-0.5" />
                                                 <span>{feature}</span>
                                             </li>
                                         ))}
@@ -453,7 +453,7 @@ const WebDevelopment = () => {
             {/* Why Choose Us */}
             <section id="why-choose" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                 <div className="mb-8 sm:mb-12 lg:mb-16">
-                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#3B82F6] to-[#10B981] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
+                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#0062ff] to-[#00734d] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                         Why Choose Us
                     </span>
                     <h2 className="font-['Noto_Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#1F2937]">Why Partner With Us</h2>
@@ -468,9 +468,9 @@ const WebDevelopment = () => {
                                 return (
                                     <div
                                         key={index}
-                                        className="bg-white p-6 sm:p-8 rounded-2xl text-center hover:shadow-lg hover:border-[#3B82F6] border-2 border-transparent transition-all duration-300 group"
+                                        className="bg-white p-6 sm:p-8 rounded-2xl text-center hover:shadow-lg hover:border-[#0062ff] border-2 border-transparent transition-all duration-300 group"
                                     >
-                                        <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#3B82F6] to-[#10B981] rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
+                                        <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#0062ff] to-[#00734d] rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
                                             <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                                         </div>
                                         <h3 className="font-['Noto_Sans'] text-base sm:text-lg font-bold mb-3 sm:mb-4 text-[#1F2937]">{feature.title}</h3>
@@ -481,8 +481,8 @@ const WebDevelopment = () => {
                         </div>
 
                         <div className="sm:col-span-2 lg:col-span-1">
-                            <div className="bg-white p-6 sm:p-8 rounded-2xl text-center hover:shadow-lg hover:border-[#3B82F6] border-2 border-transparent transition-all duration-300 group h-full">
-                                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#3B82F6] to-[#10B981] rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
+                            <div className="bg-white p-6 sm:p-8 rounded-2xl text-center hover:shadow-lg hover:border-[#0062ff] border-2 border-transparent transition-all duration-300 group h-full">
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#0062ff] to-[#00734d] rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
                                     <Monitor className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                                 </div>
                                 <h3 className="font-['Noto_Sans'] text-base sm:text-lg font-bold mb-3 sm:mb-4 text-[#1F2937]">{whyChooseUs[4].title}</h3>
@@ -499,7 +499,7 @@ const WebDevelopment = () => {
                                 className="w-full h-full object-cover rounded-2xl"
                                 onError={(e) => {
                                     e.target.onerror = null;
-                                    e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%233B82F6' opacity='0.1'/%3E%3Ctext x='50%' y='50%' font-family='Arial' font-size='20' fill='%233B82F6' text-anchor='middle'%3EOur Team%3C/text%3E%3C/svg%3E"
+                                    e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%230062ff' opacity='0.1'/%3E%3Ctext x='50%' y='50%' font-family='Arial' font-size='20' fill='%230062ff' text-anchor='middle'%3EOur Team%3C/text%3E%3C/svg%3E"
                                 }}
                             />
                         </div>
@@ -510,7 +510,7 @@ const WebDevelopment = () => {
             {/* Testimonials */}
             <section id="testimonials" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                 <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#3B82F6] to-[#10B981] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
+                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#0062ff] to-[#00734d] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                         Testimonials
                     </span>
                     <h2 className="font-['Noto_Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#1F2937]">What Our Clients Say</h2>
@@ -518,7 +518,7 @@ const WebDevelopment = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
                     {testimonials.map((testimonial, index) => (
                         <div key={index} className="bg-white p-6 sm:p-8 lg:p-10 rounded-3xl shadow-lg hover:translate-y-[-5px] transition-transform duration-300 group">
-                            <div className="text-4xl sm:text-5xl text-[#3B82F6] opacity-30 mb-3 sm:mb-4 group-hover:opacity-50 transition-opacity">❝</div>
+                            <div className="text-4xl sm:text-5xl text-[#0062ff] opacity-30 mb-3 sm:mb-4 group-hover:opacity-50 transition-opacity">❝</div>
                             <p className="font-['Noto_Sans'] text-[#4B5563] italic leading-relaxed mb-4 sm:mb-6 text-sm sm:text-base">{testimonial.text}</p>
                             <div className="font-['Noto_Sans'] font-semibold text-[#1F2937] text-sm sm:text-base">— {testimonial.author}</div>
                         </div>
@@ -529,7 +529,7 @@ const WebDevelopment = () => {
             {/* FAQ Section */}
             <section id="faq" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
                 <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#3B82F6] to-[#10B981] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
+                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#0062ff] to-[#00734d] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
                         FAQ
                     </span>
                     <h2 className="font-['Noto_Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#1F2937]">Frequently Asked Questions</h2>
@@ -538,11 +538,11 @@ const WebDevelopment = () => {
                     {faqItems.map((item, index) => (
                         <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                             <button
-                                className="w-full p-4 sm:p-6 text-left flex justify-between items-center font-['Noto_Sans'] font-semibold hover:text-[#3B82F6] transition-colors text-sm sm:text-base group text-[#1F2937]"
+                                className="w-full p-4 sm:p-6 text-left flex justify-between items-center font-['Noto_Sans'] font-semibold hover:text-[#0062ff] transition-colors text-sm sm:text-base group text-[#1F2937]"
                                 onClick={() => toggleFaq(index)}
                             >
                                 <span className="text-left pr-4">{item.question}</span>
-                                <span className={`text-xl sm:text-2xl transition-transform flex-shrink-0 ${activeFaq === index ? 'rotate-45 text-[#3B82F6]' : 'text-[#4B5563] group-hover:text-[#3B82F6]'}`}>+</span>
+                                <span className={`text-xl sm:text-2xl transition-transform flex-shrink-0 ${activeFaq === index ? 'rotate-45 text-[#0062ff]' : 'text-[#4B5563] group-hover:text-[#0062ff]'}`}>+</span>
                             </button>
                             <div className={`overflow-hidden transition-all duration-300 ${activeFaq === index ? 'max-h-96' : 'max-h-0'}`}>
                                 <div className="p-4 sm:p-6 pt-0 font-['Noto_Sans'] text-[#4B5563] leading-relaxed text-sm sm:text-base">
@@ -571,7 +571,7 @@ const WebDevelopment = () => {
 
             {/* Scroll to Top Button */}
             <button
-                className={`fixed bottom-6 right-4 sm:bottom-8 sm:right-8 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#3B82F6] to-[#10B981] text-white rounded-full flex items-center justify-center text-lg sm:text-xl shadow-lg hover:translate-y-[-5px] transition-all ${isScrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                className={`fixed bottom-6 right-4 sm:bottom-8 sm:right-8 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#0062ff] to-[#00734d] text-white rounded-full flex items-center justify-center text-lg sm:text-xl shadow-lg hover:translate-y-[-5px] transition-all ${isScrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                 onClick={scrollToTop}
             >
                 ↑

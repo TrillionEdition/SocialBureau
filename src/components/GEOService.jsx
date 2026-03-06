@@ -22,6 +22,7 @@ export default function GEOService() {
         keywords="local SEO, Google Business Profile, Google Maps ranking, AI review management, AEO, GEO, multi-location SEO"
         image="/assets/socialbureau.png"
         url="https://www.socialbureau.in/services/geo"
+        canonicalUrl="https://www.socialbureau.in/services/geo"
       />
 
       <header className="bg-gradient-to-b from-black via-gray-900 to-black text-white py-24">
@@ -35,7 +36,7 @@ export default function GEOService() {
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <a href="/contact" className="inline-flex items-center gap-3 px-6 py-3 bg-[#b2632c] hover:bg-[#b2632c] rounded-full font-semibold shadow-lg transition">Discuss GEO</a>
-                <a href="/services" className="px-4 py-3 border border-zinc-800 rounded-full text-sm text-gray-300 hover:bg-zinc-800 transition bg-gray-900">All Services</a>
+                <a href="#" className="px-4 py-3 border border-zinc-800 rounded-full text-sm text-gray-300 hover:bg-zinc-800 transition bg-gray-900">All Services</a>
               </div>
 
               <div className="mt-8 flex gap-6 text-gray-300">

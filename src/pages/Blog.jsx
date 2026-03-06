@@ -14,6 +14,7 @@ export const Blog = () => {
                     keywords="marketing insights blog, digital marketing articles, meta ads updates 2025, google marketing tools blog, ai marketing news, freelancer marketing guide, agency performance case studies, socialbureau insights, marketing research india, content marketing tips"
                     image="/assets/socialbureau.png"
                     url="https://www.socialbureau.in/blog"
+                    canonicalUrl="https://www.socialbureau.in/blog"
                   />
         <BlogHeader/>
         <BlogPosts/>

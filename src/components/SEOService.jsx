@@ -21,6 +21,7 @@ export default function SEOService() {
         keywords="SEO, technical SEO, on-page SEO, off-page SEO, backlink building, content optimization, site audits, organic traffic, search engine optimization"
         image="/assets/socialbureau.png"
         url="https://www.socialbureau.in/services/seo"
+        canonicalUrl="https://www.socialbureau.in/services/seo"
       />
 
       <header className="bg-gradient-to-b from-black via-zinc-900 to-black text-white py-24">
@@ -32,7 +33,7 @@ export default function SEOService() {
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <a href="/contact" className="inline-flex items-center gap-3 px-6 py-3 bg-[#f2c402] hover:bg-[#f2c402] rounded-full font-semibold shadow-lg transition text-black">Schedule an Audit</a>
-                <a href="/services" className="px-4 py-3 border border-zinc-800 rounded-full text-sm text-gray-300 hover:bg-zinc-800 transition bg-gray-900">See Services</a>
+                <a href="#" className="px-4 py-3 border border-zinc-800 rounded-full text-sm text-gray-300 hover:bg-zinc-800 transition bg-gray-900">See Services</a>
               </div>
 
               <div className="mt-8 flex gap-6 text-gray-300">

@@ -4,12 +4,19 @@
   font-family: 'Inter', sans-serif;
 }
 
-body {
+html,
+body,
+#root {
   font-family: 'Inter', sans-serif;
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  max-width: 100%;
+}
+
+body {
+  position: relative;
 }
 
 /* Ensure all elements inherit or use Inter */
@@ -35,6 +42,7 @@ select {
   src: url("/assets/logo.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 /* Custom Global Scrollbar */
@@ -89,6 +97,7 @@ select {
 }
 
 @keyframes move1 {
+
   0%,
   100% {
     transform: translate(-30%, -30%);
@@ -100,6 +109,7 @@ select {
 }
 
 @keyframes move2 {
+
   0%,
   100% {
     transform: translate(30%, -20%);
@@ -177,12 +187,15 @@ select {
 /* no scroller */
 /* Hide scrollbar but keep scroll functionality */
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE & Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;
+  /* IE & Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .no-scrollbar::-webkit-scrollbar {
-  display: none;             /* Chrome, Safari */
+  display: none;
+  /* Chrome, Safari */
 }
 
 /* Lenis Smooth Scroll Styles */
@@ -236,8 +249,10 @@ html.lenis body {
 }
 
 .font-display {
-  font-family: inherit; /* Falling back to system sans for now, but keeping class for styling hook */
+  font-family: inherit;
+  /* Falling back to system sans for now, but keeping class for styling hook */
 }
+
 /* to hide */
 .visually-hidden {
   position: absolute !important;

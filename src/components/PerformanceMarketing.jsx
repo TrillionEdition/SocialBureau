@@ -1,18 +1,36 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { BarChart3, Megaphone, Search, ShoppingCart, Target, Users } from 'lucide-react';
+import { BarChart3, Megaphone, Search, ShoppingCart, Target, Users, ChevronRight, ArrowUp, Plus, X, CheckCircle, BarChart, Settings, Smartphone, Layers, Shield } from 'lucide-react';
 import Seo from './Seo';
+import { getOptimizedCloudinaryUrl } from '../utils/cloudinary';
 
 const PerformanceMarketing = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [activeFaq, setActiveFaq] = useState(null);
+    const [activeCaseStudy, setActiveCaseStudy] = useState(0);
 
     useEffect(() => {
+        let rafId;
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
+            const update = () => {
+                setIsScrolled(window.scrollY > 50);
+
+                // Update scroll progress bar
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                const progressBar = document.querySelector('.scroll-progress-bar');
+                if (progressBar) {
+                    progressBar.style.transform = `scaleX(${winScroll / height})`;
+                }
+            };
+            cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(update);
         };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            cancelAnimationFrame(rafId);
+        };
     }, []);
 
     const scrollToTop = () => {
@@ -21,54 +39,6 @@ const PerformanceMarketing = () => {
 
     const toggleFaq = (index) => {
         setActiveFaq(activeFaq === index ? null : index);
-    };
-
-    const CountUp = ({ end, duration = 1500, suffix = "" }) => {
-        const [value, setValue] = useState(0);
-        const ref = useRef(null);
-        const hasAnimated = useRef(false);
-
-        useEffect(() => {
-            const element = ref.current;
-            if (!element) return;
-
-            const observer = new IntersectionObserver(
-                ([entry]) => {
-                    if (entry.isIntersecting && !hasAnimated.current) {
-                        hasAnimated.current = true;
-
-                        const startTime = performance.now();
-
-                        const animate = (time) => {
-                            const progress = Math.min((time - startTime) / duration, 1);
-                            const eased = 1 - Math.pow(1 - progress, 3);
-                            const current = Math.floor(eased * end);
-
-                            setValue(current);
-
-                            if (progress < 1) {
-                                requestAnimationFrame(animate);
-                            } else {
-                                setValue(end);
-                            }
-                        };
-
-                        requestAnimationFrame(animate);
-                    }
-                },
-                { threshold: 0.4 }
-            );
-
-            observer.observe(element);
-            return () => observer.disconnect();
-        }, [end, duration]);
-
-        return (
-            <span ref={ref}>
-                {value}
-                {suffix}
-            </span>
-        );
     };
 
     const faqItems = [
@@ -90,7 +60,7 @@ const PerformanceMarketing = () => {
         },
         {
             question: "How do you measure success in result-driven campaigns?",
-            answer: "Success is evaluated using business-aligned indicators such as lead relevance, cost efficiency, and contribution to revenue. These insights help identify what's working and guide ongoing optimization efforts."
+            answer: "Success is evaluated using business-aligned indicators such as lead relevance, cost efficiency, and contribution to revenue. These insights help identify what’s working and guide ongoing optimization efforts."
         },
         {
             question: "Can performance marketing support long-term business growth?",
@@ -106,11 +76,11 @@ const PerformanceMarketing = () => {
         },
         {
             question: "Does this replace organic or long-term marketing efforts?",
-            answer: "No, it works best alongside organic strategies. Insights from paid efforts often improve content, user experience, and targeting, creating a stronger foundation for long-term brand visibility and trust."
+            answer: "No, it works best alongside organic strategies. Insights from performance campaigns often strengthen content, user experience, and targeting, creating a stronger foundation for long-term visibility and trust."
         },
         {
             question: "What should businesses prepare before starting performance marketing?",
-            answer: "Before starting performance marketing, businesses should define clear goals, understand their audience, and ensure digital assets are conversion-ready. Proper preparation improves efficiency and prevents wasted spend early on."
+            answer: "Businesses should define clear goals, understand their audience, and ensure digital assets are conversion-ready. Proper preparation improves efficiency and helps prevent wasted spend during early stages."
         }
     ];
 
@@ -118,320 +88,497 @@ const PerformanceMarketing = () => {
         {
             icon: Target,
             title: "PPC Management",
-            description: "We plan and execute paid search programs built around relevance, budget efficiency, and measurable outcomes. Campaigns are continuously refined to improve efficiency without increasing risk. This approach helps maintain consistency even as competition and costs fluctuate.",
-            features: ["Structured keyword and intent mapping", "Budget control with performance benchmarks", "Ongoing optimization based on results"]
+            description: "We plan and execute paid search programs built around relevance, budget efficiency, and measurable outcomes. Campaigns are continuously refined to improve efficiency without increasing risk. This approach helps maintain consistency even as competition and costs fluctuate",
+            features: ["Structured keyword mapping", "Budget control benchmarks", "Ongoing optimization"]
         },
         {
             icon: Megaphone,
             title: "Paid Advertising",
-            description: "We develop structured advertising programs across digital platforms to support visibility and acquisition goals while maintaining cost discipline. Each campaign is aligned with a clear objective to avoid wasted spend.",
-            features: ["Platform-aligned campaign structure", "Clear messaging for intent-based audiences", "Continuous performance monitoring"]
+            description: "We develop structured advertising programs across digital platforms to support visibility and acquisition goals while maintaining cost discipline. Each campaign is aligned with a clear objective to avoid wasted spend",
+            features: ["Platform-aligned structure", "Clear intent-based messaging", "Continuous monitoring"]
         },
         {
             icon: Users,
             title: "Meta Ads",
-            description: "Audience-focused social campaigns designed to support awareness, consideration, and action across different stages of the buying journey. Creative and targeting decisions are guided by performance signals rather than assumptions.",
-            features: ["Creative aligned to audience behavior", "Funnel-based campaign planning", "Performance-driven iteration cycles"]
+            description: "Audience-focused social campaigns designed to support awareness, consideration, and action across different stages of the buying journey. Creative and targeting decisions are guided by performance signals rather than assumptions",
+            features: ["Creative aligned to behavior", "Funnel-based planning", "Performance-driven iteration"]
         },
         {
             icon: Search,
             title: "Google Ads",
-            description: "Search-led programs designed to capture demand at the right moment while maintaining efficiency and relevance. Campaigns are reviewed regularly to adapt to changes in user behavior.",
-            features: ["Intent-based campaign architecture", "Cost control through structured bidding", "Ongoing refinement for quality traffic"]
+            description: "Search-led programs designed to capture demand at the right moment while maintaining efficiency and relevance. Campaigns are reviewed regularly to adapt to changes in user behavior",
+            features: ["Intent-based architecture", "Cost control bidding", "Refinement for quality traffic"]
         },
         {
             icon: ShoppingCart,
             title: "E-Commerce Marketing",
-            description: "Product-focused performance systems designed to support discovery, trust, and transaction readiness across paid channels. This helps brands scale sales while maintaining predictable acquisition costs.",
-            features: ["Catalog-driven campaign planning", "Audience refinement based on behavior", "Conversion-focused messaging alignment"]
+            description: "Product-focused performance systems designed to support discovery, trust, and transaction readiness across paid channels. This helps brands scale sales while maintaining predictable acquisition costs",
+            features: ["Catalog-driven planning", "Behavioral audience refinement", "Conversion-focused messaging"]
         },
         {
             icon: BarChart3,
             title: "Marketing Analytics",
-            description: "Measurement frameworks built to provide clarity into what works, why it works, and how results can be scaled responsibly. Insights are used to guide both short-term adjustments and long-term planning.",
-            features: ["Clear reporting structures", "Insight-driven decision making", "Continuous performance evaluation"]
+            description: "Measurement frameworks built to provide clarity into what works, why it works, and how results can be scaled responsibly. Insights are used to guide both short-term adjustments and long-term planning",
+            features: ["Clear reporting structures", "Insight-driven decisions", "Continuous evaluation"]
         }
     ];
 
-    const features = [
+    const whyChooseUs = [
         {
-
+            icon: Layers,
             title: "ROI Driven Decision Making",
-            description: "Every recommendation is grounded in measurable outcomes rather than assumptions. Campaign decisions are guided by efficiency benchmarks, helping businesses protect budgets while improving results steadily over time. This disciplined approach reduces volatility and supports predictable performance growth."
+            description: "Every recommendation is grounded in measurable outcomes rather than assumptions. Decisions are guided by efficiency benchmarks to protect budgets while delivering steady, predictable performance growth."
         },
         {
-
+            icon: BarChart,
             title: "Data Driven Marketing Execution",
-            description: "Execution is guided by insights gathered from real user behavior and performance signals. Testing and refinement are ongoing, allowing campaigns to improve consistently instead of relying on one-time optimizations. This method helps identify what truly contributes to results across channels."
+            description: "Execution is informed by real user behavior and performance signals. Continuous testing and refinement ensure campaigns improve consistently instead of relying on one-time optimizations."
         },
         {
-
+            icon: Target,
             title: "Performance Strategy Built for Scale",
-            description: "Campaign structures are designed with future growth in mind. As demand increases, systems can be expanded without losing control, clarity, or efficiency. This ensures scaling efforts remain sustainable and aligned with business capacity."
+            description: "Campaign structures are designed with future growth in mind, allowing systems to scale smoothly without losing control, clarity, or operational efficiency."
         },
         {
+            icon: Settings,
             title: "Channel-Specific Expertise",
-            description: "Each platform is managed based on its unique strengths and limitations. Strategies are adapted to audience behavior and platform dynamics rather than applying the same approach everywhere. This leads to better relevance and stronger engagement across channels."
+            description: "Each platform is managed according to its unique strengths and audience behavior. Strategies are adapted to platform dynamics rather than applying a one-size-fits-all approach."
         },
         {
+            icon: Smartphone,
             title: "Transparent Performance Reporting",
-            description: "Clear reporting provides visibility into spend, outcomes, and optimization actions. Stakeholders always understand how campaigns are performing and what steps are being taken to improve results. This transparency builds confidence and supports informed decision-making."
-        }
-    ];
-
-    const testimonials = [
-        {
-            text: "Performance marketing finally became clear for us. Every campaign had purpose, every number had meaning, and we could confidently see how our efforts were translating into real business growth.",
-            author: ""
-        },
-        {
-            text: "What we valued most was the clarity and structure they brought. Decisions were data-backed but always aligned with our goals, which helped us scale without feeling uncertain or reactive.",
-            author: ""
-        },
-        {
-            text: "Communication was consistent and transparent throughout. We always knew what was happening, why it mattered, and how it would impact results, which made the entire process stress-free.",
-            author: ""
-        },
-        {
-            text: "This wasn't just about ads or traffic. They helped us build a system that continues to perform as our business grows, giving us confidence in our long-term acquisition strategy.",
-            author: ""
-        },
-        {
-            text: "We saw a clear improvement in lead quality within weeks. Sales conversations became more relevant, follow-ups were easier, and our team spent less time filtering low-intent enquiries.",
-            author: ""
+            description: "Clear reporting provides visibility into spend, outcomes, and optimization actions, ensuring stakeholders always understand performance and improvement efforts."
         }
     ];
 
     const caseStudies = [
         {
-            type: "CASE STUDY 1: SERVICE-BASED BUSINESS",
-            idealCustomer: "A service-focused company with strong offline credibility but limited visibility and inconsistent enquiries from digital channels.",
-            challenge: "The website attracted traffic, but visitors rarely converted. Messaging was broad, service pages lacked clarity, and enquiry forms generated leads that were poorly aligned with the sales team's expectations.",
-            approach: "We refined the website structure by clarifying service positioning and aligning content with high-intent user journeys. Pages were optimized to address real buyer concerns, supported by improved navigation and clearer conversion paths designed to guide users toward meaningful actions.",
+            title: "Service-Based Business — Lead Quality Growth",
+            type: "Service-Based",
+            idealCustomer: "A service-focused company with strong offline credibility but limited digital visibility and inconsistent enquiries.",
+            challenge: "The website attracted traffic, but visitors rarely converted. Messaging was broad, service pages lacked clarity, and enquiries were poorly aligned with sales expectations.",
+            approach: "Refined website structure by clarifying service positioning and aligning content with high-intent user journeys. Improved navigation and conversion paths guided users toward meaningful actions.",
             results: [
-                "Qualified enquiries increased by 58% within 90 days",
-                "Bounce rate on key pages reduced by 34%",
-                "Sales conversations became shorter due to better-informed prospects"
+                { value: "58%", label: "Qualified enquiries" },
+                { value: "34%", label: "Bounce rate reduced" },
+                { value: "Shorter", label: "Sales conversations" }
             ]
         },
         {
-            type: "CASE STUDY 2: eCOMMERCE BRAND",
-            idealCustomer: "An eCommerce brand experiencing steady traffic but struggling to convert visitors into repeat customers.",
-            challenge: "Despite consistent ad spend, conversion rates remained low. Product pages lacked persuasive elements, and customer drop-offs occurred before checkout. Marketing decisions were reactive rather than insight-led.",
-            approach: "We analyzed user behavior across the funnel and restructured product pages to improve clarity, trust, and usability. Conversion-focused improvements were introduced alongside performance tracking to identify friction points and refine messaging based on real customer behavior.",
+            title: "eCommerce Brand — Conversion Rate Optimization",
+            type: "eCommerce",
+            idealCustomer: "An eCommerce brand with steady traffic but struggling to convert visitors into repeat customers.",
+            challenge: "Despite consistent ad spend, conversion rates remained low. Product pages lacked persuasive elements and users dropped off before checkout.",
+            approach: "Analyzed user behavior across the funnel and restructured product pages to improve clarity, trust, and usability. Introduced conversion-focused improvements backed by performance tracking.",
             results: [
-                "Conversion rate improved by 41% in three months",
-                "Cart abandonment reduced by 27%",
-                "Revenue per visitor increased significantly without increasing ad spend"
+                { value: "41%", label: "Conversion rate" },
+                { value: "27%", label: "Cart abandonment" },
+                { value: "Higher", label: "Revenue per visitor" }
             ]
         },
         {
-            type: "CASE STUDY 3: B2B LEAD GENERATION BRAND",
+            title: "B2B Lead Generation — Lead Quality Improvement",
+            type: "B2B Lead Gen",
             idealCustomer: "A B2B company offering specialized solutions and targeting decision-makers with longer buying cycles.",
-            challenge: "Leads were coming in, but most lacked intent or decision authority. The sales team spent time filtering enquiries that did not meet qualification standards, slowing down revenue growth.",
-            approach: "We aligned messaging with buyer-stage intent and optimized landing experiences to attract decision-ready prospects. Content was structured to educate, build credibility, and pre-qualify users before enquiry submission.",
+            challenge: "Leads were coming in, but most lacked intent or decision authority. The sales team spent excessive time filtering unqualified enquiries.",
+            approach: "Aligned messaging with buyer-stage intent and optimized landing pages to attract decision-makers ready to engage. Improved qualification through clearer value propositions.",
             results: [
-                "Lead quality improved by 46%",
-                "Sales-qualified leads increased within eight weeks",
-                "Sales team reported higher close rates and shorter deal cycles"
+                { value: "46%", label: "Lead quality" },
+                { value: "8 wks", label: "Time to impact" },
+                { value: "Higher", label: "Close rates" }
             ]
         }
     ];
 
-    return (
-        <div className="font-['Inter'] bg-[#F5F1EB] text-[#2C2C2C] overflow-x-hidden pm-page">
+    const testimonials = [
+        {
+            text: "Performance marketing finally became clear for us. Every campaign had purpose, every number had meaning, and we could clearly see how our efforts translated into real business growth.",
+            author: "Operations Lead"
+        },
+        {
+            text: "What we valued most was the clarity and structure they brought. Decisions were data-backed and aligned with our goals, which helped us scale without feeling uncertain or reactive.",
+            author: "Marketing Manager"
+        },
+        {
+            text: "Communication was consistent and transparent throughout. We always knew what was happening, why it mattered, and how it would impact results.",
+            author: "Founder"
+        },
+        {
+            text: "This wasn’t just about ads or traffic. They helped us build a system that continues to perform as our business grows, giving us confidence in our long-term acquisition strategy.",
+            author: "Business Owner"
+        },
+        {
+            text: "We saw a clear improvement in lead quality within weeks. Sales conversations became more relevant, follow-ups were easier, and our team spent less time filtering low-intent enquiries.",
+            author: "Sales Lead"
+        }
+    ];
 
+    return (
+        <div className="font-['SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif] bg-white text-[#1d1d1f] overflow-x-hidden antialiased relative">
             <Seo
-                title="Performance Marketing Agency in Kochi | Social Bureau"
-                description="Structured performance marketing in Kerala designed to turn data into clarity, optimize spend, and drive consistent, measurable growth."
-                keywords="performance marketing agency in KOCHI, performance marketing specialist,performance marketing services KERALA,PPC Management,Paid Advertising, Social media  Ads, Google Ads, eCommerce Marketing, Marketing Analytics"
+                title="Performance Marketing Agency in Kochi | SocialBureau"
+                description="Drive measurable results with SocialBureau’s performance marketing. Boost conversions, optimize campaigns, and maximize ROI with data-driven strategies"
+                keywords="performance marketing agency, kochi, kerala, PPC, Google Ads, Meta Ads,PERFORMANCE MARKETING AGENCY IN KOCHI, PERFORMANCE MARKETING STRATEGY, PPC Management, ROI Driven Decision Making"
+                canonicalUrl="https://www.socialbureau.in/performance-marketing"
+                url="https://www.socialbureau.in/performance-marketing"
             />
-            {/* Add inline styles for animations */}
+
             <style dangerouslySetInnerHTML={{
                 __html: `
-                .pm-page img {
-                    max-width: 100%;
-                    height: auto;
+                * {
+                    -webkit-font-smoothing: antialiased;
+                    -moz-osx-font-smoothing: grayscale;
                 }
-                @keyframes fadeInUp {
-                    from {
-                        opacity: 0;
-                        transform: translateY(30px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
+                
+                .apple-overline {
+                    font-size: 0.75rem;
+                    letter-spacing: 0.05em;
+                    text-transform: uppercase;
+                    color: #86868b;
+                    font-weight: 600;
                 }
-                @keyframes float {
-                    0%, 100% {
-                        transform: translateY(0px);
-                    }
-                    50% {
-                        transform: translateY(-20px);
-                    }
+                
+                .apple-heading {
+                    font-size: clamp(2.5rem, 5vw, 3.5rem);
+                    font-weight: 600;
+                    line-height: 1.1;
+                    letter-spacing: -0.015em;
                 }
-                @keyframes pulse-slow {
-                    0%, 100% {
-                        opacity: 0.2;
-                    }
-                    50% {
-                        opacity: 0.4;
-                    }
+                
+                .apple-card {
+                    background: #ffffff;
+                    border-radius: 24px;
+                    padding: 2rem;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+                    transition: all 0.3s ease;
+                    border: 1px solid #f5f5f7;
                 }
-                .animate-fadeInUp {
-                    animation: fadeInUp 0.8s ease-out forwards;
+                
+                .apple-card:hover {
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+                    border-color: #e5e5e7;
                 }
-                .animate-float {
-                    animation: float 6s ease-in-out infinite;
+                
+                .apple-button-primary {
+                    background: #7E0A11;
+                    color: white;
+                    padding: 0.75rem 2rem;
+                    border-radius: 980px;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    transition: all 0.3s ease;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
                 }
-                .animate-pulse-slow {
-                    animation: pulse-slow 4s ease-in-out infinite;
+                
+                .apple-button-primary:hover {
+                    background: #63080d;
+                    transform: scale(1.02);
                 }
-                .clip-path-polygon {
-                    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+                
+                .apple-button-secondary {
+                    background: transparent;
+                    color: #7E0A11;
+                    padding: 0.75rem 2rem;
+                    border-radius: 980px;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    border: 1px solid #7E0A11;
+                    transition: all 0.3s ease;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
                 }
-            `}} />
+                
+                .apple-button-secondary:hover {
+                    background: rgba(126, 10, 17, 0.05);
+                }
+                
+                .apple-stat {
+                    font-size: 2.5rem;
+                    font-weight: 600;
+                    color: #7E0A11;
+                    line-height: 1;
+                }
+                
+                .apple-stat-label {
+                    font-size: 0.875rem;
+                    color: #86868b;
+                    margin-top: 0.5rem;
+                }
+                
+                .scroll-progress-bar {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    height: 3px;
+                    width: 100%;
+                    background: #7E0A11;
+                    z-index: 1000;
+                    transform: scaleX(0);
+                    transform-origin: left;
+                    will-change: transform;
+                    transition: transform 0.1s ease;
+                }
+                
+                .stack-layer {
+                    position: sticky;
+                    top: 0;
+                    z-index: 1;
+                    box-shadow: 0 -20px 40px rgba(0,0,0,0.05);
+                }
+                
+                @keyframes fadeUp {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                .animate-fadeUp {
+                    animation: fadeUp 0.8s ease-out forwards;
+                }
 
-            {/* Scroll Progress Bar */}
-            <div className="fixed top-0 left-0 h-1 bg-gradient-to-r from-[#D97634] to-[#B8956A] z-50" style={{ width: '0%' }}></div>
+                /* CASE STUDIES RESULTS MOBILE RESPONSIVENESS */
+                @media (max-width: 768px) {
+                    .grid.grid-cols-3 {
+                        grid-template-columns: 1fr !important;
+                        gap: 1rem !important;
+                    }
+
+                    .apple-stat {
+                        font-size: 1.75rem !important;
+                    }
+
+                    .apple-stat-label {
+                        font-size: 0.75rem !important;
+                        margin-top: 0.375rem !important;
+                        word-break: break-word;
+                        line-height: 1.2;
+                    }
+                }
+
+                @media (max-width: 640px) {
+                    .grid.grid-cols-3 {
+                        grid-template-columns: 1fr !important;
+                        gap: 0.75rem !important;
+                        padding-top: 0.75rem !important;
+                        padding-bottom: 0.75rem !important;
+                    }
+
+                    .apple-stat {
+                        font-size: 1.5rem !important;
+                    }
+
+                    .apple-stat-label {
+                        font-size: 0.65rem !important;
+                        word-break: break-word;
+                        line-height: 1.1;
+                        margin-top: 0.25rem !important;
+                    }
+                }
+
+                /* CASE STUDY CARD MOBILE */
+                @media (max-width: 768px) {
+                    .apple-card.sticky {
+                        position: relative !important;
+                        top: 0 !important;
+                    }
+
+                    .apple-card {
+                        padding: 1.5rem !important;
+                    }
+
+                    .apple-card h3 {
+                        font-size: 1.25rem !important;
+                    }
+
+                    .apple-card h4 {
+                        font-size: 0.95rem !important;
+                    }
+
+                    .apple-card p {
+                        font-size: 0.9rem !important;
+                    }
+                }
+
+                @media (max-width: 640px) {
+                    .apple-card {
+                        padding: 1rem !important;
+                        border-radius: 12px !important;
+                    }
+
+                    .apple-card h3 {
+                        font-size: 1.1rem !important;
+                    }
+
+                    .apple-card h4 {
+                        font-size: 0.85rem !important;
+                    }
+
+                    .apple-card p {
+                        font-size: 0.8rem !important;
+                    }
+
+                    [class*="space-y-6"] {
+                        gap: 1rem !important;
+                    }
+
+                    [class*="border-t"] {
+                        margin-top: 0.75rem !important;
+                        padding-top: 0.75rem !important;
+                    }
+                }
+
+                /* CASE STUDY LIST MOBILE */
+                @media (max-width: 768px) {
+                    .lg\:col-span-5 {
+                        grid-column: span 1 !important;
+                    }
+
+                    .lg\:col-span-7 {
+                        grid-column: span 1 !important;
+                    }
+
+                    .space-y-6 {
+                        gap: 1rem !important;
+                    }
+                }
+
+                /* GENERAL RESULTS SECTION FIX */
+                @media (max-width: 640px) {
+                    .text-center {
+                        text-align: center;
+                    }
+
+                    .grid {
+                        width: 100%;
+                        overflow: visible;
+                    }
+
+                    div[class*="text-center"] {
+                        padding: 0.5rem;
+                    }
+                }
+                `
+            }} />
+
+            <div className="scroll-progress-bar" style={{ width: '0%' }}></div>
 
             {/* Hero Section */}
-            <section className="min-h-screen flex items-center pt-20 px-4 sm:px-6 lg:px-8 relative overflow-visible bg-gradient-to-br from-[#F5F1EB] to-[#F0E8E0]">
-                {/* Decorative background - adjusted to not overlap */}
-                <div className="absolute top-0 right-0 w-96 h-full bg-gradient-to-br from-[#B8956A] to-[#D97634] clip-path-polygon opacity-5 animate-float hidden lg:block -z-0"></div>
-
-                <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 lg:gap-16 items-center relative z-10">
-                    <div className="animate-fadeInUp">
-                        <h1 className="font-['Inter'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 lg:mb-8 text-[#2C2C2C]">
-                            Performance Marketing Agency in Kochi
+            <section className="min-h-screen flex items-center px-6 lg:px-8 relative overflow-hidden bg-white stack-layer" style={{ zIndex: 10 }}>
+                <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                    <div className="animate-fadeUp">
+                        <span className="apple-overline mb-4 block">Performance Marketing Agency</span>
+                        <h1 className="apple-heading mb-6">
+                            Performance Marketing Agency
+                            <span className="block text-[#7E0A11]">in Kochi</span>
                         </h1>
-                        <p className="text-base sm:text-lg text-[#666666] mb-8 lg:mb-12 max-w-2xl">
+                        <p className="apple-body text-[#515154] mb-10 max-w-2xl leading-relaxed text-lg">
                             We help businesses scale visibility, enquiries, and revenue through outcome-focused advertising systems designed for measurable growth across modern digital platforms.
                         </p>
-                        <div className="flex flex-col sm:flex-row flex-wrap gap-4">
-                            <a href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-br from-[#E67E3C] to-[#D46E2F] text-white font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-xl hover:shadow-orange-500/30 transition-all text-sm sm:text-base">
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            <a href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more." className="apple-button-primary">
                                 Book a Strategy Call
+                                <ChevronRight className="w-4 h-4" />
                             </a>
-                            <a href="#services" className="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-white text-[#2C2C2C] font-semibold rounded-full border-2 border-[#B8956A] hover:bg-[#B8956A] hover:text-white hover:translate-y-[-3px] transition-all text-sm sm:text-base">
+                            <a href="#services" className="apple-button-secondary">
                                 Explore Services
                             </a>
                         </div>
                     </div>
-                    <div className="relative h-64 sm:h-80 md:h-96 flex items-center justify-center animate-fadeInUp mt-8 md:mt-0">
-                        <div className="w-full h-full bg-gradient-to-br from-[rgba(230,126,60,0.1)] to-[rgba(74,155,158,0.1)] rounded-3xl overflow-hidden flex items-center justify-center p-4">
-                            <img
-                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579760/performance-marketing_1_oll9bz.jpg"
-                                alt="PERFORMANCE MARKETING IMAGE"
-                                className="w-full h-full object-cover rounded-2xl"
-                                loading="lazy"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Stats Section */}
-            <section className="bg-white py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 relative z-20 mt-8 sm:mt-12">
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-                        {[
-                            { number: '58%', label: 'Increase in Qualified Enquiries' },
-                            { number: '41%', label: 'Conversion Rate Improvement' },
-                            { number: '46%', label: 'Better Lead Quality' },
-                            { number: '27%', label: 'Reduced Cart Abandonment' }
-                        ].map((stat, index) => (
-                            <div key={index} className="text-center p-4 sm:p-6 lg:p-8 hover:translate-y-[-5px] transition-transform relative after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-3/5 after:bg-gradient-to-b from-transparent via-[#CCCCCC] to-transparent after:opacity-20 last:after:hidden even:after:hidden md:even:after:block">
-                                <div className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-br from-[#D97634] to-[#B8956A] bg-clip-text text-transparent mb-2 sm:mb-3">
-                                    <CountUp
-                                        end={parseInt(stat.number)}
-                                        suffix={stat.number.replace(/[0-9]/g, "")}
-                                    />
-                                </div>
-
-                                <div className="text-xs sm:text-sm lg:text-base text-[#666666]">{stat.label}</div>
-                            </div>
-                        ))}
+                    <div className="relative h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+                        <img
+                            src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086611/Digital_Marketing_Made_Simple__Strategy_Growth_cmfbtw.webp", 1200)}
+                            alt="Performance Marketing Strategy Hero"
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                            decoding="async"
+                        />
                     </div>
                 </div>
             </section>
 
             {/* About Section */}
-            <section id="about" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#B8956A] to-[#D97634] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                        ABOUT SECTION
-                    </span>
-                    <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">Performance Marketing Specialist</h2>
-                </div>
-                <div className="grid md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
-                    <div className="h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-[rgba(230,126,60,0.1)] to-[rgba(74,155,158,0.1)] rounded-3xl flex items-center justify-center relative overflow-hidden p-4">
-                        <img
-                            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579775/busy-manager-at-workplace-above-view-2026-01-08-06-22-51-utc_1_rau5yl.jpg"
-                            alt="PERFORMANCE MARKETING IMAGE"
-                            className="w-full h-full object-cover rounded-2xl"
-                            loading="lazy"
-                        />
+            <section id="about" className="min-h-screen w-full bg-[#fbfbfd] text-black flex items-center stack-layer" style={{ zIndex: 20 }}>
+                <div className="w-full px-6 lg:px-8 max-w-7xl mx-auto py-24">
+                    <div className="text-center mb-16">
+                        <span className="apple-overline mb-4 block text-gray-500">About Our Approach</span>
+                        <h2 className="apple-heading text-4xl lg:text-5xl mb-6">Results-Oriented Marketing Strategy</h2>
                     </div>
-                    <div>
-                        <p className="text-[#666666] mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-                            Performance marketing is a results-oriented approach where every campaign is measured against clear outcomes such as enquiries, purchases, or qualified actions. Instead of focusing only on impressions, performance marketing prioritizes accountability, efficiency, and measurable returns.
-                        </p>
-                        <p className="text-[#666666] mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-                            At <a href='https://socialbureau.in'>Social Bureau</a>, we work as a strategic partner, supporting brands with structured performance-led systems that align budgets, messaging, and targeting with real business objectives.
-                        </p>
+                    <div className="grid lg:grid-cols-2 gap-16 items-center">
+                        <div>
+                            <h3 className="text-2xl mb-6 text-[#1d1d1f] font-semibold">Accountability, Efficiency, and Measurable Returns</h3>
+                            <p className="text-[#515154] mb-6 leading-relaxed text-lg">
+                                <a href='https://en.wikipedia.org/wiki/Performance-based_advertising' target='_blank' title="Learn more about Performance-based advertising on Wikipedia">Performance marketing</a> is a results-oriented approach where every campaign is measured against clear outcomes such as enquiries, purchases, or qualified actions. Instead of focusing only on impressions, performance marketing prioritizes accountability, efficiency, and measurable returns                            </p>
+                            <p className="text-[#515154] leading-relaxed text-lg">
+                                At <a href='https://socialbureau.in' title="Visit SocialBureau Official Website"> SocialBureau</a>, we work as a strategic partner, supporting brands with structured performance-led systems that align budgets, messaging, and targeting with real business objectives                            </p>
+                        </div>
+                        <div className="h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl">
+                            <img
+                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/SMM_PHOTOSHOOT_xdkcl5.webp", 1000)}
+                                className="w-full h-full object-cover"
+                                alt="Result driven performance marketing team at work"
+                                loading="lazy"
+                                decoding="async"
+                            />
+                        </div>
                     </div>
                 </div>
             </section>
 
             {/* Services Section */}
-            <section id="services" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-white">
+            <section id="services" className="min-h-screen py-24 px-6 lg:px-8 bg-[#7E0A11] text-white stack-layer" style={{ zIndex: 30 }}>
                 <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                        <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#B8956A] to-[#D97634] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                            OUR SERVICES
-                        </span>
-                        <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">Performance Marketing Services Kerala</h2>
-                        <p className="text-base sm:text-lg text-[#666666] max-w-3xl mx-auto px-4 mb-8">
-                            Our services are designed to support sustainable scaling by aligning paid channels with intent, data signals, and conversion-focused execution. This ensures growth efforts remain efficient, controlled, and adaptable as performance requirements evolve over time.
+                    <div className="text-center mb-16">
+                        <span className="apple-overline mb-4 block text-white/70">Our Services</span>
+                        <h2 className="apple-heading text-4xl lg:text-5xl mb-6 text-white">Performance Marketing Services Kerala</h2>
+                        <p className="apple-body text-white/80 max-w-3xl mx-auto mb-12">
+                            Our services are designed to support sustainable scaling by aligning paid channels with intent,
+                            data signals, and conversion-focused execution. This ensures growth efforts remain efficient,
+                            controlled, and adaptable as performance requirements evolve over time.
                         </p>
-                        <div className="max-w-4xl mx-auto mb-12">
+                    </div>
+
+                    <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+                        <div className="h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl order-2 lg:order-1">
                             <img
-                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771579759/process-of-creating-an-interface-for-a-mobile-app-2026-01-07-01-03-00-utc_1_oktarr.jpg"
-                                alt="PERFORMANCE MARKETING IMAGE"
-                                className="w-full h-auto max-h-[400px] object-cover rounded-2xl shadow-lg"
+                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772183939/Red_stock_martket_chart_p4hejw.webp", 1000)}
+                                alt="Data-driven marketing charts and analytics"
+                                className="w-full h-full object-cover"
                                 loading="lazy"
+                                decoding="async"
                             />
                         </div>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-                        {services.map((service, index) => {
-                            const Icon = service.icon;
-
-                            return (
-                                <div
-                                    key={index}
-                                    className="bg-white p-4 sm:p-6 lg:p-8 rounded-3xl shadow-lg hover:shadow-2xl hover:translate-y-[-10px] transition-all duration-400 border-2 border-transparent hover:border-[#B8956A] relative overflow-hidden group"
-                                >
-                                    <div className="absolute inset-0 bg-gradient-to-br from-[#D97634] to-[#B8956A] opacity-0 group-hover:opacity-5 transition-opacity z-0"></div>
-
-                                    <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-[#D97634] to-[#B8956A] rounded-xl flex items-center justify-center mb-4 sm:mb-6 relative z-10">
-                                        <Icon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
+                        <div className="grid grid-cols-1 gap-6 order-1 lg:order-2">
+                            {services.slice(0, 3).map((service, index) => {
+                                const Icon = service.icon;
+                                return (
+                                    <div key={index} className="rounded-2xl p-6 bg-[#63080d] border border-white/10">
+                                        <div className="w-10 h-10 bg-[#7E0A11] rounded-xl flex items-center justify-center mb-4">
+                                            <Icon className="w-5 h-5 text-white" />
+                                        </div>
+                                        <h3 className="text-lg font-semibold mb-2">{service.title}</h3>
+                                        <p className="text-sm text-white/80 leading-relaxed">{service.description}</p>
                                     </div>
+                                );
+                            })}
+                        </div>
+                    </div>
 
-                                    <h3 className="font-['Inter'] text-lg sm:text-xl font-bold mb-3 sm:mb-4 relative z-10 text-[#2C2C2C]">
-                                        {service.title}
-                                    </h3>
-
-                                    <p className="text-[#666666] mb-4 sm:mb-6 relative z-10 text-sm sm:text-base">
-                                        {service.description}
-                                    </p>
-
-                                    <ul className="space-y-1 sm:space-y-2 relative z-10">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {services.slice(3).map((service, index) => {
+                            const Icon = service.icon;
+                            return (
+                                <div key={index} className="rounded-3xl p-8 bg-[#63080d] border border-white/10 hover:border-white/30 transition">
+                                    <div className="w-12 h-12 bg-[#7E0A11] rounded-xl flex items-center justify-center mb-6">
+                                        <Icon className="w-6 h-6 text-white" />
+                                    </div>
+                                    <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
+                                    <p className="text-white/80 mb-6 text-sm leading-relaxed">{service.description}</p>
+                                    <ul className="space-y-2">
                                         {service.features.map((feature, idx) => (
-                                            <li key={idx} className="text-[#666666] flex items-start text-xs sm:text-sm">
-                                                <span className="text-[#B8956A] font-bold mr-2">✓</span>
-                                                {feature}
+                                            <li key={idx} className="text-sm text-white/80 flex items-start">
+                                                <CheckCircle className="w-4 h-4 text-white mr-2 mt-0.5" />
+                                                <span>{feature}</span>
                                             </li>
                                         ))}
                                     </ul>
@@ -443,214 +590,97 @@ const PerformanceMarketing = () => {
             </section>
 
             {/* Why Choose Us */}
-            <section
-                id="why-choose"
-                className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
-            >
-                {/* HEADER – full width */}
-                <div className="mb-12">
-                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#B8956A] to-[#D97634] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4">
-                        WHY CHOOSE US
-                    </span>
+            <section id="why-choose" className="py-24 px-6 lg:px-8 bg-white text-black stack-layer" style={{ zIndex: 40 }}>
+                <div className="max-w-7xl mx-auto">
+                    <div className="grid lg:grid-cols-2 gap-16 items-center">
+                        <div className="order-2 lg:order-1">
+                            <span className="apple-overline mb-4 block text-gray-500">Why Choose Us</span>
+                            <h2 className="apple-heading text-4xl lg:text-5xl mb-10 text-black">Data-Led Growth Partners</h2>
 
-                    <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2C2C2C]">
-                        Why Choose Social Bureau
-                    </h2>
-                </div>
-
-                {/* CONTENT ROW – cards + image start SAME height */}
-                <div className="grid lg:grid-cols-[1.8fr_1fr] gap-12 items-start">
-
-                    {/* LEFT: Cards */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        {features.map((feature, index) => (
-                            <div
-                                key={index}
-                                className="bg-white p-6 rounded-2xl border border-[#E5E5E5] hover:border-[#B8956A] hover:shadow-lg transition-all"
-                            >
-
-                                <h3 className="font-['Inter'] font-bold mb-2 text-base text-[#2C2C2C]">
-                                    {feature.title}
-                                </h3>
-
-                                <p className="text-[#666666] text-sm leading-relaxed">
-                                    {feature.description}
-                                </p>
+                            <div className="space-y-8">
+                                {whyChooseUs.map((feature, index) => {
+                                    const Icon = feature.icon;
+                                    return (
+                                        <div key={index} className="flex gap-6">
+                                            <div className="flex-shrink-0 w-12 h-12 bg-[#7E0A11]/5 rounded-xl flex items-center justify-center">
+                                                <Icon className="w-6 h-6 text-[#7E0A11]" />
+                                            </div>
+                                            <div>
+                                                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                                                <p className="text-[#515154] leading-relaxed">{feature.description}</p>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
-                        ))}
-                    </div>
-
-                    {/* RIGHT: Image */}
-                    <div className="flex justify-center mt-1">
-                        <div className="bg-gradient-to-br from-[rgba(230,126,60,0.1)] to-[rgba(74,155,158,0.1)] rounded-3xl p-4 max-w-[380px]">
+                        </div>
+                        <div className="order-1 lg:order-2 h-[400px] lg:h-[600px] rounded-[2rem] overflow-hidden shadow-2xl relative group">
                             <img
-                                src="assets/PMO.webp"
-                                alt="Social Bureau Performance Marketing"
-                                className="w-full max-h-[540px] object-contain rounded-2xl shadow-xl"
+                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772022966/PMO_converted_yhchbh.webp", 1000)}
+                                className="w-full h-full object-cover object-[50%_0%] origin-top transition-transform duration-700"
                                 loading="lazy"
+                                decoding="async"
+                                alt="SocialBureau performance marketing results showcase"
                             />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                         </div>
                     </div>
-
                 </div>
             </section>
 
             {/* Case Studies */}
-            <section id="case-studies" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-white">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                        <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#B8956A] to-[#D97634] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                            CASE STUDIES
-                        </span>
-                        <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">Proven Results</h2>
+            <section id="case-studies" className="py-24 bg-[#fbfbfd] stack-layer" style={{ zIndex: 50 }}>
+                <div className="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div className="text-center mb-14">
+                        <span className="apple-overline block mb-3">Case Studies</span>
+                        <h2 className="apple-heading text-4xl lg:text-5xl">Proven Results in Performance</h2>
                     </div>
-                    <div className="space-y-8 sm:space-y-12">
-                        {/* Case Study 1 */}
-                        <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg relative overflow-hidden border-l-4 border-[#E67E3C]">
-                            <span className="inline-block px-3 py-1 sm:px-4 sm:py-2 bg-[#F8F4F0] text-[#E67E3C] text-xs sm:text-sm font-semibold rounded-full mb-4 sm:mb-6">
-                                CASE STUDY 1: SERVICE-BASED BUSINESS
-                            </span>
-                            <h3 className="font-['Inter'] text-xl sm:text-2xl font-bold mb-4 text-[#2C2C2C]">Ideal Customer</h3>
-                            <p className="text-[#666666] mb-6 text-sm sm:text-base">{caseStudies[0].idealCustomer}</p>
 
-                            <div className="mb-6">
-                                <h4 className="font-['Inter'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2">The Challenge (Before)</h4>
-                                <p className="text-[#666666] text-sm sm:text-base">{caseStudies[0].challenge}</p>
-                            </div>
-
-                            <div className="mb-6">
-                                <h4 className="font-['Inter'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2">The Approach</h4>
-                                <p className="text-[#666666] text-sm sm:text-base">{caseStudies[0].approach}</p>
-                            </div>
-
-                            <div className="mb-4">
-                                <h4 className="font-['Inter'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-3">The Results (After)</h4>
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-8 bg-[#F8F4F0] rounded-2xl">
-                                    {caseStudies[0].results.map((result, idx) => {
-                                        const match = result.match(/(\d+)%/);
-                                        const percentage = match ? match[1] : null;
-                                        const text = result.replace(/(\d+%)/, '').trim();
-
-                                        if (percentage) {
-                                            return (
-                                                <div key={idx} className="text-center p-4">
-                                                    <div className="font-['Inter'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#E67E3C] mb-1 sm:mb-2">
-                                                        {result.includes('increased') ? '+' : '-'}{percentage}%
-                                                    </div>
-                                                    <div className="text-xs sm:text-sm text-[#666666]">{text}</div>
-                                                </div>
-                                            );
-                                        } else {
-                                            return (
-                                                <div key={idx} className="text-center p-4">
-                                                    <div className="font-['Inter'] text-lg sm:text-xl font-bold text-[#E67E3C] mb-1 sm:mb-2">
-                                                        ✓
-                                                    </div>
-                                                    <div className="text-xs sm:text-sm text-[#666666]">{result}</div>
-                                                </div>
-                                            );
-                                        }
-                                    })}
-                                </div>
-                            </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                        {/* LEFT list */}
+                        <div className="lg:col-span-5 space-y-6">
+                            {caseStudies.map((study, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setActiveCaseStudy(index)}
+                                    className={`apple-card text-left w-full transition-all duration-300 ${activeCaseStudy === index ? 'ring-2 ring-[#7E0A11] bg-white' : 'hover:bg-[#f5f5f7]'}`}
+                                >
+                                    <span className="text-xs font-semibold text-[#7E0A11] bg-[#7E0A11]/5 px-3 py-1.5 rounded-full uppercase tracking-wider">
+                                        {study.type}
+                                    </span>
+                                    <h3 className="text-lg font-semibold mt-3 text-black">{study.title}</h3>
+                                    <div className="text-[#7E0A11] text-sm mt-3 flex items-center gap-1 font-medium">
+                                        View details <ChevronRight className="w-4 h-4" />
+                                    </div>
+                                </button>
+                            ))}
                         </div>
 
-                        {/* Case Study 2 */}
-                        <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg relative overflow-hidden border-l-4 border-[#E67E3C]">
-                            <span className="inline-block px-3 py-1 sm:px-4 sm:py-2 bg-[#F8F4F0] text-[#E67E3C] text-xs sm:text-sm font-semibold rounded-full mb-4 sm:mb-6">
-                                CASE STUDY 2: eCOMMERCE BRAND
-                            </span>
-                            <h3 className="font-['Inter'] text-xl sm:text-2xl font-bold mb-4 text-[#2C2C2C]">Ideal Customer</h3>
-                            <p className="text-[#666666] mb-6 text-sm sm:text-base">{caseStudies[1].idealCustomer}</p>
-
-                            <div className="mb-6">
-                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2">The Challenge (Before)</h4>
-                                <p className="text-[#666666] text-sm sm:text-base">{caseStudies[1].challenge}</p>
-                            </div>
-
-                            <div className="mb-6">
-                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2">The Approach</h4>
-                                <p className="text-[#666666] text-sm sm:text-base">{caseStudies[1].approach}</p>
-                            </div>
-
-                            <div className="mb-4">
-                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-3">The Results (After)</h4>
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-8 bg-[#F8F4F0] rounded-2xl">
-                                    {caseStudies[1].results.map((result, idx) => {
-                                        const match = result.match(/(\d+)%/);
-                                        const percentage = match ? match[1] : null;
-                                        const text = result.replace(/(\d+%)/, '').trim();
-
-                                        if (percentage) {
-                                            return (
-                                                <div key={idx} className="text-center p-4">
-                                                    <div className="font-['Noto Sans'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#E67E3C] mb-1 sm:mb-2">
-                                                        {result.includes('improved') ? '+' : '-'}{percentage}%
-                                                    </div>
-                                                    <div className="text-xs sm:text-sm text-[#666666]">{text}</div>
-                                                </div>
-                                            );
-                                        } else {
-                                            return (
-                                                <div key={idx} className="text-center p-4">
-                                                    <div className="font-['Noto Sans'] text-lg sm:text-xl font-bold text-[#E67E3C] mb-1 sm:mb-2">
-                                                        ✓
-                                                    </div>
-                                                    <div className="text-xs sm:text-sm text-[#666666]">{result}</div>
-                                                </div>
-                                            );
-                                        }
-                                    })}
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Case Study 3 */}
-                        <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg relative overflow-hidden border-l-4 border-[#E67E3C]">
-                            <span className="inline-block px-3 py-1 sm:px-4 sm:py-2 bg-[#F8F4F0] text-[#E67E3C] text-xs sm:text-sm font-semibold rounded-full mb-4 sm:mb-6">
-                                CASE STUDY 3: B2B LEAD GENERATION BRAND
-                            </span>
-                            <h3 className="font-['Noto Sans'] text-xl sm:text-2xl font-bold mb-4 text-[#2C2C2C]">Ideal Customer</h3>
-                            <p className="text-[#666666] mb-6 text-sm sm:text-base">{caseStudies[2].idealCustomer}</p>
-
-                            <div className="mb-6">
-                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2">The Challenge (Before)</h4>
-                                <p className="text-[#666666] text-sm sm:text-base">{caseStudies[2].challenge}</p>
-                            </div>
-
-                            <div className="mb-6">
-                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-2">The Approach</h4>
-                                <p className="text-[#666666] text-sm sm:text-base">{caseStudies[2].approach}</p>
-                            </div>
-
-                            <div className="mb-4">
-                                <h4 className="font-['Noto Sans'] text-base sm:text-lg font-semibold text-[#E67E3C] mb-3">The Results (After)</h4>
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-8 bg-[#F8F4F0] rounded-2xl">
-                                    {caseStudies[2].results.map((result, idx) => {
-                                        const match = result.match(/(\d+)%/);
-                                        const percentage = match ? match[1] : null;
-                                        const text = result.replace(/(\d+%)/, '').trim();
-
-                                        if (percentage) {
-                                            return (
-                                                <div key={idx} className="text-center p-4">
-                                                    <div className="font-['Noto Sans'] text-2xl sm:text-3xl lg:text-4xl font-bold text-[#E67E3C] mb-1 sm:mb-2">
-                                                        {result.includes('improved') ? '+' : '-'}{percentage}%
-                                                    </div>
-                                                    <div className="text-xs sm:text-sm text-[#666666]">{text}</div>
-                                                </div>
-                                            );
-                                        } else {
-                                            return (
-                                                <div key={idx} className="text-center p-4">
-                                                    <div className="font-['Noto Sans'] text-lg sm:text-xl font-bold text-[#E67E3C] mb-1 sm:mb-2">
-                                                        ✓
-                                                    </div>
-                                                    <div className="text-xs sm:text-sm text-[#666666]">{result}</div>
-                                                </div>
-                                            );
-                                        }
-                                    })}
+                        {/* RIGHT details */}
+                        <div className="lg:col-span-7">
+                            <div className="apple-card sticky top-28">
+                                <h3 className="text-2xl font-semibold mb-6 text-black">{caseStudies[activeCaseStudy].title}</h3>
+                                <div className="space-y-6 text-sm lg:text-base">
+                                    <div>
+                                        <h4 className="font-semibold text-[#7E0A11] mb-1">Ideal Customer</h4>
+                                        <p className="text-[#515154]">{caseStudies[activeCaseStudy].idealCustomer}</p>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-[#7E0A11] mb-1">The Challenge</h4>
+                                        <p className="text-[#515154]">{caseStudies[activeCaseStudy].challenge}</p>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-[#7E0A11] mb-1">The Approach</h4>
+                                        <p className="text-[#515154]">{caseStudies[activeCaseStudy].approach}</p>
+                                    </div>
+                                    <div className="grid grid-cols-3 gap-6 pt-6 border-t border-[#f5f5f7]">
+                                        {caseStudies[activeCaseStudy].results.map((result, idx) => (
+                                            <div key={idx} className="text-center">
+                                                <div className="apple-stat">{result.value}</div>
+                                                <div className="apple-stat-label capitalize">{result.label}</div>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -659,70 +689,78 @@ const PerformanceMarketing = () => {
             </section>
 
             {/* Testimonials */}
-            <section id="testimonials" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#B8956A] to-[#D97634] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                        TESTIMONIALS
-                    </span>
-                    <h2 className="font-['Inter'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">What Our Clients Say</h2>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-                    {testimonials.map((testimonial, index) => (
-                        <div key={index} className="bg-white p-6 sm:p-8 lg:p-10 rounded-3xl shadow-lg hover:translate-y-[-5px] transition-transform duration-300">
-                            <div className="text-4xl sm:text-5xl text-[#B8956A] opacity-30 mb-3 sm:mb-4">❝</div>
-                            <p className="text-[#666666] italic leading-relaxed mb-4 sm:mb-6 text-sm sm:text-base">{testimonial.text}</p>
-                            <div className="font-semibold text-[#2C2C2C] text-sm sm:text-base">{index + 1}.</div>
-                        </div>
-                    ))}
+            <section id="testimonials" className="py-24 px-6 lg:px-8 bg-[#1d1d1f] text-white stack-layer" style={{ zIndex: 60 }}>
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-16">
+                        <span className="apple-overline mb-4 block text-white/70">Testimonials</span>
+                        <h2 className="apple-heading text-4xl lg:text-5xl text-white">Client Success Stories</h2>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {testimonials.map((testimonial, index) => (
+                            <div key={index} className="rounded-3xl p-8 bg-white/5 border border-white/10">
+                                <div className="text-6xl text-white opacity-20 mb-4 leading-none font-serif">“</div>
+                                <p className="text-white/80 italic mb-6 leading-relaxed text-lg">{testimonial.text}</p>
+                                <div className="font-semibold text-white">— {testimonial.author}</div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
 
             {/* FAQ Section */}
-            <section id="faq" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-                <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                    <span className="inline-block px-4 py-1 sm:px-6 sm:py-2 bg-gradient-to-br from-[#B8956A] to-[#D97634] text-white text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full mb-4 sm:mb-6">
-                        FAQ
-                    </span>
-                    <h2 className="font-['Noto Sans'] text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-[#2C2C2C]">Frequently Asked Questions</h2>
-                </div>
-                <div className="space-y-3 sm:space-y-4">
-                    {faqItems.map((item, index) => (
-                        <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                            <button
-                                className="w-full p-4 sm:p-6 text-left flex justify-between items-center font-['Noto Sans'] font-semibold hover:text-[#E67E3C] transition-colors text-sm sm:text-base text-[#2C2C2C]"
-                                onClick={() => toggleFaq(index)}
-                            >
-                                <span className="text-left pr-4">{item.question}</span>
-                                <span className={`text-xl sm:text-2xl transition-transform flex-shrink-0 text-[#E67E3C] ${activeFaq === index ? 'rotate-45' : ''}`}>+</span>
-                            </button>
-                            <div className={`overflow-hidden transition-all duration-300 ${activeFaq === index ? 'max-h-96' : 'max-h-0'}`}>
-                                <div className="p-4 sm:p-6 pt-0 text-[#666666] leading-relaxed text-sm sm:text-base">
-                                    {item.answer}
-                                </div>
+            <section id="faq" className="w-full bg-white stack-layer" style={{ zIndex: 70 }}>
+                <div className="max-w-3xl mx-auto px-6 py-24">
+                    <div className="text-center mb-12">
+                        <span className="apple-overline block mb-3 text-gray-500">FAQ</span>
+                        <h2 className="apple-heading text-3xl lg:text-4xl text-black">Frequently Asked Questions</h2>
+                    </div>
+                    <div className="divide-y divide-gray-100">
+                        {faqItems.map((item, index) => (
+                            <div key={index} className="py-6">
+                                <button
+                                    onClick={() => toggleFaq(index)}
+                                    className="w-full flex justify-between items-center text-left text-lg font-medium text-black hover:text-[#7E0A11] transition"
+                                >
+                                    <span>{item.question}</span>
+                                    {activeFaq === index ? (
+                                        <X className="w-4 h-4 text-[#7E0A11]" />
+                                    ) : (
+                                        <Plus className="w-4 h-4 text-gray-400" />
+                                    )}
+                                </button>
+                                {activeFaq === index && (
+                                    <div className="mt-4 text-[#515154] text-base leading-relaxed animate-fadeUp">
+                                        {item.answer}
+                                    </div>
+                                )}
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </section>
 
             {/* CTA Section */}
-            <section id="contact" className="py-12 sm:py-16 lg:py-20 mx-4 sm:mx-6 lg:mx-8 my-8 sm:my-12 lg:my-16 bg-gradient-to-br from-[#2C2C2C] to-[#3C3C3C] text-white rounded-3xl text-center relative overflow-hidden">
-                <div className="absolute -top-1/2 -right-1/10 w-64 h-64 sm:w-96 sm:h-96 bg-radial-gradient(circle, rgba(74,155,158,0.2), transparent) rounded-full animate-pulse-slow hidden sm:block"></div>
-                <h2 className="font-['Inter'] text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 relative z-10 px-4">Connect With Us</h2>
-                <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-gray-200 relative z-10 px-4">
-                    Let's discuss how performance marketing can drive measurable growth for your business.
-                </p>
-                <a href="https://api.whatsapp.com/send/?phone=918921840486&text=Hello%2C+I+would+like+to+learn+more.&type=phone_number&app_absent=0" className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-[#E67E3C] to-[#D46E2F] text-white font-semibold rounded-full hover:translate-y-[-3px] hover:shadow-[0_15px_40px_rgba(230,126,60,0.3)] transition-all relative z-10 text-sm sm:text-base">
-                    Book a Strategy Call
-                </a>
+            <section id="contact" className="w-full px-6 py-24 bg-[#fbfbfd] stack-layer" style={{ zIndex: 80 }}>
+                <div className="bg-[#1d1d1f] text-white rounded-[2rem] py-20 px-6 lg:px-16 text-center relative overflow-hidden max-w-7xl mx-auto shadow-2xl">
+                    <div className="absolute -top-20 -right-20 w-96 h-96 bg-[#7E0A11] opacity-20 rounded-full blur-3xl"></div>
+                    <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-[#7E0A11] opacity-10 rounded-full blur-3xl"></div>
+                    <h2 className="apple-heading text-white mb-6">Scale Your Growth With Strategy</h2>
+                    <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
+                        Let's discuss how <a href='https://socialbureau.in//blogs/where-roi-meets-creative-flow' target='_blank' title="Learn more about Performance Marketing">performance marketing</a> can drive measurable growth and clarity for your business.
+                    </p>
+                    <a href="/contact" className="apple-button-primary bg-white text-black hover:bg-gray-100 hover:scale-105 transition-all text-lg py-4 px-10">
+                        Book a Strategy Call
+                        <ChevronRight className="w-5 h-5 ml-1" />
+                    </a>
+                </div>
             </section>
 
-            {/* Scroll to Top Button */}
+            {/* Scroll to Top */}
             <button
-                className={`fixed bottom-6 right-4 sm:bottom-8 sm:right-8 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#D97634] to-[#B8956A] text-white rounded-full flex items-center justify-center text-lg sm:text-xl shadow-lg hover:translate-y-[-5px] transition-all font-bold ${isScrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                className={`fixed bottom-8 right-8 w-14 h-14 bg-[#7E0A11] text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-[#63080d] hover:scale-110 active:scale-95 transition-all z-[1001] ${isScrolled ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
                 onClick={scrollToTop}
             >
-                ↑
+                <ArrowUp className="w-6 h-6" />
             </button>
         </div>
     );

@@ -113,6 +113,7 @@ export default function BrandingService() {
         keywords="branding agency india, socialbureau branding, brand identity design, visual branding, brand strategy, rebranding, brand guidelines, logo design, brand positioning, digital brand presence"
         image="/assets/socialbureau.png"
         url="https://www.socialbureau.in/services/branding"
+        canonicalUrl="https://www.socialbureau.in/services/branding"
       />
     <div className="min-h-screen bg-gradient-to-b from-[#0f172a] via-[#071129] to-[#071023] text-slate-100 p-6">
       <div className="max-w-6xl mx-auto">

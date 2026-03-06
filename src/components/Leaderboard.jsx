@@ -201,24 +201,6 @@ export default function DynamicLeaderboard() {
       </div>
 
       <div className="relative z-10 w-full px-3 sm:px-4 pb-8 sm:pb-12 pt-4 sm:pt-6 md:pt-8">
-        {/* Tabs
-        <div className="flex justify-center mb-6 sm:mb-8 md:mb-12">
-          <div className="bg-[#131B2C] border border-white/5 p-1 rounded-full flex gap-1">
-            {["daily", "monthly"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setTimeRange(tab)}
-                className={`px-4 sm:px-6 md:px-10 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 capitalize
-                  ${timeRange === tab
-                    ? "bg-[#2A354D] text-white shadow-lg"
-                    : "text-gray-400 hover:text-white"
-                  }`}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-        </div> */}
 
         {/* Podium Section - Always Horizontal */}
         <div className="flex items-end justify-center gap-2 sm:gap-3 lg:gap-8 mb-10 sm:mb-16 md:mb-24 mt-6 sm:mt-12 md:mt-20 w-full px-2 sm:px-4">

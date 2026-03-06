@@ -37,32 +37,6 @@ export const Register = () => {
     idCard: null,
   });
 
-  // ✅ Upload image to Cloudinary
-  // const uploadToCloudinary = async (file) => {
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("file", file);
-  //     formData.append("upload_preset", "your_upload_preset"); // Replace with your preset
-
-  //     const response = await fetch(
-  //       "https://api.cloudinary.com/v1_1/your_cloud_name/image/upload", // Replace cloud_name
-  //       {
-  //         method: "POST",
-  //         body: formData,
-  //       }
-  //     );
-
-  //     const data = await response.json();
-  //     if (data.secure_url) {
-  //       return data.secure_url;
-  //     }
-  //     throw new Error("Image upload failed");
-  //   } catch (err) {
-  //     console.error("Cloudinary upload error:", err);
-  //     throw err;
-  //   }
-  // };
-
   const handleToolChange = (index, field, value) => {
     const updatedTools = form.tools.map((tool, i) =>
       i === index ? { ...tool, [field]: value } : tool
@@ -71,26 +45,6 @@ export const Register = () => {
   };
 
 
-  //   const handleToolFile = async (index, file) => {
-  //   if (!file) return;
-
-  //   try {
-  //     setUploadingTools(true);
-
-  //     const iconUrl = await uploadToCloudinary(file);
-
-  //     const updatedTools = form.tools.map((tool, i) =>
-  //       i === index ? { ...tool, icon: iconUrl } : tool
-  //     );
-
-  //     setForm({ ...form, tools: updatedTools });
-  //     setError("");
-  //   } catch (err) {
-  //     setError("Failed to upload tool icon");
-  //   } finally {
-  //     setUploadingTools(false);
-  //   }
-  // };
   const handleToolFile = (index, file) => {
     if (!file) return;
 
@@ -185,111 +139,6 @@ export const Register = () => {
     }
   };
 
-  // ✅ FIXED: Frontend Register Component - Proper Tool Handling
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-
-  //   if (loading) return;
-
-  //   setError("");
-  //   setSuccess("");
-
-  //   try {
-  //     setLoading(true);
-  //     validateForm();
-
-  //     const formData = new FormData();
-
-  //     formData.append("clickupId", form.clickupId);
-  //     formData.append("name", form.name);
-  //     formData.append("email", form.email);
-  //     formData.append("password", form.password);
-  //     formData.append("role", form.role);
-  //     formData.append("emp_id", form.emp_id);
-  //     formData.append("doj", form.doj);
-  //     formData.append("rate", form.rate);
-  //     formData.append("phone", form.phone || "");
-  //     formData.append("isEmployee", "true");
-
-  //     // ✅ FIXED: Filter tools that have BOTH name AND url
-  //     // Only include tools that are complete (have name, url, and ideally imageUrl)
-  //     const toolsData = form.tools
-  //   .filter(tool => tool.toolName?.trim()) // ONLY toolName is required
-  //   .map(tool => ({
-  //     toolName: tool.toolName.trim(),
-  //     url: tool.url?.trim() || undefined,
-  //     icon: tool.icon || undefined,
-  //     description: tool.description?.trim() || undefined,
-  //   }));
-
-  // console.log("Tools being sent to backend:", toolsData);
-  // formData.append("tools", JSON.stringify(toolsData));
-
-
-  //     console.log("Tools being sent to backend:", toolsData); // Debug log
-
-  //     // ✅ Send as JSON string (backend will parse it)
-  //     formData.append("tools", JSON.stringify(toolsData));
-
-  //     if (files.coverImage) formData.append("coverImage", files.coverImage);
-  //     if (files.idCard) formData.append("idCard", files.idCard);
-
-  //     console.log("Complete FormData being submitted:");
-  //     for (let [key, value] of formData.entries()) {
-  //       if (key === "tools") {
-  //         console.log(key, JSON.parse(value)); // Parse and log tools
-  //       } else {
-  //         console.log(key, typeof value === "object" ? value.name : value);
-  //       }
-  //     }
-  // console.log("Form",formData);
-
-  //     const response = await fetch(`${BASE_URL}/user/register`, {
-  //       method: "POST",
-  //       body: formData,
-  //       credentials: "include",
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (!response.ok) {
-  //       throw new Error(
-  //         data.message || `Registration failed (Status: ${response.status})`
-  //       );
-  //     }
-
-  //     setSuccess("Employee registered successfully! ✅");
-
-  //     // Reset form
-  //     setForm({
-  //       clickupId: "",
-  //       name: "",
-  //       email: "",
-  //       password: "",
-  //       role: "",
-  //       emp_id: "",
-  //       doj: "",
-  //       rate: "",
-  //       isEmployee: true,
-  //       tools: [{ name: "", url: "", image: null, imageUrl: "" }],
-  //     });
-
-  //     setFiles({ coverImage: null, idCard: null });
-  //     document.querySelectorAll("input[type='file']").forEach((input) => {
-  //       input.value = "";
-  //     });
-
-  //     setTimeout(() => {
-  //       navigate("/");
-  //     }, 1500);
-  //   } catch (err) {
-  //     setError(err.message || "An error occurred during registration");
-  //     console.error("Registration error:", err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();

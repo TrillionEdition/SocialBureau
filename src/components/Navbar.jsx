@@ -44,7 +44,7 @@ export default function Navbar() {
     { label: "Home", href: "/" },
     {
       label: "Services",
-      href: "/services",
+      href: "#",
       columns: [
         {
           title: "API Marketing",
@@ -58,7 +58,7 @@ export default function Navbar() {
         },
         {
           title: "Design & Tech",
-          items: [{ label: "Web Development", href: "#" }],
+          items: [{ label: "Web Development", href: "/web-development" }],
         },
       ],
     },
@@ -70,7 +70,7 @@ export default function Navbar() {
           items: [
             { label: "About Us", href: "/about" },
             { label: "Our Team", href: "/our-team" },
-            { label: "Work", href: "/our-works" },
+            { label: "Work", href: "#" },
           ],
         },
         {
@@ -128,58 +128,40 @@ export default function Navbar() {
       href: "/performance-marketing",
       columns: [
         {
-          title: "360 Performance Marketing",
+          title: "Marketing",
           items: [
             {
-              label: "Paid Media Advertising",
-              href: "https://ads.google.com/home/",
+              label: "Content Marketing Blog",
+              href: "https://socialbureau.in/blogs/why-content-marketing-is-essential-for-seo-success-in-2026",
             },
-            { label: "Google Ads", href: "https://ads.google.com/home/" },
+            { label: "Niche Brands and Build", href: "https://socialbureau.in/blogs/niche-brands-and-build" },
             {
-              label: "Meta Ads (Facebook & Instagram)",
-              href: "https://www.facebook.com/business/ads",
-            },
-            {
-              label: "LinkedIn Ads",
-              href: "https://www.linkedin.com/marketing-solutions/ads",
+              label: "Dark Social in Digital",
+              href: "https://socialbureau.in/blogs/the-hidden-power-of-dark-social-in-digital",
             },
             {
-              label: "Programmatic Advertising",
-              href: "https://marketingplatform.google.com/about/display-video-360/",
+              label: "Niche Marketing for Startups",
+              href: "https://socialbureau.in/blogs/niche-marketing-for-startups",
             },
             {
-              label: "Lead Generation Campaigns",
-              href: "https://ads.google.com/intl/en_in/home/solutions/lead-generation/",
+              label: "Digital Marketing Belongs to Bold Ideas",
+              href: "https://socialbureau.in/blogs/digital-marketing-belongs-to-bold-ideas",
+            },
+            {
+              label: "Where ROI Meets Creative Flow",
+              href: "https://socialbureau.in/blogs/where-roi-meets-creative-flow",
             },
           ],
         },
         {
           title: "More Channels",
           items: [
-            {
-              label: "Conversion & Sales Campaigns",
-              href: "https://support.google.com/google-ads/answer/6364",
-            },
-            {
-              label: "Retargeting & Remarketing",
-              href: "https://support.google.com/google-ads/answer/2453998",
-            },
-            {
-              label: "Affiliate Marketing",
-              href: "https://support.google.com/google-ads/answer/7644078",
-            },
-            {
-              label: "Landing Page & Funnel Optimization",
-              href: "https://support.google.com/analytics/answer/10089681",
-            },
-            {
-              label: "Conversion Rate Optimization (CRO)",
-              href: "https://support.google.com/optimize/answer/6211930",
-            },
-            {
-              label: "Marketing Automation",
-              href: "https://developers.google.com/business-communications/rcs-business-messaging",
-            },
+            { label: "Conversion & Sales Campaigns", href: "#" },
+            { label: "Retargeting & Remarketing", href: "#" },
+            { label: "Affiliate Marketing", href: "#" },
+            { label: "Landing Page & Funnel Optimization", href: "#" },
+            { label: "Conversion Rate Optimization (CRO)", href: "#" },
+            { label: "Marketing Automation", href: "#" },
           ],
         },
       ],
@@ -192,11 +174,13 @@ export default function Navbar() {
           title: "Partnership",
           items: [
             { label: "Partners", href: "/partners" },
-            { label: "Ranjit", href: "/Ranjit" },
+            { label: "Ranjit", href: "/partnership/Ranjit" },
+            { label: 'Sivaprasad', href: '/partnership/Sivaprasad' },
           ],
         },
       ],
     },
+    { label: "Entertainment", href: "/our-team" },
     { label: "Team", href: "/our-team" },
     { label: "Support", href: "/contact" },
   ];
@@ -206,6 +190,18 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
 
   const handleNavClick = (href) => {
     if (!href || href === "#") return;
@@ -254,84 +250,88 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Far-right desktop actions - dropdown menu */}
+          {/* Far-right desktop actions - dropdown menu or simple login */}
           <div className="hidden md:flex items-center shrink-0 pl-3 relative">
-            <div className="relative">
+            {isLoggedIn ? (
+              <div className="relative">
+                <button
+                  onMouseEnter={() => setActiveDropdown("userMenu")}
+                  className="flex items-center gap-1.5 text-[11px] font-semibold transition-all px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 cursor-pointer text-white hover:bg-white/10"
+                >
+                  <User size={13} />
+                  <span>Profile</span>
+                </button>
+
+                {/* Dropdown Menu */}
+                <AnimatePresence>
+                  {activeDropdown === "userMenu" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute right-0 top-full mt-2 bg-[#262627]/95 backdrop-blur-xl border border-white/10 rounded-lg overflow-hidden min-w-[180px] z-50"
+                      onMouseEnter={() => setActiveDropdown("userMenu")}
+                      onMouseLeave={() => setActiveDropdown(null)}
+                    >
+                      <div className="flex flex-col">
+                        {(isAdmin || isPartnership) && (
+                          <>
+                            <button
+                              onClick={() => {
+                                handleNavClick("/dashboard");
+                                setActiveDropdown(null);
+                              }}
+                              className="text-[13px] font-medium text-[#f5f5f7]/80 hover:text-white hover:bg-white/10 px-4 py-3 text-left transition-colors flex items-center gap-2"
+                            >
+                              <User size={14} />
+                              Dashboard
+                            </button>
+                            <div className="h-px bg-white/10" />
+                          </>
+                        )}
+
+                        <button
+                          onClick={() => {
+                            handleNavClick("/leaderboard");
+                            setActiveDropdown(null);
+                          }}
+                          className="text-[13px] font-medium text-[#f5f5f7]/80 hover:text-white hover:bg-white/10 px-4 py-3 text-left transition-colors flex items-center gap-2"
+                        >
+                          <Trophy size={14} />
+                          Leaderboard
+                        </button>
+                        <div className="h-px bg-white/10" />
+
+                        <button
+                          onClick={() => {
+                            handleNavClick("/profile");
+                            setActiveDropdown(null);
+                          }}
+                          className="text-[13px] font-medium text-[#f5f5f7]/80 hover:text-white hover:bg-white/10 px-4 py-3 text-left transition-colors flex items-center gap-2"
+                        >
+                          <User size={14} />
+                          Profile
+                        </button>
+
+                        <div className="h-px bg-white/10" />
+                        <div className="px-4 py-3">
+                          <Logout />
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
               <button
-                onMouseEnter={() => setActiveDropdown("userMenu")}
+                onClick={() => handleNavClick("/login")}
                 className="flex items-center gap-1.5 text-[11px] font-semibold transition-all px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 cursor-pointer text-white hover:bg-white/10"
               >
                 <User size={13} />
-                <span>{isLoggedIn ? "Profile" : "Login"}</span>
+                <span>Login</span>
               </button>
-
-              {/* Dropdown Menu */}
-              <AnimatePresence>
-                {activeDropdown === "userMenu" && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute right-0 top-full mt-2 bg-[#262627]/95 backdrop-blur-xl border border-white/10 rounded-lg overflow-hidden min-w-[180px] z-50"
-                  >
-                    <div className="flex flex-col">
-                      {(isAdmin || isPartnership) && (
-                        <>
-                          <button
-                            onClick={() => {
-                              handleNavClick("/dashboard");
-                              setActiveDropdown(null);
-                            }}
-                            className="text-[13px] font-medium text-[#f5f5f7]/80 hover:text-white hover:bg-white/10 px-4 py-3 text-left transition-colors flex items-center gap-2"
-                          >
-                            <User size={14} />
-                            Dashboard
-                          </button>
-                          <div className="h-px bg-white/10" />
-                        </>
-                      )}
-
-                      {isLoggedIn && (
-                        <>
-                          <button
-                            onClick={() => {
-                              handleNavClick("/leaderboard");
-                              setActiveDropdown(null);
-                            }}
-                            className="text-[13px] font-medium text-[#f5f5f7]/80 hover:text-white hover:bg-white/10 px-4 py-3 text-left transition-colors flex items-center gap-2"
-                          >
-                            <Trophy size={14} />
-                            Leaderboard
-                          </button>
-                          <div className="h-px bg-white/10" />
-                        </>
-                      )}
-
-                      <button
-                        onClick={() => {
-                          handleNavClick(isLoggedIn ? "/profile" : "/login");
-                          setActiveDropdown(null);
-                        }}
-                        className="text-[13px] font-medium text-[#f5f5f7]/80 hover:text-white hover:bg-white/10 px-4 py-3 text-left transition-colors flex items-center gap-2"
-                      >
-                        <User size={14} />
-                        {isLoggedIn ? "Profile" : "Login"}
-                      </button>
-
-                      {isLoggedIn && (
-                        <>
-                          <div className="h-px bg-white/10" />
-                          <div className="px-4 py-3">
-                            <Logout />
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            )}
           </div>
 
           {/* Mobile Logo */}
@@ -377,7 +377,7 @@ export default function Navbar() {
                           <button
                             key={subitem.label}
                             onClick={() => handleNavClick(subitem.href)}
-                            className="text-[17px] font-semibold text-[#f5f5f7] hover:text-[#e20000] text-left transition-colors leading-tight"
+                            className="text-[17px] text-[#f5f5f7] hover:text-[#e20000] text-left transition-colors leading-tight"
                           >
                             {subitem.label}
                           </button>
@@ -400,7 +400,7 @@ export default function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 z-100 bg-[#000000ea] flex flex-col pt-16 px-6 pb-8 overflow-y-auto md:hidden relative"
+            className="fixed inset-0 z-50 bg-[#000000ea] flex flex-col pt-16 px-6 pb-8 overflow-y-auto md:hidden"
           >
             <button
               className="absolute top-4 right-4 text-white p-2"
@@ -409,7 +409,7 @@ export default function Navbar() {
             >
               <X size={22} />
             </button>
-            <div className="flex flex-col gap-4 mt-4">
+            <div className="flex flex-col gap-2 mt-4">
               {navItems.map((item) => (
                 <div key={item.label}>
                   <div className="flex items-center justify-between">
@@ -425,18 +425,17 @@ export default function Navbar() {
                           handleNavClick(item.href);
                         }
                       }}
-                      className="text-[28px] font-semibold text-[#f5f5f7] active:text-[#0066cc] text-left transition-colors duration-200"
+                      className="w-full flex items-center justify-between text-[28px] font-semibold text-[#f5f5f7] active:text-[#0066cc] text-left transition-colors duration-200"
                     >
                       {item.label}
                     </button>
                     {item.columns && (
                       <ChevronRight
                         size={20}
-                        className={`text-white/40 transition-transform duration-200 ${
-                          expandedMobileCategory === item.label
-                            ? "rotate-90"
-                            : ""
-                        }`}
+                        className={`text-white/40 transition-transform duration-200 ${expandedMobileCategory === item.label
+                          ? "rotate-90"
+                          : ""
+                          }`}
                       />
                     )}
                   </div>
