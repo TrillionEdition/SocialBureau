@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { getOptimizedCloudinaryUrl } from '../../utils/cloudinary';
+import { getOptimizedCloudinaryUrl } from '../../../utils/cloudinary';
 
 const mainMovies = [
     { id: 1, title: "API Marketing", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1771850532/imwv5sirhwgvtehpgb6h_n33iwu.webp", tag: "Marketing", link: "https://www.youtube.com/watch?v=UU-AeatnaEI", desc: "API Marketing" },

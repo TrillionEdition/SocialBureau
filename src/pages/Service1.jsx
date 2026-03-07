@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Seo from '../components/Seo';
 import SchemaMarkup from '../components/SchemaMarkup';
-import { generateServiceSchema } from '../utils/schema';
+import { generateServiceSchema } from '../../utils/schema';
 import { motion } from 'framer-motion';
 import Footer from '../components/Footer';
 import servicesData from '../data/services';

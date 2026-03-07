@@ -5,11 +5,11 @@ import FAQSection from "../components/Home/FAQSection";
 import AppleSection from "../components/Home/EntertainmentGrid";
 import { Googlereview } from "../components/Googlereview";
 import StaticServicesGrid from "../components/Home/BlogNTrillion";
-import ApiMarketingHero from "../components/Home/ApiMarketing";
 // import ImageCarousel from "../components/Home/Hero";
 import SchemaMarkup from "../components/SchemaMarkup";
-import { generateHomepageSchemas } from "../utils/schema";
+import { generateHomepageSchemas } from "../../utils/schema";
 import Seo from "../components/Seo";
+import ApiMarketing from "../components/Home/ApiMarketing";
 
 
 export const Home = () => {
@@ -19,13 +19,13 @@ export const Home = () => {
     <Seo
                   title="SocialBureau Careers | Join India’s Fastest-Growing Creative & Digital Agency"
                   description="Explore exciting career opportunities at SocialBureau. Join our team of designers, marketers, developers, and creators shaping the future of digital experiences."
-                  keywords="socialbureau careers, trillionedition llp jobs, api marketing jobs, digital marketing career, seo expert jobs india, creative agency hiring, video editor hiring, content writer jobs, performance marketing openings, join socialbureau"
+                  keywords="socialbureau careers, trillionedition llp jobs, api marketing jobs, digital marketing career, seo expert jobs india, creative agency hiring, video editor hiring, content writer jobs, performance marketing openings, join socialbureau, niche marketing agency, adtech agency in kochi, content marketing agency in kochi, api marketing agency in kochi, performance marketing agency in kochi"
                   image="/assets/socialbureau.png"
                   canonicalUrl="https://www.socialbureau.in"
                 />
       <SchemaMarkup data={homepageSchemas} />
       {/* <ImageCarousel/> */}
-      <ApiMarketingHero />
+      <ApiMarketing />
       <WebSection />
       <ServicesGrid />
       <CareerSection />

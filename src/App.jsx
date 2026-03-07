@@ -70,7 +70,8 @@ const Client = lazy(() =>
 const Team = lazy(() =>
   import("./pages/Team").then((module) => ({ default: module.Team })),
 );
-const ATSChecker = lazy(() => import("./pages/ATSChecker"));
+// const ATSChecker = lazy(() => import("./pages/ATSChecker"));
+// const ResumeGenerator = lazy(() => import("./pages/ResumeGenerator"));
 const AuthPage = lazy(() => import("./pages/UserRegistration"));
 const Verification = lazy(() => import("./pages/UserVerification"));
 const AdminCreateJob = lazy(() => import("./pages/CreateJob"));
@@ -84,6 +85,8 @@ const ResetPassword = lazy(() =>
   })),
 );
 const VoiceAsst = lazy(() => import("./pages/VoiceAsst"));
+const CandidateProfilePage = lazy(() => import("./pages/CandidateProfilePage"));
+const Sakilan = lazy(() => import("./pages/Partnerships/sakilan"));
 
 // Lazy-loaded Components
 const AddAchievementForm = lazy(
@@ -157,6 +160,7 @@ function ConditionalFooter() {
     "/partnership/shailesh-sivan",
     "/partnership/alen-jacob",
     "/partnership/cheriyan",
+    "/partnership/sakilan",
     "/dashboard",
     "/user-management",
     "/analytics",
@@ -261,7 +265,8 @@ function App() {
             <Route path="/our-team" element={<OurTeam />} />
             <Route path="/our-works" element={<OurWork />} />
             <Route path="/achievements" element={<CompanyAchievements />} />
-            <Route path="/ats-checker" element={<ATSChecker />} />
+            {/* <Route path="/ats-checker" element={<ATSChecker />} /> */}
+            {/* <Route path="/resume-generator" element={<ResumeGenerator />} /> */}
             <Route path="/tool" element={<ScorePage />} />
 
             <Route path="/blogs/:slug" element={<BlogDetail />} />
@@ -292,9 +297,13 @@ function App() {
 
             <Route path="/hr-forum" element={<HRForum />} />
             <Route path="/appy-job" element={<JobPosting />} />
-            <Route path="/job-details" element={<JobDetails />} />
+            <Route path="/job-details/:id" element={<JobDetails />} />
             <Route path="/job-listing" element={<JobsList />} />
             <Route path="/candidate-profile" element={<CandidateProfile />} />
+            <Route
+              path="/candidate-profile/:applicationId"
+              element={<CandidateProfilePage />}
+            />
 
             <Route path="/services/:serviceTitle" element={<Service1 />} />
             <Route path="/employee/:name" element={<StaffDashboard />} />
@@ -316,15 +325,30 @@ function App() {
             <Route path="/login" element={<AuthPage />} />
             <Route path="/logout" element={<Logout />} />
 
-            <Route path="/api-marketing" element={<ApiMarketingPage />} />
             <Route
-              path="/performance-marketing"
+              path="/api-marketing-agency-in-kochi"
+              element={<ApiMarketingPage />}
+            />
+            <Route
+              path="/performance-marketing-agency-in-kochi"
               element={<PerformanceMarketing />}
             />
-            <Route path="/niche-marketing" element={<Niche />} />
-            <Route path="/content-marketing" element={<ContentMarketing />} />
-            <Route path="/adTech-marketing" element={<AdTechIntegration />} />
-            <Route path="/web-development" element={<WebDevelopment />} />
+            <Route
+              path="/niche-marketing-agency-in-kochi"
+              element={<Niche />}
+            />
+            <Route
+              path="/content-marketing-agency-in-kochi"
+              element={<ContentMarketing />}
+            />
+            <Route
+              path="/adTech-marketing-agency-in-kochi"
+              element={<AdTechIntegration />}
+            />
+            <Route
+              path="/web-development-agency-in-kochi"
+              element={<WebDevelopment />}
+            />
             <Route path="/dashboard" element={<DashboardX />} />
             <Route path="/insights" element={<SocialBureauInsight />} />
 
@@ -393,6 +417,7 @@ function App() {
             />
             <Route path="/partnership/alen-jacob" element={<AlenJacob />} />
             <Route path="/partnership/cheriyan" element={<CheriyanPage />} />
+            <Route path="/partnership/sakilan" element={<Sakilan />} />
 
             <Route path="/*" element={<NotFound />} />
           </Routes>

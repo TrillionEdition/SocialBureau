@@ -1282,8 +1282,8 @@ const AdTechIntegration = () => {
                 description="Optimize campaigns with SocialBureau's AdTech integration.
 Connect platforms, track ads, and boost ROI with data-driven solutions"
                 keywords="AdTech Integration Agency in Kerala,AdTech Integration agency kochi,AdTech Integration Services,Marketing Technology Integration,Adtech expert,ADTECH INTEGRATION, ADTECH INTEGRATION AGENCY,Ad Infrastructure Setup"
-                canonicalUrl="https://www.socialbureau.in/adTech-marketing"
-                url="https://www.socialbureau.in/adTech-marketing"
+                canonicalUrl="https://www.socialbureau.in/adTech-marketing-agency-in-kochi"
+                url="https://www.socialbureau.in/adTech-marketing-agency-in-kochi"
             />
 
             <style dangerouslySetInnerHTML={{

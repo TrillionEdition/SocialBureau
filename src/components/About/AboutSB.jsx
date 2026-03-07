@@ -70,7 +70,7 @@ const WhoWeAre = () => {
               >
                 <p className="text-[18px] md:text-[22px] text-gray-800 leading-[1.6]">
                   With over <span className="text-[#8D0F16] font-bold">2+ years</span> of hands-on online marketing experience, our
-                  team brings deep expertise in <a href='https://www.socialbureau.in/api-marketing' target='_blank' title="Learn more about API Marketing on Wikipedia">API marketing</a>, <a href='https://en.wikipedia.org/wiki/Niche_marketing' target='_blank' title="Learn more about Niche Marketing on Wikipedia">niche marketing</a>,
+                  team brings deep expertise in <a href='https://www.socialbureau.in/api-marketing-agency-in-kochi' target='_blank' title="Learn more about API Marketing on Wikipedia">API marketing</a>, <a href='https://en.wikipedia.org/wiki/Niche_marketing' target='_blank' title="Learn more about Niche Marketing on Wikipedia">niche marketing</a>,
                   content marketing, AdTech integration, and performance marketing.
                 </p>
                 <p className="text-[18px] md:text-[22px] text-gray-500 leading-[1.6] italic border-l-4 border-[#8D0F16] pl-6">

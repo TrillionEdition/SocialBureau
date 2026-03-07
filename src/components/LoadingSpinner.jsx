@@ -222,7 +222,7 @@ const LoadingSpinner = () => {
       </div>
 
       {/* Custom Animations */}
-      <style jsx>{`
+      <style>{`
         @keyframes fadeInSlide {
           0% {
             opacity: 0;

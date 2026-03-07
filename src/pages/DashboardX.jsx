@@ -27,6 +27,7 @@ import {
   Bell,
   LayoutDashboard,
   FileText,
+  BarChart3,
   Package,
   Users,
   Tag,
@@ -43,6 +44,7 @@ import {
   Apple,
   Smartphone,
   Laptop,
+  LogOut,
 } from "lucide-react";
 
 const balanceData = [
@@ -74,6 +76,12 @@ const DashboardX = () => {
   });
   const [submitting, setSubmitting] = useState(false);
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/login";
+  };
+
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem("user");
@@ -95,7 +103,7 @@ const DashboardX = () => {
   const { data: analyticsData, isLoading: analyticsLoading } = useQuery({
     queryKey: ["googleAnalytics", range, selectedPartnerParam],
     queryFn: () => analyticsAPI.getAnalytics(range, selectedPartnerParam),
-    refetchInterval: 1000 * 60 * 5, // Refetch every 5 minutes
+    refetchInterval: 1000 * 30, // Refetch every 30 seconds for live feel
   });
 
   const { data: teamData } = useQuery({
@@ -189,47 +197,41 @@ const DashboardX = () => {
   const myBlogs = blogsData?.data || [];
 
   return (
-    <div className="flex min-h-screen bg-[#0A0B10] text-[#E2E8F0] font-sans selection:bg-blue-500/30">
-      {/* Sidebar */}
-      <aside className="w-64 bg-[#0F1117] border-r border-slate-800 lg:flex flex-col hidden sticky top-0 h-screen">
-        <div className="p-6 flex items-center gap-3">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-            <LayoutDashboard className="text-white w-5 h-5" />
+    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row font-['Inter',sans-serif] text-slate-900 selection:bg-blue-500/30">
+      {/* Sidebar - Desktop */}
+      <aside className="hidden md:flex flex-col w-72 bg-white border-r border-slate-200 p-8 fixed h-full z-20 shadow-sm overflow-y-auto">
+        <div className="flex items-center gap-3 mb-12 px-2">
+          <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+            <LayoutDashboard className="text-white w-6 h-4" />
           </div>
-          <h1 className="text-xl font-bold tracking-tight">
-            {user?.name || "Dashboard"}
+          <h1 className="text-xl font-black tracking-tighter text-slate-900">
+            Social<span className="text-blue-600">Bureau</span>
           </h1>
         </div>
 
-        <div className="px-4 mb-6">
-          <div className="relative group">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-blue-500 transition-colors" />
-            <input
-              type="text"
-              placeholder="Find metrics..."
-              className="w-full bg-[#161921] border border-slate-800 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-600"
-            />
+        <nav className="flex-1 space-y-2">
+          <div className="px-3 mb-2">
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">
+              Main Menu
+            </p>
           </div>
-        </div>
-
-        <nav className="flex-1 overflow-y-auto px-4 space-y-1 custom-scrollbar">
           <NavItem
             icon={<LayoutDashboard size={18} />}
-            label="Overall Core"
+            label="Analytics Hub"
             active={!selectedPartnerParam}
             onClick={() =>
               user?.role === "admin" && setSelectedPartnerParam(null)
             }
           />
+          <NavItem icon={<Users size={18} />} label="Partnerships" hasSubmenu />
+          <NavItem icon={<Monitor size={18} />} label="Campaigns" />
+          <NavItem icon={<BarChart3 size={18} />} label="Performance" />
+          <NavItem icon={<Settings size={18} />} label="API Settings" />
+
           {user?.role !== "partnership" && (
             <>
-              <div className="pt-4 pb-2 text-[10px] font-semibold text-slate-500 uppercase tracking-wider px-2">
-                Features
-              </div>
-              <NavItem icon={<FileText size={18} />} label="Reports" />
-              {/* Partners Section */}
-              <div className="pt-4 pb-2 text-[10px] font-semibold text-slate-500 uppercase tracking-wider px-2">
-                Partners
+              <div className="pt-6 pb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest px-3">
+                Partnerships
               </div>
               {partners.length > 0 ? (
                 partners
@@ -258,23 +260,48 @@ const DashboardX = () => {
                     />
                   ))
               ) : (
-                <div className="px-2 py-4 text-[10px] text-slate-600 italic">
+                <div className="px-3 py-4 text-[10px] text-slate-400 italic font-bold">
                   No partners found
                 </div>
               )}
             </>
           )}
         </nav>
+
+        <div className="mt-8 pt-8 border-t border-slate-100">
+          <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold border border-blue-200">
+                {user?.name?.charAt(0) || "U"}
+              </div>
+              <div className="overflow-hidden">
+                <p className="text-sm font-bold truncate text-slate-900">
+                  {user?.name}
+                </p>
+                <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">
+                  {user?.role}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center justify-center gap-2 bg-white border border-slate-200 hover:border-red-200 hover:text-red-500 text-slate-600 text-[10px] font-black uppercase tracking-widest py-2.5 rounded-xl transition-all"
+            >
+              <LogOut size={14} />
+              Sign Out
+            </button>
+          </div>
+        </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 bg-[#0A0B10]">
-        <div className="p-8 pb-24 space-y-8">
+      {/* Main Content Area */}
+      <main className="flex-1 md:ml-72 p-4 md:p-10">
+        <div className="max-w-[1400px] mx-auto space-y-8">
           {/* Stats section */}
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
               <div>
-                <h2 className="text-3xl font-black tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+                <h2 className="text-3xl font-black tracking-tight text-slate-900">
                   {selectedPartnerParam
                     ? `${partners.find((p) => p.param === selectedPartnerParam)?.name || selectedPartnerParam} Analytics`
                     : "Overall Analytics"}
@@ -284,24 +311,24 @@ const DashboardX = () => {
                 </p>
               </div>
 
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 {user?.role === "admin" && (
                   <button
                     onClick={() => setShowRegisterForm(!showRegisterForm)}
-                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20"
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20"
                   >
                     <Plus size={16} />
                     Register Partner
                   </button>
                 )}
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                <div className="w-full sm:w-auto flex items-center justify-between sm:justify-start gap-3 bg-white border border-slate-200 p-1.5 rounded-xl shadow-sm">
+                  <span className="text-xs font-bold text-slate-500 uppercase tracking-widest pl-2">
                     Range:
                   </span>
                   <select
                     value={range}
                     onChange={(e) => setRange(e.target.value)}
-                    className="bg-[#161921] border border-slate-800 text-slate-200 text-xs font-bold px-4 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all cursor-pointer hover:bg-slate-800 shadow-lg"
+                    className="bg-transparent text-slate-800 text-xs font-bold px-4 py-1.5 rounded-lg focus:outline-none transition-all cursor-pointer hover:bg-slate-50"
                   >
                     <option value="today">Today</option>
                     <option value="yesterday">Yesterday</option>
@@ -322,8 +349,12 @@ const DashboardX = () => {
               <StatCard
                 label="Active Users"
                 value={analyticsLoading ? "..." : totals.activeUsers}
-                trend="Live"
-                trendUp={true}
+                trend={
+                  analyticsLoading
+                    ? "Live"
+                    : `${analyticsData?.trends?.activeUsers >= 0 ? "+" : ""}${analyticsData?.trends?.activeUsers}%`
+                }
+                trendUp={analyticsData?.trends?.activeUsers >= 0}
                 icon={<Users className="w-4 h-4 text-blue-400" />}
               />
               <StatCard
@@ -335,22 +366,34 @@ const DashboardX = () => {
                       ? (parseInt(totals.eventCount) / 1000).toFixed(1) + "K"
                       : totals.eventCount
                 }
-                trend="Live"
-                trendUp={true}
+                trend={
+                  analyticsLoading
+                    ? "Live"
+                    : `${analyticsData?.trends?.eventCount >= 0 ? "+" : ""}${analyticsData?.trends?.eventCount}%`
+                }
+                trendUp={analyticsData?.trends?.eventCount >= 0}
                 icon={<Monitor className="w-4 h-4 text-purple-400" />}
               />
               <StatCard
                 label="New Users"
                 value={analyticsLoading ? "..." : totals.newUsers}
-                trend="Live"
-                trendUp={true}
+                trend={
+                  analyticsLoading
+                    ? "Live"
+                    : `${analyticsData?.trends?.newUsers >= 0 ? "+" : ""}${analyticsData?.trends?.newUsers}%`
+                }
+                trendUp={analyticsData?.trends?.newUsers >= 0}
                 icon={<Smartphone className="w-4 h-4 text-emerald-400" />}
               />
               <StatCard
                 label="Key Events"
                 value={analyticsLoading ? "..." : totals.keyEvents}
-                trend="Live"
-                trendUp={true}
+                trend={
+                  analyticsLoading
+                    ? "Live"
+                    : `${analyticsData?.trends?.keyEvents >= 0 ? "+" : ""}${analyticsData?.trends?.keyEvents}%`
+                }
+                trendUp={analyticsData?.trends?.keyEvents >= 0}
                 icon={<Laptop className="w-4 h-4 text-amber-400" />}
               />
             </div>
@@ -358,19 +401,21 @@ const DashboardX = () => {
 
           {/* Partner Registration Form */}
           {showRegisterForm && (
-            <div className="animate-in fade-in slide-in-from-top-4 duration-500 bg-[#0F1117] border border-blue-500/20 rounded-[2.5rem] p-8 shadow-2xl relative mb-12">
+            <div className="animate-in fade-in slide-in-from-top-4 duration-500 bg-white border border-blue-200 rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
               <div className="relative">
                 <div className="flex items-center justify-between mb-8">
                   <div>
-                    <h3 className="text-xl font-bold">Register New Partner</h3>
+                    <h3 className="text-xl font-bold text-slate-900">
+                      Register New Partner
+                    </h3>
                     <p className="text-xs text-slate-500 mt-1 uppercase tracking-widest font-black">
                       Expand the Ecosystem
                     </p>
                   </div>
                   <button
                     onClick={() => setShowRegisterForm(false)}
-                    className="p-2 hover:bg-slate-800 rounded-lg text-slate-500 transition-colors"
+                    className="p-2 hover:bg-slate-100 rounded-lg text-slate-400 transition-colors"
                   >
                     <Plus className="rotate-45" size={20} />
                   </button>
@@ -395,7 +440,7 @@ const DashboardX = () => {
                             email: e.target.value,
                           })
                         }
-                        className="w-full bg-[#161921] border border-slate-800 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-700"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-400 text-slate-900"
                       />
                     </div>
                     <div>
@@ -410,7 +455,7 @@ const DashboardX = () => {
                         onChange={(e) =>
                           setNewPartner({ ...newPartner, name: e.target.value })
                         }
-                        className="w-full bg-[#161921] border border-slate-800 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-700"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-400 text-slate-900"
                       />
                     </div>
                     <div>
@@ -428,7 +473,7 @@ const DashboardX = () => {
                             param: e.target.value.replace(/ /g, "-"),
                           })
                         }
-                        className="w-full bg-[#161921] border border-slate-800 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-700"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-400 text-slate-900"
                       />
                     </div>
                     <div>
@@ -445,7 +490,7 @@ const DashboardX = () => {
                             category: e.target.value,
                           })
                         }
-                        className="w-full bg-[#161921] border border-slate-800 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-700"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-400 text-slate-900"
                       />
                     </div>
                     <div>
@@ -462,11 +507,11 @@ const DashboardX = () => {
                             role: e.target.value,
                           })
                         }
-                        className="w-full bg-[#161921] border border-slate-800 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-700"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-400 text-slate-900"
                       />
                     </div>
                     <div>
-                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-1.5 ml-1">
+                      <label className="text-[10px) font-black text-slate-500 uppercase tracking-widest block mb-1.5 ml-1">
                         Link to User
                       </label>
                       <select
@@ -474,7 +519,7 @@ const DashboardX = () => {
                         onChange={(e) =>
                           setNewPartner({ ...newPartner, user: e.target.value })
                         }
-                        className="w-full bg-[#161921] border border-slate-800 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all appearance-none"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all appearance-none text-slate-900"
                       >
                         <option value="">None (Public Partner)</option>
                         {teamData?.map((u) => (
@@ -498,7 +543,7 @@ const DashboardX = () => {
                         onChange={(e) =>
                           setNewPartner({ ...newPartner, tags: e.target.value })
                         }
-                        className="w-full bg-[#161921] border border-slate-800 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-700"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-400 text-slate-900"
                       />
                     </div>
                     <div>
@@ -515,7 +560,7 @@ const DashboardX = () => {
                             image: e.target.value,
                           })
                         }
-                        className="w-full bg-[#161921] border border-slate-800 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-700"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-400 text-slate-900"
                       />
                     </div>
                     <div>
@@ -532,7 +577,7 @@ const DashboardX = () => {
                             subtitle: e.target.value,
                           })
                         }
-                        className="w-full bg-[#161921] border border-slate-800 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-700"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-400 text-slate-900"
                       />
                     </div>
                   </div>
@@ -541,7 +586,7 @@ const DashboardX = () => {
                     <button
                       type="button"
                       onClick={() => setShowRegisterForm(false)}
-                      className="px-6 py-2.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                      className="px-6 py-2.5 rounded-xl text-xs font-bold text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-all"
                     >
                       Cancel
                     </button>
@@ -558,122 +603,170 @@ const DashboardX = () => {
             </div>
           )}
 
-          {/* Live Traffic Chart */}
-          <div className="bg-[#0F1117] border border-slate-800/50 rounded-[2.5rem] p-8 relative overflow-hidden group shadow-2xl shadow-blue-500/5">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-emerald-600 opacity-50"></div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Live Traffic Chart */}
+            <div className="lg:col-span-2 bg-white border border-slate-200 rounded-[2.5rem] p-8 relative overflow-hidden group shadow-sm">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-emerald-600 opacity-50"></div>
 
-            <div className="flex items-center justify-between mb-10">
-              <div>
-                <h3 className="text-xl font-bold">Traffic Velocity</h3>
-                <p className="text-xs text-slate-500 mt-1 uppercase tracking-widest font-black">
-                  Dynamic Interaction Wave
-                </p>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10">
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900">
+                    Traffic Velocity
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-1 uppercase tracking-widest font-black">
+                    Dynamic Interaction Wave
+                  </p>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)] animate-pulse"></div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+                      Views
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+                      Users
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div className="flex gap-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)] animate-pulse"></div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
-                    Views
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)]"></div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
-                    Users
-                  </span>
-                </div>
+
+              <div className="h-[350px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={hasData ? chartData : balanceData}>
+                    <defs>
+                      <linearGradient
+                        id="colorViews"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="5%"
+                          stopColor="#3B82F6"
+                          stopOpacity={0.3}
+                        />
+                        <stop
+                          offset="95%"
+                          stopColor="#3B82F6"
+                          stopOpacity={0}
+                        />
+                      </linearGradient>
+                      <linearGradient
+                        id="colorUsers"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="5%"
+                          stopColor="#10B981"
+                          stopOpacity={0.1}
+                        />
+                        <stop
+                          offset="95%"
+                          stopColor="#10B981"
+                          stopOpacity={0}
+                        />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      vertical={false}
+                      stroke="#e2e8f0"
+                      opacity={1}
+                    />
+                    <XAxis
+                      dataKey="formattedDate"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: "#64748b", fontSize: 10, fontWeight: 700 }}
+                      dy={10}
+                    />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: "#64748b", fontSize: 10, fontWeight: 700 }}
+                      dx={-10}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "#ffffff",
+                        borderRadius: "16px",
+                        border: "1px solid #e2e8f0",
+                        boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+                        fontSize: "12px",
+                        fontWeight: "700",
+                        color: "#1e293b",
+                      }}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="activeUsers"
+                      stroke="#3B82F6"
+                      strokeWidth={4}
+                      fillOpacity={1}
+                      fill="url(#colorViews)"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="newUsers"
+                      stroke="#10B981"
+                      strokeWidth={4}
+                      fillOpacity={1}
+                      fill="url(#colorUsers)"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
               </div>
             </div>
 
-            <div className="h-[350px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={hasData ? chartData : balanceData}>
-                  <defs>
-                    <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10B981" stopOpacity={0.1} />
-                      <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    vertical={false}
-                    stroke="#1e293b"
-                    opacity={0.5}
-                  />
-                  <XAxis
-                    dataKey={hasData ? "formattedDate" : "name"}
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: "#64748b", fontSize: 10, fontWeight: 700 }}
-                    dy={10}
-                  />
-                  <YAxis yAxisId="left" hide />
-                  <YAxis yAxisId="right" orientation="right" hide />
-                  <Tooltip
-                    cursor={{ stroke: "#334155", strokeWidth: 2 }}
-                    contentStyle={{
-                      backgroundColor: "#0F1117",
-                      borderColor: "#334155",
-                      borderRadius: "16px",
-                      padding: "12px",
-                      boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.5)",
-                    }}
-                    itemStyle={{ fontSize: "12px", fontWeight: 600 }}
-                  />
-                  <Area
-                    yAxisId="left"
-                    type="monotone"
-                    dataKey={hasData ? "eventCount" : "revenue"}
-                    name="Events"
-                    stroke="#3B82F6"
-                    strokeWidth={4}
-                    fillOpacity={1}
-                    fill="url(#colorViews)"
-                    animationDuration={1500}
-                  />
-                  <Area
-                    yAxisId="right"
-                    type="monotone"
-                    dataKey={hasData ? "activeUsers" : "expenses"}
-                    name="Active Users"
-                    stroke="#10B981"
-                    strokeWidth={4}
-                    fillOpacity={1}
-                    fill="url(#colorUsers)"
-                    animationDuration={2000}
-                    strokeDasharray="8 8"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+            <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8 flex flex-col shadow-sm relative group hover:shadow-xl transition-all duration-500">
+              <div className="flex items-center justify-between mb-8">
+                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm group-hover:scale-110 transition-transform duration-500">
+                  <Users className="w-6 h-6 text-blue-500" />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <p className="text-[11px] font-black text-slate-400 uppercase tracking-[2px]">
+                  Active Users (30m)
+                </p>
+                <div className="text-5xl font-black text-slate-900 tracking-tighter">
+                  {analyticsLoading
+                    ? "..."
+                    : analyticsData?.realtime?.activeUsers || "0"}
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Web traffic table */}
-          <div className="bg-[#0F1117] border border-slate-800/50 rounded-[2.5rem] overflow-hidden group shadow-2xl">
-            <div className="p-8 border-b border-slate-800/50 flex items-center justify-between">
-              <h4 className="font-bold flex items-center gap-2">
+          <div className="bg-white border border-slate-200 rounded-[2.5rem] overflow-hidden group shadow-sm">
+            <div className="p-8 border-b border-slate-100 flex items-center justify-between">
+              <h4 className="font-bold flex items-center gap-2 text-slate-900">
                 <FileText className="w-4 h-4 text-blue-500" />
                 Content Performance
               </h4>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+              <table className="w-full text-left border-collapse min-w-[600px]">
                 <thead>
-                  <tr className="bg-slate-900/30">
-                    <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none">
+                  <tr className="bg-slate-50">
+                    <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none border-b border-slate-100">
                       Blog Title
                     </th>
-                    <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none text-center">
+                    <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none text-center border-b border-slate-100">
                       Engagement
                     </th>
-                    <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none">
+                    <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none border-b border-slate-100">
                       Status
                     </th>
-                    <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none">
+                    <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none border-b border-slate-100">
                       Actions
                     </th>
                   </tr>
@@ -683,16 +776,16 @@ const DashboardX = () => {
                     <tr>
                       <td
                         colSpan="4"
-                        className="px-8 py-10 text-center text-slate-500"
+                        className="px-8 py-10 text-center text-slate-400"
                       >
-                        Syncing with database...
+                        Syncing...
                       </td>
                     </tr>
                   ) : myBlogs.length === 0 ? (
                     <tr>
                       <td
                         colSpan="4"
-                        className="px-8 py-10 text-center text-slate-500"
+                        className="px-8 py-10 text-center text-slate-400"
                       >
                         No content records found
                       </td>
@@ -701,22 +794,22 @@ const DashboardX = () => {
                     myBlogs.map((blog) => (
                       <tr
                         key={blog._id}
-                        className="border-t border-slate-800/30 hover:bg-white/5 transition-colors group/row"
+                        className="border-t border-slate-100 hover:bg-slate-50 transition-colors group/row"
                       >
                         <td className="px-8 py-5">
-                          <p className="font-bold text-sm text-slate-100 group-hover/row:text-blue-400 transition-colors">
+                          <p className="font-bold text-sm text-slate-700 group-hover/row:text-blue-600 transition-colors">
                             {blog.title}
                           </p>
-                          <p className="text-[10px] text-slate-500 mt-1 uppercase tracking-wider font-bold">
+                          <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-wider font-bold">
                             {blog.category}
                           </p>
                         </td>
                         <td className="px-8 py-5 text-center">
                           <div className="flex flex-col items-center">
-                            <span className="text-sm font-black text-slate-200">
+                            <span className="text-sm font-black text-slate-700">
                               {blog.meta?.views || 0}
                             </span>
-                            <div className="w-12 h-1 bg-slate-800 rounded-full mt-2 overflow-hidden">
+                            <div className="w-12 h-1 bg-slate-100 rounded-full mt-2 overflow-hidden">
                               <div
                                 className="h-full bg-blue-500"
                                 style={{
@@ -728,7 +821,7 @@ const DashboardX = () => {
                         </td>
                         <td className="px-8 py-5">
                           <span
-                            className={`px-2 py-1 rounded text-[10px] font-black uppercase tracking-tighter ${blog.published ? "bg-emerald-500/10 text-emerald-500" : "bg-amber-500/10 text-amber-500"}`}
+                            className={`px-2 py-1 rounded text-[10px] font-black uppercase tracking-tighter ${blog.published ? "bg-emerald-500/10 text-emerald-600" : "bg-amber-500/10 text-amber-600"}`}
                           >
                             {blog.published ? "Live" : "Draft"}
                           </span>
@@ -736,7 +829,7 @@ const DashboardX = () => {
                         <td className="px-8 py-5">
                           <Link
                             to={`/blogs/${blog.slug}`}
-                            className="p-2 hover:bg-blue-500/10 rounded-lg text-blue-500 transition-colors inline-block"
+                            className="p-2 hover:bg-blue-500/10 rounded-lg text-blue-600 transition-colors inline-block"
                           >
                             <ChevronRight className="w-4 h-4" />
                           </Link>
@@ -751,30 +844,30 @@ const DashboardX = () => {
 
           {/* Partners Performance Table - Only for Admin */}
           {user?.role === "admin" && (
-            <div className="bg-[#0F1117] border border-slate-800/50 rounded-[2.5rem] overflow-hidden group shadow-2xl">
-              <div className="p-8 border-b border-slate-800/50 flex items-center justify-between">
-                <h4 className="font-bold flex items-center gap-2">
-                  <Users className="w-4 h-4 text-purple-500" />
+            <div className="bg-white border border-slate-200 rounded-[2.5rem] overflow-hidden group shadow-sm">
+              <div className="p-8 border-b border-slate-100 flex items-center justify-between">
+                <h4 className="font-bold flex items-center gap-2 text-slate-900">
+                  <span className="w-2 h-2 rounded-full bg-purple-500"></span>
                   Partners Performance Summary
                 </h4>
               </div>
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+                <table className="w-full text-left border-collapse min-w-[700px]">
                   <thead>
-                    <tr className="bg-slate-900/30">
-                      <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none">
+                    <tr className="bg-slate-50">
+                      <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none border-b border-slate-100">
                         Partner
                       </th>
-                      <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none text-center">
+                      <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none text-center border-b border-slate-100">
                         Active Users
                       </th>
-                      <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none text-center">
+                      <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none text-center border-b border-slate-100">
                         Events
                       </th>
-                      <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none text-center">
+                      <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none text-center border-b border-slate-100">
                         New Users
                       </th>
-                      <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none">
+                      <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none border-b border-slate-100">
                         Actions
                       </th>
                     </tr>
@@ -784,18 +877,18 @@ const DashboardX = () => {
                       <tr>
                         <td
                           colSpan="5"
-                          className="px-8 py-10 text-center text-slate-500"
+                          className="px-8 py-10 text-center text-slate-400"
                         >
-                          Fetching partner analytics...
+                          Syncing...
                         </td>
                       </tr>
                     ) : partnersSummary.length === 0 ? (
                       <tr>
                         <td
                           colSpan="5"
-                          className="px-8 py-10 text-center text-slate-500"
+                          className="px-8 py-10 text-center text-slate-400"
                         >
-                          No partner data found for this range
+                          No records found
                         </td>
                       </tr>
                     ) : (
@@ -806,43 +899,43 @@ const DashboardX = () => {
                         return (
                           <tr
                             key={ps.param}
-                            className="border-t border-slate-800/30 hover:bg-white/5 transition-colors group/row"
+                            className="border-t border-slate-100 hover:bg-slate-50 transition-colors group/row"
                           >
                             <td className="px-8 py-5">
                               <div className="flex items-center gap-3">
                                 {partner?.coverImage ? (
                                   <img
                                     src={partner.coverImage}
-                                    className="w-10 h-10 rounded-full object-cover border border-slate-700"
+                                    className="w-10 h-10 rounded-full object-cover border border-slate-200"
                                     alt=""
                                   />
                                 ) : (
-                                  <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center border border-slate-700">
-                                    <Users className="w-5 h-5 text-slate-600" />
+                                  <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200">
+                                    <Users className="w-5 h-5 text-slate-400" />
                                   </div>
                                 )}
                                 <div>
-                                  <p className="font-bold text-sm text-slate-100 group-hover/row:text-purple-400 transition-colors">
+                                  <p className="font-bold text-sm text-slate-700 group-hover/row:text-purple-600 transition-colors">
                                     {partner?.name || ps.param}
                                   </p>
-                                  <p className="text-[10px] text-slate-500 mt-1 uppercase tracking-wider font-bold">
+                                  <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-wider font-bold">
                                     {partner?.category || "Partnership"}
                                   </p>
                                 </div>
                               </div>
                             </td>
                             <td className="px-8 py-5 text-center">
-                              <span className="text-sm font-black text-slate-200">
+                              <span className="text-sm font-black text-slate-700">
                                 {ps.activeUsers}
                               </span>
                             </td>
                             <td className="px-8 py-5 text-center">
-                              <span className="text-sm font-black text-slate-200">
+                              <span className="text-sm font-black text-slate-700">
                                 {ps.eventCount}
                               </span>
                             </td>
                             <td className="px-8 py-5 text-center">
-                              <span className="text-sm font-black text-slate-200">
+                              <span className="text-sm font-black text-slate-700">
                                 {ps.newUsers}
                               </span>
                             </td>
@@ -851,7 +944,7 @@ const DashboardX = () => {
                                 onClick={() =>
                                   setSelectedPartnerParam(ps.param)
                                 }
-                                className="p-2 hover:bg-purple-500/10 rounded-lg text-purple-500 transition-colors inline-block"
+                                className="px-4 py-2 border border-slate-200 hover:bg-purple-50 hover:border-purple-200 rounded-xl text-purple-600 text-xs font-bold transition-all"
                               >
                                 View Details
                               </button>
@@ -880,34 +973,50 @@ const NavItem = ({
 }) => (
   <div
     onClick={onClick}
-    className={`flex items-center gap-3 p-2.5 rounded-xl cursor-pointer transition-all ${active ? "bg-blue-600/10 text-blue-500 shadow-[inset_0_0_10px_rgba(59,130,246,0.1)]" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
+    className={`flex items-center gap-3 p-2.5 rounded-xl cursor-pointer transition-all ${active ? "bg-blue-600/10 text-blue-600 shadow-sm" : "text-slate-500 hover:bg-slate-100 hover:text-slate-900"}`}
   >
     {icon}
     <span className="text-sm font-semibold flex-1">{label}</span>
-    {hasSubmenu && <ChevronRight className="w-4 h-4 text-slate-600" />}
+    {hasSubmenu && <ChevronRight className="w-4 h-4 text-slate-400" />}
   </div>
 );
 
-const StatCard = ({ label, value, trend, trendUp, icon }) => (
-  <div className="bg-[#0F1117] border border-slate-800/50 rounded-3xl p-6 hover:border-blue-500/30 transition-all duration-500 group relative overflow-hidden">
-    <div className="absolute -right-4 -top-4 w-16 h-16 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-colors"></div>
-    <div className="flex items-center justify-between mb-4">
-      <div className="p-2.5 bg-slate-800/50 rounded-xl group-hover:scale-110 transition-transform duration-500 shadow-xl">
-        {icon}
+const StatCard = ({ label, value, trend, trendUp, icon }) => {
+  const displayTrend =
+    trend === "NaN%" || trend === "undefined%" || !trend ? "Live" : trend;
+
+  return (
+    <div className="bg-white border border-slate-200 rounded-3xl p-6 hover:shadow-xl hover:border-blue-500/30 transition-all duration-500 group relative overflow-hidden shadow-sm">
+      <div className="absolute -right-4 -top-4 w-16 h-16 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-colors"></div>
+      <div className="flex items-center justify-between mb-4">
+        <div className="p-2.5 bg-slate-50 rounded-xl group-hover:scale-110 transition-transform duration-500 shadow-sm border border-slate-100">
+          {icon}
+        </div>
+        <div className="flex flex-col items-end">
+          <span
+            className={`text-[10px] font-black tracking-widest px-2 py-0.5 rounded-md uppercase ${trendUp ? "bg-emerald-500/10 text-emerald-600" : "bg-red-500/10 text-red-600"}`}
+          >
+            {displayTrend}
+          </span>
+          {displayTrend !== "Live" && (
+            <div className="flex items-center mt-1">
+              {trendUp ? (
+                <ArrowUpRight className="w-2.5 h-2.5 text-emerald-500" />
+              ) : (
+                <ArrowDownRight className="w-2.5 h-2.5 text-red-500" />
+              )}
+            </div>
+          )}
+        </div>
       </div>
-      <span
-        className={`text-[10px] font-black tracking-widest px-2 py-0.5 rounded-md uppercase ${trendUp ? "bg-emerald-500/10 text-emerald-500" : "bg-red-500/10 text-red-500"}`}
-      >
-        {trend}
-      </span>
+      <p className="text-[10px] text-slate-500 font-black uppercase tracking-[2px] mb-1">
+        {label}
+      </p>
+      <h3 className="text-2xl font-black mb-1 tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
+        {value}
+      </h3>
     </div>
-    <p className="text-[10px] text-slate-500 font-black uppercase tracking-[2px] mb-1">
-      {label}
-    </p>
-    <h3 className="text-2xl font-black mb-1 tracking-tight group-hover:text-blue-400 transition-colors">
-      {value}
-    </h3>
-  </div>
-);
+  );
+};
 
 export default DashboardX;

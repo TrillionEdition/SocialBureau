@@ -1,13 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 @import "tailwindcss";
 
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-serif: "Playfair Display", serif;
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  --animate-fade-up: fade-up 0.8s ease-out forwards;
+}
+
 :root {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 html,
 body,
 #root {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -16,7 +34,40 @@ body,
 }
 
 body {
+  @apply bg-[#0a0a0a] text-white antialiased overflow-x-hidden selection:bg-white selection:text-black;
   position: relative;
+}
+
+.text-reveal {
+  @apply overflow-hidden;
+}
+
+.text-reveal span {
+  @apply inline-block;
+}
+
+@layer utilities {
+  .kerning-tight {
+    letter-spacing: -0.04em;
+  }
+}
+
+/* Custom scrollbar for a cleaner look */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e5e5e5;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d1d1d1;
 }
 
 /* Ensure all elements inherit or use Inter */
@@ -33,9 +84,8 @@ button,
 input,
 textarea,
 select {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
-
 
 @font-face {
   font-family: "MyFont";
@@ -97,7 +147,6 @@ select {
 }
 
 @keyframes move1 {
-
   0%,
   100% {
     transform: translate(-30%, -30%);
@@ -109,7 +158,6 @@ select {
 }
 
 @keyframes move2 {
-
   0%,
   100% {
     transform: translate(30%, -20%);

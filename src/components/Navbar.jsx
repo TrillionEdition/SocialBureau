@@ -50,15 +50,15 @@ export default function Navbar() {
           title: "API Marketing",
           items: [
             { label: "API Marketing", href: "/api-marketing" },
-            { label: "Performance Marketing", href: "/performance-marketing" },
-            { label: "Niche Marketing", href: "/niche-marketing" },
-            { label: "Content Marketing", href: "/content-marketing" },
-            { label: "AdTech Integration", href: "/adTech-marketing" },
+            { label: "Performance Marketing", href: "/performance-marketing-agency-in-kochi" },
+            { label: "Niche Marketing", href: "/niche-marketing-agency-in-kochi" },
+            { label: "Content Marketing", href: "/content-marketing-agency-in-kochi" },
+            { label: "AdTech Integration", href: "/adTech-marketing-agency-in-kochi" },
           ],
         },
         {
           title: "Design & Tech",
-          items: [{ label: "Web Development", href: "/web-development" }],
+          items: [{ label: "Web Development", href: "/web-development-agency-in-kochi" }],
         },
       ],
     },
@@ -125,7 +125,7 @@ export default function Navbar() {
     },
     {
       label: "Performance Marketing",
-      href: "/performance-marketing",
+      href: "/performance-marketing-agency-in-kochi",
       columns: [
         {
           title: "Marketing",
