@@ -265,7 +265,8 @@ const PerformanceMarketing = () => {
                         <div className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-gray-50">
                             <img
                                 src="/performance_dashboard.png"
-                                alt="Performance Marketing Agency"
+                                alt="performance-marketing-agency-in-kochi"
+                                title='performance-marketing-agency-in-kochi'
                                 className="w-full h-full object-cover"
                             />
                         </div>
@@ -315,8 +316,9 @@ const PerformanceMarketing = () => {
                         >
                             <img
                                 src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/SMM_PHOTOSHOOT_xdkcl5.webp", 1000)}
-                                alt="Our Approach"
-                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                                alt="performance-marketing-agency-in-kochi"
+                                title='performance-marketing-agency-in-kochi'
+                                className="w-full h-full object-cover"
                             />
                         </motion.div>
                     </div>
@@ -403,23 +405,13 @@ const PerformanceMarketing = () => {
                                 ))}
                             </div>
                         </motion.div>
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            className="relative h-[400px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl"
-                        >
+                        
                             <img
                                 src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772022966/PMO_converted_yhchbh.webp", 1000)}
-                                alt="Performance Growth"
-                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                                alt="performance-marketing-agency-in-kochi"
+                                title='performance-marketing-agency-in-kochi'
+                                className="w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                            <div className="absolute bottom-10 left-10 text-white">
-                                <p className="text-4xl font-bold">100%</p>
-                                <p className="text-sm uppercase tracking-widest opacity-80">Data-Driven Approach</p>
-                            </div>
-                        </motion.div>
                     </div>
                 </div>
             </section>

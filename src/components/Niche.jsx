@@ -252,7 +252,8 @@ const Niche = () => {
                         <div className="absolute -inset-10 bg-[#920F17]/5 rounded-full blur-[100px]"></div>
                         <img
                             src="/niche_target.png"
-                            alt="Niche Targeting"
+                            alt="niche marketing-agency-in-kochi"
+                            title='niche marketing-agency-in-kochi'
                             className="relative w-full h-auto drop-shadow-2xl"
                         />
                     </motion.div>
@@ -271,10 +272,11 @@ const Niche = () => {
                         >
                             <img
                                 src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/SMM_PHOTOSHOOT_xdkcl5.webp", 1000)}
-                                alt="Strategy Session"
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                alt="niche marketing-agency-in-kochi"
+                                title='niche marketing-agency-in-kochi'
+                                className="w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                            
                         </motion.div>
                         <motion.div
                             initial={{ opacity: 0, x: 30 }}
@@ -392,7 +394,8 @@ const Niche = () => {
                             <div className="absolute -inset-20 bg-[#920F17]/20 blur-[120px] rounded-full"></div>
                             <img
                                 src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772183939/Red_stock_martket_chart_p4hejw.webp", 1000)}
-                                alt="Strategy Visualization"
+                                alt="niche marketing-agency-in-kochi"
+                                title='niche marketing-agency-in-kochi'
                                 className="relative rounded-[3rem] shadow-2xl border border-white/10"
                             />
                         </motion.div>

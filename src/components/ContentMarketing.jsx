@@ -317,7 +317,8 @@ const ContentMarketing = () => {
                                 "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086614/cup-coffee-with-headphones-notebook-red-background_up2ufi.webp",
                                 1200,
                             )}
-                            alt="Content Marketing Hero"
+                            alt="content-marketing-agency-in-kochi"
+                            title="content-marketing-agency-in-kochi"
                             className="w-full h-full object-cover"
                             loading="lazy"
                             decoding="async"
@@ -378,7 +379,8 @@ const ContentMarketing = () => {
                                     "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086611/Fastion_sg9hqc.webp",
                                     1000,
                                 )}
-                                alt="Strategic Content Creation and Planning"
+                                alt="content-marketing-agency-in-kochi"
+                                title="content-marketing-agency-in-kochi"
                                 className="w-full h-full object-cover"
                                 loading="lazy"
                                 decoding="async"
@@ -420,8 +422,9 @@ const ContentMarketing = () => {
                                     "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/alarm-clock-top-laptop-with-copy-space_fl8wmq.webp",
                                     1200,
                                 )}
-                                alt="Content Creation Services and productivity"
+                                alt="content-marketing-agency-in-kochi"
                                 className="w-full h-full object-cover"
+                                title="content-marketing-agency-in-kochi"
                                 loading="lazy"
                                 decoding="async"
                             />
@@ -542,7 +545,7 @@ const ContentMarketing = () => {
                                 Why Choose Us
                             </span>
                             <h2 className="text-4xl lg:text-5xl font-semibold leading-[1.1] tracking-[-0.015em] mb-10 text-black">
-                                Content Marketing agency in Kochi
+                                Content Marketing agency in Kochi, Kerala
                             </h2>
 
                             <div className="space-y-8">
@@ -572,12 +575,12 @@ const ContentMarketing = () => {
                                     "https://res.cloudinary.com/dtwcgfmar/image/upload/v1770978614/Picsart_26-02-10_22-36-15-902_yehobf.jpg",
                                     1000,
                                 )}
-                                alt="Content professional working at SocialBureau"
-                                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                alt="content-marketing-agency-in-kochi"
+                                className="w-full h-full object-cover object-top "
                                 loading="lazy"
+                                title="content-marketing-agency-in-kochi"
                                 decoding="async"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                         </div>
                     </div>
                 </div>
