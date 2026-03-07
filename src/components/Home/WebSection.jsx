@@ -12,7 +12,6 @@ const WebSection = () => {
 
                 <div className="flex flex-col md:flex-row items-center justify-between gap-10 md:gap-16">
 
-                    {/* LEFT – VIDEO / VISUAL ELEMENT */}
                     <div className="relative w-full md:w-[48%] aspect-[4/3] md:aspect-square overflow-hidden rounded-[1.5rem] md:rounded-[2rem] shadow-2xl">
                         <video
                             className="w-full h-full object-cover"
