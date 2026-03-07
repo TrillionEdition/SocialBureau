@@ -21,8 +21,8 @@
 
 // import { downloadResumeSinglePage } from "../../../utils/singlePagePdfGenerator.js";
 // import { getAIResumeImprovements, checkResumeQuality, generateAISuggestions } from "../../../services/aiResumeService.js";
-// import AIResumeGenerator from '../../components/AIResumeGenerator';
-// import AICompanionModal from '../../components/AICompanionModal'; // Import the new component
+// import AIResumeGenerator from './AIResumeGenerator';
+// import AICompanionModal from './AICompanionModal'; // Import the new component
 // import { downloadResumeAsWord } from "../../../utils/wordGenerator.js";
 
 // const RESUME_TEMPLATES = {
@@ -58,6 +58,23 @@
 //     const [method, setMethod] = useState(null); // 'pdf' | 'form' | 'fresh'
 //     const [selectedTemplate, setSelectedTemplate] = useState('modern');
 //     const [resumeData, setResumeData] = useState({
+//         personalInfo: {
+//             fullName: '',
+//             email: '',
+//             phone: '',
+//             location: '',
+//             linkedin: '',
+//             portfolio: '',
+//             title: '',
+//             summary: ''
+//         },
+//         experience: [],
+//         education: [],
+//         skills: [],
+//         projects: [],
+//         certifications: [],
+//         languages: []
+//     });
 //     const [loading, setLoading] = useState(false);
 //     const [error, setError] = useState('');
 //     const [pdfLoading, setPdfLoading] = useState(false);
@@ -67,6 +84,8 @@
 //     const [showAIPanel, setShowAIPanel] = useState(false);
 //     const [isCompanionOpen, setIsCompanionOpen] = useState(false);
 //     const [companionSection, setCompanionSection] = useState(null);
+//     const [atsEnabled, setAtsEnabled] = useState(false);
+//     const [atsScore, setAtsScore] = useState(null);
 
 //     useEffect(() => {
 //         // Load from localStorage if exists
@@ -105,7 +124,7 @@
 //                 element,
 //                 resumeData.personalInfo.fullName
 //             );
-            
+
 //             setError('');
 //         } catch (err) {
 //             console.error('PDF generation error:', err);
@@ -159,31 +178,17 @@
 //     };
 
 //     const handleGetSuggestions = async (sectionType, currentContent) => {
-//         setSuggestionSection(sectionType);
-//         setSuggestionsLoading(true);
-//         setSuggestions([]);
+//         setAiLoading(true);
 //         try {
 //             const result = await generateAISuggestions(sectionType, currentContent, { jobTitle: resumeData.personalInfo.title });
-//             setSuggestions(result.suggestions);
+//             return result.suggestions;
 //         } catch (err) {
 //             console.error('AI suggestion error:', err);
 //             setError('Failed to get AI suggestions. Please try again.');
+//             return [];
 //         } finally {
-//             setSuggestionsLoading(false);
+//             setAiLoading(false);
 //         }
-//     };
-
-//     const applyAISuggestion = (suggestion) => {
-//         if (suggestion.type === 'summary' && suggestion.examples) {
-//             setResumeData(prev => ({
-//                 ...prev,
-//                 personalInfo: {
-//                     ...prev.personalInfo,
-//                     summary: suggestion.examples[0]
-//                 }
-//             }));
-//         }
-//         setError('');
 //     };
 
 //     return (
@@ -205,7 +210,7 @@
 //                         onClose={() => setIsCompanionOpen(false)}
 //                         section={companionSection.split('.').pop()}
 //                         currentContent={companionSection.split('.').reduce((o, i) => o[i], resumeData)}
-//                         onGenerate={generateAISuggestions}
+//                         onGenerate={handleGetSuggestions}
 //                         onApply={(suggestion) => {
 //                             const keys = companionSection.split('.');
 //                             let updatedData = { ...resumeData };
@@ -224,14 +229,13 @@
 //                 <div className="mb-12 flex justify-center gap-3">
 //                     {['Method', 'AI Generation', 'Template', 'Input', 'Preview'].map((label, idx) => (
 //                         <div key={label} className="flex items-center">
-//                             <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
-//                                 (step === ['method', 'ai-generation', 'template', 'input', 'preview'][idx] || 
-//                                  (step === 'extraction' && idx === 1))
+//                             <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${(step === ['method', 'ai-generation', 'template', 'input', 'preview'][idx] ||
+//                                     (step === 'extraction' && idx === 1))
 //                                     ? 'bg-blue-600 text-white scale-110'
 //                                     : ['method', 'ai-generation', 'extraction', 'template', 'input', 'preview'].indexOf(step) > idx
-//                                     ? 'bg-green-600 text-white'
-//                                     : 'bg-gray-800 text-gray-400'
-//                             }`}>
+//                                         ? 'bg-green-600 text-white'
+//                                         : 'bg-gray-800 text-gray-400'
+//                                 }`}>
 //                                 {['method', 'ai-generation', 'extraction', 'template', 'input', 'preview'].indexOf(step) > idx ? '✓' : idx + 1}
 //                             </div>
 //                             {idx < 4 && <div className="w-12 h-1 mx-1 bg-gray-800" />}
@@ -303,42 +307,56 @@
 //                                             </div>
 //                                         </div>
 //                                     </div>
+//                                 </div>
+//                             )}
 
-//                                     {step === 'preview' && (
-//                                         <div className="pt-4 border-t border-gray-700 space-y-3">
-//                                             <div className="grid grid-cols-2 gap-2">
-//                                                 <button
-//                                                     onClick={handleDownloadPDF}
-//                                                     disabled={pdfLoading}
-//                                                     className="btn-primary flex items-center justify-center gap-2 py-2 disabled:opacity-50 text-xs"
-//                                                 >
-//                                                     {pdfLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-//                                                     PDF
-//                                                 </button>
-//                                                 <button
-//                                                     onClick={handleDownloadWord}
-//                                                     className="bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2 py-2 rounded-lg transition-colors font-medium text-xs"
-//                                                 >
-//                                                     <FileText className="w-4 h-4" />
-//                                                     Word
-//                                                 </button>
-//                                             </div>
+//                             {step === 'preview' && (
+//                                 <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-4">
+//                                     <h2 className="text-lg font-bold flex items-center gap-2">
+//                                         <CheckCircle2 className="w-5 h-5 text-green-500" />
+//                                         All Set!
+//                                     </h2>
+//                                     <p className="text-sm text-gray-400">Your resume is ready. Download, preview, or edit further.</p>
+
+//                                     <div className="space-y-3">
+//                                         <div className="grid grid-cols-2 gap-3">
 //                                             <button
-//                                                 onClick={handleGetAISuggestions}
-//                                                 disabled={aiLoading}
-//                                                 className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg transition-colors font-medium text-sm flex items-center justify-center gap-2 disabled:opacity-50"
+//                                                 onClick={handleDownloadPDF}
+//                                                 disabled={pdfLoading}
+//                                                 className="btn-primary flex items-center justify-center gap-2 py-3 disabled:opacity-50"
 //                                             >
-//                                                 {aiLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4" />}
-//                                                 {aiLoading ? 'Analyzing...' : 'Get AI Suggestions'}
+//                                                 {pdfLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+//                                                 PDF Format
 //                                             </button>
 //                                             <button
-//                                                 onClick={() => setStep('method')}
-//                                                 className="w-full border border-gray-700 hover:border-red-500 text-gray-400 hover:text-red-400 py-2 rounded-lg transition-colors font-medium text-sm"
+//                                                 onClick={handleDownloadWord}
+//                                                 className="bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2 py-3 rounded-xl transition-colors font-medium shadow-lg hover:shadow-blue-500/20"
 //                                             >
-//                                                 Start Over
+//                                                 <FileText className="w-4 h-4" />
+//                                                 Word Format
 //                                             </button>
 //                                         </div>
-//                                     )}
+//                                         <button
+//                                             onClick={handleGetAISuggestions}
+//                                             disabled={aiLoading}
+//                                             className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl transition-colors font-medium text-sm flex items-center justify-center gap-2 disabled:opacity-50"
+//                                         >
+//                                             {aiLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4" />}
+//                                             {aiLoading ? 'Analyzing...' : 'Get AI Suggestions'}
+//                                         </button>
+//                                         <button
+//                                             onClick={() => setStep('input')}
+//                                             className="w-full border border-gray-700 text-gray-400 hover:text-white py-2 rounded-lg transition-colors font-medium text-sm"
+//                                         >
+//                                             Edit
+//                                         </button>
+//                                         <button
+//                                             onClick={() => setStep('method')}
+//                                             className="w-full border border-gray-700 hover:border-red-500 text-gray-400 hover:text-red-400 py-2 rounded-lg transition-colors font-medium text-sm"
+//                                         >
+//                                             Start Over
+//                                         </button>
+//                                     </div>
 //                                 </div>
 //                             )}
 
@@ -374,18 +392,6 @@
 //                                         </label>
 //                                     </div>
 
-//                                     {atsEnabled && atsScore !== null && (
-//                                         <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
-//                                             <div className="flex items-center justify-between">
-//                                                 <span className="text-sm text-green-400">ATS Score</span>
-//                                                 <span className="text-2xl font-bold text-green-400">{atsScore}%</span>
-//                                             </div>
-//                                             <div className="mt-2 h-1 bg-gray-700 rounded-full overflow-hidden">
-//                                                 <div className="h-full bg-green-500 transition-all" style={{ width: `${atsScore}%` }} />
-//                                             </div>
-//                                         </div>
-//                                     )}
-
 //                                     <button
 //                                         onClick={() => setStep('preview')}
 //                                         className="w-full btn-primary flex items-center justify-center gap-2 py-3 mt-6"
@@ -393,43 +399,6 @@
 //                                         <Eye className="w-4 h-4" />
 //                                         Preview Resume
 //                                     </button>
-//                                 </div>
-//                             )}
-
-//                             {/* Step 4: Export */}
-//                             {step === 'preview' && (
-//                                 <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-4">
-//                                     <h2 className="text-lg font-bold flex items-center gap-2">
-//                                         <CheckCircle2 className="w-5 h-5 text-green-500" />
-//                                         All Set!
-//                                     </h2>
-//                                     <p className="text-sm text-gray-400">Your resume is ready. Download, preview, or edit further.</p>
-
-//                                     <div className="space-y-3">
-//                                         <div className="grid grid-cols-2 gap-3">
-//                                             <button
-//                                                 onClick={handleDownloadPDF}
-//                                                 disabled={pdfLoading}
-//                                                 className="btn-primary flex items-center justify-center gap-2 py-3 disabled:opacity-50"
-//                                             >
-//                                                 {pdfLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-//                                                 PDF Format
-//                                             </button>
-//                                             <button
-//                                                 onClick={handleDownloadWord}
-//                                                 className="bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2 py-3 rounded-xl transition-colors font-medium shadow-lg hover:shadow-blue-500/20"
-//                                             >
-//                                                 <FileText className="w-4 h-4" />
-//                                                 Word Format
-//                                             </button>
-//                                         </div>
-//                                         <button
-//                                             onClick={() => setStep('input')}
-//                                             className="w-full border border-gray-700 text-gray-400 hover:text-white py-2 rounded-lg transition-colors font-medium text-sm"
-//                                         >
-//                                             Edit
-//                                         </button>
-//                                     </div>
 //                                 </div>
 //                             )}
 //                         </div>
@@ -452,7 +421,6 @@
 //                                 selected={selectedTemplate}
 //                                 onSelect={setSelectedTemplate}
 //                                 onNext={() => {
-//                                     setSelectedTemplate(selectedTemplate);
 //                                     setStep('input');
 //                                 }}
 //                                 fullView
@@ -476,7 +444,7 @@
 //                                 data={resumeData}
 //                                 onChange={setResumeData}
 //                                 template={selectedTemplate}
-//                                 onGetSuggestions={handleOpenAICompanion}
+//                                 onOpenAICompanion={handleOpenAICompanion}
 //                             />
 //                         )}
 
