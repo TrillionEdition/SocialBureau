@@ -1,48 +1,110 @@
-import React from "react";
-import "@fortawesome/fontawesome-free/css/all.min.css";
+// import React from "react";
+// import "@fortawesome/fontawesome-free/css/all.min.css";
+
+// const values = [
+//   {
+//     title: "Excellence",
+//     icon: "fas fa-gem",
+//     text: "Uncompromising commitment to excellence in everything we do",
+//   },
+//   {
+//     title: "Integrity",
+//     icon: "fas fa-handshake",
+//     text: "Conducting principled leadership and ethical decisions at every level",
+//   },
+//   {
+//     title: "Innovation",
+//     icon: "fas fa-rocket",
+//     text: "Creating solutions that define the industries of tomorrow",
+//   },
+// ];
+
+// export default function CareersContent() {
+//   return (
+//     <div className="text-white font-inter">
+      
+//       <section id="culture" className="py-20 px-6">
+//         <div className="max-w-6xl mx-auto text-center mb-16">
+//           <h2 className="font-playfair text-4xl md:text-5xl font-bold mb-6" style={{ fontFamily: "Playfair Display, serif" }}>Inspired by Excellence
+// </h2>
+//           <p className="text-xl text-gray-300 font-light">Founded on the principles of excellence and distinction</p>
+//         </div>
+//         <div className="grid md:grid-cols-3 gap-12 md:px-20">
+//           {values.map((v, i) => (
+//             <div key={i} className="text-center">
+//               <div className="w-20 h-20 mx-auto mb-6 flex items-center justify-center ">
+//                 <i className={`${v.icon} text-red-600 text-5xl`}></i>
+//               </div>
+//               <h3 className="font-playfair text-2xl font-semibold mb-4">{v.title}</h3>
+//               <p className="text-gray-300">{v.text}</p>
+//             </div>
+//           ))}
+//         </div>
+        
+//       </section>
+
+//     </div>
+//   );
+// }
+
+import React from 'react';
+import { motion } from 'framer-motion';
 
 const values = [
-  {
-    title: "Excellence",
-    icon: "fas fa-gem",
-    text: "Uncompromising commitment to excellence in everything we do",
-  },
-  {
-    title: "Integrity",
-    icon: "fas fa-handshake",
-    text: "Conducting principled leadership and ethical decisions at every level",
-  },
-  {
-    title: "Innovation",
-    icon: "fas fa-rocket",
-    text: "Creating solutions that define the industries of tomorrow",
-  },
+  { number: "01", title: "Excellence", text: "Uncompromising commitment to precision and craft in everything we do.", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772887075/modern-business-building-scenery-touching-sky_i84t8j.webp" },
+  { number: "02", title: "Integrity", text: "Principled leadership that values transparency above all else.", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772887073/0e0c8050-92a9-4f63-b732-8c52cb3dc07c_caspjt.webp" },
+  { number: "03", title: "Innovation", text: "Architecting solutions that define the industries of tomorrow.", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772887074/3923_d8k6kn.webp" },
+  { number: "04", title: "Artistry", text: "Blending data-driven strategy with creative visual mastery.", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772887074/v655-sasi-21-bwflower_jj47pv.webp" },
 ];
 
 export default function CareersContent() {
   return (
-    <div className="text-white font-inter">
-      
-      <section id="culture" className="py-20 px-6">
-        <div className="max-w-6xl mx-auto text-center mb-16">
-          <h2 className="font-playfair text-4xl md:text-5xl font-bold mb-6" style={{ fontFamily: "Playfair Display, serif" }}>Inspired by Excellence
-</h2>
-          <p className="text-xl text-gray-300 font-light">Founded on the principles of excellence and distinction</p>
+    <section className="py-32 px-6 bg-[#fafafa] text-[#1a1a1a]">
+      <div className="max-w-7xl mx-auto">
+        
+        {/* Header */}
+        <div className="mb-24">
+          <h2 style={{ fontFamily: "'Playfair Display', serif" }} className="text-5xl md:text-7xl font-medium tracking-tight mb-6">
+            Principles of <span className="italic">Distinction</span>
+          </h2>
+          <div className="h-[1px] w-20 bg-red-600"></div>
         </div>
-        <div className="grid md:grid-cols-3 gap-12 md:px-20">
+
+        {/* 4-Column Grid */}
+        <div className="grid md:grid-cols-4 gap-6">
           {values.map((v, i) => (
-            <div key={i} className="text-center">
-              <div className="w-20 h-20 mx-auto mb-6 flex items-center justify-center ">
-                <i className={`${v.icon} text-red-600 text-5xl`}></i>
+            <motion.div 
+              key={i} 
+              className="relative h-[500px] overflow-hidden group cursor-pointer"
+              whileHover={{ flexGrow: 1.2 }}
+            >
+              {/* Background Image */}
+              <div 
+                className="absolute inset-0 bg-gray-200 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url(${v.img})` }}
+              />
+              
+              {/* Dark Overlay that appears on hover */}
+              <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              {/* Static Content */}
+              <div className="absolute bottom-10 left-8 z-10 text-white">
+                <div className="text-[10px] uppercase tracking-[0.4em] mb-4 text-white/60">{v.number}</div>
+                <h3 style={{ fontFamily: "'Playfair Display', serif" }} className="text-3xl font-medium">
+                  {v.title}
+                </h3>
               </div>
-              <h3 className="font-playfair text-2xl font-semibold mb-4">{v.title}</h3>
-              <p className="text-gray-300">{v.text}</p>
-            </div>
+
+              {/* Hover Text Reveal */}
+              <div className="absolute inset-0 flex items-center justify-center p-8 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-10 group-hover:translate-y-0">
+                <p className="text-white text-lg font-light leading-relaxed border-t border-white/20 pt-6">
+                  {v.text}
+                </p>
+              </div>
+            </motion.div>
           ))}
         </div>
-        
-      </section>
-
-    </div>
+      </div>
+    </section>
   );
 }
