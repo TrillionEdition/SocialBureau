@@ -16,6 +16,8 @@
     }
   }
   --animate-fade-up: fade-up 0.8s ease-out forwards;
+  --color-brand-bg: #f5f2ed;
+  --color-brand-ink: #1a1a1a;
 }
 
 :root {
@@ -62,7 +64,8 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #e5e5e5;
+  background: var(--color-brand-ink, #1a1a1a);
+  opacity: 0.1;
   border-radius: 10px;
 }
 
@@ -97,20 +100,21 @@ select {
 
 /* Custom Global Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 3px;
+  height: 3px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: var(--color-brand-bg, #f5f2ed);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #dc2626;
-  border-radius: 4px;
+  background: var(--color-brand-ink, #1a1a1a);
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #b91c1c;
+  background: #000;
 }
 
 /* Custom scrollbar utility class */

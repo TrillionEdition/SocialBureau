@@ -38,7 +38,7 @@ const Services = lazy(() =>
 const CaseStudy = lazy(() =>
   import("./pages/CaseStudy").then((module) => ({ default: module.CaseStudy })),
 );
-const Partner1 = lazy(() => import("./pages/Partnerships/partner1"));
+const JohnSamuelPage = lazy(() => import("./pages/Partnerships/johnsamuel"));
 const ShaileshSivan = lazy(() => import("./pages/Partnerships/shaileshsivan"));
 const AlenJacob = lazy(() => import("./pages/Partnerships/alenJacob"));
 const Blog = lazy(() =>
@@ -128,7 +128,10 @@ const HRForum = lazy(() => import("./components/HrForum/Home"));
 const JobDetails = lazy(() => import("./components/HrForum/JobDetails"));
 const JobPosting = lazy(() => import("./components/HrForum/JobPosting"));
 const JobsList = lazy(() => import("./components/HrForum/JobListing"));
-const JohnSamuel = lazy(() => import("./components/JohnSamuel"));
+const Partner1 = lazy(() => import("./pages/Partnerships/Partner1"));
+const Partner2 = lazy(() => import("./pages/Partnerships/Partner2"));
+const Partner3 = lazy(() => import("./pages/Partnerships/Partner3"));
+const Partner4 = lazy(() => import("./pages/Partnerships/Partner4"));
 const Landing = lazy(() => import("./components/ExternalPortfolio"));
 const Leaderboard = lazy(() => import("./components/Leaderboard"));
 const Logout = lazy(() => import("./components/Logout"));
@@ -157,6 +160,8 @@ function ConditionalFooter() {
   const location = useLocation();
   const hideFooterRoutes = [
     "/partnership/partner-1",
+    "/partnership/Partner1",
+    "/partnership/JohnSamuel",
     "/partnership/shailesh-sivan",
     "/partnership/alen-jacob",
     "/partnership/cheriyan",
@@ -181,6 +186,12 @@ function ConditionalFooter() {
 function ConditionalNavbar() {
   const location = useLocation();
   const hideNavbarRoutes = [
+    "/partnership/Partner1",
+    "/partnership/JohnSamuel",
+    "/partnership/shailesh-sivan",
+    "/partnership/alen-jacob",
+    "/partnership/cheriyan",
+    "/partnership/sakilan",
     "/dashboard",
     "/user-management",
     "/analytics",
@@ -409,8 +420,11 @@ function App() {
             <Route path="/partners" element={<Partnership />} />
             <Route path="/partnership/Ranjit" element={<Landing />} />
             <Route path="/partnership/Sivaprasad" element={<Sivaprasad />} />
-            <Route path="/partnership/john-samuel" element={<JohnSamuel />} />
-            <Route path="/partnership/partner-1" element={<Partner1 />} />
+            <Route path="/partnership/Partner1" element={<Partner1 />} />
+            <Route
+              path="/partnership/JohnSamuel"
+              element={<JohnSamuelPage />}
+            />
             <Route
               path="/partnership/shailesh-sivan"
               element={<ShaileshSivan />}
@@ -418,6 +432,10 @@ function App() {
             <Route path="/partnership/alen-jacob" element={<AlenJacob />} />
             <Route path="/partnership/cheriyan" element={<CheriyanPage />} />
             <Route path="/partnership/sakilan" element={<Sakilan />} />
+            <Route path="/partnership/Partner2" element={<Partner2 />} />
+            <Route path="/partnership/Partner3" element={<Partner3 />} />
+            <Route path="/partnership/Partner4" element={<Partner4 />} />
+            
 
             <Route path="/*" element={<NotFound />} />
           </Routes>
