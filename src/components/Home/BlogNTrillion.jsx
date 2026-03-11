@@ -11,7 +11,7 @@ const StaticServicesGrid = () => {
             bg: "bg-white",
             text: "text-[#1D1D1F]",
             link: "/blog",
-            accent: "#0071E3",
+            accent: "black",
             decorStyle: "left",
         },
         {
@@ -21,7 +21,7 @@ const StaticServicesGrid = () => {
             bg: "bg-[#000000]",
             text: "text-white",
             link: "https://www.trillionedition.com/",
-            accent: "#0071E3",
+            accent: "white",
             decorStyle: "right",
         },
     ];

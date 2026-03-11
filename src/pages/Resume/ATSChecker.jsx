@@ -18,8 +18,8 @@
 //     Wand2
 // } from 'lucide-react';
 // import { useNavigate } from 'react-router-dom';
-// import { fetchHistory, analyzeResume, deleteScan, generateResume } from '../../services/atsService';
-// import ResumeModal from '../components/ResumeModal';
+// import { fetchHistory, analyzeResume, deleteScan, generateResume } from '../../../services/atsService';
+// import ResumeModal from '../../components/ResumeModal';
 
 // const ROLE_TEMPLATES = {
 //     "Content Creator": "Video Editing, Script Writing, Adobe Premiere Pro, Storytelling, Social Media Trends, Engagement Metrics, Content Strategy, YouTube SEO, Canva, CapCut, Thumbnail Design.",

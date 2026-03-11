@@ -6,13 +6,11 @@ const WebSection = () => {
     const navigate = useNavigate();
 
     return (
-        /* Reduced padding from py-40 to py-16/py-24 to match standard Apple section heights */
-        <section className="w-full bg-[#920F17] py-16 md:py-24 font-['-apple-system',_BlinkMacSystemFont,_'Segoe_UI',_Roboto,_'Helvetica_Neue',_Arial,_sans-serif] overflow-hidden">
+       <section className="w-full bg-[#920F17] py-16 md:py-24 font-['-apple-system',_BlinkMacSystemFont,_'Segoe_UI',_Roboto,_'Helvetica_Neue',_Arial,_sans-serif] overflow-hidden">
             <div className="max-w-[1250px] mx-auto px-6 md:px-16">
 
                 <div className="flex flex-col md:flex-row items-center justify-between gap-10 md:gap-16">
 
-                    {/* LEFT – VIDEO / VISUAL ELEMENT */}
                     <div className="relative w-full md:w-[48%] aspect-[4/3] md:aspect-square overflow-hidden rounded-[1.5rem] md:rounded-[2rem] shadow-2xl">
                         <video
                             className="w-full h-full object-cover"

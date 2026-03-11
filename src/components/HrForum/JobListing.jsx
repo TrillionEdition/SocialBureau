@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { getUserData } from "../../../utils/authUtils";
-import { BASE_URL } from "../../../utils/urls";
 
-const API_BASE_URL = `${BASE_URL}/hr-jobs`;
+const API_BASE_URL = "http://localhost:5000/hr-jobs";
 
 export default function JobsList() {
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const currentUser = getUserData();
-    const isAdmin = currentUser?.role?.toLowerCase() === "admin";
 
     useEffect(() => {
         const fetchJobs = async () => {
@@ -42,13 +38,11 @@ export default function JobsList() {
             <main className="flex-1 p-8">
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-2xl font-semibold">Jobs</h1>
-                    {isAdmin && (
-                        <Link to="/appy-job">
-                            <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
-                                Post a job
-                            </button>
-                        </Link>
-                    )}
+                    <Link to="/appy-job">
+                        <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                            Post a job
+                        </button>
+                    </Link>
                 </div>
 
                 {/* Filters */}

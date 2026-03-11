@@ -39,7 +39,7 @@ export default function HomeServices() {
     },
     {
       icon: "fas fa-globe",
-      text: "AdTech Integration",
+      text: "AdTech Marketing",
       color: "rose",
       description:
         "Seamless connection between social, analytics, and CRM platforms.",

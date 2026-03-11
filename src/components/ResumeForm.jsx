@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, ChevronDown } from 'lucide-react';
+import { Plus, Trash2, ChevronDown, Sparkles } from 'lucide-react';
 
-const ResumeForm = ({ data, onChange, template }) => {
+const ResumeForm = ({ data, onChange, template, onGetSuggestions }) => {
     const [expandedSection, setExpandedSection] = useState('personalInfo');
 
     const handlePersonalInfoChange = (field, value) => {
@@ -106,11 +106,22 @@ const ResumeForm = ({ data, onChange, template }) => {
         </div>
     );
 
-    const InputField = ({ label, value, onChange, type = 'text', placeholder = '' }) => (
+    const InputField = ({ label, value, onChange, type = 'text', placeholder = '', suggestionsPath = null }) => (
         <div>
-            <label className="block text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">
-                {label}
-            </label>
+            <div className="flex justify-between items-center mb-2">
+                <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                    {label}
+                </label>
+                {suggestionsPath && (
+                    <button
+                        onClick={() => onGetSuggestions(suggestionsPath, value)}
+                        className="text-xs text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1"
+                    >
+                        <Sparkles size={14} />
+                        Get AI Suggestions
+                    </button>
+                )}
+            </div>
             {type === 'textarea' ? (
                 <textarea
                     value={value || ''}
@@ -197,6 +208,7 @@ const ResumeForm = ({ data, onChange, template }) => {
                     value={data.personalInfo.summary}
                     onChange={(v) => handlePersonalInfoChange('summary', v)}
                     placeholder="Brief overview of your professional background and goals..."
+                    suggestionsPath="personalInfo.summary"
                 />
             </FormSection>
 
@@ -240,6 +252,7 @@ const ResumeForm = ({ data, onChange, template }) => {
                                 value={exp.description}
                                 onChange={(v) => handleExperienceChange(idx, 'description', v)}
                                 placeholder="Describe your responsibilities and achievements..."
+                                suggestionsPath={`experience.${idx}.description`}
                             />
                         </div>
                     ))}

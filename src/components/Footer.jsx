@@ -13,7 +13,7 @@ export default function Footer() {
         { label: "Performance Marketing", href: "/performance-marketing-agency-in-kochi" },
         { label: "Niche Marketing", href: "/niche-marketing-agency-in-kochi" },
         { label: "Content Marketing", href: "/content-marketing-agency-in-kochi" },
-        { label: "AdTech Integration", href: "/adTech-marketing-agency-in-kochi" },
+        { label: "AdTech Marketing", href: "/adTech-marketing-agency-in-kochi" },
         { label: "Blog", href: "/blog" },
       ],
     },
@@ -226,7 +226,7 @@ export default function Footer() {
               >
                 Cookie Policy
               </Link>
-              
+
             </div>
           </div>
         </motion.div>

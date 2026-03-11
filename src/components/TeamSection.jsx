@@ -58,14 +58,6 @@ export const teamData = {
         "Ensures every project connects vision to execution and strategy to outcomes.",
     },
     {
-      name: "Muhasin",
-      role: "SEO Specialist and Performance Marketer",
-      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1766494424/images/iy29fzregdmfohgjc3pr.jpg",
-      hoverImage: "/assets/aneek.webp",
-      description:
-        "Leads paid media & performance strategies across global ad ecosystems.",
-    },
-    {
       name: "Amal",
       role: "Digital Marketer",
       image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1766495417/images/nd8whdzhbwwsqzjhhfaj.jpg",
@@ -93,10 +85,10 @@ export const teamData = {
     //     "Narrative-driven editor skilled in 4K workflows, color grading, and motion.",
     // },
     {
-      name: "Afnas N",
+      name: "Gino Abraham",
       role: "Cinematographer",
-      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761030913/images/kuktmap7exgze81z2afh.png",
-      hoverImage: "/assets/afnas.webp",
+      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1773056139/ID_Card_gino-01_vmxq5p.jpg",
+      hoverImage: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1773056139/ID_Card_gino-01_vmxq5p.jpg",
       description:
         "Responsible for visual direction on shoots using Sony A7M4 + DJI systems.",
     },
@@ -155,6 +147,22 @@ export const teamData = {
       name: "Anjay Ramesh",
       role: "Content Writer & Production Lead",
       image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761195484/SB_ID_Card_Anjay_New_bbobhw.png",
+    },
+    {
+      name: "Afnas N",
+      role: "Cinematographer",
+      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761030913/images/kuktmap7exgze81z2afh.png",
+    },
+    {
+      name: "Gowri Pradeep",
+      role: "Creative Director",
+      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1773056139/ID_Card_all_Team-15_1_tajdxo.jpg",
+    },
+    ,
+    {
+      name: "Muhasin",
+      role: "SEO Specialist and Performance Marketer",
+      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1766494424/images/iy29fzregdmfohgjc3pr.jpg",
     },
   ],
 };

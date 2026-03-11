@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Search, Users, BarChart, Shield, Zap, ChevronRight, ArrowUp, Plus, X, CheckCircle, Layers, Settings, Smartphone, Compass, Sliders, TrendingUp, ShieldCheck, MapPin } from 'lucide-react';
+import {
+    Target, Search, Users, BarChart, Shield, Zap,
+    ChevronRight, ArrowUp, Plus, X, CheckCircle, Layers,
+    Settings, Smartphone, Compass, Sliders, TrendingUp,
+    ShieldCheck, MapPin
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Seo from './Seo';
 import { getOptimizedCloudinaryUrl } from '../../utils/cloudinary';
 
@@ -11,15 +17,8 @@ const Niche = () => {
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 50);
-
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const progressBar = document.querySelector('.scroll-progress-bar');
-            if (progressBar) {
-                progressBar.style.transform = `scaleX(${winScroll / height})`;
-            }
         };
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -96,7 +95,7 @@ const Niche = () => {
         },
         {
             title: "Personalized & Product-Led Campaigns",
-            content: "For businesses offering specialized solutions, personalization becomes a key growth driver. We design campaigns using hyper-personalized marketing principles to align communication with user context, intent, and expectations across the customer journey.",
+            content: "For businesses offering specialized solutions, personalization becomes a key growth driver. As a niche marketing agency in Kochi, Kerala, we design campaigns using hyper-personalized marketing principles to align communication with user context, intent, and expectations across the customer journey.",
             points: [
                 "Niche product marketing for focused offerings",
                 "Micro-niche marketing for highly specific audience segments",
@@ -142,7 +141,7 @@ const Niche = () => {
         {
             icon: BarChart,
             title: "Data-Led Decisions",
-            description: "Every strategic decision is informed by research, performance signals, and audience behavior. Instead of assumptions, we rely on measurable insights to guide planning and optimization. This ensures campaigns remain aligned with market realities, adapt to changes, and consistently improve results through informed adjustments."
+            description: "Every strategic decision is informed by research, performance signals, and audience behavior. As a niche marketing agency in Kochi, Kerala, we rely on measurable insights rather than assumptions to guide planning and optimization. This ensures campaigns remain aligned with market realities, adapt to changes, and consistently improve results through informed adjustments."
         },
         {
             icon: MapPin,
@@ -169,7 +168,7 @@ const Niche = () => {
             type: "Product",
             idealCustomer: "A product-based business targeting users actively searching for specific solutions within a defined category.",
             challenge: "The website attracted traffic from multiple sources, but conversions remained low. Visitors lacked clear intent alignment, resulting in high bounce rates and inefficient acquisition costs.",
-            approach: "We restructured the niche sales funnel using audience behavior analysis and implemented personalized campaign execution. Efforts were focused on high-intent traffic generation, aligning product messaging with specific user expectations and decision stages.",
+            approach: "We restructured the niche sales funnel using audience behavior analysis and implemented personalized campaign execution. As a niche marketing agency in Kochi, Kerala, our efforts were focused on high-intent traffic generation, aligning product messaging with specific user expectations and decision stages",
             results: [
                 { value: "29%", label: "Conversion rate increased" },
                 { value: "24%", label: "Bounce rate reduced" },
@@ -191,1017 +190,337 @@ const Niche = () => {
     ];
 
     return (
-        <div className="font-['SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif] bg-white text-[#1d1d1f] overflow-x-hidden antialiased relative">
+        <div className="font-['Outfit',_sans-serif] bg-white text-[#1d1d1f] overflow-x-hidden antialiased">
             <Seo
                 title="Niche Marketing Agency in Kerala | SocialBureau"
                 url="https://www.socialbureau.in/niche-marketing-agency-in-kochi"
                 canonicalUrl="https://www.socialbureau.in/niche-marketing-agency-in-kochi"
-                description="Partner with a niche marketing agency that understands your audience and drives results through precision marketing"
-                keywords="niche marketing, specialized marketing, kerala, Kochi, audience targeting,NICHE MARKETING AGENCY,NICHE MARKETING STRATEGIST,GROWTH STRATEGIES"
-                
+                description="Partner with a niche marketing agency in Kochi, Kerala that understands your audience and drives results through precision marketing"
+                keywords="Niche Marketing Agency in kochi, Kerala, niche marketing, specialized marketing, kerala, Kochi, audience targeting,NICHE MARKETING AGENCY,NICHE MARKETING STRATEGIST,GROWTH STRATEGIES"
             />
 
-            <style dangerouslySetInnerHTML={{
-                __html: `
-                * {
-                    -webkit-font-smoothing: antialiased;
-                    -moz-osx-font-smoothing: grayscale;
-                }
-                
-                .apple-overline {
-                    font-size: 0.75rem;
-                    letter-spacing: 0.05em;
-                    text-transform: uppercase;
-                    color: #86868b;
-                    font-weight: 600;
-                }
-                
-                .apple-heading {
-                    font-size: clamp(1.75rem, 5vw, 3.5rem);
-                    font-weight: 600;
-                    line-height: 1.1;
-                    letter-spacing: -0.015em;
-                }
-                
-                .apple-card {
-                    background: #ffffff;
-                    border-radius: 20px;
-                    padding: 1.5rem;
-                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-                    transition: all 0.3s ease;
-                    border: 1px solid #f5f5f7;
-                }
-                
-                .apple-card:hover {
-                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
-                    border-color: #e5e5e7;
-                }
-                
-                .apple-button-primary {
-                    background: #920F17;
-                    color: white;
-                    padding: 0.75rem 1.5rem;
-                    border-radius: 980px;
-                    font-size: 0.95rem;
-                    font-weight: 500;
-                    transition: all 0.3s ease;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    border: none;
-                    cursor: pointer;
-                }
-                
-                .apple-button-primary:hover {
-                    background: #6B080E;
-                    transform: scale(1.02);
-                }
-                
-                .apple-button-secondary {
-                    background: transparent;
-                    color: #920F17;
-                    padding: 0.75rem 1.5rem;
-                    border-radius: 980px;
-                    font-size: 0.95rem;
-                    font-weight: 500;
-                    border: 1px solid #920F17;
-                    transition: all 0.3s ease;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    cursor: pointer;
-                }
-                
-                .apple-button-secondary:hover {
-                    background: rgba(146, 15, 23, 0.05);
-                }
-                
-                .apple-stat {
-                    font-size: clamp(1.75rem, 5vw, 2.5rem);
-                    font-weight: 600;
-                    color: #920F17;
-                    line-height: 1;
-                }
-                
-                .apple-stat-label {
-                    font-size: 0.75rem;
-                    color: #86868b;
-                    margin-top: 0.5rem;
-                    line-height: 1.3;
-                }
-                
-                .apple-body {
-                    font-size: clamp(0.9rem, 2vw, 1.125rem);
-                    line-height: 1.6;
-                    color: #515154;
-                }
-                
-                .scroll-progress-bar {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    height: 3px;
-                    width: 100%;
-                    background: #920F17;
-                    z-index: 1000;
-                    transform: scaleX(0);
-                    transform-origin: left;
-                    will-change: transform;
-                    transition: transform 0.1s ease;
-                }
-                
-                .stack-layer {
-                    position: sticky;
-                    top: 0;
-                    box-shadow: 0 -20px 40px rgba(0,0,0,0.05);
-                }
-
-                @keyframes fadeUp {
-                    from { opacity: 0; transform: translateY(20px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                .animate-fadeUp {
-                    animation: fadeUp 0.8s ease-out forwards;
-                }
-
-                /* HERO SECTION MOBILE */
-                @media (max-width: 1024px) {
-                    .hero-grid {
-                        grid-template-columns: 1fr !important;
-                        gap: 1.5rem !important;
-                    }
-                }
-
-                @media (max-width: 768px) {
-                    .hero-image {
-                        height: 300px !important;
-                        border-radius: 16px !important;
-                        margin-right: 1rem !important;
-                        margin-top: 1rem !important;
-                    }
-
-                    .hero-content {
-                        padding: 0 !important;
-                    }
-                }
-
-                @media (max-width: 640px) {
-                    .hero-image {
-                        height: 250px !important;
-                        border-radius: 12px !important;
-                        margin-right: 0 !important;
-                    }
-
-                    .hero-heading {
-                        font-size: 1.5rem !important;
-                    }
-
-                    .hero-text {
-                        font-size: 0.9rem !important;
-                        margin-bottom: 1.5rem !important;
-                    }
-
-                    .hero-buttons {
-                        flex-direction: column !important;
-                        gap: 0.75rem !important;
-                    }
-
-                    .hero-buttons a {
-                        width: 100% !important;
-                        justify-content: center !important;
-                    }
-                }
-
-                /* ABOUT SECTION MOBILE */
-                @media (max-width: 1024px) {
-                    .about-grid {
-                        grid-template-columns: 1fr !important;
-                        gap: 1.5rem !important;
-                    }
-                }
-
-                @media (max-width: 768px) {
-                    .about-image {
-                        height: 280px !important;
-                        border-radius: 16px !important;
-                    }
-
-                    .about-text h2 {
-                        font-size: 1.25rem !important;
-                        margin-bottom: 1rem !important;
-                    }
-
-                    .about-text p {
-                        font-size: 0.9rem !important;
-                        margin-bottom: 1rem !important;
-                    }
-
-                    .about-wrapper {
-                        padding: 1.5rem !important;
-                    }
-                }
-
-                @media (max-width: 640px) {
-                    .about-image {
-                        height: 240px !important;
-                        border-radius: 12px !important;
-                    }
-
-                    .about-text h2 {
-                        font-size: 1.1rem !important;
-                    }
-
-                    .about-text p {
-                        font-size: 0.85rem !important;
-                    }
-
-                    .about-wrapper {
-                        padding: 1rem !important;
-                    }
-                }
-
-                /* SERVICES SECTION MOBILE */
-                @media (max-width: 1024px) {
-                    .services-top-grid {
-                        grid-template-columns: 1fr !important;
-                        gap: 1rem !important;
-                    }
-
-                    .services-image {
-                        order: 2 !important;
-                        height: 320px !important;
-                    }
-
-                    .services-cards {
-                        order: 1 !important;
-                        gap: 0.75rem !important;
-                    }
-                }
-
-                @media (max-width: 768px) {
-                    .services-image {
-                        height: 300px !important;
-                        border-radius: 16px !important;
-                        margin: 0 !important;
-                    }
-
-                    .services-card {
-                        padding: 1rem !important;
-                        border-radius: 14px !important;
-                        gap: 0.75rem !important;
-                    }
-
-                    .services-card h3 {
-                        font-size: 0.9rem !important;
-                        margin-bottom: 0.5rem !important;
-                    }
-
-                    .services-card p {
-                        font-size: 0.75rem !important;
-                        margin-bottom: 0.75rem !important;
-                    }
-
-                    .services-card ul {
-                        gap: 0.5rem !important;
-                    }
-
-                    .services-card li {
-                        font-size: 0.7rem !important;
-                        line-height: 1.2;
-                    }
-
-                    .services-bottom-grid {
-                        grid-template-columns: 1fr !important;
-                        gap: 1rem !important;
-                    }
-
-                    .services-header h2 {
-                        font-size: 2rem !important;
-                    }
-
-                    .services-card .services-number {
-                        font-size: 1.5rem !important;
-                        min-width: 2rem !important;
-                    }
-                }
-
-                @media (max-width: 640px) {
-                    .services-image {
-                        height: 260px !important;
-                        border-radius: 12px !important;
-                    }
-
-                    .services-card {
-                        padding: 0.75rem !important;
-                    }
-
-                    .services-card h3 {
-                        font-size: 0.85rem !important;
-                    }
-
-                    .services-card p {
-                        font-size: 0.7rem !important;
-                    }
-
-                    .services-header h2 {
-                        font-size: 1.5rem !important;
-                    }
-
-                    .services-header p {
-                        font-size: 0.85rem !important;
-                    }
-
-                    .services-card .services-number {
-                        font-size: 1.25rem !important;
-                    }
-                }
-
-                /* STRATEGIES SECTION MOBILE */
-                @media (max-width: 1024px) {
-                    .strategies-grid {
-                        grid-template-columns: 1fr !important;
-                        gap: 1.5rem !important;
-                    }
-
-                    .strategies-image {
-                        height: 350px !important;
-                        border-radius: 16px !important;
-                    }
-                }
-
-                @media (max-width: 768px) {
-                    .strategies-image {
-                        height: 320px !important;
-                        object-position: top !important;
-                    }
-
-                    .strategy-item {
-                        gap: 1rem !important;
-                    }
-
-                    .strategy-icon {
-                        width: 40px !important;
-                        height: 40px !important;
-                        min-width: 40px !important;
-                    }
-
-                    .strategy-item h3 {
-                        font-size: 0.95rem !important;
-                    }
-
-                    .strategy-item p {
-                        font-size: 0.85rem !important;
-                    }
-
-                    .strategies-title {
-                        font-size: 2rem !important;
-                    }
-                }
-
-                @media (max-width: 640px) {
-                    .strategies-image {
-                        height: 280px !important;
-                        border-radius: 12px !important;
-                    }
-
-                    .strategy-item h3 {
-                        font-size: 0.9rem !important;
-                    }
-
-                    .strategy-item p {
-                        font-size: 0.8rem !important;
-                    }
-
-                    .strategies-title {
-                        font-size: 1.5rem !important;
-                    }
-                }
-
-                /* CASE STUDIES MOBILE */
-                @media (max-width: 1024px) {
-                    .case-grid {
-                        grid-template-columns: 1fr !important;
-                        gap: 1.5rem !important;
-                    }
-
-                    .case-list {
-                        grid-column: auto !important;
-                    }
-
-                    .case-detail {
-                        grid-column: auto !important;
-                        position: static !important;
-                        top: auto !important;
-                    }
-                }
-
-                @media (max-width: 768px) {
-                    .case-button {
-                        padding: 1rem !important;
-                        border-radius: 16px !important;
-                    }
-
-                    .case-detail {
-                        padding: 1.25rem !important;
-                        border-radius: 16px !important;
-                    }
-
-                    .case-button h3 {
-                        font-size: 0.95rem !important;
-                    }
-
-                    .case-detail h3 {
-                        font-size: 1.1rem !important;
-                    }
-
-                    .case-detail h4 {
-                        font-size: 0.85rem !important;
-                    }
-
-                    .case-detail p {
-                        font-size: 0.8rem !important;
-                    }
-
-                    .case-results {
-                        grid-template-columns: 1fr !important;
-                        gap: 1rem !important;
-                    }
-                }
-
-                @media (max-width: 640px) {
-                    .case-button {
-                        padding: 0.75rem !important;
-                    }
-
-                    .case-detail {
-                        padding: 1rem !important;
-                    }
-
-                    .case-detail h3 {
-                        font-size: 1rem !important;
-                    }
-                }
-
-                /* TESTIMONIALS MOBILE */
-                @media (max-width: 768px) {
-                    .testimonials-grid {
-                        grid-template-columns: 1fr !important;
-                        gap: 1rem !important;
-                    }
-
-                    .testimonial-card {
-                        padding: 1.25rem !important;
-                        border-radius: 16px !important;
-                    }
-
-                    .testimonial-card p {
-                        font-size: 0.85rem !important;
-                    }
-
-                    .testimonial-card div {
-                        font-size: 0.8rem !important;
-                    }
-
-                    .testimonials-title {
-                        font-size: 2rem !important;
-                    }
-                }
-
-                @media (max-width: 640px) {
-                    .testimonial-card {
-                        padding: 1rem !important;
-                    }
-
-                    .testimonial-card p {
-                        font-size: 0.8rem !important;
-                    }
-
-                    .testimonials-title {
-                        font-size: 1.5rem !important;
-                    }
-                }
-
-                /* FAQ MOBILE */
-                @media (max-width: 768px) {
-                    .faq-container {
-                        padding: 1.5rem !important;
-                    }
-
-                    .faq-title {
-                        font-size: 1.75rem !important;
-                    }
-
-                    .faq-item {
-                        padding: 0.75rem 0 !important;
-                    }
-
-                    .faq-button {
-                        font-size: 0.95rem !important;
-                        padding: 0.75rem 0 !important;
-                    }
-
-                    .faq-answer {
-                        font-size: 0.85rem !important;
-                        padding: 0.5rem 0 0.75rem 0 !important;
-                    }
-                }
-
-                @media (max-width: 640px) {
-                    .faq-container {
-                        padding: 1rem !important;
-                    }
-
-                    .faq-title {
-                        font-size: 1.25rem !important;
-                    }
-
-                    .faq-button {
-                        font-size: 0.85rem !important;
-                    }
-
-                    .faq-answer {
-                        font-size: 0.8rem !important;
-                    }
-                }
-
-                /* CTA SECTION MOBILE */
-                @media (max-width: 768px) {
-                    .cta-wrapper {
-                        padding: 2rem 1.25rem !important;
-                        border-radius: 16px !important;
-                        margin: 0 1rem !important;
-                    }
-
-                    .cta-wrapper h2 {
-                        font-size: 1.5rem !important;
-                        margin-bottom: 0.75rem !important;
-                    }
-
-                    .cta-wrapper p {
-                        font-size: 0.9rem !important;
-                        margin-bottom: 1rem !important;
-                    }
-                }
-
-                @media (max-width: 640px) {
-                    .cta-wrapper {
-                        padding: 1.5rem 1rem !important;
-                        margin: 0 0.5rem !important;
-                    }
-
-                    .cta-wrapper h2 {
-                        font-size: 1.25rem !important;
-                    }
-
-                    .cta-wrapper p {
-                        font-size: 0.8rem !important;
-                    }
-                }
-
-                /* SECTION PADDING MOBILE */
-                @media (max-width: 768px) {
-                    section {
-                        padding-top: 2rem !important;
-                        padding-bottom: 2rem !important;
-                    }
-                }
-
-                @media (max-width: 640px) {
-                    section {
-                        padding-top: 1.5rem !important;
-                        padding-bottom: 1.5rem !important;
-                        padding-left: 1rem !important;
-                        padding-right: 1rem !important;
-                    }
-                }
-
-                /* SCROLL TO TOP BUTTON */
-                @media (max-width: 640px) {
-                    .scroll-top-btn {
-                        width: 44px !important;
-                        height: 44px !important;
-                        bottom: 1rem !important;
-                        right: 1rem !important;
-                    }
-                }
-
-                /* GENERAL RESPONSIVE */
-                img {
-                    max-width: 100% !important;
-                    height: auto !important;
-                    display: block !important;
-                }
-
-                @media (max-width: 768px) {
-                    .px-6 {
-                        padding-left: 1rem !important;
-                        padding-right: 1rem !important;
-                    }
-
-                    .gap-12,
-                    .gap-16 {
-                        gap: 1.25rem !important;
-                    }
-                }
-                `
-            }} />
-
-            <div className="scroll-progress-bar" style={{ width: '0%' }}></div>
+            {/* Scroll Progress */}
+            <motion.div
+                className="fixed top-0 left-0 h-1 bg-[#920F17] z-[1000] origin-left"
+                style={{ scaleX: 0 }}
+                animate={{ scaleX: isScrolled ? 1 : 0 }}
+            />
 
             {/* Hero Section */}
-            <section className="min-h-screen flex items-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12 relative overflow-hidden bg-white stack-layer" style={{ zIndex: 10 }}>
-                <div className="max-w-7xl mx-auto w-full hero-grid grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-                    <div className="animate-fadeUp hero-content">
-                        <span className="apple-overline mb-3 sm:mb-4 block">Niche Marketing Agency</span>
-                        <h1 className="apple-heading hero-heading mb-4 sm:mb-6">
-                            Niche Marketing Agency
-                            <span className="block text-[#920F17]">in Kerala</span>
-                        </h1>
-                        <p className="apple-body hero-text text-[#515154] mb-6 sm:mb-10 max-w-2xl leading-relaxed text-base sm:text-lg">
-                            Transform business growth by focusing on clarity, relevance, and specialization. Social Bureau
-                            helps brands grow by reaching audiences that actually convert—through carefully structured
-                            niche-focused strategies designed for long-term authority and sustainable results.                        </p>
-                        <div className="flex hero-buttons flex-col sm:flex-row gap-3 sm:gap-4">
-                            <a href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more." className="apple-button-primary">
-                                Find Your Niche
-                                <ChevronRight className="w-4 h-4" />
-                            </a>
-                            <a href="#services" className="apple-button-secondary">
-                                Explore Services
-                            </a>
-                        </div>
-                    </div>
-                    <div className="relative w-full hero-image rounded-2xl overflow-hidden shadow-lg">
-                        <img
-                            src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772181555/download_8_evgktd.webp", 1200)}
-                            alt="Niche Marketing Hero"
-                            className="w-full h-full object-cover"
-                            loading="lazy"
-                            decoding="async"
-                        />
-                    </div>
-                </div>
-            </section>
-
-            {/* About Section */}
-            <section id="about" className="min-h-auto w-full bg-[#1d1d1f] text-white flex items-center stack-layer" style={{ zIndex: 20 }}>
-                <div className="w-full max-w-7xl mx-auto py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-10 sm:mb-14 lg:mb-16">
-                        <span className="apple-overline mb-2 sm:mb-3 block text-gray-400">About</span>
-                        <h2 className="apple-heading text-2xl sm:text-3xl lg:text-5xl mb-4 sm:mb-6">Move Beyond The Mainstream</h2>
-                    </div>
-                    <div className="about-grid grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-                        <div className="about-text">
-                            <h2 className="text-xl sm:text-2xl mb-4 sm:mb-6 text-white/80 font-medium">Niche Marketing Strategy</h2>
-                            <p className="text-sm sm:text-base text-white/80 mb-4 sm:mb-6 leading-relaxed">
-                                <a href='https://socialbureau.in/blogs/niche-marketing-for-startups' title="Learn more about Niche Marketing on Wikipedia">Niche marketing</a> is the process of identifying a
-                                clearly defined market segment and building
-                                communication, positioning, and messaging
-                                around that audience's specific needs. Unlike
-                                broad campaigns, this approach prioritizes
-                                relevance over reach and depth over volume                            </p>
-                            <p className="text-sm sm:text-base text-white/80 leading-relaxed">
-                                At<a href='https://socialbureau.in' title="Visit SocialBureau Official Website"> Social Bureau</a>, a Kochi-based marketing
-                                agency, we work with businesses that want to
-                                grow through specialization. Our team studies
-                                how audiences think, search, and make
-                                decisions, then builds structured marketing
-                                systems that support long-term positioning
-                                and consistent demand.
-                            </p>
-                        </div>
-                        <div className="about-image h-64 sm:h-80 lg:h-96 rounded-xl sm:rounded-2xl overflow-hidden shadow-lg sm:shadow-2xl border border-white/10">
-                            <img
-                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/Luminuce_-_Brand_sgp6th.webp", 1000)}
-                                className="w-full h-full object-cover"
-                                loading="lazy"
-                                decoding="async"
-                                alt="Detailed niche marketing strategy and branding"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Services Section */}
-            <section
-                id="services"
-                className="min-h-auto py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-[#920F17] text-white stack-layer relative overflow-hidden"
-                style={{ zIndex: 30 }}
-            >
-                {/* Decorative background depth */}
-                <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                    <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-white/[0.03] rounded-full blur-[120px]"></div>
-                    <div className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-black/[0.05] rounded-full blur-[120px]"></div>
-                </div>
-
-                <div className="max-w-7xl mx-auto relative z-10">
-
-                    {/* Header */}
-                    <div className="services-header text-center mb-12 sm:mb-16 lg:mb-20 animate-fadeUp">
-                        <span className="apple-overline mb-2 sm:mb-3 block text-white/50 tracking-[0.2em]">
-                            Our Services
+            <section className="relative min-h-[90vh] flex items-center pt-20 overflow-hidden bg-white">
+                <div className="absolute top-0 right-0 w-2/3 h-full bg-gradient-to-l from-[#920F17]/5 to-transparent -z-10"></div>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid lg:grid-cols-2 gap-12 items-center">
+                    <motion.div
+                        initial={{ opacity: 0, x: -50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <span className="text-[#920F17] text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-4 block">
+                            Niche Marketing Excellence
                         </span>
-                        <h2 className="apple-heading text-2xl sm:text-3xl lg:text-6xl mb-4 sm:mb-6 lg:mb-8 text-white">
-                            Niche marketing service
-                        </h2>
-                        <p className="text-white/90 max-w-2xl mx-auto mb-8 sm:mb-10 lg:mb-12 text-sm sm:text-base lg:text-lg leading-relaxed">
-                            We design and implement marketing solutions that are built around precision
-                            rather than assumptions. Each service is delivered with research-backed
-                            planning, structured execution, and measurable outcomes
+                        <h1 className="text-4xl md:text-7xl font-bold text-[#1d1d1f] leading-tight mb-6 tracking-tight">
+                            Find Your Focus.
+                            <span className="block text-[#920F17]">Own Your Niche.</span>
+                        </h1>
+                        <p className="text-gray-600 text-lg md:text-xl mb-10 max-w-xl leading-relaxed">
+                            Partner with a niche marketing agency in Kochi, Kerala that understands your audience and drives results through precision marketing.
                         </p>
-                    </div>
-
-                    {/* TOP SECTION — Image + 3 stacked cards */}
-                    <div className="services-top-grid grid lg:grid-cols-2 gap-6 lg:gap-12 items-start mb-12 lg:mb-20">
-
-                        {/* Image Container */}
-                        <div className="relative group order-2 lg:order-1">
-                            <div className="absolute -inset-4 bg-white/[0.05] rounded-[2.5rem] blur-2xl group-hover:bg-white/[0.08] transition-all duration-700"></div>
-                            <div className="services-image relative h-72 sm:h-96 lg:h-[500px] rounded-xl sm:rounded-2xl lg:rounded-[2rem] overflow-hidden shadow-lg lg:shadow-2xl bg-white/5 border border-white/10">
-                                <img
-                                    src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772185316/image-gen_8_sbd0tb.webp", 1000)}
-                                    alt="Nichemarketing Services"
-                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#920F17]/30 to-transparent"></div>
-                            </div>
-                        </div>
-
-                        {/* Stacked cards (first 3 items) */}
-                        <div className="services-cards grid grid-cols-1 gap-2 sm:gap-3 order-1 lg:order-2">
-                            {processSections.slice(0, 3).map((section, index) => (
-                                <div
-                                    key={index}
-                                    className="services-card group rounded-lg sm:rounded-xl lg:rounded-2xl p-3 sm:p-4 lg:p-6 bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-md hover:bg-white/[0.07] hover:border-white/30 transition-all duration-500"
-                                >
-                                    <div className="flex items-start gap-2 sm:gap-3">
-                                        <div className="services-number flex-shrink-0 text-white/20 text-lg sm:text-xl lg:text-3xl font-bold font-mono leading-none min-w-max">
-                                            0{index + 1}
-                                        </div>
-                                        <div className="min-w-0 flex-1">
-                                            <h3 className="text-xs sm:text-sm lg:text-base font-semibold mb-1 text-white tracking-tight line-clamp-2">
-                                                {section.title}
-                                            </h3>
-                                            <p className="text-xs text-white/60 leading-tight mb-1.5 line-clamp-2">
-                                                {section.content}
-                                            </p>
-                                            <ul className="space-y-0.5 sm:space-y-1">
-                                                {section.points.slice(0, 2).map((point, i) => (
-                                                    <li key={i} className="flex items-start gap-1.5 text-white/70 text-xs line-clamp-1">
-                                                        <div className="w-0.5 h-0.5 rounded-full bg-white/30 mt-1 flex-shrink-0"></div>
-                                                        <span className="truncate">{point}</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* BOTTOM GRID — Remaining cards */}
-                    <div className="services-bottom-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-                        {processSections.slice(3).map((section, index) => (
-                            <div
-                                key={index}
-                                className="group rounded-2xl lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-10 bg-white/[0.03] backdrop-blur-xl border border-white/10 hover:border-white/40 transition-all duration-500 hover:-translate-y-2 shadow-2xl flex flex-col"
+                        <div className="flex flex-col sm:flex-row gap-6">
+                            <motion.a
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more."
+                                className="bg-[#920F17] text-white px-10 py-5 rounded-full font-bold hover:bg-[#6B080E] transition-all flex items-center justify-center gap-3 shadow-xl shadow-[#920F17]/20"
                             >
-                                <div className="flex justify-between items-start mb-6 sm:mb-8">
-                                    <span className="text-white/10 text-4xl sm:text-5xl font-bold font-mono leading-none">0{index + 4}</span>
-                                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-2xl bg-white/[0.05] border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/10 transition-all duration-500">
-                                        <Plus className="w-4 h-4 sm:w-5 sm:h-5 text-white/30 group-hover:text-white" />
-                                    </div>
+                                Get Started
+                                <ChevronRight className="w-5 h-5" />
+                            </motion.a>
+                            <a href="#services" className="flex items-center justify-center gap-2 text-[#1d1d1f] font-bold hover:text-[#920F17] transition-all group">
+                                View Our Process
+                                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </a>
+                        </div>
+                    </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1 }}
+                        className="relative"
+                    >
+                        <div className="absolute -inset-10 bg-[#920F17]/5 rounded-full blur-[100px]"></div>
+                        <img
+                            src="/niche_target.png"
+                            alt="niche marketing-agency-in-kochi"
+                            title='niche marketing-agency-in-kochi'
+                            className="relative w-full h-auto drop-shadow-2xl"
+                        />
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* Stats/About Section */}
+            <section className="py-24 bg-gray-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid lg:grid-cols-2 gap-20 items-center">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            className="rounded-3xl overflow-hidden shadow-2xl relative group"
+                        >
+                            <img
+                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/SMM_PHOTOSHOOT_xdkcl5.webp", 1000)}
+                                alt="niche marketing-agency-in-kochi"
+                                title='niche marketing-agency-in-kochi'
+                                className="w-full h-full object-cover"
+                            />
+                            
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, x: 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                        >
+                            <h2 className="text-3xl md:text-5xl font-bold text-[#1d1d1f] mb-8 leading-tight">
+                                Precision marketing for businesses that value depth over noise.
+                            </h2>
+                            <p className="text-gray-600 text-lg leading-relaxed mb-8">
+                                Understanding a market deeply is the foundation of successful growth. Our process begins with niche market analysis, where we study demand patterns, buyer expectations, and competitive gaps to uncover opportunities.
+                            </p>
+                            <div className="grid grid-cols-2 gap-8">
+                                <div>
+                                    <p className="text-4xl font-bold text-[#920F17] mb-2">98%</p>
+                                    <p className="text-sm text-gray-500 font-bold uppercase tracking-widest">Client Satisfaction</p>
                                 </div>
-                                <h3 className="text-lg sm:text-2xl font-semibold mb-3 sm:mb-4 text-white tracking-tight">
-                                    {section.title}
-                                </h3>
-                                <p className="text-white/60 mb-6 sm:mb-8 text-xs sm:text-sm leading-relaxed group-hover:text-white/80 transition-colors">
+                                <div>
+                                    <p className="text-4xl font-bold text-[#920F17] mb-2">15x</p>
+                                    <p className="text-sm text-gray-500 font-bold uppercase tracking-widest">Average ROI</p>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Process/Services Section */}
+            <section id="services" className="py-24 bg-white relative">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-20">
+                        <motion.span
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            className="text-[#920F17] text-sm font-bold uppercase tracking-widest mb-4 block"
+                        >
+                            Our Methodology
+                        </motion.span>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            className="text-3xl md:text-5xl font-bold text-[#1d1d1f]"
+                        >
+                            Strategic Niche Framework
+                        </motion.h2>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+                        {processSections.map((section, index) => (
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                                className="bg-white border border-gray-100 p-8 rounded-[2rem] hover:shadow-2xl hover:shadow-black/5 transition-all group"
+                            >
+                                <div className="text-4xl font-black text-gray-50 mb-6 group-hover:text-[#920F17]/10 transition-colors">
+                                    0{index + 1}
+                                </div>
+                                <h3 className="text-xl font-bold text-[#1d1d1f] mb-4 group-hover:text-[#920F17] transition-colors">{section.title}</h3>
+                                <p className="text-gray-500 text-sm leading-relaxed mb-6">
                                     {section.content}
                                 </p>
-                                <div className="mt-auto pt-6 sm:pt-8 border-t border-white/10">
-                                    <ul className="space-y-3 sm:space-y-4">
-                                        {section.points.map((point, i) => (
-                                            <li key={i} className="flex items-start gap-3 text-white/70 text-xs sm:text-sm group-hover:text-white/90 transition-colors">
-                                                <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/20 mt-0.5 flex-shrink-0 group-hover:text-white/40 transition-colors" />
-                                                <span>{point}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </div>
+                                <ul className="space-y-3">
+                                    {section.points.map((point, pIdx) => (
+                                        <li key={pIdx} className="flex items-start text-xs text-gray-400">
+                                            <div className="w-1 h-1 bg-[#920F17] rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+                                            {point}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </motion.div>
                         ))}
                     </div>
-
                 </div>
             </section>
 
             {/* Strategies Section */}
-            <section id="strategies" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-white text-black stack-layer" style={{ zIndex: 40 }}>
-                <div className="max-w-7xl mx-auto">
-                    <div className="strategies-grid grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-                        <div>
-                            <span className="apple-overline mb-3 sm:mb-4 block text-gray-500">Why Choose Us</span>
-                            <h2 className="apple-heading strategies-title text-2xl sm:text-3xl lg:text-5xl mb-8 sm:mb-10 text-black">Niche Marketing agency in Kochi</h2>
-                            <div className="space-y-6 sm:space-y-8">
-                                {strategies.map((strategy, index) => {
-                                    const Icon = strategy.icon;
-                                    return (
-                                        <div key={index} className="strategy-item flex gap-4 sm:gap-6">
-                                            <div className="strategy-icon flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-[#920F17]/5 rounded-lg sm:rounded-xl flex items-center justify-center">
-                                                <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#920F17]" />
-                                            </div>
-                                            <div>
-                                                <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2">{strategy.title}</h3>
-                                                <p className="text-[#515154] leading-relaxed text-sm sm:text-base">{strategy.description}</p>
-                                            </div>
+            <section id="strategies" className="py-24 bg-[#1d1d1f] text-white relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-1/3 h-full bg-[#920F17]/10 -skew-x-12 translate-x-1/2"></div>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="grid lg:grid-cols-2 gap-16 items-center">
+                        <motion.div
+                            initial={{ opacity: 0, x: -30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                        >
+                            <span className="text-white/50 text-sm font-bold uppercase tracking-[0.3em] mb-6 block">Our Core Strategies</span>
+                            <h2 className="text-4xl md:text-6xl font-bold mb-12 leading-tight">
+                                Built for Authority. <br />
+                                Designed for results.
+                            </h2>
+                            <div className="space-y-10">
+                                {strategies.map((strategy, index) => (
+                                    <div key={index} className="flex gap-6 group">
+                                        <div className="flex-shrink-0 w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center group-hover:bg-[#920F17] group-hover:border-[#920F17] transition-all">
+                                            <strategy.icon className="w-6 h-6 text-white" />
                                         </div>
-                                    );
-                                })}
+                                        <div>
+                                            <h3 className="text-xl font-bold mb-3">{strategy.title}</h3>
+                                            <p className="text-white/50 leading-relaxed text-sm">{strategy.description}</p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        </div>
-                        <div className="strategies-image h-72 sm:h-96 lg:h-[600px] rounded-xl sm:rounded-2xl lg:rounded-[2rem] overflow-hidden shadow-lg lg:shadow-2xl relative group">
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 1 }}
+                            className="relative lg:block hidden"
+                        >
+                            <div className="absolute -inset-20 bg-[#920F17]/20 blur-[120px] rounded-full"></div>
                             <img
-                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772088857/DSC04857_1_2_vksgod.webp", 1000)}
-                                alt="Professionals working at SocialBureau"
-                                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                                loading="lazy"
-                                decoding="async"
+                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772183939/Red_stock_martket_chart_p4hejw.webp", 1000)}
+                                alt="niche marketing-agency-in-kochi"
+                                title='niche marketing-agency-in-kochi'
+                                className="relative rounded-[3rem] shadow-2xl border border-white/10"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
             </section>
 
             {/* Case Studies */}
-            <section id="case-studies" className="py-12 sm:py-16 lg:py-24 bg-[#fbfbfd] stack-layer px-4 sm:px-6 lg:px-8" style={{ zIndex: 50 }}>
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-10 sm:mb-12 lg:mb-14">
-                        <span className="apple-overline block mb-2 sm:mb-3">Case Studies</span>
-                        <h2 className="apple-heading text-2xl sm:text-3xl lg:text-5xl">Success in Specialization</h2>
+            <section id="case-studies" className="py-24 bg-gray-50 overflow-hidden">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-16">
+                        <motion.span
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            className="text-[#920F17] text-sm font-bold uppercase tracking-widest mb-4 block"
+                        >
+                            Proven Results
+                        </motion.span>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            className="text-3xl md:text-5xl font-bold text-[#1d1d1f]"
+                        >
+                            Case Studies
+                        </motion.h2>
                     </div>
 
-                    <div className="case-grid grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
-                        {/* LEFT list */}
-                        <div className="case-list lg:col-span-5 space-y-4 sm:space-y-5 lg:space-y-6">
+                    <div className="flex flex-col lg:flex-row gap-8">
+                        {/* List */}
+                        <div className="lg:w-1/3 space-y-4">
                             {caseStudies.map((study, index) => (
-                                <button
+                                <motion.button
                                     key={index}
+                                    whileHover={{ x: 10 }}
                                     onClick={() => setActiveCaseStudy(index)}
-                                    className={`case-button apple-card text-left w-full transition-all duration-300 rounded-2xl lg:rounded-3xl ${activeCaseStudy === index ? 'ring-2 ring-[#920F17] bg-white' : 'hover:bg-[#f5f5f7]'}`}
+                                    className={`w-full text-left p-6 rounded-2xl transition-all border ${activeCaseStudy === index
+                                            ? 'bg-[#920F17] text-white border-[#920F17] shadow-xl shadow-[#920F17]/20'
+                                            : 'bg-white text-[#1d1d1f] border-gray-100 hover:bg-gray-50'
+                                        }`}
                                 >
-                                    <span className="text-xs font-semibold text-[#920F17] bg-[#920F17]/5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full uppercase tracking-wider inline-block">
+                                    <span className={`text-[10px] font-bold uppercase tracking-wider mb-2 block ${activeCaseStudy === index ? 'text-white/70' : 'text-[#920F17]'}`}>
                                         {study.type}
                                     </span>
-                                    <h3 className="text-sm sm:text-base lg:text-lg font-semibold mt-2 sm:mt-3 text-black">{study.title}</h3>
-                                    <div className="text-[#920F17] text-xs sm:text-sm mt-2 sm:mt-3 flex items-center gap-1 font-medium">
-                                        View details <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
-                                    </div>
-                                </button>
+                                    <h3 className="text-lg font-bold">{study.title}</h3>
+                                </motion.button>
                             ))}
                         </div>
 
-                        {/* RIGHT details */}
-                        <div className="case-detail lg:col-span-7">
-                            <div className="apple-card sticky lg:top-28 rounded-2xl lg:rounded-3xl">
-                                <h3 className="text-lg sm:text-2xl font-semibold mb-4 sm:mb-6 text-black">{caseStudies[activeCaseStudy].title}</h3>
-                                <div className="space-y-4 sm:space-y-6 text-xs sm:text-sm lg:text-base">
-                                    <div>
-                                        <h4 className="font-semibold text-[#920F17] mb-1">Ideal Customer</h4>
-                                        <p className="text-[#515154]">{caseStudies[activeCaseStudy].idealCustomer}</p>
-                                    </div>
-                                    <div>
-                                        <h4 className="font-semibold text-[#920F17] mb-1">The Challenge</h4>
-                                        <p className="text-[#515154]">{caseStudies[activeCaseStudy].challenge}</p>
-                                    </div>
-                                    <div>
-                                        <h4 className="font-semibold text-[#920F17] mb-1">The Approach</h4>
-                                        <p className="text-[#515154]">{caseStudies[activeCaseStudy].approach}</p>
-                                    </div>
-                                    <div className="case-results grid grid-cols-3 gap-4 sm:gap-6 pt-4 sm:pt-6 border-t border-[#f5f5f7]">
-                                        {caseStudies[activeCaseStudy].results.map((result, idx) => (
-                                            <div key={idx} className="text-center">
-                                                <div className="apple-stat text-base sm:text-2xl">{result.value}</div>
-                                                <div className="apple-stat-label capitalize text-xs">{result.label}</div>
+                        {/* Details */}
+                        <div className="lg:w-2/3">
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={activeCaseStudy}
+                                    initial={{ opacity: 0, x: 30 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -30 }}
+                                    className="bg-white p-8 md:p-14 rounded-[3rem] shadow-xl h-full"
+                                >
+                                    <h3 className="text-2xl font-bold mb-8 text-[#1d1d1f] leading-tight">
+                                        {caseStudies[activeCaseStudy].title}
+                                    </h3>
+                                    <div className="space-y-10">
+                                        <div className="grid md:grid-cols-2 gap-10">
+                                            <div>
+                                                <h4 className="text-[#920F17] text-xs font-bold uppercase tracking-widest mb-4">Challenge</h4>
+                                                <p className="text-gray-500 text-sm leading-relaxed">{caseStudies[activeCaseStudy].challenge}</p>
                                             </div>
-                                        ))}
+                                            <div>
+                                                <h4 className="text-[#920F17] text-xs font-bold uppercase tracking-widest mb-4">Approach</h4>
+                                                <p className="text-gray-500 text-sm leading-relaxed">{caseStudies[activeCaseStudy].approach}</p>
+                                            </div>
+                                        </div>
+                                        <div className="pt-10 border-t border-gray-100">
+                                            <div className="grid grid-cols-3 gap-6">
+                                                {caseStudies[activeCaseStudy].results.map((result, idx) => (
+                                                    <div key={idx} className="text-center">
+                                                        <div className="text-2xl md:text-3xl font-bold text-[#920F17] mb-1">{result.value}</div>
+                                                        <div className="text-[10px] text-gray-400 font-bold uppercase tracking-tighter leading-none">{result.label}</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Testimonials Section */}
-            <section
-                id="testimonials"
-                className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-[#1d1d1f] text-white stack-layer"
-                style={{ zIndex: 60 }}
-            >
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-10 sm:mb-14 lg:mb-16">
-                        <span className="apple-overline mb-2 sm:mb-3 block text-white/70">
-                            Testimonials
-                        </span>
-                        <h2 className="apple-heading testimonials-title text-2xl sm:text-3xl lg:text-5xl text-white">
-                            Trusted by Specialists
-                        </h2>
-                    </div>
-
-                    <div className="testimonials-grid grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7 lg:gap-8 max-w-5xl mx-auto">
-                        <div className="testimonial-card rounded-2xl lg:rounded-3xl p-6 sm:p-7 lg:p-8 bg-white/5 border border-white/10">
-                            <div className="text-5xl sm:text-6xl text-white opacity-20 mb-3 sm:mb-4 leading-none font-serif">"</div>
-                            <p className="text-white/80 italic mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-                                Working with the team helped us bring clarity to our marketing. Instead of chasing volume,
-                                we started attracting enquiries that actually matched our services. The difference in lead
-                                quality was noticeable within a few months.
-                            </p>
-                            <div className="font-semibold text-white text-sm sm:text-base">
-                                — Service Business Owner
-                            </div>
-                        </div>
-
-                        <div className="testimonial-card rounded-2xl lg:rounded-3xl p-6 sm:p-7 lg:p-8 bg-white/5 border border-white/10">
-                            <div className="text-5xl sm:text-6xl text-white opacity-20 mb-3 sm:mb-4 leading-none font-serif">"</div>
-                            <p className="text-white/80 italic mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-                                What stood out was their understanding of our market. The strategy wasn't generic and felt
-                                well thought out. Our messaging became more focused, and customer engagement improved
-                                steadily over time.
-                            </p>
-                            <div className="font-semibold text-white text-sm sm:text-base">
-                                — Founder, Product-Based Brand
-                            </div>
-                        </div>
-
-                        <div className="testimonial-card rounded-2xl lg:rounded-3xl p-6 sm:p-7 lg:p-8 bg-white/5 border border-white/10">
-                            <div className="text-5xl sm:text-6xl text-white opacity-20 mb-3 sm:mb-4 leading-none font-serif">"</div>
-                            <p className="text-white/80 italic mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-                                They took the time to understand how our audience thinks and searches. The changes made
-                                to positioning and campaigns helped us convert existing traffic more effectively without
-                                increasing spend.
-                            </p>
-                            <div className="font-semibold text-white text-sm sm:text-base">
-                                — Marketing Lead
-                            </div>
-                        </div>
-
-                        <div className="testimonial-card rounded-2xl lg:rounded-3xl p-6 sm:p-7 lg:p-8 bg-white/5 border border-white/10">
-                            <div className="text-5xl sm:text-6xl text-white opacity-20 mb-3 sm:mb-4 leading-none font-serif">"</div>
-                            <p className="text-white/80 italic mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-                                Our brand finally feels differentiated. Earlier, we struggled to explain why we were
-                                different. Now the messaging is clear, consistent, and resonates with the right customers.
-                            </p>
-                            <div className="font-semibold text-white text-sm sm:text-base">
-                                — Operations Manager
-                            </div>
-                        </div>
-
-                        <div className="testimonial-card rounded-2xl lg:rounded-3xl p-6 sm:p-7 lg:p-8 bg-white/5 border border-white/10 md:col-span-2">
-                            <div className="text-5xl sm:text-6xl text-white opacity-20 mb-3 sm:mb-4 leading-none font-serif">"</div>
-                            <p className="text-white/80 italic mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-                                The process was transparent and structured. We always knew what was being done and why.
-                                The results came gradually, but they were stable and sustainable, which is exactly what
-                                we were looking for.
-                            </p>
-                            <div className="font-semibold text-white text-sm sm:text-base">
-                                — Business Consultant
-                            </div>
+                                </motion.div>
+                            </AnimatePresence>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* FAQ Section */}
-            <section id="faq" className="w-full bg-white stack-layer" style={{ zIndex: 70 }}>
-                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24 faq-container">
-                    <div className="text-center mb-8 sm:mb-10 lg:mb-12">
-                        <span className="apple-overline block mb-2 sm:mb-3 text-gray-500">FAQ</span>
-                        <h2 className="apple-heading faq-title text-2xl sm:text-3xl lg:text-4xl text-black">Frequently Asked Questions</h2>
+            <section id="faq" className="py-24 bg-white relative">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-20">
+                        <span className="text-[#920F17] text-sm font-bold uppercase tracking-widest mb-4 block">Knowledge Base</span>
+                        <h2 className="text-3xl md:text-5xl font-bold text-[#1d1d1f]">Any Questions?</h2>
                     </div>
                     <div className="divide-y divide-gray-100">
                         {faqItems.map((item, index) => (
-                            <div key={index} className="faq-item py-4 sm:py-6">
+                            <div key={index} className="py-6">
                                 <button
                                     onClick={() => toggleFaq(index)}
-                                    className="faq-button w-full flex justify-between items-start sm:items-center text-left text-base sm:text-lg font-medium text-black hover:text-[#920F17] transition gap-3"
+                                    className="w-full flex justify-between items-center text-left group"
                                 >
-                                    <span className="flex-1">{item.question}</span>
-                                    {activeFaq === index ? (
-                                        <X className="w-4 h-4 sm:w-5 sm:h-5 text-[#920F17] flex-shrink-0" />
-                                    ) : (
-                                        <Plus className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 flex-shrink-0" />
-                                    )}
-                                </button>
-                                {activeFaq === index && (
-                                    <div className="faq-answer mt-3 sm:mt-4 text-[#515154] text-sm sm:text-base leading-relaxed animate-fadeUp">
-                                        {item.answer}
+                                    <span className="text-xl font-bold text-[#1d1d1f] group-hover:text-[#920F17] transition-all">
+                                        {item.question}
+                                    </span>
+                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${activeFaq === index ? 'bg-[#920F17] text-white rotate-45' : 'bg-gray-100 text-gray-400'}`}>
+                                        <Plus className="w-5 h-5" />
                                     </div>
-                                )}
+                                </button>
+                                <AnimatePresence>
+                                    {activeFaq === index && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            className="overflow-hidden"
+                                        >
+                                            <p className="py-6 text-gray-500 leading-relaxed text-lg">
+                                                {item.answer}
+                                            </p>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                             </div>
                         ))}
                     </div>
@@ -1209,28 +528,47 @@ const Niche = () => {
             </section>
 
             {/* CTA Section */}
-            <section id="contact" className="w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-24 bg-[#fbfbfd] stack-layer" style={{ zIndex: 80 }}>
-                <div className="cta-wrapper bg-[#1d1d1f] text-white rounded-2xl lg:rounded-[2rem] py-8 sm:py-12 lg:py-20 px-6 sm:px-8 lg:px-16 text-center relative overflow-hidden max-w-7xl mx-auto shadow-xl lg:shadow-2xl">
-                    <div className="absolute -top-20 -right-20 w-96 h-96 bg-[#920F17] opacity-20 rounded-full blur-3xl"></div>
-                    <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-[#920F17] opacity-10 rounded-full blur-3xl"></div>
-                    <h2 className="apple-heading text-xl sm:text-2xl lg:text-4xl text-white mb-3 sm:mb-4 lg:mb-6 relative z-10">Dominate Your Segment</h2>
-                    <p className="text-base sm:text-lg lg:text-xl text-gray-400 mb-6 sm:mb-8 lg:mb-10 max-w-2xl mx-auto relative z-10">
-                        Let's discuss how focused <a href='https://en.wikipedia.org/wiki/Niche_market' title="Learn more about Niche Marketing on Wikipedia"> niche marketing</a> can drive measurable results and authority for your brand.
-                    </p>
-                    <a href="/contact" className="apple-button-primary cta-button bg-white text-black hover:bg-gray-100 hover:scale-105 transition-all inline-flex text-base sm:text-lg py-3 sm:py-4 px-6 sm:px-10 relative z-10">
-                        Book a Strategy Call
-                        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 ml-1" />
-                    </a>
+            <section className="py-24 bg-[#1d1d1f]">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        className="bg-white rounded-[3rem] p-10 md:p-20 text-center shadow-2xl relative overflow-hidden"
+                    >
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-[#920F17]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                        <h2 className="text-3xl md:text-6xl font-bold text-[#1d1d1f] mb-8 leading-tight">
+                            Ready to dominate your niche?
+                        </h2>
+                        <p className="text-gray-500 text-xl max-w-2xl mx-auto mb-12">
+                            Stop chasing broad metrics and start building meaningful authority where it counts.
+                        </p>
+                        <motion.a
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            href="/contact"
+                            className="inline-flex items-center gap-4 bg-[#920F17] text-white px-12 py-6 rounded-full font-bold text-lg hover:bg-[#6B080E] transition-all"
+                        >
+                            Book a Consultation
+                            <ChevronRight className="w-6 h-6" />
+                        </motion.a>
+                    </motion.div>
                 </div>
             </section>
 
             {/* Scroll to Top */}
-            <button
-                className={`scroll-top-btn fixed bottom-6 sm:bottom-8 right-6 sm:right-8 w-12 h-12 sm:w-14 sm:h-14 bg-[#920F17] text-white rounded-full flex items-center justify-center shadow-lg hover:bg-[#6B080E] hover:scale-110 active:scale-95 transition-all z-[1001] ${isScrolled ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
-                onClick={scrollToTop}
-            >
-                <ArrowUp className="w-5 h-5 sm:w-6 sm:h-6" />
-            </button>
+            <AnimatePresence>
+                {isScrolled && (
+                    <motion.button
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        onClick={scrollToTop}
+                        className="fixed bottom-10 right-10 w-14 h-14 bg-[#920F17] text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-[#6B080E] transition-all z-[1000]"
+                    >
+                        <ArrowUp className="w-6 h-6" />
+                    </motion.button>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

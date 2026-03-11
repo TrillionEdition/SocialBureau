@@ -70,8 +70,7 @@ const Client = lazy(() =>
 const Team = lazy(() =>
   import("./pages/Team").then((module) => ({ default: module.Team })),
 );
-// const ATSChecker = lazy(() => import("./pages/ATSChecker"));
-// const ResumeGenerator = lazy(() => import("./pages/ResumeGenerator"));
+// const ATSChecker = lazy(() => import("./pages/Resume/ATSChecker"));
 const AuthPage = lazy(() => import("./pages/UserRegistration"));
 const Verification = lazy(() => import("./pages/UserVerification"));
 const AdminCreateJob = lazy(() => import("./pages/CreateJob"));
@@ -85,7 +84,6 @@ const ResetPassword = lazy(() =>
   })),
 );
 const VoiceAsst = lazy(() => import("./pages/VoiceAsst"));
-const CandidateProfilePage = lazy(() => import("./pages/CandidateProfilePage"));
 const Sakilan = lazy(() => import("./pages/Partnerships/sakilan"));
 
 // Lazy-loaded Components
@@ -313,7 +311,7 @@ function App() {
             <Route path="/candidate-profile" element={<CandidateProfile />} />
             <Route
               path="/candidate-profile/:applicationId"
-              element={<CandidateProfilePage />}
+              element={<CandidateProfile />}
             />
 
             <Route path="/services/:serviceTitle" element={<Service1 />} />
@@ -344,6 +342,7 @@ function App() {
               path="/performance-marketing-agency-in-kochi"
               element={<PerformanceMarketing />}
             />
+
             <Route
               path="/niche-marketing-agency-in-kochi"
               element={<Niche />}
@@ -435,7 +434,6 @@ function App() {
             <Route path="/partnership/Partner2" element={<Partner2 />} />
             <Route path="/partnership/Partner3" element={<Partner3 />} />
             <Route path="/partnership/Partner4" element={<Partner4 />} />
-            
 
             <Route path="/*" element={<NotFound />} />
           </Routes>

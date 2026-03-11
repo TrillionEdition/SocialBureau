@@ -2,19 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Printer } from 'lucide-react';
 import { calculateATSScore } from '../../utils/atsOptimization';
 
-const ResumePreview = ({ data, template, onATSScoreChange }) => {
-    const [atsScore, setAtsScore] = useState(0);
-
-    useEffect(() => {
-        const scoreData = calculateATSScore(data);
-        const scoreValue = typeof scoreData === 'number' ? scoreData : scoreData.overall;
-        setAtsScore(scoreValue);
-        onATSScoreChange?.(scoreValue);
-    }, [data, onATSScoreChange]);
-
-    const handlePrint = () => {
-        window.print();
-    };
+const ResumePreview = ({ data, template }) => {
 
     const renderModern = () => (
         <div className="bg-white text-slate-800 font-sans shadow-inner" style={{ minHeight: '1120px', padding: '60px' }}>
@@ -479,24 +467,11 @@ const ResumePreview = ({ data, template, onATSScoreChange }) => {
                     <h3 className="font-semibold text-white mb-1">
                         {template === 'atsOptimized' ? 'ATS-Optimized' : template.charAt(0).toUpperCase() + template.slice(1)} Template
                     </h3>
-                    <div className="flex items-center gap-3">
-                        <span className="text-sm text-gray-400">ATS Score:</span>
-                        <span className="text-2xl font-bold text-green-500">{atsScore}%</span>
-                    </div>
-                </div>
-                <div className="flex gap-3">
-                    <button
-                        onClick={handlePrint}
-                        className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2 font-semibold text-sm"
-                    >
-                        <Printer className="w-4 h-4" />
-                        Print/Save as PDF
-                    </button>
                 </div>
             </div>
 
             {/* Resume Preview */}
-            <div id="resume-content" className="rounded-xl overflow-hidden shadow-2xl border border-gray-200">
+            <div id="resume-to-download" className="rounded-xl overflow-hidden shadow-2xl border border-gray-200">
                 {renderer()}
             </div>
 
@@ -504,7 +479,7 @@ const ResumePreview = ({ data, template, onATSScoreChange }) => {
             <style>{`
                 @media print {
                     body { background: white; }
-                    #resume-content { box-shadow: none; border: none; }
+                    #resume-to-download { box-shadow: none; border: none; }
                 }
             `}</style>
         </div>

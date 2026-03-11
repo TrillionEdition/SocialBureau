@@ -49,7 +49,7 @@ export default function Navbar() {
         {
           title: "API Marketing",
           items: [
-            { label: "API Marketing", href: "/api-marketing" },
+            { label: "API Marketing", href: "/api-marketing-agency-in-kochi" },
             {
               label: "Performance Marketing",
               href: "/performance-marketing-agency-in-kochi",
@@ -63,7 +63,7 @@ export default function Navbar() {
               href: "/content-marketing-agency-in-kochi",
             },
             {
-              label: "AdTech Integration",
+              label: "AdTech Marketing",
               href: "/adTech-marketing-agency-in-kochi",
             },
           ],
@@ -176,12 +176,30 @@ export default function Navbar() {
         {
           title: "More Channels",
           items: [
-            { label: "Conversion & Sales Campaigns", href: "#" },
-            { label: "Retargeting & Remarketing", href: "#" },
-            { label: "Affiliate Marketing", href: "#" },
-            { label: "Landing Page & Funnel Optimization", href: "#" },
-            { label: "Conversion Rate Optimization (CRO)", href: "#" },
-            { label: "Marketing Automation", href: "#" },
+            {
+              label: "Conversion & Sales Campaigns",
+              href: "blogs/conversion-sales-campaigns",
+            },
+            {
+              label: "Retargeting & Remarketing",
+              href: "/blogs/retargeting-remarketing-the-complete-guide-to-recover-los",
+            },
+            {
+              label: "Affiliate Marketing",
+              href: "/blogs/affiliate-marketing-the-ultimate-guide-to-building-passive-",
+            },
+            {
+              label: "Landing Page & Funnel Optimization",
+              href: "/blogs/landing-page-funnel-optimization-the-ultimate-guide-to-in",
+            },
+            {
+              label: "Conversion Rate Optimization (CRO)",
+              href: "/blogs/conversion-rate-optimization-cro-the-complete-guide-to-in",
+            },
+            {
+              label: "Marketing Automation",
+              href: "/blogs/marketing-automation",
+            },
           ],
         },
       ],
@@ -196,9 +214,6 @@ export default function Navbar() {
             { label: "Partners", href: "/partners" },
             { label: "Ranjit", href: "/partnership/Ranjit" },
             { label: "Sivaprasad", href: "/partnership/Sivaprasad" },
-            { label: "Alex Rivera", href: "/partnership/Partner2" },
-            { label: "Elena Cross", href: "/partnership/Partner3" },
-            { label: "Julian Vane", href: "/partnership/Partner4" },
           ],
         },
       ],
