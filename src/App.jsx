@@ -3,6 +3,16 @@ import "./App.css";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { ReactLenis } from "lenis/react";
 import "lenis/dist/lenis.css";
+// import Partner1 from "./pages/Partnerships/partner1";
+// import ShaileshSivan from "./pages/Partnerships/shaileshsivan";
+// import AlenJacob from "./pages/Partnerships/alenJacob";
+import CheriyanPage from "./pages/Partnerships/cheriyan";
+// import { Blog } from "./pages/Blog";
+// import { Contact } from "./pages/Contact";
+// These were duplicates so removed standard imports
+// import CompanyAchievements from "./pages/CompanyAchievements";
+// import JohnSamuel from "./components/JohnSamuel";
+
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -14,20 +24,34 @@ import LoadingSpinner from "./components/LoadingSpinner";
 import AdminRoute from "./components/AdminRoute";
 import CookieConsent from "./components/CookieConsent";
 import { ToastContainer } from "react-toastify";
-
+import Partner1 from "./pages/Partnerships/johnsamuel";
 
 // Lazy-loaded Pages
-const Home = lazy(() => import("./pages/Home").then(module => ({ default: module.Home })));
-const About = lazy(() => import("./pages/About").then(module => ({ default: module.About })));
-const Services = lazy(() => import("./pages/Services").then(module => ({ default: module.Services })));
-const CaseStudy = lazy(() => import("./pages/CaseStudy").then(module => ({ default: module.CaseStudy })));
-const Partner1 = lazy(() => import("./pages/Partnerships/partner1"));
+const Home = lazy(() =>
+  import("./pages/Home").then((module) => ({ default: module.Home })),
+);
+const About = lazy(() =>
+  import("./pages/About").then((module) => ({ default: module.About })),
+);
+const Services = lazy(() =>
+  import("./pages/Services").then((module) => ({ default: module.Services })),
+);
+const CaseStudy = lazy(() =>
+  import("./pages/CaseStudy").then((module) => ({ default: module.CaseStudy })),
+);
+const JohnSamuelPage = lazy(() => import("./pages/Partnerships/johnsamuel"));
 const ShaileshSivan = lazy(() => import("./pages/Partnerships/shaileshsivan"));
 const AlenJacob = lazy(() => import("./pages/Partnerships/alenJacob"));
-const Blog = lazy(() => import("./pages/Blog").then(module => ({ default: module.Blog })));
-const Contact = lazy(() => import("./pages/Contact").then(module => ({ default: module.Contact })));
+const Blog = lazy(() =>
+  import("./pages/Blog").then((module) => ({ default: module.Blog })),
+);
+const Contact = lazy(() =>
+  import("./pages/Contact").then((module) => ({ default: module.Contact })),
+);
 const CompanyAchievements = lazy(() => import("./pages/CompanyAchievements"));
-const NotFound = lazy(() => import("./pages/NotFound").then(module => ({ default: module.NotFound })));
+const NotFound = lazy(() =>
+  import("./pages/NotFound").then((module) => ({ default: module.NotFound })),
+);
 const Service1 = lazy(() => import("./pages/Service1"));
 const Careers = lazy(() => import("./pages/Careers").then(module => ({ default: module.Careers })));
 const OurTeam = lazy(() => import("./pages/OurTeam").then(module => ({ default: module.OurTeam })));
@@ -44,11 +68,18 @@ const SocialBureauInsight = lazy(() => import("./pages/SocialBureauInsight"));
 const EditUser = lazy(() => import("./pages/EditUser"));
 const DashboardX = lazy(() => import("./pages/DashboardX"));
 const UserManagement = lazy(() => import("./pages/UserManagement"));
-const ResetPassword = lazy(() => import("./pages/ForgetPassword").then(module => ({ default: module.ResetPassword })));
+const ResetPassword = lazy(() =>
+  import("./pages/ForgetPassword").then((module) => ({
+    default: module.ResetPassword,
+  })),
+);
 const VoiceAsst = lazy(() => import("./pages/VoiceAsst"));
+const Sakilan = lazy(() => import("./pages/Partnerships/sakilan"));
 
 // Lazy-loaded Components
-const AddAchievementForm = lazy(() => import("./components/AddAchievementForm"));
+const AddAchievementForm = lazy(
+  () => import("./components/AddAchievementForm"),
+);
 const AddEvent = lazy(() => import("./components/AddEvent"));
 const AddReview = lazy(() => import("./components/AddReview"));
 const AdTechIntegration = lazy(() => import("./components/AdTechIntegration"));
@@ -56,19 +87,31 @@ const AEOService = lazy(() => import("./components/AEOService"));
 const AdminPanel = lazy(() => import("./components/AdminPannel"));
 const AnalyticsWidget = lazy(() => import("./components/Analytics"));
 const ApiMarketingPage = lazy(() => import("./components/ApiMarketing"));
-const AppAdvertisingService = lazy(() => import("./components/AppAdvertisingService"));
+const AppAdvertisingService = lazy(
+  () => import("./components/AppAdvertisingService"),
+);
 const BlogDetail = lazy(() => import("./components/BlogDetail"));
 const BrandingService = lazy(() => import("./components/BrandingService"));
-const CandidateProfile = lazy(() => import("./components/HrForum/CandidateProfile"));
+const CandidateProfile = lazy(
+  () => import("./components/HrForum/CandidateProfile"),
+);
 const CareerDetail = lazy(() => import("./components/CareerDetail"));
 const ContentMarketing = lazy(() => import("./components/ContentMarketing"));
 const CookiePolicy = lazy(() => import("./components/CookiePolicy"));
 const Disclaimer = lazy(() => import("./components/Disclaimer"));
 const Events = lazy(() => import("./components/Events"));
-const ForgotPassword = lazy(() => import("./components/ForgetPassword").then(module => ({ default: module.ForgotPassword })));
+const ForgotPassword = lazy(() =>
+  import("./components/ForgetPassword").then((module) => ({
+    default: module.ForgotPassword,
+  })),
+);
 const GEOService = lazy(() => import("./components/GEOService"));
-const GlobalMarketingService = lazy(() => import("./components/GlobalMarketingService"));
-const GoogleMarketingService = lazy(() => import("./components/GoogleMarketingService"));
+const GlobalMarketingService = lazy(
+  () => import("./components/GlobalMarketingService"),
+);
+const GoogleMarketingService = lazy(
+  () => import("./components/GoogleMarketingService"),
+);
 const HRForum = lazy(() => import("./components/HrForum/Home"));
 const JobDetails = lazy(() => import("./components/HrForum/JobDetails"));
 const JobPosting = lazy(() => import("./components/HrForum/JobPosting"));
@@ -81,13 +124,19 @@ const Leaderboard = lazy(() => import("./components/Leaderboard"));
 const Logout = lazy(() => import("./components/Logout"));
 const Niche = lazy(() => import("./components/Niche"));
 const Partnership = lazy(() => import("./components/Partnership"));
-const PerformanceMarketing = lazy(() => import("./components/PerformanceMarketing"));
+const PerformanceMarketing = lazy(
+  () => import("./components/PerformanceMarketing"),
+);
 const PrivacyPolicy = lazy(() => import("./components/PrivacyPolicy"));
 const ProfilePage = lazy(() => import("./components/Profile"));
 const QASection = lazy(() => import("./components/QASection"));
 const SEOService = lazy(() => import("./components/SEOService"));
 const Sivaprasad = lazy(() => import("./components/Sivaprasad"));
-const StaffDashboard = lazy(() => import("./components/StaffDashboard").then(module => ({ default: module.StaffDashboard })));
+const StaffDashboard = lazy(() =>
+  import("./components/StaffDashboard").then((module) => ({
+    default: module.StaffDashboard,
+  })),
+);
 const SubmitBlog = lazy(() => import("./components/SubmitBlog"));
 const TechnologyService = lazy(() => import("./components/TechnologyService"));
 const ViewEvents = lazy(() => import("./components/ViewEvents"));
@@ -98,8 +147,11 @@ function ConditionalFooter() {
   const location = useLocation();
   const hideFooterRoutes = [
     "/partnership/partner-1",
+    "/partnership/JohnSamuel",
     "/partnership/shailesh-sivan",
     "/partnership/alen-jacob",
+    "/partnership/cheriyan",
+    "/partnership/sakilan",
     "/dashboard",
     "/user-management",
     "/analytics",
@@ -126,6 +178,12 @@ function ConditionalFooter() {
 function ConditionalNavbar() {
   const location = useLocation();
   const hideNavbarRoutes = [
+    "/partnership/Partner1",
+    "/partnership/JohnSamuel",
+    "/partnership/shailesh-sivan",
+    "/partnership/alen-jacob",
+    "/partnership/cheriyan",
+    "/partnership/sakilan",
     "/dashboard",
     "/user-management",
     "/analytics",
@@ -217,7 +275,7 @@ function App() {
             <Route path="/our-works" element={<OurWork />} />
             <Route path="/achievements" element={<CompanyAchievements />} />
             <Route path="/ats-checker" element={<ATSChecker />} />
-            <Route path="/resume-generator" element={<ResumeGenerator/>} />
+            <Route path="/resume-generator" element={<ResumeGenerator />} />
             <Route path="/tool" element={<ScorePage />} />
 
             <Route path="/blogs/:slug" element={<BlogDetail />} />
@@ -226,7 +284,10 @@ function App() {
 
             <Route path="/services/branding" element={<BrandingService />} />
             <Route path="/services/experience-design" element={<XDService />} />
-            <Route path="/services/technology" element={<TechnologyService />} />
+            <Route
+              path="/services/technology"
+              element={<TechnologyService />}
+            />
             <Route
               path="/services/global-marketing"
               element={<GlobalMarketingService />}
@@ -238,7 +299,10 @@ function App() {
             <Route path="/services/geo" element={<GEOService />} />
             <Route path="/services/seo" element={<SEOService />} />
             <Route path="/services/aeo" element={<AEOService />} />
-            <Route path="/services/app-advertising" element={<AppAdvertisingService />} />
+            <Route
+              path="/services/app-advertising"
+              element={<AppAdvertisingService />}
+            />
 
             <Route path="/hr-forum" element={<HRForum />} />
             <Route path="/apply-job" element={<JobPosting />} />
@@ -268,16 +332,31 @@ function App() {
             <Route path="/login" element={<AuthPage />} />
             <Route path="/logout" element={<Logout />} />
 
-            <Route path="/api-marketing-agency-in-kochi" element={<ApiMarketingPage />} />
+            <Route
+              path="/api-marketing-agency-in-kochi"
+              element={<ApiMarketingPage />}
+            />
             <Route
               path="/performance-marketing-agency-in-kochi"
               element={<PerformanceMarketing />}
             />
-            
-            <Route path="/niche-marketing-agency-in-kochi" element={<Niche />} />
-            <Route path="/content-marketing-agency-in-kochi" element={<ContentMarketing />} />
-            <Route path="/adTech-marketing-agency-in-kochi" element={<AdTechIntegration />} />
-            <Route path="/web-development-agency-in-kochi" element={<WebDevelopment />} />
+
+            <Route
+              path="/niche-marketing-agency-in-kochi"
+              element={<Niche />}
+            />
+            <Route
+              path="/content-marketing-agency-in-kochi"
+              element={<ContentMarketing />}
+            />
+            <Route
+              path="/adTech-marketing-agency-in-kochi"
+              element={<AdTechIntegration />}
+            />
+            <Route
+              path="/web-development-agency-in-kochi"
+              element={<WebDevelopment />}
+            />
             <Route path="/dashboard" element={<DashboardX />} />
             <Route path="/insights" element={<SocialBureauInsight />} />
 
@@ -334,16 +413,25 @@ function App() {
             />
             <Route path="/add-review" element={<AddReview />} />
 
+            {/* <Route path='/partner' element={<PortfolioPager />} /> */}
             <Route path="/partners" element={<Partnership />} />
             <Route path="/partnership/Ranjit" element={<Landing />} />
             <Route path="/partnership/Sivaprasad" element={<Sivaprasad />} />
-            <Route path="/partnership/john-samuel" element={<JohnSamuel />} />
-            <Route path="/partnership/partner-1" element={<Partner1 />} />
+            <Route path="/partnership/Partner1" element={<Partner1 />} />
+            <Route
+              path="/partnership/JohnSamuel"
+              element={<JohnSamuelPage />}
+            />
             <Route
               path="/partnership/shailesh-sivan"
               element={<ShaileshSivan />}
             />
             <Route path="/partnership/alen-jacob" element={<AlenJacob />} />
+            <Route path="/partnership/cheriyan" element={<CheriyanPage />} />
+            <Route path="/partnership/sakilan" element={<Sakilan />} />
+            {/* <Route path="/partnership/Partner2" element={<Partner2 />} /> */}
+            {/* <Route path="/partnership/Partner3" element={<Partner3 />} />
+            <Route path="/partnership/Partner4" element={<Partner4 />} /> */}
 
             <Route path="/*" element={<NotFound />} />
           </Routes>

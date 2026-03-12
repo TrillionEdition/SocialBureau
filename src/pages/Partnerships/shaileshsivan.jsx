@@ -657,9 +657,9 @@ const AboutSection = () => {
       id="about"
       className="py-12 md:py-24 px-[5%] bg-white relative z-10 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto flex flex-col md:grid md:grid-cols-12 gap-8 md:gap-20 items-start md:items-center w-full">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20 items-start w-full">
         {/* Profile Image Container */}
-        <div className="md:col-span-5 relative group w-full max-w-md md:max-w-none mx-auto">
+        <div className="lg:col-span-5 lg:sticky top-32 h-fit relative group w-full max-w-md md:max-w-none mx-auto">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -704,7 +704,7 @@ const AboutSection = () => {
         </div>
 
         {/* Biography Content */}
-        <div className="w-full md:col-span-7 space-y-12">
+        <div className="w-full lg:col-span-7 space-y-12">
           <div>
             <SectionTitle label="00 Bio" title="About" />
             <RevealText className="text-xl md:text-3xl font-light leading-relaxed text-gray-600 mt-6 md:mt-12 italic">
@@ -854,9 +854,11 @@ const EducationSection = () => {
       id="education"
       className="py-12 md:py-24 px-[5%] bg-gray-50 relative z-10"
     >
-      <div className="max-w-7xl mx-auto">
-        <SectionTitle label="04 Background" title="Education" />
-        <div className="space-y-4 md:space-y-6 mt-8 md:mt-16">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+        <div className="lg:col-span-4 lg:sticky top-32 h-fit">
+          <SectionTitle label="04 Background" title="Education" />
+        </div>
+        <div className="lg:col-span-8 space-y-4 md:space-y-6">
           {EDUCATION.map((edu, i) => (
             <Magnetic key={i} strength={0.05}>
               <div className="bg-white/80 backdrop-blur-xl p-8 md:p-12 border border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center group hover:bg-white hover:shadow-2xl hover:shadow-[#10B981]/10 transition-all duration-500 relative overflow-hidden">
@@ -1287,9 +1289,11 @@ const ShaileshSivan = () => {
           transition={{ duration: 8, repeat: Infinity }}
           className="blob w-[600px] h-[600px] bg-green-50 -top-20 right-0 opacity-40"
         />
-        <div className="max-w-7xl mx-auto relative z-10">
-          <SectionTitle label="03 Innovation" title="Intellect" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 mt-8 md:mt-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+          <div className="lg:col-span-4 lg:sticky top-32 h-fit">
+            <SectionTitle label="03 Innovation" title="Intellect" />
+          </div>
+          <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 mt-8 md:mt-16">
             <div className="space-y-12 md:space-y-24">
               <RevealText className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-300">
                 Granted Patents
@@ -1343,53 +1347,57 @@ const ShaileshSivan = () => {
 
       {/* RESEARCH */}
       <section id="research" className="py-12 md:py-24 px-[5%] bg-white">
-        <div className="max-w-7xl mx-auto">
-          <SectionTitle label="06 Science" title="Publications" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1px] bg-gray-200 border border-gray-200 mt-8 md:mt-16">
-            {PUBLICATIONS.map((pub, i) => (
-              <div
-                key={i}
-                className="bg-white p-8 md:p-12 flex flex-col group hover:bg-[#f2f2f2] transition-colors relative"
-              >
-                <div className="flex flex-wrap gap-2 mb-10">
-                  {pub.tags.map((tag, ti) => (
-                    <span
-                      key={ti}
-                      className="text-[8px] font-black tracking-widest uppercase px-3 py-1 border border-gray-200 rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <h3 className="text-2xl font-display font-medium uppercase tracking-tight mb-auto leading-tight">
-                  <RevealText delay={i * 0.05}>{pub.title}</RevealText>
-                </h3>
-                <div className="mt-16 pt-10 border-t border-gray-100">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-300 mb-4 leading-relaxed">
-                    {pub.source}
-                  </p>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-light text-gray-400 italic">
-                      {pub.year}
-                    </span>
-                    {pub.doi && (
-                      <a
-                        href={`https://doi.org/${pub.doi}`}
-                        target="_blank"
-                        className="text-[#10B981] hover:scale-125 transition-transform"
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+          <div className="lg:col-span-4 lg:sticky top-32 h-fit">
+            <SectionTitle label="06 Science" title="Publications" />
+          </div>
+          <div className="lg:col-span-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[1px] bg-gray-200 border border-gray-200 mt-8 md:mt-16">
+              {PUBLICATIONS.map((pub, i) => (
+                <div
+                  key={i}
+                  className="bg-white p-8 md:p-12 flex flex-col group hover:bg-[#f2f2f2] transition-colors relative"
+                >
+                  <div className="flex flex-wrap gap-2 mb-10">
+                    {pub.tags.map((tag, ti) => (
+                      <span
+                        key={ti}
+                        className="text-[8px] font-black tracking-widest uppercase px-3 py-1 border border-gray-200 rounded-full"
                       >
-                        <ArrowUpRight size={20} />
-                      </a>
-                    )}
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <h3 className="text-2xl font-display font-medium uppercase tracking-tight mb-auto leading-tight">
+                    <RevealText delay={i * 0.05}>{pub.title}</RevealText>
+                  </h3>
+                  <div className="mt-16 pt-10 border-t border-gray-100">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-300 mb-4 leading-relaxed">
+                      {pub.source}
+                    </p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-light text-gray-400 italic">
+                        {pub.year}
+                      </span>
+                      {pub.doi && (
+                        <a
+                          href={`https://doi.org/${pub.doi}`}
+                          target="_blank"
+                          className="text-[#10B981] hover:scale-125 transition-transform"
+                        >
+                          <ArrowUpRight size={20} />
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-20 text-center">
-            <RevealText className="text-gray-400 text-sm italic">
-              + 35 Conference Papers & 5 Book Chapters
-            </RevealText>
+              ))}
+            </div>
+            <div className="mt-20 text-center">
+              <RevealText className="text-gray-400 text-sm italic">
+                + 35 Conference Papers & 5 Book Chapters
+              </RevealText>
+            </div>
           </div>
         </div>
       </section>

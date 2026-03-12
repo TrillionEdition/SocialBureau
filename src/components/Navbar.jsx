@@ -50,15 +50,32 @@ export default function Navbar() {
           title: "API Marketing",
           items: [
             { label: "API Marketing", href: "/api-marketing-agency-in-kochi" },
-            { label: "Performance Marketing", href: "/performance-marketing-agency-in-kochi" },
-            { label: "Niche Marketing", href: "/niche-marketing-agency-in-kochi" },
-            { label: "Content Marketing", href: "/content-marketing-agency-in-kochi" },
-            { label: "AdTech Marketing", href: "/adTech-marketing-agency-in-kochi" },
+            {
+              label: "Performance Marketing",
+              href: "/performance-marketing-agency-in-kochi",
+            },
+            {
+              label: "Niche Marketing",
+              href: "/niche-marketing-agency-in-kochi",
+            },
+            {
+              label: "Content Marketing",
+              href: "/content-marketing-agency-in-kochi",
+            },
+            {
+              label: "AdTech Marketing",
+              href: "/adTech-marketing-agency-in-kochi",
+            },
           ],
         },
         {
           title: "Design & Tech",
-          items: [{ label: "Web Development", href: "/web-development-agency-in-kochi" }],
+          items: [
+            {
+              label: "Web Development",
+              href: "/web-development-agency-in-kochi",
+            },
+          ],
         },
       ],
     },
@@ -134,7 +151,10 @@ export default function Navbar() {
               label: "Content Marketing Blog",
               href: "https://socialbureau.in/blogs/why-content-marketing-is-essential-for-seo-success-in-2026",
             },
-            { label: "Niche Brands and Build", href: "https://socialbureau.in/blogs/niche-brands-and-build" },
+            {
+              label: "Niche Brands and Build",
+              href: "https://socialbureau.in/blogs/niche-brands-and-build",
+            },
             {
               label: "Dark Social in Digital",
               href: "https://socialbureau.in/blogs/the-hidden-power-of-dark-social-in-digital",
@@ -156,12 +176,30 @@ export default function Navbar() {
         {
           title: "More Channels",
           items: [
-            { label: "Conversion & Sales Campaigns", href: "blogs/conversion-sales-campaigns" },
-            { label: "Retargeting & Remarketing", href: "/blogs/retargeting-remarketing-the-complete-guide-to-recover-los" },
-            { label: "Affiliate Marketing", href: "/blogs/affiliate-marketing-the-ultimate-guide-to-building-passive-" },
-            { label: "Landing Page & Funnel Optimization", href: "/blogs/landing-page-funnel-optimization-the-ultimate-guide-to-in" },
-            { label: "Conversion Rate Optimization (CRO)", href: "/blogs/conversion-rate-optimization-cro-the-complete-guide-to-in" },
-            { label: "Marketing Automation", href: "/blogs/marketing-automation" },
+            {
+              label: "Conversion & Sales Campaigns",
+              href: "blogs/conversion-sales-campaigns",
+            },
+            {
+              label: "Retargeting & Remarketing",
+              href: "/blogs/retargeting-remarketing-the-complete-guide-to-recover-los",
+            },
+            {
+              label: "Affiliate Marketing",
+              href: "/blogs/affiliate-marketing-the-ultimate-guide-to-building-passive-",
+            },
+            {
+              label: "Landing Page & Funnel Optimization",
+              href: "/blogs/landing-page-funnel-optimization-the-ultimate-guide-to-in",
+            },
+            {
+              label: "Conversion Rate Optimization (CRO)",
+              href: "/blogs/conversion-rate-optimization-cro-the-complete-guide-to-in",
+            },
+            {
+              label: "Marketing Automation",
+              href: "/blogs/marketing-automation",
+            },
           ],
         },
       ],
@@ -175,7 +213,7 @@ export default function Navbar() {
           items: [
             { label: "Partners", href: "/partners" },
             { label: "Ranjit", href: "/partnership/Ranjit" },
-            { label: 'Sivaprasad', href: '/partnership/Sivaprasad' },
+            { label: "Sivaprasad", href: "/partnership/Sivaprasad" },
           ],
         },
       ],
@@ -432,10 +470,11 @@ export default function Navbar() {
                     {item.columns && (
                       <ChevronRight
                         size={20}
-                        className={`text-white/40 transition-transform duration-200 ${expandedMobileCategory === item.label
-                          ? "rotate-90"
-                          : ""
-                          }`}
+                        className={`text-white/40 transition-transform duration-200 ${
+                          expandedMobileCategory === item.label
+                            ? "rotate-90"
+                            : ""
+                        }`}
                       />
                     )}
                   </div>

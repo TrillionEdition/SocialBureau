@@ -24,4 +24,18 @@ export const analyticsAPI = {
       throw error;
     }
   },
+
+  getSummary: async (range = "last30Days") => {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/analytics/summary`, {
+        params: { range },
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching analytics summary:", error);
+      throw error;
+    }
+  },
 };
+
