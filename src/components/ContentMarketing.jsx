@@ -243,7 +243,7 @@ const ContentMarketing = () => {
             results: [
                 { value: "74%", label: "Organic traffic growth" },
                 { value: "42%", label: "Sales-assisted deals" },
-                { value: "Improved", label: "Non-branded visibility" },
+                { value: "Better", label: "Non-branded visibility" },
             ],
         },
         {
@@ -311,7 +311,7 @@ const ContentMarketing = () => {
                             </a>
                         </div>
                     </div>
-                    <div className="relative h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+                    <div className="relative h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl mb-3">
                         <img
                             src={getOptimizedCloudinaryUrl(
                                 "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086614/cup-coffee-with-headphones-notebook-red-background_up2ufi.webp",

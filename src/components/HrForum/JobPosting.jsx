@@ -1,552 +1,277 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { BASE_URL } from "../../../utils/urls";
+import * as hrforumService from "../../../services/hrforumService.js";
+import { getUserData } from "../../../utils/authUtils";
+import {
+    ChevronLeft,
+    ArrowRight,
+    CheckCircle,
+    Briefcase,
+    MapPin,
+    DollarSign,
+    Info,
+    Upload,
+    X,
+    ShieldCheck,
+    Zap,
+    Layout,
+    Clock,
+    User,
+    Building,
+    Check
+} from "lucide-react";
+import HrNavbar from "./HrNavbar";
 
-const API_BASE_URL = `${BASE_URL}/hr-jobs` // Update this if needed
-
-// --- Step Components ---
-
-function CreateEmployerAccount({ formData, updateFormData, nextStep }) {
-    return (
-        <div className="min-h-screen bg-white flex items-start justify-center px-4 py-12">
-            <div className="w-full max-w-2xl">
-                <h1 className="text-3xl font-semibold text-gray-900">
-                    Create an employer account
-                </h1>
-                <Link
-                    to="/hr-forum"
-                    className="inline-flex items-center gap-1 mt-2 text-blue-600 font-medium hover:underline"
-                >
-                    I'm looking for a job <span>→</span>
-                </Link>
-
-                <form className="mt-8 space-y-6" onSubmit={(e) => { e.preventDefault(); nextStep(); }}>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-900">
-                            Company name <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            required
-                            value={formData.companyName}
-                            onChange={(e) => updateFormData({ companyName: e.target.value })}
-                            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-900">
-                            Company website <span className="text-gray-500">(optional)</span>
-                        </label>
-                        <input
-                            type="url"
-                            placeholder="https://www.example.com"
-                            value={formData.companyWebsite}
-                            onChange={(e) => updateFormData({ companyWebsite: e.target.value })}
-                            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-900">
-                            Company Logo URL <span className="text-gray-500">(optional)</span>
-                        </label>
-                        <input
-                            type="url"
-                            placeholder="https://.../logo.png"
-                            value={formData.companyLogo}
-                            onChange={(e) => updateFormData({ companyLogo: e.target.value })}
-                            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-900">
-                            Application link <span className="text-gray-500">(for external redirects like Indeed, LinkedIn)</span>
-                        </label>
-                        <input
-                            type="url"
-                            placeholder="https://www.indeed.com/job/..."
-                            value={formData.applicationLink}
-                            onChange={(e) => updateFormData({ applicationLink: e.target.value })}
-                            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-900">
-                                First name <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                required
-                                value={formData.employerFirstName}
-                                onChange={(e) => updateFormData({ employerFirstName: e.target.value })}
-                                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-900">
-                                Last name <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                required
-                                value={formData.employerLastName}
-                                onChange={(e) => updateFormData({ employerLastName: e.target.value })}
-                                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-900">
-                            How did you hear about us?
-                        </label>
-                        <select
-                            value={formData.source}
-                            onChange={(e) => updateFormData({ source: e.target.value })}
-                            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                            <option value="">Select an option</option>
-                            <option value="Search engine">Search engine</option>
-                            <option value="Social media">Social media</option>
-                            <option value="Referral">Referral</option>
-                            <option value="Advertisement">Advertisement</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-900">
-                            Phone number
-                        </label>
-                        <p className="text-sm text-gray-500 mb-1">
-                            For account management communication. Not visible to jobseekers.
-                        </p>
-                        <div className="flex">
-                            <div className="flex items-center gap-1 px-3 border border-gray-300 rounded-l-md bg-gray-50 text-sm">
-                                🇮🇳 <span>+91</span>
-                            </div>
-                            <input
-                                type="tel"
-                                value={formData.phoneNumber}
-                                onChange={(e) => updateFormData({ phoneNumber: e.target.value })}
-                                className="flex-1 rounded-r-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-between pt-6">
-                        <button type="button" className="text-sm text-blue-600 hover:underline">
-                            Have feedback? Tell us more.
-                        </button>
-                        <button
-                            type="submit"
-                            className="inline-flex items-center gap-2 rounded-md bg-blue-600 px-5 py-2 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                            Continue →
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    );
-}
-
-function AddJobBasics({ formData, updateFormData, nextStep, prevStep }) {
-    const [submitted, setSubmitted] = useState(false);
-
-    const hasJobTitleError = submitted && !formData.jobTitle;
-    const hasLocationError = submitted && !formData.location;
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setSubmitted(true);
-        if (formData.jobTitle && formData.location) {
-            nextStep();
-        }
-    };
-
-    return (
-        <div className="min-h-screen bg-white flex justify-center px-4 py-12">
-            <div className="w-full max-w-2xl">
-                <h1 className="text-3xl font-semibold text-gray-900">Add job basics</h1>
-                <p className="mt-2 text-sm text-gray-600">
-                    The job post will be in <strong>English</strong> in <strong>India</strong>
-                </p>
-                <hr className="my-6" />
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-900">
-                            Job title <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            value={formData.jobTitle}
-                            onChange={(e) => updateFormData({ jobTitle: e.target.value })}
-                            className={`mt-1 w-full rounded-md px-3 py-2 border focus:outline-none focus:ring-2 ${hasJobTitleError ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"}`}
-                        />
-                        {hasJobTitleError && <p className="mt-1 text-sm text-red-600">⛔ Add a job title.</p>}
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-900">
-                            Job location type <span className="text-red-500">*</span>
-                        </label>
-                        <select
-                            value={formData.locationType}
-                            onChange={(e) => updateFormData({ locationType: e.target.value })}
-                            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                            <option value="In person">In person</option>
-                            <option value="Hybrid">Hybrid</option>
-                            <option value="Remote">Remote</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-900">
-                            What is the job location? <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            placeholder="Enter a city or location"
-                            value={formData.location}
-                            onChange={(e) => updateFormData({ location: e.target.value })}
-                            className={`mt-1 w-full rounded-md px-3 py-2 border focus:outline-none focus:ring-2 ${hasLocationError ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"}`}
-                        />
-                    </div>
-                    {(hasJobTitleError || hasLocationError) && (
-                        <div className="rounded-md bg-red-50 border border-red-200 p-4">
-                            <p className="text-red-700 font-medium">⛔ These items need your attention before you can continue.</p>
-                            <ul className="mt-2 ml-6 list-disc text-sm text-red-700">
-                                {hasJobTitleError && <li>Job title</li>}
-                                {hasLocationError && <li>Job location</li>}
-                            </ul>
-                        </div>
-                    )}
-                    <div className="flex items-center justify-between pt-6">
-                        <button type="button" onClick={prevStep} className="border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50">← Back</button>
-                        <button type="submit" className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700">Continue →</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    );
-}
-
-function HiringGoals({ formData, updateFormData, nextStep, prevStep }) {
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (formData.recruitmentTimeline) nextStep();
-    };
-
-    return (
-        <div className="min-h-screen bg-white flex justify-center px-4 py-12">
-            <div className="w-full max-w-2xl">
-                <h1 className="text-3xl font-semibold text-gray-900">Hiring goals</h1>
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-900">
-                            Recruitment timeline for this job <span className="text-red-500">*</span>
-                        </label>
-                        <select
-                            required
-                            value={formData.recruitmentTimeline}
-                            onChange={(e) => updateFormData({ recruitmentTimeline: e.target.value })}
-                            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500"
-                        >
-                            <option value="">Select an option</option>
-                            <option value="Urgently hiring">Urgently hiring</option>
-                            <option value="Hiring in 1–2 weeks">Hiring in 1–2 weeks</option>
-                            <option value="Hiring in 1 month">Hiring in 1 month</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-900">
-                            Number of people to hire for this job <span className="text-red-500">*</span>
-                        </label>
-                        <div className="mt-1 inline-flex items-center border border-gray-300 rounded-md">
-                            <button type="button" onClick={() => updateFormData({ hiringCount: Math.max(1, formData.hiringCount - 1) })} className="px-3 py-2 hover:bg-gray-100">−</button>
-                            <span className="px-6 py-2 text-sm">{formData.hiringCount}</span>
-                            <button type="button" onClick={() => updateFormData({ hiringCount: formData.hiringCount + 1 })} className="px-3 py-2 hover:bg-gray-100">+</button>
-                        </div>
-                    </div>
-                    <div className="flex justify-between pt-6">
-                        <button type="button" onClick={prevStep} className="border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50">← Back</button>
-                        <button type="submit" className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700">Continue →</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    );
-}
-
-function AddJobDetails({ formData, updateFormData, nextStep, prevStep }) {
-    const JOB_TYPES = ["Full-time", "Permanent", "Fresher", "Part-time", "Internship", "Contractual / Temporary", "Freelance", "Volunteer"];
-
-    const toggleType = (type) => {
-        const selected = formData.jobTypes.includes(type)
-            ? formData.jobTypes.filter((t) => t !== type)
-            : [...formData.jobTypes, type];
-        updateFormData({ jobTypes: selected });
-    };
-
-    return (
-        <div className="min-h-screen bg-white flex justify-center px-4 py-12">
-            <div className="w-full max-w-2xl">
-                <h1 className="text-3xl font-semibold text-gray-900">Add job details</h1>
-                <div className="mt-6">
-                    <label className="block text-sm font-medium text-gray-900 mb-2">
-                        Job type <span className="text-red-500">*</span>
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                        {JOB_TYPES.map((type) => (
-                            <button
-                                key={type}
-                                type="button"
-                                onClick={() => toggleType(type)}
-                                className={`px-4 py-2 rounded-full border text-sm ${formData.jobTypes.includes(type) ? "bg-blue-600 text-white border-blue-600" : "border-gray-300 text-gray-700 hover:bg-gray-100"}`}
-                            >
-                                + {type}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-                <div className="flex justify-between pt-10">
-                    <button type="button" onClick={prevStep} className="border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50">← Back</button>
-                    <button type="button" onClick={() => { if (formData.jobTypes.length > 0) nextStep(); }} className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700">Continue →</button>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-function AddPayAndBenefits({ formData, updateFormData, nextStep, prevStep }) {
-    const BENEFITS = ["Health insurance", "Provident Fund", "Cell phone reimbursement", "Paid sick time", "Work from home", "Paid time off", "Food provided"];
-
-    const toggleBenefit = (b) => {
-        const selected = formData.benefits.includes(b)
-            ? formData.benefits.filter((x) => x !== b)
-            : [...formData.benefits, b];
-        updateFormData({ benefits: selected });
-    };
-
-    return (
-        <div className="min-h-screen bg-white flex justify-center px-4 py-12">
-            <div className="w-full max-w-2xl">
-                <h1 className="text-3xl font-semibold text-gray-900">Add pay and benefits</h1>
-                <div className="mt-8 space-y-6">
-                    <div>
-                        <h2 className="font-medium text-gray-900">Pay</h2>
-                        <div className="mt-4 grid grid-cols-1 sm:grid-cols-4 gap-4">
-                            <select className="border rounded-md px-3 py-2"><option>Range</option></select>
-                            <input
-                                value={formData.payRange.min}
-                                onChange={(e) => updateFormData({ payRange: { ...formData.payRange, min: e.target.value } })}
-                                placeholder="Min"
-                                className="border rounded-md px-3 py-2"
-                            />
-                            <input
-                                value={formData.payRange.max}
-                                onChange={(e) => updateFormData({ payRange: { ...formData.payRange, max: e.target.value } })}
-                                placeholder="Max"
-                                className="border rounded-md px-3 py-2"
-                            />
-                            <select
-                                value={formData.payRange.period}
-                                onChange={(e) => updateFormData({ payRange: { ...formData.payRange, period: e.target.value } })}
-                                className="border rounded-md px-3 py-2"
-                            >
-                                <option value="per month">per month</option>
-                                <option value="per year">per year</option>
-                                <option value="per week">per week</option>
-                                <option value="per hour">per hour</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <h2 className="font-medium text-gray-900 mb-2">Benefits</h2>
-                        <div className="flex flex-wrap gap-2">
-                            {BENEFITS.map((b) => (
-                                <button
-                                    key={b}
-                                    onClick={() => toggleBenefit(b)}
-                                    className={`px-4 py-2 rounded-full border text-sm ${formData.benefits.includes(b) ? "bg-blue-600 text-white border-blue-600" : "border-gray-300 hover:bg-gray-100"}`}
-                                >
-                                    + {b}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-                <div className="flex justify-between pt-10">
-                    <button type="button" onClick={prevStep} className="border px-4 py-2 rounded-md hover:bg-gray-50">← Back</button>
-                    <button type="button" onClick={nextStep} className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700">Continue →</button>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-function DescribeTheJob({ formData, updateFormData, prevStep, submitForm }) {
-    const isError = formData.description.length < 30;
-
-    return (
-        <div className="min-h-screen bg-white flex justify-center px-4 py-12">
-            <div className="w-full max-w-2xl">
-                <h1 className="text-3xl font-semibold text-gray-900">Describe the job</h1>
-                <p className="text-sm text-gray-500 mt-2 mb-8">
-                    Pro-tip: Use terms like <strong>"must have"</strong> or <strong>"required"</strong> to help the ATS identify essential skills.
-                </p>
-
-                <div className="space-y-8">
-                    <div>
-                        <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">
-                            About the company/role
-                        </label>
-                        <textarea
-                            value={formData.about}
-                            onChange={(e) => updateFormData({ about: e.target.value })}
-                            rows={3}
-                            placeholder="e.g. Join our award-winning creative team..."
-                            className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">
-                            Role Summary (One per line)
-                        </label>
-                        <textarea
-                            value={formData.roleSummary}
-                            onChange={(e) => updateFormData({ roleSummary: e.target.value })}
-                            rows={4}
-                            placeholder="Design high-quality assets&#10;Collaborate with marketing teams"
-                            className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">
-                            Key Responsibilities & Requirements (One per line)
-                        </label>
-                        <textarea
-                            value={formData.responsibilities}
-                            onChange={(e) => updateFormData({ responsibilities: e.target.value })}
-                            rows={6}
-                            placeholder="Must have 3+ years in Figma&#10;Proficiency in Adobe Suite"
-                            className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">
-                            Full Job description <span className="text-red-500">*</span>
-                        </label>
-                        <textarea
-                            value={formData.description}
-                            onChange={(e) => updateFormData({ description: e.target.value })}
-                            rows={6}
-                            placeholder="Detailed description of the daily routine and expectations..."
-                            className={`mt-2 w-full rounded-md border px-3 py-2 focus:ring-2 ${isError ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"}`}
-                        />
-                        {isError && <p className="mt-1 text-sm text-red-600">Add a job description with a minimum of 30 characters.</p>}
-                    </div>
-                </div>
-
-                <div className="flex justify-between items-center pt-10 border-t mt-12">
-                    <button type="button" onClick={prevStep} className="border px-4 py-2 rounded-md hover:bg-gray-50">← Back</button>
-                    <button
-                        type="button"
-                        disabled={isError}
-                        onClick={submitForm}
-                        className="bg-blue-600 text-white px-8 py-3 rounded-md font-bold hover:bg-blue-700 disabled:opacity-50 shadow-lg transition-all active:scale-95"
-                    >
-                        Post Job ✨
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-// --- Main JobPosting Component ---
-
-export default function JobPosting() {
+export default function JobPostingForm() {
     const navigate = useNavigate();
-    const [step, setStep] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [step, setStep] = useState(1);
+    const [currentUser, setCurrentUser] = useState(null);
     const [formData, setFormData] = useState({
         companyName: "",
         companyWebsite: "",
-        applicationLink: "",
-        employerFirstName: "WEB ASST",
-        employerLastName: "SocialBureau",
-        source: "",
-        phoneNumber: "70122-29117",
+        employerFirstName: "",
+        employerLastName: "",
         jobTitle: "",
-        locationType: "In person",
         location: "",
-        recruitmentTimeline: "",
-        hiringCount: 1,
-        jobTypes: [],
-        payRange: {
-            min: "8919.35",
-            max: "44819.72",
-            period: "per month"
-        },
-        benefits: [],
-        about: "",
-        roleSummary: "",
-        responsibilities: "",
-        description: ""
+        locationType: "In person",
+        jobTypes: ["Full-time"],
+        payRange: { min: "", max: "", period: "per month" },
+        description: "",
+        responsibilities: [""],
+        benefits: [""]
     });
 
-    const updateFormData = (newData) => {
-        setFormData((prev) => ({ ...prev, ...newData }));
+    useEffect(() => {
+        const user = getUserData();
+        if (user) {
+            setCurrentUser(user);
+            setFormData(prev => ({
+                ...prev,
+                employerFirstName: user.name?.split(' ')[0] || "",
+                employerLastName: user.name?.split(' ')[1] || ""
+            }));
+        } else {
+            navigate('/login');
+        }
+    }, []);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        if (name.includes(".")) {
+            const [parent, child] = name.split(".");
+            setFormData(prev => ({
+                ...prev,
+                [parent]: { ...prev[parent], [child]: value }
+            }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
     };
 
-    const nextStep = () => setStep((prev) => prev + 1);
-    const prevStep = () => setStep((prev) => Math.max(0, prev - 1));
+    const handleListChange = (index, value, type) => {
+        const newList = [...formData[type]];
+        newList[index] = value;
+        setFormData(prev => ({ ...prev, [type]: newList }));
+    };
 
-    const submitForm = async () => {
+    const addItem = (type) => {
+        setFormData(prev => ({ ...prev, [type]: [...prev[type], ""] }));
+    };
+
+    const removeItem = (index, type) => {
+        const newList = formData[type].filter((_, i) => i !== index);
+        setFormData(prev => ({ ...prev, [type]: newList }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         setLoading(true);
-        // Clean up textareas into arrays if needed
-        const processedData = {
-            ...formData,
-            roleSummary: formData.roleSummary.split('\n').filter(s => s.trim()),
-            responsibilities: formData.responsibilities.split('\n').filter(s => s.trim())
-        };
         try {
-            const response = await axios.post(API_BASE_URL, processedData);
-            alert("Job posted successfully!");
-            navigate("/hr-forum");
+            const payload = {
+                ...formData,
+                employerId: currentUser?._id || currentUser?.id
+            };
+            await hrforumService.postJob(payload);
+            alert("Job Posted Successfully! ✓");
+            navigate("/job-listing");
         } catch (error) {
-            console.error("Submission error:", error);
-            alert("Failed to post job. Please check console for details.");
+            console.error(error);
+            alert("Posting failed. Please check the details.");
         } finally {
             setLoading(false);
         }
     };
 
-    if (loading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-                <p className="ml-4 text-xl font-medium">Posting your job...</p>
+    return (
+        <div className="min-h-screen bg-[#F5F7FB] font-sans antialiased text-[#2d2d2d] selection:bg-[#0099a7d7] selection:text-white">
+            <HrNavbar />
+
+            {/* Sub-Header with Progress */}
+            <div className="bg-white border-b border-gray-100 px-8 py-5 flex items-center justify-between sticky top-16 z-40 shadow-sm transition-all duration-300">
+                <div className="flex items-center gap-6">
+                    <Link to="/job-listing" className="w-12 h-12 bg-[#f8fafc] hover:bg-white rounded-2xl flex items-center justify-center transition-all border border-gray-100 shadow-sm text-gray-400 hover:text-[#0e686eff]">
+                        <ChevronLeft size={24} />
+                    </Link>
+                    <div>
+                        <h1 className="text-xl font-black uppercase tracking-tight text-gray-900 leading-none mb-1">Post a New Job</h1>
+                        <p className="text-[9px] font-black text-[#0099a7d7] uppercase tracking-widest">Step 0{step} of 3</p>
+                    </div>
+                </div>
+                <div className="flex gap-4">
+                    {[1, 2, 3].map(s => (
+                        <div key={s} className={`h-2.5 w-16 rounded-full transition-all duration-700 ${s <= step ? 'bg-[#0e686eff] shadow-[0_0_15px_rgba(14,104,110,0.3)]' : 'bg-gray-100'}`}></div>
+                    ))}
+                </div>
             </div>
-        );
-    }
 
-    const stepProps = { formData, updateFormData, nextStep, prevStep };
+            <main className="max-w-[1000px] mx-auto py-16 px-8 pb-32">
+                <form onSubmit={handleSubmit} className="space-y-12">
 
-    switch (step) {
-        case 0:
-            return <CreateEmployerAccount {...stepProps} />;
-        case 1:
-            return <AddJobBasics {...stepProps} />;
-        case 2:
-            return <HiringGoals {...stepProps} />;
-        case 3:
-            return <AddJobDetails {...stepProps} />;
-        case 4:
-            return <AddPayAndBenefits {...stepProps} />;
-        case 5:
-            return <DescribeTheJob {...stepProps} submitForm={submitForm} />;
-        default:
-            return <CreateEmployerAccount {...stepProps} />;
-    }
+                    {step === 1 && (
+                        <Card title="Company Details" icon={<Building className="text-[#0e686eff]" />}>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                <Input label="Company Name" name="companyName" value={formData.companyName} onChange={handleChange} required placeholder="Enterprise name..." />
+                                <Input label="Company Website" name="companyWebsite" value={formData.companyWebsite} onChange={handleChange} placeholder="https://..." />
+                                <Input label="Contact Person (First Name)" name="employerFirstName" value={formData.employerFirstName} onChange={handleChange} required />
+                                <Input label="Contact Person (Last Name)" name="employerLastName" value={formData.employerLastName} onChange={handleChange} required />
+                            </div>
+                            <div className="mt-16 flex justify-end">
+                                <button type="button" onClick={() => setStep(2)} className="bg-[#0e686eff] hover:bg-[#0099a7d7] text-white font-black uppercase tracking-widest text-[11px] px-14 py-6 rounded-[2rem] flex items-center gap-4 transition-all shadow-2xl shadow-teal-900/10 active:scale-95 group">
+                                    Next Step <ArrowRight size={22} className="group-hover:translate-x-1 transition-transform" />
+                                </button>
+                            </div>
+                        </Card>
+                    )}
+
+                    {step === 2 && (
+                        <Card title="Job Details" icon={<Briefcase className="text-[#0e686eff]" />}>
+                            <div className="space-y-12">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                    <Input label="Job Title" name="jobTitle" value={formData.jobTitle} onChange={handleChange} required placeholder="Job title..." />
+                                    <Input label="Location" name="location" value={formData.location} onChange={handleChange} required placeholder="City or Remote..." />
+                                </div>
+
+                                <div className="space-y-4">
+                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block ml-1">Workplace Type</label>
+                                    <div className="grid grid-cols-3 gap-6">
+                                        {['In person', 'Hybrid', 'Remote'].map(type => (
+                                            <button
+                                                key={type}
+                                                type="button"
+                                                onClick={() => setFormData(prev => ({ ...prev, locationType: type }))}
+                                                className={`py-6 rounded-[1.8rem] text-[10px] font-black uppercase tracking-widest border-2 transition-all flex items-center justify-center gap-3 ${formData.locationType === type
+                                                        ? 'bg-[#0099a7d7]/10 border-[#0099a7d7] text-[#0e686eff] shadow-inner font-black'
+                                                        : 'bg-[#f8fafc] border-transparent text-gray-400 hover:border-gray-200'
+                                                    }`}
+                                            >
+                                                {formData.locationType === type && <Check size={16} />} {type}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-end">
+                                    <Input label="Salary (Min)" name="payRange.min" value={formData.payRange.min} onChange={handleChange} type="number" />
+                                    <Input label="Salary (Max)" name="payRange.max" value={formData.payRange.max} onChange={handleChange} type="number" />
+                                    <div className="space-y-3">
+                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block ml-1">Frequency</label>
+                                        <select
+                                            name="payRange.period"
+                                            value={formData.payRange.period}
+                                            onChange={handleChange}
+                                            className="w-full h-[75px] bg-[#f8fafc] border-none rounded-[1.8rem] text-[10px] font-black uppercase tracking-widest focus:ring-8 focus:ring-[#0099a7d7]/5 focus:border-[#0099a7d7] outline-none px-10 transition-all shadow-inner appearance-none cursor-pointer"
+                                        >
+                                            <option value="per month">per month</option>
+                                            <option value="per year">per year</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="mt-16 flex justify-between items-center">
+                                <button type="button" onClick={() => setStep(1)} className="px-8 py-4 text-gray-400 font-black uppercase tracking-widest text-[10px] hover:text-[#0e686eff] transition-colors rounded-2xl bg-[#f8fafc]">Back</button>
+                                <button type="button" onClick={() => setStep(3)} className="bg-[#0e686eff] hover:bg-[#0099a7d7] text-white font-black uppercase tracking-widest text-[11px] px-14 py-6 rounded-[2rem] flex items-center gap-4 transition-all shadow-2xl shadow-teal-900/10 active:scale-95">
+                                    Next Step <ArrowRight size={22} />
+                                </button>
+                            </div>
+                        </Card>
+                    )}
+
+                    {step === 3 && (
+                        <Card title="Job Description" icon={<Layout className="text-[#0e686eff]" />}>
+                            <div className="space-y-12">
+                                <div className="space-y-4">
+                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block ml-1">Description</label>
+                                    <textarea
+                                        name="description"
+                                        value={formData.description}
+                                        onChange={handleChange}
+                                        className="w-full h-72 bg-[#f8fafc] border-none rounded-[3rem] text-sm font-bold focus:ring-8 focus:ring-[#0099a7d7]/5 focus:border-[#0099a7d7] outline-none p-12 leading-relaxed placeholder:text-gray-200 transition-all shadow-inner resize-none mb-4 italic"
+                                        placeholder="Explain the role and requirements..."
+                                        required
+                                    />
+                                    <p className="text-[9px] font-black text-gray-300 uppercase tracking-widest text-right">Detailed descriptions help find better matches.</p>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center mb-6">
+                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Responsibilities</label>
+                                        <button type="button" onClick={() => addItem('responsibilities')} className="text-[#0e686eff] font-black text-[9px] uppercase tracking-widest border-2 border-[#0e686eff]/10 bg-white px-6 py-3 rounded-2xl hover:bg-[#0e686eff] hover:text-white transition-all shadow-sm">Add Responsibility</button>
+                                    </div>
+                                    <div className="space-y-4">
+                                        {formData.responsibilities.map((r, i) => (
+                                            <div key={i} className="flex gap-4 animate-in slide-in-from-right-3 duration-300">
+                                                <input
+                                                    value={r}
+                                                    onChange={(e) => handleListChange(i, e.target.value, 'responsibilities')}
+                                                    className="flex-1 bg-[#f8fafc] border-none rounded-[1.8rem] text-[10px] font-black uppercase tracking-widest focus:ring-8 focus:ring-[#0099a7d7]/5 focus:border-[#0099a7d7] outline-none px-10 py-6 transition-all shadow-inner"
+                                                    placeholder={`Responsibility 0${i + 1}...`}
+                                                />
+                                                {formData.responsibilities.length > 1 && (
+                                                    <button type="button" onClick={() => removeItem(i, 'responsibilities')} className="w-16 h-16 flex items-center justify-center text-gray-300 hover:text-red-500 transition-all bg-[#f8fafc] rounded-[1.2rem]"><X size={24} /></button>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="mt-20 flex justify-between items-center">
+                                <button type="button" onClick={() => setStep(2)} className="px-8 py-4 text-gray-400 font-black uppercase tracking-widest text-[10px] hover:text-[#0e686eff] transition-colors rounded-2xl bg-[#f8fafc]">Back</button>
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="bg-[#0e686eff] hover:bg-[#0099a7d7] text-white font-black uppercase tracking-[0.2em] text-[12px] px-20 py-8 rounded-[3rem] shadow-[0_40px_80px_rgba(14,104,110,0.3)] transition-all active:scale-95 disabled:opacity-50 flex items-center gap-6 group overflow-hidden relative"
+                                >
+                                    <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                                    {loading ? 'Posting...' : 'Post Job Now'} <ShieldCheck size={32} />
+                                </button>
+                            </div>
+                        </Card>
+                    )}
+                </form>
+            </main>
+        </div>
+    );
 }
+
+const Card = ({ children, title, icon }) => (
+    <div className="bg-white rounded-[4rem] p-20 shadow-[0_40px_100px_rgba(0,0,0,0.08)] border border-gray-100 animate-in fade-in slide-in-from-bottom-5 duration-1000 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#0e686eff]/2 rounded-full blur-[120px] -z-10 -mr-64 -mt-64"></div>
+        <div className="flex items-center gap-8 mb-16">
+            <div className="w-24 h-24 bg-white rounded-[2.2rem] flex items-center justify-center text-[#0e686eff] shadow-[inset_0_5px_15px_rgba(0,0,0,0.05)] border border-gray-50">{icon}</div>
+            <h2 className="text-4xl font-black text-gray-900 uppercase tracking-tighter">{title}</h2>
+        </div>
+        {children}
+    </div>
+);
+
+const Input = ({ label, ...props }) => (
+    <div className="space-y-4">
+        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block cursor-default ml-1">{label}</label>
+        <input
+            {...props}
+            className="w-full h-[75px] bg-[#f8fafc] border-none rounded-[1.8rem] text-[10px] font-black uppercase tracking-widest focus:ring-8 focus:ring-[#0099a7d7]/5 focus:border-[#0099a7d7] transition-all outline-none px-10 placeholder:text-gray-200 shadow-inner"
+        />
+    </div>
+);
 

@@ -35,7 +35,8 @@ const OurWork = lazy(() => import("./pages/OurWork").then(module => ({ default: 
 const ScorePage = lazy(() => import("./pages/ScorePage").then(module => ({ default: module.ScorePage })));
 const Client = lazy(() => import("./pages/Client").then(module => ({ default: module.Client })));
 const Team = lazy(() => import("./pages/Team").then(module => ({ default: module.Team })));
-// const ATSChecker = lazy(() => import("./pages/Resume/ATSChecker"));
+const ATSChecker = lazy(() => import("./pages/Resume/ATSChecker"));
+const ResumeGenerator = lazy(() => import("./pages/Resume/ResumeGenerator"));
 const AuthPage = lazy(() => import("./pages/UserRegistration"));
 const Verification = lazy(() => import("./pages/UserVerification"));
 const AdminCreateJob = lazy(() => import("./pages/CreateJob"));
@@ -71,7 +72,9 @@ const GoogleMarketingService = lazy(() => import("./components/GoogleMarketingSe
 const HRForum = lazy(() => import("./components/HrForum/Home"));
 const JobDetails = lazy(() => import("./components/HrForum/JobDetails"));
 const JobPosting = lazy(() => import("./components/HrForum/JobPosting"));
+const HrMessages = lazy(() => import("./components/HrForum/HrMessages"));
 const JobsList = lazy(() => import("./components/HrForum/JobListing"));
+const JobApplicants = lazy(() => import("./components/HrForum/JobApplicants"));
 const JohnSamuel = lazy(() => import("./components/JohnSamuel"));
 const Landing = lazy(() => import("./components/ExternalPortfolio"));
 const Leaderboard = lazy(() => import("./components/Leaderboard"));
@@ -104,6 +107,12 @@ function ConditionalFooter() {
     "/add-user",
     "/edit-user",
     "/add-review",
+    "/hr-forum",
+    "/apply-job",
+    "/job-details",
+    "/job-listing",
+    "/job-applicants",
+    "/candidate-profile"
   ];
 
   const shouldHide = hideFooterRoutes.some(
@@ -124,6 +133,12 @@ function ConditionalNavbar() {
     "/add-user",
     "/edit-user",
     "/add-review",
+    "/hr-forum",
+    "/apply-job",
+    "/job-details",
+    "/job-listing",
+    "/job-applicants",
+    "/candidate-profile"
   ];
 
   const shouldHide = hideNavbarRoutes.some(
@@ -201,8 +216,8 @@ function App() {
             <Route path="/our-team" element={<OurTeam />} />
             <Route path="/our-works" element={<OurWork />} />
             <Route path="/achievements" element={<CompanyAchievements />} />
-            {/* <Route path="/ats-checker" element={<ATSChecker />} /> */}
-            {/* <Route path="/resume-generator" element={<ResumeGenerator />} /> */}
+            <Route path="/ats-checker" element={<ATSChecker />} />
+            <Route path="/resume-generator" element={<ResumeGenerator/>} />
             <Route path="/tool" element={<ScorePage />} />
 
             <Route path="/blogs/:slug" element={<BlogDetail />} />
@@ -226,10 +241,12 @@ function App() {
             <Route path="/services/app-advertising" element={<AppAdvertisingService />} />
 
             <Route path="/hr-forum" element={<HRForum />} />
-            <Route path="/appy-job" element={<JobPosting />} />
+            <Route path="/apply-job" element={<JobPosting />} />
             <Route path="/job-details/:id" element={<JobDetails />} />
             <Route path="/job-listing" element={<JobsList />} />
-            <Route path="/candidate-profile" element={<CandidateProfile />} />
+            <Route path="/job-applicants/:jobId" element={<JobApplicants />} />
+            <Route path="/candidate-profile/:applicationId" element={<CandidateProfile />} />
+            <Route path="/hr-messages" element={<HrMessages />} />
 
             <Route path="/services/:serviceTitle" element={<Service1 />} />
             <Route path="/employee/:name" element={<StaffDashboard />} />
