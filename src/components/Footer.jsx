@@ -26,7 +26,6 @@ export default function Footer() {
         { label: "Work", href: "/our-works" },
         { label: "Events", href: "/events" },
         { label: "Contact", href: "/contact" },
-        { label: "Let's Talk", href: "/voice" },
       ],
     },
     {

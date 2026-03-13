@@ -14,10 +14,10 @@ import {
     FileText,
     FileDown
 } from 'lucide-react';
-import TemplateSelector from '../../components/TemplateSelector';
+import TemplateSelector from './TemplateSelector.jsx';
 import PDFExtractor from '../../components/PDFExtractor';
-import ResumeForm from '../../components/ResumeForm';
-import ResumePreview from '../../components/ResumePreview';
+import ResumeForm from './ResumeForm.jsx';
+import ResumePreview from './ResumePreview.jsx';
 
 import { downloadResumeSinglePage } from "../../../utils/singlePagePdfGenerator.js";
 import { getAIResumeImprovements, checkResumeQuality, generateAISuggestions } from "../../../services/aiResumeService.js";
@@ -230,11 +230,11 @@ const ResumeGenerator = () => {
                     {['Method', 'AI Generation', 'Template', 'Input', 'Preview'].map((label, idx) => (
                         <div key={label} className="flex items-center">
                             <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${(step === ['method', 'ai-generation', 'template', 'input', 'preview'][idx] ||
-                                    (step === 'extraction' && idx === 1))
-                                    ? 'bg-blue-600 text-white scale-110'
-                                    : ['method', 'ai-generation', 'extraction', 'template', 'input', 'preview'].indexOf(step) > idx
-                                        ? 'bg-green-600 text-white'
-                                        : 'bg-gray-800 text-gray-400'
+                                (step === 'extraction' && idx === 1))
+                                ? 'bg-blue-600 text-white scale-110'
+                                : ['method', 'ai-generation', 'extraction', 'template', 'input', 'preview'].indexOf(step) > idx
+                                    ? 'bg-green-600 text-white'
+                                    : 'bg-gray-800 text-gray-400'
                                 }`}>
                                 {['method', 'ai-generation', 'extraction', 'template', 'input', 'preview'].indexOf(step) > idx ? '✓' : idx + 1}
                             </div>

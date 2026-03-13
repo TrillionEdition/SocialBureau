@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Upload, X, FileText, AlertCircle, Loader2, Sparkles, Award, Briefcase, Users } from 'lucide-react';
-import { extractPdfData } from '../../services/resumeGeneratorService';
+import { extractPdfData } from '../../../services/resumeGeneratorService';
 
 const PDFExtractor = ({ onDataExtracted, onError }) => {
     const [file, setFile] = useState(null);
