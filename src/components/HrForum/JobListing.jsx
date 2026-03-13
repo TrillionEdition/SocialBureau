@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { BASE_URL } from "../../../utils/urls";
 
-const API_BASE_URL = "http://localhost:5000/hr-jobs";
+const API_BASE_URL = `${BASE_URL}/hr-jobs`;
 
 export default function JobsList() {
     const [jobs, setJobs] = useState([]);
