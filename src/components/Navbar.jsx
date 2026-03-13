@@ -32,6 +32,19 @@ const useAuth = () => {
   return { isLoggedIn, isAdmin, isPartnership };
 };
 
+// Color scheme for category cards
+const categoryColors = {
+  "API Marketing": "from-red-500 to-red-600",
+  "Design & Tech": "from-cyan-500 to-cyan-600",
+  "About": "from-lime-400 to-lime-500",
+  "Community": "from-white to-gray-200",
+  "Open Positions": "from-yellow-400 to-yellow-500",
+  "Explore": "from-orange-400 to-orange-500",
+  "Marketing": "from-purple-500 to-purple-600",
+  "More Channels": "from-blue-500 to-blue-600",
+  "Partnership": "from-indigo-500 to-indigo-600",
+};
+
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -77,73 +90,6 @@ export default function Navbar() {
             },
           ],
         },
-      ],
-    },
-    {
-      label: "Company",
-      columns: [
-        {
-          title: "About",
-          items: [
-            { label: "About Us", href: "/about" },
-            { label: "Our Team", href: "/our-team" },
-            { label: "Work", href: "#" },
-          ],
-        },
-        {
-          title: "Community",
-          items: [
-            { label: "Blog", href: "/blog" },
-            { label: "Partners", href: "/partners" },
-          ],
-        },
-      ],
-    },
-    {
-      label: "Careers",
-      href: "/careers",
-      columns: [
-        {
-          title: "Open Positions",
-          items: [
-            {
-              label: "Content Copywriter",
-              href: "/careers/content-copywriter",
-            },
-            {
-              label: "Client Success Manager",
-              href: "/careers/client-success-manager",
-            },
-            {
-              label: "Business Development",
-              href: "/careers/business-development-manager",
-            },
-            {
-              label: "Front Desk Manager",
-              href: "/careers/front-desk-manager",
-            },
-            {
-              label: "Digital Marketing Expert",
-              href: "/careers/digital-marketing-expert",
-            },
-            { label: "Video Editor", href: "/careers/video-editor" },
-            { label: "Web Developer", href: "#" },
-            {
-              label: "Office Operations",
-              href: "/careers/office-operations-manager",
-            },
-          ],
-        },
-        {
-          title: "Explore",
-          items: [{ label: "All Careers", href: "/careers" }],
-        },
-      ],
-    },
-    {
-      label: "Performance Marketing",
-      href: "/performance-marketing-agency-in-kochi",
-      columns: [
         {
           title: "Marketing",
           items: [
@@ -178,7 +124,7 @@ export default function Navbar() {
           items: [
             {
               label: "Conversion & Sales Campaigns",
-              href: "blogs/conversion-sales-campaigns",
+              href: "/blogs/conversion-sales-campaigns",
             },
             {
               label: "Retargeting & Remarketing",
@@ -205,20 +151,85 @@ export default function Navbar() {
       ],
     },
     {
+      label: "Company",
+      columns: [
+        {
+          title: "About",
+          items: [
+            { label: "About Us", href: "/about" },
+            { label: "Our Team", href: "/our-team" },
+            { label: "Work", href: "#" },
+          ],
+        },
+        {
+          title: "Community",
+          items: [
+            { label: "Blog", href: "/blog" },
+            { label: "Partners", href: "/partners" },
+          ],
+        },
+      ],
+    },
+    {
+      label: "Careers",
+      href: "/careers",
+      columns: [
+        {
+          title: "Open Positions",
+          items: [
+            {
+              label: "Content Copywriter",
+              href: "/careers/content-copywriter",
+            },
+            {
+              label: "Front Desk Manager",
+              href: "/careers/front-desk-manager",
+            },
+            {
+              label: "Digital Marketing Expert",
+              href: "/careers/digital-marketing-expert",
+            },
+            { label: "Video Editor", href: "/careers/video-editor" },
+            { label: "Web Developer", href: "#" },
+          ],
+        },
+        {
+          title: "",
+          items: [
+            {
+              label: "Client Success Manager",
+              href: "/careers/client-success-manager",
+            },
+            {
+              label: "Business Development",
+              href: "/careers/business-development-manager",
+            },
+            {
+              label: "Office Operations",
+              href: "/careers/office-operations-manager",
+            },
+          ],
+        },
+        {
+          title: "Explore",
+          items: [{ label: "All Careers", href: "/careers" }],
+        },
+      ],
+    },
+    {
       label: "Partnership",
       href: "/partners",
       columns: [
         {
           title: "Partnership",
           items: [
-            { label: "Partners", href: "/partners" },
             { label: "Ranjit", href: "/partnership/Ranjit" },
             { label: "Sivaprasad", href: "/partnership/Sivaprasad" },
+            { label: "John Samuel", href: "/partnership/JohnSamuel" },
           ],
         },
       ],
     },
-    { label: "Entertainment", href: "/our-team" },
     { label: "Team", href: "/our-team" },
     { label: "Support", href: "/contact" },
   ];
@@ -278,12 +289,36 @@ export default function Navbar() {
                   item.columns && setActiveDropdown(item.label)
                 }
               >
-                <button
+                <motion.button
                   onClick={() => handleNavClick(item.href || "#")}
-                  className="text-[11px] font-normal text-[#f5f5f7]/80 hover:text-white transition-colors px-2 py-1 antialiased tracking-normal whitespace-nowrap cursor-pointer"
+                  className="relative h-6 overflow-hidden text-[11px] font-normal px-2 py-1 antialiased tracking-normal whitespace-nowrap cursor-pointer"
+                  whileHover="hover"
+                  initial="rest"
                 >
-                  {item.label}
-                </button>
+                  {/* Original Text - slides up on hover */}
+                  <motion.span
+                    className="block text-[#f5f5f7]/80"
+                    variants={{
+                      rest: { y: 0 },
+                      hover: { y: -24 },
+                    }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                  >
+                    {item.label}
+                  </motion.span>
+
+                  {/* Hover Text - appears from bottom */}
+                  <motion.span
+                    className="block text-white absolute top-6"
+                    variants={{
+                      rest: { y: 0 },
+                      hover: { y: -24 },
+                    }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                  >
+                    {item.label}
+                  </motion.span>
+                </motion.button>
               </div>
             ))}
           </div>
@@ -391,7 +426,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mega Dropdown */}
+        {/* Mega Dropdown - New Card Design */}
         <AnimatePresence>
           {activeDropdown && activeDropdown !== "userMenu" && (
             <motion.div
@@ -400,29 +435,84 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.2 }}
-              className="hidden md:block border-t border-white/10 bg-[#161617]/95 backdrop-blur-xl"
+              className="hidden md:block border-t border-white/10 bg-[#0a0a0a]/95 backdrop-blur-xl"
             >
-              <div className="max-w-[980px] mx-auto px-4 py-8 flex gap-12">
-                {navItems
-                  .find((i) => i.label === activeDropdown)
-                  ?.columns?.map((col, idx) => (
-                    <div key={idx} className="min-w-[160px]">
-                      <p className="text-[11px] font-semibold text-[#f5f5f7]/40 uppercase tracking-widest mb-3">
-                        {col.title}
-                      </p>
-                      <div className="flex flex-col gap-2">
-                        {col.items.map((subitem) => (
-                          <button
-                            key={subitem.label}
-                            onClick={() => handleNavClick(subitem.href)}
-                            className="text-[17px] text-[#f5f5f7] hover:text-[#e20000] text-left transition-colors leading-tight"
-                          >
-                            {subitem.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+              <div className="max-w-7xl mx-auto px-8 py-16">
+                {/* Section Title */}
+                <div className="mb-12">
+                  <h3 className="text-xl font-bold text-white tracking-widest uppercase">
+                    {activeDropdown === "Services"
+                      ? "DIGITAL MARKETING"
+                      : activeDropdown === "Company"
+                        ? "COMPANY"
+                        : activeDropdown === "Careers"
+                          ? "CAREERS"
+                          : activeDropdown === "Partnership"
+                            ? "PARTNERSHIP"
+                            : activeDropdown}
+                  </h3>
+                </div>
+
+                {/* Cards Grid - 5 columns */}
+                <div className="grid grid-cols-5 gap-8">
+                  {navItems
+                    .find((i) => i.label === activeDropdown)
+                    ?.columns?.map((col, idx) => {
+                      const colorClass = categoryColors[col.title] || "from-gray-500 to-gray-600";
+                      return (
+                        <div key={idx} className="flex flex-col">
+                          {/* Colored Bar - 3px thick */}
+                          <div
+                            className={`w-12 h-1 bg-gradient-to-r ${colorClass} mb-6`}
+                          />
+
+                          {/* Column Header */}
+                          <h4 className="text-white font-bold text-[16px] tracking-widest uppercase mb-6 text-[#f5f5f7]">
+                            {col.title}
+                          </h4>
+
+                          {/* Items List */}
+                          <div className="flex flex-col gap-4">
+                            {col.items.map((subitem) => (
+                              <button
+                                key={subitem.label}
+                                onClick={() => handleNavClick(subitem.href)}
+                                className="relative text-left group/item"
+                              >
+                                <motion.div
+                                  className="relative inline-block"
+                                  whileHover="hover"
+                                  initial="rest"
+                                >
+                                  {/* Text */}
+                                  <motion.span
+                                    className="block text-[16px] text-[#f5f5f7]/80 font-normal group-hover/item:text-white transition-colors"
+                                    variants={{
+                                      rest: { color: "rgba(245, 245, 247, 0.5)" },
+                                      hover: { color: "rgba(245, 245, 247, 1)" },
+                                    }}
+                                    transition={{ duration: 0.2 }}
+                                  >
+                                    {subitem.label}
+                                  </motion.span>
+
+                                  {/* Underline - animates from left to right */}
+                                  <motion.div
+                                    className="absolute bottom-0 left-0 h-0.5 bg-white"
+                                    variants={{
+                                      rest: { width: "0%", opacity: 0 },
+                                      hover: { width: "100%", opacity: 1 },
+                                    }}
+                                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                                  />
+                                </motion.div>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
               </div>
             </motion.div>
           )}
@@ -470,11 +560,10 @@ export default function Navbar() {
                     {item.columns && (
                       <ChevronRight
                         size={20}
-                        className={`text-white/40 transition-transform duration-200 ${
-                          expandedMobileCategory === item.label
-                            ? "rotate-90"
-                            : ""
-                        }`}
+                        className={`text-white/40 transition-transform duration-200 ${expandedMobileCategory === item.label
+                          ? "rotate-90"
+                          : ""
+                          }`}
                       />
                     )}
                   </div>
