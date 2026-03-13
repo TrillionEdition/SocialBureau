@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { Play } from 'lucide-react';
 import { getOptimizedCloudinaryUrl } from '../../../utils/cloudinary';
 
 const mainMovies = [
@@ -20,7 +21,7 @@ const subItems = [
     { id: 7, title: "Crispy chips, consistent hard work. Meet Rasheed", category: "Business stories", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772001865/image-gen_27_mum1kc.webp", link: "https://www.youtube.com/watch?v=6som6dTIX0A" },
     { id: 8, title: "Every word I write carries a piece of my soul", category: "testimonial", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772004537/vnvbs7ynsgalcigxuwcn_chtuai.webp", link: "https://www.youtube.com/watch?v=D0G2NYgGpLY" },
     { id: 10, title: "What is Content and Copy Writing ", category: "potcast", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772004906/SB-Podcast-YouTube-Thumbanil-Anjay-b.png_umddoi.webp", link: "https://www.youtube.com/watch?v=e1eckOb9v38" },
-    { id: 11, title: "API Marketing", category: "Marketing", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772007615/mqdefault_6s_vbtuv5.webp", link: "youtube.com/watch?v=UU-AeatnaEI&pp=0gcJCaIKAYcqIYzv" },
+    { id: 11, title: "API Marketing", category: "Marketing", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772007615/mqdefault_6s_vbtuv5.webp", link: "https://www.youtube.com/watch?v=UU-AeatnaEI&pp=0gcJCaIKAYcqIYzv" },
     { id: 12, title: "Using GitHub without understanding it?", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1771850266/Artboard_1_copy_2_vqh4f5.webp", tag: "Sports", link: "https://youtu.be/g2PxbqjgmXE?si=z0rdNT0_u9AkUYOu", desc: "The race for the championship begins." },
     { id: 13, title: "Sound branding", category: "branding", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1771850266/Artboard_1_copy_4_f5nb2k.webp", tag: "branding ", link: "https://www.youtube.com/watch?v=2RuLiO6eVb4", desc: "Ever wondered why some brands sound iconic" },
 ];
@@ -37,7 +38,9 @@ const MovieCard = ({ movie }) => (
         href={movie.link}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex-none w-[90vw] md:w-[70vw] relative aspect-[21/9] rounded-xl overflow-hidden shadow-lg cursor-pointer group"
+        tabIndex={0}
+        onTouchStart={() => {}}
+        className="flex-none w-[90vw] md:w-[70vw] relative aspect-[21/9] rounded-xl overflow-hidden shadow-lg cursor-pointer group outline-none focus-within:ring-2 focus-within:ring-[#920F17]"
     >
         <img
             src={getOptimizedCloudinaryUrl(movie.img, 1200)}
@@ -46,7 +49,7 @@ const MovieCard = ({ movie }) => (
             className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             alt={`${movie.title} - ${movie.tag} Video Thumbnail`}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex flex-col justify-end p-4 md:p-8 text-white">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex flex-col justify-end p-4 md:p-8 text-white md:opacity-100 opacity-0 group-hover:opacity-100 group-active:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300">
             <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3">
                 <button
                     className="bg-white text-black px-4 md:px-6 py-2 rounded-full font-bold text-xs md:text-sm hover:bg-gray-200 transition-colors active:scale-95 w-fit"
@@ -58,6 +61,12 @@ const MovieCard = ({ movie }) => (
                 </p>
             </div>
         </div>
+        {/* Play Button Overlay - Mobile Only */}
+        <div className="absolute inset-0 flex items-center justify-center md:hidden pointer-events-none group-hover:opacity-0 group-active:opacity-0 group-focus-within:opacity-0 transition-opacity duration-300">
+            <div className="w-12 h-12 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center">
+                <Play className="w-6 h-6 text-white fill-white" />
+            </div>
+        </div>
     </a>
 );
 
@@ -66,7 +75,9 @@ const SubItemCard = ({ item }) => (
         href={item.link}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex-none w-[140px] md:w-[280px] aspect-video relative rounded-lg overflow-hidden group bg-gray-100 cursor-pointer"
+        tabIndex={0}
+        onTouchStart={() => {}}
+        className="flex-none w-[140px] md:w-[280px] aspect-video relative rounded-lg overflow-hidden group bg-gray-100 cursor-pointer outline-none focus-within:ring-2 focus-within:ring-[#920F17]"
     >
         <img
             src={getOptimizedCloudinaryUrl(item.img, 600)}
@@ -75,7 +86,7 @@ const SubItemCard = ({ item }) => (
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             alt={`${item.title} - ${item.category || ''} Thumbnail`}
         />
-        <div className="absolute inset-0 p-2 md:p-4 flex flex-col justify-end bg-black/20 text-white group-hover:bg-black/40 transition-all">
+        <div className="absolute inset-0 p-2 md:p-4 flex flex-col justify-end bg-black/20 text-white md:opacity-100 opacity-0 group-hover:opacity-100 group-active:opacity-100 group-focus-within:opacity-100 group-hover:bg-black/40 transition-all duration-300">
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-1 md:gap-2">
                 <p className="text-[10px] md:text-xs font-semibold opacity-80 line-clamp-1">
                     {truncateText(item.category, 20)}
@@ -87,6 +98,12 @@ const SubItemCard = ({ item }) => (
                         Play now
                     </button>
                 )}
+            </div>
+        </div>
+        {/* Play Button Overlay - Mobile Only */}
+        <div className="absolute inset-0 flex items-center justify-center md:hidden pointer-events-none group-hover:opacity-0 group-active:opacity-0 group-focus-within:opacity-0 transition-opacity duration-300">
+            <div className="w-8 h-8 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center">
+                <Play className="w-4 h-4 text-white fill-white" />
             </div>
         </div>
     </a>
@@ -168,8 +185,18 @@ const AppleSection = () => {
     const hideScrollbarClass = "[ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden";
 
     return (
-        <div className="bg-white py-8 md:py-12 overflow-hidden select-none">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 md:mb-10 px-4">Endless Entertainment</h2>
+        <div className="bg-white py-12 md:py-20 overflow-hidden">
+            <div className="text-center mb-10 md:mb-16 px-4 max-w-[1250px] mx-auto">
+                <span className="block text-[12px] md:text-[13px] text-[#920F17] font-bold tracking-[0.2em] uppercase mb-4 opacity-90">
+                    Behind the Scenes
+                </span>
+                <h2 className="text-[32px] sm:text-[40px] md:text-[56px] lg:text-[64px] font-bold tracking-tight leading-[1.1] mb-6 text-[#1d1d1f]">
+                    Endless Entertainment
+                </h2>
+                <p className="text-gray-500 max-w-2xl mx-auto text-[16px] md:text-[19px] font-light leading-relaxed">
+                    Explore our curated collection of business stories, creator journeys, and visual narratives. 
+                </p>
+            </div>
 
             <div
                 ref={mainScrollRef}

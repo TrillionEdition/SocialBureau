@@ -12,9 +12,9 @@ const CareerSection = () => {
                 <GridScan
                     sensitivity={0.8}
                     lineThickness={1.5}
-                    linesColor="#392e4e"
+                    linesColor="#450a0a"
                     gridScale={0.12}
-                    scanColor="#FF9FFC"
+                    scanColor="#ff0000"
                     scanOpacity={0.5}
                     enablePost={true}
                     bloomIntensity={0.8}
@@ -52,7 +52,7 @@ const CareerSection = () => {
                 <div className="flex flex-col sm:flex-row items-center gap-6 pointer-events-auto">
                     <button
                         onClick={() => navigate("/careers")}
-                        className="bg-[#642162] hover:bg-[#642162] text-white px-8 py-3 rounded-full text-lg font-normal transition-all duration-300 cursor-pointer"
+                        className="bg-[#751111] hover:bg-[#ce1a38] text-white px-8 py-3 rounded-full text-lg font-normal transition-all duration-300 cursor-pointer"
                     >
                         View Open Roles
                     </button>

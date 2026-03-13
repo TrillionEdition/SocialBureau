@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 
 const TextReveal = ({ text, className, delay = 0 }) => {
   const words = text.split(" ");
@@ -61,20 +62,20 @@ const Hero = () => {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full max-w-2xl bg-white/80 backdrop-blur-2xl p-8 rounded-[2rem] border border-white/40 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] md:bg-transparent md:backdrop-blur-none md:p-0 md:rounded-none md:border-none md:shadow-none lg:max-w-none"
+              className="w-full max-w-2xl lg:max-w-none"
             >
               <div className="w-full">
                 <h1 className="font-display text-[10vw] font-bold leading-[1.1] tracking-[-0.04em] text-[#0A0A0A] sm:text-[8vw] md:text-[7vw] lg:text-[5.5vw] text-center lg:text-left">
                   <TextReveal text="World's First" delay={0.2} className="flex flex-wrap justify-center lg:justify-start" />
-                  <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-3">
+                  <div className="flex flex-wrap items-center justify-center lg:justify-start">
                     <TextReveal text="API-" delay={0.4} />
                     <motion.span 
                       initial={{ opacity: 0, rotate: -5 }}
                       animate={{ opacity: 1, rotate: 0 }}
                       transition={{ delay: 0.8, duration: 1 }}
-                      className="text-neutral-400 italic font-serif lowercase text-[9vw] sm:text-[7vw] md:text-[6vw] lg:text-[5vw]"
+                      className="text-neutral-600 italic font-serif text-[9vw] sm:text-[7vw] md:text-[6vw] lg:text-[5vw]"
                     >
-                      driven
+                      Driven
                     </motion.span>
                   </div>
                   <TextReveal text="Marketing Agency" delay={0.7} className="flex flex-wrap justify-center lg:justify-start" />
@@ -91,17 +92,19 @@ const Hero = () => {
                   </p>
                   
                   <div className="mt-10 lg:mt-12 flex flex-wrap items-center justify-center lg:justify-start gap-8">
-                    <motion.button 
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 1.2, duration: 0.5 }}
-                      whileHover={{ scale: 1.05, backgroundColor: "#111" }}
-                      whileTap={{ scale: 0.95 }}
-                      className="group relative flex h-14 lg:h-16 items-center justify-center overflow-hidden rounded-full bg-[#000000] px-10 lg:px-14 text-[11px] font-bold tracking-[0.3em] text-white uppercase transition-all shadow-2xl shadow-black/20"
-                    >
-                      <span className="relative z-10">Get Started</span>
-                      <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
-                    </motion.button>
+                    <Link to="/api-marketing-agency-in-kochi">
+                      <motion.button 
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 1.2, duration: 0.5 }}
+                        whileHover={{ scale: 1.05, backgroundColor: "#111" }}
+                        whileTap={{ scale: 0.95 }}
+                        className="group relative flex h-14 lg:h-16 items-center justify-center overflow-hidden rounded-full bg-[#000000] px-10 lg:px-14 text-[11px] font-bold tracking-[0.3em] text-white uppercase transition-all shadow-2xl shadow-black/20"
+                      >
+                        <span className="relative z-10">Get Started</span>
+                        <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+                      </motion.button>
+                    </Link>
                   </div>
                 </motion.div>
               </div>
