@@ -326,3 +326,22 @@ html.lenis body {
   white-space: nowrap;
   border: 0;
 }
+
+.noise {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: "";
+  opacity: 0.05;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url("https://res.cloudinary.com/dtwcgfmar/image/upload/v1710515152/noise_u6p5qg.png");
+}
+
+@layer utilities {
+  .bg-radial-gradient {
+    background-image: radial-gradient(var(--tw-gradient-stops));
+  }
+}

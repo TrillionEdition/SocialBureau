@@ -1,16 +1,15 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Search, X } from "lucide-react";
-import Footer from "./Footer";
 
 const Partnership = () => {
   // Sample portfolio data
   const portfolioData = [
     {
-      id: 2,
+      id: 1,
       title: "SIVAPRASAD",
       category: "Media",
       status: "Completed",
-      image: "/assets/sivaprasad/Siva Prasad.webp",
+      image: "/assets/home/Siva Prasad.jpg",
       link: "/partnership/Sivaprasad",
       subtitle: "Media Entrepreneur · Visionary Leader · Industry Pioneer",
       day: "ENTREPRENEUR",
@@ -18,7 +17,7 @@ const Partnership = () => {
       year: "2026",
     },
     {
-      id: 1,
+      id: 2,
       title: "RANJIT",
       category: "Photography",
       status: "Completed",
@@ -36,9 +35,8 @@ const Partnership = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [clickedCard, setClickedCard] = useState(null);
   const [activeHeroIndex, setActiveHeroIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
     if (!isPlaying) return;
@@ -88,11 +86,8 @@ const Partnership = () => {
   };
 
   const handleCardClick = (item) => {
-    setClickedCard(item);
-    // Navigate after animation completes (600ms matches the cardClick animation duration)
-    setTimeout(() => {
-      window.location.href = item.link;
-    }, 60);
+    // Navigate immediately without animation
+    window.location.href = item.link;
   };
 
   const resetFilters = () => {
@@ -210,7 +205,12 @@ const Partnership = () => {
             {/* Progress Bar */}
             <div className="flex-1 hidden sm:block mx-4 md:mx-6">
               <div className="h-1 bg-white/20 rounded-full overflow-hidden">
-                <div className="h-full w-1/3 bg-gradient-to-r from-pink-400 to-pink-300 rounded-full"></div>
+                <div
+                  className="h-full bg-gradient-to-r from-pink-400 to-pink-300 rounded-full transition-all duration-300"
+                  style={{
+                    width: `${((activeHeroIndex + 1) / portfolioData.length) * 100}%`,
+                  }}
+                ></div>
               </div>
             </div>
           </div>
@@ -294,11 +294,10 @@ const Partnership = () => {
                     setSelectedCategory(cat);
                     setCurrentPage(1);
                   }}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all whitespace-nowrap flex-shrink-0 ${
-                    selectedCategory === cat
-                      ? "bg-gradient-to-r from-lime-300 to-emerald-400 text-gray-900"
-                      : "bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700"
-                  }`}
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all whitespace-nowrap flex-shrink-0 ${selectedCategory === cat
+                    ? "bg-gradient-to-r from-lime-300 to-emerald-400 text-gray-900"
+                    : "bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700"
+                    }`}
                 >
                   {cat}
                 </button>
@@ -322,19 +321,13 @@ const Partnership = () => {
                 <div
                   key={item.id}
                   onClick={() => handleCardClick(item)}
-                  className={`group relative overflow-hidden rounded-lg sm:rounded-2xl bg-gray-800 border border-gray-700 hover:border-lime-300 cursor-pointer transition-all duration-300 h-56 sm:h-64 ${
-                    clickedCard?.id === item.id ? "scale-95 opacity-50" : ""
-                  }`}
+                  className="group relative overflow-hidden rounded-lg sm:rounded-2xl bg-gray-800 border border-gray-700 hover:border-lime-300 cursor-pointer transition-all duration-300 h-56 sm:h-64 hover:shadow-2xl hover:shadow-lime-300/30 animate-fadeIn"
                   style={{
-                    animation:
-                      clickedCard?.id === item.id
-                        ? "cardClick 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards"
-                        : `slideUp 0.5s ease-out ${index * 50}ms forwards`,
-                    opacity: clickedCard?.id === item.id ? 0.3 : 1,
+                    animationDelay: `${index * 50}ms`,
                   }}
                 >
                   {/* Image Container */}
-                  <div className="relative h-full overflow-hidden bg-gray-700 group-hover:shadow-2xl group-hover:shadow-lime-300/30 transition-all duration-300">
+                  <div className="relative h-full overflow-hidden bg-gray-700">
                     <img
                       src={item.image}
                       alt={item.title}
@@ -363,11 +356,6 @@ const Partnership = () => {
                         <ChevronRight className="w-3 sm:w-4 h-3 sm:h-4" />
                       </div>
                     </div>
-
-                    {/* Click Animation Ripple */}
-                    {clickedCard?.id === item.id && (
-                      <div className="absolute inset-0 animate-ping bg-lime-300/20"></div>
-                    )}
                   </div>
                 </div>
               ))}
@@ -407,11 +395,10 @@ const Partnership = () => {
                       <button
                         key={page}
                         onClick={() => handlePageChange(page)}
-                        className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg text-xs sm:text-sm font-medium transition-all ${
-                          currentPage === page
-                            ? "bg-gradient-to-r from-lime-300 to-emerald-400 text-gray-900"
-                            : "bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700"
-                        }`}
+                        className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg text-xs sm:text-sm font-medium transition-all ${currentPage === page
+                          ? "bg-gradient-to-r from-lime-300 to-emerald-400 text-gray-900"
+                          : "bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700"
+                          }`}
                       >
                         {page}
                       </button>
@@ -430,56 +417,34 @@ const Partnership = () => {
             </div>
           )}
         </div>
+
+        <style>{`
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+              transform: translateY(30px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          .animate-fadeIn {
+            animation: fadeIn 0.5s ease-out forwards;
+            opacity: 0;
+          }
+
+          .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+
+          .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+          }
+        `}</style>
       </section>
-
-      <style>{`
-                @keyframes slideUp {
-                    from {
-                        opacity: 0;
-                        transform: translateY(30px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-
-                @keyframes cardClick {
-                    0% {
-                        transform: scale(1);
-                        opacity: 1;
-                    }
-                    50% {
-                        transform: scale(1.1);
-                    }
-                    100% {
-                        transform: scale(0.5);
-                        opacity: 0;
-                    }
-                }
-
-                .animate-ping {
-                    animation: ping 0.6s cubic-bezier(0, 0, 0.2, 1);
-                }
-
-                @keyframes ping {
-                    0% {
-                        opacity: 1;
-                    }
-                    75%, 100% {
-                        opacity: 0;
-                    }
-                }
-
-                .scrollbar-hide {
-                    -ms-overflow-style: none;
-                    scrollbar-width: none;
-                }
-
-                .scrollbar-hide::-webkit-scrollbar {
-                    display: none;
-                }
-            `}</style>
     </div>
   );
 };

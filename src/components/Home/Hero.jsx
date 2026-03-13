@@ -1,54 +1,116 @@
-import { useEffect, useState, useRef } from "react";
-import { getOptimizedCloudinaryUrl } from "../../utils/cloudinary";
+import { motion } from "framer-motion";
+import { useRef } from "react";
 
-export default function ImageCarousel() {
-    const images = [
-        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1771995838/Artboard_1_1_1_l982re.webp",
-        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1771995838/Artboard_1_copy_2_mmmbkk.webp",
-        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772003206/Untitled-design-40.png_fuipcr.webp",
-        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772003206/Untitled-design-41.png_rblbxq.webp",
-        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1771995838/Artboard_1_copy_2_1_1_haxwde.webp",
-    ];
+const TextReveal = ({ text, className, delay = 0 }) => {
+  const words = text.split(" ");
+  return (
+    <div className={`flex flex-wrap ${className}`}>
+      {words.map((word, i) => (
+        <div key={i} className="overflow-hidden">
+          <motion.span
+            initial={{ y: "105%" }}
+            animate={{ y: 0 }}
+            transition={{
+              duration: 1,
+              delay: delay + i * 0.05,
+              ease: [0.16, 1, 0.3, 1]
+            }}
+            className="inline-block mr-[0.2em] pr-[0.1em] whitespace-nowrap"
+          >
+            {word}
+          </motion.span>
+        </div>
+      ))}
+    </div>
+  );
+};
 
-    const [active, setActive] = useState(0);
+const Hero = () => {
+  const containerRef = useRef(null);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setActive((prev) => (prev + 1) % images.length);
-        }, 4000);
+  return (
+    <div ref={containerRef} className="relative min-h-screen bg-[#FFFFFF] selection:bg-[#000000] selection:text-white overflow-hidden">
+      <div className="noise" />
 
-        return () => clearInterval(interval);
-    }, [images.length]);
+      {/* Hero Section */}
+      <section className="relative h-screen w-full overflow-hidden bg-[#F8F8F8]">
+        <div className="flex flex-col lg:flex-row h-full w-full">
+          
+          {/* Image Section */}
+          <div className="hidden lg:block relative lg:h-full lg:w-[45%] lg:order-2 overflow-hidden">
+            <motion.div 
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+              className="h-full w-full"
+            >
+              <img 
+                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1773048754/Adobe_Express_-_file_1_s8y5h5.webp" 
+                alt="API Driven Marketing" 
+                className="h-full w-full object-cover object-top lg:object-[center_20%]"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/5 lg:hidden" />
+            </motion.div>
+          </div>
 
-    return (
-        <section className="relative w-full aspect-[16/6] min-h-[40vh] sm:min-h-[50vh] md:min-h-[60vh] lg:min-h-[80vh] overflow-hidden bg-white">
-            <h1 className="visually-hidden">API MARKETING AGENCY IN KOCHI</h1>
-            <p className="visually-hidden">SocialBureau, Kerala's first API-driven digital and performance marketing agency, helps niche brands scale smarter with data, automation, and precision</p>
-            {images.map((img, index) => (
-                <img
-                    key={index}
-                    src={getOptimizedCloudinaryUrl(img, 1920)}
-                    alt={`SocialBureau Digital Marketing Strategy Slide ${index + 1}`}
-                    loading={index === 0 ? "eager" : "lazy"}
-                    decoding="async"
-                    className={`absolute inset-0 w-full h-full object-cover md:object-top transition-opacity duration-1000 ${active === index ? "opacity-100 scale-100" : "opacity-0 scale-105"
-                        }`}
-                />
-            ))}
-            {/* Smooth Scroll Indicator Dots */}
-            <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2 md:gap-3 z-10">
-                {images.map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => setActive(index)}
-                        className={`h-1.5 md:h-2 rounded-full transition-all duration-300 cursor-pointer ${active === index
-                            ? "bg-white w-6 md:w-8"
-                            : "bg-white/50 w-1.5 md:w-2 hover:bg-white/70"
-                            }`}
-                        aria-label={`Go to slide ${index + 1}`}
-                    />
-                ))}
-            </div>
-        </section>
-    );
-}
+          {/* Text Section */}
+          <div className="relative flex min-h-screen flex-col items-center justify-center px-4 pb-12 z-10 lg:h-full lg:w-[55%] lg:items-start lg:px-24 lg:py-0 lg:order-1">
+            
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full max-w-2xl bg-white/80 backdrop-blur-2xl p-8 rounded-[2rem] border border-white/40 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] md:bg-transparent md:backdrop-blur-none md:p-0 md:rounded-none md:border-none md:shadow-none lg:max-w-none"
+            >
+              <div className="w-full">
+                <h1 className="font-display text-[10vw] font-bold leading-[1.1] tracking-[-0.04em] text-[#0A0A0A] sm:text-[8vw] md:text-[7vw] lg:text-[5.5vw] text-center lg:text-left">
+                  <TextReveal text="World's First" delay={0.2} className="flex flex-wrap justify-center lg:justify-start" />
+                  <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-3">
+                    <TextReveal text="API-" delay={0.4} />
+                    <motion.span 
+                      initial={{ opacity: 0, rotate: -5 }}
+                      animate={{ opacity: 1, rotate: 0 }}
+                      transition={{ delay: 0.8, duration: 1 }}
+                      className="text-neutral-400 italic font-serif lowercase text-[9vw] sm:text-[7vw] md:text-[6vw] lg:text-[5vw]"
+                    >
+                      driven
+                    </motion.span>
+                  </div>
+                  <TextReveal text="Marketing Agency" delay={0.7} className="flex flex-wrap justify-center lg:justify-start" />
+                </h1>
+
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1, duration: 0.8 }}
+                  className="mt-8 lg:mt-10"
+                >
+                  <p className="max-w-xl text-base font-medium leading-relaxed text-neutral-600 md:text-lg lg:text-xl text-center lg:text-left mx-auto lg:mx-0">
+                    Automate, Integrate, and Scale Your Marketing powered by real-time data, AI, and performance APIs.
+                  </p>
+                  
+                  <div className="mt-10 lg:mt-12 flex flex-wrap items-center justify-center lg:justify-start gap-8">
+                    <motion.button 
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 1.2, duration: 0.5 }}
+                      whileHover={{ scale: 1.05, backgroundColor: "#111" }}
+                      whileTap={{ scale: 0.95 }}
+                      className="group relative flex h-14 lg:h-16 items-center justify-center overflow-hidden rounded-full bg-[#000000] px-10 lg:px-14 text-[11px] font-bold tracking-[0.3em] text-white uppercase transition-all shadow-2xl shadow-black/20"
+                    >
+                      <span className="relative z-10">Get Started</span>
+                      <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+                    </motion.button>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Hero;

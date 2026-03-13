@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Printer } from 'lucide-react';
-import { calculateATSScore } from '../../utils/atsOptimization';
+import { calculateATSScore } from '../../../utils/atsOptimization';
 
 const ResumePreview = ({ data, template }) => {
 

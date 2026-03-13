@@ -5,11 +5,10 @@ import FAQSection from "../components/Home/FAQSection";
 import AppleSection from "../components/Home/EntertainmentGrid";
 import { Googlereview } from "../components/Googlereview";
 import StaticServicesGrid from "../components/Home/BlogNTrillion";
-// import ImageCarousel from "../components/Home/Hero";
+import Hero from "../components/Home/Hero";
 import SchemaMarkup from "../components/SchemaMarkup";
 import { generateHomepageSchemas } from "../../utils/schema";
 import Seo from "../components/Seo";
-import ApiMarketing from "../components/Home/ApiMarketing";
 
 
 export const Home = () => {
@@ -24,8 +23,7 @@ export const Home = () => {
                   canonicalUrl="https://www.socialbureau.in"
                 />
       <SchemaMarkup data={homepageSchemas} />
-      {/* <ImageCarousel/> */}
-      <ApiMarketing />
+      <Hero />
       <WebSection />
       <ServicesGrid />
       <CareerSection />

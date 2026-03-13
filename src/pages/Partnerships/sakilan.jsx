@@ -38,7 +38,7 @@ const TextReveal = ({ children, className = "", delay = 0 }) => {
               delay: delay + i * 0.03,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className="inline-block"
+            className="inline-block pr-[0.1em]"
           >
             {word}
           </motion.span>
