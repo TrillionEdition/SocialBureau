@@ -15,7 +15,6 @@ import {
     FileDown
 } from 'lucide-react';
 import TemplateSelector from './TemplateSelector.jsx';
-import PDFExtractor from '../../components/PDFExtractor';
 import ResumeForm from './ResumeForm.jsx';
 import ResumePreview from './ResumePreview.jsx';
 
@@ -24,6 +23,7 @@ import { getAIResumeImprovements, checkResumeQuality, generateAISuggestions } fr
 import AIResumeGenerator from './AIResumeGenerator';
 import AICompanionModal from './AICompanionModal'; // Import the new component
 import { downloadResumeAsWord } from "../../../utils/wordGenerator.js";
+import PDFExtractor from './PDFExtractor.jsx';
 
 const RESUME_TEMPLATES = {
     modern: {

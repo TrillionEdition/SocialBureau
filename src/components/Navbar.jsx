@@ -60,7 +60,7 @@ export default function Navbar() {
       href: "#",
       columns: [
         {
-          title: "API Marketing",
+          title: "MARKETING SERVICES",
           items: [
             { label: "API Marketing", href: "/api-marketing-agency-in-kochi" },
             {
@@ -91,7 +91,7 @@ export default function Navbar() {
           ],
         },
         {
-          title: "Marketing",
+          title: "Performance Marketing",
           items: [
             {
               label: "Content Marketing Blog",
@@ -120,7 +120,7 @@ export default function Navbar() {
           ],
         },
         {
-          title: "More Channels",
+          title: "More Services",
           items: [
             {
               label: "Conversion & Sales Campaigns",
@@ -442,7 +442,7 @@ export default function Navbar() {
                 <div className="mb-12">
                   <h3 className="text-xl font-bold text-white tracking-widest uppercase">
                     {activeDropdown === "Services"
-                      ? "DIGITAL MARKETING"
+                      ? "API MARKETING"
                       : activeDropdown === "Company"
                         ? "COMPANY"
                         : activeDropdown === "Careers"
