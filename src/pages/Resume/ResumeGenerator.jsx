@@ -404,7 +404,6 @@ const ResumeGenerator = () => {
                         </div>
                     </div>
 
-                    {/* Right Panel: Dynamic Content */}
                     <div className="lg:col-span-2">
                         {/* Step: PDF Extraction */}
                         {step === 'extraction' && method === 'pdf' && (
