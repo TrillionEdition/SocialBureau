@@ -276,7 +276,7 @@ const Niche = () => {
                                 title='niche marketing-agency-in-kochi'
                                 className="w-full h-full object-cover"
                             />
-                            
+
                         </motion.div>
                         <motion.div
                             initial={{ opacity: 0, x: 30 }}
@@ -338,12 +338,12 @@ const Niche = () => {
                                     0{index + 1}
                                 </div>
                                 <h3 className="text-xl font-bold text-[#1d1d1f] mb-4 group-hover:text-[#920F17] transition-colors">{section.title}</h3>
-                                <p className="text-gray-500 text-sm leading-relaxed mb-6">
+                                <p className="text-gray-500 text-md leading-relaxed mb-6">
                                     {section.content}
                                 </p>
                                 <ul className="space-y-3">
                                     {section.points.map((point, pIdx) => (
-                                        <li key={pIdx} className="flex items-start text-xs text-gray-400">
+                                        <li key={pIdx} className="flex items-start text-md text-gray-500">
                                             <div className="w-1 h-1 bg-[#920F17] rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
                                             {point}
                                         </li>
@@ -432,8 +432,8 @@ const Niche = () => {
                                     whileHover={{ x: 10 }}
                                     onClick={() => setActiveCaseStudy(index)}
                                     className={`w-full text-left p-6 rounded-2xl transition-all border ${activeCaseStudy === index
-                                            ? 'bg-[#920F17] text-white border-[#920F17] shadow-xl shadow-[#920F17]/20'
-                                            : 'bg-white text-[#1d1d1f] border-gray-100 hover:bg-gray-50'
+                                        ? 'bg-[#920F17] text-white border-[#920F17] shadow-xl shadow-[#920F17]/20'
+                                        : 'bg-white text-[#1d1d1f] border-gray-100 hover:bg-gray-50'
                                         }`}
                                 >
                                     <span className={`text-[10px] font-bold uppercase tracking-wider mb-2 block ${activeCaseStudy === index ? 'text-white/70' : 'text-[#920F17]'}`}>
@@ -469,11 +469,11 @@ const Niche = () => {
                                             </div>
                                         </div>
                                         <div className="pt-10 border-t border-gray-100">
-                                            <div className="grid grid-cols-3 gap-6">
+                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                                                 {caseStudies[activeCaseStudy].results.map((result, idx) => (
                                                     <div key={idx} className="text-center">
-                                                        <div className="text-2xl md:text-3xl font-bold text-[#920F17] mb-1">{result.value}</div>
-                                                        <div className="text-[10px] text-gray-400 font-bold uppercase tracking-tighter leading-none">{result.label}</div>
+                                                        <div className="text-2xl md:text-3xl font-bold text-[#920F17] mb-2">{result.value}</div>
+                                                        <div className="text-[11px] text-gray-400 font-bold uppercase leading-none">{result.label}</div>
                                                     </div>
                                                 ))}
                                             </div>
@@ -503,8 +503,7 @@ const Niche = () => {
                                     <span className="text-xl font-bold text-[#1d1d1f] group-hover:text-[#920F17] transition-all">
                                         {item.question}
                                     </span>
-                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${activeFaq === index ? 'bg-[#920F17] text-white rotate-45' : 'bg-gray-100 text-gray-400'}`}>
-                                        <Plus className="w-5 h-5" />
+                                    <div className={`w-10 h-10 min-w-[40px] min-h-[40px] rounded-full flex items-center justify-center flex-shrink-0 transition-all ${activeFaq === index ? 'bg-[#920F17] text-white rotate-45' : 'bg-gray-100 text-gray-400'}`}>                                        <Plus className="w-5 h-5" />
                                     </div>
                                 </button>
                                 <AnimatePresence>
@@ -529,14 +528,13 @@ const Niche = () => {
 
             {/* CTA Section */}
             <section className="py-24 bg-[#1d1d1f]">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        className="bg-white rounded-[3rem] p-10 md:p-20 text-center shadow-2xl relative overflow-hidden"
-                    >
+                        className="bg-white rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-10 md:p-20 text-center shadow-2xl relative overflow-hidden"                    >
                         <div className="absolute top-0 right-0 w-64 h-64 bg-[#920F17]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-                        <h2 className="text-3xl md:text-6xl font-bold text-[#1d1d1f] mb-8 leading-tight">
+                        <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-[#1d1d1f] mb-8 leading-tight">
                             Ready to dominate your niche?
                         </h2>
                         <p className="text-gray-500 text-xl max-w-2xl mx-auto mb-12">

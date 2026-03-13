@@ -5,7 +5,7 @@ import TeamSection from '../components/TeamSection'
 import HomeMouse from '../components/HomeMouse'
 import LatestVideos from '../components/YoutubeVideos'
 import Testimonials from '../components/Testimonials'
-import TeamLayout from '../components/TeamLayout'
+// import TeamLayout from '../components/TeamLayout'
 import Seo from '../components/Seo'
 
 export const OurTeam = () => {

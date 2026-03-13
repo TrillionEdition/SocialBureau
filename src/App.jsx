@@ -24,6 +24,7 @@ import LoadingSpinner from "./components/LoadingSpinner";
 import AdminRoute from "./components/AdminRoute";
 import CookieConsent from "./components/CookieConsent";
 import { ToastContainer } from "react-toastify";
+import Partner1 from "./pages/Partnerships/johnsamuel";
 
 // Lazy-loaded Pages
 const Home = lazy(() =>
@@ -52,25 +53,14 @@ const NotFound = lazy(() =>
   import("./pages/NotFound").then((module) => ({ default: module.NotFound })),
 );
 const Service1 = lazy(() => import("./pages/Service1"));
-const Careers = lazy(() =>
-  import("./pages/Careers").then((module) => ({ default: module.Careers })),
-);
-const OurTeam = lazy(() =>
-  import("./pages/OurTeam").then((module) => ({ default: module.OurTeam })),
-);
-const OurWork = lazy(() =>
-  import("./pages/OurWork").then((module) => ({ default: module.OurWork })),
-);
-const ScorePage = lazy(() =>
-  import("./pages/ScorePage").then((module) => ({ default: module.ScorePage })),
-);
-const Client = lazy(() =>
-  import("./pages/Client").then((module) => ({ default: module.Client })),
-);
-const Team = lazy(() =>
-  import("./pages/Team").then((module) => ({ default: module.Team })),
-);
-// const ATSChecker = lazy(() => import("./pages/Resume/ATSChecker"));
+const Careers = lazy(() => import("./pages/Careers").then(module => ({ default: module.Careers })));
+const OurTeam = lazy(() => import("./pages/OurTeam").then(module => ({ default: module.OurTeam })));
+const OurWork = lazy(() => import("./pages/OurWork").then(module => ({ default: module.OurWork })));
+const ScorePage = lazy(() => import("./pages/ScorePage").then(module => ({ default: module.ScorePage })));
+const Client = lazy(() => import("./pages/Client").then(module => ({ default: module.Client })));
+const Team = lazy(() => import("./pages/Team").then(module => ({ default: module.Team })));
+const ATSChecker = lazy(() => import("./pages/Resume/ATSChecker"));
+const ResumeGenerator = lazy(() => import("./pages/Resume/ResumeGenerator"));
 const AuthPage = lazy(() => import("./pages/UserRegistration"));
 const Verification = lazy(() => import("./pages/UserVerification"));
 const AdminCreateJob = lazy(() => import("./pages/CreateJob"));
@@ -125,11 +115,10 @@ const GoogleMarketingService = lazy(
 const HRForum = lazy(() => import("./components/HrForum/Home"));
 const JobDetails = lazy(() => import("./components/HrForum/JobDetails"));
 const JobPosting = lazy(() => import("./components/HrForum/JobPosting"));
+const HrMessages = lazy(() => import("./components/HrForum/HrMessages"));
 const JobsList = lazy(() => import("./components/HrForum/JobListing"));
-const Partner1 = lazy(() => import("./pages/Partnerships/Partner1"));
-const Partner2 = lazy(() => import("./pages/Partnerships/Partner2"));
-const Partner3 = lazy(() => import("./pages/Partnerships/Partner3"));
-const Partner4 = lazy(() => import("./pages/Partnerships/Partner4"));
+const JobApplicants = lazy(() => import("./components/HrForum/JobApplicants"));
+const JohnSamuel = lazy(() => import("./components/JohnSamuel"));
 const Landing = lazy(() => import("./components/ExternalPortfolio"));
 const Leaderboard = lazy(() => import("./components/Leaderboard"));
 const Logout = lazy(() => import("./components/Logout"));
@@ -158,7 +147,6 @@ function ConditionalFooter() {
   const location = useLocation();
   const hideFooterRoutes = [
     "/partnership/partner-1",
-    "/partnership/Partner1",
     "/partnership/JohnSamuel",
     "/partnership/shailesh-sivan",
     "/partnership/alen-jacob",
@@ -171,6 +159,12 @@ function ConditionalFooter() {
     "/add-user",
     "/edit-user",
     "/add-review",
+    "/hr-forum",
+    "/apply-job",
+    "/job-details",
+    "/job-listing",
+    "/job-applicants",
+    "/candidate-profile"
   ];
 
   const shouldHide = hideFooterRoutes.some(
@@ -197,6 +191,12 @@ function ConditionalNavbar() {
     "/add-user",
     "/edit-user",
     "/add-review",
+    "/hr-forum",
+    "/apply-job",
+    "/job-details",
+    "/job-listing",
+    "/job-applicants",
+    "/candidate-profile"
   ];
 
   const shouldHide = hideNavbarRoutes.some(
@@ -274,8 +274,8 @@ function App() {
             <Route path="/our-team" element={<OurTeam />} />
             <Route path="/our-works" element={<OurWork />} />
             <Route path="/achievements" element={<CompanyAchievements />} />
-            {/* <Route path="/ats-checker" element={<ATSChecker />} /> */}
-            {/* <Route path="/resume-generator" element={<ResumeGenerator />} /> */}
+            <Route path="/ats-checker" element={<ATSChecker />} />
+            <Route path="/resume-generator" element={<ResumeGenerator />} />
             <Route path="/tool" element={<ScorePage />} />
 
             <Route path="/blogs/:slug" element={<BlogDetail />} />
@@ -305,14 +305,12 @@ function App() {
             />
 
             <Route path="/hr-forum" element={<HRForum />} />
-            <Route path="/appy-job" element={<JobPosting />} />
+            <Route path="/apply-job" element={<JobPosting />} />
             <Route path="/job-details/:id" element={<JobDetails />} />
             <Route path="/job-listing" element={<JobsList />} />
-            <Route path="/candidate-profile" element={<CandidateProfile />} />
-            <Route
-              path="/candidate-profile/:applicationId"
-              element={<CandidateProfile />}
-            />
+            <Route path="/job-applicants/:jobId" element={<JobApplicants />} />
+            <Route path="/candidate-profile/:applicationId" element={<CandidateProfile />} />
+            <Route path="/hr-messages" element={<HrMessages />} />
 
             <Route path="/services/:serviceTitle" element={<Service1 />} />
             <Route path="/employee/:name" element={<StaffDashboard />} />
@@ -431,9 +429,9 @@ function App() {
             <Route path="/partnership/alen-jacob" element={<AlenJacob />} />
             <Route path="/partnership/cheriyan" element={<CheriyanPage />} />
             <Route path="/partnership/sakilan" element={<Sakilan />} />
-            <Route path="/partnership/Partner2" element={<Partner2 />} />
-            <Route path="/partnership/Partner3" element={<Partner3 />} />
-            <Route path="/partnership/Partner4" element={<Partner4 />} />
+            {/* <Route path="/partnership/Partner2" element={<Partner2 />} /> */}
+            {/* <Route path="/partnership/Partner3" element={<Partner3 />} />
+            <Route path="/partnership/Partner4" element={<Partner4 />} /> */}
 
             <Route path="/*" element={<NotFound />} />
           </Routes>

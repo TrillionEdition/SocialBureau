@@ -172,11 +172,11 @@ export const improveSectionWithAI = async (section, content) => {
 /**
  * Get personalized resume tips based on content
  */
-export const getResumeTips = async (resumeData, jobTitle = null) => {
+export const getResumeTips = async (jobTitle, skills = []) => {
   try {
     const response = await axios.post(
       `${BASE_URL}/resume/get-tips`,
-      { resumeData, jobTitle }
+      { jobTitle, skills }
     );
 
     if (response.data.success) {
