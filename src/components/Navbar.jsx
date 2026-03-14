@@ -297,7 +297,7 @@ export default function Navbar() {
                 >
                   {/* Original Text - slides up on hover */}
                   <motion.span
-                    className="block text-[#f5f5f7]/80"
+                    className="block text-white/90"
                     variants={{
                       rest: { y: 0 },
                       hover: { y: -24 },
@@ -488,8 +488,8 @@ export default function Navbar() {
                                   <motion.span
                                     className="block text-[16px] text-[#f5f5f7]/80 font-normal group-hover/item:text-white transition-colors"
                                     variants={{
-                                      rest: { color: "rgba(245, 245, 247, 0.5)" },
-                                      hover: { color: "rgba(245, 245, 247, 1)" },
+                                      rest: { color: "rgba(255, 255, 255, 0.82)" },
+                                      hover: { color: "rgba(255, 178, 211, 1)" },
                                     }}
                                     transition={{ duration: 0.2 }}
                                   >

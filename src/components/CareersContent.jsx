@@ -31,7 +31,7 @@ export default function CareersContent() {
             >
               {/* Background Image */}
               <div 
-                className="absolute inset-0 bg-gray-200 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                className="absolute inset-0 bg-gray-800 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                 style={{ backgroundImage: `url(${v.img})` }}
               />
               
@@ -47,7 +47,7 @@ export default function CareersContent() {
               </div>
 
               {/* Hover Text Reveal */}
-              <div className="absolute inset-0 flex items-center justify-center p-8 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-10 group-hover:translate-y-0">
+              <div className="absolute inset-0 flex items-center justify-center p-8 opacity-0 group-hover:opacity-900 bg-black/50 transition-all duration-500 transform translate-y-10 group-hover:translate-y-0">
                 <p className="text-white text-lg font-light leading-relaxed border-t border-white/20 pt-6">
                   {v.text}
                 </p>

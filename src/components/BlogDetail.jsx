@@ -493,7 +493,12 @@ export default function BlogDetail() {
     return (
       <div className="min-h-screen bg-gray-50 text-center text-gray-700 py-20 font-sans">
         <h2 className="text-2xl mb-4 text-gray-900">Blog not found</h2>
-        <Link to="/blog" className="text-red-600 hover:text-red-500 underline">Back to Blogs</Link>
+        <Link
+          to="/blog"
+          state={{
+            page: location.state?.fromPage,
+            category: location.state?.fromCategory
+          }} className="text-red-600 hover:text-red-500 underline">Back to Blogs</Link>
       </div>
     );
   }
@@ -519,7 +524,14 @@ export default function BlogDetail() {
       )}
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24">
-        <Link to="/blog" className="inline-flex items-center text-gray-500 hover:text-gray-900 mb-8 group transition-colors">
+        <Link
+          to="/blog"
+          state={{
+            fromPage: location.state?.fromPage,
+            fromCategory: location.state?.fromCategory
+          }}
+          className="inline-flex items-center text-gray-500 hover:text-gray-900 mb-8 group transition-colors"
+        >
           <FaArrowLeft className="mr-2 group-hover:-translate-x-1 transition-transform" />
           <span>Back to all posts</span>
         </Link>

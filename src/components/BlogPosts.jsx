@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { blogAPI } from "../../services/blogServices";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const categories = ["All Posts", "Marketing", "Creatives", "Case Studies", "Technology", "Advertisement"];
 
@@ -18,8 +18,16 @@ const BlogSkeleton = () => (
 );
 
 export default function BlogPosts() {
-  const [selectedCategory, setSelectedCategory] = useState("All Posts");
-  const [currentPage, setCurrentPage] = useState(0);
+  const location = useLocation();
+
+  const [selectedCategory, setSelectedCategory] = useState(
+    location.state?.fromCategory || "All Posts"
+  );
+
+  const [currentPage, setCurrentPage] = useState(
+    location.state?.fromPage || 0
+  );
+
   const navigate = useNavigate();
   const postsPerPage = 6;
 
@@ -33,7 +41,7 @@ export default function BlogPosts() {
       });
       return response;
     },
-    staleTime: 300000, 
+    staleTime: 300000,
   });
 
   const backendPosts = data?.data || [];
@@ -58,18 +66,17 @@ export default function BlogPosts() {
   return (
     <div className="bg-[#FCFCFC] min-h-screen">
       <div className="max-w-[95vw] 2xl:max-w-[1400px] mx-auto px-2 md:px-6 py-12">
-        
+
         {/* Category Selection - Minimalist Pill style */}
         <div className="flex flex-wrap justify-center gap-3 mb-16">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => { setSelectedCategory(cat); setCurrentPage(0); }}
-              className={`px-6 py-2 text-xs font-bold tracking-widest uppercase transition-all duration-300 border-b-2 ${
-                selectedCategory === cat
-                  ? "border-[#ff0000] text-[#1a1a1a]"
-                  : "border-transparent text-gray-400 hover:text-gray-600"
-              }`}
+              className={`px-6 py-2 text-xs font-bold tracking-widest uppercase transition-all duration-300 border-b-2 ${selectedCategory === cat
+                ? "border-[#ff0000] text-[#1a1a1a]"
+                : "border-transparent text-gray-400 hover:text-gray-600"
+                }`}
             >
               {cat}
             </button>
@@ -84,7 +91,14 @@ export default function BlogPosts() {
             paginatedPosts.map((post) => (
               <article
                 key={post._id}
-                onClick={() => navigate(`/blogs/${post.slug}`)}
+                onClick={() =>
+                  navigate(`/blogs/${post.slug}`, {
+                    state: {
+                      fromPage: currentPage,
+                      fromCategory: selectedCategory
+                    }
+                  })
+                }
                 className="group bg-white border border-gray-100 hover:border-gray-300 transition-all duration-500 hover:shadow-2xl hover:shadow-black/5 flex flex-col rounded-2xl overflow-hidden"
               >
                 <div className="relative overflow-hidden aspect-[16/10]">
@@ -127,46 +141,46 @@ export default function BlogPosts() {
           )}
         </div>
 
-{/* Minimalist Pagination */}
-{totalPages > 1 && (
-  <div className="flex justify-center items-center gap-12 mt-24">
-    <button 
-        onClick={() => {
-          if (currentPage > 0) {
-            setCurrentPage(prev => prev - 1);
-            // This ensures the user sees the start of the new results
-            window.scrollTo({ top: 400, behavior: 'smooth' }); 
-          }
-        }}
-        disabled={currentPage === 0}
-        className="text-xs font-black tracking-[0.3em] uppercase disabled:opacity-10 hover:text-[#ff0000] transition-all cursor-pointer"
-    >
-        Back
-    </button>
+        {/* Minimalist Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-12 mt-24">
+            <button
+              onClick={() => {
+                if (currentPage > 0) {
+                  setCurrentPage(prev => prev - 1);
+                  // This ensures the user sees the start of the new results
+                  window.scrollTo({ top: 400, behavior: 'smooth' });
+                }
+              }}
+              disabled={currentPage === 0}
+              className="text-gray-400 uppercase tracking-widest hover:text-[#ff0000] transition-all cursor-pointer"
+            >
+              Back
+            </button>
 
-    <span className="w-[1px] h-8 bg-gray-200"></span>
-    
-    <span className="text-xs font-mono text-gray-400 uppercase tracking-widest">
-      Page {currentPage + 1} / {totalPages}
-    </span>
+            <span className="w-[1px] h-8 bg-gray-200"></span>
 
-    <span className="w-[1px] h-8 bg-gray-200"></span>
+            <span className="text-xs font-mono text-gray-400 uppercase tracking-widest">
+              Page {currentPage + 1} / {totalPages}
+            </span>
 
-    <button 
-        onClick={() => {
-          if (currentPage < totalPages - 1) {
-            setCurrentPage(prev => prev + 1);
-            // Adjust the 'top' value to match where your blog grid starts
-            window.scrollTo({ top: 400, behavior: 'smooth' });
-          }
-        }}
-        disabled={currentPage === totalPages - 1}
-        className="text-xs font-black tracking-[0.3em] uppercase disabled:opacity-10 hover:text-[#ff0000] transition-all cursor-pointer"
-    >
-        Next
-    </button>
-  </div>
-)}
+            <span className="w-[1px] h-8 bg-gray-200"></span>
+
+            <button
+              onClick={() => {
+                if (currentPage < totalPages - 1) {
+                  setCurrentPage(prev => prev + 1);
+                  // Adjust the 'top' value to match where your blog grid starts
+                  window.scrollTo({ top: 400, behavior: 'smooth' });
+                }
+              }}
+              disabled={currentPage === totalPages - 1}
+              className="text-gray-400 uppercase tracking-widest hover:text-[#ff0000] transition-all cursor-pointer"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

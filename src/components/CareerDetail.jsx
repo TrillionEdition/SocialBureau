@@ -103,20 +103,20 @@ export default function CareerDetail() {
               <p className="text-gray-500 -mt-4 text-sm font-medium uppercase tracking-widest">Non-negotiable workplace policies</p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <PolicySection title="Work Timings" icon="⏰">
+                <PolicySection title="Work Timings">
                   <p><strong>9:30 AM - 6:30 PM (Sharp)</strong></p>
                   <p>Monday to Saturday. Punctuality is strictly monitored. Late arrivals result in a half-day mark.</p>
                 </PolicySection>
 
-                <PolicySection title="Dress Code" icon="👔">
+                <PolicySection title="Dress Code">
                   <p>Black/White formal shirts, formal pants, and mandatory Blazers. ID cards must be worn at all times.</p>
                 </PolicySection>
 
-                <PolicySection title="Performance" icon="📈">
+                <PolicySection title="Performance">
                   <p>Daily reporting on Zoho/ClickUp. Increments are strictly performance-based, not tenure-based.</p>
                 </PolicySection>
 
-                <PolicySection title="Leave Policy" icon="🗓️">
+                <PolicySection title="Leave Policy">
                   <p>2 Casual Leaves per month. Advance approval is required. Uninformed absence is treated as misconduct.</p>
                 </PolicySection>
               </div>
@@ -138,11 +138,11 @@ export default function CareerDetail() {
           </div>
 
           {/* RIGHT: STICKY FORM & IMAGES */}
-          <div className="lg:col-span-5 space-y-8">
+          <div className="xl:col-span-5 space-y-10">
 
             {/* Desktop Carousel */}
             {job.img?.length > 0 && (
-              <div className="hidden lg:block rounded-3xl overflow-hidden shadow-2xl h-64 border-4 border-white">
+              <div className="hidden lg:block rounded-3xl overflow-hidden shadow-2xl h-[470px] border-4 border-white">
                 <img src={job.img[currentIndex]} alt="Culture" className="w-full h-full object-cover transition-opacity duration-1000" />
               </div>
             )}
