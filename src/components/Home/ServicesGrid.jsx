@@ -165,7 +165,6 @@ const CombinedServicesGrid = () => {
       subtitle: "Grow stronger, together",
       images: [
         "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159675/dp3_jscnpp.jpg",
-        // NOTE: Move this large local image to Cloudinary to solve LCP issues
         "/assets/sivaprasad/Siva Prasad.webp",
         "https://res.cloudinary.com/dtwcgfmar/image/upload/v1771997817/2_1_1_wzl8fc.jpg",
       ],
