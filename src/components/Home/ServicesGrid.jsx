@@ -180,102 +180,101 @@ const CombinedServicesGrid = () => {
     <section className="w-full bg-gradient-to-b from-[#f8fdff] to-white">
 
       <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-0 border-y border-slate-100">
-      {items.map((item, index) => (
-        <Link
-          key={`${item.title}-${index}`}
-          to={item.link}
-          className={`relative flex flex-col h-[500px] sm:h-[600px] lg:h-[640px] ${item.bg} ${item.text} overflow-hidden group cursor-pointer`}
-        >
-          {/* FULLSCREEN VIDEO BACKGROUND */}
-          {item.isFullScreenVideo && item.video ? (
-            <>
-              {/* Video Background - Full Screen */}
-              <div className="absolute inset-0 w-full h-full overflow-hidden">
-                <video
-                  src={getOptimizedCloudinaryUrl(item.video, 1280)}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  title={`${item.title} background video`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+        {items.map((item, index) => (
+          <Link
+            key={`${item.title}-${index}`}
+            to={item.link}
+            className={`relative flex flex-col h-[500px] sm:h-[600px] lg:h-[640px] ${item.bg} ${item.text} overflow-hidden group cursor-pointer`}
+          >
+            {/* FULLSCREEN VIDEO BACKGROUND */}
+            {item.isFullScreenVideo && item.video ? (
+              <>
+                {/* Video Background - Full Screen */}
+                <div className="absolute inset-0 w-full h-full overflow-hidden">
+                  <video
+                    src={getOptimizedCloudinaryUrl(item.video, 1280)}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    title={`${item.title} background video`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
 
-              {/* Dark Overlay */}
-              <div className="absolute inset-0 bg-black/40 z-10"></div>
+                {/* Dark Overlay */}
+                <div className="absolute inset-0 bg-black/40 z-10"></div>
 
-              {/* TEXT CONTENT - Same position as other items */}
-              <div className="relative z-20 text-center flex flex-col items-center px-6 pt-12 md:pt-16">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white mb-2 drop-shadow-lg">
-                  {item.title}
-                </h2>
-                <p className="text-lg text-white/90 mb-6 drop-shadow-md">
-                  {item.subtitle}
-                </p>
-                <span className="bg-white text-black px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-neutral-100 transition-all duration-300 shadow-lg">
-                  Learn more
-                </span>
-              </div>
+                {/* TEXT CONTENT - Same position as other items */}
+                <div className="relative z-20 text-center flex flex-col items-center px-6 pt-12 md:pt-16">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white mb-2 drop-shadow-lg">
+                    {item.title}
+                  </h2>
+                  <p className="text-lg text-white/90 mb-6 drop-shadow-md">
+                    {item.subtitle}
+                  </p>
+                  <span className="bg-white text-black px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-neutral-100 transition-all duration-300 shadow-lg">
+                    Learn more
+                  </span>
+                </div>
 
-              {/* GRAPHIC AREA - Empty since video is full background */}
-              <div className="relative flex-1 w-full"></div>
-            </>
-          ) : (
-            <>
-              {/* 1. TEXT ON TOP */}
-              <div className="relative z-50 text-center flex flex-col items-center px-6 pt-12 md:pt-16">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight mb-2">
-                  {item.title}
-                </h2>
-                <p className="text-lg opacity-80 mb-6">{item.subtitle}</p>
-                <span className="bg-white text-black px-8 py-2.5 rounded-full text-sm font-semibold hover:bg-neutral-100 transition-all duration-300 shadow-lg">
-                  Learn more
-                </span>
-              </div>
+                {/* GRAPHIC AREA - Empty since video is full background */}
+                <div className="relative flex-1 w-full"></div>
+              </>
+            ) : (
+              <>
+                {/* 1. TEXT ON TOP */}
+                <div className="relative z-50 text-center flex flex-col items-center px-6 pt-12 md:pt-16">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight mb-2">
+                    {item.title}
+                  </h2>
+                  <p className="text-lg opacity-80 mb-6">{item.subtitle}</p>
+                  <span className="bg-white text-black px-8 py-2.5 rounded-full text-sm font-semibold hover:bg-neutral-100 transition-all duration-300 shadow-lg">
+                    Learn more
+                  </span>
+                </div>
 
-              <div className="relative flex-1 w-full flex items-end justify-center overflow-hidden pb-0 px-4 md:px-8">
-                <div className={`w-full h-full ${item.imageClass || 'max-h-[340px]'} flex items-end justify-center transition-transform duration-700 group-hover:scale-105`}>
-                  {item.isRotatingStack ? (
-                    <RotatingStackedImages images={item.images} />
-                  ) : item.video ? (
-                    <video
-                      src={getOptimizedCloudinaryUrl(item.video, 800)}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      title={`${item.title} preview video`}
-                      className="w-full h-full object-contain object-bottom mx-auto drop-shadow-2xl"
-                    />
-                  ) : (
-                    item.image && (
-                      <div className="relative w-full h-full flex items-end justify-center">
-                        <img
-                          src={getOptimizedCloudinaryUrl(item.image, 800)}
-                          alt={`${item.title} - ${item.subtitle}`}
-                          className="w-full h-full object-contain object-bottom mx-auto"
-                        />
-                        {/* Hover Overlay Context */}
-                        {item.hoverContext && (
-                          <div className="absolute inset-x-0 bottom-6 mx-auto w-[75%] h-fit bg-transparent backdrop-blur-xl border border-white/20 rounded-2xl p-4 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0 flex flex-col justify-center items-center text-center z-30 shadow-2xl">
-                            <h3 className="text-lg font-bold text-white mb-1 italic">
+                <div className="relative flex-1 w-full flex items-end justify-center overflow-hidden pb-0 px-4 md:px-8">
+                  <div className={`w-full h-full ${item.imageClass || 'max-h-[340px]'} flex items-end justify-center transition-transform duration-700 group-hover:scale-105`}>
+                    {item.isRotatingStack ? (
+                      <RotatingStackedImages images={item.images} />
+                    ) : item.video ? (
+                      <video
+                        src={getOptimizedCloudinaryUrl(item.video, 800)}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        title={`${item.title} preview video`}
+                        className="w-full h-full object-contain object-bottom mx-auto drop-shadow-2xl"
+                      />
+                    ) : (
+                      item.image && (
+                        <div className="relative w-full h-full flex items-end justify-center">
+                          <img
+                            src={getOptimizedCloudinaryUrl(item.image, 800)}
+                            alt={`${item.title} - ${item.subtitle}`}
+                            className="w-full h-full object-contain object-bottom mx-auto"
+                          />
+                          {/* Hover Overlay Context */}
+                          {item.hoverContext && (
+                            <div className="hidden md:flex absolute inset-x-0 bottom-6 mx-auto w-[75%] h-fit bg-transparent backdrop-blur-xl border border-white/20 rounded-2xl p-4 opacity-0 md:group-hover:opacity-100 transition-all duration-500 translate-y-4 md:group-hover:translate-y-0 flex-col justify-center items-center text-center z-30 shadow-2xl">                            <h3 className="text-lg font-bold text-white mb-1 italic">
                               {item.hoverContext.expert}
                             </h3>
-                            <p className="text-xs text-white/80 leading-relaxed font-medium">
-                              {item.hoverContext.fact}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    )
-                  )}
+                              <p className="text-xs text-white/80 leading-relaxed font-medium">
+                                {item.hoverContext.fact}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      )
+                    )}
+                  </div>
                 </div>
-              </div>
-            </>
-          )}
-        </Link>
-      ))}
+              </>
+            )}
+          </Link>
+        ))}
       </div>
     </section>
   );
