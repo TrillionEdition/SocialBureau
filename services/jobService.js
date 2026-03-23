@@ -2,7 +2,7 @@ import axios from "axios";
 import { BASE_URL } from "../utils/urls";
 
 export const jobService = {
-  // CREATE JOB (ADMIN)
+
   createJob: async (data) => {
     const res = await axios.post(`${BASE_URL}/job`, data, {
       withCredentials: true,
