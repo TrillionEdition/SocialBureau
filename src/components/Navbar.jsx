@@ -226,6 +226,7 @@ export default function Navbar() {
             { label: "Ranjit", href: "/partnership/Ranjit" },
             { label: "Sivaprasad", href: "/partnership/Sivaprasad" },
             { label: "John Samuel", href: "/partnership/JohnSamuel" },
+            { label: "Jignesh Rana", href: "https://www.jigneshrana.com" },
           ],
         },
       ],

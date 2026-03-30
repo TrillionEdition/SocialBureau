@@ -29,6 +29,19 @@ const Partnership = () => {
       month: "CONTENT WRITER",
       year: "2025",
     },
+    {
+      id: 3,
+      title: "JIGNESH RANA",
+      category: "Marketing",
+      status: "Completed",
+      image:
+        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1774880077/copy_of_image-gen_18_qt9ikl_8b856d.webp",
+      link: "https://www.jigneshrana.com",
+      subtitle: "Digital Entrepreneur · Marketing Expert · Media Architect",
+      day: "ENTREPRENEUR",
+      month: "MARKETING EXPERT",
+      year: "2026",
+    },
   ];
 
   //state
@@ -331,7 +344,12 @@ const Partnership = () => {
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-125 transition-transform duration-700"
+                      className={
+                        item.id === 3
+                          ? "w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
+                          : "w-full h-full object-cover group-hover:scale-125 transition-transform duration-700"
+                      }
+                      style={item.id === 3 ? { objectPosition: "center 65%" } : {}}
                     />
 
                     {/* Dark Overlay */}

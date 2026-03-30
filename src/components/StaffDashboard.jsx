@@ -1,11 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import Footer from "./Footer";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaCrown, FaDownload, FaGem, FaLeaf, FaMapMarkerAlt, FaMedal, FaPiggyBank, FaRocket, FaStar, FaUserGraduate } from "react-icons/fa";
-import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { userDetailsAPI } from "../../services/clickupServices";
-import { BASE_URL } from "../../utils/urls";
+import { userDetailsAPI, userClickupStatsAPI } from "../../services/clickupServices";
+
 
 const LEVELS = [
   {
@@ -68,8 +67,6 @@ const LEVELS = [
 export function StaffDashboard() {
   const { name } = useParams();
   const decodedName = name ? decodeURIComponent(name).replace(/_/g, " ") : null;
-  const [achievements, setAchievements] = useState([]);
-  const [loadingAchievements, setLoadingAchievements] = useState(false);
   // Only run the query when we have a decodedName to avoid unnecessary/invalid requests
   const { data, isLoading, isFetching } = useQuery({
     queryKey: ['profile', decodedName],
@@ -85,7 +82,18 @@ export function StaffDashboard() {
 
   const navigate = useNavigate()
   const user = data?.user
-  const clickup = data?.clickup
+
+  // Non-blocking: fetch ClickUp stats only after user data has loaded (avoids blocking page render)
+  const { data: clickupStats } = useQuery({
+    queryKey: ['clickup-stats', user?.clickupId],
+    queryFn: () => userClickupStatsAPI(user.clickupId),
+    enabled: Boolean(user?.clickupId),
+    staleTime: 1000 * 60 * 15,
+    cacheTime: 1000 * 60 * 60,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  });
 
   // For review carousel
   const [startIdx, setStartIdx] = useState(0);
@@ -106,48 +114,6 @@ export function StaffDashboard() {
   const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const fetchAchievements = async (userId) => {
-    setLoadingAchievements(true);
-    console.log("🔍 Fetching achievements directly for user ID:", userId);
-
-    try {
-      // Use the direct endpoint which queries the Achievement collection by user ID
-      const response = await axios.get(`${BASE_URL}/achievement/user/${userId}`);
-      console.log("📊 API Response:", response.data);
-
-      if (response.data && response.data.success) {
-        if (response.data.data && Array.isArray(response.data.data)) {
-          console.log(`✅ Found ${response.data.data.length} achievements via direct endpoint`);
-          setAchievements(response.data.data);
-        } else {
-          console.log("⚠️ Response success but data format unexpected:", response.data);
-          setAchievements([]);
-        }
-      } else {
-        console.warn("⚠️ Direct fetch failed or returned false success.", response.data);
-        setAchievements([]);
-      }
-    } catch (error) {
-      console.error('❌ Error fetching achievements:', error);
-      setAchievements([]);
-    } finally {
-      setLoadingAchievements(false);
-    }
-  };
-
-  // Fetch achievements periodically or when user changes
-  useEffect(() => {
-    if (user && user._id) {
-      fetchAchievements(user._id);
-    }
-  }, [user?._id]);
-
-  // Sync achievements with user data if fetch hasn't completed or as a fallback
-  useEffect(() => {
-    if (user?.achievements && user.achievements.length > 0 && achievements.length === 0) {
-      setAchievements(user.achievements);
-    }
-  }, [user?.achievements, achievements.length]);
 
 
   const handleReviewInputChange = (e) => {
@@ -348,6 +314,7 @@ export function StaffDashboard() {
                           src={tool.img}
                           alt={tool.name}
                           className="w-8 h-8 rounded-full object-cover"
+                          loading="lazy"
                         />
                       </a>
                     ))}
@@ -366,6 +333,7 @@ export function StaffDashboard() {
                         alt={tool.toolName}
                         title={tool.toolName}
                         className="w-8 h-8 rounded-full object-cover cursor-pointer"
+                        loading="lazy"
                       />
                     ))}
                   </div>
@@ -409,7 +377,7 @@ export function StaffDashboard() {
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mt-4">
             <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
               <span className="text-gray-400 text-xs mb-2">Total works done</span>
-              <span className="text-3xl font-bold text-white">{clickup.tasks}</span>
+              <span className="text-3xl font-bold text-white">{clickupStats ? clickupStats.tasks : <span className="text-gray-500 text-2xl animate-pulse">…</span>}</span>
               <span className="text-xs text-gray-400 mt-2">Last 30 days</span>
             </div>
 
@@ -469,7 +437,7 @@ export function StaffDashboard() {
             <div className="rounded-xl p-6 flex flex-col items-center"></div>
             <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
               <span className="text-gray-400 text-xs mb-2">Time Worked</span>
-              <span className="text-3xl font-bold text-white">{Math.round(Number(clickup?.totalHours ?? 0))} hrs</span>
+              <span className="text-3xl font-bold text-white">{clickupStats ? `${Math.round(Number(clickupStats.totalHours ?? 0))} hrs` : <span className="text-gray-500 text-2xl animate-pulse">…</span>}</span>
               <span className="text-xs text-gray-400 mt-2">Last 30 days</span>
             </div>
             <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
@@ -535,6 +503,7 @@ export function StaffDashboard() {
                         alt={client.name}
                         title={client.name}
                         className="object-contain w-full h-full group-hover:scale-110 transition-transform duration-300"
+                        loading="lazy"
                       />
                     </div>
                   )}
@@ -566,18 +535,13 @@ export function StaffDashboard() {
                 </div>
                 <div className="mt-4 md:mt-0 px-6 py-2 bg-black/40 border border-gray-700 rounded-2xl backdrop-blur-md">
                   <span className="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-                    {loadingAchievements ? '...' : achievements.length}
+                    {user.achievements?.length ?? 0}
                   </span>
                   <span className="text-gray-400 ml-2 text-sm font-semibold uppercase tracking-wider">Badges</span>
                 </div>
               </div>
 
-              {loadingAchievements && achievements.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-20">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-400 mb-4"></div>
-                  <p className="text-gray-400 font-medium">Fetching excellence...</p>
-                </div>
-              ) : !achievements || achievements.length === 0 ? (
+              {!user.achievements || user.achievements.length === 0 ? (
                 <div className="text-center py-16 bg-black/20 rounded-2xl border border-dashed border-gray-700 relative z-10">
                   <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
                     <FaRocket className="text-gray-500 text-2xl" />
@@ -589,7 +553,7 @@ export function StaffDashboard() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 relative z-10">
-                  {achievements.map((achievement, idx) => (
+                  {user.achievements.map((achievement, idx) => (
                     <div
                       key={achievement._id || idx}
                       className="relative group/card overflow-hidden rounded-2xl border border-gray-800 bg-black/40 
@@ -602,6 +566,7 @@ export function StaffDashboard() {
                           src={achievement.image}
                           alt={achievement.title}
                           className="w-full h-56 object-cover transition-transform duration-700 group-hover/card:scale-110"
+                          loading="lazy"
                           onError={(e) => {
                             e.currentTarget.style.display = 'none';
                           }}
@@ -707,7 +672,7 @@ export function StaffDashboard() {
 
                   </div>
                   <div className="flex items-center mt-2">
-                    <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1762926257/b0833156962d005d1ccbee648cba509b_fl58sy.jpg" alt="user_icon" className="h-8 w-8 mr-2 md:mr-5" />
+                    <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1762926257/b0833156962d005d1ccbee648cba509b_fl58sy.jpg" alt="user_icon" className="h-8 w-8 mr-2 md:mr-5" loading="lazy" />
                     <div>
                       <div className="font-medium text-gray-800 text-xs md:text-sm">{review.name}</div>
                       {review.company && (
