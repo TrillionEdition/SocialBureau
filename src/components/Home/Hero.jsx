@@ -520,7 +520,7 @@ export default function Hero() {
 
   const videos = [
     "https://res.cloudinary.com/dtwcgfmar/video/upload/v1774073469/Hello_2_1_hd4afv.mp4",
-    "https://res.cloudinary.com/dtwcgfmar/video/upload/v1774072709/freepik_glancing-typography-with-slightly-zooming_seedance_720p_16-9_24fps_11657_z7zxbg.mp4",
+    "https://res.cloudinary.com/dtwcgfmar/video/upload/v1774267811/SB_Logo_glass_effect_2_edqpb3.mp4",
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -557,9 +557,8 @@ export default function Hero() {
       
       {/* VIDEO SECTION */}
       {!showHero && (
-        <div className={`w-screen h-screen relative overflow-hidden flex items-center justify-center transition-colors duration-300 ${
-          activeVideo === 2 ? "bg-[#D5D7D4]" : "bg-black"
-        }`}>
+        <div className={`w-screen h-screen relative overflow-hidden flex items-center justify-center transition-colors duration-300 bg-black
+        `}>
           {/* Video 1 */}
           <video
             ref={video1Ref}
