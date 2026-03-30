@@ -280,7 +280,7 @@ export default function Navbar() {
               href="https://socialbureau.in"
               className="text-white text-[17px] font-bold tracking-tight shrink-0 mr-10"
             >
-              Social<span className="text-[#ff0000]">B</span>ureau
+              <img src="/assets/logo.webp" className="h-7 w-40" />
             </a>
             {navItems.map((item) => (
               <div
@@ -414,7 +414,7 @@ export default function Navbar() {
             href="https://socialbureau.in"
             className="md:hidden text-white text-[17px] font-bold tracking-tight shrink-0"
           >
-            Social<span className="text-[#ff0000]">B</span>ureau
+           <img src="/assets/logo.webp" className="h-7 w-40" />
           </a>
 
           {/* Mobile Toggle */}
