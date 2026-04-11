@@ -460,7 +460,13 @@ const blogs = [
     image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769157941/image-gen_7_g4ewu6.png",
     link: "https://looplogik.wordpress.com/2026/01/23/integrated-business-consultants-brochure",
   },
-
+{
+    id: 12,
+    title: "Flight",
+    category: "UI Interface",
+    image: "https://looplogik.wordpress.com/wp-content/uploads/2026/04/dsc_5812_col-jpg.jpg?w=768",
+    link: "https://looplogik.wordpress.com/2026/04/11/flight",
+  },
 
 
 ];
