@@ -270,18 +270,18 @@ const ApiMarketing = () => {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="font-bebas text-[clamp(2.5rem,10vw,10rem)] leading-[0.95] tracking-tight text-white mb-8 text-center lg:text-left break-words"
+            className="font-bebas text-[clamp(2rem,8vw,9rem)] leading-[0.9] tracking-tight text-white mb-6 sm:mb-8 text-center lg:text-left break-words"
           >
             ALGORITHM<br />
             <span className="text-[#C8102E]">POWERED</span><br className="lg:hidden" />
-            <span className="text-stroke lg:ml-4">MARKETING</span>
+            <span className="text-stroke lg:ml-3 sm:lg:ml-4">MARKETING</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="font-cormorant italic text-lg md:text-2xl text-white/40 mb-12 max-w-2xl leading-relaxed mx-auto lg:mx-0 text-center lg:text-left px-2"
+            className="font-cormorant italic text-base sm:text-lg md:text-xl lg:text-2xl text-white/40 mb-10 sm:mb-12 max-w-2xl leading-relaxed mx-auto lg:mx-0 text-center lg:text-left px-2 sm:px-4 lg:px-0"
           >
             Most Indian businesses advertise. Very few <em className="text-white/60">engineer</em> their audience. API Marketing is the infrastructure that makes the difference.
           </motion.p>
@@ -301,18 +301,18 @@ const ApiMarketing = () => {
             </button>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-0 border-t border-white/10 pt-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-0 border-t border-white/10 pt-6 sm:pt-10">
             {[
               { val: "93", unit: "%", lbl: "Ads lost audience" },
               { val: "₹2.3", unit: "L Cr", lbl: "Spend wasted" },
               { val: "6", unit: "×", lbl: "ROI Advantage" },
               { val: "0", unit: "%", lbl: "API Adoption" }
             ].map((stat, i) => (
-              <div key={i} className={`pb-0 ${i !== 3 ? 'lg:border-r lg:border-white/10' : ''} text-center lg:text-left ${i % 2 !== 0 ? 'pl-4 lg:pl-10' : 'pr-4 lg:pr-10'}`}>
-                <div className="font-bebas text-2xl sm:text-3xl md:text-5xl text-white tracking-widest leading-none">
+              <div key={i} className={`pb-2 sm:pb-0 ${i !== 3 ? 'lg:border-r lg:border-white/10' : ''} text-center lg:text-left ${i % 2 !== 0 ? 'pl-2 sm:pl-4 lg:pl-10' : 'pr-2 sm:pr-4 lg:pr-10'}`}>
+                <div className="font-bebas text-xl sm:text-2xl md:text-4xl lg:text-5xl text-white tracking-widest leading-none">
                   {stat.val}<b className="text-[#C8102E] font-normal">{stat.unit}</b>
                 </div>
-                <div className="text-[0.55rem] md:text-[0.68rem] tracking-[1px] md:tracking-[2px] uppercase text-white/30 mt-2 leading-tight">
+                <div className="text-[0.50rem] sm:text-[0.60rem] md:text-[0.68rem] tracking-[0.5px] sm:tracking-[1px] md:tracking-[2px] uppercase text-white/30 mt-1 sm:mt-2 leading-tight">
                   {stat.lbl}
                 </div>
               </div>
@@ -322,22 +322,22 @@ const ApiMarketing = () => {
       </section>
 
       {/* DATA INSIGHTS SECTION */}
-      <section className="bg-[#f7f7f5] py-20 md:py-28 px-6 md:px-14" id="insights">
-        <div className="max-w-7xl mx-auto px-4 sm:px-0">
-          <div className="text-[#C8102E] text-[0.68rem] tracking-[3px] uppercase mb-5 text-center lg:text-left">Data Insights</div>
-          <h2 className="font-bebas text-[clamp(2.2rem,5vw,4rem)] leading-none tracking-tight mb-6 text-center lg:text-left">
+      <section className="bg-[#f7f7f5] py-12 sm:py-20 md:py-28 px-4 sm:px-8 lg:px-14" id="insights">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-0">
+          <div className="text-[#C8102E] text-[0.60rem] sm:text-[0.68rem] tracking-[2px] sm:tracking-[3px] uppercase mb-3 sm:mb-5 text-center lg:text-left">Data Insights</div>
+          <h2 className="font-bebas text-[clamp(1.8rem,6vw,3.8rem)] leading-none tracking-tight mb-4 sm:mb-6 text-center lg:text-left">
             The Numbers That Prove<br />Why This Matters
           </h2>
-          <p className="text-[#555550] text-sm md:text-lg max-w-2xl mb-12 md:mb-16 text-center lg:text-left">
+          <p className="text-[#555550] text-xs sm:text-sm md:text-base lg:text-lg max-w-2xl mb-8 sm:mb-12 md:mb-16 text-center lg:text-left leading-relaxed">
             Hard data from the Indian digital marketing landscape — showing exactly where the opportunity is and what API Marketing delivers.
           </p>
 
-          <div className="grid lg:grid-cols-2 gap-8 mb-8">
+          <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-8">
             {/* Chart 1: ROI Comparison */}
-            <div className="bg-white p-8 border border-[#ebebea] shadow-sm">
-              <h3 className="font-bebas text-xl md:text-2xl tracking-wider mb-2">API Marketing vs Conventional Ads</h3>
-              <p className="text-[#b0b0ab] text-[0.7rem] uppercase tracking-widest mb-6">Average ROAS Comparison (6 Months)</p>
-              <div className="h-[250px] w-full">
+            <div className="bg-white p-4 sm:p-6 md:p-8 border border-[#ebebea] shadow-sm">
+              <h3 className="font-bebas text-base sm:text-lg md:text-xl lg:text-2xl tracking-wider mb-1 sm:mb-2">API Marketing vs Conventional Ads</h3>
+              <p className="text-[#b0b0ab] text-[0.60rem] sm:text-[0.70rem] uppercase tracking-widest mb-4 sm:mb-6">Average ROAS Comparison (6 Months)</p>
+              <div className="h-[200px] sm:h-[250px] w-full">
                 <Bar
                   data={{
                     labels: ['Conventional', 'Boosted Posts', 'Basic Targeting', 'SocialBureau API'],
@@ -359,10 +359,10 @@ const ApiMarketing = () => {
             </div>
 
             {/* Chart 2: Platform Reach */}
-            <div className="bg-[#080808] p-8 border border-white/5 shadow-sm">
-              <h3 className="font-bebas text-xl md:text-2xl tracking-wider text-white mb-2">Monthly Active Users in India</h3>
-              <p className="text-white/20 text-[0.7rem] uppercase tracking-widest mb-6">Reach Across Key Platforms (Millions)</p>
-              <div className="h-[250px] w-full">
+            <div className="bg-[#080808] p-4 sm:p-6 md:p-8 border border-white/5 shadow-sm">
+              <h3 className="font-bebas text-base sm:text-lg md:text-xl lg:text-2xl tracking-wider text-white mb-1 sm:mb-2">Monthly Active Users in India</h3>
+              <p className="text-white/20 text-[0.60rem] sm:text-[0.70rem] uppercase tracking-widest mb-4 sm:mb-6">Reach Across Key Platforms (Millions)</p>
+              <div className="h-[200px] sm:h-[250px] w-full">
                 <Bar
                   data={{
                     labels: ['Instagram', 'Facebook', 'YouTube', 'LinkedIn', 'Google'],
@@ -387,12 +387,12 @@ const ApiMarketing = () => {
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {/* Chart 3: Budget Utilisation */}
-            <div className="bg-white p-8 border border-[#ebebea] shadow-sm">
-              <h3 className="font-bebas text-xl md:text-2xl tracking-wider mb-2">Ad Budget Utilisation</h3>
-              <p className="text-[#b0b0ab] text-[0.7rem] uppercase tracking-widest mb-6">Spend vs Conversion Reality</p>
-              <div className="h-[180px] w-full">
+            <div className="bg-white p-4 sm:p-6 md:p-8 border border-[#ebebea] shadow-sm">
+              <h3 className="font-bebas text-base sm:text-lg md:text-xl lg:text-2xl tracking-wider mb-1 sm:mb-2">Ad Budget Utilisation</h3>
+              <p className="text-[#b0b0ab] text-[0.60rem] sm:text-[0.70rem] uppercase tracking-widest mb-4 sm:mb-6">Spend vs Conversion Reality</p>
+              <div className="h-[160px] sm:h-[180px] w-full">
                 <Doughnut
                   data={{
                     labels: ['Wasted', 'Correct Audience', 'Converted'],
@@ -413,10 +413,10 @@ const ApiMarketing = () => {
             </div>
 
             {/* Chart 4: Lead Quality */}
-            <div className="bg-[#080808] p-8 border border-white/5 shadow-sm">
-              <h3 className="font-bebas text-xl md:text-2xl tracking-wider text-white mb-2">Lead Quality Over Time</h3>
-              <p className="text-white/20 text-[0.7rem] uppercase tracking-widest mb-6">API Evolution (8 Weeks)</p>
-              <div className="h-[180px] w-full">
+            <div className="bg-[#080808] p-4 sm:p-6 md:p-8 border border-white/5 shadow-sm">
+              <h3 className="font-bebas text-base sm:text-lg md:text-xl lg:text-2xl tracking-wider text-white mb-1 sm:mb-2">Lead Quality Over Time</h3>
+              <p className="text-white/20 text-[0.60rem] sm:text-[0.70rem] uppercase tracking-widest mb-4 sm:mb-6">API Evolution (8 Weeks)</p>
+              <div className="h-[160px] sm:h-[180px] w-full">
                 <Line
                   data={{
                     labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8'],
@@ -439,10 +439,10 @@ const ApiMarketing = () => {
             </div>
 
             {/* Chart 5: Cost Per Lead */}
-            <div className="bg-white p-8 border border-[#ebebea] shadow-sm">
-              <h3 className="font-bebas text-xl md:text-2xl tracking-wider mb-2">Cost Per Lead (INR)</h3>
-              <p className="text-[#b0b0ab] text-[0.7rem] uppercase tracking-widest mb-6">Before vs After API</p>
-              <div className="h-[180px] w-full">
+            <div className="bg-white p-4 sm:p-6 md:p-8 border border-[#ebebea] shadow-sm">
+              <h3 className="font-bebas text-base sm:text-lg md:text-xl lg:text-2xl tracking-wider mb-1 sm:mb-2">Cost Per Lead (INR)</h3>
+              <p className="text-[#b0b0ab] text-[0.60rem] sm:text-[0.70rem] uppercase tracking-widest mb-4 sm:mb-6">Before vs After API</p>
+              <div className="h-[160px] sm:h-[180px] w-full">
                 <Bar
                   data={{
                     labels: ['Real Estate', 'Ed-Tech', 'Health', 'Fashion', 'B2B'],
@@ -458,12 +458,12 @@ const ApiMarketing = () => {
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8 mt-8">
+          <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mt-6 sm:mt-8">
             {/* Chart 6: Community Growth */}
-            <div className="bg-[#080808] p-8 border border-white/5 shadow-sm">
-              <h3 className="font-bebas text-xl md:text-2xl tracking-wider text-white mb-2">Audience Community Growth</h3>
-              <p className="text-white/20 text-[0.7rem] uppercase tracking-widest mb-6">Organic Followers (90 Days)</p>
-              <div className="h-[250px] w-full">
+            <div className="bg-[#080808] p-4 sm:p-6 md:p-8 border border-white/5 shadow-sm">
+              <h3 className="font-bebas text-base sm:text-lg md:text-xl lg:text-2xl tracking-wider text-white mb-1 sm:mb-2">Audience Community Growth</h3>
+              <p className="text-white/20 text-[0.60rem] sm:text-[0.70rem] uppercase tracking-widest mb-4 sm:mb-6">Organic Followers (90 Days)</p>
+              <div className="h-[200px] sm:h-[250px] w-full">
                 <Line
                   data={{
                     labels: ['D1', 'D15', 'D30', 'D45', 'D60', 'D75', 'D90'],
@@ -486,10 +486,10 @@ const ApiMarketing = () => {
             </div>
 
             {/* Chart 7: Funnel Chart */}
-            <div className="bg-white p-8 border border-[#ebebea] shadow-sm">
-              <h3 className="font-bebas text-xl md:text-2xl tracking-wider mb-2">Enquiry Conversion Funnel</h3>
-              <p className="text-[#b0b0ab] text-[0.7rem] uppercase tracking-widest mb-6">10,000 Impressions Outcome</p>
-              <div className="h-[250px] w-full">
+            <div className="bg-white p-4 sm:p-6 md:p-8 border border-[#ebebea] shadow-sm">
+              <h3 className="font-bebas text-base sm:text-lg md:text-xl lg:text-2xl tracking-wider mb-1 sm:mb-2">Enquiry Conversion Funnel</h3>
+              <p className="text-[#b0b0ab] text-[0.60rem] sm:text-[0.70rem] uppercase tracking-widest mb-4 sm:mb-6">10,000 Impressions Outcome</p>
+              <div className="h-[200px] sm:h-[250px] w-full">
                 <Bar
                   data={{
                     labels: ['10k Impr.', 'Correct Aud.', 'Engaged', 'Clicked', 'Enquiry'],
@@ -516,20 +516,20 @@ const ApiMarketing = () => {
       </section>
 
       {/* SUB-SERVICES & DEFINITIONS */}
-      <section className="bg-[#080808] py-16 px-4 sm:px-14 overflow-hidden">
+      <section className="bg-[#080808] py-12 sm:py-16 md:py-20 px-4 sm:px-8 lg:px-14 overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="text-[#C8102E]/75 text-[0.62rem] tracking-[3px] uppercase flex items-center gap-2.5 mb-4 before:content-[''] before:w-6 before:h-[1px] before:bg-[#C8102E]">
+          <div className="text-[#C8102E]/75 text-[0.55rem] sm:text-[0.62rem] tracking-[2px] sm:tracking-[3px] uppercase flex items-center gap-2 sm:gap-2.5 mb-3 sm:mb-4 before:content-[''] before:w-4 sm:before:w-6 before:h-[1px] before:bg-[#C8102E]">
             SocialBureau API Marketing
           </div>
-          <h2 className="text-white font-bebas text-[clamp(2.2rem,5vw,3.8rem)] leading-none tracking-[1px] mb-2">
+          <h2 className="text-white font-bebas text-[clamp(1.8rem,5vw,3.5rem)] leading-none tracking-[0.5px] sm:tracking-[1px] mb-2 sm:mb-3">
             Sub-Services & <span className="text-[#C8102E]">Definitions</span>
           </h2>
-          <p className="text-white/40 text-[0.88rem] max-w-[700px] leading-[1.85] mb-12">
+          <p className="text-white/40 text-[0.75rem] sm:text-[0.88rem] max-w-[700px] leading-[1.75] sm:leading-[1.85] mb-8 sm:mb-12">
             Every service SocialBureau delivers under the API Marketing umbrella — explained point by point. Click any service card to read its full definition, what it does, and what outcome it drives for your business.
           </p>
 
           {/* Category Navigation */}
-          <div className="flex flex-wrap gap-2 mb-12">
+          <div className="flex flex-wrap gap-2 sm:gap-3 mb-8 sm:mb-12">
             {[
               { id: 'all', l: 'All Services' },
               { id: 'algorithm', l: 'Algorithm Prompting' },
@@ -542,7 +542,7 @@ const ApiMarketing = () => {
               <button
                 key={cat.id}
                 onClick={() => setActiveSubCat(cat.id)}
-                className={`px-5 py-2 text-[0.68rem] tracking-[2px] uppercase transition-all border ${activeSubCat === cat.id
+                className={`px-3 sm:px-5 py-1.5 sm:py-2 text-[0.55rem] sm:text-[0.68rem] tracking-[1.5px] sm:tracking-[2px] uppercase transition-all border text-nowrap ${activeSubCat === cat.id
                   ? 'bg-[#C8102E] border-[#C8102E] text-white'
                   : 'bg-white/[0.04] border-white/[0.08] text-white/40 hover:border-[#C8102E]/40 hover:text-white/80'
                   }`}
@@ -555,48 +555,48 @@ const ApiMarketing = () => {
           {/* Services Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.05]">
             {[
-              {
-                id: "01", cat: "algorithm", catLabel: "Algorithm Prompting", title: "Social Media Algorithm Prompting",
-                short: "Directly instructing platform algorithms using API-level signals to control who sees your content, when, and how often.",
-                full: "Social Media Algorithm Prompting is the practice of communicating precise instructions to platform algorithms — Instagram, Facebook, YouTube, LinkedIn, Google — through their official API layer. Instead of hoping the algorithm distributes your content to the right people, we program it with structured data signals that tell it exactly who your buyer is, where they are, and what triggers their engagement. This is the core differentiator of SocialBureau's approach.",
-                points: ["API signal configuration", "Interest graph mapping", "Engagement triggers", "Time-of-delivery sync", "Cross-platform consistency", "Continuous refinement"],
-                outcome: "Your content reaches the right niche audience every time it is published — not just your existing followers — generating organic discovery."
-              },
-              {
-                id: "02", cat: "campaign", catLabel: "Campaign Management", title: "Campaign Algorithm Configuration",
-                short: "Engineering the precise rules, restrictions, and parameters for every paid campaign through direct API access.",
-                full: "Campaign Algorithm Configuration means we do not simply create an ad and press boost. We architect the entire campaign structure at API level — defining who sees the ad, who is excluded, under what conditions the ad is served, and what conversion event the algorithm should optimise toward.",
-                points: ["Custom parameter configuration", "Exclusion rule architecture", "Conversion event setup", "Budget allocation logic", "Device & placement config", "A/B testing framework"],
-                outcome: "Campaigns that generate qualified enquiries at 3–8× lower cost per lead compared to conventional boosted posts."
-              },
-              {
-                id: "03", cat: "audience", catLabel: "Audience Engineering", title: "Niche Audience Architecture",
-                short: "Building a precise multi-layer audience model based on your exact buyer profile — interest, behaviour, and intent.",
-                full: "Niche Audience Architecture is the process of constructing a detailed, multi-dimensional model of your ideal customer and translating it into API-readable audience parameters. We go beyond basic demographics to map behavioural patterns and platform activity.",
-                points: ["Buyer persona translation", "Interest stacking (10–30 signals)", "Behavioural audience mapping", "Geographic segmentation", "Life-stage intent layers", "Lookalike modelling"],
-                outcome: "Your marketing budget reaches only the people who are statistically most likely to buy from you — eliminating waste."
-              },
-              {
-                id: "04", cat: "content", catLabel: "Content & Feed", title: "Social Feed Engineering",
-                short: "Configuring how, when, and to whom organic content is distributed by the platform's feed algorithm.",
-                full: "Social Feed Engineering is the discipline of programming the platform's organic distribution engine. We override defaults with structured feed signals — hashtags, engagement velocity, and format signals — that instruct the algorithm to push content efficiently.",
-                points: ["Hashtag taxonomy architecture", "Publishing time optimisation", "Content format selection", "Engagement velocity seeding", "Caption signal structure", "Cross-platform adaptation"],
-                outcome: "Organic content reaches new niche audiences outside your follower base with every publish — growing brand discovery."
-              },
-              {
-                id: "05", cat: "audience", catLabel: "Audience Engineering", title: "Geo-Targeted Audience Mapping",
-                short: "Identifying exactly where your buyers are located across India — city, district, PIN code, or radius.",
-                full: "Geo-Targeted Audience Mapping uses location intelligence data from platform APIs to identify where your niche buyers are geographically concentrated and restricts campaign delivery precisely to those zones for maximum leverage.",
-                points: ["PIN code level targeting", "Radius targeting (500m – 50km)", "Geographic bid modifiers", "Location exclusion rules", "Multi-region architecture", "Tier-specific strategies"],
-                outcome: "Your ad budget is concentrated only in locations where your real buyers are — dramatically reducing wasted spend."
-              },
-              {
-                id: "06", cat: "campaign", catLabel: "Retargeting & Funnel Sequencing",
-                short: "Programmatically re-engaging people who have already shown interest with stage-specific messaging.",
-                full: "Retargeting & Funnel Sequencing uses API-level pixel and event tracking to identify previous interactions and delivers a sequenced series of messages designed to move users toward a purchase decision.",
-                points: ["Pixel & Tag setup", "Watch time segmentation", "Engagement-based pools", "Sequential ad delivery", "Cart abandonment flows", "Frequency cap config"],
-                outcome: "Converts warm audiences into buyers — typically delivering 2–4× higher conversion rate compared to cold campaigns."
-              },
+            {
+              id: "01", cat: "algorithm", catLabel: "Algorithm Prompting", title: "Social Media Algorithm Prompting",
+              short: "Directly instructing platform algorithms using API-level signals to control who sees your content, when, and how often.",
+              full: "Social Media Algorithm Prompting is the practice of communicating precise instructions to platform algorithms — Instagram, Facebook, YouTube, LinkedIn, Google — through their official API layer. Instead of hoping the algorithm distributes your content to the right people, we program it with structured data signals that tell it exactly who your buyer is, where they are, and what triggers their engagement. This is the core differentiator of SocialBureau's approach.",
+              points: ["API signal configuration", "Interest graph mapping", "Engagement triggers", "Time-of-delivery sync", "Cross-platform consistency", "Continuous refinement"],
+              outcome: "Your content reaches the right niche audience every time it is published — not just your existing followers — generating organic discovery."
+            },
+            {
+              id: "02", cat: "campaign", catLabel: "Campaign Management", title: "Campaign Algorithm Configuration",
+              short: "Engineering the precise rules, restrictions, and parameters for every paid campaign through direct API access.",
+              full: "Campaign Algorithm Configuration means we do not simply create an ad and press boost. We architect the entire campaign structure at API level — defining who sees the ad, who is excluded, under what conditions the ad is served, and what conversion event the algorithm should optimise toward.",
+              points: ["Custom parameter configuration", "Exclusion rule architecture", "Conversion event setup", "Budget allocation logic", "Device & placement config", "A/B testing framework"],
+              outcome: "Campaigns that generate qualified enquiries at 3–8× lower cost per lead compared to conventional boosted posts."
+            },
+            {
+              id: "03", cat: "audience", catLabel: "Audience Engineering", title: "Niche Audience Architecture",
+              short: "Building a precise multi-layer audience model based on your exact buyer profile — interest, behaviour, and intent.",
+              full: "Niche Audience Architecture is the process of constructing a detailed, multi-dimensional model of your ideal customer and translating it into API-readable audience parameters. We go beyond basic demographics to map behavioural patterns and platform activity.",
+              points: ["Buyer persona translation", "Interest stacking (10–30 signals)", "Behavioural audience mapping", "Geographic segmentation", "Life-stage intent layers", "Lookalike modelling"],
+              outcome: "Your marketing budget reaches only the people who are statistically most likely to buy from you — eliminating waste."
+            },
+            {
+              id: "04", cat: "content", catLabel: "Content & Feed", title: "Social Feed Engineering",
+              short: "Configuring how, when, and to whom organic content is distributed by the platform's feed algorithm.",
+              full: "Social Feed Engineering is the discipline of programming the platform's organic distribution engine. We override defaults with structured feed signals — hashtags, engagement velocity, and format signals — that instruct the algorithm to push content efficiently.",
+              points: ["Hashtag taxonomy architecture", "Publishing time optimisation", "Content format selection", "Engagement velocity seeding", "Caption signal structure", "Cross-platform adaptation"],
+              outcome: "Organic content reaches new niche audiences outside your follower base with every publish — growing brand discovery."
+            },
+            {
+              id: "05", cat: "audience", catLabel: "Audience Engineering", title: "Geo-Targeted Audience Mapping",
+              short: "Identifying exactly where your buyers are located across India — city, district, PIN code, or radius.",
+              full: "Geo-Targeted Audience Mapping uses location intelligence data from platform APIs to identify where your niche buyers are geographically concentrated and restricts campaign delivery precisely to those zones for maximum leverage.",
+              points: ["PIN code level targeting", "Radius targeting (500m – 50km)", "Geographic bid modifiers", "Location exclusion rules", "Multi-region architecture", "Tier-specific strategies"],
+              outcome: "Your ad budget is concentrated only in locations where your real buyers are — dramatically reducing wasted spend."
+            },
+            {
+              id: "06", cat: "campaign", catLabel: "Retargeting & Funnel Sequencing",
+              short: "Programmatically re-engaging people who have already shown interest with stage-specific messaging.",
+              full: "Retargeting & Funnel Sequencing uses API-level pixel and event tracking to identify previous interactions and delivers a sequenced series of messages designed to move users toward a purchase decision.",
+              points: ["Pixel & Tag setup", "Watch time segmentation", "Engagement-based pools", "Sequential ad delivery", "Cart abandonment flows", "Frequency cap config"],
+              outcome: "Converts warm audiences into buyers — typically delivering 2–4× higher conversion rate compared to cold campaigns."
+            },
               {
                 id: "07", cat: "data", catLabel: "Data & Analytics", title: "API Performance Analytics",
                 short: "Real-time tracking, attribution, and reporting of every campaign parameter for full visibility.",
@@ -753,12 +753,12 @@ const ApiMarketing = () => {
       <AdChart />
 
       {/* WHAT IS IT SECTION */}
-      <section className="py-20 md:py-28 px-4 sm:px-14 overflow-hidden" id="what">
+      <section className="py-12 sm:py-20 md:py-28 px-4 sm:px-8 lg:px-14 overflow-hidden" id="what">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-center lg:justify-start gap-3 text-[#C8102E] text-[0.68rem] tracking-[3px] uppercase mb-5">
-            <div className="w-7 h-[1px] bg-[#C8102E]" /> Education First
+          <div className="flex items-center justify-center lg:justify-start gap-2 sm:gap-3 text-[#C8102E] text-[0.55rem] sm:text-[0.68rem] tracking-[2px] sm:tracking-[3px] uppercase mb-4 sm:mb-5">
+            <div className="w-5 sm:w-7 h-[1px] bg-[#C8102E]" /> Education First
           </div>
-          <h2 className="font-bebas text-[clamp(2rem,6vw,4.5rem)] leading-none tracking-tight mb-12 md:mb-16 text-center lg:text-left">
+          <h2 className="font-bebas text-[clamp(1.8rem,6vw,4rem)] leading-none tracking-tight mb-8 sm:mb-12 md:mb-16 text-center lg:text-left">
             What Exactly Is<br />API Marketing?
           </h2>
 
