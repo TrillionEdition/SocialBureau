@@ -16,8 +16,8 @@ import AdminRoute from "./components/AdminRoute";
 import CookieConsent from "./components/CookieConsent";
 import { ToastContainer } from "react-toastify";
 import Partner1 from "./pages/Partnerships/johnsamuel";
+import GlobalCursor from "./components/GlobalCursor";
 import { Clickup } from "./pages/Clickup";
-
 // Lazy-loaded Pages
 const Home = lazy(() =>
   import("./pages/Home").then((module) => ({ default: module.Home })),
@@ -190,7 +190,8 @@ const lenisOptions = {
 
 function App() {
   return (
-    <ReactLenis root options={lenisOptions}>
+    <ReactLenis root options={lenisOptions} style={{ position: 'relative' }}>
+      <GlobalCursor />
       <BrowserRouter>
         <ToastContainer
           position="top-right"

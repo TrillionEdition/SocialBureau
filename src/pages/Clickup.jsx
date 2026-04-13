@@ -392,19 +392,19 @@ export const Clickup = () => {
     gap: '6px',
     textAlign: 'center'
   }}
->
-  <img
+><a href="https://socialbureau.in" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#666', textDecoration: 'none' }}>
+  <img 
     className="h-3"
     src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776064892/Subtitle_2_n7fktm.png"
     alt="SocialBureau"
-  />
-  — A Venture of
+  /></a>
+  — A Venture of <a href="https://trillionedition.com" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#666', textDecoration: 'none' }}>
   <img
     className="h-5"
     src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776064892/Subtitle_3_tzbpmq.png"
     alt="TrillionEdition"
   />
-  
+  </a>
 </p>
     </div>
   )

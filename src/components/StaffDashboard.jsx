@@ -72,11 +72,11 @@ export function StaffDashboard() {
     queryKey: ['profile', decodedName],
     queryFn: () => userDetailsAPI(decodedName),
     enabled: Boolean(decodedName),
-    staleTime: Infinity,
-    cacheTime: 1000 * 60 * 60,
+    staleTime: 1000 * 60 * 5, // 5 minutes instead of Infinity to allow for updates
+    gcTime: 1000 * 60 * 60,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchOnMount: false,
+    refetchOnReconnect: true,
+    refetchOnMount: true,
   });
 
 

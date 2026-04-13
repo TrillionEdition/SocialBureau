@@ -5,16 +5,19 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Space Grotesk", sans-serif;
   --font-serif: "Playfair Display", serif;
+
   @keyframes fade-up {
     from {
       opacity: 0;
       transform: translateY(20px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
+
   --animate-fade-up: fade-up 0.8s ease-out forwards;
   --color-brand-bg: #f5f2ed;
   --color-brand-ink: #1a1a1a;
@@ -154,12 +157,14 @@ select {
   .btn-primary {
     @apply bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-lg font-semibold transition-all duration-300 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:scale-105;
   }
+
   .btn-secondary {
     @apply border border-blue-600 text-blue-400 hover:bg-blue-600/10 rounded-lg font-semibold transition-all duration-300;
   }
 }
 
 @keyframes move1 {
+
   0%,
   100% {
     transform: translate(-30%, -30%);
@@ -171,6 +176,7 @@ select {
 }
 
 @keyframes move2 {
+
   0%,
   100% {
     transform: translate(30%, -20%);
