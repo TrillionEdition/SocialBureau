@@ -10,9 +10,16 @@ export const dashboardAPI=async()=>{
 }
 
 export const userDetailsAPI=async(name)=>{
-    // const userToken=getToken()  
     const response = await axios.get(`${BASE_URL}/clickup/user-details`, {
-    params: { name},
+    params: { name, skipClickup: true },
+    headers: { "Accept": "application/json" }
+  });
+    return response.data
+}
+
+export const userClickupStatsAPI=async(clickupId)=>{
+    const response = await axios.get(`${BASE_URL}/clickup/stats`, {
+    params: { clickupId },
     headers: { "Accept": "application/json" }
   });
     return response.data

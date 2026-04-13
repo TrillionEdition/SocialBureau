@@ -77,7 +77,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section className="bg-black text-white py-16 px-4 md:px-12 flex flex-col lg:flex-row gap-8 pb-20">
+    <section className="bg-white text-black py-16 px-4 md:px-12 flex flex-col lg:flex-row gap-8 pb-20">
 
       {/* LEFT */}
       <div className="flex-1 flex flex-col gap-6">
@@ -89,7 +89,7 @@ export default function ContactSection() {
           </span>
         </h2>
 
-        <div className="bg-[#101010ff] p-6 rounded-lg shadow-lg space-y-4">
+        <div className="bg-[#ffffffc1] p-6 rounded-lg shadow-lg space-y-4">
 
           {/* GRID */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -102,12 +102,12 @@ export default function ContactSection() {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="peer w-full bg-neutral-900 p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
+                className="peer w-full p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
               />
 
               <label className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200
-              peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-neutral-900 peer-focus:px-1
-              peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-neutral-900 peer-valid:px-1">
+              peer-focus:-top-2 peer-focus:text-xs peer-focus:text-black peer-focus:bg-white peer-focus:px-1
+              peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-white peer-valid:px-1">
                 Name *
               </label>
             </div>
@@ -120,12 +120,12 @@ export default function ContactSection() {
                 value={formData.company}
                 onChange={handleChange}
                 required
-                className="peer w-full bg-neutral-900 p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
+                className="peer w-full p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
               />
 
               <label className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200
-              peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-neutral-900 peer-focus:px-1
-              peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-neutral-900 peer-valid:px-1">
+              peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-white peer-focus:px-1
+              peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-white peer-valid:px-1">
                 Company *
               </label>
             </div>
@@ -138,12 +138,12 @@ export default function ContactSection() {
                 value={formData.role}
                 onChange={handleChange}
                 required
-                className="peer w-full bg-neutral-900 p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
+                className="peer w-full p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
               />
 
               <label className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200
-              peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-neutral-900 peer-focus:px-1
-              peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-neutral-900 peer-valid:px-1">
+              peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-white peer-focus:px-1
+              peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-white peer-valid:px-1">
                 Role *
               </label>
             </div>
@@ -156,36 +156,53 @@ export default function ContactSection() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="peer w-full bg-neutral-900 p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
+                className="peer w-full p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
               />
 
               <label className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200
-              peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-neutral-900 peer-focus:px-1
-              peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-neutral-900 peer-valid:px-1">
+              peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-white peer-focus:px-1
+              peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-white peer-valid:px-1">
                 Email *
               </label>
             </div>
 
           </div>
 
-          {/* WEBSITE */}
-          <input
-            type="url"
-            name="website"
-            value={formData.website}
-            onChange={handleChange}
-            placeholder="https://"
-            className="w-full bg-neutral-900 p-3 rounded focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
-          />
+            {/* WEBSITE */}
+          <div className="relative">
+              <input
+                type="text"
+                name="website"
+                value={formData.website}
+                onChange={handleChange}
+                required
+                className="peer w-full p-3 pt-6 rounded placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
+              />
+
+              <label className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200
+              peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-white peer-focus:px-1
+              peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-white peer-valid:px-1">
+                Website *
+              </label>
+            </div>
 
           {/* MESSAGE */}
-          <textarea
-            name="message"
-            rows={4}
-            value={formData.message}
-            onChange={handleChange}
-            className="w-full bg-neutral-900 p-3 rounded resize-none focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
-          />
+          <div className="relative">
+            <textarea
+              name="message"
+              rows={4}
+              value={formData.message}
+              onChange={handleChange}
+              required
+              className="peer w-full p-3 pt-6 rounded resize-none placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]"
+            />
+
+            <label className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200
+              peer-focus:-top-2 peer-focus:text-xs peer-focus:text-[#ff0000] peer-focus:bg-white peer-focus:px-1
+              peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-white peer-valid:px-1">
+              Message *
+            </label>
+          </div>
 
           {/* SUBMIT */}
           <button
@@ -198,7 +215,7 @@ export default function ContactSection() {
               !formData.role ||
               !formData.message
             }
-            className="w-full border border-white hover:border-[#ff0000] text-white hover:bg-[#ff0000] transition-all duration-300 font-medium py-3 rounded-md flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full border border-white text-white bg-[#ff0000] transition-all duration-300 font-medium py-3 rounded-md flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
           >
             {isSubmitting ? "Sending..." : "Submit"}
           </button>
@@ -211,7 +228,7 @@ export default function ContactSection() {
         <div className="relative inline-block">
 
           <img
-            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1763383653/oii_upmu8c.png"
+            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772020659/image-gen_6__converted_xwf2hv.webp"
             alt="Growth Architect"
             className="h-auto w-64 md:w-80 mx-auto"
           />
