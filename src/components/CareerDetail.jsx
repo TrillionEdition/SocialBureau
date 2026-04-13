@@ -3,6 +3,13 @@ import { useParams, Link } from "react-router-dom";
 import Footer from "./Footer";
 import { jobService } from "../../services/jobService";
 
+// Fallback mock details for when backend is uncontactable
+const fallbackJobDetails = {
+  'content-copywriter': { title: 'Content & Copywriter', company: 'SocialBureau', location: 'Kochi', employment: 'Full Time', department: 'Creative', roleSummary: ['Write compelling copy for brand campaigns.', 'Develop engaging social media captions.', 'Collaborate with the design team for holistic output.'], qualifications: ['2+ years of experience in copywriting.', 'Strong command of English grammar and phrasing.', 'Ability to write for diverse niches.'], img: [] },
+  'digital-marketing-expert': { title: 'Digital Marketing Expert', company: 'SocialBureau', location: 'Kochi', employment: 'Full Time', department: 'Growth', roleSummary: ['Manage ad campaigns on Meta and Google.', 'Monitor performance metrics and ROI.', 'Develop and implement API marketing strategies.'], qualifications: ['Proven track record in digital marketing.', 'Experience with analytics tools.', 'Creative problem-solving skills.'], img: [] },
+  'video-editor': { title: 'Video Editor', company: 'SocialBureau', location: 'Kochi', employment: 'Full Time', department: 'Production', roleSummary: ['Edit short-form and long-form video content.', 'Add motion graphics and visual effects.', 'Collaborate with content creators for storytelling.'], qualifications: ['Proficiency in Premiere Pro and After Effects.', 'Strong understanding of pacing and rhythm.', 'Experience with color grading.'], img: [] },
+};
+
 // Helper Component for Policy Cards
 const PolicySection = ({ title, children, icon }) => (
   <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
@@ -26,7 +33,20 @@ export default function CareerDetail() {
     setLoading(true);
     jobService.getJobBySlug(slug)
       .then((data) => { setJob(data); setLoading(false); })
-      .catch(() => { setJob(null); setLoading(false); });
+      .catch((error) => { 
+        console.warn("Backend unavailable, using fallback job detail:", error.message);
+        const fallback = fallbackJobDetails[slug] || {
+          title: slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+          company: 'SocialBureau',
+          location: 'Kochi',
+          employment: 'Full Time',
+          roleSummary: ['Drive innovation and growth within your department.', 'Collaborate with cross-functional teams to deliver excellent results.', 'Maintain SocialBureau standard of quality.'],
+          qualifications: ['Relevant professional experience in this specific field.', 'Strong communication and proactive problem-solving skills.', 'Cultural fit for a fast-paced agency environment.'],
+          img: []
+        };
+        setJob(fallback); 
+        setLoading(false); 
+      });
   }, [slug]);
 
   useEffect(() => {

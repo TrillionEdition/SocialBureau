@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export const teamData = {
+export const staticTeamData = {
   leadership: [
     {
       name: "Alen Jacob",
@@ -243,31 +243,42 @@ const ExEmployeeSection = ({ data }) => (
   </section>
 );
 
-const TeamSection = () => (
-  <div className="bg-[#0B0B0B] px-6 md:px-24 pb-10">
-    <Section title="Leadership Team" data={teamData.leadership} />
-    <Section title="Strategy & Marketing Division" data={teamData.strategyMarketing} />
-    <Section title="Finance Division" data={teamData.finance} />
-    <Section title="Content & Production Department" data={teamData.contentProduction} />
-    <Section title="Technology & Development" data={teamData.technology} />
-    <ExEmployeeSection data={teamData.exemployee} />
+/**
+ * TeamSection
+ *
+ * @param {object} [teamData] - Optional team data from the API (Redis-cached).
+ *                              Falls back to the built-in static `staticTeamData`
+ *                              if omitted or undefined.
+ */
+const TeamSection = ({ teamData: propData } = {}) => {
+  const data = propData || staticTeamData;
 
-    <div className="mt-20 max-w-5xl mx-auto text-center">
-      <p className="font-light opacity-90 text-lg text-white">
-        Together, this team powers{" "}
-        <a style={{ fontFamily: "MyFont, sans-serif" }} href="https://socialbureau.in">
-          Social<span className="text-[#ff0000]">B</span>ureau
-        </a>
-        's mission, to redefine API Marketing, Performance Marketing, and Data-Driven Content Creation for the new era of global business growth.
-      </p>
-      <Link
-        to="/careers"
-        className="inline-block mt-8 px-8 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
-      >
-        Apply Now
-      </Link>
+  return (
+    <div className="bg-[#0B0B0B] px-6 md:px-24 pb-10">
+      <Section title="Leadership Team" data={data.leadership} />
+      <Section title="Strategy & Marketing Division" data={data.strategyMarketing} />
+      <Section title="Finance Division" data={data.finance} />
+      <Section title="Content & Production Department" data={data.contentProduction} />
+      <Section title="Technology & Development" data={data.technology} />
+      <ExEmployeeSection data={data.exemployee} />
+
+      <div className="mt-20 max-w-5xl mx-auto text-center">
+        <p className="font-light opacity-90 text-lg text-white">
+          Together, this team powers{" "}
+          <a style={{ fontFamily: "MyFont, sans-serif" }} href="https://socialbureau.in">
+            Social<span className="text-[#ff0000]">B</span>ureau
+          </a>
+          's mission, to redefine API Marketing, Performance Marketing, and Data-Driven Content Creation for the new era of global business growth.
+        </p>
+        <Link
+          to="/careers"
+          className="inline-block mt-8 px-8 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+        >
+          Apply Now
+        </Link>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default TeamSection;

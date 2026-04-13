@@ -3,12 +3,27 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { jobService } from "../../services/jobService";
 
+const fallbackJobs = [
+  { slug: 'content-copywriter', title: 'Content & Copywriter', department: 'Creative' },
+  { slug: 'digital-marketing-expert', title: 'Digital Marketing Expert', department: 'Growth' },
+  { slug: 'video-editor', title: 'Video Editor', department: 'Production' },
+  { slug: 'client-success-manager', title: 'Client Success Manager', department: 'Client Services' },
+  { slug: 'business-development-manager', title: 'Business Development Manager', department: 'Sales' },
+  { slug: 'office-operations-manager', title: 'Office Operations Manager', department: 'Operations' },
+  { slug: 'front-desk-manager', title: 'Front Desk Manager', department: 'Operations' },
+];
+
 export default function CareersPost() {
   const [jobs, setJobs] = useState([]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    jobService.getJobs().then(setJobs);
+    jobService.getJobs()
+      .then(setJobs)
+      .catch((error) => {
+        console.warn("Backend unavailable, using fallback careers data:", error.message);
+        setJobs(fallbackJobs);
+      });
   }, []);
 
   const filteredJobs = useMemo(() => {

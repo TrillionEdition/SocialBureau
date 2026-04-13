@@ -75,11 +75,11 @@ export function StaffDashboard() {
     queryKey: ['profile', decodedName],
     queryFn: () => userDetailsAPI(decodedName),
     enabled: Boolean(decodedName),
-    staleTime: Infinity,
-    cacheTime: 1000 * 60 * 60,
+    staleTime: 1000 * 60 * 5, // 5 minutes instead of Infinity to allow for updates
+    gcTime: 1000 * 60 * 60,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchOnMount: false,
+    refetchOnReconnect: true,
+    refetchOnMount: true,
   });
 
 
@@ -409,7 +409,7 @@ export function StaffDashboard() {
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mt-4">
             <div className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col items-center">
               <span className="text-gray-400 text-xs mb-2">Total works done</span>
-              <span className="text-3xl font-bold text-white">{clickup.tasks}</span>
+              <span className="text-3xl font-bold text-white">{clickup?.tasks || 0}</span>
               <span className="text-xs text-gray-400 mt-2">Last 30 days</span>
             </div>
 
