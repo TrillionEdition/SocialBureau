@@ -414,7 +414,7 @@ export const Home = () => {
             <FadeUp delay={0.4}>
               <div className="rounded-[36px] overflow-hidden border border-black/5 bg-[#F0F0F2] aspect-[0.82] relative group shadow-2xl">
                 <img
-                  src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776068850/DSC01208_2_mhv4fn.jpg"
+                  src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776074252/DSC01171_hsyqoo.jpg"
                   alt="Sham SK"
                   className="w-full h-full duration-1000 group-hover:scale-110"
                 />
