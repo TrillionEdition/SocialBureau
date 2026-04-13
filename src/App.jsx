@@ -17,7 +17,7 @@ import CookieConsent from "./components/CookieConsent";
 import { ToastContainer } from "react-toastify";
 import Partner1 from "./pages/Partnerships/johnsamuel";
 import GlobalCursor from "./components/GlobalCursor";
-
+import { Clickup } from "./pages/Clickup";
 // Lazy-loaded Pages
 const Home = lazy(() =>
   import("./pages/Home").then((module) => ({ default: module.Home })),
@@ -348,6 +348,7 @@ function App() {
                 </AdminRoute>
               }
             />
+            <Route path="/clickup" element={<Clickup />} />
             <Route path="/add-review" element={<AddReview />} />
 
             {/* <Route path='/partner' element={<PortfolioPager />} /> */}
@@ -366,10 +367,11 @@ function App() {
             <Route path="/partnership/alen-jacob" element={<AlenJacob />} />
             <Route path="/partnership/cheriyan" element={<CheriyanPage />} />
             <Route path="/partnership/sakilan" element={<Sakilan />} />
+            
             {/* <Route path="/partnership/Partner2" element={<Partner2 />} /> */}
             {/* <Route path="/partnership/Partner3" element={<Partner3 />} />
             <Route path="/partnership/Partner4" element={<Partner4 />} /> */}
-
+              
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </Suspense>
