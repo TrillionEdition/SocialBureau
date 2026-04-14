@@ -19,7 +19,7 @@ import { ToastContainer } from "react-toastify";
 import Partner1 from "./pages/Partnerships/johnsamuel";
 import GlobalCursor from "./components/GlobalCursor";
 import { Clickup } from "./pages/Clickup";
-import ClientDashboard from "./pages/clientdashboard";
+import ClientDashboard from "./pages/ClientDashboard";
 // Lazy-loaded Pages
 const Home = lazy(() =>
   import("./pages/Home").then((module) => ({ default: module.Home })),
