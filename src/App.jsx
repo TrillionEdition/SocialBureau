@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 // Components
 import Navbar from "./components/Navbar";
+import ClientForm from "./pages/ClientForm";
 import Footer from "./components/Footer";
 import ScrollTop from "./components/ScrollTop";
 import LoadingSpinner from "./components/LoadingSpinner";
@@ -18,6 +19,7 @@ import { ToastContainer } from "react-toastify";
 import Partner1 from "./pages/Partnerships/johnsamuel";
 import GlobalCursor from "./components/GlobalCursor";
 import { Clickup } from "./pages/Clickup";
+import ClientDashboard from "./pages/clientdashboard";
 // Lazy-loaded Pages
 const Home = lazy(() =>
   import("./pages/Home").then((module) => ({ default: module.Home })),
@@ -337,6 +339,10 @@ function App() {
                 </AdminRoute>
               }
             />
+
+            <Route path="/client-form" element={<ClientForm />} />
+            <Route path="/client-dashboard" element={<ClientDashboard />} />
+
 
             <Route path="/analytics" element={<AnalyticsWidget />} />
 

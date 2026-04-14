@@ -82,7 +82,7 @@ const GlobalCursor = () => {
                 height: isPointer ? 80 : 40,
                 scale: isClicked ? 0.8 : 1,
                 opacity: 1,
-                backgroundColor: isPointer ? "rgba(232, 0, 26, 0.1)" : "transparent",
+                backgroundColor: isPointer ? "rgba(232, 0, 26, 0.1)" : "rgba(232, 0, 26, 0)",
                 borderWidth: isPointer ? "1px" : "2px",
               }}
               style={{
