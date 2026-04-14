@@ -1,5 +1,6 @@
 import { useState } from "react";
 import clientService from "../../services/clientService";
+import { createClickUpTask } from "../../services/clickupServices";
 import Confetti from "react-confetti";
 
 export default function ClientForm() {
@@ -61,6 +62,25 @@ export default function ClientForm() {
       };
 
       await clientService.createClient(submitData);
+
+      // Automatically create ClickUp task
+      try {
+        const dueDate = new Date();
+        dueDate.setDate(dueDate.getDate() + 30); // Default 30 days
+        
+        const taskData = {
+          clientName: `${form.first_name} ${form.last_name} is on Intake`,
+          clientCompany: form.company_name || 'Unknown',
+          status: 'intake',
+          dueDate: dueDate.toISOString(),
+          priority: 2 // Default priority
+        };
+        await createClickUpTask(taskData);
+      } catch (clickupError) {
+        console.error("ClickUp creation failed:", clickupError);
+        // We don't block the UI for ClickUp failure if the main client creation succeeded
+      }
+
       setMessage({
         type: "success",
         text: "✓ Your request submitted successfully! We'll contact you soon."

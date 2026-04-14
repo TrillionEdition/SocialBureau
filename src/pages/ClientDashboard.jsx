@@ -88,12 +88,18 @@ export default function ClientDashboard() {
       setUpdating(true);
       await clientService.updateClient(clientId, { status: newStatus });
       
+      const updatedClient = clients.find(c => c._id === clientId);
+      const clientWithNewStatus = { ...updatedClient, status: newStatus };
+
       setClients(clients.map(c => 
-        c._id === clientId ? { ...c, status: newStatus } : c
+        c._id === clientId ? clientWithNewStatus : c
       ));
       
       setEditingId(null);
       setNewStatus("");
+
+      // Automatically create ClickUp task on status update
+      handleCreateClickUpTask(clientWithNewStatus);
     } catch (error) {
       console.error('Failed to update status:', error);
       alert('Failed to update status');
@@ -111,7 +117,7 @@ export default function ClientDashboard() {
       dueDate.setDate(dueDate.getDate() + 30);
 
       const taskData = {
-        clientName: `${client.first_name} ${client.last_name}`,
+        clientName: `${client.first_name} ${client.last_name} is on ${formatStatus(client.status)}`,
         clientCompany: client.company_name || 'Unknown',
         status: client.status,
         dueDate: dueDate.toISOString(),
