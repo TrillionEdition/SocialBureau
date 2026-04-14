@@ -463,7 +463,7 @@ export const Home = () => {
             <motion.div whileHover={{ y: -8 }} className="bg-white rounded-[20px] sm:rounded-[28px] border border-[#D2D2D7] overflow-hidden group hover:shadow-2xl transition-all duration-500">
               <div className="h-24 sm:h-32 flex items-center justify-center p-4 sm:p-8 transition-colors">
                 <a href='https://partners.cloud.google.com'>
-                <img className='w-20 sm:w-30' src='assets/home/google.png' alt='Google' />
+                  <img className='w-20 sm:w-30' src='assets/home/google.png' alt='Google' />
                 </a>
               </div>
               <div className="p-4 sm:p-6 pt-0 text-center">
@@ -476,7 +476,7 @@ export const Home = () => {
             <motion.div whileHover={{ y: -8 }} className="bg-white rounded-[20px] sm:rounded-[28px] border border-[#D2D2D7] overflow-hidden group hover:shadow-2xl transition-all duration-500">
               <div className="h-24 sm:h-32 flex items-center justify-center p-4 sm:p-8 transition-colors">
                 <a href='https://www.facebook.com/business/marketing-partners/become-a-partner'>
-                <img className='w-16 sm:w-20' src='assets/home/meta.png' alt='Meta' />
+                  <img className='w-16 sm:w-20' src='assets/home/meta.png' alt='Meta' />
                 </a>
               </div>
               <div className="p-4 sm:p-6 pt-0 text-center">
@@ -489,9 +489,9 @@ export const Home = () => {
             <motion.div whileHover={{ y: -8 }} className="bg-white rounded-[20px] sm:rounded-[28px] border border-[#D2D2D7] overflow-hidden group hover:shadow-2xl transition-all duration-500">
               <div className="h-24 sm:h-32 flex items-center justify-center p-4 sm:p-8 transition-colors">
                 <div className="flex flex-col items-center gap-2 transform scale-50 sm:scale-75">
-<a href='https://clickup.com/partners'>
-                  <img className='w-25' src='assets/home/clickup.jpg' alt='ClickUp' />
-                </a></div>
+                  <a href='https://clickup.com/partners'>
+                    <img className='w-25' src='assets/home/clickup.jpg' alt='ClickUp' />
+                  </a></div>
               </div>
               <div className="p-4 sm:p-6 pt-0 text-center">
                 <div className="text-[12px] sm:text-[15px] font-black text-[#0A0A0A] mb-1.5 tracking-tight">ClickUp Software</div>
@@ -503,7 +503,7 @@ export const Home = () => {
             <motion.div whileHover={{ y: -8 }} className="bg-white rounded-[20px] sm:rounded-[28px] border border-[#D2D2D7] overflow-hidden group hover:shadow-2xl transition-all duration-500">
               <div className="h-24 sm:h-32 flex items-center justify-center p-4 sm:p-8 transition-colors">
                 <a href='https://ads.google.com/intl/en_in/start/campaigns/video-ads-gdn/?subid=in-en-adon-yt-sch-a-byb!o3~~1154489075500768~kwd-72156283195328:loc-90~627302844~&&msclkid=f56eafec5bff166b5de1c630b38506ac&gclid=f56eafec5bff166b5de1c630b38506ac&gclsrc=3p.ds&gad_source=7&gad_campaignid=21162634961'>
-                <img className='w-20 sm:w-30' src='assets/home/youtube.png' alt='YouTube' /></a>
+                  <img className='w-20 sm:w-30' src='assets/home/youtube.png' alt='YouTube' /></a>
               </div>
               <div className="p-4 sm:p-6 pt-0 text-center">
                 <div className="text-[12px] sm:text-[15px] font-black text-[#0A0A0A] mb-1.5 tracking-tight">YouTube Ads</div>
@@ -515,7 +515,7 @@ export const Home = () => {
             <motion.div whileHover={{ y: -8 }} className="bg-white rounded-[20px] sm:rounded-[28px] border border-[#D2D2D7] overflow-hidden group hover:shadow-2xl transition-all duration-500">
               <div className="h-24 sm:h-32 flex items-center justify-center p-4 sm:p-8 transition-colors">
                 <a href='https://creators.instagram.com/earn-money/partnership-ads?locale=en_US'>
-                <img className='w-16 sm:w-22' src='assets/home/insta.jpg' alt='Instagram' />
+                  <img className='w-16 sm:w-22' src='assets/home/insta.jpg' alt='Instagram' />
                 </a>
               </div>
               <div className="p-4 sm:p-6 pt-0 text-center">
@@ -670,11 +670,11 @@ export const Home = () => {
 
       {/* --- SERVICES SECTION --- */}
       <Section id="services" className="bg-[#F5F5F7]">
-        <div className="flex flex-col lg:flex-row justify-between items-end gap-8 sm:gap-12 mb-16 sm:mb-20">
-          <FadeUp className="flex-1">
-            <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-3 sm:mb-4 block underline decoration-2 underline-offset-8">Capabilities</span>
-            <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-[#0A0A0A]">Our <span className="text-[#E8001A] italic">Services</span></h2>
-          </FadeUp>
+        <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-8 sm:gap-12 mb-16 sm:mb-20">          <FadeUp className="flex-1">
+          <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-3 sm:mb-4 block underline decoration-2 underline-offset-8">Capabilities</span>
+          <h2 className="text-center text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-[#0A0A0A]">
+            Our <span className="text-[#E8001A] italic">Services</span>
+          </h2>          </FadeUp>
           <FadeUp delay={0.2}>
             <p className="text-base sm:text-lg lg:text-xl font-light text-[#6E6E73] max-w-md mb-6 sm:mb-8 lg:text-right italic">Bespoke marketing solutions engineered for performance and scale.</p>
           </FadeUp>

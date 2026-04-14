@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Footer from '../components/Footer'
 import { Mail, User, MessageSquare, Send, Linkedin, Instagram, Play } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 export default function Landing() {
   return (
     <div className="bg-[#0b0d10] text-white">
@@ -460,12 +459,19 @@ const blogs = [
     image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769157941/image-gen_7_g4ewu6.png",
     link: "https://looplogik.wordpress.com/2026/01/23/integrated-business-consultants-brochure",
   },
-{
+  {
     id: 12,
     title: "Flight",
     category: "UI Interface",
     image: "https://looplogik.wordpress.com/wp-content/uploads/2026/04/dsc_5812_col-jpg.jpg?w=768",
     link: "https://looplogik.wordpress.com/2026/04/11/flight",
+  },
+  {
+    id: 13,
+    title: "Fauna of Mirrors and other stories",
+    category: "Uncategorized",
+    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776140797/fauna_x9veyg.webp",
+    link: "https://looplogik.wordpress.com/2026/04/13/fauna-of-mirrors-and-other-stories-work-in-progress",
   },
 
 
@@ -1109,7 +1115,7 @@ const videosData = [
     title: "Ramayana Patashala from Ranjit Chettur",
     youtubeId: "https://www.youtube.com/embed/516Ku0G_1EE?si=y433VXgwVukg9R5j",
     category: "Design Process",
-    youtube_img:"https://res.cloudinary.com/dtwcgfmar/image/upload/v1772255541/UtubeRanjith1_pb3tlt.webp",
+    youtube_img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772255541/UtubeRanjith1_pb3tlt.webp",
   },
   {
     id: 2,
@@ -1199,11 +1205,11 @@ function YoutubeVideoSection() {
     if (url.includes('youtube') || url.includes('youtu.be')) {
       // Open YouTube video in new tab
       const id = extractVideoId(url);
-      window.open(`https://www.youtube.com/watch?v=${id}`,'_blank');
+      window.open(`https://www.youtube.com/watch?v=${id}`, '_blank');
     } else if (url.includes('vimeo')) {
       // Open Vimeo video in new tab
       const id = extractVideoId(url);
-      window.open(`https://vimeo.com/${id}`,'_blank');
+      window.open(`https://vimeo.com/${id}`, '_blank');
     } else {
       window.open(url, '_blank');
     }
@@ -1414,5 +1420,5 @@ function YoutubeVideoSection() {
       </div>
     </section>
   );
-} 
+}
 
