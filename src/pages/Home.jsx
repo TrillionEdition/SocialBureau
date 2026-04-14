@@ -331,123 +331,105 @@ export const Home = () => {
 
 
       {/* --- HERO SECTION --- */}
-      <section className="min-h-screen flex flex-col justify-center pt-16 sm:pt-20 relative overflow-hidden">
-        {/* Hero Background Gradient Mesh */}
-        <div className="absolute inset-0 -z-10 bg-white">
-          <div className="absolute top-[15%] right-[-5%] w-[60%] h-[60%] bg-gradient-to-br from-[#E8001A]/10 to-transparent blur-[80px] sm:blur-[120px] opacity-60 rounded-full" />
-          <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] bg-gradient-to-tr from-[#4285F4]/8 to-transparent blur-[80px] sm:blur-[110px] opacity-50 rounded-full" />
-          <div className="absolute bottom-[-10%] right-[10%] w-[45%] h-[40%] bg-gradient-to-tl from-[#7B68EE]/6 to-transparent blur-[80px] sm:blur-[120px] opacity-50 rounded-full" />
+<section className="min-h-screen flex flex-col justify-center pt-16 sm:pt-20 relative overflow-hidden">
+  
+  {/* Background */}
+  <div className="absolute inset-0 -z-10 bg-white">
+    <div className="absolute top-[15%] right-[-5%] w-[60%] h-[60%] bg-gradient-to-br from-[#E8001A]/10 to-transparent blur-[80px] sm:blur-[120px] opacity-60 rounded-full" />
+    <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] bg-gradient-to-tr from-[#4285F4]/8 to-transparent blur-[80px] sm:blur-[110px] opacity-50 rounded-full" />
+    <div className="absolute bottom-[-10%] right-[10%] w-[45%] h-[40%] bg-gradient-to-tl from-[#7B68EE]/6 to-transparent blur-[80px] sm:blur-[120px] opacity-50 rounded-full" />
+  </div>
+
+  <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-14 grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
+
+    {/* LEFT CONTENT */}
+    <div className="relative z-10 text-left pt-8 sm:pt-12 lg:pt-0">
+      
+      <FadeUp delay={0.1}>
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8001A]/22 bg-[#E8001A]/[0.07] text-[#E8001A] text-[10px] sm:text-[12px] font-bold tracking-widest uppercase mb-6">
+          <span className="w-1.5 h-1.5 bg-[#E8001A] rounded-full animate-ping" />
+          World's First API Marketing Agency
         </div>
+      </FadeUp>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-14 grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
-          <div className="relative z-10 text-center lg:text-left pt-8 sm:pt-12 lg:pt-0">
-            <FadeUp delay={0.1}>
-              <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border border-[#E8001A]/22 bg-[#E8001A]/[0.07] text-[#E8001A] text-[10px] sm:text-[12.5px] font-bold tracking-widest uppercase mb-6 sm:mb-8">
-                <span className="w-1.5 h-1.5 bg-[#E8001A] rounded-full animate-ping" />
-                World's First API Marketing Agency
-              </div>
-            </FadeUp>
+      <FadeUp delay={0.25}>
+        <h1 className="text-[clamp(2rem,8vw,7rem)] font-black leading-[0.92] tracking-tighter text-[#0A0A0A] mb-6">
+          Scale<br />
+          <span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent italic">
+            Smarter.
+          </span><br />
+          Win Bigger
+        </h1>
+      </FadeUp>
 
-            <FadeUp delay={0.25}>
-              <h1 className="text-[clamp(2rem,8vw,7rem)] font-black leading-[0.92] tracking-tighter text-[#0A0A0A] mb-6 sm:mb-8">
-                Scale<br />
-                <span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent italic">Smarter.</span><br />
-                Win Bigger
-              </h1>
-            </FadeUp>
+      <FadeUp delay={0.4}>
+        <p className="text-base sm:text-lg lg:text-2xl font-light leading-relaxed text-[#6E6E73] max-w-[500px] mb-8">
+          Kerala's first and the world's first data-driven API Marketing agency. We help brands attract, pull, and influence at scale.
+        </p>
+      </FadeUp>
 
-            <FadeUp delay={0.4}>
-              <p className="text-base sm:text-lg lg:text-2xl font-light leading-relaxed text-[#6E6E73] max-w-[500px] mb-8 sm:mb-12 mx-auto lg:mx-0">
-                Kerala's first and the world's first data-driven API Marketing agency. We help brands attract, pull, and influence at scale.
-              </p>
-            </FadeUp>
+      {/* BUTTONS */}
+      <FadeUp delay={0.55}>
+        <div className="flex flex-col sm:flex-row flex-wrap items-start gap-3 sm:gap-4">
+          <a href="#contact" className="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 bg-[#0A0A0A] text-white rounded-full font-bold text-sm sm:text-lg hover:bg-[#E8001A] transition-all hover:scale-105 shadow-xl shadow-black/10">
+            Start your growth →
+          </a>
+          <a href="#api" className="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 border border-[#D2D2D7] text-[#1D1D1F] rounded-full font-bold text-sm sm:text-lg hover:border-[#E8001A] hover:text-[#E8001A] transition-all bg-white/50 backdrop-blur-md">
+            Our framework
+          </a>
+        </div>
+      </FadeUp>
 
-            <FadeUp delay={0.55}>
-              <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4">
-                <a href="#contact" className="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4.5 bg-[#0A0A0A] text-white rounded-full font-bold text-sm sm:text-lg hover:bg-[#E8001A] transition-all hover:scale-105 shadow-xl shadow-black/10">
-                  Start your growth →
-                </a>
-                <a href="#api" className="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4.5 border border-[#D2D2D7] text-[#1D1D1F] rounded-full font-bold text-sm sm:text-lg hover:border-[#E8001A] hover:text-[#E8001A] transition-all bg-white/50 backdrop-blur-md">
-                  Our framework
-                </a>
-              </div>
-            </FadeUp>
+      {/* ✅ MOBILE IMAGE (AFTER BUTTONS) */}
+      <div className="mt-10 lg:hidden">
+        <div className="w-full max-w-[340px] rounded-2xl overflow-hidden border border-black/5 shadow-xl">
+          <img
+            src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776074252/DSC01171_hsyqoo.jpg"
+            alt="Sham SK"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </div>
 
-            <FadeUp delay={0.7}>
-              <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-6 sm:gap-12 lg:gap-16 mt-12 sm:mt-20 pt-8 sm:pt-12 border-t border-[#D2D2D7]">
+      {/* STATS */}
+      <FadeUp delay={0.7}>
+        <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 mt-10 pt-8 border-t border-[#D2D2D7]">
 
-                {/* ITEM */}
-                <div className="text-center lg:text-left">
-                  <div className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-[-2px] text-[#0A0A0A] leading-none">
-                    50<span className="text-[#E8001A] font-extrabold">+</span>
-                  </div>
-                  <div className="text-[11px] sm:text-[13px] font-bold text-[#6E6E73] uppercase tracking-[1px] sm:tracking-[2px] mt-2 sm:mt-3">
-                    Brands Scaled
-                  </div>
-                </div>
-
-                {/* ITEM */}
-                <div className="text-center lg:text-left">
-                  <div className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-[-2px] text-[#0A0A0A] leading-none">
-                    4<span className="text-[#E8001A] font-extrabold">×</span>
-                  </div>
-                  <div className="text-[11px] sm:text-[13px] font-bold text-[#6E6E73] uppercase tracking-[1px] sm:tracking-[2px] mt-2 sm:mt-3">
-                    Average ROAS
-                  </div>
-                </div>
-
-                {/* ITEM */}
-                <div className="text-center lg:text-left">
-                  <div className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-[-2px] text-[#0A0A0A] leading-none">
-                    ₹10<span className="text-[#E8001A] font-extrabold">Cr</span>
-                  </div>
-                  <div className="text-[11px] sm:text-[13px] font-bold text-[#6E6E73] uppercase tracking-[1px] sm:tracking-[2px] mt-2 sm:mt-3">
-                    Ad Spend
-                  </div>
-                </div>
-
-              </div>
-            </FadeUp>
+          <div>
+            <div className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0A0A0A]">50+</div>
+            <div className="text-[11px] font-bold text-[#6E6E73] uppercase mt-2">Brands Scaled</div>
           </div>
 
-          <div className="hidden lg:block relative max-w-[480px] ml-auto w-full">
-            <FadeUp delay={0.4}>
-              <div className="rounded-[28px] sm:rounded-[36px] overflow-hidden border border-black/5 bg-[#F0F0F2] aspect-[0.82] relative group shadow-2xl">
-                <img
-                  src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776074252/DSC01171_hsyqoo.jpg"
-                  alt="Sham SK"
-                  className="w-full h-full duration-1000 group-hover:scale-110"
-                />
-                <div className="absolute inset-x-5 bottom-5 bg-white/90 backdrop-blur-2xl border border-black/5 rounded-[24px] p-6 shadow-xl">
-                  <div className="text-2xl font-black tracking-tighter text-[#0A0A0A]">Sham SK</div>
-                  <div className="text-[13px] font-bold text-[#E8001A] mt-1.5 uppercase tracking-wide">World's First API Marketing Consultant</div>
-                  <div className="text-[12px] font-medium text-[#6E6E73] mt-1 italic">Founder & CEO · Social Bureau</div>
-                </div>
-              </div>
-
-              {/* Floating Stat Cards */}
-              <motion.div
-                animate={{ y: [0, -12, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-10 -left-10 bg-white/95 backdrop-blur-2xl border border-black/5 rounded-2xl p-5 shadow-2xl z-10"
-              >
-                <div className="text-[11px] font-black text-[#6E6E73] tracking-widest uppercase mb-1.5 opacity-60">ROAS Delivered</div>
-                <div className="text-[28px] font-black text-[#0A0A0A] leading-none">4<span className="text-[#E8001A] italic">×</span></div>
-              </motion.div>
-
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-[45%] -right-10 bg-white/95 backdrop-blur-2xl border border-black/5 rounded-2xl p-5 shadow-2xl z-10 flex items-center gap-3"
-              >
-                <div className="w-2.5 h-2.5 bg-[#30D158] rounded-full animate-pulse shadow-[0_0_12px_#30D158]" />
-                <div className="text-[15px] font-extrabold text-[#0A0A0A] tracking-tight">Campaigns Live</div>
-              </motion.div>
-            </FadeUp>
+          <div>
+            <div className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0A0A0A]">4×</div>
+            <div className="text-[11px] font-bold text-[#6E6E73] uppercase mt-2">Average ROAS</div>
           </div>
-        </div>
-      </section>
 
+          <div>
+            <div className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0A0A0A]">₹10Cr</div>
+            <div className="text-[11px] font-bold text-[#6E6E73] uppercase mt-2">Ad Spend</div>
+          </div>
+
+        </div>
+      </FadeUp>
+    </div>
+
+    {/* ✅ DESKTOP IMAGE (RIGHT SIDE) */}
+    <div className="hidden lg:block relative max-w-[480px] ml-auto w-full">
+      <FadeUp delay={0.4}>
+        <div className="rounded-[28px] overflow-hidden border border-black/5 shadow-2xl">
+          <img
+            src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776074252/DSC01171_hsyqoo.jpg"
+            alt="Sham SK"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </FadeUp>
+    </div>
+
+  </div>
+</section>
+      
       {/* --- MARQUEE --- */}
       <MarqueeSection />
 
@@ -676,7 +658,7 @@ export const Home = () => {
             Our <span className="text-[#E8001A] italic">Services</span>
           </h2>          </FadeUp>
           <FadeUp delay={0.2}>
-            <p className="text-base sm:text-lg lg:text-xl font-light text-[#6E6E73] max-w-md mb-6 sm:mb-8 lg:text-right italic">Bespoke marketing solutions engineered for performance and scale.</p>
+            <p className="text-center lg:text-right mx-auto lg:ml-auto text-base sm:text-lg lg:text-xl font-light text-[#6E6E73] max-w-md mb-6 sm:mb-8 italic">Bespoke marketing solutions engineered for performance and scale.</p>
           </FadeUp>
         </div>
 
