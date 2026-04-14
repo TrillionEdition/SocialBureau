@@ -377,7 +377,6 @@ export const Home = () => {
                     Average ROAS
                   </div>
                 </div>
-        {/* ITEM */}
                 <div className="text-center lg:text-left">
                   <div className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-[-2px] text-[#0A0A0A] leading-none">
                     ₹10<span className="text-[#E8001A] font-extrabold">Cr</span>
