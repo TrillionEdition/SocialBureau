@@ -316,7 +316,7 @@ export const Home = () => {
       />
       <SchemaMarkup data={homepageSchemas} />
 
-<section className="py-6 w-full px-0">
+<section className="w-full px-0">
   <img
     src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776173060/SocialBureau_Vishu_Poster_b86azc.jpg"
     alt="Vish Poster"
@@ -325,7 +325,7 @@ export const Home = () => {
 </section>
      
          {/* --- HERO SECTION --- */}
-<section className="min-h-screen flex flex-col justify-center pt-16 sm:pt-20 relative overflow-hidden">
+<section className="min-h-screen flex flex-col justify-center pt-2 sm:pt-20 relative overflow-hidden">
         {/* Hero Background Gradient Mesh */}
         <div className="absolute inset-0 -z-10 bg-white">
           <div className="absolute top-[15%] right-[-5%] w-[60%] h-[60%] bg-gradient-to-br from-[#E8001A]/10 to-transparent blur-[80px] sm:blur-[120px] opacity-60 rounded-full" />
