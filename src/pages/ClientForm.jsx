@@ -1,7 +1,6 @@
 import { useState } from "react";
 import clientService from "../../services/clientService";
 import { createClickUpTask } from "../../services/clickupServices";
-import Confetti from "react-confetti";
 
 export default function ClientForm() {
   const [socialLinks, setSocialLinks] = useState([]);
