@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useSpring, useInView, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import Seo from "../components/Seo";
 import SchemaMarkup from "../components/SchemaMarkup";
 import { generateHomepageSchemas } from "../../utils/schema";
@@ -65,51 +66,38 @@ const PlatformDetailSection = () => (
 
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
       {[
-        { t: 'Google Partner', d: 'Certified Google Partner with advanced access to Google Ads & Analytics — delivering precision targeting and transparent reporting.', b: '✓ Official Google Partner', c: 'Google', g: 'white', icon: 'google' },
-        { t: 'Meta Business Partner', d: 'Official Meta Business Partner with exclusive access to advanced audience targeting and direct support.', b: '✓ Official Meta Partner', c: 'Meta', g: 'white', icon: 'meta' },
-        { t: 'ClickUp India Partner', d: 'Official ClickUp reseller for India. Get licensed subscriptions with full onboarding, team training, and INR invoicing.', b: '✓ Verified Reseller Partner', c: 'ClickUp', g: 'white', icon: 'clickup' },
-        { t: 'YouTube Certified', d: 'managing video strategy, monetisation, advertising, and channel growth for Kerala\'s leading content creators.', b: '✓ Certified YouTube Partner', c: 'YouTube', g: 'white', icon: 'youtube' }
+        { t: 'Google Partner', d: 'Certified Google Partner with advanced access to Google Ads & Analytics — delivering precision targeting and transparent reporting.', b: '✓ Official Google Partner', c: 'Google', g: 'white', icon: 'google', href: 'https://partners.cloud.google.com' },
+        { t: 'Meta Business Partner', d: 'Official Meta Business Partner with exclusive access to advanced audience targeting and direct support.', b: '✓ Official Meta Partner', c: 'Meta', g: 'white', icon: 'meta', href: 'https://www.facebook.com/business/marketing-partners' },
+        { t: 'ClickUp India Partner', d: 'Official ClickUp reseller for India. Get licensed subscriptions with full onboarding, team training, and INR invoicing.', b: '✓ Verified Reseller Partner', c: 'ClickUp', g: 'white', icon: 'clickup', href: 'https://www.clickup.com' },
+        { t: 'YouTube Certified', d: 'managing video strategy, monetisation, advertising, and channel growth for Kerala\'s leading content creators.', b: '✓ Certified YouTube Partner', c: 'YouTube', g: 'white', icon: 'youtube', href: 'https://www.youtube.com/creators/partner-program/' }
       ].map((plat, i) => (
         <FadeUp key={plat.t} delay={i * 0.1} className="rounded-[40px] overflow-hidden border border-[#D2D2D7] group hover:shadow-2xl transition-all duration-700 bg-white">
-          <div className={`h-64 bg-gradient-to-br ${plat.g} flex flex-col items-center justify-center relative overflow-hidden`}>
-            <div className="absolute inset-0 bg-white/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="relative z-10 transform group-hover:scale-110 transition-transform duration-700 flex flex-col items-center gap-4">
-              {/* Simplified Logo Represenation */}
-              <a href='google.com/partners/become-a-partner/' target='_blank'>
+          <a href={plat.href} target="_blank" rel="noopener noreferrer" className="block w-full h-full">
+            <div className={`h-64 bg-gradient-to-br ${plat.g} flex flex-col items-center justify-center relative overflow-hidden`}>
+              <div className="absolute inset-0 bg-white/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="relative z-10 transform group-hover:scale-110 transition-transform duration-700 flex flex-col items-center gap-4">
                 {plat.icon === 'google' && (
                   <img src="assets/home/google.png" alt="Google" className="w-60 h-auto" />
                 )}
-              </a>
-              {plat.icon === 'meta' && (
-                <div className="flex items-center gap-3">
-                  <a href='https://www.facebook.com/business/marketing-partners' target='_blank'>
-                    <img src="assets/home/meta.png" alt="Meta" className="w-60 h-auto" />
-                  </a>
-                </div>
-              )}
-              {plat.icon === 'clickup' && (
-                <div className="flex items-center gap-4">
-                  <a href='https://www.clickup.com' target='_blank'>
-                    <img src="assets/home/clickup.jpg" alt="ClickUp" className="w-60 h-auto" />
-                  </a>
-                </div>
-              )}
-              {plat.icon === 'youtube' && (
-                <div className="flex items-center gap-3">
-                  <a href='https://www.youtube.com/creators/partner-program/' target='_blank'>
-                    <img src="assets/home/youtube.png" alt="YouTube" className="w-60 h-auto" />
-                  </a>
-                </div>
-              )}
+                {plat.icon === 'meta' && (
+                  <img src="assets/home/meta.png" alt="Meta" className="w-60 h-auto" />
+                )}
+                {plat.icon === 'clickup' && (
+                  <img src="assets/home/clickup.jpg" alt="ClickUp" className="w-60 h-auto" />
+                )}
+                {plat.icon === 'youtube' && (
+                  <img src="assets/home/youtube.png" alt="YouTube" className="w-60 h-auto" />
+                )}
+              </div>
             </div>
-          </div>
-          <div className="p-12">
-            <h4 className="text-2xl font-black text-[#0A0A0A] mb-3 tracking-tighter">{plat.t}</h4>
-            <p className="text-[16px] font-light text-[#6E6E73] leading-relaxed mb-8">{plat.d}</p>
-            <div className="inline-flex items-center gap-3 text-[11px] font-black text-[#E8001A] bg-[#E8001A]/[0.08] px-5 py-2 rounded-full uppercase tracking-widest border border-[#E8001A]/20">
-              {plat.b}
+            <div className="p-12">
+              <h4 className="text-2xl font-black text-[#0A0A0A] mb-3 tracking-tighter">{plat.t}</h4>
+              <p className="text-[16px] font-light text-[#6E6E73] leading-relaxed mb-8">{plat.d}</p>
+              <div className="inline-flex items-center gap-3 text-[11px] font-black text-[#E8001A] bg-[#E8001A]/[0.08] px-5 py-2 rounded-full uppercase tracking-widest border border-[#E8001A]/20">
+                {plat.b}
+              </div>
             </div>
-          </div>
+          </a>
         </FadeUp>
       ))}
     </div>
@@ -329,161 +317,195 @@ export const Home = () => {
       <SchemaMarkup data={homepageSchemas} />
 
 
- {/* --- HERO SECTION --- */}
+      {/* --- HERO SECTION --- */}
 
-<section className="min-h-screen flex flex-col justify-center pt-16 sm:pt-20 relative overflow-hidden">
-
-
-
-  {/* Background */}
-
-  <div className="absolute inset-0 -z-10 bg-white">
-
-    <div className="absolute top-[15%] right-[-5%] w-[60%] h-[60%] bg-gradient-to-br from-[#E8001A]/10 to-transparent blur-[80px] sm:blur-[120px] opacity-60 rounded-full" />
-
-    <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] bg-gradient-to-tr from-[#4285F4]/8 to-transparent blur-[80px] sm:blur-[110px] opacity-50 rounded-full" />
-
-    <div className="absolute bottom-[-10%] right-[10%] w-[45%] h-[40%] bg-gradient-to-tl from-[#7B68EE]/6 to-transparent blur-[80px] sm:blur-[120px] opacity-50 rounded-full" />
-
-  </div>
+      <section className="min-h-screen flex flex-col justify-center pt-16 sm:pt-20 relative overflow-hidden">
 
 
 
-  <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-14 grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
+        {/* Background */}
 
+        <div className="absolute inset-0 -z-10 bg-white">
 
+          <div className="absolute top-[15%] right-[-5%] w-[60%] h-[60%] bg-gradient-to-br from-[#E8001A]/10 to-transparent blur-[80px] sm:blur-[120px] opacity-60 rounded-full" />
 
-    {/* LEFT CONTENT */}
+          <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] bg-gradient-to-tr from-[#4285F4]/8 to-transparent blur-[80px] sm:blur-[110px] opacity-50 rounded-full" />
 
-    <div className="relative z-10 text-left pt-8 sm:pt-12 lg:pt-0">
-
-
-
-      <FadeUp delay={0.1}>
-
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8001A]/22 bg-[#E8001A]/[0.07] text-[#E8001A] text-[10px] sm:text-[12px] font-bold tracking-widest uppercase mb-6">
-
-          <span className="w-1.5 h-1.5 bg-[#E8001A] rounded-full animate-ping" />
-
-          World's First API Marketing Agency
+          <div className="absolute bottom-[-10%] right-[10%] w-[45%] h-[40%] bg-gradient-to-tl from-[#7B68EE]/6 to-transparent blur-[80px] sm:blur-[120px] opacity-50 rounded-full" />
 
         </div>
 
-      </FadeUp>
+
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-14 grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
 
 
 
-      <FadeUp delay={0.25}>
+          {/* LEFT CONTENT */}
 
-        <h1 className="text-[clamp(2rem,8vw,7rem)] font-black leading-[0.92] tracking-tighter text-[#0A0A0A] mb-6">
-
-          Scale<br />
-
-          <span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent italic">
-
-            Smarter.
-
-          </span><br />
-
-          Win Bigger
-
-        </h1>
-
-      </FadeUp>
+          <div className="relative z-10 text-left pt-8 sm:pt-12 lg:pt-0">
 
 
 
-      <FadeUp delay={0.4}>
+            <FadeUp delay={0.1}>
 
-        <p className="text-base sm:text-lg lg:text-2xl font-light leading-relaxed text-[#6E6E73] max-w-[500px] mb-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8001A]/22 bg-[#E8001A]/[0.07] text-[#E8001A] text-[10px] sm:text-[12px] font-bold tracking-widest uppercase mb-6">
 
-          Kerala's first and the world's first data-driven API Marketing agency. We help brands attract, pull, and influence at scale.
+                <span className="w-1.5 h-1.5 bg-[#E8001A] rounded-full animate-ping" />
 
-        </p>
+                World's First API Marketing Agency
 
-      </FadeUp>
+              </div>
 
-
-
-      {/* BUTTONS */}
-
-      <FadeUp delay={0.55}>
-
-        <div className="flex flex-col sm:flex-row flex-wrap items-start gap-3 sm:gap-4">
-
-          <a href="#contact" className="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 bg-[#0A0A0A] text-white rounded-full font-bold text-sm sm:text-lg hover:bg-[#E8001A] transition-all hover:scale-105 shadow-xl shadow-black/10">
-
-            Start your growth →
-
-          </a>
-
-          <a href="#api" className="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 border border-[#D2D2D7] text-[#1D1D1F] rounded-full font-bold text-sm sm:text-lg hover:border-[#E8001A] hover:text-[#E8001A] transition-all bg-white/50 backdrop-blur-md">
-
-            Our framework
-
-          </a>
-
-        </div>
-
-      </FadeUp>
+            </FadeUp>
 
 
 
-      {/* ✅ MOBILE IMAGE (AFTER BUTTONS) */}
+            <FadeUp delay={0.25}>
 
-      <div className="mt-10 lg:hidden">
+              <h1 className="text-[clamp(2rem,8vw,7rem)] font-black leading-[0.92] tracking-tighter text-[#0A0A0A] mb-6">
 
-        <div className="w-full max-w-[340px] rounded-2xl overflow-hidden border border-black/5 shadow-xl">
+                Scale<br />
 
-          <img
+                <span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent italic">
 
-            src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776074252/DSC01171_hsyqoo.jpg"
+                  Smarter.
 
-            alt="Sham SK"
+                </span><br />
 
-            className="w-full h-full object-cover"
+                Win Bigger
 
-          />
+              </h1>
 
-        </div>
-
-      </div>
+            </FadeUp>
 
 
 
-      {/* STATS */}
+            <FadeUp delay={0.4}>
 
-      <FadeUp delay={0.7}>
+              <p className="text-base sm:text-lg lg:text-2xl font-light leading-relaxed text-[#6E6E73] max-w-[500px] mb-8">
 
-        <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 mt-10 pt-8 border-t border-[#D2D2D7]">
+                Kerala's first and the world's first data-driven API Marketing agency. We help brands attract, pull, and influence at scale.
+
+              </p>
+
+            </FadeUp>
 
 
 
-          <div>
+            {/* BUTTONS */}
 
-            <div className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0A0A0A]">50+</div>
+            <FadeUp delay={0.55}>
 
-            <div className="text-[11px] font-bold text-[#6E6E73] uppercase mt-2">Brands Scaled</div>
+              <div className="flex flex-col sm:flex-row flex-wrap items-start gap-3 sm:gap-4">
+
+                <a href="#contact" className="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 bg-[#0A0A0A] text-white rounded-full font-bold text-sm sm:text-lg hover:bg-[#E8001A] transition-all hover:scale-105 shadow-xl shadow-black/10">
+
+                  Start your growth →
+
+                </a>
+
+                <a href="#api" className="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 border border-[#D2D2D7] text-[#1D1D1F] rounded-full font-bold text-sm sm:text-lg hover:border-[#E8001A] hover:text-[#E8001A] transition-all bg-white/50 backdrop-blur-md">
+
+                  Our framework
+
+                </a>
+
+              </div>
+
+            </FadeUp>
+
+
+
+            {/* ✅ MOBILE IMAGE (AFTER BUTTONS) */}
+
+            <div className="mt-10 lg:hidden">
+
+              <div className="w-full max-w-[340px] rounded-2xl overflow-hidden border border-black/5 shadow-xl">
+
+                <img
+
+                  src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776074252/DSC01171_hsyqoo.jpg"
+
+                  alt="Sham SK"
+
+                  className="w-full h-full object-cover"
+
+                />
+
+              </div>
+
+            </div>
+
+
+
+            {/* STATS */}
+
+            <FadeUp delay={0.7}>
+
+              <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 mt-10 pt-8 border-t border-[#D2D2D7]">
+
+
+
+                <div>
+
+                  <div className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0A0A0A]">50+</div>
+
+                  <div className="text-[11px] font-bold text-[#6E6E73] uppercase mt-2">Brands Scaled</div>
+
+                </div>
+
+
+
+                <div>
+
+                  <div className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0A0A0A]">4×</div>
+
+                  <div className="text-[11px] font-bold text-[#6E6E73] uppercase mt-2">Average ROAS</div>
+
+                </div>
+
+
+
+                <div>
+
+                  <div className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0A0A0A]">₹10Cr</div>
+
+                  <div className="text-[11px] font-bold text-[#6E6E73] uppercase mt-2">Ad Spend</div>
+
+                </div>
+
+
+
+              </div>
+
+            </FadeUp>
 
           </div>
 
 
 
-          <div>
+          {/* ✅ DESKTOP IMAGE (RIGHT SIDE) */}
 
-            <div className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0A0A0A]">4×</div>
+          <div className="hidden lg:block relative max-w-[480px] ml-auto w-full">
 
-            <div className="text-[11px] font-bold text-[#6E6E73] uppercase mt-2">Average ROAS</div>
+            <FadeUp delay={0.4}>
 
-          </div>
+              <div className="rounded-[28px] overflow-hidden border border-black/5 shadow-2xl">
 
+                <img
 
+                  src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776074252/DSC01171_hsyqoo.jpg"
 
-          <div>
+                  alt="Sham SK"
 
-            <div className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0A0A0A]">₹10Cr</div>
+                  className="w-full h-full object-cover"
 
-            <div className="text-[11px] font-bold text-[#6E6E73] uppercase mt-2">Ad Spend</div>
+                />
+
+              </div>
+
+            </FadeUp>
 
           </div>
 
@@ -491,42 +513,8 @@ export const Home = () => {
 
         </div>
 
-      </FadeUp>
+      </section>
 
-    </div>
-
-
-
-    {/* ✅ DESKTOP IMAGE (RIGHT SIDE) */}
-
-    <div className="hidden lg:block relative max-w-[480px] ml-auto w-full">
-
-      <FadeUp delay={0.4}>
-
-        <div className="rounded-[28px] overflow-hidden border border-black/5 shadow-2xl">
-
-          <img
-
-            src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776074252/DSC01171_hsyqoo.jpg"
-
-            alt="Sham SK"
-
-            className="w-full h-full object-cover"
-
-          />
-
-        </div>
-
-      </FadeUp>
-
-    </div>
-
-
-
-  </div>
-
-</section>
-      
       {/* --- MARQUEE --- */}
       <MarqueeSection />
 
@@ -538,109 +526,94 @@ export const Home = () => {
             <p className="text-lg sm:text-2xl font-light text-[#1D1D1F] max-w-2xl mx-auto px-2">Official Partner of the World's Leading Platforms</p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6">
-            {/* GOOGLE */}
-            <motion.div whileHover={{ y: -8 }} className="bg-white rounded-[20px] sm:rounded-[28px] border border-[#D2D2D7] overflow-hidden group hover:shadow-2xl transition-all duration-500">
-              <div className="h-24 sm:h-32 flex items-center justify-center p-4 sm:p-8 transition-colors">
-                <a href='https://partners.cloud.google.com'>
-                  <img className='w-20 sm:w-30' src='assets/home/google.png' alt='Google' />
+            {[
+              {
+                name: 'Google Advertising',
+                img: 'assets/home/google.png',
+                href: 'https://partners.cloud.google.com',
+                status: 'Official Partner',
+                imgClass: 'w-20 sm:w-30'
+              },
+              {
+                name: 'Meta Business',
+                img: 'assets/home/meta.png',
+                href: 'https://www.facebook.com/business/marketing-partners/become-a-partner',
+                status: 'Business Partner',
+                imgClass: 'w-16 sm:w-20'
+              },
+              {
+                name: 'ClickUp Software',
+                img: 'assets/home/clickup.jpg',
+                href: 'https://clickup.com',
+                status: 'Reseller Partner',
+                imgClass: 'w-25',
+                isClickUp: true
+              },
+              {
+                name: 'YouTube Ads',
+                img: 'assets/home/youtube.png',
+                href: 'https://ads.google.com/intl/en_in/start/campaigns/video-ads-gdn/?subid=in-en-adon-yt-sch-a-byb!o3~~1154489075500768~kwd-72156283195328:loc-90~627302844~&&msclkid=f56eafec5bff166b5de1c630b38506ac&gclid=f56eafec5bff166b5de1c630b38506ac&gclsrc=3p.ds&gad_source=7&gad_campaignid=21162634961',
+                status: 'Certified Partner',
+                imgClass: 'w-20 sm:w-30'
+              },
+              {
+                name: 'Social Content',
+                img: 'assets/home/insta.jpg',
+                href: 'https://creators.instagram.com/earn-money/partnership-ads?locale=en_US',
+                status: 'Certified Partner',
+                imgClass: 'w-16 sm:w-22'
+              },
+              {
+                name: 'TikTok',
+                img: 'assets/home/tick.png',
+                href: 'https://www.tiktok.com/business/',
+                status: 'Certified Partner',
+                imgClass: 'w-16 sm:w-22'
+              },
+              {
+                name: 'Reddit',
+                img: 'assets/home/redis.jpg',
+                href: 'https://www.redditinc.com/advertising',
+                status: 'Certified Partner',
+                imgClass: 'w-16 sm:w-27'
+              },
+              {
+                name: 'LinkedIn',
+                img: 'assets/home/linked.png',
+                href: 'https://business.linkedin.com/marketing-solutions',
+                status: 'Certified Partner',
+                imgClass: 'w-16 sm:w-18'
+              },
+              {
+                name: 'X',
+                img: 'assets/home/x.png',
+                href: 'https://business.twitter.com/',
+                status: 'Certified Partner',
+                imgClass: 'w-16 sm:w-17'
+              }
+            ].map((p, i) => (
+              <motion.div
+                key={p.name}
+                whileHover={{ y: -8 }}
+                className={`bg-white rounded-[20px] sm:rounded-[28px] border border-[#D2D2D7] overflow-hidden group hover:shadow-2xl transition-all duration-500 ${i >= 7 ? 'hidden sm:block' : ''}`}
+              >
+                <a href={p.href} target="_blank" rel="noopener noreferrer" className="block w-full h-full">
+                  <div className="h-24 sm:h-32 flex items-center justify-center p-4 sm:p-8 transition-colors">
+                    {p.isClickUp ? (
+                      <div className="flex flex-col items-center gap-2 transform scale-50 sm:scale-75">
+                        <img className={p.imgClass} src={p.img} alt={p.name} />
+                      </div>
+                    ) : (
+                      <img className={p.imgClass} src={p.img} alt={p.name} />
+                    )}
+                  </div>
+                  <div className="p-4 sm:p-6 pt-0 text-center">
+                    <div className="text-[12px] sm:text-[15px] font-black text-[#0A0A0A] mb-1.5 tracking-tight">{p.name}</div>
+                    <div className="inline-block text-[8px] sm:text-[10px] font-black text-[#E8001A] bg-[#E8001A]/[0.08] px-2 sm:px-3 py-0.5 sm:py-1 rounded-full uppercase tracking-widest">{p.status}</div>
+                  </div>
                 </a>
-              </div>
-              <div className="p-4 sm:p-6 pt-0 text-center">
-                <div className="text-[12px] sm:text-[15px] font-black text-[#0A0A0A] mb-1.5 tracking-tight">Google Advertising</div>
-                <div className="inline-block text-[8px] sm:text-[10px] font-black text-[#E8001A] bg-[#E8001A]/[0.08] px-2 sm:px-3 py-0.5 sm:py-1 rounded-full uppercase tracking-widest">Official Partner</div>
-              </div>
-            </motion.div>
-
-            {/* META */}
-            <motion.div whileHover={{ y: -8 }} className="bg-white rounded-[20px] sm:rounded-[28px] border border-[#D2D2D7] overflow-hidden group hover:shadow-2xl transition-all duration-500">
-              <div className="h-24 sm:h-32 flex items-center justify-center p-4 sm:p-8 transition-colors">
-                <a href='https://www.facebook.com/business/marketing-partners/become-a-partner'>
-                  <img className='w-16 sm:w-20' src='assets/home/meta.png' alt='Meta' />
-                </a>
-              </div>
-              <div className="p-4 sm:p-6 pt-0 text-center">
-                <div className="text-[12px] sm:text-[15px] font-black text-[#0A0A0A] mb-1.5 tracking-tight">Meta Business</div>
-                <div className="inline-block text-[8px] sm:text-[10px] font-black text-[#E8001A] bg-[#E8001A]/[0.08] px-2 sm:px-3 py-0.5 sm:py-1 rounded-full uppercase tracking-widest">Business Partner</div>
-              </div>
-            </motion.div>
-
-            {/* CLICKUP */}
-            <motion.div whileHover={{ y: -8 }} className="bg-white rounded-[20px] sm:rounded-[28px] border border-[#D2D2D7] overflow-hidden group hover:shadow-2xl transition-all duration-500">
-              <div className="h-24 sm:h-32 flex items-center justify-center p-4 sm:p-8 transition-colors">
-                <div className="flex flex-col items-center gap-2 transform scale-50 sm:scale-75">
-                  <a href='https://clickup.com/partners'>
-                    <img className='w-25' src='assets/home/clickup.jpg' alt='ClickUp' />
-                  </a></div>
-              </div>
-              <div className="p-4 sm:p-6 pt-0 text-center">
-                <div className="text-[12px] sm:text-[15px] font-black text-[#0A0A0A] mb-1.5 tracking-tight">ClickUp Software</div>
-                <div className="inline-block text-[8px] sm:text-[10px] font-black text-[#E8001A] bg-[#E8001A]/[0.08] px-2 sm:px-3 py-0.5 sm:py-1 rounded-full uppercase tracking-widest">Reseller Partner</div>
-              </div>
-            </motion.div>
-
-            {/* YOUTUBE */}
-            <motion.div whileHover={{ y: -8 }} className="bg-white rounded-[20px] sm:rounded-[28px] border border-[#D2D2D7] overflow-hidden group hover:shadow-2xl transition-all duration-500">
-              <div className="h-24 sm:h-32 flex items-center justify-center p-4 sm:p-8 transition-colors">
-                <a href='https://ads.google.com/intl/en_in/start/campaigns/video-ads-gdn/?subid=in-en-adon-yt-sch-a-byb!o3~~1154489075500768~kwd-72156283195328:loc-90~627302844~&&msclkid=f56eafec5bff166b5de1c630b38506ac&gclid=f56eafec5bff166b5de1c630b38506ac&gclsrc=3p.ds&gad_source=7&gad_campaignid=21162634961'>
-                  <img className='w-20 sm:w-30' src='assets/home/youtube.png' alt='YouTube' /></a>
-              </div>
-              <div className="p-4 sm:p-6 pt-0 text-center">
-                <div className="text-[12px] sm:text-[15px] font-black text-[#0A0A0A] mb-1.5 tracking-tight">YouTube Ads</div>
-                <div className="inline-block text-[8px] sm:text-[10px] font-black text-[#E8001A] bg-[#E8001A]/[0.08] px-2 sm:px-3 py-0.5 sm:py-1 rounded-full uppercase tracking-widest">Certified Partner</div>
-              </div>
-            </motion.div>
-
-            {/* INSTAGRAM */}
-            <motion.div whileHover={{ y: -8 }} className="bg-white rounded-[20px] sm:rounded-[28px] border border-[#D2D2D7] overflow-hidden group hover:shadow-2xl transition-all duration-500">
-              <div className="h-24 sm:h-32 flex items-center justify-center p-4 sm:p-8 transition-colors">
-                <a href='https://creators.instagram.com/earn-money/partnership-ads?locale=en_US'>
-                  <img className='w-16 sm:w-22' src='assets/home/insta.jpg' alt='Instagram' />
-                </a>
-              </div>
-              <div className="p-4 sm:p-6 pt-0 text-center">
-                <div className="text-[12px] sm:text-[15px] font-black text-[#0A0A0A] mb-1.5 tracking-tight">Social Content</div>
-                <div className="inline-block text-[8px] sm:text-[10px] font-black text-[#E8001A] bg-[#E8001A]/[0.08] px-2 sm:px-3 py-0.5 sm:py-1 rounded-full uppercase tracking-widest">Certified Partner</div>
-              </div>
-            </motion.div>
-
-            <motion.div whileHover={{ y: -8 }} className="bg-white rounded-[20px] sm:rounded-[28px] border border-[#D2D2D7] overflow-hidden group hover:shadow-2xl transition-all duration-500">
-              <div className="h-24 sm:h-32 flex items-center justify-center p-4 sm:p-8 transition-colors">
-                <img className='w-16 sm:w-22' src='assets/home/tick.png' alt='TikTok' />
-              </div>
-              <div className="p-4 sm:p-6 pt-0 text-center">
-                <div className="text-[12px] sm:text-[15px] font-black text-[#0A0A0A] mb-1.5 tracking-tight">TikTok</div>
-                <div className="inline-block text-[8px] sm:text-[10px] font-black text-[#E8001A] bg-[#E8001A]/[0.08] px-2 sm:px-3 py-0.5 sm:py-1 rounded-full uppercase tracking-widest">Certified Partner</div>
-              </div>
-            </motion.div>
-
-            <motion.div whileHover={{ y: -8 }} className="bg-white rounded-[20px] sm:rounded-[28px] border border-[#D2D2D7] overflow-hidden group hover:shadow-2xl transition-all duration-500">
-              <div className="h-24 sm:h-32 flex items-center justify-center p-4 sm:p-8 transition-colors">
-                <img className='w-16 sm:w-27' src='assets/home/redis.jpg' alt='Reddit' />
-              </div>
-              <div className="p-4 sm:p-6 pt-0 text-center">
-                <div className="text-[12px] sm:text-[15px] font-black text-[#0A0A0A] mb-1.5 tracking-tight">Reddit</div>
-                <div className="inline-block text-[8px] sm:text-[10px] font-black text-[#E8001A] bg-[#E8001A]/[0.08] px-2 sm:px-3 py-0.5 sm:py-1 rounded-full uppercase tracking-widest">Certified Partner</div>
-              </div>
-            </motion.div>
-
-            <motion.div whileHover={{ y: -8 }} className="bg-white rounded-[20px] sm:rounded-[28px] border border-[#D2D2D7] overflow-hidden group hover:shadow-2xl transition-all duration-500 hidden sm:block">
-              <div className="h-24 sm:h-32 flex items-center justify-center p-4 sm:p-8 transition-colors">
-                <img className='w-16 sm:w-18' src='assets/home/linked.png' alt='LinkedIn' />
-              </div>
-              <div className="p-4 sm:p-6 pt-0 text-center">
-                <div className="text-[12px] sm:text-[15px] font-black text-[#0A0A0A] mb-1.5 tracking-tight">LinkedIn</div>
-                <div className="inline-block text-[8px] sm:text-[10px] font-black text-[#E8001A] bg-[#E8001A]/[0.08] px-2 sm:px-3 py-0.5 sm:py-1 rounded-full uppercase tracking-widest">Certified Partner</div>
-              </div>
-            </motion.div>
-            <motion.div whileHover={{ y: -8 }} className="bg-white rounded-[20px] sm:rounded-[28px] border border-[#D2D2D7] overflow-hidden group hover:shadow-2xl transition-all duration-500 hidden sm:block">
-              <div className="h-24 sm:h-32 flex items-center justify-center p-4 sm:p-8 transition-colors">
-                <img className='w-16 sm:w-17' src='assets/home/x.png' alt='X' />
-              </div>
-              <div className="p-4 sm:p-6 pt-0 text-center">
-                <div className="text-[12px] sm:text-[15px] font-black text-[#0A0A0A] mb-1.5 tracking-tight">X</div>
-                <div className="inline-block text-[8px] sm:text-[10px] font-black text-[#E8001A] bg-[#E8001A]/[0.08] px-2 sm:px-3 py-0.5 sm:py-1 rounded-full uppercase tracking-widest">Certified Partner</div>
-              </div>
-            </motion.div>
+              </motion.div>
+            ))}
           </div>
         </FadeUp>
       </Section>
@@ -761,12 +734,12 @@ export const Home = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-0.5 bg-[#D2D2D7] border border-[#D2D2D7] rounded-[32px] sm:rounded-[40px] overflow-hidden shadow-2xl">
           {[
-            { t: 'API Marketing', d: 'The world\'s first Attract → Pull → Influence framework. Organic-first growth built for niche brands.', b: 'World First', s: 'lg:col-span-2' },
-            { t: 'ClickUp Reselling', d: 'Official India reseller. Licensed ClickUp at the best INR pricing with full local onboarding.', b: 'New' },
-            { t: 'Performance Marketing', d: 'ROI-obsessed Meta, Google & YouTube campaigns. Every rupee tracked and optimized.', b: 'Certified' },
-            { t: 'Social Media', d: 'Full-service strategy, content creation and community management across all major platforms.' },
-            { t: 'Influencer Marketing', d: 'High-impact micro-to-macro campaigns with precision audience matching.' },
-            { t: 'Brand Strategy', d: 'Positioning, identity, and messaging that ensures market dominance.' }
+            { t: 'API Marketing', d: 'The world\'s first Attract → Pull → Influence framework. Organic-first growth built for niche brands.', b: 'World First', s: 'lg:col-span-2', link: '/api-marketing-agency-in-kochi' },
+            { t: 'ClickUp Reselling', d: 'Official India reseller. Licensed ClickUp at the best INR pricing with full local onboarding.', b: 'New', link: '/clickup' },
+            { t: 'Performance Marketing', d: 'ROI-obsessed Meta, Google & YouTube campaigns. Every rupee tracked and optimized.', b: 'Certified', link: '/performance-marketing-agency-in-kochi' },
+            { t: 'Social Media', d: 'Full-service strategy, content creation and community management across all major platforms.', link: '/content-marketing-agency-in-kochi' },
+            { t: 'Influencer Marketing', d: 'High-impact micro-to-macro campaigns with precision audience matching.', link: '/niche-marketing-agency-in-kochi' },
+            { t: 'Brand Strategy', d: 'Positioning, identity, and messaging that ensures market dominance.', link: '#' }
           ].map((s, i) => (
             <motion.div
               key={s.t}
@@ -780,9 +753,9 @@ export const Home = () => {
                 {s.b && <span className="text-[8px] sm:text-[10px] font-black px-2 sm:px-3 py-0.5 sm:py-1 rounded bg-[#E8001A] text-white uppercase tracking-widest">{s.b}</span>}
               </h3>
               <p className="text-[14px] sm:text-[15px] lg:text-[17px] font-light text-[#6E6E73] leading-relaxed mb-8 sm:mb-10 antialiased font-serif italic">{s.d}</p>
-              <a href="#" className="inline-flex items-center gap-3 text-[13px] sm:text-[15px] font-black text-[#E8001A] group-hover:gap-6 transition-all tracking-tighter">
+              <Link to={s.link} className="inline-flex items-center gap-3 text-[13px] sm:text-[15px] font-black text-[#E8001A] group-hover:gap-6 transition-all tracking-tighter">
                 Explore The Service <span className="text-lg">→</span>
-              </a>
+              </Link>
             </motion.div>
           ))}
         </div>
@@ -885,74 +858,43 @@ export const Home = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0.5 bg-[#D2D2D7] border border-[#D2D2D7] rounded-[28px] sm:rounded-[44px] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.15)] bg-white">
-          {/* big tv telungu */}
-          <motion.div whileHover={{ backgroundColor: '#FAFAFA' }} className="bg-white p-4 sm:p-10 flex flex-col items-center justify-center gap-3 sm:gap-6 min-h-[160px] sm:min-h-[220px] relative group border-transparent transition-all duration-300">
-            <img src="assets/home/bigtv.jpg" alt="Big TV" className="w-16 sm:w-20" />
-            <div className="text-[10px] sm:text-[12px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased text-center">Big TV</div>
-            <div className="absolute bottom-0 inset-x-0 h-1.5 bg-[#E8001A] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
+          {[
+            {
+              name: 'Big TV',
+              img: 'assets/home/bigtv.jpg',
+              href: 'https://bigtvlive.com',
+              accent: 'bg-[#E8001A]'
+            },
+            {
+              name: 'Reporter Tv',
+              img: 'assets/home/reporter.png',
+              href: 'https://www.reporterlive.com',
+              accent: 'bg-[#FFA500]'
+            },
+            {
+              name: 'News Tamil',
+              img: 'assets/home/newstam.webp',
+              href: 'https://newstamil.tv/',
+              accent: 'bg-[#E5001A]'
+            }
+          ].map((client) => (
+            <motion.div key={client.name} whileHover={{ backgroundColor: '#FAFAFA' }} className="bg-white relative group border-transparent transition-all duration-300">
+              <a href={client.href} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center gap-3 sm:gap-6 p-4 sm:p-10 min-h-[160px] sm:min-h-[220px] w-full h-full block">
+                <img src={client.img} alt={client.name} className="w-20 sm:w-28 object-contain" />
+                <div className="text-[10px] sm:text-[12px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased text-center">{client.name}</div>
+                <div className={`absolute bottom-0 inset-x-0 h-1.5 ${client.accent} origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700`} />
+              </a>
+            </motion.div>
+          ))}
+
+          {/* Confidential Clients Message */}
+          <motion.div whileHover={{ backgroundColor: '#FAFAFA' }} className="bg-white relative group border-transparent transition-all duration-300 p-6 sm:p-10 flex flex-col items-center justify-center text-center">
+            <h4 className="text-[14px] sm:text-[18px] font-black text-[#0A0A0A] tracking-tighter mb-2 italic">Most of our clients<br />are confidential.</h4>
+            <a href="/contact" className="text-[10px] sm:text-[12px] font-black text-[#E8001A] uppercase tracking-widest hover:underline decoration-2 underline-offset-4 mt-2 transition-all block">
+              Contact us to know more →
+            </a>
+            <div className="absolute bottom-0 inset-x-0 h-1.5 bg-[#4285F4] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
           </motion.div>
-
-          {/*news malayalm */}
-          {/* <motion.div whileHover={{ backgroundColor: '#FAFAFA' }} className="bg-white p-10 flex flex-col items-center justify-center gap-6 min-h-[220px] relative group border-transparent transition-all duration-300"> */}
-          {/* <img src="assets/home/newsmal.jpg" alt="" />
-            <div className="text-[12px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased">News Malayalam</div>
-            <div className="absolute bottom-0 inset-x-0 h-1.5 bg-[#1D1D1F] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
-          </motion.div> */}
-
-          {/* reporter */}
-          <motion.div whileHover={{ backgroundColor: '#FAFAFA' }} className="bg-white p-10 flex flex-col items-center justify-center gap-6 min-h-[220px] relative group border-transparent transition-all duration-300">
-            <img src="assets/home/reporter.png" alt="" />
-            <div className="text-[12px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased">Reporter Tv</div>
-            <div className="absolute bottom-0 inset-x-0 h-1.5 bg-[#FFA500] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
-          </motion.div>
-
-          {/* newstamil */}
-          <motion.div whileHover={{ backgroundColor: '#FAFAFA' }} className="bg-white p-10 flex flex-col items-center justify-center gap-6 min-h-[220px] relative group border-transparent transition-all duration-300">
-            <img src="assets/home/newstam.webp" alt="" />
-            <div className="text-[12px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased">News Tamil</div>
-            <div className="absolute bottom-0 inset-x-0 h-1.5 bg-[#E5001A] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
-          </motion.div>
-
-
-          {/* <motion.div whileHover={{ backgroundColor: '#FAFAFA' }} className="bg-white p-10 flex flex-col items-center justify-center gap-6 min-h-[220px] relative group border-transparent transition-all duration-300">
-            <svg viewBox="0 0 150 42" className="w-[130px] h-[36px]" fill="none">
-              <circle cx="21" cy="21" r="17" fill="#006CB8" />
-              <text x="11" y="27" fontFamily="-apple-system,sans-serif" fontWeight="900" fontSize="13" fill="white">M1</text>
-              <text x="46" y="25" fontFamily="-apple-system,sans-serif" fontWeight="800" fontSize="15" fill="#1D1D1F">MEDIA</text>
-              <text x="46" y="39" fontFamily="-apple-system,sans-serif" fontWeight="800" fontSize="12" fill="#006CB8">ONE</text>
-            </svg>
-            <div className="text-[12px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased">Media One</div>
-            <div className="absolute bottom-0 inset-x-0 h-1.5 bg-[#006CB8] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
-          </motion.div>
-
-          <motion.div whileHover={{ backgroundColor: '#FAFAFA' }} className="bg-white p-10 flex flex-col items-center justify-center gap-6 min-h-[220px] relative group border-transparent transition-all duration-300">
-            <svg viewBox="0 0 150 42" className="w-[130px] h-[36px]" fill="none">
-              <text x="0" y="26" fontFamily="-apple-system,sans-serif" fontWeight="900" fontSize="20" fill="#1D1D1F" letterSpacing="-.3">KAIRALI</text>
-              <text x="0" y="40" fontFamily="-apple-system,sans-serif" fontWeight="500" fontSize="10" fill="#00A651" letterSpacing="3">NEWS TV</text>
-            </svg>
-            <div className="text-[12px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased">Kairali TV</div>
-            <div className="absolute bottom-0 inset-x-0 h-1.5 bg-[#00A651] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
-          </motion.div>
-
-          <motion.div whileHover={{ backgroundColor: '#FAFAFA' }} className="bg-white p-10 flex flex-col items-center justify-center gap-6 min-h-[220px] relative group border-transparent transition-all duration-300">
-            <svg viewBox="0 0 150 42" className="w-[130px] h-[36px]" fill="none">
-              <rect x="0" y="5" width="65" height="28" rx="4" fill="#E5001A" />
-              <text x="7" y="25" fontFamily="-apple-system,sans-serif" fontWeight="900" fontSize="13" fill="white">NEWS18</text>
-              <text x="73" y="24" fontFamily="-apple-system,sans-serif" fontWeight="600" fontSize="12" fill="#555" letterSpacing=".2">KERALA</text>
-            </svg>
-            <div className="text-[12px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased">News18 Kerala</div>
-            <div className="absolute bottom-0 inset-x-0 h-1.5 bg-[#E5001A] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
-          </motion.div>
-
-          <motion.div whileHover={{ backgroundColor: '#FAFAFA' }} className="bg-white p-10 flex flex-col items-center justify-center gap-6 min-h-[220px] relative group border-transparent transition-all duration-300">
-            <svg viewBox="0 0 150 42" className="w-[130px] h-[36px]" fill="none">
-              <text x="0" y="26" fontFamily="-apple-system,sans-serif" fontWeight="900" fontSize="20" fill="#1D1D1F" letterSpacing="1">JANAM</text>
-              <text x="0" y="40" fontFamily="-apple-system,sans-serif" fontWeight="400" fontSize="10" fill="#888" letterSpacing="3">TV</text>
-            </svg>
-            <div className="text-[12px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased">Janam TV</div>
-            <div className="absolute bottom-0 inset-x-0 h-1.5 bg-[#1D1D1F] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
-          </motion.div> */}
-
         </div>
       </Section>
 
@@ -983,8 +925,8 @@ export const Home = () => {
               <a href="mailto:admin@socialbureau.in" className="w-full sm:w-auto px-10 md:px-16 py-5 md:py-6 bg-[#0A0A0A] text-white rounded-full font-black text-xl md:text-2xl hover:bg-[#E8001A] transition-all duration-500 shadow-2xl shadow-black/20">
                 Propose A Project
               </a>
-              <a href="#" className="w-full sm:w-auto px-10 md:px-16 py-5 md:py-6 border-b-4 border-[#0A0A0A] text-[#1D1D1F] font-black text-xl md:text-2xl hover:text-[#E8001A] transition-all duration-300 transform active:translate-y-1">
-                WhatsApp Direct <span className="text-[#E8001A]">→</span>
+              <a href="/client-form" className="w-full sm:w-auto px-10 md:px-16 py-5 md:py-6 border-b-4 border-[#0A0A0A] text-[#1D1D1F] font-black text-xl md:text-2xl hover:text-[#E8001A] transition-all duration-300 transform active:translate-y-1">
+                CSM Integration <span className="text-[#E8001A]">→</span>
               </a>
             </div>
           </FadeUp>
