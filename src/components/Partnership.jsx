@@ -44,6 +44,9 @@ const Partnership = () => {
     },
   ];
 
+  const [dynamicPartners, setDynamicPartners] = useState([]);
+  const [fetching, setFetching] = useState(false);
+
   //state
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
@@ -62,6 +65,25 @@ const Partnership = () => {
 
     return () => clearInterval(interval);
   }, [isPlaying, portfolioData.length]);
+
+  useEffect(() => {
+    const fetchDynamicPartners = async () => {
+      setFetching(true);
+      try {
+        const response = await fetch(`${BASE_URL}/partners`);
+        const data = await response.json();
+        if (data.success) {
+          // Filter out the free ones as per user request
+          setDynamicPartners(data.data.filter(p => p.isFree));
+        }
+      } catch (err) {
+        console.error("Failed to fetch dynamic partners", err);
+      } finally {
+        setFetching(false);
+      }
+    };
+    fetchDynamicPartners();
+  }, []);
 
   const itemsPerPage = 8;
 
@@ -389,12 +411,12 @@ const Partnership = () => {
               >
                 Reset Filters
               </button>
-            </div>
+                                </div>
           )}
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0 border-t border-gray-700 pt-6 sm:pt-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0 border-t border-gray-700 pt-6 sm:pt-8 mb-12">
               <div className="text-gray-500 text-xs sm:text-sm">
                 Showing page {currentPage} of {totalPages}
               </div>
@@ -434,6 +456,59 @@ const Partnership = () => {
               </div>
             </div>
           )}
+        </div>
+
+        {/* COMMUNITY PORTFOLIOS SECTION (FREE) */}
+        {dynamicPartners.length > 0 && (
+          <div className="max-w-7xl mx-auto relative z-10 mt-32 border-t border-gray-800 pt-20">
+            <div className="mb-12">
+              <span className="text-lime-400 text-xs font-bold tracking-[0.3em] uppercase">Community Network</span>
+              <h2 className="text-4xl md:text-5xl font-black text-white mt-4">
+                Partner <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Portfolios</span>
+              </h2>
+              <p className="text-gray-400 mt-4 max-w-2xl">
+                Ready-made portfolios from our growing network of independent partners and creators.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {dynamicPartners.map((item, index) => (
+                 <div
+                   key={item._id}
+                   onClick={() => window.location.href = `/partnership/${item.param}`}
+                   className="group bg-zinc-900/50 border border-zinc-800 rounded-3xl p-6 hover:bg-zinc-800/80 transition-all duration-500 cursor-pointer hover:border-blue-400/50 shadow-xl"
+                 >
+                   <div className="aspect-video rounded-2xl overflow-hidden mb-6 bg-zinc-800">
+                     <img 
+                       src={item.image || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop"} 
+                       alt={item.name}
+                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                     />
+                   </div>
+                   <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors uppercase">{item.name}</h3>
+                   <p className="text-zinc-500 text-sm mb-6 line-clamp-2">{item.subtitle}</p>
+                   <div className="flex items-center justify-between text-[10px] font-bold tracking-widest uppercase text-zinc-600">
+                      <span>{item.category || "Consultant"}</span>
+                      <span className="flex items-center gap-1 text-blue-400">View Portfolio <ChevronRight size={12}/></span>
+                   </div>
+                 </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* GET STARTED CTA */}
+        <div className="max-w-7xl mx-auto flex flex-col items-center justify-center mt-32 relative z-10">
+           <div className="bg-gradient-to-br from-zinc-900 to-black border border-white/5 p-12 rounded-[40px] text-center w-full max-w-3xl">
+              <h3 className="text-3xl font-bold mb-6">Want to create your own?</h3>
+              <p className="text-gray-400 mb-10">Generate a premium, ready-made portfolio page in minutes. Completely free for our partners.</p>
+              <button 
+                onClick={() => window.location.href = "/partners/select-template"}
+                className="px-10 py-4 bg-lime-400 text-black font-black rounded-full hover:bg-white transition-all scale-110 shadow-[0_0_30px_rgba(163,230,53,0.3)]"
+              >
+                Get Started Now
+              </button>
+           </div>
         </div>
 
         <style>{`

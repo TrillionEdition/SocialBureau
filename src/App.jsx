@@ -112,6 +112,12 @@ const StaffDashboard = lazy(() =>
 const SubmitBlog = lazy(() => import("./components/SubmitBlog"));
 const ViewEvents = lazy(() => import("./components/ViewEvents"));
 const WebDevelopment = lazy(() => import("./components/Home/WebDevelopment"));
+const PartnershipTemplateSelector = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnershipTemplateSelector"));
+const PartnershipDataForm = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnershipDataForm"));
+const DynamicPartnershipPage = lazy(() => import("./pages/Partnerships/PartnershipTemplate/DynamicPartnershipPage"));
+const PartnerRegister = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerRegister"));
+const PartnerLogin = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerLogin"));
+const PartnerDashboard = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboard"));
 
 function ConditionalFooter() {
   const location = useLocation();
@@ -364,6 +370,13 @@ function App() {
             <Route path="/partnership/alen-jacob" element={<AlenJacob />} />
             <Route path="/partnership/cheriyan" element={<CheriyanPage />} />
             <Route path="/partnership/sakilan" element={<Sakilan />} />
+            <Route path="/partnership/:slug" element={<DynamicPartnershipPage />} />
+            
+            <Route path="/partners/select-template" element={<PartnershipTemplateSelector />} />
+            <Route path="/partners/create-portfolio" element={<PartnershipDataForm />} />
+            <Route path="/partners/register" element={<PartnerRegister />} />
+            <Route path="/partners/login" element={<PartnerLogin />} />
+            <Route path="/partners/dashboard" element={<PartnerDashboard />} />
             {/* <Route path="/partnership/Partner2" element={<Partner2 />} /> */}
             {/* <Route path="/partnership/Partner3" element={<Partner3 />} />
             <Route path="/partnership/Partner4" element={<Partner4 />} /> */}
