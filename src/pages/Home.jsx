@@ -316,7 +316,15 @@ export const Home = () => {
       />
       <SchemaMarkup data={homepageSchemas} />
 
- {/* --- HERO SECTION --- */}
+<section className="py-6 w-full px-0">
+  <img
+    src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776173060/SocialBureau_Vishu_Poster_b86azc.jpg"
+    alt="Vish Poster"
+    className="block w-full h-auto object-cover"
+  />
+</section>
+     
+         {/* --- HERO SECTION --- */}
 <section className="min-h-screen flex flex-col justify-center pt-16 sm:pt-20 relative overflow-hidden">
         {/* Hero Background Gradient Mesh */}
         <div className="absolute inset-0 -z-10 bg-white">
