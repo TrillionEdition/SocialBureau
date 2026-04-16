@@ -25,6 +25,7 @@ export default function ClientForm() {
     website_url: "",
     current_marketing_description: "",
     monthly_budget_range: "",
+    currency: "INR",
     timeline_to_start: "",
     channels: [],
     goals: []
@@ -75,16 +76,16 @@ export default function ClientForm() {
         dueDate.setDate(dueDate.getDate() + 30); // Default 30 days
 
         const taskData = {
-          clientName: `${form.first_name} ${form.last_name} is on Intake`,
+          clientName: `${form.first_name} ${form.last_name} Intake`,
           clientCompany: form.company_name || 'Unknown',
           status: 'intake',
           dueDate: dueDate.toISOString(),
-          priority: 2 // Default priority
+          priority: 2,
+          notes: `Budget: ${form.currency} ${form.monthly_budget_range}\nIndustry: ${form.industry}\nWebsite: ${form.website_url}\nGoals: ${form.goals.join(", ")}`
         };
         await createClickUpTask(taskData);
       } catch (clickupError) {
         console.error("ClickUp creation failed:", clickupError);
-        // We don't block the UI for ClickUp failure if the main client creation succeeded
       }
 
       setShowConfetti(true);
@@ -110,10 +111,11 @@ export default function ClientForm() {
       });
       setSocialLinks([]);
     } catch (error) {
+      console.error("Form submission error:", error);
       const errorMsg =
-        error.message === "Email already exists"
+        error.message === "Email already exists" || error.error?.includes("email_1 dup key")
           ? "This email is already registered. Please use a different one."
-          : error.message || "Failed to submit form. Please try again.";
+          : error.message || error.error || (typeof error === 'string' ? error : "Failed to submit form. Please try again.");
       setMessage({ type: "error", text: errorMsg });
     } finally {
       setLoading(false);
