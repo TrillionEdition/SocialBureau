@@ -197,12 +197,16 @@ export const Clickup = () => {
         </p>
 
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: '3.5rem' }}>
+          <a href="https://app.clickup.com/login?_gl=1*168xxy9*_gcl_aw*R0NMLjE3NzY0MzE2NjguQ2p3S0NBand0SWZQQmhBekVpd0F2OVJUSnZ0cFQycVhEUWhHQTFQeG5MbWJHNUN4YzJhTnI0RXdHem1QNGlQanBUM1U0bTBiQzVlOGJob0NRRklRQXZEX0J3RQ..*_gcl_au*NDYyMDc0NTkyLjE3NzE5MDc2NzM.">
           <button style={{ background: GRAD, color: '#fff', border: 'none', borderRadius: 6, padding: '0.75rem 1.5rem', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer' }}>
-            Get <a href="https://clickup.com" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', textDecoration: 'none' }}>ClickUp</a> for your team
+            Get ClickUp for your team
           </button>
-          <button style={{ background: 'transparent', color: '#000', border: '1.5px solid #000', borderRadius: 6, padding: '0.75rem 1.5rem', fontWeight: 600, fontSize: '0.9rem', cursor: 'pointer' }}>
+          </a>
+         <a href='/contact'>
+                   <button style={{ background: 'transparent', color: '#000', border: '1.5px solid #000', borderRadius: 6, padding: '0.75rem 1.5rem', fontWeight: 600, fontSize: '0.9rem', cursor: 'pointer' }}>
             Talk to our experts
           </button>
+          </a>
         </div>
 
         <p style={{ fontSize: '0.68rem', letterSpacing: '0.13em', color: '#666', textTransform: 'uppercase', marginBottom: '0.9rem' }}>
@@ -373,9 +377,11 @@ export const Clickup = () => {
           Get <a href="https://clickup.com" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', textDecoration: 'none' }}>ClickUp</a> through India's only official partner. Local support, INR pricing,
           and hands-on implementation — all included.
         </p>
+         <a href="https://app.clickup.com/login?_gl=1*168xxy9*_gcl_aw*R0NMLjE3NzY0MzE2NjguQ2p3S0NBand0SWZQQmhBekVpd0F2OVJUSnZ0cFQycVhEUWhHQTFQeG5MbWJHNUN4YzJhTnI0RXdHem1QNGlQanBUM1U0bTBiQzVlOGJob0NRRklRQXZEX0J3RQ..*_gcl_au*NDYyMDc0NTkyLjE3NzE5MDc2NzM.">
         <button style={{ background: 'transparent', color: '#fff', border: '2px solid #fff', borderRadius: 6, padding: '0.8rem 2rem', fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer' }}>
           Book a free demo
         </button>
+        </a>
         <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.75rem', marginTop: '2.5rem', letterSpacing: '0.06em' }}>
           Official <a href="https://clickup.com" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', textDecoration: 'none' }}>ClickUp</a> Partner &nbsp;·&nbsp; 🇮🇳 India Region &nbsp;·&nbsp; Authorised Reseller
         </p>

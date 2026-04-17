@@ -241,10 +241,16 @@ const SoftwareSection = () => (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-14 grid lg:grid-cols-2 gap-8 sm:gap-16 lg:gap-20 xl:gap-32 items-center relative z-10">
       <FadeUp className="text-center lg:text-left">
         <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-6 sm:mb-8 block opacity-80 decoration-2 underline underline-offset-8 italic">Engineering the Future</span>
-        <h2 className="text-[clamp(2.5rem,10vw,8.5rem)] font-black tracking-tighter leading-[0.8] mb-8 sm:mb-12 italic antialiased">
-          The<br />
-          <span className="bg-gradient-to-tr from-[#FF8A80] via-[#FF5C35] to-[#FF6FCF] bg-clip-text text-transparent underline decoration-[#E8001A]/30">Future</span><br />
-          Of Media.
+     <h2 className="text-[clamp(2.5rem,10vw,8.5rem)] font-black tracking-tighter leading-[0.9] mb-8 sm:mb-12 italic antialiased overflow-visible">          The<br />
+<span className="relative inline-block px-[6px] overflow-visible">
+  <span className="bg-gradient-to-tr from-[#FF8A80] via-[#FF5C35] to-[#FF6FCF] bg-clip-text text-transparent">
+    Future&nbsp;
+  </span>
+
+  {/* custom underline */}
+  <span className="absolute left-0 bottom-[-8px] w-full h-[2px] bg-[#E8001A]/40"></span>
+</span>
+<br />         Of Media.
         </h2>
         <p className="text-base sm:text-lg lg:text-2xl xl:text-3xl font-light text-white/60 mb-12 sm:mb-16 leading-tight italic max-w-lg mx-auto lg:mx-0">
           Social Bureau is engineering a first-of-its-kind software platform to transform how the creator economy and media operate.
@@ -550,7 +556,9 @@ export const Home = () => {
       {/* --- API FRAMEWORK SECTION --- */}
       <Section id="api" className="bg-white">
         <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-24 items-center">
-          <div className="relative w-full sm:w-[400px] lg:w-[500px] aspect-square flex items-center justify-center mx-auto lg:mx-0 rounded-[32px] sm:rounded-[40px] overflow-hidden bg-gradient-to-br from-[#FFF5F5] via-[#FFF0F8] to-[#F5F0FF] border border-[#D2D2D7] shadow-inner">
+          {/* LEFT COLUMN: upleft (top) + bottom-left (below) */}
+          <div className="flex flex-col items-center lg:items-start gap-6 w-full">
+            <div className="relative w-full sm:w-[400px] lg:w-[500px] aspect-square flex items-center justify-center mx-auto lg:mx-0 rounded-[32px] sm:rounded-[40px] overflow-hidden bg-gradient-to-br from-[#FFF5F5] via-[#FFF0F8] to-[#F5F0FF] border border-[#D2D2D7] shadow-inner">
 
             {/* Glow Background FIX */}
             <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(232,0,26,0.15),_transparent)] blur-3xl opacity-40" />
@@ -611,21 +619,66 @@ export const Home = () => {
                 {tag}
               </motion.div>
             ))}
+            </div>
+            {/* bottom-left card (just below upleft) */}
+           
+           
+            <div className="w-full flex justify-center lg:justify-start mt-14">
+  <div className="w-full sm:w-[420px] lg:w-[480px] bg-white/90 backdrop-blur-2xl border border-[#D2D2D7] rounded-3xl shadow-[0_30px_80px_rgba(0,0,0,0.12)] p-6 sm:p-8 lg:p-10 relative overflow-hidden transition-all duration-500 hover:shadow-[0_40px_100px_rgba(232,0,26,0.15)]">
+
+    {/* glow */}
+    <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-[160px] h-[60px] bg-gradient-to-r from-[#E8001A]/30 to-[#FF1493]/30 blur-3xl rounded-full opacity-60" />
+
+    {/* subtle border glow */}
+    <div className="absolute inset-0 rounded-3xl border border-white/40 pointer-events-none" />
+
+    {/* label */}
+    <div className="text-[11px] uppercase tracking-[0.25em] text-[#6E6E73] font-bold mb-3">
+      API Module
+    </div>
+
+    {/* title */}
+    <div className="text-2xl sm:text-3xl font-black text-[#0A0A0A] mb-3 tracking-tight leading-tight">
+      Activate Growth Flow
+    </div>
+
+    {/* description */}
+    <div className="text-[14px] sm:text-[16px] text-[#6E6E73] mb-6 leading-relaxed">
+      Start your API Marketing engine and let your brand attract, engage, and convert high-intent audiences seamlessly.
+    </div>
+
+    {/* button */}
+    <a href='https://docs.google.com/forms/d/e/1FAIpQLSdTQR9NJZMz3KYMwJSCow0EsGP8zUk_m79i4SqRzWVaHts6aA/viewform?usp=header' target="_blank" rel="noopener noreferrer" className="w-full">
+    <button className="w-full py-3 sm:py-3.5 rounded-2xl bg-gradient-to-r from-[#E8001A] to-[#FF4444] text-white font-bold text-[14px] sm:text-[15px] shadow-lg hover:scale-[1.04] hover:shadow-[0_10px_40px_rgba(232,0,26,0.4)] transition-all duration-300">
+      Join the API Revolution
+    </button>
+    </a>
+
+  </div>
+</div>
+          
+          
           </div>
 
+          {/* section parallel (right column) */}
           <div>
             <FadeUp>
               <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-4 sm:mb-6 block opacity-80">Scientific Growth Framework</span>
               <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter leading-[0.9] mb-6 sm:mb-10 text-[#0A0A0A]">
                 The World's First<br />
-                <span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent italic">API Marketing</span><br />
-                Method.
-              </h2>
+               <span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent italic py-1 inline-block">
+                API Marketing
+              </span>Method.
+                 
+                </h2>
+                <span className="text-base sm:text-lg lg:text-2xl font-light text-[#6E6E73] mb-8 sm:mb-12 leading-relaxed">
+  Application Programming Interface
+</span>
               <p className="text-base sm:text-lg lg:text-2xl font-light text-[#6E6E73] mb-8 sm:mb-12 leading-relaxed">
                 Pioneered by Sham SK — a systematic engine that warms audiences before scaling ad spend, ensuring maximum ROAS.
               </p>
 
-              <div className="space-y-1 sm:space-y-2">
+              <div className="space-y-2 sm:space-y-3">
                 {[
                   { l: 'A', t: 'Attract', d: 'Draw in your exact audience through high-intent content and discovery.' },
                   { l: 'P', t: 'Pull', d: 'Engage prospects deeply within a curated brand ecosystem.' },
@@ -663,7 +716,7 @@ export const Home = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-0.5 bg-[#D2D2D7] border border-[#D2D2D7] rounded-[32px] sm:rounded-[40px] overflow-hidden shadow-2xl">
           {[
-            { t: 'API Marketing', d: 'The world\'s first Attract → Pull → Influence framework. Organic-first growth built for niche brands.', b: 'World First', s: 'lg:col-span-2', link: '/api-marketing-agency-in-kochi' },
+            { t: 'API Marketing', d: 'The world\'s first Application Programming Interface-based marketing framework, built on an organic-first approach for scalable growth in niche brands.', b: 'World First', s: 'lg:col-span-2', link: '/api-marketing-agency-in-kochi' },
             { t: 'ClickUp Reselling', d: 'Official India reseller. Licensed ClickUp at the best INR pricing with full local onboarding.', b: 'New', link: '/clickup' },
             { t: 'Performance Marketing', d: 'ROI-obsessed Meta, Google & YouTube campaigns. Every rupee tracked and optimized.', b: 'Certified', link: '/performance-marketing-agency-in-kochi' },
             { t: 'Social Media', d: 'Full-service strategy, content creation and community management across all major platforms.', link: '/content-marketing-agency-in-kochi' },
@@ -764,7 +817,7 @@ export const Home = () => {
                 <a href="/clickup" className="w-full sm:w-auto text-center px-10 sm:px-12 py-4 sm:py-5 bg-[#0A0A0A] text-white rounded-full font-black text-base sm:text-lg hover:bg-[#E8001A] transition-all hover:scale-105 shadow-2xl shadow-[#7B68EE]/20">
                   Get ClickUp India
                 </a>
-                <a href="mailto:info@gmail.com?subject=I%20would%20like%20to%20book%20a%20demo&body=I%20would%20like%20to%20book%20a%20demo" className="w-full sm:w-auto text-center px-10 sm:px-12 py-4 sm:py-5 border border-[#D2D2D7] text-[#1D1D1F] rounded-full font-black text-base sm:text-lg hover:border-[#7B68EE] hover:text-[#7B68EE] transition-all bg-white/50 backdrop-blur-md italic font-bold">
+                <a href="https://app.clickup.com/login?_gl=1*168xxy9*_gcl_aw*R0NMLjE3NzY0MzE2NjguQ2p3S0NBand0SWZQQmhBekVpd0F2OVJUSnZ0cFQycVhEUWhHQTFQeG5MbWJHNUN4YzJhTnI0RXdHem1QNGlQanBUM1U0bTBiQzVlOGJob0NRRklRQXZEX0J3RQ..*_gcl_au*NDYyMDc0NTkyLjE3NzE5MDc2NzM." className="w-full sm:w-auto text-center px-10 sm:px-12 py-4 sm:py-5 border border-[#D2D2D7] text-[#1D1D1F] rounded-full font-black text-base sm:text-lg hover:border-[#7B68EE] hover:text-[#7B68EE] transition-all bg-white/50 backdrop-blur-md italic font-bold">
                   Book a demo
                 </a>
               </div>
