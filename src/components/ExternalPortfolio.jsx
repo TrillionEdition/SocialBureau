@@ -473,8 +473,13 @@ const blogs = [
     image: "https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776140797/fauna_x9veyg.webp",
     link: "https://looplogik.wordpress.com/2026/04/13/fauna-of-mirrors-and-other-stories-work-in-progress",
   },
-
-
+  {
+    id: 14,
+    title: "Beyond Eco-Living- an excerpt",
+    category: "Uncategorized",
+    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776423489/ChatGPT_Image_Apr_17_2026_04_27_00_PM_1_rkmruq.png",
+    link: "https://looplogik.wordpress.com/2026/03/14/beyond-eco-living-an-excerpt",
+  },
 ];
 
 function LatestBlogs() {
