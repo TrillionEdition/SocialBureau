@@ -20,7 +20,9 @@ import Partner1 from "./pages/Partnerships/johnsamuel";
 import GlobalCursor from "./components/GlobalCursor";
 import { Clickup } from "./pages/Clickup";
 import ClientDashboard from "./pages/ClientDashboard";
+import ApiMarketingDashboard from "./pages/ApiMarketingDashboard";
 import PartnershipChatbot from "./components/PartnershipChatbot";
+
 // Lazy-loaded Pages
 const Home = lazy(() =>
   import("./pages/Home").then((module) => ({ default: module.Home })),
@@ -351,6 +353,7 @@ function App() {
 
             <Route path="/client-form" element={<ClientForm />} />
             <Route path="/client-dashboard" element={<ClientDashboard />} />
+            <Route path="/api-marketing-dashboard" element={<AdminRoute><ApiMarketingDashboard /></AdminRoute>} />
 
 
             <Route path="/analytics" element={<AnalyticsWidget />} />

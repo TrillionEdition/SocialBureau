@@ -52,7 +52,7 @@ const videosList = [
   },
 ];
 
-export default function Testimonials() {
+export default function Testimonials({ className = "" }) {
   const [items, setItems] = useState(videosList);
   const containerRef = useRef(null);
   const offsetRef = useRef(0);
@@ -83,10 +83,13 @@ export default function Testimonials() {
   }, []);
 
   return (
-    <section className="max-w-[80vw] bg-black py-12 overflow-hidden px-5 mx-auto flex flex-col">
-      <h2 className="text-xl font-bold mb-6 text-left text-white">
-        Testimonials
-      </h2>
+    <section className={`w-full bg-black py-16 md:py-24 overflow-hidden flex flex-col ${className}`}>
+      <div className="px-4 sm:px-14 w-full mb-10">
+        <h2 className="text-3xl md:text-5xl font-bebas tracking-tight text-white uppercase">
+          Voices of the<br />Algorithm
+        </h2>
+        <div className="h-1 w-20 bg-[#C8102E] mt-4"></div>
+      </div>
       <div
         className="flex gap-6 will-change-transform"
         ref={containerRef}
