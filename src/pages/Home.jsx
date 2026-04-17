@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Seo from "../components/Seo";
 import SchemaMarkup from "../components/SchemaMarkup";
 import { generateHomepageSchemas } from "../../utils/schema";
+import Testimonials from '@/components/Testimonials';
 import { subscribeNewsletter } from "../../services/newsLetterServices";
 import Toast from "../components/Toast";
 
@@ -978,39 +979,7 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* --- FOOTER --- */}
-      {/* <footer className="bg-[#F5F5F7] border-t border-[#D2D2D7] py-20 md:py-28 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-14">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-20 mb-20 md:mb-32">
-            <div className="col-span-1">
-              <div className="font-black text-[28px] tracking-tighter text-[#0A0A0A] mb-6 italic">Social<span className="text-[#E8001A]">Bureau</span></div>
-              <p className="text-[16px] font-light text-[#6E6E73] leading-relaxed max-w-[300px] italic">Kerala's first and the world's first data-driven API Marketing Agency. Official partner of Google, Meta, and ClickUp.</p>
-            </div>
-            {[
-              { title: 'Services', links: ['API Marketing', 'Performance', 'Social Media', 'ClickUp Reselling'] },
-              { title: 'Agency', links: ['About Sham SK', 'Case Studies', 'Software Tech', 'Careers'] },
-              { title: 'Connect', links: ['hello@socialbureau.in', 'Instagram', 'LinkedIn', 'WhatsApp'] }
-            ].map((col) => (
-              <div key={col.title}>
-                <h6 className="text-[13px] font-black text-[#0A0A0A] uppercase tracking-[0.3em] mb-8 opacity-70">{col.title}</h6>
-                <ul className="space-y-4">
-                  {col.links.map((link) => (
-                    <li key={link}><a href="#" className="text-[15px] font-medium text-[#6E6E73] hover:text-[#E8001A] transition-colors">{link}</a></li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-          <div className="pt-12 border-t border-[#D2D2D7] flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
-            <div className="text-[14px] font-medium text-[#6E6E73]">© 2026 Social Bureau Agency. Scaled in Kochi.</div>
-            <div className="text-[12px] font-black text-[#E8001A]/40 uppercase tracking-[0.4em] italic antialiased hidden lg:block">World's First API Marketing Agency</div>
-            <div className="flex gap-10 text-[14px] font-black uppercase tracking-widest text-[#6E6E73]">
-              <a href="#" className="hover:text-[#E8001A] transition-colors">Privacy</a>
-              <a href="#" className="hover:text-[#E8001A] transition-colors">Terms</a>
-            </div>
-          </div>
-        </div>
-      </footer> */}
+      <Testimonials className="w-full" />
     </div>
   );
 };

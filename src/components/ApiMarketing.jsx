@@ -15,6 +15,7 @@ import {
 } from 'chart.js';
 import { Bar, Line, Doughnut } from 'react-chartjs-2';
 import AdChart from './AdChart';
+import apiLeadService from '../../services/apiLeadService';
 
 // Register ChartJS components
 ChartJS.register(
@@ -57,17 +58,42 @@ const ApiMarketing = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const sendEmail = () => {
-    const subject = encodeURIComponent(`New Strategy Call Request - ${formData.businessName}`);
-    const body = encodeURIComponent(
-      `Name: ${formData.name}\r\n` +
-      `Phone/WhatsApp: ${formData.phone}\r\n` +
-      `Business: ${formData.businessName}\r\n` +
-      `Category: ${formData.category}\r\n` +
-      `Monthly Spend: ${formData.monthlySpend}\r\n\r\n` +
-      `Biggest Challenge:\r\n${formData.challenge}`
-    );
-    window.location.href = `mailto:info@socialbureau.in?subject=${subject}&body=${body}`;
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmission = async (e) => {
+    if (e) e.preventDefault();
+
+    if (!formData.name || !formData.phone || !formData.businessName) {
+      alert("Please fill in your name, phone, and business name.");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      await apiLeadService.createLead(formData);
+      setSubmitted(true);
+
+      // Still allow opening mailto if preferred, or just show success
+      const subject = encodeURIComponent(`New Strategy Call Request - ${formData.businessName}`);
+      const body = encodeURIComponent(
+        `Name: ${formData.name}\r\n` +
+        `Phone/WhatsApp: ${formData.phone}\r\n` +
+        `Business: ${formData.businessName}\r\n` +
+        `Category: ${formData.category}\r\n` +
+        `Monthly Spend: ${formData.monthlySpend}\r\n\r\n` +
+        `Biggest Challenge:\r\n${formData.challenge}`
+      );
+      // window.location.href = `mailto:info@socialbureau.in?subject=${subject}&body=${body}`;
+
+      alert("Strategy call requested successfully! We'll contact you within 12 hours.");
+
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("Failed to submit request. Please try again or use WhatsApp.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const platforms = {
@@ -270,11 +296,11 @@ const ApiMarketing = () => {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="font-bebas text-[clamp(2rem,8vw,9rem)] leading-[0.9] tracking-tight text-white mb-6 sm:mb-8 text-center lg:text-left break-words"
+            className="font-bebas text-[clamp(2rem,8vw,9rem)] leading-[0.9] tracking-tight text-white mb-6 sm:mb-8 text-center lg:text-left"
           >
             ALGORITHM<br />
-            <span className="text-[#C8102E]">POWERED</span><br className="lg:hidden" />
-            <span className="text-stroke lg:ml-3 sm:lg:ml-4">MARKETING</span>
+            <span className="text-[#C8102E]">POWERED</span><br />
+            <span className="text-stroke whitespace-nowrap">MARKETING</span>
           </motion.h1>
 
           <motion.p
@@ -518,13 +544,13 @@ const ApiMarketing = () => {
       {/* SUB-SERVICES & DEFINITIONS */}
       <section className="bg-[#080808] py-12 sm:py-16 md:py-20 px-4 sm:px-8 lg:px-14 overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="text-[#C8102E]/75 text-[0.55rem] sm:text-[0.62rem] tracking-[2px] sm:tracking-[3px] uppercase flex items-center gap-2 sm:gap-2.5 mb-3 sm:mb-4 before:content-[''] before:w-4 sm:before:w-6 before:h-[1px] before:bg-[#C8102E]">
+          <div className="text-[#C8102E] text-[0.55rem] sm:text-[0.62rem] tracking-[2px] sm:tracking-[3px] uppercase flex items-center gap-2 sm:gap-2.5 mb-3 sm:mb-4 before:content-[''] before:w-4 sm:before:w-6 before:h-[1px] before:bg-[#C8102E]">
             SocialBureau API Marketing
           </div>
           <h2 className="text-white font-bebas text-[clamp(1.8rem,5vw,3.5rem)] leading-none tracking-[0.5px] sm:tracking-[1px] mb-2 sm:mb-3">
             Sub-Services & <span className="text-[#C8102E]">Definitions</span>
           </h2>
-          <p className="text-white/40 text-[0.75rem] sm:text-[0.88rem] max-w-[700px] leading-[1.75] sm:leading-[1.85] mb-8 sm:mb-12">
+          <p className="text-white/70 text-[0.75rem] sm:text-[0.88rem] max-w-[700px] leading-[1.75] sm:leading-[1.85] mb-8 sm:mb-12">
             Every service SocialBureau delivers under the API Marketing umbrella — explained point by point. Click any service card to read its full definition, what it does, and what outcome it drives for your business.
           </p>
 
@@ -544,7 +570,7 @@ const ApiMarketing = () => {
                 onClick={() => setActiveSubCat(cat.id)}
                 className={`px-3 sm:px-5 py-1.5 sm:py-2 text-[0.55rem] sm:text-[0.68rem] tracking-[1.5px] sm:tracking-[2px] uppercase transition-all border text-nowrap ${activeSubCat === cat.id
                   ? 'bg-[#C8102E] border-[#C8102E] text-white'
-                  : 'bg-white/[0.04] border-white/[0.08] text-white/40 hover:border-[#C8102E]/40 hover:text-white/80'
+                  : 'bg-white/10 border-white/20 text-white/70 hover:border-[#C8102E] hover:text-white font-bold'
                   }`}
               >
                 {cat.l}
@@ -555,48 +581,48 @@ const ApiMarketing = () => {
           {/* Services Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.05]">
             {[
-            {
-              id: "01", cat: "algorithm", catLabel: "Algorithm Prompting", title: "Social Media Algorithm Prompting",
-              short: "Directly instructing platform algorithms using API-level signals to control who sees your content, when, and how often.",
-              full: "Social Media Algorithm Prompting is the practice of communicating precise instructions to platform algorithms — Instagram, Facebook, YouTube, LinkedIn, Google — through their official API layer. Instead of hoping the algorithm distributes your content to the right people, we program it with structured data signals that tell it exactly who your buyer is, where they are, and what triggers their engagement. This is the core differentiator of SocialBureau's approach.",
-              points: ["API signal configuration", "Interest graph mapping", "Engagement triggers", "Time-of-delivery sync", "Cross-platform consistency", "Continuous refinement"],
-              outcome: "Your content reaches the right niche audience every time it is published — not just your existing followers — generating organic discovery."
-            },
-            {
-              id: "02", cat: "campaign", catLabel: "Campaign Management", title: "Campaign Algorithm Configuration",
-              short: "Engineering the precise rules, restrictions, and parameters for every paid campaign through direct API access.",
-              full: "Campaign Algorithm Configuration means we do not simply create an ad and press boost. We architect the entire campaign structure at API level — defining who sees the ad, who is excluded, under what conditions the ad is served, and what conversion event the algorithm should optimise toward.",
-              points: ["Custom parameter configuration", "Exclusion rule architecture", "Conversion event setup", "Budget allocation logic", "Device & placement config", "A/B testing framework"],
-              outcome: "Campaigns that generate qualified enquiries at 3–8× lower cost per lead compared to conventional boosted posts."
-            },
-            {
-              id: "03", cat: "audience", catLabel: "Audience Engineering", title: "Niche Audience Architecture",
-              short: "Building a precise multi-layer audience model based on your exact buyer profile — interest, behaviour, and intent.",
-              full: "Niche Audience Architecture is the process of constructing a detailed, multi-dimensional model of your ideal customer and translating it into API-readable audience parameters. We go beyond basic demographics to map behavioural patterns and platform activity.",
-              points: ["Buyer persona translation", "Interest stacking (10–30 signals)", "Behavioural audience mapping", "Geographic segmentation", "Life-stage intent layers", "Lookalike modelling"],
-              outcome: "Your marketing budget reaches only the people who are statistically most likely to buy from you — eliminating waste."
-            },
-            {
-              id: "04", cat: "content", catLabel: "Content & Feed", title: "Social Feed Engineering",
-              short: "Configuring how, when, and to whom organic content is distributed by the platform's feed algorithm.",
-              full: "Social Feed Engineering is the discipline of programming the platform's organic distribution engine. We override defaults with structured feed signals — hashtags, engagement velocity, and format signals — that instruct the algorithm to push content efficiently.",
-              points: ["Hashtag taxonomy architecture", "Publishing time optimisation", "Content format selection", "Engagement velocity seeding", "Caption signal structure", "Cross-platform adaptation"],
-              outcome: "Organic content reaches new niche audiences outside your follower base with every publish — growing brand discovery."
-            },
-            {
-              id: "05", cat: "audience", catLabel: "Audience Engineering", title: "Geo-Targeted Audience Mapping",
-              short: "Identifying exactly where your buyers are located across India — city, district, PIN code, or radius.",
-              full: "Geo-Targeted Audience Mapping uses location intelligence data from platform APIs to identify where your niche buyers are geographically concentrated and restricts campaign delivery precisely to those zones for maximum leverage.",
-              points: ["PIN code level targeting", "Radius targeting (500m – 50km)", "Geographic bid modifiers", "Location exclusion rules", "Multi-region architecture", "Tier-specific strategies"],
-              outcome: "Your ad budget is concentrated only in locations where your real buyers are — dramatically reducing wasted spend."
-            },
-            {
-              id: "06", cat: "campaign", catLabel: "Retargeting & Funnel Sequencing",
-              short: "Programmatically re-engaging people who have already shown interest with stage-specific messaging.",
-              full: "Retargeting & Funnel Sequencing uses API-level pixel and event tracking to identify previous interactions and delivers a sequenced series of messages designed to move users toward a purchase decision.",
-              points: ["Pixel & Tag setup", "Watch time segmentation", "Engagement-based pools", "Sequential ad delivery", "Cart abandonment flows", "Frequency cap config"],
-              outcome: "Converts warm audiences into buyers — typically delivering 2–4× higher conversion rate compared to cold campaigns."
-            },
+              {
+                id: "01", cat: "algorithm", catLabel: "Algorithm Prompting", title: "Social Media Algorithm Prompting",
+                short: "Directly instructing platform algorithms using API-level signals to control who sees your content, when, and how often.",
+                full: "Social Media Algorithm Prompting is the practice of communicating precise instructions to platform algorithms — Instagram, Facebook, YouTube, LinkedIn, Google — through their official API layer. Instead of hoping the algorithm distributes your content to the right people, we program it with structured data signals that tell it exactly who your buyer is, where they are, and what triggers their engagement. This is the core differentiator of SocialBureau's approach.",
+                points: ["API signal configuration", "Interest graph mapping", "Engagement triggers", "Time-of-delivery sync", "Cross-platform consistency", "Continuous refinement"],
+                outcome: "Your content reaches the right niche audience every time it is published — not just your existing followers — generating organic discovery."
+              },
+              {
+                id: "02", cat: "campaign", catLabel: "Campaign Management", title: "Campaign Algorithm Configuration",
+                short: "Engineering the precise rules, restrictions, and parameters for every paid campaign through direct API access.",
+                full: "Campaign Algorithm Configuration means we do not simply create an ad and press boost. We architect the entire campaign structure at API level — defining who sees the ad, who is excluded, under what conditions the ad is served, and what conversion event the algorithm should optimise toward.",
+                points: ["Custom parameter configuration", "Exclusion rule architecture", "Conversion event setup", "Budget allocation logic", "Device & placement config", "A/B testing framework"],
+                outcome: "Campaigns that generate qualified enquiries at 3–8× lower cost per lead compared to conventional boosted posts."
+              },
+              {
+                id: "03", cat: "audience", catLabel: "Audience Engineering", title: "Niche Audience Architecture",
+                short: "Building a precise multi-layer audience model based on your exact buyer profile — interest, behaviour, and intent.",
+                full: "Niche Audience Architecture is the process of constructing a detailed, multi-dimensional model of your ideal customer and translating it into API-readable audience parameters. We go beyond basic demographics to map behavioural patterns and platform activity.",
+                points: ["Buyer persona translation", "Interest stacking (10–30 signals)", "Behavioural audience mapping", "Geographic segmentation", "Life-stage intent layers", "Lookalike modelling"],
+                outcome: "Your marketing budget reaches only the people who are statistically most likely to buy from you — eliminating waste."
+              },
+              {
+                id: "04", cat: "content", catLabel: "Content & Feed", title: "Social Feed Engineering",
+                short: "Configuring how, when, and to whom organic content is distributed by the platform's feed algorithm.",
+                full: "Social Feed Engineering is the discipline of programming the platform's organic distribution engine. We override defaults with structured feed signals — hashtags, engagement velocity, and format signals — that instruct the algorithm to push content efficiently.",
+                points: ["Hashtag taxonomy architecture", "Publishing time optimisation", "Content format selection", "Engagement velocity seeding", "Caption signal structure", "Cross-platform adaptation"],
+                outcome: "Organic content reaches new niche audiences outside your follower base with every publish — growing brand discovery."
+              },
+              {
+                id: "05", cat: "audience", catLabel: "Audience Engineering", title: "Geo-Targeted Audience Mapping",
+                short: "Identifying exactly where your buyers are located across India — city, district, PIN code, or radius.",
+                full: "Geo-Targeted Audience Mapping uses location intelligence data from platform APIs to identify where your niche buyers are geographically concentrated and restricts campaign delivery precisely to those zones for maximum leverage.",
+                points: ["PIN code level targeting", "Radius targeting (500m – 50km)", "Geographic bid modifiers", "Location exclusion rules", "Multi-region architecture", "Tier-specific strategies"],
+                outcome: "Your ad budget is concentrated only in locations where your real buyers are — dramatically reducing wasted spend."
+              },
+              {
+                id: "06", cat: "campaign", catLabel: "Retargeting & Funnel Sequencing",
+                short: "Programmatically re-engaging people who have already shown interest with stage-specific messaging.",
+                full: "Retargeting & Funnel Sequencing uses API-level pixel and event tracking to identify previous interactions and delivers a sequenced series of messages designed to move users toward a purchase decision.",
+                points: ["Pixel & Tag setup", "Watch time segmentation", "Engagement-based pools", "Sequential ad delivery", "Cart abandonment flows", "Frequency cap config"],
+                outcome: "Converts warm audiences into buyers — typically delivering 2–4× higher conversion rate compared to cold campaigns."
+              },
               {
                 id: "07", cat: "data", catLabel: "Data & Analytics", title: "API Performance Analytics",
                 short: "Real-time tracking, attribution, and reporting of every campaign parameter for full visibility.",
@@ -687,18 +713,18 @@ const ApiMarketing = () => {
                 <div
                   key={svc.id}
                   onClick={() => setExpandedSvc(expandedSvc === svc.id ? null : svc.id)}
-                  className={`bg-[#080808] p-8 border-t-2 transition-all cursor-pointer group flex flex-col ${expandedSvc === svc.id ? 'border-[#C8102E] bg-[#C8102E]/[0.06]' : 'border-transparent hover:border-[#C8102E]/40 hover:bg-[#C8102E]/[0.02]'
+                  className={`bg-[#080808] p-8 border-t-2 transition-all cursor-pointer group flex flex-col ${expandedSvc === svc.id ? 'border-[#C8102E] bg-[#C8102E]/10' : 'border-white/10 hover:border-[#C8102E] hover:bg-white/[0.03]'
                     }`}
                 >
-                  <div className="text-[#C8102E]/60 text-[0.58rem] tracking-[2.5px] uppercase mb-3">{svc.catLabel}</div>
+                  <div className="text-[#C8102E] text-[0.58rem] tracking-[2.5px] uppercase mb-3 font-bold">{svc.catLabel}</div>
                   <div className="font-bebas text-5xl leading-none mb-2 transition-all duration-300 group-hover:scale-110 text-[#C8102E] italic">
                     {String(i + 1).padStart(2, '0')}
                   </div>
-                  <h4 className="text-white font-bebas text-xl tracking-[1px] mb-3 leading-tight">{svc.title || svc.catLabel}</h4>
-                  <p className="text-white/35 text-[0.78rem] leading-relaxed mb-6">{svc.short}</p>
+                  <h4 className="text-white text-xl tracking-[1px] mb-3 leading-tight font-bold">{svc.title || svc.catLabel}</h4>
+                  <p className="text-white/70 text-[0.78rem] leading-relaxed mb-6 font-medium">{svc.short}</p>
 
-                  <div className="mt-auto pt-4 border-t border-white/[0.05] flex items-center gap-2 text-[0.62rem] tracking-[2px] uppercase text-[#C8102E]/50 group-hover:text-[#C8102E] transition-colors">
-                    <div className={`w-4 h-4 border border-[#C8102E]/30 flex items-center justify-center text-[10px] transition-all ${expandedSvc === svc.id ? 'bg-[#C8102E] text-white border-[#C8102E]' : 'text-[#C8102E]'}`}>
+                  <div className="mt-auto pt-4 border-t border-white/10 flex items-center gap-2 text-[0.62rem] tracking-[2px] uppercase text-[#C8102E] font-bold group-hover:text-white transition-colors">
+                    <div className={`w-4 h-4 border border-[#C8102E] flex items-center justify-center text-[10px] transition-all ${expandedSvc === svc.id ? 'bg-[#C8102E] text-white' : 'text-[#C8102E]'}`}>
                       {expandedSvc === svc.id ? '−' : '+'}
                     </div>
                     {expandedSvc === svc.id ? 'Close Definition' : 'Read Full Definition'}
@@ -710,21 +736,21 @@ const ApiMarketing = () => {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden mt-6 pt-6 border-t border-white/[0.06]"
+                        className="overflow-hidden mt-6 pt-6 border-t border-white/10"
                       >
-                        <p className="text-white/45 text-[0.8rem] leading-relaxed mb-6">
+                        <p className="text-white/80 text-[0.8rem] leading-relaxed mb-6">
                           {svc.full}
                         </p>
                         <ul className="space-y-2 mb-6">
                           {svc.points.map((p, i) => (
-                            <li key={i} className="text-white/35 text-[0.75rem] flex items-start gap-2">
-                              <span className="text-[#C8102E]">→</span> {p}
+                            <li key={i} className="text-white/60 text-[0.75rem] flex items-start gap-2">
+                              <span className="text-[#C8102E] font-bold">→</span> {p}
                             </li>
                           ))}
                         </ul>
-                        <div className="bg-[#C8102E]/[0.08] border-l-2 border-[#C8102E] p-4">
-                          <div className="text-[#C8102E]/70 text-[0.58rem] tracking-[2px] uppercase mb-1">Business Outcome</div>
-                          <p className="text-white/50 text-[0.76rem] leading-relaxed">{svc.outcome}</p>
+                        <div className="bg-[#C8102E]/10 border-l-2 border-[#C8102E] p-4">
+                          <div className="text-[#C8102E] text-[0.58rem] tracking-[2px] uppercase mb-1 font-black">Business Outcome</div>
+                          <p className="text-white/90 text-[0.76rem] leading-relaxed font-semibold">{svc.outcome}</p>
                         </div>
                       </motion.div>
                     )}
@@ -1316,10 +1342,11 @@ const ApiMarketing = () => {
                 />
               </div>
               <button
-                onClick={sendEmail}
-                className="w-full bg-[#C8102E] text-white px-10 py-5 uppercase text-[0.7rem] tracking-[3px] hover:bg-[#FF2244] transition-colors font-semibold"
+                onClick={handleSubmission}
+                disabled={submitting}
+                className={`w-full bg-[#C8102E] text-white px-10 py-5 uppercase text-[0.7rem] tracking-[3px] hover:bg-[#FF2244] transition-colors font-semibold ${submitting ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
-                Request Strategy Call →
+                {submitting ? 'Submitting...' : 'Request Strategy Call →'}
               </button>
             </div>
 
