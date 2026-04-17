@@ -21,6 +21,7 @@ import GlobalCursor from "./components/GlobalCursor";
 import { Clickup } from "./pages/Clickup";
 import ClientDashboard from "./pages/ClientDashboard";
 import ApiMarketingDashboard from "./pages/ApiMarketingDashboard";
+import MediaDashboard from "./pages/MediaDashboard";
 import PartnershipChatbot from "./components/PartnershipChatbot";
 
 // Lazy-loaded Pages
@@ -354,6 +355,7 @@ function App() {
             <Route path="/client-form" element={<ClientForm />} />
             <Route path="/client-dashboard" element={<ClientDashboard />} />
             <Route path="/api-marketing-dashboard" element={<AdminRoute><ApiMarketingDashboard /></AdminRoute>} />
+            <Route path="/media-dashboard" element={<AdminRoute><MediaDashboard /></AdminRoute>} />
 
 
             <Route path="/analytics" element={<AnalyticsWidget />} />

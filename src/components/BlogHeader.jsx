@@ -2,80 +2,67 @@ import React, { useState, useEffect } from "react";
 
 export default function BlogHeader() {
   const [loaded, setLoaded] = useState(false);
+  const [time, setTime] = useState(new Date().toLocaleTimeString());
 
   useEffect(() => {
-    // Small timeout to ensure the browser is ready for the transition
     const timer = setTimeout(() => setLoaded(true), 100);
-    return () => clearTimeout(timer);
+    const clock = setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(clock);
+    };
   }, []);
 
   return (
-    <div className="bg-[#FCFCFC] text-[#1a1a1a] overflow-hidden">
-      <section className="relative h-[75vh] flex items-center justify-center border-b border-gray-100">
-        
-        {/* Background with Cinematic Zoom */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <img
-            src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=2000" 
-            alt="Workspace"
-            className={`w-full h-full object-cover transition-transform duration-[3000ms] ease-out ${
-              loaded ? "scale-110 opacity-20" : "scale-100 opacity-0"
-            }`}
-          />
-          {/* Soft Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-[#FCFCFC]/80 to-[#FCFCFC]"></div>
+    <div className="bg-[#FFFFFF] text-[#1a1a1a] overflow-hidden font-sans selection:bg-[#ff0000] selection:text-white">
+
+
+
+      <section className="relative min-h-[85vh] flex flex-col items-center justify-center px-4 pt-10 pb-10">
+
+        {/* Minimalist Grid Pattern Background */}
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03]">
+          <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(#000 1.5px, transparent 1.5px)', backgroundSize: '60px 60px' }}></div>
         </div>
 
-        <div className="relative z-10 text-center px-4 max-w-5xl">
-          {/* 1. Staggered Red Line */}
-          <div className="flex justify-center items-center mb-8">
-            <div 
-              className={`h-[2px] bg-[#ff0000] transition-all duration-1000 delay-300 ease-out ${
-                loaded ? "w-16 opacity-100" : "w-0 opacity-0"
-              }`}
-            ></div>
+        <div className="relative z-10 w-full max-w-7xl mx-auto text-center">
+
+          <div className="inline-flex items-center gap-4 mb-12">
+            <div className="h-[1px] w-12 bg-gray-200"></div>
+            <span className={`text-[11px] font-black uppercase tracking-[0.6em] text-gray-300 transition-all duration-1000 delay-300 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              Engineering the Future
+            </span>
+            <div className="h-[1px] w-12 bg-gray-200"></div>
           </div>
-          
-          {/* 2. Staggered Title */}
-          <h1 
-            style={{ fontFamily: "Playfair Display, serif" }} 
-            className={`text-6xl md:text-8xl font-black leading-tight mb-8 tracking-tighter transition-all duration-[1200ms] delay-500 ease-out transform ${
-              loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
-            }`}
+
+          <h1
+            style={{ fontFamily: "'Playfair Display', serif" }}
+            className={`flex flex-col text-[12vw] md:text-[160px] font-black leading-[0.8] tracking-[-0.04em] transition-all duration-[1500ms] delay-500 ease-out transform ${loaded ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"}`}
           >
-            The <span className="italic font-normal">Intelligence</span> Journal
+            <span className="relative">
+              The
+            </span>
+            <span className="text-[#ff0000] italic font-light lowercase my-2 md:my-6">Intelligence</span>
+            <span className="relative">
+              Journal
+            </span>
           </h1>
 
-          {/* 3. Staggered Sub-sentence */}
-          <p 
-            className={`max-w-2xl mx-auto text-lg md:text-xl text-gray-400 font-light tracking-[0.2em] uppercase transition-all duration-[1200ms] delay-700 ease-out transform ${
-              loaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-            }`}
-          >
-            Marketing insights for the <span className="text-black font-semibold">Digital Elite</span>
-          </p>
-        </div>
-        
-        {/* Subtle Scroll Indicator */}
-        <div className={`absolute bottom-10 left-1/2 -translate-x-1/2 transition-opacity duration-1000 delay-[1500ms] ${loaded ? 'opacity-100' : 'opacity-0'}`}>
-          <div className="w-[1px] h-12 bg-gradient-to-b from-[#ff0000] to-transparent"></div>
+          <div className={`mt-20 flex flex-col items-center gap-10 transition-all duration-1000 delay-[1200ms] ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <p className="text-sm md:text-base text-gray-500 max-w-xl font-medium tracking-tight leading-relaxed px-4">
+              Curating high-stakes data, architectural marketing, and human behavior analysis for the digital elite.
+            </p>
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-[1.5px] h-20 bg-gradient-to-b from-[#ff0000] to-transparent"></div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Intro Text - Fades in last */}
-      <section className={`py-24 px-6 bg-white transition-all duration-1000 delay-[1000ms] ${loaded ? 'opacity-100' : 'opacity-0'}`}>
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-2xl md:text-4xl font-light text-gray-800 leading-[1.4] tracking-tight">
-            Welcome to{" "}
-            <a style={{ fontFamily: "MyFont, sans-serif" }} href="https://socialbureau.in" className="relative inline-block group">
-              Social<span className="text-[#ff0000]">B</span>ureau
-              <span className="absolute bottom-0 left-0 w-full h-[1px] bg-gray-200 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
-            </a>{" "}
-            Insights. Real-world data to help you learn, adapt, and evolve.
-          </p>
-        </div>
-      </section>
-    
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,900;1,400;1,900&display=swap');
+      `}} />
     </div>
   );
 }
