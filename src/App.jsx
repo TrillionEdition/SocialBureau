@@ -20,6 +20,7 @@ import Partner1 from "./pages/Partnerships/johnsamuel";
 import GlobalCursor from "./components/GlobalCursor";
 import { Clickup } from "./pages/Clickup";
 import ClientDashboard from "./pages/ClientDashboard";
+import PartnershipChatbot from "./components/PartnershipChatbot";
 // Lazy-loaded Pages
 const Home = lazy(() =>
   import("./pages/Home").then((module) => ({ default: module.Home })),
@@ -180,6 +181,13 @@ function ConditionalNavbar() {
   return shouldHide ? null : <Navbar />;
 }
 
+function ConditionalChatbot() {
+  const location = useLocation();
+  const isPartnershipPage = location.pathname.toLowerCase().startsWith("/partnership");
+
+  return isPartnershipPage ? <PartnershipChatbot /> : null;
+}
+
 const lenisOptions = {
   duration: 1.2,
   easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -208,6 +216,7 @@ function App() {
           theme="dark"
         />
         <ConditionalNavbar />
+        <ConditionalChatbot />
         <ScrollTop />
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
