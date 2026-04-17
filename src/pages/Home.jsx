@@ -112,23 +112,23 @@ const GallerySection = () => (
     </FadeUp>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
       <FadeUp className="lg:col-span-2 lg:row-span-2 rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl relative">
-        <a href="https://www.instagram.com/p/DVdlqEkAd78/?igsh=MXJieGg0YWNheGN3Mw==">
-          <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776057987/suntips_fwlcy9.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Strategy" />
+        <a href="https://www.instagram.com/socialbureau.in/">
+          <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776428582/1000094772.jpg_cpm1zi.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Strategy" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-10">
             <span className="text-white font-black text-lg sm:text-2xl tracking-tighter">SunTips</span>
           </div>
         </a>
       </FadeUp>
       <FadeUp delay={0.1} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-square relative">
-        <a href="https://www.instagram.com/p/DN5XbS9AUnU/?igsh=MW95bXM4OGhuMjZrbg==">
-          <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776057987/Parle_ovp0yu.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Social" />
+        <a href="https://www.instagram.com/socialbureau.in/">
+          <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776428582/1000094774.jpg_tvc7le.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Social" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
-            <span className="text-white font-black text-base sm:text-xl tracking-tighter">Parle-G</span>
+            <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
           </div>
         </a>
       </FadeUp>
       <FadeUp delay={0.2} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-square relative">
-        <a href="https://www.instagram.com/p/DUiYb2MAYee/?igsh=MWQ1djYxM2tyYTNwag==">
+        <a href="https://www.instagram.com/socialbureau.in/">
           <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776057987/sb_dd4gwn.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Performance" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
             <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
@@ -136,18 +136,26 @@ const GallerySection = () => (
         </a>
       </FadeUp>
       <FadeUp delay={0.3} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-video lg:aspect-auto relative min-h-[180px] sm:min-h-[240px]">
-        <a href="https://www.instagram.com/p/DWMEVPOgVcN/?igsh=MXAxbHB4dms2YWlzbg==">
-          <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776057987/suntip_ubjuoy.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Brand" />
+        <a href="https://www.instagram.com/socialbureau.in/">
+          <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776428582/1000094773.jpg_lbz6ws.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Brand" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
-            <span className="text-white font-black text-base sm:text-xl tracking-tighter">SunTips</span>
+            <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
           </div>
         </a>
       </FadeUp>
       <FadeUp delay={0.4} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-video lg:aspect-auto relative min-h-[180px] sm:min-h-[240px]">
-        <a href="https://www.instagram.com/p/DQJzWY4jFlG/?igsh=bm01c2Z6YXdrdXRy">
-          <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776057986/trillion_nj7q09.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Collaboration" />
+        <a href="https://www.instagram.com/socialbureau.in/">
+          <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776428581/1000094771.jpg_hom8pa.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Collaboration" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
-            <span className="text-white font-black text-base sm:text-xl tracking-tighter">TrillionEdition</span>
+            <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
+          </div>
+        </a>
+      </FadeUp>
+      <FadeUp delay={0.4} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-video lg:aspect-auto relative min-h-[180px] sm:min-h-[240px]">
+        <a href="https://www.instagram.com/socialbureau.in/">
+          <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776428581/1000094775.jpg_dxbmyx.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Collaboration" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
+            <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
           </div>
         </a>
       </FadeUp>
@@ -315,17 +323,17 @@ export const Home = () => {
         canonicalUrl="https://www.socialbureau.in"
       />
       <SchemaMarkup data={homepageSchemas} />
-     
-         {/* --- HERO SECTION --- */}
-<section className="min-h-screen flex flex-col justify-center pt-2 sm:pt-20 relative overflow-hidden">
+
+      {/* --- HERO SECTION --- */}
+      <section className="min-h-screen flex flex-col justify-center pt-2 sm:pt-20 relative overflow-hidden">
         {/* Hero Background Gradient Mesh */}
         <div className="absolute inset-0 -z-10 bg-white">
           <div className="absolute top-[15%] right-[-5%] w-[60%] h-[60%] bg-gradient-to-br from-[#E8001A]/10 to-transparent blur-[80px] sm:blur-[120px] opacity-60 rounded-full" />
           <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] bg-gradient-to-tr from-[#4285F4]/8 to-transparent blur-[80px] sm:blur-[110px] opacity-50 rounded-full" />
           <div className="absolute bottom-[-10%] right-[10%] w-[45%] h-[40%] bg-gradient-to-tl from-[#7B68EE]/6 to-transparent blur-[80px] sm:blur-[120px] opacity-50 rounded-full" />
-   
+
         </div>
-  <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-14 grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-14 grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
           <div className="relative z-10 text-center lg:text-left pt-8 sm:pt-12 lg:pt-0">
             <FadeUp delay={0.1}>
               <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border border-[#E8001A]/22 bg-[#E8001A]/[0.07] text-[#E8001A] text-[10px] sm:text-[12.5px] font-bold tracking-widest uppercase mb-6 sm:mb-8">
@@ -347,7 +355,7 @@ export const Home = () => {
                 Kerala's first and the world's first data-driven API Marketing agency. We help brands attract, pull, and influence at scale.
               </p>
             </FadeUp>
-  <FadeUp delay={0.55}>
+            <FadeUp delay={0.55}>
               <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4">
                 <a href="#contact" className="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4.5 bg-[#0A0A0A] text-white rounded-full font-bold text-sm sm:text-lg hover:bg-[#E8001A] transition-all hover:scale-105 shadow-xl shadow-black/10">
                   Start your growth →
@@ -357,9 +365,9 @@ export const Home = () => {
                 </a>
               </div>
             </FadeUp>
-  <FadeUp delay={0.7}>
+            <FadeUp delay={0.7}>
               <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-6 sm:gap-12 lg:gap-16 mt-12 sm:mt-20 pt-8 sm:pt-12 border-t border-[#D2D2D7]">
-          {/* ITEM */}
+                {/* ITEM */}
                 <div className="text-center lg:text-left">
                   <div className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-[-2px] text-[#0A0A0A] leading-none">
                     50<span className="text-[#E8001A] font-extrabold">+</span>
@@ -368,7 +376,7 @@ export const Home = () => {
                     Brands Scaled
                   </div>
                 </div>
-       {/* ITEM */}
+                {/* ITEM */}
                 <div className="text-center lg:text-left">
                   <div className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-[-2px] text-[#0A0A0A] leading-none">
                     4<span className="text-[#E8001A] font-extrabold">×</span>
@@ -385,9 +393,9 @@ export const Home = () => {
                     Ad Spend
                   </div>
                 </div>
- </div>
+              </div>
             </FadeUp>
-          
+
           </div>
 
           {/* Mobile image: show on small screens after the buttons/stats */}
@@ -422,7 +430,7 @@ export const Home = () => {
                   <div className="text-[12px] font-medium text-[#6E6E73] mt-1 italic">Founder & CEO · <a href="https://trillionedition.com" className="text-[#E8001A] ">TrillionEdition</a></div>
                 </div>
               </div>
- {/* Floating Stat Cards */}
+              {/* Floating Stat Cards */}
               <motion.div
                 animate={{ y: [0, -12, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
@@ -431,7 +439,7 @@ export const Home = () => {
                 <div className="text-[11px] font-black text-[#6E6E73] tracking-widest uppercase mb-1.5 opacity-60">ROAS Delivered</div>
                 <div className="text-[28px] font-black text-[#0A0A0A] leading-none">4<span className="text-[#E8001A] italic">×</span></div>
               </motion.div>
-        <motion.div
+              <motion.div
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                 className="absolute top-[45%] -right-10 bg-white/95 backdrop-blur-2xl border border-black/5 rounded-2xl p-5 shadow-2xl z-10 flex items-center gap-3"
@@ -443,7 +451,7 @@ export const Home = () => {
           </div>
 
         </div>
- </section>
+      </section>
       {/* --- MARQUEE --- */}
       <MarqueeSection />
 
@@ -517,6 +525,13 @@ export const Home = () => {
                 name: 'X',
                 img: 'assets/home/x.png',
                 href: 'https://business.twitter.com/',
+                status: 'Certified Partner',
+                imgClass: 'w-16 sm:w-17'
+              },
+              {
+                name: 'Whatsapp',
+                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7_Fd3X61J8NCIMLY9h2vBJfDOip562gQpdg&s',
+                href: 'https://business.whatsapp.com/',
                 status: 'Certified Partner',
                 imgClass: 'w-16 sm:w-17'
               }
@@ -668,7 +683,9 @@ export const Home = () => {
             { t: 'Performance Marketing', d: 'ROI-obsessed Meta, Google & YouTube campaigns. Every rupee tracked and optimized.', b: 'Certified', link: '/performance-marketing-agency-in-kochi' },
             { t: 'Social Media', d: 'Full-service strategy, content creation and community management across all major platforms.', link: '/content-marketing-agency-in-kochi' },
             { t: 'Influencer Marketing', d: 'High-impact micro-to-macro campaigns with precision audience matching.', link: '/niche-marketing-agency-in-kochi' },
-            { t: 'Brand Strategy', d: 'Positioning, identity, and messaging that ensures market dominance.', link: '#' }
+            { t: 'Brand Strategy', d: 'Positioning, identity, and messaging that ensures market dominance.', link: '#' },
+            { t: 'Content Marketing', d: 'Content that converts. We create high-quality, engaging content that attracts, engages, and converts your target audience.', link: '/content-marketing-agency-in-kochi' },
+            { t: 'Web Development', d: 'We build fast, secure, and scalable websites that are designed to convert visitors into customers.', link: '/web-development-agency-in-kochi' }
           ].map((s, i) => (
             <motion.div
               key={s.t}
@@ -782,7 +799,7 @@ export const Home = () => {
           <FadeUp>
             <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.2em] sm:tracking-[0.4em] mb-4 sm:mb-6 block opacity-70 italic">Industry Leaders</span>
             <h2 className="text-4xl sm:text-6xl lg:text-[clamp(60px,10vw,140px)] font-black tracking-tighter text-[#0A0A0A] leading-none mb-6 sm:mb-10 italic antialiased px-2">Trusted by Kerala's<br /><span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent">Media Giants.</span></h2>
-            <p className="text-base sm:text-lg lg:text-3xl font-light text-[#6E6E73] max-w-3xl leading-relaxed italic antialiased font-serif px-2">Powering the digital strategy of India's most-watched news networks.</p>
+            <p className="text-base sm:text-lg lg:text-3xl font-light text-[#6E6E73] leading-relaxed italic antialiased font-serif px-2">Powering the digital strategy of India's most-watched news networks.</p>
           </FadeUp>
         </div>
 
