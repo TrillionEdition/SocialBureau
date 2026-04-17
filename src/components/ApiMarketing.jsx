@@ -961,7 +961,7 @@ const ApiMarketing = () => {
 
               <div className="flex justify-around mb-6">
                 {['Location', 'Behaviour', 'Intent'].map((node, i) => (
-                  <div key={i} className="bg-white/5 border border-white/10 px-3 py-2 text-[0.6rem] text-white/40 min-w-[70px]">
+                  <div key={i} className="bg-white/5 border border-white/10 px-3 py-2 text-[0.6rem] text-white/40 min-w-[70px] hover:bg-[#C8102E] hover:text-white transition-colors rounded">
                     {node}
                   </div>
                 ))}

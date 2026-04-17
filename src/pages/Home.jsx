@@ -4,6 +4,47 @@ import { Link } from 'react-router-dom';
 import Seo from "../components/Seo";
 import SchemaMarkup from "../components/SchemaMarkup";
 import { generateHomepageSchemas } from "../../utils/schema";
+import { subscribeNewsletter } from "../../services/newsLetterServices";
+import Toast from "../components/Toast";
+
+const handleJoinWaitingList = async ({ onResult } = {}) => {
+  let email = null;
+  const storedUser = localStorage.getItem('user');
+  const token = localStorage.getItem('token');
+
+  if (storedUser) {
+    try {
+      const parsed = JSON.parse(storedUser);
+      email = parsed?.email || parsed?.user?.email || parsed?.data?.email;
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  if (!email && token) {
+    email = localStorage.getItem('email') || null;
+  }
+
+  if (email) {
+    try {
+      await subscribeNewsletter(email);
+      onResult?.({ type: 'success', message: 'You are added to the waiting list. We will notify you when we launch!' });
+      return { success: true };
+    } catch (err) {
+      console.error('subscribe error', err);
+      onResult?.({ type: 'error', message: 'Could not save your email. Please try again.' });
+      return { success: false };
+    }
+  }
+
+  const promptEmail = window.prompt('Enter your email to join the waiting list (you will be redirected to login):');
+  if (promptEmail) {
+    const next = window.location.pathname + window.location.search;
+    const loginUrl = `/login?email=${encodeURIComponent(promptEmail)}&next=${encodeURIComponent(next)}`;
+    window.location.href = loginUrl;
+  }
+  return { success: false };
+};
 
 // --- Sub-components ---
 
@@ -220,7 +261,9 @@ const FounderSection = () => (
   </Section>
 );
 
-const SoftwareSection = () => (
+const SoftwareSection = () => {
+  const [toast, setToast] = useState(null);
+  return (
   <section id="software" className="py-16 sm:py-32 lg:py-64 bg-[#0A0A0A] text-white relative overflow-hidden">
     {/* Animated background elements */}
     <div className="absolute inset-0 -z-10 bg-black">
@@ -263,9 +306,9 @@ const SoftwareSection = () => (
         <p className="text-base sm:text-lg lg:text-2xl xl:text-3xl font-light text-white/60 mb-12 sm:mb-16 leading-tight italic max-w-lg mx-auto lg:mx-0">
           Social Bureau is engineering a first-of-its-kind software platform to transform how the creator economy and media operate.
         </p>
-        <a href="mailto:info@gmail.com?subject=req%20for%20joining%20in%20waiting%20list%20for%20api%20marketing&body=i%20would%20like%20to%20get%20a%20short%20list%20in%20api%20marketing%20in%20here" className="inline-block px-8 sm:px-14 py-4 sm:py-6 bg-white text-[#0A0A0A] rounded-full font-black text-base sm:text-xl hover:bg-[#E8001A] hover:text-white transition-all hover:scale-105 shadow-[0_20px_60px_rgba(232,0,26,0.3)]">
-          Join the waitlist
-        </a>
+        <button onClick={() => handleJoinWaitingList({ onResult: setToast })} className="inline-block px-8 sm:px-14 py-4 sm:py-6 bg-white text-[#0A0A0A] rounded-full font-black text-base sm:text-xl hover:bg-[#E8001A] hover:text-white transition-all hover:scale-105 shadow-[0_20px_60px_rgba(232,0,26,0.3)]">
+          Join the waiting List
+        </button>
       </FadeUp>
 
       <div className="grid gap-6 sm:gap-8">
@@ -286,8 +329,10 @@ const SoftwareSection = () => (
         ))}
       </div>
     </div>
+      {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}
   </section>
-);
+  );
+};
 
 const BottomStatsSection = () => (
   <section className="bg-gradient-to-br from-[#0A0A0A] to-[#1A0008] border-y border-white/5 overflow-hidden">
@@ -312,6 +357,7 @@ const BottomStatsSection = () => (
 export const Home = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const homepageSchemas = generateHomepageSchemas();
+  
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
@@ -734,9 +780,9 @@ export const Home = () => {
             { t: 'API Marketing', d: 'The world\'s first Application Programming Interface-based marketing framework, built on an organic-first approach for scalable growth in niche brands.', b: 'World First', s: 'lg:col-span-2', link: '/api-marketing-agency-in-kochi' },
             { t: 'ClickUp Reselling', d: 'Official India reseller. Licensed ClickUp at the best INR pricing with full local onboarding.', b: 'New', link: '/clickup' },
             { t: 'Performance Marketing', d: 'ROI-obsessed Meta, Google & YouTube campaigns. Every rupee tracked and optimized.', b: 'Certified', link: '/performance-marketing-agency-in-kochi' },
-            { t: 'Social Media', d: 'Full-service strategy, content creation and community management across all major platforms.', link: '/content-marketing-agency-in-kochi' },
+            { t: 'Social Media Prompting', d: 'Full-service strategy, content creation and community management across all major platforms.', link: '/content-marketing-agency-in-kochi' },
             { t: 'Influencer Marketing', d: 'High-impact micro-to-macro campaigns with precision audience matching.', link: '/niche-marketing-agency-in-kochi' },
-            { t: 'Brand Strategy', d: 'Positioning, identity, and messaging that ensures market dominance.', link: '#' },
+            { t: 'Brand Connect', d: 'Positioning, identity, and messaging that ensures market dominance.', link: '#' },
             { t: 'Content Marketing', d: 'Content that converts. We create high-quality, engaging content that attracts, engages, and converts your target audience.', link: '/content-marketing-agency-in-kochi' },
             { t: 'Web Development', d: 'We build fast, secure, and scalable websites that are designed to convert visitors into customers.', link: '/web-development-agency-in-kochi' }
           ].map((s, i) => (
