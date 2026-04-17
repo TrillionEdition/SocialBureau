@@ -5,20 +5,24 @@ import Seo from "../components/Seo";
 import SchemaMarkup from "../components/SchemaMarkup";
 import { generateHomepageSchemas } from "../../utils/schema";
 import Testimonials from '@/components/Testimonials';
-import { subscribeNewsletter } from "../../services/newsLetterServices";
+import mediaWaitlistService from "../../services/mediaWaitlistService";
 import Toast from "../components/Toast";
 
 const handleJoinWaitingList = async ({ onResult } = {}) => {
   let email = null;
+  let name = null;
   const storedUser = localStorage.getItem('user');
   const token = localStorage.getItem('token');
 
   if (storedUser) {
     try {
       const parsed = JSON.parse(storedUser);
-      email = parsed?.email || parsed?.user?.email || parsed?.data?.email;
+      // Try to extract from common payload structures
+      const userObj = parsed?.user || parsed?.data || parsed;
+      email = userObj?.email;
+      name = userObj?.name;
     } catch (e) {
-      // ignore
+      console.error('Error parsing stored user', e);
     }
   }
 
@@ -28,12 +32,12 @@ const handleJoinWaitingList = async ({ onResult } = {}) => {
 
   if (email) {
     try {
-      await subscribeNewsletter(email);
-      onResult?.({ type: 'success', message: 'You are added to the waiting list. We will notify you when we launch!' });
+      await mediaWaitlistService.joinWaitlist({ name: name || 'Logged In User', email });
+      onResult?.({ type: 'success', message: 'You are added to the Media Waiting List. We will notify you when we launch!' });
       return { success: true };
     } catch (err) {
-      console.error('subscribe error', err);
-      onResult?.({ type: 'error', message: 'Could not save your email. Please try again.' });
+      console.error('waitlist error', err);
+      onResult?.({ type: 'error', message: 'Could not save your invitation. Please try again.' });
       return { success: false };
     }
   }

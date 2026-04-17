@@ -13,7 +13,8 @@ const AdminPanel = () => {
         { title: "Testimonials", desc: "Client reviews and feedback", link: "/add-review" },
         { title: "Algorithms", desc: "Manage API Marketing leads", link: "/api-marketing-dashboard" },
         { title: "Client Dashboard", desc: "Manage client data", link: "/client-dashboard" },
-    
+        { title: "Media", desc: "Future of Media waitlist entries", link: "/media-dashboard" },
+
     ];
 
     return (
