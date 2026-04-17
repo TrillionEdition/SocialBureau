@@ -315,14 +315,6 @@ export const Home = () => {
         canonicalUrl="https://www.socialbureau.in"
       />
       <SchemaMarkup data={homepageSchemas} />
-
-<section className="w-full px-0">
-  <img
-    src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776173060/SocialBureau_Vishu_Poster_b86azc.jpg"
-    alt="Vish Poster"
-    className="block w-full h-auto object-cover"
-  />
-</section>
      
          {/* --- HERO SECTION --- */}
 <section className="min-h-screen flex flex-col justify-center pt-2 sm:pt-20 relative overflow-hidden">
