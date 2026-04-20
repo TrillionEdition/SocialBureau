@@ -3,7 +3,7 @@ import Footer from "./Footer";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaCrown, FaDownload, FaGem, FaLeaf, FaMapMarkerAlt, FaMedal, FaPiggyBank, FaRocket, FaStar, FaUserGraduate } from "react-icons/fa";
 import { useQuery } from '@tanstack/react-query';
-import { userDetailsAPI } from "../../services/clickupServices";
+import { userDetailsAPI, userClickupStatsAPI } from "../../services/clickupServices";
 
 
 const LEVELS = [
@@ -83,9 +83,17 @@ export function StaffDashboard() {
   const navigate = useNavigate()
   const user = data?.user
 
-  // Use ClickUp data included in `user` (returned by `userDetailsAPI`) instead
-  // of calling a non-existent `/clickup/stats` endpoint.
-  const clickupStats = data?.clickup;
+  // Non-blocking: fetch ClickUp stats only after user data has loaded (avoids blocking page render)
+  const { data: clickupStats } = useQuery({
+    queryKey: ['clickup-stats', user?.clickupId],
+    queryFn: () => userClickupStatsAPI(user.clickupId),
+    enabled: Boolean(user?.clickupId),
+    staleTime: 1000 * 60 * 15,
+    cacheTime: 1000 * 60 * 60,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  });
 
   // For review carousel
   const [startIdx, setStartIdx] = useState(0);

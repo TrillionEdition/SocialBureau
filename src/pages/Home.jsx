@@ -319,7 +319,7 @@ const SoftwareSection = () => {
       <div className="grid gap-6 sm:gap-8">
         {[
           { t: 'Creator Intelligence Engine', d: 'AI-powered real-time audience analytics, content forecasting, and monetisation optimisation in one command centre.', s: 'In Development' },
-          { t: 'Media Workflow OS', d: 'End-to-end production management — scripting to global distribution, built for the next generation of media hubs.', s: 'Coming 2025' },
+          { t: 'Media Workflow OS', d: 'End-to-end production management — scripting to global distribution, built for the next generation of media hubs.', s: 'Coming 2026' },
           { t: 'API Marketing Dashboard', d: 'The first dedicated tool to execute our proprietary framework — track A, P, and I metrics with clinical accuracy.', s: 'Beta Early 2026' }
         ].map((feat, i) => (
           <FadeUp key={feat.t} delay={0.1 * i} className="bg-white/[0.04] backdrop-blur-3xl border border-white/10 rounded-[28px] sm:rounded-[44px] p-6 sm:p-12 hover:bg-white/[0.08] transition-all duration-700 hover:-translate-x-4 group">
