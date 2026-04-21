@@ -380,7 +380,14 @@ export const Home = () => {
         canonicalUrl="https://www.socialbureau.in"
       />
       <SchemaMarkup data={homepageSchemas} />
-
+<section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
+  <img
+    src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1776763522/Poster_1_1_weggbx.jpg"
+    alt="HR Session Poster"
+    className="block w-full h-auto object-cover"
+  />
+  </a>
+</section>
       {/* --- HERO SECTION --- */}
       <section className="min-h-screen flex flex-col justify-center pt-2 sm:pt-20 relative overflow-hidden">
         {/* Hero Background Gradient Mesh */}
