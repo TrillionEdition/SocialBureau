@@ -381,11 +381,16 @@ export const Home = () => {
       />
       <SchemaMarkup data={homepageSchemas} />
 <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
-  <img
-    src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1776944040/Poster_1_2_twxkga.jpg"
-    alt="HR Session Poster"
-    className="block w-full h-auto object-cover"
-  />
+  <video
+  className="block w-full h-auto object-cover"
+  controls
+  autoPlay
+  loop
+  muted
+>
+  <source src="https://res.cloudinary.com/dtwcgfmar/video/upload/v1777006357/Promo_Video_cib4iq.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
   </a>
 </section>
       {/* --- HERO SECTION --- */}
