@@ -3,7 +3,7 @@ import clientService from "../../services/clientService";
 import { createClickUpTask } from "../../services/clickupServices";
 import Confetti from "react-confetti";
 
-export default function ClientForm() {
+export default function Clientforms() {
   const [socialLinks, setSocialLinks] = useState([]);
   const [socialInput, setSocialInput] = useState("");
   const [loading, setLoading] = useState(false);

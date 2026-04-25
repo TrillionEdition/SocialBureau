@@ -318,24 +318,24 @@ const SoftwareSection = () => {
           </button>
         </FadeUp>
 
-        <div className="grid gap-6 sm:gap-8">
-          {[
-            { t: 'Creator Intelligence Engine', d: 'AI-powered real-time audience analytics, content forecasting, and monetisation optimisation in one command centre.', s: 'In Development' },
-            { t: 'Media Workflow OS', d: 'End-to-end production management — scripting to global distribution, built for the next generation of media hubs.', s: 'Coming 2025' },
-            { t: 'API Marketing Dashboard', d: 'The first dedicated tool to execute our proprietary framework — track A, P, and I metrics with clinical accuracy.', s: 'Beta Early 2026' }
-          ].map((feat, i) => (
-            <FadeUp key={feat.t} delay={0.1 * i} className="bg-white/[0.04] backdrop-blur-3xl border border-white/10 rounded-[28px] sm:rounded-[44px] p-6 sm:p-12 hover:bg-white/[0.08] transition-all duration-700 hover:-translate-x-4 group">
-              <div className="text-[10px] sm:text-[12px] font-black text-[#E8001A] uppercase tracking-[0.25em] mb-4 sm:mb-6 opacity-60 group-hover:opacity-100 transition-opacity italic">Feature Module 0{i + 1}</div>
-              <h4 className="text-xl sm:text-3xl font-black mb-3 sm:mb-4 tracking-tighter text-white/90">{feat.t}</h4>
-              <p className="text-white/40 text-[14px] sm:text-[17px] leading-relaxed mb-8 sm:mb-10 font-light italic">{feat.d}</p>
-              <div className="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-[12px] font-black text-white/20 uppercase tracking-widest group-hover:text-[#E8001A] transition-colors">
-                <span className="w-2.5 h-2.5 bg-[#E8001A] rounded-full animate-ping" />
-                {feat.s}
-              </div>
-            </FadeUp>
-          ))}
-        </div>
+      <div className="grid gap-6 sm:gap-8">
+        {[
+          { t: 'Creator Intelligence Engine', d: 'AI-powered real-time audience analytics, content forecasting, and monetisation optimisation in one command centre.', s: 'In Development' },
+          { t: 'Media Workflow OS', d: 'End-to-end production management — scripting to global distribution, built for the next generation of media hubs.', s: 'Coming 2026' },
+          { t: 'API Marketing Dashboard', d: 'The first dedicated tool to execute our proprietary framework — track A, P, and I metrics with clinical accuracy.', s: 'Beta Early 2026' }
+        ].map((feat, i) => (
+          <FadeUp key={feat.t} delay={0.1 * i} className="bg-white/[0.04] backdrop-blur-3xl border border-white/10 rounded-[28px] sm:rounded-[44px] p-6 sm:p-12 hover:bg-white/[0.08] transition-all duration-700 hover:-translate-x-4 group">
+            <div className="text-[10px] sm:text-[12px] font-black text-[#E8001A] uppercase tracking-[0.25em] mb-4 sm:mb-6 opacity-60 group-hover:opacity-100 transition-opacity italic">Feature Module 0{i + 1}</div>
+            <h4 className="text-xl sm:text-3xl font-black mb-3 sm:mb-4 tracking-tighter text-white/90">{feat.t}</h4>
+            <p className="text-white/40 text-[14px] sm:text-[17px] leading-relaxed mb-8 sm:mb-10 font-light italic">{feat.d}</p>
+            <div className="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-[12px] font-black text-white/20 uppercase tracking-widest group-hover:text-[#E8001A] transition-colors">
+              <span className="w-2.5 h-2.5 bg-[#E8001A] rounded-full animate-ping" />
+              {feat.s}
+            </div>
+          </FadeUp>
+        ))}
       </div>
+    </div>
       {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}
     </section>
   );
@@ -382,7 +382,19 @@ export const Home = () => {
         canonicalUrl="https://www.socialbureau.in"
       />
       <SchemaMarkup data={homepageSchemas} />
-
+<section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
+  <video
+  className="block w-full h-auto object-cover"
+  controls
+  autoPlay
+  loop
+  muted
+>
+  <source src="https://res.cloudinary.com/dtwcgfmar/video/upload/v1777006357/Promo_Video_cib4iq.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+  </a>
+</section>
       {/* --- HERO SECTION --- */}
       <section className="min-h-screen flex flex-col justify-center pt-2 sm:pt-20 relative overflow-hidden">
         {/* Hero Background Gradient Mesh */}
@@ -914,7 +926,7 @@ export const Home = () => {
             {
               name: 'Big TV',
               img: 'assets/home/bigtv.jpg',
-              href: 'https://bigtvlive.com',
+              href: 'https://images.bigtvlive.com/2026/03/BigTvLive-Telugu-Logo-1.png',
               accent: 'bg-[#E8001A]'
             },
             {
