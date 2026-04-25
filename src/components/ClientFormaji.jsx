@@ -269,7 +269,7 @@ export default function AjinorahForm() {
 
 const FormSection = ({ title, children }) => (
     <div className="border-l-2 border-red-500/10 pl-4">
-        <h2 className="text-xs font-black uppercase tracking-widest text-[#ff0000] mb-4">{title}</h2>
+        <h2 className="text-md font-black uppercase tracking-widest text-[#ff0000] mb-4">{title}</h2>
         <div className="space-y-6">{children}</div>
     </div>
 );
