@@ -73,7 +73,9 @@
     "swiper": "^11.2.8",
     "tailwindcss": "^4.1.10",
     "three": "^0.180.0",
-    "tsparticles": "^3.9.1"
+    "tsparticles": "^3.9.1",
+    "postcss": "^8.4.21",
+    "autoprefixer": "^10.4.14"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
@@ -102,3 +104,4 @@
   },
   "homepage": "https://github.com/SocialBureauWeb/SocialBureau#readme"
 }
+
