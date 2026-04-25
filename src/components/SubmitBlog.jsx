@@ -13,6 +13,26 @@ export default function SubmitBlog() {
   const queryClient = useQueryClient();
   const editor = useRef(null);
   const [toast, setToast] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const uploadToCloudinary = async (file) => {
+    const data = new FormData();
+    data.append('file', file);
+    data.append('upload_preset', 'social_bureau');
+    data.append('cloud_name', 'dtwcgfmar');
+
+    try {
+      const res = await fetch('https://api.cloudinary.com/v1_1/dtwcgfmar/image/upload', {
+        method: 'POST',
+        body: data
+      });
+      const result = await res.json();
+      return result.secure_url;
+    } catch (err) {
+      console.error('Upload failed', err);
+      return null;
+    }
+  };
 
   useEffect(() => {
     const userData = getUserData();
@@ -113,7 +133,7 @@ export default function SubmitBlog() {
     );
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.title.trim()) {
@@ -128,7 +148,7 @@ export default function SubmitBlog() {
       setToast({ type: "error", message: "Featured image is required" });
       return;
     }
-    // Ensure content isn't empty (strip tags and check length)
+    
     const plainContent = content.replace(/<[^>]*>/g, '').trim();
     if (!plainContent) {
       setToast({ type: "error", message: "Content is required" });
@@ -139,23 +159,36 @@ export default function SubmitBlog() {
       return;
     }
 
-    // Convert single HTML content to section format expected by backend
-    const contentSection = [{
-      type: 'text',
-      text: content,
-      heading: 'none',
-    }];
+    setIsUploading(true);
+    setToast({ type: "loading", message: "Securing image link..." });
 
-    const blogData = {
-      ...formData,
-      image: imageFile,
-      content: contentSection, // Send as array with single section
-      keywords,
-      childBlogs: selectedChildBlogs,
-      author: formData.author.trim() || 'SocialBureau Team',
-    };
+    try {
+        const imageUrl = await uploadToCloudinary(imageFile);
+        if (!imageUrl) {
+            throw new Error("Failed to secure image link from Cloudinary");
+        }
 
-    createMutation.mutate(blogData);
+        const contentSection = [{
+            type: 'text',
+            text: content,
+            heading: 'none',
+        }];
+
+        const blogData = {
+            ...formData,
+            image: imageUrl, // Send URL string
+            content: contentSection,
+            keywords,
+            childBlogs: selectedChildBlogs,
+            author: formData.author.trim() || 'SocialBureau Team',
+        };
+
+        createMutation.mutate(blogData);
+    } catch (err) {
+        setToast({ type: "error", message: err.message });
+    } finally {
+        setIsUploading(false);
+    }
   };
 
   return (
@@ -543,10 +576,15 @@ export default function SubmitBlog() {
               <div className="flex gap-4 pt-4">
                 <button
                   type="submit"
-                  disabled={createMutation.isPending || wordCount > 2000}
+                  disabled={createMutation.isPending || isUploading || wordCount > 2000}
                   className="flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 rounded-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {createMutation.isPending ? 'Submitting...' : 'Submit Blog Post'}
+                  {createMutation.isPending || isUploading ? (
+                    <div className="flex items-center justify-center gap-2">
+                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                       {isUploading ? 'Securing Image...' : 'Publishing...'}
+                    </div>
+                  ) : 'Submit Blog Post'}
                 </button>
                 <button
                   type="button"

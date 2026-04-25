@@ -3,15 +3,17 @@ import { FaCheckCircle, FaExclamationTriangle, FaTimes } from "react-icons/fa";
 
 export default function Toast({ type = "info", message, onClose }) {
   useEffect(() => {
+    if (type === "loading") return;
     const timer = setTimeout(onClose, 3000);
     return () => clearTimeout(timer);
-  }, [onClose]);
+  }, [onClose, type]);
 
   const styles = {
     success: "bg-green-600",
     error: "bg-red-600",
     warning: "bg-yellow-500 text-black",
     info: "bg-gray-700",
+    loading: "bg-blue-600",
   };
 
   const icons = {
@@ -19,6 +21,7 @@ export default function Toast({ type = "info", message, onClose }) {
     error: <FaTimes />,
     warning: <FaExclamationTriangle />,
     info: <FaExclamationTriangle />,
+    loading: <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />,
   };
 
   return (

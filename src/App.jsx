@@ -25,6 +25,7 @@ import MediaDashboard from "./pages/MediaDashboard";
 import PartnershipChatbot from "./components/PartnershipChatbot";
 import AjnoraDashboard from "./pages/AjnoraDashboard";
 import AjinorahForm from "./components/ClientFormaji";
+import SocialBureauIntro from "./components/Light";
 
 // Lazy-loaded Pages
 const Home = lazy(() =>
@@ -248,6 +249,7 @@ function App() {
             />
             <Route path="/contact" element={<Contact />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/social-bureau" element={<SocialBureauIntro />} />
             <Route
               path="/events/manage"
               element={
@@ -403,7 +405,7 @@ function App() {
             <Route path="/partnership/cheriyan" element={<CheriyanPage />} />
             <Route path="/partnership/sakilan" element={<Sakilan />} />
             <Route path="/partnership/:slug" element={<DynamicPartnershipPage />} />
-            
+
             <Route path="/partners/select-template" element={<PartnershipTemplateSelector />} />
             <Route path="/partners/create-portfolio" element={<PartnershipDataForm />} />
             <Route path="/partners/register" element={<PartnerRegister />} />
