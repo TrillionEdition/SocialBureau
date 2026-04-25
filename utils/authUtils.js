@@ -172,7 +172,9 @@ export const fetchWithAuth = async (url, options = {}) => {
   if (response.status === 401) {
     await clearAuthData();
     const currentPath = window.location.pathname + window.location.search;
-    window.location.href = `/login?redirect=${encodeURIComponent(currentPath)}`;
+    const isPartnership = currentPath.includes("/partners") || currentPath.includes("/partnership");
+    const loginPath = isPartnership ? "/partners/create-portfolio" : "/login";
+    window.location.href = `${loginPath}?redirect=${encodeURIComponent(currentPath)}`;
   }
 
   return response;

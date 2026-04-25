@@ -1,14 +1,20 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { logoutUser } from "../../services/userServices";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Logout = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showConfirm, setShowConfirm] = useState(false);
 
   const handleLogout = async () => {
+    const userDataStr = localStorage.getItem("userData");
+    const isPartnershipSection =
+      location.pathname.includes("/partners") ||
+      location.pathname.includes("/partnership");
+
     try {
       await logoutUser();
     } catch (error) {
@@ -18,7 +24,17 @@ const Logout = () => {
       localStorage.removeItem("userData");
       localStorage.removeItem("token");
       window.dispatchEvent(new Event("authChange"));
-      navigate("/login");
+
+      const userData = JSON.parse(userDataStr || "{}");
+      const isPartner =
+        userData.role?.toLowerCase() === "partnership" ||
+        userData.role?.toLowerCase() === "partner";
+
+      if (isPartnershipSection || isPartner) {
+        navigate("/partners/login");
+      } else {
+        navigate("/login");
+      }
     }
   };
 
@@ -81,7 +97,7 @@ const Logout = () => {
       {/* Desktop Logout Button */}
       <button
         onClick={() => setShowConfirm(true)}
-        className="hidden md:block text-[11px] font-medium text-[#ffffff]/70 transition-colors px-2 py-1 whitespace-nowrap cursor-pointer"
+        className="hidden md:block text-[11px] font-bold text-[#ffffff]/70 hover:text-white transition-colors px-2 py-1 whitespace-nowrap cursor-pointer relative z-[50]"
       >
         Logout
       </button>
@@ -89,7 +105,7 @@ const Logout = () => {
       {/* Mobile Logout Button */}
       <button
         onClick={() => setShowConfirm(true)}
-        className="md:hidden flex items-center gap-2 text-[22px] font-semibold text-[#ffffff] active:text-[#ff0000] text-left transition-colors"
+        className="md:hidden flex items-center gap-2 text-[22px] font-semibold text-[#ffffff] active:text-[#ff0000] text-left transition-colors relative z-[50]"
       >
         Logout
       </button>

@@ -50,12 +50,18 @@ const PartnerRegister = () => {
       // Register the user
       const data = await registerUserAPI(form);
       
-      setSuccess("Account created successfully!");
+      // Auto-login: save user data if returned
+      if (data.user) {
+        setUserData(data.user);
+        // Dispatch event to update authenticated state across the app
+        window.dispatchEvent(new Event("authChange"));
+      }
+
+      setSuccess("Account created successfully! Preparing your studio...");
       
-      // Auto-login or redirect to login
       setTimeout(() => {
-        navigate("/partners/login" + location.search);
-      }, 2000);
+        navigate("/partners/select-template" + location.search);
+      }, 1500);
     } catch (err) {
       setError(err.response?.data?.message || err.message || "Registration failed");
     } finally {

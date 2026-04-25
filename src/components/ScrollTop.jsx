@@ -1,13 +1,19 @@
-// ScrollToTop.jsx
+// ScrollTop.jsx
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useLenis } from "lenis/react";
 
 export default function ScrollTop() {
   const { pathname } = useLocation();
+  const lenis = useLenis();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, lenis]);
 
   return null;
 }

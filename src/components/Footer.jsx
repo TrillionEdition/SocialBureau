@@ -3,51 +3,42 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 export default function Footer() {
-  const footerSections = [
-    {
-      title: "Services",
-      items: [
-        { label: "Services", href: "#" },
-        { label: "Web Development", href: "#" },
-        { label: "API Marketing", href: "/api-marketing-agency-in-kochi" },
-        { label: "Performance Marketing", href: "/performance-marketing-agency-in-kochi" },
-        { label: "Niche Marketing", href: "/niche-marketing-agency-in-kochi" },
-        { label: "Content Marketing", href: "/content-marketing-agency-in-kochi" },
-        { label: "AdTech Marketing", href: "/adTech-marketing-agency-in-kochi" },
-        { label: "Blog", href: "/blog" },
-      ],
-    },
-    {
-      title: "Company",
-      items: [
-        { label: "Home", href: "/" },
-        { label: "About Us", href: "/about" },
-        { label: "Our Team", href: "/our-team" },
-        { label: "Work", href: "/our-works" },
-        { label: "Events", href: "/events" },
-        { label: "Contact", href: "/contact" },
-      ],
-    },
-    {
-      title: "Account",
-      items: [
-        { label: "Careers", href: "/careers" },
-        { label: "Blog", href: "/blog" },
-        { label: "Partners", href: "/partners" },
-        { label: "Login", href: "/login" },
-      ],
-    },
-
-    {
-      title: "About Us",
-      items: [
-        { label: "Blogs", href: "/blog" },
-        { label: "Our team", href: "/our-team" },
-        { label: "Career Opportunities", href: "/careers" },
-        { label: "Contact Us", href: "/contact" },
-      ],
-    },
-  ];
+ const footerSections = [
+  {
+    title: "Services",
+    items: [
+      { label: "Web Development", href: "#" },
+      { label: "API Marketing", href: "/api-marketing-agency-in-kochi" },
+      { label: "Performance Marketing", href: "/performance-marketing-agency-in-kochi" },
+      { label: "Niche Marketing", href: "/niche-marketing-agency-in-kochi" },
+      { label: "Content Marketing", href: "/content-marketing-agency-in-kochi" },
+      { label: "AdTech Marketing", href: "/adTech-marketing-agency-in-kochi" },
+    ],
+  },
+  {
+    title: "Company",
+    items: [
+      { label: "Home", href: "/" },
+      { label: "About Us", href: "/about" },
+      { label: "Our Team", href: "/our-team" },
+      { label: "Contact", href: "/contact" },
+    ],
+  },
+  {
+    title: "Resources",
+    items: [
+      { label: "Blog", href: "/blog" },
+      { label: "Careers", href: "/careers" },
+      { label: "Partners", href: "/partners" },
+    ],
+  },
+  {
+    title: "Account",
+    items: [
+      { label: "Login", href: "/login" },
+    ],
+  },
+];
 
   const containerVariants = {
     hidden: { opacity: 0 },

@@ -24,3 +24,10 @@ export const userClickupStatsAPI=async(clickupId)=>{
   });
     return response.data
 }
+
+export const createClickUpTask = async (taskData) => {
+  const response = await axios.post(`${BASE_URL}/clickup/create-task`, taskData, {
+    headers: { "Content-Type": "application/json" }
+  });
+  return response.data;
+}

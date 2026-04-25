@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, Lock, LogIn, Eye, EyeOff, CheckCircle2, AlertCircle, ArrowRight, Loader2 } from "lucide-react";
@@ -17,6 +17,29 @@ const PartnerLogin = () => {
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
+    if (user && token) {
+      const checkPortfolio = async () => {
+        try {
+          const response = await fetch(`${BASE_URL}/partners/my-partnership`, {
+            headers: { "Authorization": `Bearer ${token}` }
+          });
+          const data = await response.json();
+          if (data.success && data.data) {
+            navigate("/partners/dashboard", { replace: true });
+          } else {
+            navigate("/partners/select-template", { replace: true });
+          }
+        } catch (err) {
+          navigate("/partners/select-template", { replace: true });
+        }
+      };
+      checkPortfolio();
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -51,10 +74,30 @@ const PartnerLogin = () => {
       setSuccess("Welcome back!");
       window.dispatchEvent(new Event("authChange"));
 
-      // Logic to return to the previous page in the flow
+      // Check if user has an existing portfolio to decide redirection
+      let hasPortfolio = false;
+      try {
+        const portResponse = await fetch(`${BASE_URL}/partners/my-partnership`, {
+          headers: { "Authorization": `Bearer ${data.token}` }
+        });
+        const portData = await portResponse.json();
+        if (portData.success && portData.data) {
+          hasPortfolio = true;
+        }
+      } catch (err) {
+        console.error("Portfolio check failed", err);
+      }
+
       const queryParams = new URLSearchParams(location.search);
       const redirectParam = queryParams.get("redirect");
-      const from = location.state?.from?.pathname || redirectParam || "/partners/select-template";
+      
+      // Default redirection logic
+      let destination = "/partners/select-template";
+      if (hasPortfolio) {
+        destination = "/partners/dashboard";
+      }
+
+      const from = location.state?.from?.pathname || redirectParam || destination;
 
       setTimeout(() => {
         navigate(from, { replace: true });

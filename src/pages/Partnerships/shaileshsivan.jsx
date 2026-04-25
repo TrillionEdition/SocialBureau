@@ -25,7 +25,11 @@ import {
   Smartphone,
   Globe,
   ArrowUp,
+  Edit3,
 } from "lucide-react";
+import { BASE_URL } from "../../utils/urls";
+import { toast } from "react-toastify";
+
 
 // --- Constants ---
 const SUMMARY =
@@ -301,7 +305,9 @@ const SKILL_CATEGORIES = [
   },
 ];
 
+
 // --- Components ---
+
 const RevealText = ({ children, className = "", delay = 0 }) => {
   return (
     <motion.div
@@ -322,10 +328,10 @@ const RevealText = ({ children, className = "", delay = 0 }) => {
 
 const CornerBracket = ({ className = "" }) => (
   <div className={`absolute pointer-events-none ${className}`}>
-    <div className="absolute -top-1 -left-1 w-4 h-4 border-t border-l border-[#10B981]/40" />
-    <div className="absolute -top-1 -right-1 w-4 h-4 border-t border-r border-[#10B981]/40" />
-    <div className="absolute -bottom-1 -left-1 w-4 h-4 border-b border-l border-[#10B981]/40" />
-    <div className="absolute -bottom-1 -right-1 w-4 h-4 border-b border-r border-[#10B981]/40" />
+    <div className="absolute -top-1 -left-1 w-4 h-4 border-t border-l border-[var(--primary-color)]/40" />
+    <div className="absolute -top-1 -right-1 w-4 h-4 border-t border-r border-[var(--primary-color)]/40" />
+    <div className="absolute -bottom-1 -left-1 w-4 h-4 border-b border-l border-[var(--primary-color)]/40" />
+    <div className="absolute -bottom-1 -right-1 w-4 h-4 border-b border-r border-[var(--primary-color)]/40" />
   </div>
 );
 
@@ -334,12 +340,12 @@ const NodePoint = ({ className = "", delay = 0 }) => (
     initial={{ scale: 0, opacity: 0 }}
     whileInView={{ scale: 1, opacity: 1 }}
     transition={{ delay, duration: 0.5 }}
-    className={`w-2 h-2 rounded-full border border-[#10B981] bg-white relative ${className}`}
+    className={`w-2 h-2 rounded-full border border-[var(--primary-color)] bg-white relative ${className}`}
   >
     <motion.div
       animate={{ scale: [1, 2, 1], opacity: [0.5, 0, 0.5] }}
       transition={{ duration: 2, repeat: Infinity }}
-      className="absolute inset-[-4px] rounded-full bg-[#10B981]/20"
+      className="absolute inset-[-4px] rounded-full bg-[var(--primary-color)]/20"
     />
   </motion.div>
 );
@@ -349,7 +355,7 @@ const DataLine = ({ className = "", delay = 0, vertical = false }) => (
     initial={vertical ? { scaleY: 0 } : { scaleX: 0 }}
     whileInView={vertical ? { scaleY: 1 } : { scaleX: 1 }}
     transition={{ delay, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-    className={`bg-gradient-to-r from-[#10B981]/20 via-[#10B981]/5 to-transparent origin-left ${vertical ? "w-[1px] h-full origin-top from-[#10B981]/20 via-[#10B981]/5 to-transparent bg-gradient-to-b" : "h-[1px] w-full"} ${className}`}
+    className={`bg-gradient-to-r from-[var(--primary-color)]/20 via-[var(--primary-color)]/5 to-transparent origin-left ${vertical ? "w-[1px] h-full origin-top from-[var(--primary-color)]/20 via-[var(--primary-color)]/5 to-transparent bg-gradient-to-b" : "h-[1px] w-full"} ${className}`}
   />
 );
 
@@ -418,14 +424,14 @@ const BackToTop = () => {
           <Magnetic strength={0.3}>
             <button
               onClick={scrollToTop}
-              className="w-12 h-12 md:w-14 md:h-14 bg-black border border-white/10 text-[#10B981] flex items-center justify-center group relative overflow-hidden transition-colors hover:border-[#10B981]/40"
+              className="w-12 h-12 md:w-14 md:h-14 bg-black border border-white/10 text-[var(--primary-color)] flex items-center justify-center group relative overflow-hidden transition-colors hover:border-[var(--primary-color)]/40"
             >
               <CornerBracket className="top-1 left-1 w-4 h-4 opacity-40 group-hover:opacity-100 transition-opacity" />
               <ArrowUp
                 size={18}
                 className="relative z-10 transition-transform group-hover:-translate-y-1"
               />
-              <div className="absolute inset-0 bg-[#10B981]/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 bg-[var(--primary-color)]/5 opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
           </Magnetic>
         </motion.div>
@@ -434,20 +440,66 @@ const BackToTop = () => {
   );
 };
 
-const SectionTitle = ({ label, title, light = false }) => (
-  <div className="mb-8 md:mb-20 w-full text-left">
-    <RevealText
-      className={`text-[10px] font-bold uppercase tracking-[0.4em] mb-4 ${light ? "text-white/40" : "text-gray-400"}`}
+  return (
+    <div 
+      className="bg-[#020202] text-white selection:bg-[var(--primary-color)] selection:text-white font-sans antialiased overflow-x-hidden scroll-smooth"
+      style={styleVariables}
     >
-      {label}
-    </RevealText>
-    <RevealText
-      className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-medium tracking-tighter leading-[0.9] sm:leading-[0.85] uppercase ${light ? "text-white" : "text-[#0e0e0e]"}`}
-    >
-      {title}
-    </RevealText>
-  </div>
-);
+      {isOwner && (
+        <button
+          onClick={() => setIsEditing(!isEditing)}
+          className="fixed top-8 right-8 z-[9999] bg-[var(--primary-color)] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center gap-2"
+        >
+          <Edit3 size={20} />
+          <span className="text-[10px] font-black uppercase tracking-widest">Customize</span>
+        </button>
+      )}
+
+      {isEditing && (
+        <div className="fixed top-24 right-8 z-[9999] bg-black/80 backdrop-blur-xl border border-white/10 p-6 rounded-3xl w-64 shadow-2xl space-y-6">
+          <div className="space-y-4">
+            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 block">Primary Color</label>
+            <input 
+              type="color" 
+              value={activeStyles.primaryColor} 
+              onChange={(e) => handleStyleChange("primaryColor", e.target.value)}
+              className="w-full h-10 rounded-lg bg-transparent border-none cursor-pointer"
+            />
+          </div>
+          <div className="space-y-4">
+            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 block">Background</label>
+            <input 
+              type="color" 
+              value={activeStyles.backgroundColor} 
+              onChange={(e) => handleStyleChange("backgroundColor", e.target.value)}
+              className="w-full h-10 rounded-lg bg-transparent border-none cursor-pointer"
+            />
+          </div>
+          <button 
+            onClick={() => setIsEditing(false)}
+            className="w-full py-3 bg-white text-black text-[10px] font-black uppercase rounded-xl"
+          >
+            Done
+          </button>
+        </div>
+      )}
+
+      <div className="mb-8 md:mb-20 w-full text-left">
+        <RevealText
+          className={`text-[10px] font-bold uppercase tracking-[0.4em] mb-4 ${light ? "text-white/40" : "text-gray-400"}`}
+        >
+          {label}
+        </RevealText>
+        <RevealText
+          className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-medium tracking-tighter leading-[0.9] sm:leading-[0.85] uppercase ${light ? "text-white" : "text-[#0e0e0e]"}`}
+        >
+          {title}
+        </RevealText>
+      </div>
+    </div>
+  );
+};
+
 
 const ImpactHighlight = () => {
   const impactData = [
@@ -502,7 +554,7 @@ const ImpactHighlight = () => {
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1, duration: 0.8 }}
               whileHover={{ y: -10 }}
-              className="group relative bg-[#10B981]/5 backdrop-blur-md border border-white/10 p-8 md:p-12 overflow-hidden hover:border-[#10B981]/30 transition-all duration-500"
+              className="group relative bg-[var(--primary-color)]/5 backdrop-blur-md border border-white/10 p-8 md:p-12 overflow-hidden hover:border-[var(--primary-color)]/30 transition-all duration-500"
             >
               <CornerBracket className="top-4 left-4 w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <CornerBracket className="bottom-4 right-4 w-8 h-8 rotate-180 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -518,21 +570,21 @@ const ImpactHighlight = () => {
               </div>
 
               {/* HUD Ornaments */}
-              <div className="absolute top-6 left-6 text-[8px] font-mono text-[#10B981]/40 tracking-[0.4em] uppercase">
+              <div className="absolute top-6 left-6 text-[8px] font-mono text-[var(--primary-color)]/40 tracking-[0.4em] uppercase">
                 {item.code}
               </div>
 
               <div className="absolute top-0 right-0 p-6 flex gap-1">
-                <div className="w-1 h-3 bg-[#10B981]/20" />
-                <div className="w-3 h-1 bg-[#10B981]/20" />
+                <div className="w-1 h-3 bg-[var(--primary-color)]/20" />
+                <div className="w-3 h-1 bg-[var(--primary-color)]/20" />
               </div>
 
               <div className="relative z-10 mt-6 md:mt-12">
                 <div className="flex items-end gap-6 mb-8">
-                  <span className="text-6xl md:text-9xl font-display font-black text-[#10B981] leading-none">
+                  <span className="text-6xl md:text-9xl font-display font-black text-[var(--primary-color)] leading-none">
                     {item.value}
                   </span>
-                  <div className="h-[2px] flex-grow bg-gradient-to-r from-[#10B981]/20 to-transparent mb-4" />
+                  <div className="h-[2px] flex-grow bg-gradient-to-r from-[var(--primary-color)]/20 to-transparent mb-4" />
                 </div>
 
                 <h3 className="text-2xl md:text-3xl font-display font-bold uppercase tracking-tight mb-6">
@@ -596,7 +648,7 @@ const ExperienceSlide = ({ experience, index }) => {
             y: [0, -20, 0],
           }}
           transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="blob w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-[#10B981] -top-20 -right-20 md:-top-40 md:-right-40 opacity-20"
+          className="blob w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-[var(--primary-color)] -top-20 -right-20 md:-top-40 md:-right-40 opacity-20"
         />
 
         <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 relative z-10">
@@ -604,15 +656,15 @@ const ExperienceSlide = ({ experience, index }) => {
           <div className="hidden lg:block lg:col-span-1 border-l border-white/10 relative h-full">
             <motion.div
               style={{ scaleY: scrollYProgress }}
-              className="absolute top-0 left-[-1px] w-[1px] h-full bg-[#10B981] origin-top"
+              className="absolute top-0 left-[-1px] w-[1px] h-full bg-[var(--primary-color)] origin-top"
             />
-            <div className="absolute top-0 left-[-4px] w-2 h-2 bg-[#10B981] rounded-full" />
+            <div className="absolute top-0 left-[-4px] w-2 h-2 bg-[var(--primary-color)] rounded-full" />
           </div>
 
           <div className="lg:col-span-11 pl-0 lg:pl-12">
             <motion.div style={{ y: subY }}>
-              <RevealText className="text-[#10B981] font-bold text-xs uppercase tracking-[0.8em] mb-8 flex items-center gap-4">
-                <span className="w-8 h-[1px] bg-[#10B981]" />
+              <RevealText className="text-[var(--primary-color)] font-bold text-xs uppercase tracking-[0.8em] mb-8 flex items-center gap-4">
+                <span className="w-8 h-[1px] bg-[var(--primary-color)]" />
                 {experience.period}
                 <NodePoint delay={0.5} />
               </RevealText>
@@ -624,7 +676,7 @@ const ExperienceSlide = ({ experience, index }) => {
                 </RevealText>
                 <RevealText className="text-2xl md:text-5xl font-display font-light text-white/30 uppercase mt-4">
                   {experience.company}{" "}
-                  <span className="text-[#10B981]/20 mx-2 md:mx-4">/</span>{" "}
+                  <span className="text-[var(--primary-color)]/20 mx-2 md:mx-4">/</span>{" "}
                   {experience.location}
                 </RevealText>
               </div>
@@ -633,7 +685,7 @@ const ExperienceSlide = ({ experience, index }) => {
                 <DataLine className="absolute top-0 left-0 w-1/2" delay={0.3} />
                 {experience.highlights.map((h, hi) => (
                   <div key={hi} className="flex gap-4 md:gap-6 group">
-                    <div className="mt-2 md:mt-3 w-1.5 h-1.5 md:w-2 md:h-2 rounded-full border border-[#10B981]/40 group-hover:bg-[#10B981] transition-colors shrink-0" />
+                    <div className="mt-2 md:mt-3 w-1.5 h-1.5 md:w-2 md:h-2 rounded-full border border-[var(--primary-color)]/40 group-hover:bg-[var(--primary-color)] transition-colors shrink-0" />
                     <RevealText
                       delay={hi * 0.1}
                       className="text-base md:text-xl text-white/50 font-light leading-relaxed group-hover:text-white/80 transition-colors"
@@ -685,7 +737,7 @@ const AboutSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               className="absolute -bottom-6 left-0 sm:-left-6 md:-left-8 bg-black text-white p-4 sm:p-6 shadow-2xl z-20 max-w-[240px] sm:max-w-[280px]"
             >
-              <div className="text-[8px] font-mono text-[#10B981] mb-2 uppercase tracking-[0.3em] overflow-hidden whitespace-nowrap">
+              <div className="text-[8px] font-mono text-[var(--primary-color)] mb-2 uppercase tracking-[0.3em] overflow-hidden whitespace-nowrap">
                 Personal_Philosophy_v2.0
               </div>
               <div className="text-sm sm:text-lg font-display italic leading-tight">
@@ -700,7 +752,7 @@ const AboutSection = () => {
           </motion.div>
 
           {/* Subtle decorative blob */}
-          <div className="absolute -z-10 -bottom-20 -left-20 w-64 h-64 bg-[#10B981]/10 blur-3xl rounded-full" />
+          <div className="absolute -z-10 -bottom-20 -left-20 w-64 h-64 bg-[var(--primary-color)]/10 blur-3xl rounded-full" />
         </div>
 
         {/* Biography Content */}
@@ -717,7 +769,7 @@ const AboutSection = () => {
             </RevealText>
           </div>
 
-          <div className="space-y-6 md:space-y-8 border-l-2 border-[#10B981]/10 pl-6 md:pl-8">
+          <div className="space-y-6 md:space-y-8 border-l-2 border-[var(--primary-color)]/10 pl-6 md:pl-8">
             <RevealText
               delay={0.2}
               className="text-base md:text-lg text-gray-500 font-light leading-relaxed"
@@ -753,11 +805,11 @@ const AboutSection = () => {
                   transition={{ delay: 0.4 + i * 0.1 }}
                   className="group flex flex-col gap-1 px-4 py-2"
                 >
-                  <div className="text-[9px] font-mono text-[#10B981] uppercase tracking-widest flex items-center gap-2">
-                    <div className="w-4 h-[1px] bg-[#10B981]/30 group-hover:w-6 transition-all" />
+                  <div className="text-[9px] font-mono text-[var(--primary-color)] uppercase tracking-widest flex items-center gap-2">
+                    <div className="w-4 h-[1px] bg-[var(--primary-color)]/30 group-hover:w-6 transition-all" />
                     {social.platform}
                   </div>
-                  <div className="text-sm font-medium text-black group-hover:text-[#10B981] transition-colors pl-6">
+                  <div className="text-sm font-medium text-black group-hover:text-[var(--primary-color)] transition-colors pl-6">
                     {social.handle}
                   </div>
                 </motion.a>
@@ -769,9 +821,9 @@ const AboutSection = () => {
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              className="flex items-center gap-4 text-[10px] font-mono uppercase tracking-[0.5em] text-[#10B981]"
+              className="flex items-center gap-4 text-[10px] font-mono uppercase tracking-[0.5em] text-[var(--primary-color)]"
             >
-              <div className="w-8 h-[1px] bg-[#10B981]" />
+              <div className="w-8 h-[1px] bg-[var(--primary-color)]" />
               Architect_Profile_Sync_Complete
             </motion.div>
           </div>
@@ -804,10 +856,10 @@ const ConsultancySection = () => {
                   <Magnetic key={i} strength={0.1}>
                     <motion.div
                       whileHover={{ y: -5 }}
-                      className="p-8 border border-gray-100 bg-gray-50/50 hover:border-[#10B981]/30 hover:bg-white transition-all duration-300 relative group/card"
+                      className="p-8 border border-gray-100 bg-gray-50/50 hover:border-[var(--primary-color)]/30 hover:bg-white transition-all duration-300 relative group/card"
                     >
                       <CornerBracket className="top-2 left-2 w-4 h-4 opacity-0 group-hover/card:opacity-100 transition-opacity" />
-                      <div className="text-[10px] font-mono text-[#10B981] mb-4 uppercase tracking-[0.3em]">
+                      <div className="text-[10px] font-mono text-[var(--primary-color)] mb-4 uppercase tracking-[0.3em]">
                         Partner_Node_{i + 1}
                       </div>
                       <div className="text-xl font-display font-bold mb-3">
@@ -826,17 +878,17 @@ const ConsultancySection = () => {
               <div className="absolute inset-0 bg-grid opacity-20" />
               <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
                 <div>
-                  <div className="text-[10px] font-mono text-[#10B981] uppercase tracking-[0.4em] mb-4">
+                  <div className="text-[10px] font-mono text-[var(--primary-color)] uppercase tracking-[0.4em] mb-4">
                     Extending_Knowledge
                   </div>
                   <div className="text-2xl md:text-4xl font-display font-medium leading-tight">
                     Resource Person for <br className="hidden md:block" />{" "}
-                    <span className="text-[#10B981]">
+                    <span className="text-[var(--primary-color)]">
                       160+ Technical Sessions
                     </span>
                   </div>
                 </div>
-                <div className="text-5xl md:text-6xl font-display font-bold text-white/10 group-hover:text-[#10B981]/20 transition-colors">
+                <div className="text-5xl md:text-6xl font-display font-bold text-white/10 group-hover:text-[var(--primary-color)]/20 transition-colors">
                   160+
                 </div>
               </div>
@@ -861,10 +913,10 @@ const EducationSection = () => {
         <div className="lg:col-span-8 space-y-4 md:space-y-6">
           {EDUCATION.map((edu, i) => (
             <Magnetic key={i} strength={0.05}>
-              <div className="bg-white/80 backdrop-blur-xl p-8 md:p-12 border border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center group hover:bg-white hover:shadow-2xl hover:shadow-[#10B981]/10 transition-all duration-500 relative overflow-hidden">
+              <div className="bg-white/80 backdrop-blur-xl p-8 md:p-12 border border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center group hover:bg-white hover:shadow-2xl hover:shadow-[var(--primary-color)]/10 transition-all duration-500 relative overflow-hidden">
                 <CornerBracket className="top-4 left-4 w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="max-w-2xl relative z-10">
-                  <div className="text-[10px] font-mono text-[#10B981] mb-2 md:mb-4 uppercase tracking-[0.3em] flex items-center gap-4">
+                  <div className="text-[10px] font-mono text-[var(--primary-color)] mb-2 md:mb-4 uppercase tracking-[0.3em] flex items-center gap-4">
                     <NodePoint delay={i * 0.1} />
                     {edu.institution} // {edu.period}
                   </div>
@@ -878,10 +930,10 @@ const EducationSection = () => {
                   )}
                 </div>
                 <div className="mt-8 md:mt-0 relative z-10">
-                  <div className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center group-hover:border-[#10B981]/30 transition-all duration-500 group-hover:rotate-45">
+                  <div className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center group-hover:border-[var(--primary-color)]/30 transition-all duration-500 group-hover:rotate-45">
                     <ArrowUpRight
                       size={20}
-                      className="text-gray-300 group-hover:text-[#10B981]"
+                      className="text-gray-300 group-hover:text-[var(--primary-color)]"
                     />
                   </div>
                 </div>
@@ -909,36 +961,36 @@ const ContactFooter = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-16 md:gap-8 items-start mb-24">
           <div className="md:col-span-2">
-            <RevealText className="text-[10px] font-mono text-[#10B981] uppercase tracking-[0.5em] mb-8">
+            <RevealText className="text-[10px] font-mono text-[var(--primary-color)] uppercase tracking-[0.5em] mb-8">
               System_Broadcast_Ready
             </RevealText>
             <RevealText className="text-4xl md:text-7xl font-display font-bold uppercase tracking-tighter leading-none mb-12">
               Get in <br className="hidden md:block" />{" "}
-              <span className="text-[#10B981]">Touch</span>
+              <span className="text-[var(--primary-color)]">Touch</span>
             </RevealText>
           </div>
 
           <div className="space-y-12">
             <div>
               <div className="text-[9px] font-mono text-white/30 uppercase tracking-[0.3em] mb-4 flex items-center gap-4">
-                <Mail size={12} className="text-[#10B981]" />
+                <Mail size={12} className="text-[var(--primary-color)]" />
                 Direct_Channel
               </div>
               <a
                 href={`mailto:${CONTACT.email}`}
-                className="text-xl md:text-2xl font-light hover:text-[#10B981] transition-colors underline decoration-white/10 underline-offset-8"
+                className="text-xl md:text-2xl font-light hover:text-[var(--primary-color)] transition-colors underline decoration-white/10 underline-offset-8"
               >
                 {CONTACT.email}
               </a>
             </div>
             <div>
               <div className="text-[9px] font-mono text-white/30 uppercase tracking-[0.3em] mb-4 flex items-center gap-4">
-                <Smartphone size={12} className="text-[#10B981]" />
+                <Smartphone size={12} className="text-[var(--primary-color)]" />
                 Secure_Line
               </div>
               <a
                 href={`tel:${CONTACT.phone.replace(/\s+/g, "")}`}
-                className="text-xl md:text-2xl font-light hover:text-[#10B981] transition-colors"
+                className="text-xl md:text-2xl font-light hover:text-[var(--primary-color)] transition-colors"
               >
                 {CONTACT.phone}
               </a>
@@ -948,7 +1000,7 @@ const ContactFooter = () => {
           <div className="space-y-12">
             <div>
               <div className="text-[9px] font-mono text-white/30 uppercase tracking-[0.3em] mb-4 flex items-center gap-4">
-                <MapPin size={12} className="text-[#10B981]" />
+                <MapPin size={12} className="text-[var(--primary-color)]" />
                 Geo_Location
               </div>
               <div className="text-xl md:text-2xl font-light">
@@ -958,14 +1010,14 @@ const ContactFooter = () => {
             </div>
             <div>
               <div className="text-[9px] font-mono text-white/30 uppercase tracking-[0.3em] mb-4 flex items-center gap-4">
-                <Globe size={12} className="text-[#10B981]" />
+                <Globe size={12} className="text-[var(--primary-color)]" />
                 Digital_Home
               </div>
               <a
                 href={`https://${CONTACT.website}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xl md:text-2xl font-light hover:text-[#10B981] transition-colors"
+                className="text-xl md:text-2xl font-light hover:text-[var(--primary-color)] transition-colors"
               >
                 {CONTACT.website}
               </a>
@@ -984,7 +1036,7 @@ const ContactFooter = () => {
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[10px] font-mono text-white/40 hover:text-[#10B981] uppercase tracking-widest transition-colors"
+                className="text-[10px] font-mono text-white/40 hover:text-[var(--primary-color)] uppercase tracking-widest transition-colors"
               >
                 {social.platform}
               </a>
@@ -1000,11 +1052,70 @@ const ShaileshSivan = () => {
   const containerRef = useRef(null);
   const workRef = useRef(null);
   const [loading, setLoading] = useState(true);
+  const [isOwner, setIsOwner] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [activeStyles, setActiveStyles] = useState({
+    primaryColor: "#10B981",
+    backgroundColor: "#f2f2f2",
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2000);
+    
+    // Check ownership
+    const checkOwnership = async () => {
+      try {
+        const storedUser = localStorage.getItem("user");
+        if (!storedUser) return;
+        const user = JSON.parse(storedUser);
+        
+        const response = await fetch(`${BASE_URL}/partners/shailesh-sivan`);
+        const data = await response.json();
+        
+        if (data.success && data.data) {
+          if (user._id === data.data.user || user.id === data.data.user) {
+            setIsOwner(true);
+            if (data.data.details?.styles) {
+              setActiveStyles(prev => ({ ...prev, ...data.data.details.styles }));
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Ownership check failed", err);
+      }
+    };
+    checkOwnership();
+
     return () => clearTimeout(timer);
   }, []);
+
+  const handleStyleChange = async (key, value) => {
+    const newStyles = { ...activeStyles, [key]: value };
+    setActiveStyles(newStyles);
+    
+    if (isOwner) {
+      try {
+        await fetch(`${BASE_URL}/partners/my-partnership`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+          },
+          body: JSON.stringify({
+            param: "shailesh-sivan",
+            details: { styles: newStyles }
+          }),
+        });
+      } catch (err) {
+        console.error("Failed to save styles", err);
+      }
+    }
+  };
+
+  const styleVariables = {
+    "--primary-color": activeStyles.primaryColor,
+    "--bg-color": activeStyles.backgroundColor,
+  };
 
   const { scrollYProgress } = useScroll();
   const workScroll = useScroll({
@@ -1020,8 +1131,61 @@ const ShaileshSivan = () => {
   return (
     <div
       ref={containerRef}
-      className={`relative bg-[#f2f2f2] text-[#0e0e0e] selection:bg-[#10B981] selection:text-white font-sans overflow-x-hidden transition-opacity duration-1000 ${loading ? "opacity-0 h-screen overflow-hidden" : "opacity-100"}`}
+      className={`relative text-[#0e0e0e] selection:bg-[var(--primary-color)] selection:text-white font-sans overflow-x-hidden transition-opacity duration-1000 ${loading ? "opacity-0 h-screen overflow-hidden" : "opacity-100"}`}
+      style={{ ...styleVariables, backgroundColor: "var(--bg-color)" }}
     >
+      {isOwner && (
+        <button
+          onClick={() => setIsEditing(!isEditing)}
+          className="fixed top-8 right-8 z-[9999] bg-[var(--primary-color)] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center gap-2"
+          style={{ backgroundColor: activeStyles.primaryColor }}
+        >
+          <Edit3 size={20} />
+          <span className="text-[10px] font-black uppercase tracking-widest">Customize</span>
+        </button>
+      )}
+
+      <AnimatePresence>
+        {isEditing && (
+          <motion.div 
+            initial={{ x: 300, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 300, opacity: 0 }}
+            className="fixed top-24 right-8 z-[9999] bg-white border border-black/10 p-6 rounded-3xl w-64 shadow-2xl space-y-6 font-sans"
+          >
+            <div className="space-y-4">
+              <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 block">Primary Color</label>
+              <div className="flex items-center gap-3">
+                <input 
+                  type="color" 
+                  value={activeStyles.primaryColor} 
+                  onChange={(e) => handleStyleChange("primaryColor", e.target.value)}
+                  className="w-10 h-10 rounded-lg bg-transparent border-none cursor-pointer"
+                />
+                <span className="text-xs font-mono uppercase">{activeStyles.primaryColor}</span>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 block">Background</label>
+              <div className="flex items-center gap-3">
+                <input 
+                  type="color" 
+                  value={activeStyles.backgroundColor} 
+                  onChange={(e) => handleStyleChange("backgroundColor", e.target.value)}
+                  className="w-10 h-10 rounded-lg bg-transparent border-none cursor-pointer"
+                />
+                <span className="text-xs font-mono uppercase">{activeStyles.backgroundColor}</span>
+              </div>
+            </div>
+            <button 
+              onClick={() => setIsEditing(false)}
+              className="w-full py-3 bg-black text-white text-[10px] font-black uppercase rounded-xl"
+            >
+              Done
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <BackToTop />
       <AnimatePresence>
         {loading && (
@@ -1038,7 +1202,7 @@ const ShaileshSivan = () => {
                 opacity: [0.3, 0.6, 0.3],
               }}
               transition={{ duration: 3, repeat: Infinity }}
-              className="w-96 h-96 bg-[#10B981]/20 rounded-full blur-[100px] absolute"
+              className="w-96 h-96 bg-[var(--primary-color)]/20 rounded-full blur-[100px] absolute"
             />
 
             <div className="relative text-center">
@@ -1046,7 +1210,7 @@ const ShaileshSivan = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1 }}
-                className="text-[#10B981] font-mono text-[10px] uppercase tracking-[0.8em] mb-6"
+                className="text-[var(--primary-color)] font-mono text-[10px] uppercase tracking-[0.8em] mb-6"
               >
                 Initializing_Neural_Vault
               </motion.div>
@@ -1072,7 +1236,7 @@ const ShaileshSivan = () => {
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
-                  className="absolute inset-0 bg-[#10B981]"
+                  className="absolute inset-0 bg-[var(--primary-color)]"
                 />
               </div>
 
@@ -1095,7 +1259,7 @@ const ShaileshSivan = () => {
 
       {/* Hero Progress Bar */}
       <motion.div
-        className="fixed left-0 top-0 h-1 bg-[#10B981] z-[1001]"
+        className="fixed left-0 top-0 h-1 bg-[var(--primary-color)] z-[1001]"
         style={{ width: scrollWidth }}
       />
 
@@ -1174,11 +1338,11 @@ const ShaileshSivan = () => {
                     className="absolute -bottom-8 left-0"
                     delay={i * 0.1}
                   />
-                  <RevealText className="text-2xl md:text-5xl lg:text-3xl xl:text-6xl font-display font-medium uppercase tracking-tighter text-[#10B981]">
+                  <RevealText className="text-2xl md:text-5xl lg:text-3xl xl:text-6xl font-display font-medium uppercase tracking-tighter text-[var(--primary-color)]">
                     {cat.title}
                   </RevealText>
                   <Magnetic strength={0.3}>
-                    <Plus className="text-gray-300 group-hover:text-[#10B981] transition-colors mb-4 cursor-pointer w-8 h-8 md:w-10 md:h-10" />
+                    <Plus className="text-gray-300 group-hover:text-[var(--primary-color)] transition-colors mb-4 cursor-pointer w-8 h-8 md:w-10 md:h-10" />
                   </Magnetic>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
@@ -1260,10 +1424,10 @@ const ShaileshSivan = () => {
               whileInView={{ y: 0, opacity: 1 }}
               className="text-center"
             >
-              <div className="text-[#10B981] font-bold text-xs uppercase tracking-[0.8em] mb-12 flex items-center justify-center gap-6">
-                <span className="w-12 h-[1px] bg-[#10B981]" />
+              <div className="text-[var(--primary-color)] font-bold text-xs uppercase tracking-[0.8em] mb-12 flex items-center justify-center gap-6">
+                <span className="w-12 h-[1px] bg-[var(--primary-color)]" />
                 02 Path
-                <span className="w-12 h-[1px] bg-[#10B981]" />
+                <span className="w-12 h-[1px] bg-[var(--primary-color)]" />
               </div>
               <h2 className="text-[18vw] md:text-[12vw] font-display font-bold uppercase tracking-tighter leading-[0.8] text-white">
                 Experience
@@ -1301,9 +1465,9 @@ const ShaileshSivan = () => {
               {PATENTS.map((pat, i) => (
                 <div
                   key={i}
-                  className="group cursor-default border-l-2 border-gray-100 pl-12 hover:border-[#10B981] transition-colors"
+                  className="group cursor-default border-l-2 border-gray-100 pl-12 hover:border-[var(--primary-color)] transition-colors"
                 >
-                  <RevealText className="text-sm font-bold text-[#10B981] mb-4">
+                  <RevealText className="text-sm font-bold text-[var(--primary-color)] mb-4">
                     Patent #{pat.id}
                   </RevealText>
                   <RevealText className="text-3xl font-display font-medium uppercase mb-6">
@@ -1383,7 +1547,7 @@ const ShaileshSivan = () => {
                         <a
                           href={`https://doi.org/${pub.doi}`}
                           target="_blank"
-                          className="text-[#10B981] hover:scale-125 transition-transform"
+                          className="text-[var(--primary-color)] hover:scale-125 transition-transform"
                         >
                           <ArrowUpRight size={20} />
                         </a>

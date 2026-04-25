@@ -77,9 +77,14 @@ const DashboardX = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const handleLogout = () => {
+    const isPartner = user?.role === "partnership" || user?.role === "partner";
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    window.location.href = "/login";
+    if (isPartner) {
+      window.location.href = "/partners/create-portfolio";
+    } else {
+      window.location.href = "/login";
+    }
   };
 
   useEffect(() => {

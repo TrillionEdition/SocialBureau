@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import { Linkedin, Twitter, Instagram, Github, Globe, ExternalLink, Quote, ArrowUpRight } from "lucide-react";
+import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
+import { Linkedin, Twitter, Instagram, Github, Globe, ExternalLink, Quote, ArrowUpRight, ArrowUp, Sparkles, ChevronDown, Edit3, X, Save, Palette, Type, Maximize2 } from "lucide-react";
 
 /**
  * Magnetic effect for buttons/icons
@@ -28,7 +28,7 @@ const MagneticButton = ({ children, className = "" }) => {
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      animate={{ x: x * 0.4, y: y * 0.4 }}
+      animate={{ x: x * 0.35, y: y * 0.35 }}
       transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
       className={className}
     >
@@ -37,12 +37,12 @@ const MagneticButton = ({ children, className = "" }) => {
   );
 };
 
-const AnimatedText = ({ text, className = "" }) => {
+const AnimatedText = ({ text, className = "", style = {} }) => {
   const container = {
     hidden: { opacity: 0 },
     visible: (i = 1) => ({
       opacity: 1,
-      transition: { staggerChildren: 0.03, delayChildren: 0.04 * i },
+      transition: { staggerChildren: 0.02, delayChildren: 0.03 * i },
     }),
   };
 
@@ -50,30 +50,22 @@ const AnimatedText = ({ text, className = "" }) => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        type: "spring",
-        damping: 12,
-        stiffness: 100,
-      },
+      transition: { type: "spring", damping: 15, stiffness: 120 },
     },
     hidden: {
       opacity: 0,
-      y: 20,
-      transition: {
-        type: "spring",
-        damping: 12,
-        stiffness: 100,
-      },
+      y: 30,
+      transition: { type: "spring", damping: 15, stiffness: 120 },
     },
   };
 
   return (
     <motion.span
-      style={{ display: "inline-block", overflow: "hidden" }}
+      style={{ display: "inline-block", overflow: "hidden", ...style }}
       variants={container}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true }}
+      viewport={{ once: true, margin: "-10%" }}
       className={className}
     >
       {text.split(" ").map((word, index) => (
@@ -89,8 +81,129 @@ const AnimatedText = ({ text, className = "" }) => {
   );
 };
 
+const PremiumHeading = ({ children, className = "", style = {} }) => {
+  return (
+    <div className="overflow-hidden py-6 -my-4">
+      <motion.div
+        initial={{ y: "110%", skewY: 7, opacity: 0 }}
+        whileInView={{ y: 0, skewY: 0, opacity: 1 }}
+        viewport={{ once: true, margin: "-5%" }}
+        transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+        className={className}
+        style={style}
+      >
+        {children}
+      </motion.div>
+    </div>
+  );
+};
+
+const CustomCursor = () => {
+  const [position, setPosition] = React.useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = React.useState(false);
+
+  React.useEffect(() => {
+    const moveCursor = (e) => setPosition({ x: e.clientX, y: e.clientY });
+    const handleMouseOver = (e) => {
+      if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+        setIsHovering(true);
+      } else {
+        setIsHovering(false);
+      }
+    };
+    window.addEventListener("mousemove", moveCursor);
+    window.addEventListener("mouseover", handleMouseOver);
+    return () => {
+      window.removeEventListener("mousemove", moveCursor);
+      window.removeEventListener("mouseover", handleMouseOver);
+    };
+  }, []);
+
+  return (
+    <motion.div
+      className="fixed top-0 left-0 w-8 h-8 rounded-full border border-[var(--primary-color)] pointer-events-none z-[9999] hidden lg:block mix-blend-difference"
+      animate={{
+        x: position.x - 16,
+        y: position.y - 16,
+        scale: isHovering ? 2.5 : 1,
+        backgroundColor: isHovering ? "rgba(232,0,26,0.1)" : "transparent"
+      }}
+      transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.5 }}
+    />
+  );
+};
+
+const BackToTop = () => {
+  const [isVisible, setIsVisible] = React.useState(false);
+  const { scrollYProgress } = useScroll();
+  
+  React.useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.button
+          initial={{ opacity: 0, scale: 0, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0, y: 20 }}
+          onClick={scrollToTop}
+          className="fixed bottom-8 md:bottom-12 right-8 md:right-12 z-[200] group"
+        >
+          <MagneticButton>
+            <div className="relative w-16 h-16 md:w-24 md:h-24 flex items-center justify-center">
+              {/* Progress Circle */}
+              <svg className="absolute inset-0 w-full h-full -rotate-90">
+                <circle
+                  cx="50%"
+                  cy="50%"
+                  r="40%"
+                  className="stroke-white/10 fill-none"
+                  strokeWidth="1"
+                />
+                <motion.circle
+                  cx="50%"
+                  cy="50%"
+                  r="40%"
+                  className="stroke-[var(--primary-color)] fill-none"
+                  strokeWidth="2"
+                  strokeDasharray="1"
+                  style={{ pathLength: scrollYProgress }}
+                />
+              </svg>
+              
+              {/* Button Core */}
+              <div className="w-12 h-12 md:w-16 md:h-16 bg-white/[0.03] backdrop-blur-2xl rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[var(--primary-color)] transition-all duration-700 shadow-2xl">
+                <ArrowUp className="w-5 h-5 md:w-6 md:h-6 text-white group-hover:scale-110 transition-transform duration-500" />
+              </div>
+              
+              {/* Label */}
+              <div className="absolute top-1/2 right-full mr-8 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none translate-x-4 group-hover:translate-x-0">
+                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 whitespace-nowrap">Top</span>
+              </div>
+            </div>
+          </MagneticButton>
+        </motion.button>
+      )}
+    </AnimatePresence>
+  );
+};
+
 const SocialIcon = ({ platform }) => {
-  switch (platform.toLowerCase()) {
+  switch (platform?.toLowerCase()) {
     case "linkedin": return <Linkedin size={20} />;
     case "twitter": return <Twitter size={20} />;
     case "instagram": return <Instagram size={20} />;
@@ -99,19 +212,57 @@ const SocialIcon = ({ platform }) => {
   }
 };
 
-export const ModernTemplate = ({ data }) => {
-  const { name, subtitle, bio, services = [], projects = [], testimonials = [], socialLinks = [], heroImage } = data;
+export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
+  const { name, subtitle, bio, services = [], projects = [], testimonials = [], socialLinks = [], image, styles = {} } = data;
   const [isPortrait, setIsPortrait] = React.useState(false);
+
+  // Default styles
+  const defaultStyles = {
+    primaryColor: "#E8001A",
+    backgroundColor: "#0A0A0A",
+    fontFamily: "sans-serif",
+    headingFontSize: "100%",
+    bodyFontSize: "100%",
+  };
+
+  const activeStyles = { ...defaultStyles, ...styles };
+
+  const styleVariables = {
+    "--primary-color": activeStyles.primaryColor,
+    "--bg-color": activeStyles.backgroundColor,
+    "--font-family": activeStyles.fontFamily,
+    "--heading-size": activeStyles.headingFontSize || "1",
+    "--body-size": activeStyles.bodyFontSize || "1",
+    "--hero-name-size": activeStyles.heroNameFontSize || "1",
+    "--hero-subtitle-size": activeStyles.heroSubtitleFontSize || "1",
+    "--bio-size": activeStyles.bioFontSize || "1",
+    "--section-title-size": activeStyles.sectionTitleFontSize || "1",
+    "--service-title-size": activeStyles.serviceTitleFontSize || "1",
+    "--service-body-size": activeStyles.serviceBodyFontSize || "1",
+    "--project-title-size": activeStyles.projectTitleFontSize || "1",
+    "--project-body-size": activeStyles.projectBodyFontSize || "1",
+    "--testimonial-quote-size": activeStyles.testimonialQuoteFontSize || "1",
+    "--testimonial-author-size": activeStyles.testimonialAuthorFontSize || "1",
+    "--footer-title-size": activeStyles.footerTitleFontSize || "1",
+    "--hero-font": activeStyles.heroFont || activeStyles.fontFamily,
+    "--bio-font": activeStyles.bioFont || activeStyles.fontFamily,
+    "--card-font": activeStyles.cardFont || activeStyles.fontFamily,
+    "--testimonial-font": activeStyles.testimonialFont || activeStyles.fontFamily,
+    "--footer-font": activeStyles.footerFont || activeStyles.fontFamily,
+    "--module-font": activeStyles.moduleFont || activeStyles.fontFamily,
+    "--hero-image-scale": activeStyles.heroImageScale || "1",
+    "--project-image-scale": activeStyles.projectImageScale || "1",
+  };
   
   React.useEffect(() => {
-    if (heroImage) {
+    if (image) {
       const img = new Image();
-      img.src = heroImage;
+      img.src = image;
       img.onload = () => {
         setIsPortrait(img.naturalHeight > img.naturalWidth);
       };
     }
-  }, [heroImage]);
+  }, [image]);
   
   const heroRef = useRef(null);
   const { scrollYProgress: heroScroll } = useScroll({
@@ -119,83 +270,120 @@ export const ModernTemplate = ({ data }) => {
     offset: ["start start", "end start"],
   });
 
-  const heroY = useTransform(heroScroll, [0, 1], ["0%", "30%"]);
-  const heroOpacity = useTransform(heroScroll, [0, 1], [1, 0.2]);
+  const heroY = useTransform(heroScroll, [0, 1], ["0%", "40%"]);
+  const heroOpacity = useTransform(heroScroll, [0, 0.8], [1, 0]);
+  const heroScale = useTransform(heroScroll, [0, 1], [1, 1.1]);
 
   return (
-    <div className="bg-[#FAF9F6] text-zinc-900 selection:bg-black selection:text-white font-sans antialiased overflow-x-hidden">
+    <>
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700;900&family=Outfit:wght@100;300;400;700;900&family=Space+Grotesk:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap');
+          
+          .font-custom {
+            font-family: var(--font-family) !important;
+          }
+          .hero-font { font-family: var(--hero-font) !important; }
+          .bio-font { font-family: var(--bio-font) !important; }
+          .card-font { font-family: var(--card-font) !important; }
+          .testimonial-font { font-family: var(--testimonial-font) !important; }
+          .footer-font { font-family: var(--footer-font) !important; }
+          .module-font { font-family: var(--module-font) !important; }
+        `}
+      </style>
+      <div 
+        className="bg-[#0A0A0A] text-white selection:bg-[var(--primary-color)] selection:text-white font-custom antialiased overflow-x-hidden scroll-smooth"
+      style={{ 
+        ...styleVariables, 
+        backgroundColor: "var(--bg-color)",
+        fontFamily: "var(--font-family)"
+      }}
+    >
+      <CustomCursor />
+      {/* Dynamic Noise Grain Overlay */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.05] z-[100] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className={`relative w-full overflow-hidden bg-[#FAF9F6] flex items-center justify-center px-6 ${isPortrait ? "min-h-[110vh] pt-32 pb-20" : "h-[90vh] md:h-screen"}`}
+        className={`relative w-full overflow-hidden bg-[#0A0A0A] flex items-center justify-center px-4 md:px-6 ${isPortrait ? "min-h-screen pt-20 pb-8" : "h-screen"}`}
       >
-        {/* Background Layer */}
+        {/* Background Layer with Parallax */}
         <motion.div
-          style={{ y: heroY, opacity: heroOpacity }}
+          style={{ y: heroY, opacity: heroOpacity, scale: heroScale }}
           className="absolute inset-0 z-0 pointer-events-none"
         >
           <img
-            src={heroImage || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2670&auto=format&fit=crop"}
-            alt="Hero Background"
-            className={`w-full h-full object-cover scale-110 ${isPortrait ? "blur-3xl opacity-30 grayscale" : ""}`}
-          />
-          <div className={`absolute inset-0 bg-[#FAF9F6] ${isPortrait ? "opacity-60" : "mix-blend-color opacity-90"}`} />
-          {!isPortrait && <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#FAF9F6]" />}
+             src={image || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"} 
+             alt={name} 
+             className={`w-full h-full object-cover opacity-30 ${isPortrait ? "blur-3xl" : ""}`}
+             style={{ transform: `scale(var(--hero-image-scale))` }}
+           />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/0 via-[#0A0A0A]/40 to-[#0A0A0A]" />
         </motion.div>
 
-        <div className="absolute top-12 left-6 md:left-12 z-20 flex items-center gap-4">
-          <div className="w-2 h-2 rounded-full bg-lime-400 animate-pulse" />
-          <div className="text-[10px] tracking-[0.4em] font-black text-zinc-900 uppercase">
-            {name || "EST. 2024"}
+        <div className="absolute top-8 md:top-12 left-6 md:left-12 z-50 flex items-center gap-4 md:gap-6">
+          <motion.div 
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-[var(--primary-color)] shadow-[0_0_20px_var(--primary-color)]" 
+          />
+          <div className="text-[9px] md:text-[11px] font-black tracking-[0.4em] md:tracking-[0.6em] text-white/60 uppercase italic">
+            {name || "SOCIAL BUREAU PARTNER"}
           </div>
         </div>
 
-        <div className={`max-w-7xl w-full relative z-10 flex flex-col items-center ${isPortrait ? "md:flex-row md:items-center md:justify-center gap-12 md:gap-24" : "text-center"}`}>
+        <div className={`max-w-7xl w-full relative z-10 flex flex-col items-center ${isPortrait ? "lg:flex-row lg:items-center lg:justify-center gap-12 md:gap-32" : "text-center"}`}>
           
-          {/* Portrait Image Frame - Only shown in Portrait Mode */}
+          {/* Portrait Image Frame */}
           {isPortrait && (
             <motion.div 
-              initial={{ opacity: 0, y: 40, rotate: -2 }}
+              initial={{ opacity: 0, y: 60, rotate: -3 }}
               animate={{ opacity: 1, y: 0, rotate: 0 }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-[300px] md:w-[450px] aspect-[3/4] rounded-[40px] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)] border-[12px] border-white z-20"
+              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-[280px] sm:w-[320px] md:w-[380px] lg:w-[420px] aspect-[3/4] rounded-[32px] md:rounded-[48px] overflow-hidden shadow-[0_60px_120px_-20px_rgba(232,0,26,0.15)] border border-white/10 p-1.5 md:p-2 bg-white/5 backdrop-blur-3xl z-20"
             >
-               <img src={heroImage} alt={name} className="w-full h-full object-cover" />
+               <img src={image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop"} alt={name} className="w-full h-full object-cover rounded-[28px] md:rounded-[40px] transition-all duration-1000" />
             </motion.div>
           )}
 
-          <div className={isPortrait ? "flex-1 text-left" : "w-full"}>
+          <div className={isPortrait ? "flex-1 text-center lg:text-left" : "w-full"}>
             <motion.div
-              initial={{ opacity: 0, x: isPortrait ? 50 : 0, scale: isPortrait ? 1 : 0.8 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="mb-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="mb-8 md:mb-12"
             >
-              <span className="text-[10px] md:text-xs font-black tracking-[0.4em] uppercase text-zinc-400 border border-zinc-200 px-8 py-3 rounded-full bg-white/80 backdrop-blur-xl shadow-xl shadow-black/5">
-                {subtitle || "Independent Professional"}
+              <span 
+                className="font-black tracking-[0.3em] md:tracking-[0.4em] uppercase text-[var(--primary-color)] border border-[var(--primary-color)]/20 px-6 md:px-8 py-2 md:py-3 rounded-full bg-[var(--primary-color)]/5 backdrop-blur-xl shadow-2xl shadow-[var(--primary-color)]/10 italic inline-block hero-font"
+                style={{ fontSize: `calc(var(--hero-subtitle-size) * clamp(0.6rem, 2.5vw, 0.85rem))` }}
+              >
+                {subtitle || "The Visionary Creator"}
               </span>
             </motion.div>
 
-            <div className={`space-y-[-0.1em] ${isPortrait ? "text-left" : "text-center flex flex-col items-center"}`}>
-              <div className="overflow-hidden py-2">
+            <div className={`space-y-[-0.1em] md:space-y-[-0.15em] ${isPortrait ? "text-center lg:text-left" : "text-center flex flex-col items-center"}`}>
+              <div className="overflow-hidden py-2 md:py-4">
                 <motion.h1
                   initial={{ y: "110%" }}
                   animate={{ y: 0 }}
                   transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                  className={`${isPortrait ? "text-6xl md:text-[8vw]" : "text-7xl md:text-[12vw]"} font-black leading-[0.8] tracking-tighter text-zinc-900 uppercase`}
+                  className="font-black leading-[0.8] tracking-tighter text-white uppercase italic pr-4 hero-font whitespace-nowrap"
+                  style={{ fontSize: `calc(var(--hero-name-size) * ${isPortrait ? "clamp(1.2rem, 6.5vw, 6rem)" : "clamp(3rem, 12vw, 12rem)"})` }}
                 >
-                  {name?.split(" ")[0] || "PORTFOLIO."}
+                  {name?.split(" ")[0] || "IDENTITY."}
                 </motion.h1>
               </div>
               {name?.split(" ")[1] && (
-                <div className="overflow-hidden py-2">
+                <div className="overflow-hidden py-2 md:py-4">
                   <motion.h1
                     initial={{ y: "110%" }}
                     animate={{ y: 0 }}
-                    transition={{ duration: 1.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                    className={`${isPortrait ? "text-6xl md:text-[8vw]" : "text-7xl md:text-[12vw]"} font-black leading-[0.8] tracking-tighter text-zinc-900 uppercase italic flex items-center ${isPortrait ? "justify-start" : "justify-center"} gap-[0.2em]`}
+                    transition={{ duration: 1.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                    className="font-black leading-[0.8] tracking-tighter text-transparent outline-text uppercase flex items-center justify-center lg:justify-start gap-[0.2em] pr-4 hero-font whitespace-nowrap"
+                    style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)", fontSize: `calc(var(--hero-name-size) * ${isPortrait ? "clamp(1.2rem, 6.5vw, 6rem)" : "clamp(3rem, 12vw, 12rem)"})` }}
                   >
-                    <span className="text-zinc-300">/</span> {name?.split(" ")[1]}
+                    <span className="text-[var(--primary-color)]/40 font-light italic" /> {name?.split(" ")[1]}
                   </motion.h1>
                 </div>
               )}
@@ -203,72 +391,116 @@ export const ModernTemplate = ({ data }) => {
           </div>
         </div>
         
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-40">
-           <div className="text-[10px] font-black tracking-[0.2em] uppercase">Scroll to explore</div>
-           <div className="w-px h-12 bg-zinc-900/20 relative overflow-hidden">
+        {/* Animated Scroll Indicator */}
+        <div className="absolute bottom-8 md:bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 md:gap-6 opacity-30">
+           <div className="text-[7px] md:text-[9px] font-black tracking-[0.4em] md:tracking-[0.5em] uppercase text-[var(--primary-color)]">Descend to Explore</div>
+           <div className="w-px h-12 md:h-20 bg-white/10 relative overflow-hidden">
                <motion.div 
                  animate={{ y: ["-100%", "100%"] }}
-                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                 className="absolute inset-0 bg-zinc-900" 
+                 transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+                 className="absolute inset-0 bg-[var(--primary-color)]" 
                />
            </div>
         </div>
       </section>
 
       {/* Narrative Section */}
-      <section className="py-40 px-6 md:px-12 lg:px-24 bg-white relative z-10">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col md:flex-row gap-20">
-              <div className="md:w-1/3">
-                  <span className="text-[10px] font-black tracking-[0.3em] uppercase text-zinc-400">01 / The Vision</span>
+      <section className="py-20 md:py-40 px-6 md:px-12 lg:px-24 bg-[#0A0A0A] relative z-10 overflow-hidden">
+        {/* Background Decorative Text */}
+        <motion.div 
+          style={{ x: useTransform(heroScroll, [0, 1], ["-10%", "10%"]) }}
+          className="absolute top-1/2 left-0 -translate-y-1/2 text-[40vw] font-black text-white/[0.01] pointer-events-none whitespace-nowrap italic"
+        >
+          NARRATIVE NARRATIVE
+        </motion.div>
+        
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="flex flex-col lg:flex-row gap-12 md:gap-32 items-start">
+              <div className="w-full lg:w-1/3">
+                  <div className="sticky top-32">
+                    <span className="text-[10px] font-black tracking-[0.4em] uppercase text-[var(--primary-color)] italic underline underline-offset-8 decoration-2">01 / The Core Mission</span>
+                    <p className="text-white/20 text-xs mt-12 font-medium tracking-widest max-w-[200px] leading-relaxed italic">CRAFTING DIGITAL LEGACIES THROUGH CLINICAL PRECISION.</p>
+                  </div>
               </div>
-              <div className="md:w-2/3">
+              <div className="w-full lg:w-2/3">
                   <AnimatedText 
-                    className="text-3xl md:text-5xl font-medium leading-[1.1] tracking-tight text-zinc-900"
-                    text={bio || "Driven by excellence and innovation. We transform ideas into measurable reality with precision and strategic action."} 
+                    className="font-bold leading-[1.1] tracking-tight text-white/95 italic uppercase bio-font"
+                    text={bio || "We exist at the intersection of clinical data and disruptive creativity. Engineering legacies that transcend the digital noise."}
+                    style={{ fontSize: `calc(var(--bio-size) * ${isPortrait ? "2rem" : "4.5rem"})` }}
+                  />
+                  <motion.div 
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="h-px w-full bg-gradient-to-r from-[var(--primary-color)] to-transparent mt-16 md:mt-24 origin-left"
                   />
               </div>
           </div>
         </div>
       </section>
 
-      {/* Selected Works / Projects */}
+      {/* Selected Works Grid */}
       {projects.length > 0 && (
-        <section className="py-40 px-6 md:px-12 lg:px-24 bg-zinc-50 border-y border-zinc-100">
-           <div className="max-w-7xl mx-auto">
-              <div className="flex justify-between items-end mb-24">
-                  <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-none">Selected<br />Works</h2>
-                  <div className="text-[10px] font-black tracking-[0.3em] uppercase text-zinc-400 hidden md:block">02 / Portfolio</div>
+        <section className="py-20 md:py-40 px-6 md:px-12 lg:px-24 bg-[#0F0F0F] relative overflow-hidden">
+           {/* Parallax Background Title */}
+           <motion.div 
+              style={{ x: useTransform(heroScroll, [0, 1], ["20%", "-20%"]) }}
+              className="absolute top-20 left-0 text-[40vw] font-black text-white/[0.02] leading-none select-none italic pointer-events-none uppercase"
+           >
+              PROJECTS
+           </motion.div>
+
+           <div className="max-w-7xl mx-auto relative z-10">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-32 border-b border-white/5 pb-8 md:pb-16 gap-8">
+                  <PremiumHeading 
+                    className="font-black tracking-tighter uppercase leading-[0.8] md:leading-[0.75] italic module-font"
+                    style={{ fontSize: `calc(var(--section-title-size) * 7vw)` }}
+                  >
+                    Selected<br /><span className="text-[var(--primary-color)]">Artifacts</span>
+                  </PremiumHeading>
+                  <div className="text-[10px] font-black tracking-[0.4em] uppercase text-white/20 hidden md:block italic">02 / Clinical Execution</div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-32">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 md:gap-x-20 gap-y-12 md:gap-y-24">
                   {projects.map((project, idx) => (
                     <motion.div 
                       key={idx}
-                      initial={{ opacity: 0, y: 50 }}
+                      initial={{ opacity: 0, y: 60 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1, delay: idx * 0.1 }}
-                      className={`group cursor-none transition-transform duration-700 ${idx % 2 !== 0 ? "md:mt-32" : ""}`}
+                      viewport={{ once: true, margin: "-10%" }}
+                      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                      className={`group relative ${idx % 2 !== 0 ? "md:mt-24" : ""}`}
                     >
-                        <div className="aspect-[4/5] rounded-[40px] overflow-hidden bg-zinc-200 border border-zinc-200 relative mb-10 shadow-2xl shadow-black/10">
+                        <div className="aspect-[3/2] rounded-[24px] md:rounded-[40px] overflow-hidden bg-zinc-900 border border-white/5 relative mb-6 md:mb-8 shadow-2xl transition-all duration-700 hover:shadow-[var(--primary-color)]/10 max-w-2xl mx-auto">
                             {project.image ? (
-                              <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s] ease-out" />
+                               <img 
+                                 src={project.image} 
+                                 alt={project.title} 
+                                 className="w-full h-full object-cover transition-transform duration-[2.5s] ease-out group-hover:scale-110" 
+                                 style={{ transform: `scale(var(--project-image-scale))` }}
+                               />
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center text-zinc-400 font-black text-4xl italic">PRJ.{idx + 1}</div>
+                              <div className="w-full h-full flex items-center justify-center text-white/5 font-black text-[15vw] md:text-[10vw] italic">{idx + 1}</div>
                             )}
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center backdrop-blur-[2px]">
-                                <div className="p-8 rounded-full bg-white text-black scale-0 group-hover:scale-100 transition-transform duration-500 shadow-2xl">
-                                  <ArrowUpRight size={40} />
-                                </div>
-                            </div>
+                             <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700" />
                         </div>
-                        <div className="flex justify-between items-start pr-4">
-                           <div className="max-w-xs">
-                              <h3 className="text-3xl font-black tracking-tighter uppercase mb-4">{project.title}</h3>
-                              <p className="text-zinc-500 text-sm leading-relaxed">{project.description}</p>
+                        <div className="flex justify-between items-start pr-4 md:pr-6">
+                           <div className="max-w-md">
+                              <h3 
+                                className="font-black tracking-tighter uppercase mb-4 md:mb-6 italic leading-none group-hover:text-[var(--primary-color)] transition-colors card-font"
+                                style={{ fontSize: `calc(var(--project-title-size) * 2rem)` }}
+                              >
+                                {project.title}
+                              </h3>
+                              <p 
+                                className="text-white/40 leading-relaxed font-light italic card-font"
+                                style={{ fontSize: `calc(var(--project-body-size) * 0.875rem)` }}
+                              >
+                                {project.description}
+                              </p>
                            </div>
-                           <span className="text-[10px] font-black text-zinc-300">/ 0{idx + 1}</span>
+                           <span className="text-xl md:text-2xl font-black italic text-white/5">0{idx + 1}</span>
                         </div>
                     </motion.div>
                   ))}
@@ -277,28 +509,50 @@ export const ModernTemplate = ({ data }) => {
         </section>
       )}
 
-      {/* Services Grid */}
-      <section className="py-40 px-6 md:px-12 lg:px-24 bg-white relative z-10">
+      {/* Expertise Section */}
+      <section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-[#0A0A0A] relative z-10">
         <div className="max-w-7xl mx-auto">
-           <div className="flex items-center gap-12 mb-32">
-               <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-none">The<br />Expertise</h2>
-               <div className="h-px flex-1 bg-zinc-200" />
-               <div className="text-[10px] font-black tracking-[0.3em] uppercase text-zinc-400 hidden md:block">03 / CORE</div>
+           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16 mb-20 md:mb-40">
+               <PremiumHeading 
+                className="font-black italic uppercase tracking-tighter leading-none module-font"
+                style={{ fontSize: `calc(var(--section-title-size) * 7vw)`, color: "rgba(255,255,255,0.05)" }}
+              >
+                Excellence Units
+              </PremiumHeading>
+               <div className="h-px flex-1 bg-white/5 hidden md:block" />
+               <div className="text-[10px] font-black tracking-[0.4em] uppercase text-[var(--primary-color)] italic">03 / Capacity Matrix</div>
            </div>
 
-           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
+           <div className={`grid grid-cols-1 sm:grid-cols-2 ${isEditing ? "xl:grid-cols-3" : "lg:grid-cols-3"} gap-px bg-white/5 border border-white/5 rounded-[32px] md:rounded-[80px] overflow-hidden`}>
             {services.map((service, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.1 * idx }}
-                className="group p-10 rounded-[40px] hover:bg-zinc-900 hover:text-white transition-all duration-700 border border-zinc-100 hover:border-zinc-900"
+                transition={{ duration: 1, delay: 0.1 * idx }}
+                className="group p-10 md:p-20 lg:p-24 bg-[#0A0A0A] hover:bg-[var(--primary-color)]/5 transition-all duration-700 flex flex-col justify-between aspect-square relative"
               >
-                <div className="text-[10px] font-black tracking-widest text-zinc-400 mb-8 border-b border-zinc-100 group-hover:border-white/10 pb-4">0{idx + 1} // CAPACITY</div>
-                <h3 className="text-3xl font-black tracking-tighter mb-6 uppercase leading-tight">{service.title}</h3>
-                <p className="text-zinc-500 group-hover:text-zinc-400 leading-relaxed text-sm">{service.description}</p>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--primary-color)]/10 blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                
+                <div className="text-[10px] md:text-[11px] font-black tracking-widest text-[var(--primary-color)] mb-8 md:mb-12 flex items-center gap-4 italic uppercase relative z-10">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary-color)] animate-pulse" />
+                  0{idx + 1} // CAPACITY
+                </div>
+                <div className="relative z-10">
+                  <h3 
+                    className="font-black tracking-tighter mb-6 md:mb-10 uppercase leading-[0.85] italic group-hover:text-[var(--primary-color)] transition-colors break-words overflow-hidden card-font"
+                    style={{ fontSize: `calc(var(--service-title-size) * 2.5rem)` }}
+                  >
+                    {service.title}
+                  </h3>
+                  <p 
+                    className="text-white/30 group-hover:text-white/70 leading-relaxed font-light italic card-font"
+                    style={{ fontSize: `calc(var(--service-body-size) * 1.125rem)` }}
+                  >
+                    {service.description}
+                  </p>
+                </div>
               </motion.div>
             ))}
            </div>
@@ -307,29 +561,46 @@ export const ModernTemplate = ({ data }) => {
 
       {/* Testimonials */}
       {testimonials.length > 0 && (
-         <section className="py-40 px-6 md:px-12 lg:px-24 bg-zinc-950 text-white rounded-[60px] mx-4 my-10 overflow-hidden relative">
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-lime-400/10 rounded-full blur-[120px] -mr-64 -mt-64" />
+        <section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-[#0A0A0A] relative overflow-hidden">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[800px] h-[300px] sm:h-[800px] bg-[var(--primary-color)]/5 rounded-full blur-[80px] md:blur-[160px] pointer-events-none" />
             
             <div className="max-w-7xl mx-auto relative z-10">
-                <div className="text-center mb-32">
-                    <Quote className="text-lime-400 mx-auto mb-8" size={60} />
-                    <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase italic">Words of<br />Confidence</h2>
+                <div className="text-center mb-20 md:mb-40">
+                    <Sparkles className="text-[var(--primary-color)] mx-auto mb-6 md:mb-10 animate-pulse w-10 md:w-16 h-10 md:h-16" />
+                    <PremiumHeading className="text-5xl sm:text-6xl md:text-[8rem] font-black tracking-tighter uppercase italic leading-[0.8] module-font">
+                        Voices of<br /><span className="text-[var(--primary-color)]">Assurance</span>
+                    </PremiumHeading>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20">
                     {testimonials.map((t, idx) => (
                       <motion.div 
                         key={idx}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8, delay: idx * 0.1 }}
-                        className="bg-white/5 backdrop-blur-3xl p-12 rounded-[50px] border border-white/10 hover:border-lime-400/30 transition-colors duration-700 h-full flex flex-col justify-between"
+                        initial={{ opacity: 0, y: 60 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: idx * 0.15 }}
+                        className="bg-white/[0.01] backdrop-blur-3xl p-10 md:p-20 rounded-[48px] md:rounded-[80px] border border-white/5 hover:border-[var(--primary-color)]/20 transition-all duration-1000 flex flex-col justify-between group relative overflow-hidden"
                       >
-                          <p className="text-2xl md:text-3xl font-medium tracking-tight mb-12 italic leading-snug">"{t.quote}"</p>
-                          <div>
-                              <div className="w-12 h-1 bg-lime-400 mb-6" />
-                              <p className="text-sm font-black uppercase tracking-[0.2em]">{t.author}</p>
-                              <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 mt-1">Verified Partner</p>
+                          <div className="absolute -top-10 -right-10 w-40 h-40 bg-[var(--primary-color)]/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                          <Quote className="text-white/5 mb-10 md:mb-16 group-hover:text-[var(--primary-color)]/10 transition-colors w-10 md:w-16 h-10 md:h-16 -ml-2" />
+                          <p 
+                            className="font-medium tracking-tight mb-10 md:mb-24 italic leading-[1.2] md:leading-[1.1] text-white/70 group-hover:text-white transition-colors testimonial-font"
+                            style={{ fontSize: `calc(var(--testimonial-quote-size) * ${isPortrait ? "clamp(1rem, 5vw, 1.8rem)" : "2.5rem"})` }}
+                          >
+                            "{t.quote}"
+                          </p>
+                          <div className="flex items-center gap-6 md:gap-8">
+                              <div className="w-12 md:w-20 h-px bg-[var(--primary-color)]/40 group-hover:w-24 md:group-hover:w-32 transition-all duration-700" />
+                              <div>
+                                <p 
+                                  className="font-black uppercase tracking-[0.3em] md:tracking-[0.4em] text-[var(--primary-color)] testimonial-font"
+                                  style={{ fontSize: `calc(var(--testimonial-author-size) * 0.875rem)` }}
+                                >
+                                  {t.author}
+                                </p>
+                                <p className="text-[9px] md:text-[11px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-white/10 mt-2 italic font-black group-hover:text-white/20 transition-colors">Verified Visionary</p>
+                              </div>
                           </div>
                       </motion.div>
                     ))}
@@ -338,23 +609,28 @@ export const ModernTemplate = ({ data }) => {
          </section>
       )}
 
-      {/* Multi-Section Footer */}
-      <footer className="bg-[#FAF9F6] text-zinc-900 py-32 px-6 md:px-12 lg:px-24">
-        <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-zinc-200 pb-20 mb-20 gap-12">
-                <div className="space-y-4">
-                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-[0.8] mb-4">Let's build<br />something.</h2>
-                    <p className="text-zinc-500 text-sm font-medium tracking-tight">Available for high-impact collaborations worldwide.</p>
+      {/* High-End Footer */}
+      <footer className="bg-[#0A0A0A] py-20 md:py-32 px-6 md:px-12 lg:px-24 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto relative z-10">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center border-b border-white/5 pb-20 md:pb-32 mb-16 md:mb-32 gap-16 md:gap-24">
+                <div className="space-y-8 md:space-y-12 w-full">
+                    <PremiumHeading 
+                      className="font-black tracking-tighter uppercase leading-[0.85] md:leading-[0.7] mb-6 md:mb-8 italic footer-font"
+                      style={{ fontSize: `calc(var(--footer-title-size) * ${isPortrait ? "clamp(2.5rem, 14vw, 5rem)" : "10rem"})` }}
+                    >
+                      Let's Build<br /><span className="text-[var(--primary-color)]">Legendary.</span>
+                    </PremiumHeading>
+                    <p className="text-white/40 text-base md:text-xl lg:text-2xl font-light italic tracking-tight max-w-xl leading-relaxed">Available for elite collaborations that demand clinical precision and bold execution.</p>
                 </div>
                 
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-3 sm:gap-4 md:gap-8">
                     {socialLinks.map((link, i) => (
-                      <MagneticButton key={i} className="flex">
+                      <MagneticButton key={i} className="flex shrink-0">
                         <a 
                           href={link.url} 
                           target="_blank" 
                           rel="noopener noreferrer" 
-                          className="w-16 h-16 rounded-full border border-zinc-200 flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition-colors duration-500 shadow-xl shadow-black/5"
+                          className="w-14 sm:w-16 md:w-24 h-14 sm:h-16 md:h-24 rounded-[16px] sm:rounded-[20px] md:rounded-[32px] bg-white/[0.03] border border-white/10 flex items-center justify-center hover:bg-[var(--primary-color)] hover:text-white hover:border-[var(--primary-color)] transition-all duration-700 shadow-2xl"
                         >
                           <SocialIcon platform={link.platform} />
                         </a>
@@ -363,16 +639,18 @@ export const ModernTemplate = ({ data }) => {
                 </div>
             </div>
 
-            <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">©{new Date().getFullYear()} // {name} // All Space Reserved</div>
-                <div className="flex gap-8 text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500">
-                    <a href="#" className="hover:text-black transition-colors">Privacy Policy</a>
-                    <a href="#" className="hover:text-black transition-colors">Terms of Service</a>
+            <div className="flex flex-col md:flex-row justify-between items-center gap-8 md:gap-12 text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] md:tracking-[0.5em] text-white/10 italic text-center md:text-left">
+                <div>©{new Date().getFullYear()} // {name || "PARTNER"} // SOCIAL BUREAU INFRASTRUCTURE</div>
+                <div className="flex gap-8 md:gap-12">
+                    <a href="#" className="hover:text-[var(--primary-color)] transition-colors">Digital Governance</a>
+                    <a href="#" className="hover:text-[var(--primary-color)] transition-colors">Access Protocols</a>
                 </div>
             </div>
         </div>
       </footer>
+      <BackToTop />
     </div>
+    </>
   );
 };
 

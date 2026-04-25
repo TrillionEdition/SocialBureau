@@ -228,7 +228,7 @@ export default function ContactSection() {
         <div className="relative inline-block">
 
           <img
-            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772020659/image-gen_6__converted_xwf2hv.webp"
+            src="https://www.socialbureau.in/assets/socialbureau.png"
             alt="Growth Architect"
             className="h-auto w-64 md:w-80 mx-auto"
           />

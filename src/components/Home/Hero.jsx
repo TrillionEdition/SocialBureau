@@ -532,11 +532,22 @@ export default function Hero() {
     const nextRef = activeVideo === 1 ? video2Ref : video1Ref;
 
     if (activeRef.current) {
+      // Stop the currently active video before switching
+      activeRef.current.pause();
       activeRef.current.src = videos[currentIndex];
-      activeRef.current.play();
+      activeRef.current.load();
+      const playPromise = activeRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          // AbortError is expected when a new load interrupts play — safe to ignore
+          if (err.name !== "AbortError") {
+            console.error("Video play error:", err);
+          }
+        });
+      }
     }
 
-    // preload next video
+    // preload next video (only set src, don't play)
     if (nextRef.current && currentIndex + 1 < videos.length) {
       nextRef.current.src = videos[currentIndex + 1];
       nextRef.current.load();
