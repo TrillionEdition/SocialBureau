@@ -27,7 +27,7 @@ import {
   ArrowUp,
   Edit3,
 } from "lucide-react";
-import { BASE_URL } from "../../utils/urls";
+import { BASE_URL } from "../../../utils/urls";
 import { toast } from "react-toastify";
 
 
@@ -440,65 +440,23 @@ const BackToTop = () => {
   );
 };
 
+const SectionTitle = ({ label, title, light = false }) => {
   return (
-    <div 
-      className="bg-[#020202] text-white selection:bg-[var(--primary-color)] selection:text-white font-sans antialiased overflow-x-hidden scroll-smooth"
-      style={styleVariables}
-    >
-      {isOwner && (
-        <button
-          onClick={() => setIsEditing(!isEditing)}
-          className="fixed top-8 right-8 z-[9999] bg-[var(--primary-color)] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center gap-2"
-        >
-          <Edit3 size={20} />
-          <span className="text-[10px] font-black uppercase tracking-widest">Customize</span>
-        </button>
-      )}
-
-      {isEditing && (
-        <div className="fixed top-24 right-8 z-[9999] bg-black/80 backdrop-blur-xl border border-white/10 p-6 rounded-3xl w-64 shadow-2xl space-y-6">
-          <div className="space-y-4">
-            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 block">Primary Color</label>
-            <input 
-              type="color" 
-              value={activeStyles.primaryColor} 
-              onChange={(e) => handleStyleChange("primaryColor", e.target.value)}
-              className="w-full h-10 rounded-lg bg-transparent border-none cursor-pointer"
-            />
-          </div>
-          <div className="space-y-4">
-            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 block">Background</label>
-            <input 
-              type="color" 
-              value={activeStyles.backgroundColor} 
-              onChange={(e) => handleStyleChange("backgroundColor", e.target.value)}
-              className="w-full h-10 rounded-lg bg-transparent border-none cursor-pointer"
-            />
-          </div>
-          <button 
-            onClick={() => setIsEditing(false)}
-            className="w-full py-3 bg-white text-black text-[10px] font-black uppercase rounded-xl"
-          >
-            Done
-          </button>
-        </div>
-      )}
-
-      <div className="mb-8 md:mb-20 w-full text-left">
-        <RevealText
-          className={`text-[10px] font-bold uppercase tracking-[0.4em] mb-4 ${light ? "text-white/40" : "text-gray-400"}`}
-        >
-          {label}
-        </RevealText>
-        <RevealText
-          className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-medium tracking-tighter leading-[0.9] sm:leading-[0.85] uppercase ${light ? "text-white" : "text-[#0e0e0e]"}`}
-        >
-          {title}
-        </RevealText>
-      </div>
+    <div className="mb-8 md:mb-20 w-full text-left">
+      <RevealText
+        className={`text-[10px] font-bold uppercase tracking-[0.4em] mb-4 ${light ? "text-white/40" : "text-gray-400"}`}
+      >
+        {label}
+      </RevealText>
+      <RevealText
+        className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-medium tracking-tighter leading-[0.9] sm:leading-[0.85] uppercase ${light ? "text-white" : "text-[#0e0e0e]"}`}
+      >
+        {title}
+      </RevealText>
     </div>
   );
 };
+
 
 
 const ImpactHighlight = () => {

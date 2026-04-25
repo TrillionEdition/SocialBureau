@@ -47,10 +47,13 @@ export default function PartnershipChatbot() {
       },
     ]);
 
-    // Open chat automatically after 3 seconds
+    // Open chat automatically after 3 seconds only on desktop
     const timer = setTimeout(() => {
-      setIsOpen(true);
+      if (window.innerWidth >= 768) {
+        setIsOpen(true);
+      }
     }, 3000);
+
 
     return () => clearTimeout(timer);
   }, []);
@@ -308,11 +311,12 @@ const styles = {
     transition: "transform 0.2s ease",
   },
   chatWindow: {
-    width: "350px",
-    height: "500px",
+    width: "min(350px, calc(100vw - 60px))",
+    height: "min(500px, calc(100vh - 100px))",
     backgroundColor: "#fff",
     borderRadius: "16px",
     boxShadow: "0 10px 40px rgba(0,0,0,0.15)",
+
     display: "flex",
     flexDirection: "column",
     overflow: "hidden",
