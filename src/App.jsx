@@ -188,13 +188,19 @@ function ConditionalNavbar() {
     "/ajio"
   ];
 
-
   const shouldHide = hideNavbarRoutes.some(
     (route) =>
       location.pathname === route || location.pathname.startsWith(route + "/"),
   );
 
   return shouldHide ? null : <Navbar />;
+}
+
+function ConditionalChatbot() {
+  const location = useLocation();
+  const isPartnershipPage = location.pathname.toLowerCase().startsWith("/partnership");
+
+  return isPartnershipPage ? <PartnershipChatbot /> : null;
 }
 
 const lenisOptions = {
@@ -210,6 +216,7 @@ const lenisOptions = {
 function App() {
   return (
     <ReactLenis root options={lenisOptions}>
+      <GlobalCursor />
       <BrowserRouter>
         <ToastContainer
           position="top-right"
@@ -224,6 +231,7 @@ function App() {
           theme="dark"
         />
         <ConditionalNavbar />
+        <ConditionalChatbot />
         <ScrollTop />
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
