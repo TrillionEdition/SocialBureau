@@ -923,8 +923,8 @@ export const Home = () => {
           {[
             {
               name: 'Big TV',
-              img: 'assets/home/bigtv.jpg',
-              href: 'https://images.bigtvlive.com/2026/03/BigTvLive-Telugu-Logo-1.png',
+              img: 'https://images.bigtvlive.com/2026/03/BigTvLive-Telugu-Logo-1.png',
+              href: 'https://www.bigtvlive.com',
               accent: 'bg-[#E8001A]'
             },
             {
