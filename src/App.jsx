@@ -13,9 +13,18 @@ import Footer from "./components/Footer";
 import ScrollTop from "./components/ScrollTop";
 import LoadingSpinner from "./components/LoadingSpinner";
 import AdminRoute from "./components/AdminRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 import CookieConsent from "./components/CookieConsent";
 import { ToastContainer } from "react-toastify";
 import Partner1 from "./pages/Partnerships/johnsamuel";
+import GlobalCursor from "./components/GlobalCursor";
+import { Clickup } from "./pages/Clickup";
+import ClientDashboard from "./pages/ClientDashboard";
+import ApiMarketingDashboard from "./pages/ApiMarketingDashboard";
+import MediaDashboard from "./pages/MediaDashboard";
+import PartnershipChatbot from "./components/PartnershipChatbot";
+import AjnoraDashboard from "./pages/AjnoraDashboard";
+import AjinorahForm from "./components/ClientFormaji";
 
 // Lazy-loaded Pages
 const Home = lazy(() =>
@@ -55,6 +64,7 @@ const EditUser = lazy(() => import("./pages/EditUser"));
 const DashboardX = lazy(() => import("./pages/DashboardX"));
 const UserManagement = lazy(() => import("./pages/UserManagement"));
 const ResetPassword = lazy(() =>
+
   import("./pages/ForgetPassword").then((module) => ({
     default: module.ResetPassword,
   })),
@@ -174,8 +184,10 @@ function ConditionalNavbar() {
     "/job-details",
     "/job-listing",
     "/job-applicants",
-    "/candidate-profile"
+    "/candidate-profile",
+    "/ajio"
   ];
+
 
   const shouldHide = hideNavbarRoutes.some(
     (route) =>
@@ -242,6 +254,12 @@ function App() {
                 <AdminRoute>
                   <AddEvent />
                 </AdminRoute>
+              }
+            />
+            <Route
+              path="/enquiry-form"
+              element={
+                <AjinorahForm />
               }
             />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -344,8 +362,14 @@ function App() {
               }
             />
 
-            <Route path="/analytics" element={<AnalyticsWidget />} />
+            <Route path="/client-form" element={<ClientForm />} />
+            <Route path="/client-dashboard" element={<ClientDashboard />} />
+            <Route path="/api-marketing-dashboard" element={<AdminRoute><ApiMarketingDashboard /></AdminRoute>} />
+            <Route path="/media-dashboard" element={<AdminRoute><MediaDashboard /></AdminRoute>} />
+            <Route path="/ajnoradashboard" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
 
+
+            <Route path="/analytics" element={<AnalyticsWidget />} />
             <Route
               path="/achievements-form"
               element={
@@ -355,8 +379,7 @@ function App() {
               }
             />
             <Route path="/add-review" element={<AddReview />} />
-
-            {/* <Route path='/partner' element={<PortfolioPager />} /> */}
+            <Route path="/client-form" element={<ClientForm />} />
             <Route path="/partners" element={<Partnership />} />
             <Route path="/partnership/Ranjit" element={<Landing />} />
             <Route path="/partnership/Sivaprasad" element={<Sivaprasad />} />
@@ -379,6 +402,7 @@ function App() {
             <Route path="/partners/register" element={<PartnerRegister />} />
             <Route path="/partners/login" element={<PartnerLogin />} />
             <Route path="/partners/dashboard" element={<PartnerDashboard />} />
+
             {/* <Route path="/partnership/Partner2" element={<Partner2 />} /> */}
             {/* <Route path="/partnership/Partner3" element={<Partner3 />} />
             <Route path="/partnership/Partner4" element={<Partner4 />} /> */}

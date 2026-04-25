@@ -231,7 +231,9 @@ export default function Navbar() {
         },
       ],
     },
+
     { label: "Team", href: "/our-team" },
+    { label: "Enquiry", href: "/enquiry-form" },
     { label: "Support", href: "/contact" },
   ];
 
@@ -414,7 +416,7 @@ export default function Navbar() {
             href="https://socialbureau.in"
             className="md:hidden text-white text-[17px] font-bold tracking-tight shrink-0"
           >
-           <img src="/assets/logo.webp" className="h-7 w-40" />
+            <img src="/assets/logo.webp" className="h-7 w-40" />
           </a>
 
           {/* Mobile Toggle */}

@@ -135,16 +135,41 @@ export const AuthPage = () => {
     setLoading(true);
     setError("");
     try {
-      await registerUserAPI({ ...signupForm, role: "user" });
+      // Register user
+      const registerRes = await registerUserAPI({ ...signupForm, role: "user" });
       setSuccess("Account created");
-      setTimeout(() => {
-        setIsLogin(true);
-        setStep(0);
-        setLoginForm({ email: signupForm.email, password: "" });
-        setSuccess("");
-      }, 2000);
+
+      // Automatically login after registration
+      const loginRes = await fetch(`${BASE_URL}/user/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: signupForm.email, password: signupForm.password }),
+        credentials: "include",
+      });
+      const data = await loginRes.json();
+      
+      if (loginRes.ok && data.user) {
+        setUserData(data.user);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        if (data.token) localStorage.setItem('token', data.token);
+        window.dispatchEvent(new Event("authChange"));
+        
+        // Handle redirection
+        const queryParams = new URLSearchParams(location.search);
+        const redirectParam = queryParams.get("redirect");
+        const from = location.state?.from?.pathname || redirectParam || "/";
+        setTimeout(() => navigate(from, { replace: true }), 1500);
+      } else {
+        // If auto-login fails for some reason, just go to login page
+        setTimeout(() => {
+          setIsLogin(true);
+          setStep(0);
+          setLoginForm({ email: signupForm.email, password: "" });
+          setSuccess("");
+        }, 2000);
+      }
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
+      setError(err.response?.data?.message || err.message || "Registration failed");
     } finally {
       setLoading(false);
     }
