@@ -259,11 +259,9 @@ function App() {
               }
             />
             <Route
-              path="/ajinorah-form"
+              path="/enquiry-form"
               element={
-                <ProtectedRoute>
-                  <AjinorahForm />
-                </ProtectedRoute>
+                <AjinorahForm />
               }
             />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />

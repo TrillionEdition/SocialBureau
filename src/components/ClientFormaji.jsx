@@ -72,23 +72,22 @@ export default function AjinorahForm() {
 
     if (submitted) {
         return (
-            <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6">
+            <div className="min-h-screen bg-white flex items-center justify-center p-4">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="text-center max-w-xl"
+                    className="text-center max-w-md"
                 >
-                    <div className="w-20 h-20 bg-[#C5A059]/10 border border-[#C5A059]/30 rounded-full flex items-center justify-center mx-auto mb-8">
-                        <i className="fas fa-check text-[#C5A059] text-3xl"></i>
+                    <div className="w-16 h-16 bg-red-50 border border-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i className="fas fa-check text-[#ff0000] text-2xl"></i>
                     </div>
-                    <h1 className="text-4xl font-light text-white mb-4 tracking-tighter">Transmission <span className="italic text-[#C5A059]">Complete</span></h1>
-                    <p className="text-white/40 leading-relaxed italic mb-8 font-sans">
-                        Your strategic intelligence has been encrypted and relayed to our growth architects.
-                        A customized roadmap is currently being formulated.
+                    <h1 className="text-2xl font-bold text-black mb-2 tracking-tight">Transmission <span className="italic text-[#ff0000]">Complete</span></h1>
+                    <p className="text-gray-500 text-sm italic mb-6 font-roboto">
+                        Your strategic intelligence has been received.
                     </p>
                     <button
                         onClick={() => window.location.href = '/'}
-                        className="px-10 py-4 bg-[#C5A059] text-black font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all"
+                        className="px-6 py-3 bg-[#ff0000] text-white font-bold uppercase text-[10px] tracking-widest hover:bg-black transition-all"
                     >
                         Return to Hub
                     </button>
@@ -98,43 +97,32 @@ export default function AjinorahForm() {
     }
 
     return (
-        <div className="min-h-screen bg-[#050505] text-white py-20 px-4 relative overflow-hidden font-sans">
-            {/* Background Accents */}
-            <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-[#C5A059]/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-
-            <div className="max-w-4xl mx-auto relative z-10">
-                <header className="mb-20 text-center md:text-left">
-                    <h1 className="text-5xl md:text-8xl font-black tracking-tighter mb-8 leading-none">
-                        Strategic <span className="italic text-[#C5A059]">Intake</span>
+        <div className="w-full bg-gray-50 py-6 px-4 md:px-8 font-roboto min-h-screen">
+            <div className="max-w-6xl mx-auto bg-white p-6 md:p-8 shadow-2xl shadow-black/5 relative z-10 border border-gray-100 rounded-3xl">
+                <header className="mb-8 border-b border-gray-100 pb-4">
+                    <h1 className="text-3xl md:text-4xl font-black tracking-tighter text-black uppercase">
+                        Client Requirement <span className="italic text-[#ff0000]">Form</span>
                     </h1>
-                    <div className="flex flex-col md:flex-row items-center gap-8 text-white/40 text-[12px] uppercase tracking-widest font-black">
-                        <div className="flex items-center gap-3">
-                            <i className="far fa-clock text-[#C5A059]"></i>
-                            <span>Takes ~5–7 minutes to complete</span>
-                        </div>
-                    </div>
                 </header>
 
-                <form onSubmit={handleSubmit} className="space-y-40">
+                <form onSubmit={handleSubmit} className="space-y-10">
 
                     {/* SECTION 1 */}
-                    <FormSection title="SECTION 1: Business Snapshot" index="01">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 mb-16">
+                    <FormSection title="01: Business Snapshot">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                             <Input label="Principal Name" name="name" value={formData.name} onChange={handleChange} required placeholder="Full Name" />
                             <Input label="Email" name="email" type="email" value={formData.email} onChange={handleChange} required placeholder="your@email.com" />
-                        </div>
-                        <div className="space-y-20">
                             <Input
-                                label="1. Briefly describe your business, key services, and what you are known for."
+                                label="1. Briefly describe your business."
                                 name="businessDescription"
                                 value={formData.businessDescription}
                                 onChange={handleChange}
                                 textarea
                                 required
-                                placeholder="(Helps us understand your positioning and strengths)"
+                                placeholder="Key services and strengths..."
                             />
                             <Input
-                                label="2. What are your top 3 priority services/programs you want to grow right now?"
+                                label="2. Top 3 priority services to grow."
                                 name="priorityServices"
                                 value={formData.priorityServices}
                                 onChange={handleChange}
@@ -146,142 +134,127 @@ export default function AjinorahForm() {
                     </FormSection>
 
                     {/* SECTION 2 */}
-                    <FormSection title="SECTION 2: Goals & Growth Direction" index="02">
-                        <CheckboxGroup
-                            label="3. What are your main goals from digital marketing?"
-                            options={["Leads", "Revenue", "Brand awareness", "Expansion into new locations", "Others"]}
-                            selected={formData.goals}
-                            onToggle={(val) => handleCheckbox("goals", val)}
-                            otherValue={formData.goalsOther}
-                            onOtherChange={(val) => setFormData(p => ({ ...p, goalsOther: val }))}
-                        />
-                        <div className="mt-20 space-y-20">
+                    <FormSection title="02: Goals & Growth">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 items-start">
+                            <CheckboxGroup
+                                label="3. Main marketing goals?"
+                                options={["Leads", "Revenue", "Brand awareness", "Expansion", "Others"]}
+                                selected={formData.goals}
+                                onToggle={(val) => handleCheckbox("goals", val)}
+                                otherValue={formData.goalsOther}
+                                onOtherChange={(val) => setFormData(p => ({ ...p, goalsOther: val }))}
+                            />
                             <Input
-                                label="4. Which locations are you currently operating in, and where do you want to expand next?"
+                                label="4. Target locations."
                                 name="expansionPlans"
                                 value={formData.expansionPlans}
                                 onChange={handleChange}
                                 required
-                                placeholder="Locations & expansion..."
+                                placeholder="Where do you want to expand?"
                             />
                             <Input
-                                label="5. What does success look like for you in the next 6 months?"
+                                label="5. Success in 6 months?"
                                 name="successVision"
                                 value={formData.successVision}
                                 onChange={handleChange}
                                 textarea
                                 required
-                                placeholder="(Leads, admissions, revenue, brand presence, etc.)"
+                                placeholder="What does success look like?"
+                            />
+                            <Input
+                                label="6. Ideal customer and their goal?"
+                                name="targetAudience"
+                                value={formData.targetAudience}
+                                onChange={handleChange}
+                                textarea
+                                required
+                                placeholder="Describe your target audience..."
                             />
                         </div>
                     </FormSection>
 
                     {/* SECTION 3 */}
-                    <FormSection title="SECTION 3: Target Audience" index="03">
-                        <Input
-                            label="6. Who is your ideal customer and what is their main goal?"
-                            name="targetAudience"
-                            value={formData.targetAudience}
-                            onChange={handleChange}
-                            textarea
-                            required
-                            placeholder="(Example: students aiming to study/work abroad, nurses preparing for OET, etc.)"
-                        />
-                    </FormSection>
-
-                    {/* SECTION 4 */}
-                    <FormSection title="SECTION 4: Current Marketing & Performance" index="04">
-                        <CheckboxGroup
-                            label="7. What marketing activities are you currently doing?"
-                            options={["Social media", "Paid ads (Meta / Google)", "SEO", "Offline marketing", "Others"]}
-                            selected={formData.currentActivities}
-                            onToggle={(val) => handleCheckbox("currentActivities", val)}
-                            otherValue={formData.currentActivitiesOther}
-                            onOtherChange={(val) => setFormData(p => ({ ...p, currentActivitiesOther: val }))}
-                        />
-                        <div className="mt-20">
+                    <FormSection title="03: Current Performance & Sales">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 items-start">
+                            <CheckboxGroup
+                                label="7. Current activities?"
+                                options={["Social media", "Ads", "SEO", "Offline", "Others"]}
+                                selected={formData.currentActivities}
+                                onToggle={(val) => handleCheckbox("currentActivities", val)}
+                                otherValue={formData.currentActivitiesOther}
+                                onOtherChange={(val) => setFormData(p => ({ ...p, currentActivitiesOther: val }))}
+                            />
                             <Input
-                                label="8. What has worked well so far, and what has not worked?"
+                                label="8. What worked/not worked?"
                                 name="performanceHistory"
                                 value={formData.performanceHistory}
                                 onChange={handleChange}
                                 textarea
                                 required
+                                placeholder="Performance history..."
+                            />
+                            <Input
+                                label="9. Lead handling process?"
+                                name="leadHandling"
+                                value={formData.leadHandling}
+                                onChange={handleChange}
+                                textarea
+                                required
+                                placeholder="How do you handle leads?"
+                            />
+                            <Input
+                                label="10. Main competitors?"
+                                name="competitors"
+                                value={formData.competitors}
+                                onChange={handleChange}
+                                textarea
+                                placeholder="(Optional)"
                             />
                         </div>
                     </FormSection>
 
-                    {/* SECTION 5 */}
-                    <FormSection title="SECTION 5: Sales & Conversion" index="05">
-                        <Input
-                            label="9. How do you currently handle leads after they come in?"
-                            name="leadHandling"
-                            value={formData.leadHandling}
-                            onChange={handleChange}
-                            textarea
-                            required
-                            placeholder="(Briefly explain your process)"
-                        />
+                    {/* SECTION 4 */}
+                    <FormSection title="04: Challenges & Strategy">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 items-start">
+                            <Input
+                                label="11. Biggest growth challenges?"
+                                name="challenges"
+                                value={formData.challenges}
+                                onChange={handleChange}
+                                textarea
+                                required
+                                placeholder="What's stopping your growth?"
+                            />
+                            <RadioGroup
+                                label="12. Monthly budget?"
+                                options={["₹50K–₹1L", "₹1L–₹3L", "₹3L+"]}
+                                selected={formData.budget}
+                                onSelect={(val) => setFormData(prev => ({ ...prev, budget: val }))}
+                            />
+                            <Input
+                                label="13. Other expectations?"
+                                name="notes"
+                                value={formData.notes}
+                                onChange={handleChange}
+                                textarea
+                                required
+                                placeholder="Additional notes..."
+                            />
+                        </div>
                     </FormSection>
 
-                    {/* SECTION 6 */}
-                    <FormSection title="SECTION 6: Brand & Competition" index="06">
-                        <Input
-                            label="10. Who are your main competitors, and what do they do better or differently?"
-                            name="competitors"
-                            value={formData.competitors}
-                            onChange={handleChange}
-                            textarea
-                            placeholder="(Optional question)"
-                        />
-                    </FormSection>
-
-                    {/* SECTION 7 */}
-                    <FormSection title="SECTION 7: Challenges & Expectations" index="07">
-                        <Input
-                            label="11. What are the biggest challenges you are facing in marketing or growth right now?"
-                            name="challenges"
-                            value={formData.challenges}
-                            onChange={handleChange}
-                            textarea
-                            required
-                        />
-                    </FormSection>
-
-                    {/* SECTION 8 */}
-                    <FormSection title="SECTION 8: Budget & Collaboration" index="08">
-                        <RadioGroup
-                            label="12. What is your approximate monthly marketing budget?"
-                            options={["₹50K–₹1L", "₹1L–₹3L", "₹3L+"]}
-                            selected={formData.budget}
-                            onSelect={(val) => setFormData(prev => ({ ...prev, budget: val }))}
-                        />
-                    </FormSection>
-
-                    {/* SECTION 9 */}
-                    <FormSection title="SECTION 9: Additional Inputs" index="09">
-                        <Input
-                            label="13. Anything else you would like us to know (ideas, expectations, concerns)?"
-                            name="notes"
-                            value={formData.notes}
-                            onChange={handleChange}
-                            textarea
-                            required
-                        />
-                    </FormSection>
-
-                    <div className="pt-12 border-t border-white/5">
+                    <div className="pt-6 border-t border-gray-100">
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-[#C5A059] text-black py-8 rounded-none font-black uppercase text-[16px] tracking-[0.5em] hover:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed group flex items-center justify-center gap-6"
+                            className="w-full max-w-sm bg-[#ff0000] text-white py-4 rounded-full font-bold uppercase text-sm tracking-widest hover:bg-black transition-all disabled:opacity-50 flex items-center justify-center gap-3"
                         >
                             {loading ? (
-                                <div className="w-6 h-6 border-3 border-black border-t-transparent rounded-full animate-spin"></div>
+                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                             ) : (
                                 <>
-                                    <span>Transmit Strategy Dossier</span>
-                                    <i className="fas fa-arrow-right group-hover:translate-x-3 transition-transform"></i>
+                                    <span>Submit Strategy Dossier</span>
+                                    <i className="fas fa-arrow-right"></i>
                                 </>
                             )}
                         </button>
@@ -294,68 +267,59 @@ export default function AjinorahForm() {
 
 /* UI COMPONENTS */
 
-const FormSection = ({ title, index, children }) => (
-    <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-        <div className="flex items-center gap-8 mb-16">
-            <span className="text-[#C5A059] font-black text-xl tracking-tighter opacity-50">{index}</span>
-            <h2 className="text-lg md:text-xl font-black uppercase tracking-[0.2em] text-[#C5A059]">{title}</h2>
-            <div className="flex-1 h-px bg-white/10"></div>
-        </div>
-        <div className="space-y-20 pl-4 md:pl-16 border-l-2 border-[#C5A059]/10">{children}</div>
-    </motion.div>
+const FormSection = ({ title, children }) => (
+    <div className="border-l-2 border-red-500/10 pl-4">
+        <h2 className="text-xs font-black uppercase tracking-widest text-[#ff0000] mb-4">{title}</h2>
+        <div className="space-y-6">{children}</div>
+    </div>
 );
 
-const Input = ({ label, name, value, onChange, placeholder, type = "text", textarea = false, required = false }) => (
-    <div className="relative group">
-        <label className="block text-xl md:text-2xl font-bold text-white mb-8 leading-tight group-hover:text-[#C5A059] transition-colors">
+const Input = ({ label, name, value, onChange, placeholder, type = "text", textarea = false, required = false, className = "" }) => (
+    <div className={`space-y-2 ${className}`}>
+        <label className="block text-sm font-bold text-black uppercase tracking-tight">
             {label}
         </label>
         {textarea ? (
-            <textarea name={name} value={value} onChange={onChange} required={required} placeholder={placeholder} rows="6"
-                className="w-full bg-white/5 border-2 border-white/10 rounded-none p-8 text-lg md:text-xl focus:outline-none focus:border-[#C5A059] transition-all placeholder:text-white/10 text-white" />
+            <textarea name={name} value={value} onChange={onChange} required={required} placeholder={placeholder} rows="3"
+                className="w-full bg-gray-50 border border-gray-200 p-3 text-sm focus:outline-none focus:border-[#ff0000] transition-all placeholder:text-gray-300 text-black rounded-2xl" />
         ) : (
             <input type={type} name={name} value={value} onChange={onChange} required={required} placeholder={placeholder}
-                className="w-full bg-white/5 border-2 border-white/10 rounded-none px-8 py-6 text-lg md:text-xl focus:outline-none focus:border-[#C5A059] transition-all placeholder:text-white/10 text-white" />
+                className="w-full bg-gray-50 border border-gray-200 px-4 py-2.5 text-sm focus:outline-none focus:border-[#ff0000] transition-all placeholder:text-gray-300 text-black rounded-full" />
         )}
     </div>
 );
 
 const CheckboxGroup = ({ label, options, selected, onToggle, otherValue, onOtherChange }) => (
-    <div>
-        <p className="text-xl md:text-2xl font-bold text-white mb-10 leading-tight">{label}</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+    <div className="space-y-3">
+        <p className="text-sm font-bold text-black uppercase tracking-tight">{label}</p>
+        <div className="flex flex-wrap gap-2">
             {options.map((opt, i) => (
                 <button key={i} type="button" onClick={() => onToggle(opt)}
-                    className={`text-left p-8 border-2 transition-all flex items-center justify-between group ${selected.includes(opt) ? "bg-[#C5A059] border-[#C5A059] text-black" : "bg-white/5 border-white/10 text-white hover:border-[#C5A059]/50"}`}>
-                    <span className="text-lg font-bold uppercase">{opt}</span>
-                    <div className={`w-6 h-6 border-2 flex items-center justify-center ${selected.includes(opt) ? "border-black" : "border-white/30"}`}>
-                        {selected.includes(opt) && <i className="fas fa-check text-[14px]"></i>}
-                    </div>
+                    className={`text-center py-2 px-4 border transition-all text-[10px] font-bold uppercase rounded-full ${selected.includes(opt) ? "bg-[#ff0000] border-[#ff0000] text-white" : "bg-white border-gray-200 text-black hover:border-red-200"}`}>
+                    {opt}
                 </button>
             ))}
         </div>
         {selected.includes("Others") && (
-            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-                <input
-                    type="text"
-                    placeholder="Please specify..."
-                    value={otherValue}
-                    onChange={(e) => onOtherChange(e.target.value)}
-                    required
-                    className="w-full bg-white/5 border-2 border-[#C5A059] rounded-none px-8 py-4 text-lg focus:outline-none text-white"
-                />
-            </motion.div>
+            <input
+                type="text"
+                placeholder="Specify..."
+                value={otherValue}
+                onChange={(e) => onOtherChange(e.target.value)}
+                required
+                className="w-full max-w-xs bg-white border border-[#ff0000] px-4 py-2 text-xs focus:outline-none text-black mt-2 rounded-full"
+            />
         )}
     </div>
 );
 
 const RadioGroup = ({ label, options, selected, onSelect }) => (
-    <div>
-        <p className="text-xl md:text-2xl font-bold text-white mb-10 leading-tight">{label}</p>
-        <div className="flex flex-wrap gap-6">
+    <div className="space-y-3">
+        <p className="text-sm font-bold text-black uppercase tracking-tight">{label}</p>
+        <div className="flex flex-wrap gap-2">
             {options.map((opt, i) => (
                 <button key={i} type="button" onClick={() => onSelect(opt)}
-                    className={`px-12 py-5 border-2 transition-all text-lg font-bold uppercase ${selected === opt ? "bg-[#C5A059] border-[#C5A059] text-black" : "bg-white/5 border-white/10 text-white hover:border-[#C5A059]/50"}`}>
+                    className={`px-5 py-2 border transition-all text-[10px] font-bold uppercase rounded-full ${selected === opt ? "bg-[#ff0000] border-[#ff0000] text-white" : "bg-white border-gray-200 text-black hover:border-red-200"}`}>
                     {opt}
                 </button>
             ))}

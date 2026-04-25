@@ -12,6 +12,15 @@ export default function AjnoraDashboard() {
   const [newStatus, setNewStatus] = useState("");
 
   useEffect(() => {
+    if (selectedEntry) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => { document.body.style.overflow = "unset"; };
+  }, [selectedEntry]);
+
+  useEffect(() => {
     fetchData();
     const interval = setInterval(fetchData, 30000);
     return () => clearInterval(interval);
@@ -44,11 +53,11 @@ export default function AjnoraDashboard() {
     });
   }, [entries, filter, searchTerm]);
 
-  const handleStatusUpdate = async (id) => {
+  const handleStatusUpdate = async (id, statusToUpdate) => {
     try {
-      await ajnoraService.updateEntry(id, { status: newStatus });
-      setEntries(entries.map(e => e._id === id ? { ...e, status: newStatus } : e));
-      if (selectedEntry?._id === id) setSelectedEntry({ ...selectedEntry, status: newStatus });
+      await ajnoraService.updateEntry(id, { status: statusToUpdate });
+      setEntries(entries.map(e => e._id === id ? { ...e, status: statusToUpdate } : e));
+      if (selectedEntry?._id === id) setSelectedEntry({ ...selectedEntry, status: statusToUpdate });
       alert("Status updated successfully.");
     } catch (error) {
       alert("Update failed: " + error.message);
@@ -177,140 +186,151 @@ export default function AjnoraDashboard() {
         ))}
       </div>
 
-      {/* INTELLIGENCE DOSSIER MODAL */}
+      {/* FULL PAGE INTELLIGENCE VIEW */}
       <AnimatePresence>
         {selectedEntry && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 lg:p-12">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedEntry(null)} className="absolute inset-0 bg-black/98 backdrop-blur-2xl" />
-            <motion.div initial={{ y: 100, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 100, opacity: 0 }} className="relative bg-[#070707] border-2 border-[#C5A059]/40 w-full max-w-6xl h-full max-h-[92vh] flex flex-col overflow-hidden shadow-2xl shadow-[#C5A059]/20">
-              
-              {/* FIXED HEADER */}
-              <div className="flex justify-between items-start p-10 lg:p-16 pb-8 border-b-2 border-white/5 bg-gradient-to-b from-[#0a0a0a] to-[#070707]">
-                <div>
-                  <h2 className="text-[#C5A059] text-[12px] font-black uppercase tracking-[0.6em] mb-6">Strategic Asset Dossier</h2>
-                  <h3 className="text-5xl lg:text-7xl font-black tracking-tighter uppercase leading-none mb-4">{selectedEntry.name}</h3>
-                  <div className="flex flex-wrap gap-8 text-white/40 font-bold text-sm">
-                    <span className="flex items-center gap-3"><i className="fas fa-envelope text-[#C5A059]"></i> {selectedEntry.email}</span>
-                    <span className="flex items-center gap-3"><i className="fas fa-phone text-[#C5A059]"></i> {selectedEntry.phone || "VOICE LINE SECURE"}</span>
-                    <span className="flex items-center gap-3"><i className="fas fa-map-marker-alt text-[#C5A059]"></i> {selectedEntry.project || "GENERAL REGISTRY"}</span>
-                  </div>
-                </div>
-                <button onClick={() => setSelectedEntry(null)} className="w-16 h-16 flex items-center justify-center bg-white/5 hover:bg-white hover:text-black transition-all rounded-full border-2 border-white/10"><i className="fas fa-times text-2xl"></i></button>
-              </div>
-
-              {/* SCROLLABLE DOSSIER CONTENT */}
-              <div className="flex-1 overflow-y-auto p-10 lg:p-16 pt-16 custom-scroller bg-[#070707]">
-                <div className="space-y-24 max-w-5xl">
-                  
-                  <DataSection title="SECTION 01: Business Snapshot">
-                    <QuestionItem question="1. Briefly describe your business, key services, and what you are known for." answer={selectedEntry.businessDescription} />
-                    <QuestionItem question="2. What are your top 3 priority services/programs you want to grow right now?" answer={selectedEntry.priorityServices} />
-                  </DataSection>
-
-                  <DataSection title="SECTION 02: Goals & Growth Direction">
-                    <div className="mb-10">
-                      <p className="text-[12px] font-black text-[#C5A059] uppercase tracking-widest mb-6 border-l-4 border-[#C5A059] pl-4">3. What are your main goals from digital marketing?</p>
-                      <div className="flex flex-wrap gap-3">
-                        {selectedEntry.goals?.map((g, i) => (
-                          <span key={i} className="px-5 py-2 bg-[#C5A059] text-black text-[12px] font-black uppercase tracking-widest">
-                            {g === "Others" && selectedEntry.goalsOther ? `OTHER: ${selectedEntry.goalsOther}` : g}
-                          </span>
-                        ))}
-                      </div>
+          <motion.div 
+            initial={{ opacity: 0, y: 50 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            exit={{ opacity: 0, y: 50 }} 
+            data-lenis-prevent
+            className="fixed inset-0 z-[100] bg-white text-black font-roboto overflow-y-auto"
+          >
+            {/* STICKY CONTROL BAR */}
+            <div className="sticky top-0 z-[110] bg-white/90 backdrop-blur-md border-b border-gray-100 px-6 py-4 flex justify-between items-center shadow-sm">
+                <div className="flex items-center gap-4">
+                    <button onClick={() => setSelectedEntry(null)} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-black transition-all">
+                        <i className="fas fa-arrow-left"></i>
+                    </button>
+                    <div>
+                        <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#ff0000]">Registry View</h2>
+                        <h3 className="text-lg font-bold truncate max-w-[200px] md:max-w-md">{selectedEntry.name}</h3>
                     </div>
-                    <QuestionItem question="4. Which locations are you currently operating in, and where do you want to expand next?" answer={selectedEntry.expansionPlans} />
-                    <QuestionItem question="5. What does success look like for you in the next 6 months?" answer={selectedEntry.successVision} />
-                  </DataSection>
-
-                  <DataSection title="SECTION 03: Target Audience">
-                    <QuestionItem question="6. Who is your ideal customer and what is their main goal?" answer={selectedEntry.targetAudience} />
-                  </DataSection>
-
-                  <DataSection title="SECTION 04: Current Marketing & Performance">
-                    <div className="mb-10">
-                      <p className="text-[12px] font-black text-[#C5A059] uppercase tracking-widest mb-6 border-l-4 border-[#C5A059] pl-4">7. What marketing activities are you currently doing?</p>
-                      <div className="flex flex-wrap gap-3">
-                        {selectedEntry.currentActivities?.map((a, i) => (
-                          <span key={i} className="px-5 py-2 bg-white/10 border-2 border-white/10 text-white text-[12px] font-black uppercase tracking-widest">
-                            {a === "Others" && selectedEntry.currentActivitiesOther ? `OTHER: ${selectedEntry.currentActivitiesOther}` : a}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    <QuestionItem question="8. What has worked well so far, and what has not worked?" answer={selectedEntry.performanceHistory} />
-                  </DataSection>
-
-                  <DataSection title="SECTION 05: Sales & Conversion">
-                    <QuestionItem question="9. How do you currently handle leads after they come in?" answer={selectedEntry.leadHandling} />
-                  </DataSection>
-
-                  <DataSection title="SECTION 06: Brand & Competition">
-                    <QuestionItem question="10. Who are your main competitors, and what do they do better or differently?" answer={selectedEntry.competitors || "INTEL NOT PROVIDED (OPTIONAL)"} />
-                  </DataSection>
-
-                  <DataSection title="SECTION 07: Challenges & Expectations">
-                    <QuestionItem question="11. What are the biggest challenges you are facing in marketing or growth right now?" answer={selectedEntry.challenges} />
-                  </DataSection>
-
-                  <DataSection title="SECTION 08: Budget & Collaboration">
-                    <QuestionItem question="12. What is your approximate monthly marketing budget?" answer={selectedEntry.budget} color="#C5A059" />
-                  </DataSection>
-
-                  <DataSection title="SECTION 09: Additional Inputs">
-                    <QuestionItem question="13. Anything else you would like us to know (ideas, expectations, concerns)?" answer={selectedEntry.notes} />
-                  </DataSection>
-
                 </div>
-              </div>
+                <div className="flex items-center gap-3">
+                    <select 
+                        defaultValue={selectedEntry.status} 
+                        onChange={(e) => handleStatusUpdate(selectedEntry._id, e.target.value)} 
+                        className="bg-gray-50 border border-gray-200 text-black font-bold text-[10px] px-6 py-2.5 rounded-full outline-none focus:border-[#ff0000] appearance-none uppercase tracking-widest cursor-pointer"
+                    >
+                        {["new", "contacted", "qualified", "converted", "lost"].map(o => <option key={o} value={o}>{o}</option>)}
+                    </select>
+                    <button onClick={() => setSelectedEntry(null)} className="w-10 h-10 flex items-center justify-center rounded-full bg-black text-white hover:bg-[#ff0000] transition-all">
+                        <i className="fas fa-times text-sm"></i>
+                    </button>
+                </div>
+            </div>
 
-              {/* FIXED MODAL FOOTER */}
-              <div className="p-10 lg:p-12 border-t-2 border-white/5 bg-[#0a0a0a] flex flex-col md:flex-row justify-between items-center gap-10">
-                 <div className="flex-1 w-full md:w-auto">
-                   <p className="text-[10px] text-[#C5A059] font-black uppercase tracking-widest mb-4">Command Engagement Status</p>
-                   <div className="flex gap-4">
-                      <select defaultValue={selectedEntry.status} onChange={(e) => setNewStatus(e.target.value)} className="bg-white/5 border-2 border-white/10 text-white font-bold text-xs px-8 py-4 flex-1 outline-none focus:border-[#C5A059] appearance-none uppercase tracking-widest cursor-pointer">
-                        {["new", "contacted", "qualified", "converted", "lost"].map(o => <option key={o} value={o} className="bg-[#0a0a0a]">{o}</option>)}
-                      </select>
-                      <button onClick={() => handleStatusUpdate(selectedEntry._id)} className="bg-[#C5A059] text-black text-[12px] font-black px-12 py-4 uppercase tracking-[0.2em] shadow-lg shadow-[#C5A059]/20 hover:scale-105 transition-all">Update Status</button>
-                   </div>
-                 </div>
-                 <div className="text-right w-full md:w-auto">
-                   <p className="text-[10px] text-white/30 font-black uppercase tracking-widest mb-2">Registry Assigned To</p>
-                   <p className="text-2xl font-black text-white uppercase tracking-tighter italic">{selectedEntry.assignedTo || "GENERAL POOL"}</p>
-                 </div>
-              </div>
+            {/* FORM CONTENT */}
+            <div className="max-w-5xl mx-auto py-12 px-6 md:px-12">
+                <header className="mb-12 border-b border-gray-100 pb-8">
+                    <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-black uppercase">
+                        Client Requirement <span className="italic text-[#ff0000]">Dossier</span>
+                    </h1>
+                    <div className="mt-6 flex flex-wrap gap-6 text-gray-400 font-bold text-xs uppercase tracking-widest">
+                        <span className="flex items-center gap-2"><i className="fas fa-envelope text-[#ff0000]"></i> {selectedEntry.email}</span>
+                        <span className="flex items-center gap-2"><i className="fas fa-phone text-[#ff0000]"></i> {selectedEntry.phone || "N/A"}</span>
+                        <span className="flex items-center gap-2"><i className="fas fa-clock text-[#ff0000]"></i> {new Date(selectedEntry.createdAt).toLocaleDateString()}</span>
+                    </div>
+                </header>
 
-            </motion.div>
-          </div>
+                <div className="space-y-16">
+                    <DataSection title="01: Business Snapshot">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                            <DisplayField label="Principal Name" value={selectedEntry.name} />
+                            <DisplayField label="Email Address" value={selectedEntry.email} />
+                            <DisplayField label="1. Business Description" value={selectedEntry.businessDescription} fullWidth />
+                            <DisplayField label="2. Priority Services" value={selectedEntry.priorityServices} fullWidth />
+                        </div>
+                    </DataSection>
+
+                    <DataSection title="02: Goals & Growth">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                            <div className="space-y-3 md:col-span-2">
+                                <p className="text-xs font-black text-[#ff0000] uppercase tracking-widest">3. Main marketing goals</p>
+                                <div className="flex flex-wrap gap-2">
+                                    {selectedEntry.goals?.map((g, i) => (
+                                        <span key={i} className="px-4 py-1.5 bg-black text-white text-[10px] font-bold uppercase rounded-full">
+                                            {g === "Others" && selectedEntry.goalsOther ? `OTHER: ${selectedEntry.goalsOther}` : g}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                            <DisplayField label="4. Target locations" value={selectedEntry.expansionPlans} />
+                            <DisplayField label="5. Success in 6 months" value={selectedEntry.successVision} />
+                            <DisplayField label="6. Ideal customer" value={selectedEntry.targetAudience} fullWidth />
+                        </div>
+                    </DataSection>
+
+                    <DataSection title="03: Performance & Sales">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                            <div className="space-y-3 md:col-span-2">
+                                <p className="text-xs font-black text-[#ff0000] uppercase tracking-widest">7. Current activities</p>
+                                <div className="flex flex-wrap gap-2">
+                                    {selectedEntry.currentActivities?.map((a, i) => (
+                                        <span key={i} className="px-4 py-1.5 bg-gray-100 text-black border border-gray-200 text-[10px] font-bold uppercase rounded-full">
+                                            {a === "Others" && selectedEntry.currentActivitiesOther ? `OTHER: ${selectedEntry.currentActivitiesOther}` : a}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                            <DisplayField label="8. History (Worked/Not worked)" value={selectedEntry.performanceHistory} />
+                            <DisplayField label="9. Lead handling process" value={selectedEntry.leadHandling} />
+                            <DisplayField label="10. Main competitors" value={selectedEntry.competitors || "None Provided"} fullWidth />
+                        </div>
+                    </DataSection>
+
+                    <DataSection title="04: Strategy & Budget">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                            <DisplayField label="11. Growth challenges" value={selectedEntry.challenges} />
+                            <DisplayField label="12. Monthly budget" value={selectedEntry.budget} highlight />
+                            <DisplayField label="13. Additional notes" value={selectedEntry.notes} fullWidth />
+                        </div>
+                    </DataSection>
+                </div>
+
+                <footer className="mt-24 pt-12 border-t border-gray-100 text-center">
+                    <p className="text-[10px] font-black text-gray-300 uppercase tracking-[0.5em] mb-4">Ajnora Intelligence System — Secure Dossier</p>
+                    <button 
+                        onClick={() => setSelectedEntry(null)}
+                        className="px-12 py-4 bg-[#ff0000] text-white font-bold uppercase text-xs tracking-widest rounded-full hover:bg-black transition-all"
+                    >
+                        Back to Registry
+                    </button>
+                </footer>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
 }
 
-function DataSection({ title, index, children }) {
-  return (
-    <div className="space-y-12">
-      <h4 className="text-[14px] font-black uppercase tracking-[0.4em] text-white border-b-4 border-[#C5A059] pb-4 inline-block">{title}</h4>
-      <div className="space-y-12 pl-8 md:pl-12 border-l-4 border-white/5">{children}</div>
-    </div>
-  );
+/* SUB-COMPONENTS */
+
+function DataSection({ title, children }) {
+    return (
+        <div className="border-l-2 border-[#ff0000]/10 pl-8">
+            <h4 className="text-xs font-black uppercase tracking-[0.3em] text-[#ff0000] mb-8">{title}</h4>
+            <div className="space-y-10">{children}</div>
+        </div>
+    );
 }
 
-function QuestionItem({ question, answer, color = "white" }) {
-  return (
-    <div className="group">
-      <p className="text-[12px] font-black text-[#C5A059] uppercase tracking-[0.1em] mb-6 group-hover:text-white transition-colors leading-relaxed border-l-4 border-[#C5A059]/20 pl-4">{question}</p>
-      <div className="text-xl md:text-2xl font-bold leading-relaxed bg-white/5 p-8 border-2 border-white/5 group-hover:border-[#C5A059]/30 transition-all text-white/90 shadow-xl" style={{ color: color === "white" ? "" : color }}>
-        {answer || "NO INTEL LOGGED"}
-      </div>
-    </div>
-  );
+function DisplayField({ label, value, fullWidth = false, highlight = false }) {
+    return (
+        <div className={`${fullWidth ? "md:col-span-2" : ""} space-y-3`}>
+            <p className="text-xs font-black text-gray-400 uppercase tracking-widest">{label}</p>
+            <div className={`p-5 rounded-3xl border-2 transition-all ${highlight ? "bg-red-50 border-[#ff0000]/20 text-[#ff0000] font-black" : "bg-gray-50 border-gray-100 text-black font-medium"} text-base leading-relaxed`}>
+                {value || "Not Provided"}
+            </div>
+        </div>
+    );
 }
 
 function StatCard({ label, value, icon, color = "#fff" }) {
   return (
-    <div className="bg-white/5 border-2 border-white/5 p-10 flex items-center justify-between group hover:border-[#C5A059]/40 transition-all backdrop-blur-md">
+    <div className="bg-white/5 border-2 border-white/5 p-10 flex items-center justify-between group hover:border-[#C5A059]/40 transition-all backdrop-blur-md rounded-3xl">
       <div>
         <p className="text-[11px] font-black text-white/40 uppercase tracking-[0.3em] mb-4">{label}</p>
         <p className="text-5xl font-black tracking-tighter" style={{ color }}>{value}</p>
