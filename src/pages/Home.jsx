@@ -78,6 +78,8 @@ const MarqueeSection = () => {
   const words = ['API Marketing', 'Performance Marketing', 'ClickUp India Partner', 'Social Media Management', 'Influencer Marketing', 'Brand Strategy'];
   return (
     <div className="border-y border-[#D2D2D7] bg-[#F5F5F7] py-3 sm:py-6 overflow-hidden relative">
+
+
       <motion.div
         animate={{ x: ["0%", "-50%"] }}
         transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
