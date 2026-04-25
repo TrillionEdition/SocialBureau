@@ -362,7 +362,7 @@ function App() {
               }
             />
 
-            <Route path="/client-form" element={<ClientForm />} />
+            <Route path="/client-form" element={<AjinorahForm />} />
             <Route path="/client-dashboard" element={<ClientDashboard />} />
             <Route path="/api-marketing-dashboard" element={<AdminRoute><ApiMarketingDashboard /></AdminRoute>} />
             <Route path="/media-dashboard" element={<AdminRoute><MediaDashboard /></AdminRoute>} />
@@ -379,7 +379,6 @@ function App() {
               }
             />
             <Route path="/add-review" element={<AddReview />} />
-            <Route path="/client-form" element={<ClientForm />} />
             <Route path="/partners" element={<Partnership />} />
             <Route path="/partnership/Ranjit" element={<Landing />} />
             <Route path="/partnership/Sivaprasad" element={<Sivaprasad />} />
