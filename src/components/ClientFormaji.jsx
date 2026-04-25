@@ -142,8 +142,7 @@ const ClientFormaji = () => {
         decisionProcess: '',
         anythingElse: '',
         referralSource: '',
-        referredBy: '',
-        partnersList: [{ name: '', role: '' }]
+        referredBy: ''
     });
 
     const handleListChange = (field, index, value) => {
