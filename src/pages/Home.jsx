@@ -78,6 +78,8 @@ const MarqueeSection = () => {
   const words = ['API Marketing', 'Performance Marketing', 'ClickUp India Partner', 'Social Media Management', 'Influencer Marketing', 'Brand Strategy'];
   return (
     <div className="border-y border-[#D2D2D7] bg-[#F5F5F7] py-3 sm:py-6 overflow-hidden relative">
+
+
       <motion.div
         animate={{ x: ["0%", "-50%"] }}
         transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
@@ -211,7 +213,7 @@ const GallerySection = () => (
 
 const FounderSection = () => (
   <Section id="founder" className="bg-[#F5F5F7] border-y border-[#D2D2D7]">
-    <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-24 items-start">
+    <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-24 items-center">
       <FadeUp className="relative max-w-[480px] mx-auto lg:ml-0 w-full">
         <div className="rounded-[28px] sm:rounded-[44px] overflow-hidden border border-black/5 bg-gradient-to-br from-[#FFF0F2] via-[#FFE5EA] to-[#F5E5FF] aspect-[0.82] relative group shadow-2xl">
           <img
@@ -222,7 +224,7 @@ const FounderSection = () => (
           <div className="absolute inset-x-3 sm:inset-x-5 bottom-3 sm:bottom-5 bg-white/94 backdrop-blur-2xl border border-black/5 rounded-[16px] sm:rounded-[24px] p-4 sm:p-8 shadow-xl">
             <div className="text-2xl sm:text-3xl font-black tracking-tighter text-[#0A0A0A]">Sham SK</div>
             <div className="text-[11px] sm:text-[13px] font-bold text-[#E8001A] mt-1.5 sm:mt-2 uppercase tracking-wide">World's First API Marketing Consultant</div>
-            <div className="text-[10px] sm:text-[12px] font-medium text-[#6E6E73] mt-1 sm:mt-1.5 italic font-serif">Founder & CEO · Social Bureau</div>
+            <div className="text-[10px] sm:text-[12px] font-medium text-[#6E6E73] mt-1 sm:mt-1.5 italic font-serif">Founder & CEO ·TrillionEdition ·SocialBureau</div>
           </div>
         </div>
         <motion.div
@@ -269,52 +271,52 @@ const FounderSection = () => (
 const SoftwareSection = () => {
   const [toast, setToast] = useState(null);
   return (
-  <section id="software" className="py-16 sm:py-32 lg:py-64 bg-[#0A0A0A] text-white relative overflow-hidden">
-    {/* Animated background elements */}
-    <div className="absolute inset-0 -z-10 bg-black">
-      <motion.div
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
-          x: [0, 50, 0],
-          y: [0, -50, 0]
-        }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[10%] left-[10%] w-[80%] h-[80%] bg-gradient-to-br from-[#E8001A]/20 to-transparent blur-[160px] rounded-full"
-      />
-      <motion.div
-        animate={{
-          scale: [1, 1.3, 1],
-          opacity: [0.2, 0.4, 0.2],
-          x: [0, -80, 0],
-          y: [0, 80, 0]
-        }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        className="absolute bottom-0 right-[10%] w-[60%] h-[60%] bg-[#7B68EE]/15 blur-[150px] rounded-full"
-      />
-    </div>
+    <section id="software" className="py-16 sm:py-32 lg:py-64 bg-[#0A0A0A] text-white relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 -z-10 bg-black">
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+            x: [0, 50, 0],
+            y: [0, -50, 0]
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[10%] left-[10%] w-[80%] h-[80%] bg-gradient-to-br from-[#E8001A]/20 to-transparent blur-[160px] rounded-full"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.2, 0.4, 0.2],
+            x: [0, -80, 0],
+            y: [0, 80, 0]
+          }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute bottom-0 right-[10%] w-[60%] h-[60%] bg-[#7B68EE]/15 blur-[150px] rounded-full"
+        />
+      </div>
 
-    <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-14 grid lg:grid-cols-2 gap-8 sm:gap-16 lg:gap-20 xl:gap-32 items-center relative z-10">
-      <FadeUp className="text-center lg:text-left">
-        <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-6 sm:mb-8 block opacity-80 decoration-2 underline underline-offset-8 italic">Engineering the Future</span>
-     <h2 className="text-[clamp(2.5rem,10vw,8.5rem)] font-black tracking-tighter leading-[0.9] mb-8 sm:mb-12 italic antialiased overflow-visible">          The<br />
-<span className="relative inline-block px-[6px] overflow-visible">
-  <span className="bg-gradient-to-tr from-[#FF8A80] via-[#FF5C35] to-[#FF6FCF] bg-clip-text text-transparent">
-    Future&nbsp;
-  </span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-14 grid lg:grid-cols-2 gap-8 sm:gap-16 lg:gap-20 xl:gap-32 items-center relative z-10">
+        <FadeUp className="text-center lg:text-left">
+          <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-6 sm:mb-8 block opacity-80 decoration-2 underline underline-offset-8 italic">Engineering the Future</span>
+          <h2 className="text-[clamp(2.5rem,10vw,8.5rem)] font-black tracking-tighter leading-[0.9] mb-8 sm:mb-12 italic antialiased overflow-visible">          The<br />
+            <span className="relative inline-block px-[6px] overflow-visible">
+              <span className="bg-gradient-to-tr from-[#FF8A80] via-[#FF5C35] to-[#FF6FCF] bg-clip-text text-transparent">
+                Future&nbsp;
+              </span>
 
-  {/* custom underline */}
-  <span className="absolute left-0 bottom-[-8px] w-full h-[2px] bg-[#E8001A]/40"></span>
-</span>
-<br />         Of Media.
-        </h2>
-        <p className="text-base sm:text-lg lg:text-2xl xl:text-3xl font-light text-white/60 mb-12 sm:mb-16 leading-tight italic max-w-lg mx-auto lg:mx-0">
-          Social Bureau is engineering a first-of-its-kind software platform to transform how the creator economy and media operate.
-        </p>
-        <button onClick={() => handleJoinWaitingList({ onResult: setToast })} className="inline-block px-8 sm:px-14 py-4 sm:py-6 bg-white text-[#0A0A0A] rounded-full font-black text-base sm:text-xl hover:bg-[#E8001A] hover:text-white transition-all hover:scale-105 shadow-[0_20px_60px_rgba(232,0,26,0.3)]">
-          Join the waiting List
-        </button>
-      </FadeUp>
+              {/* custom underline */}
+              <span className="absolute left-0 bottom-[-8px] w-full h-[2px] bg-[#E8001A]/40"></span>
+            </span>
+            <br />         Of Media.
+          </h2>
+          <p className="text-base sm:text-lg lg:text-2xl xl:text-3xl font-light text-white/60 mb-12 sm:mb-16 leading-tight italic max-w-lg mx-auto lg:mx-0">
+            Social Bureau is engineering a first-of-its-kind software platform to transform how the creator economy and media operate.
+          </p>
+          <button onClick={() => handleJoinWaitingList({ onResult: setToast })} className="inline-block px-8 sm:px-14 py-4 sm:py-6 bg-white text-[#0A0A0A] rounded-full font-black text-base sm:text-xl hover:bg-[#E8001A] hover:text-white transition-all hover:scale-105 shadow-[0_20px_60px_rgba(232,0,26,0.3)]">
+            Join the waiting List
+          </button>
+        </FadeUp>
 
       <div className="grid gap-6 sm:gap-8">
         {[
@@ -335,7 +337,7 @@ const SoftwareSection = () => {
       </div>
     </div>
       {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}
-  </section>
+    </section>
   );
 };
 
@@ -362,7 +364,7 @@ const BottomStatsSection = () => (
 export const Home = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const homepageSchemas = generateHomepageSchemas();
-  
+
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
@@ -598,8 +600,8 @@ export const Home = () => {
                 imgClass: 'w-16 sm:w-17'
               },
               {
-                name: 'Whatsapp',
-                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7_Fd3X61J8NCIMLY9h2vBJfDOip562gQpdg&s',
+                name: 'WhatsApp Business',
+                img: 'https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776655154/wb_jaisd2.jpg',
                 href: 'https://business.whatsapp.com/',
                 status: 'Certified Partner',
                 imgClass: 'w-16 sm:w-17'
@@ -638,104 +640,104 @@ export const Home = () => {
           <div className="flex flex-col items-center lg:items-start gap-6 w-full">
             <div className="relative w-full sm:w-[400px] lg:w-[500px] aspect-square flex items-center justify-center mx-auto lg:mx-0 rounded-[32px] sm:rounded-[40px] overflow-hidden bg-gradient-to-br from-[#FFF5F5] via-[#FFF0F8] to-[#F5F0FF] border border-[#D2D2D7] shadow-inner">
 
-            {/* Glow Background FIX */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(232,0,26,0.15),_transparent)] blur-3xl opacity-40" />
+              {/* Glow Background FIX */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(232,0,26,0.15),_transparent)] blur-3xl opacity-40" />
 
-            {/* Orbit 1 */}
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-              className="absolute w-[240px] h-[240px] border border-dashed border-[#E8001A]/30 rounded-full flex items-start justify-center"
-            >
-              {/* DOT */}
-              <div className="w-3 h-3 bg-red-500 rounded-full shadow-[0_0_12px_red]" />
-            </motion.div>
-
-            {/* Orbit 2 */}
-            <motion.div
-              animate={{ rotate: -360 }}
-              transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-              className="absolute w-[360px] h-[360px] border border-dashed border-[#E8001A]/20 rounded-full flex items-end justify-center"
-            >
-              {/* DOT */}
-              <div className="w-3 h-3 bg-red-500 rounded-full shadow-[0_0_12px_red]" />
-            </motion.div>
-
-            {/* CENTER HEX */}
-            <div
-              className="relative z-10 w-32 sm:w-40 lg:w-44 h-32 sm:h-40 lg:h-44 bg-gradient-to-br from-[#E8001A] to-[#FF4444] shadow-[0_24px_64px_rgba(232,0,26,0.35)] flex flex-col items-center justify-center transform hover:scale-110 transition-transform duration-500"
-              style={{
-                clipPath:
-                  "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-              }}
-            >
-              <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-widest italic">
-                API
-              </div>
-              <div className="text-[8px] sm:text-[10px] font-bold text-white/90 uppercase tracking-[0.25em] mt-1.5 sm:mt-2 border-t border-white/20 pt-1.5 sm:pt-2">
-                Framework
-              </div>
-            </div>
-
-            {/* FLOATING TAGS */}
-            {["Attract", "Pull", "Influence"].map((tag, i) => (
+              {/* Orbit 1 */}
               <motion.div
-                key={tag}
-                animate={{ y: [0, -6, 0] }}
-                transition={{
-                  duration: 3 + i,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className={`absolute ${i === 0
-                  ? "top-4 sm:top-12 text-[10px]"
-                  : i === 1
-                    ? "bottom-6 sm:bottom-16 left-2 sm:left-10 text-[10px]"
-                    : "bottom-6 sm:bottom-16 right-2 sm:right-10 text-[10px]"
-                  } px-3 sm:px-6 py-1 sm:py-2 bg-white/90 backdrop-blur-xl border border-[#D2D2D7] rounded-full font-black shadow-xl`}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                className="absolute w-[240px] h-[240px] border border-dashed border-[#E8001A]/30 rounded-full flex items-start justify-center"
               >
-                {tag}
+                {/* DOT */}
+                <div className="w-3 h-3 bg-red-500 rounded-full shadow-[0_0_12px_red]" />
               </motion.div>
-            ))}
+
+              {/* Orbit 2 */}
+              <motion.div
+                animate={{ rotate: -360 }}
+                transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                className="absolute w-[360px] h-[360px] border border-dashed border-[#E8001A]/20 rounded-full flex items-end justify-center"
+              >
+                {/* DOT */}
+                <div className="w-3 h-3 bg-red-500 rounded-full shadow-[0_0_12px_red]" />
+              </motion.div>
+
+              {/* CENTER HEX */}
+              <div
+                className="relative z-10 w-32 sm:w-40 lg:w-44 h-32 sm:h-40 lg:h-44 bg-gradient-to-br from-[#E8001A] to-[#FF4444] shadow-[0_24px_64px_rgba(232,0,26,0.35)] flex flex-col items-center justify-center transform hover:scale-110 transition-transform duration-500"
+                style={{
+                  clipPath:
+                    "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+                }}
+              >
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-widest italic">
+                  API
+                </div>
+                <div className="text-[8px] sm:text-[10px] font-bold text-white/90 uppercase tracking-[0.25em] mt-1.5 sm:mt-2 border-t border-white/20 pt-1.5 sm:pt-2">
+                  Framework
+                </div>
+              </div>
+
+              {/* FLOATING TAGS */}
+              {["Attract", "Pull", "Influence"].map((tag, i) => (
+                <motion.div
+                  key={tag}
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{
+                    duration: 3 + i,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className={`absolute ${i === 0
+                    ? "top-4 sm:top-12 text-[10px]"
+                    : i === 1
+                      ? "bottom-6 sm:bottom-16 left-2 sm:left-10 text-[10px]"
+                      : "bottom-6 sm:bottom-16 right-2 sm:right-10 text-[10px]"
+                    } px-3 sm:px-6 py-1 sm:py-2 bg-white/90 backdrop-blur-xl border border-[#D2D2D7] rounded-full font-black shadow-xl`}
+                >
+                  {tag}
+                </motion.div>
+              ))}
             </div>
             {/* bottom-left card (just below upleft) */}
-           
-           
+
+
             <div className="w-full flex justify-center lg:justify-start mt-14">
-  <div className="w-full sm:w-[420px] lg:w-[480px] bg-white/90 backdrop-blur-2xl border border-[#D2D2D7] rounded-3xl shadow-[0_30px_80px_rgba(0,0,0,0.12)] p-6 sm:p-8 lg:p-10 relative overflow-hidden transition-all duration-500 hover:shadow-[0_40px_100px_rgba(232,0,26,0.15)]">
+              <div className="w-full sm:w-[420px] lg:w-[480px] bg-white/90 backdrop-blur-2xl border border-[#D2D2D7] rounded-3xl shadow-[0_30px_80px_rgba(0,0,0,0.12)] p-6 sm:p-8 lg:p-10 relative overflow-hidden transition-all duration-500 hover:shadow-[0_40px_100px_rgba(232,0,26,0.15)]">
 
-    {/* glow */}
-    <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-[160px] h-[60px] bg-gradient-to-r from-[#E8001A]/30 to-[#FF1493]/30 blur-3xl rounded-full opacity-60" />
+                {/* glow */}
+                <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-[160px] h-[60px] bg-gradient-to-r from-[#E8001A]/30 to-[#FF1493]/30 blur-3xl rounded-full opacity-60" />
 
-    {/* subtle border glow */}
-    <div className="absolute inset-0 rounded-3xl border border-white/40 pointer-events-none" />
+                {/* subtle border glow */}
+                <div className="absolute inset-0 rounded-3xl border border-white/40 pointer-events-none" />
 
-    {/* label */}
-    <div className="text-[11px] uppercase tracking-[0.25em] text-[#6E6E73] font-bold mb-3">
-      API Module
-    </div>
+                {/* label */}
+                <div className="text-[11px] uppercase tracking-[0.25em] text-[#6E6E73] font-bold mb-3">
+                  API Module
+                </div>
 
-    {/* title */}
-    <div className="text-2xl sm:text-3xl font-black text-[#0A0A0A] mb-3 tracking-tight leading-tight">
-      Activate Growth Flow
-    </div>
+                {/* title */}
+                <div className="text-2xl sm:text-3xl font-black text-[#0A0A0A] mb-3 tracking-tight leading-tight">
+                  Activate Growth Flow
+                </div>
 
-    {/* description */}
-    <div className="text-[14px] sm:text-[16px] text-[#6E6E73] mb-6 leading-relaxed">
-      Start your API Marketing engine and let your brand attract, engage, and convert high-intent audiences seamlessly.
-    </div>
+                {/* description */}
+                <div className="text-[14px] sm:text-[16px] text-[#6E6E73] mb-6 leading-relaxed">
+                  Start your API Marketing engine and let your brand attract, engage, and convert high-intent audiences seamlessly.
+                </div>
 
-    {/* button */}
-    <a href='https://docs.google.com/forms/d/e/1FAIpQLSdTQR9NJZMz3KYMwJSCow0EsGP8zUk_m79i4SqRzWVaHts6aA/viewform?usp=header' target="_blank" rel="noopener noreferrer" className="w-full">
-    <button className="w-full py-3 sm:py-3.5 rounded-2xl bg-gradient-to-r from-[#E8001A] to-[#FF4444] text-white font-bold text-[14px] sm:text-[15px] shadow-lg hover:scale-[1.04] hover:shadow-[0_10px_40px_rgba(232,0,26,0.4)] transition-all duration-300">
-      Join the API Revolution
-    </button>
-    </a>
+                {/* button */}
+                <a href='https://docs.google.com/forms/d/e/1FAIpQLSdTQR9NJZMz3KYMwJSCow0EsGP8zUk_m79i4SqRzWVaHts6aA/viewform?usp=header' target="_blank" rel="noopener noreferrer" className="w-full">
+                  <button className="w-full py-3 sm:py-3.5 rounded-2xl bg-gradient-to-r from-[#E8001A] to-[#FF4444] text-white font-bold text-[14px] sm:text-[15px] shadow-lg hover:scale-[1.04] hover:shadow-[0_10px_40px_rgba(232,0,26,0.4)] transition-all duration-300">
+                    Join the API Revolution
+                  </button>
+                </a>
 
-  </div>
-</div>
-          
-          
+              </div>
+            </div>
+
+
           </div>
 
           {/* section parallel (right column) */}
@@ -744,14 +746,14 @@ export const Home = () => {
               <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-4 sm:mb-6 block opacity-80">Scientific Growth Framework</span>
               <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter leading-[0.9] mb-6 sm:mb-10 text-[#0A0A0A]">
                 The World's First<br />
-               <span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent italic py-1 inline-block">
-                API Marketing
-              </span>Method.
-                 
-                </h2>
-                <span className="text-base sm:text-lg lg:text-2xl font-light text-[#6E6E73] mb-8 sm:mb-12 leading-relaxed">
-  Application Programming Interface
-</span>
+                <span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent italic py-3 inline-block">
+                  API Marketing
+                </span>Method.
+
+              </h2>
+              <span className="text-base sm:text-lg lg:text-2xl font-light text-[#6E6E73] mb-8 sm:mb-12 leading-relaxed">
+                Application Programming Interface
+              </span>
               <p className="text-base sm:text-lg lg:text-2xl font-light text-[#6E6E73] mb-8 sm:mb-12 leading-relaxed">
                 Pioneered by Sham SK — a systematic engine that warms audiences before scaling ad spend, ensuring maximum ROAS.
               </p>
@@ -891,7 +893,7 @@ export const Home = () => {
                 Work<br /><span className="text-[#E8001A] italic">Smarter.</span><br /><span className="text-transparent italic" style={{ WebkitTextStroke: '1.5px #D2D2D7' }}>Not Harder.</span>
               </h2>
               <p className="text-lg lg:text-3xl font-light text-[#6E6E73] mb-10 sm:mb-12 leading-relaxed italic antialiased font-serif">
-                Social Bureau brings the world's most powerful productivity platform to your team with full local support and INR pricing.
+                SocialBureau brings the world's most powerful productivity platform to your team with full local support and INR pricing.
               </p>
               <div className="flex flex-wrap gap-4 sm:gap-5">
                 <a href="/clickup" className="w-full sm:w-auto text-center px-10 sm:px-12 py-4 sm:py-5 bg-[#0A0A0A] text-white rounded-full font-black text-base sm:text-lg hover:bg-[#E8001A] transition-all hover:scale-105 shadow-2xl shadow-[#7B68EE]/20">
