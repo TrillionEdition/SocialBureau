@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { blogAPI } from "../../services/blogServices";
+import { blogAPI } from "@/services/blogServices";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -181,3 +181,4 @@ export default function BlogPosts() {
     </div>
   );
 }
+

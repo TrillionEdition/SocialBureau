@@ -981,3 +981,4 @@ function dist2(a, b) {
 }
 
 export default GridScan;
+

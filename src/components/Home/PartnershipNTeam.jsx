@@ -80,3 +80,4 @@ const PartnershipTeamGrid = () => {
 };
 
 export default PartnershipTeamGrid;
+

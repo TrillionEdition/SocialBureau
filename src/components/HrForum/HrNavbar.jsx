@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Search, MapPin, MessageSquare, Bell, User, Menu, X, Briefcase, Zap } from "lucide-react";
-import { getUserData } from "../../../utils/authUtils";
-import { getUserConversations } from "../../../services/hrforumService";
+import { getUserData } from "@/utils/authUtils";
+import { getUserConversations } from "@/services/hrforumService";
 
 export default function HrNavbar({ 
     showSearch = false, 
@@ -199,4 +199,6 @@ export default function HrNavbar({
         </header>
     );
 }
+
+
 

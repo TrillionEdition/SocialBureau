@@ -19,3 +19,4 @@ export const SCENE_TIMINGS = {
   END: 4500,    // Animation sequence duration
   AUTO_REPLAY: 10000 // 10s idle replay
 };
+

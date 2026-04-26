@@ -217,3 +217,4 @@ const AboutFooter = () => {
 };
 
 export default AboutFooter;
+

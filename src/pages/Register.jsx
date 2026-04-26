@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { BASE_URL } from "../../utils/urls";
+import { BASE_URL } from "@/utils/urls";
 import Footer from "../components/Footer";
 
 export const Register = () => {
@@ -600,3 +600,5 @@ const FileInput = ({ label, helperText, disabled, ...props }) => (
     {helperText && <p className="text-xs text-gray-500 mt-2">{helperText}</p>}
   </div>
 );
+
+

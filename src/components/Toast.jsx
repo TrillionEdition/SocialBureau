@@ -36,3 +36,4 @@ export default function Toast({ type = "info", message, onClose }) {
     </div>
   );
 }
+

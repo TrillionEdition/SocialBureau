@@ -27,7 +27,7 @@ import {
   ArrowUp,
   Edit3,
 } from "lucide-react";
-import { BASE_URL } from "../../../utils/urls";
+import { BASE_URL } from "@/utils/urls";
 import { toast } from "react-toastify";
 
 
@@ -1530,3 +1530,5 @@ const ShaileshSivan = () => {
 };
 
 export default ShaileshSivan;
+
+

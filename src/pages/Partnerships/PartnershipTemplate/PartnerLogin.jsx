@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, Lock, LogIn, Eye, EyeOff, CheckCircle2, AlertCircle, ArrowRight, Loader2 } from "lucide-react";
-import { BASE_URL } from "../../../../utils/urls";
-import { setUserData } from "../../../../utils/authUtils";
+import { BASE_URL } from "@/utils/urls";
+import { setUserData } from "@/utils/authUtils";
 
 const PartnerLogin = () => {
   const navigate = useNavigate();
@@ -230,3 +230,5 @@ const PartnerLogin = () => {
 };
 
 export default PartnerLogin;
+
+

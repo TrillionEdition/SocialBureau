@@ -42,3 +42,4 @@ const AISuggestions = ({ suggestions, onSelect, isLoading }) => {
 };
 
 export default AISuggestions;
+

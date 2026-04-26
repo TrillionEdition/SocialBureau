@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Footer from "../components/Footer";
-import { jobService } from "../../services/jobService";
+import { jobService } from "@/services/jobService";
 
 export default function AdminCreateJob() {
   const [loading, setLoading] = useState(false);
@@ -220,4 +220,6 @@ export default function AdminCreateJob() {
     </div>
   );
 }
+
+
 

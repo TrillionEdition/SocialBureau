@@ -91,3 +91,4 @@ export default function TableOfContents({ content }) {
     </div>
   );
 }
+

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import mediaWaitlistService from "../../services/mediaWaitlistService";
+import mediaWaitlistService from "@/services/mediaWaitlistService";
 
 export default function MediaDashboard() {
   const [stats, setStats] = useState({
@@ -233,3 +233,5 @@ function FilterButton({ label, active, onClick }) {
     </button>
   );
 }
+
+

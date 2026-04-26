@@ -22,3 +22,4 @@ export default function Seo({ title, description, keywords, image, url, canonica
     </Helmet>
   );
 }
+

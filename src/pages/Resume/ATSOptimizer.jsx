@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AlertCircle, CheckCircle2, Zap, BookOpen, TrendingUp } from 'lucide-react';
-import { getATSSuggestions, calculateATSScore } from '../../../utils/atsOptimization';
+import { getATSSuggestions, calculateATSScore } from '@/utils/atsOptimization';
 
 const ATSOptimizer = ({ resumeData, onUpdate }) => {
     const [suggestions, setSuggestions] = useState([]);
@@ -319,3 +319,5 @@ const SuggestionCard = ({ suggestion, onApply }) => {
 };
 
 export default ATSOptimizer;
+
+

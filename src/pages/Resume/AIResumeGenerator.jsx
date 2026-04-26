@@ -23,7 +23,7 @@ import {
     recommendSkills,
     extractSEOKeywords,
     analyzeSEOMatch
-} from '../../../services/aiResumeService';
+} from '@/services/aiResumeService';
 
 const AIResumeGenerator = ({ onResumeGenerated, currentResumeData = {} }) => {
     const [activeTab, setActiveTab] = useState('job-based');
@@ -659,3 +659,5 @@ const AIResumeGenerator = ({ onResumeGenerated, currentResumeData = {} }) => {
 };
 
 export default AIResumeGenerator;
+
+

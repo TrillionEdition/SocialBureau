@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, Lightbulb, CheckCircle, AlertCircle, X } from 'lucide-react';
-import { getResumeTips } from '../../../services/aiResumeService';
+import { getResumeTips } from '@/services/aiResumeService';
 
 /**
  * AI Tips Component - Displays personalized resume tips
@@ -99,3 +99,5 @@ const AITipsPanel = ({ jobTitle = 'Professional', skills = [], onClose }) => {
 };
 
 export default AITipsPanel;
+
+

@@ -2,13 +2,13 @@ import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import localJobs from "../../data/jobs";
-import { getUserData } from "../../../utils/authUtils";
-import { getUserApplicationsAPI, getUserSavedJobsAPI } from "../../../services/userServices";
+import { getUserData } from "@/utils/authUtils";
+import { getUserApplicationsAPI, getUserSavedJobsAPI } from "@/services/userServices";
 import { Briefcase, Bookmark, CheckCircle, ExternalLink, Loader, Send, BookmarkCheck, Info, Zap, Search, MapPin, Clock } from "lucide-react";
-import { BASE_URL } from "../../../utils/urls";
+import { BASE_URL } from "@/utils/urls";
 import HrNavbar from "./HrNavbar";
 import ApplyModal from "./ApplyModal";
-import * as hrforumService from "../../../services/hrforumService";
+import * as hrforumService from "@/services/hrforumService";
 
 export default function HRForum() {
     const [jobs, setJobs] = useState([]);
@@ -482,4 +482,6 @@ const DetailBadge = ({ icon, label }) => (
         <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{label}</span>
     </div>
 );
+
+
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { jobService } from "../../services/jobService";
+import { jobService } from "@/services/jobService";
 
 const fallbackJobs = [
   { slug: 'content-copywriter', title: 'Content & Copywriter', department: 'Creative' },
@@ -113,3 +113,4 @@ export default function CareersPost() {
     </section>
   );
 }
+

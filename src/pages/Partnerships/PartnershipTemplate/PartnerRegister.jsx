@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Lock, User, Briefcase, Eye, EyeOff, CheckCircle2, AlertCircle, ArrowRight, Loader2 } from "lucide-react";
-import { BASE_URL } from "../../../../utils/urls";
-import { setUserData } from "../../../../utils/authUtils";
-import { registerUserAPI } from "../../../../services/userServices";
+import { BASE_URL } from "@/utils/urls";
+import { setUserData } from "@/utils/authUtils";
+import { registerUserAPI } from "@/services/userServices";
 
 const PartnerRegister = () => {
   const navigate = useNavigate();
@@ -213,3 +213,5 @@ const PartnerRegister = () => {
 };
 
 export default PartnerRegister;
+
+

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { logoutUser } from "../../services/userServices";
+import { logoutUser } from "@/services/userServices";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -161,3 +161,5 @@ const Logout = () => {
 };
 
 export default Logout;
+
+

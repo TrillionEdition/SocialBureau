@@ -877,3 +877,4 @@ const Partner1 = () => {
 };
 
 export default Partner1;
+

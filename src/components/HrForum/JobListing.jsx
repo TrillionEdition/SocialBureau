@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import * as hrforumService from "../../../services/hrforumService.js";
-import { getUserData } from "../../../utils/authUtils";
+import * as hrforumService from "@/services/hrforumService.js";
+import { getUserData } from "@/utils/authUtils";
 import {
     Briefcase,
     Search,
@@ -208,4 +208,6 @@ export default function JobsDashboard() {
         </div>
     );
 }
+
+
 

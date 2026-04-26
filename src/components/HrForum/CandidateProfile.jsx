@@ -1,8 +1,8 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import * as hrforumService from "../../../services/hrforumService.js";
-import { BASE_URL } from "../../../utils/urls.js"
-import { getUserData } from "../../../utils/authUtils";
+import * as hrforumService from "@/services/hrforumService.js";
+import { BASE_URL } from "@/utils/urls.js"
+import { getUserData } from "@/utils/authUtils";
 import {
     CheckCircle,
     XCircle,
@@ -715,3 +715,4 @@ export default function CandidateProfile() {
         </div>
     );
 }
+

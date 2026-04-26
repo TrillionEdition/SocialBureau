@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
-import { BASE_URL } from "../../utils/urls";
+import { BASE_URL } from "@/utils/urls";
 
 export const ResetPassword = () => {
   const { token } = useParams();
@@ -186,3 +186,5 @@ export const ResetPassword = () => {
     </div>
   );
 };
+
+

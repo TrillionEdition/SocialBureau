@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import * as hrforumService from "../../../services/hrforumService";
-import { getUserData } from "../../../utils/authUtils";
+import * as hrforumService from "@/services/hrforumService";
+import { getUserData } from "@/utils/authUtils";
 import { 
     MessageSquare, 
     Send, 
@@ -277,3 +277,5 @@ export default function HrMessages() {
         </div>
     );
 }
+
+

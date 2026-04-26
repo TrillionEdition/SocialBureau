@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BASE_URL } from "../../utils/urls";
+import { BASE_URL } from "@/utils/urls";
 import { Link, useLocation } from "react-router-dom";
 
 export const ForgotPassword = () => {
@@ -156,3 +156,5 @@ export const ForgotPassword = () => {
     </div>
   );
 };
+
+

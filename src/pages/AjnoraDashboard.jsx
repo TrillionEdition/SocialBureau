@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import ajnoraService from "../../services/ajnoraService";
+import ajnoraService from "@/services/ajnoraService";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
 import { 
@@ -713,3 +713,5 @@ const Metric = ({ label, value }) => (
     <p className="text-xl font-['Bebas_Neue'] text-red-600 tracking-widest">{value || "0"}</p>
   </div>
 );
+
+

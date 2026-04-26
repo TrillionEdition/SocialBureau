@@ -76,3 +76,4 @@ const AICompanionModal = ({ isOpen, onClose, section, currentContent, onApply, o
 };
 
 export default AICompanionModal;
+

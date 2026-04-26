@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import { BASE_URL } from "../../../../utils/urls";
+import { BASE_URL } from "@/utils/urls";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import ModernTemplate from "./ModernTemplate";
 import { Edit3, X, Save, Palette, Type, Maximize2, Check, Layout, Sparkles, Image as ImageIcon } from "lucide-react";
@@ -811,3 +811,5 @@ const DynamicPartnershipPage = () => {
 };
 
 export default DynamicPartnershipPage;
+
+

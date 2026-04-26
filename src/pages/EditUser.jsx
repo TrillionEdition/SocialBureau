@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { BASE_URL } from "../../utils/urls";
+import { BASE_URL } from "@/utils/urls";
 import Footer from "../components/Footer";
 
 const EditUser = () => {
@@ -280,3 +280,5 @@ const EditUser = () => {
 };
 
 export default EditUser;
+
+

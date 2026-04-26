@@ -351,3 +351,4 @@ const Section = ({ title, children }) => (
 );
 
 export default ResumeModal;
+

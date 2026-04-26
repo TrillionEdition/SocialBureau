@@ -149,3 +149,4 @@ const GlobalCursor = () => {
 };
 
 export default GlobalCursor;
+

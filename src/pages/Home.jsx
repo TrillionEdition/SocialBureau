@@ -3,9 +3,9 @@ import { motion, useScroll, useSpring, useInView, AnimatePresence } from 'framer
 import { Link } from 'react-router-dom';
 import Seo from "../components/Seo";
 import SchemaMarkup from "../components/SchemaMarkup";
-import { generateHomepageSchemas } from "../../utils/schema";
+import { generateHomepageSchemas } from "@/utils/schema";
 import Testimonials from '@/components/Testimonials';
-import mediaWaitlistService from "../../services/mediaWaitlistService";
+import mediaWaitlistService from "@/services/mediaWaitlistService";
 import Toast from "../components/Toast";
 import StudentPortfolioPopup from '../components/Home/StudentPortfolioPopup';
 
@@ -1005,3 +1005,4 @@ export const Home = () => {
 };
 
 export default Home;
+

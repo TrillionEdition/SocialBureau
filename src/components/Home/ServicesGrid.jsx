@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getOptimizedCloudinaryUrl } from "../../../utils/cloudinary";
+import { getOptimizedCloudinaryUrl } from "@/utils/cloudinary";
 
 const RotatingStackedImages = ({ images }) => {
   const [index, setIndex] = useState(0);
@@ -280,3 +280,5 @@ const CombinedServicesGrid = () => {
 };
 
 export default CombinedServicesGrid;
+
+

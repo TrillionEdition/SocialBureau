@@ -18,7 +18,7 @@ import {
     Wand2
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { fetchHistory, analyzeResume, deleteScan, generateResume } from '../../../services/atsService';
+import { fetchHistory, analyzeResume, deleteScan, generateResume } from '@/services/atsService';
 import ResumeModal from './ResumeModal';
 
 const ROLE_TEMPLATES = {
@@ -644,3 +644,5 @@ const ATSChecker = () => {
 };
 
 export default ATSChecker;
+
+

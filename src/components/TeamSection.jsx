@@ -283,3 +283,4 @@ const staticTeamData = {
 };
 
 export default TeamSection;
+

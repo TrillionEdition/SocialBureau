@@ -7,8 +7,8 @@ import {
     updateProfileWithImagesAPI,
     getUserApplicationsAPI,
     getUserSavedJobsAPI
-} from '../../services/userServices';
-import { getUserData, setUserData as setLocalUserData } from '../../utils/authUtils';
+} from '@/services/userServices';
+import { getUserData, setUserData as setLocalUserData } from '@/utils/authUtils';
 
 const ProfilePage = () => {
     const [isEditing, setIsEditing] = useState(false);
@@ -387,3 +387,5 @@ const BookmarkCheck = ({ className, size }) => (
 );
 
 export default ProfilePage;
+
+

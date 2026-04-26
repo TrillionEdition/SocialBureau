@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Upload, Send, AlertCircle, FileText, CheckCircle, Zap, Phone, MessageSquare, User, Clock, CheckCircle2 } from 'lucide-react';
-import * as hrforumService from "../../../services/hrforumService";
-import { getUserData } from "../../../utils/authUtils";
+import * as hrforumService from "@/services/hrforumService";
+import { getUserData } from "@/utils/authUtils";
 
 export default function ApplyModal({ isOpen, onClose, onSubmit, jobTitle, isSubmitting: parentSubmitting, applicationId }) {
     const [formData, setFormData] = useState({
@@ -310,3 +310,5 @@ export default function ApplyModal({ isOpen, onClose, onSubmit, jobTitle, isSubm
         </div>
     );
 }
+
+
