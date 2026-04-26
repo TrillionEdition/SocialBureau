@@ -537,9 +537,12 @@ const ClientFormaji = () => {
 
             <div className="max-w-4xl mx-auto px-6 pt-8 pb-16">
                 <header className="mb-10 pb-5 border-b border-white/5">
-                    <div className="flex items-center gap-4 mb-8">
+                    <div className="flex items-center justify-between gap-4 mb-8">
                         <img src='https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_sticker-02_1_k3ulwd.png'
-                            className='h-26 w-auto' alt="SocialBureau" />
+                            className='h-20 sm:h-26 w-auto' alt="SocialBureau" />
+                        <div className="sm:hidden text-4xl font-black text-white/10 tracking-tighter leading-none select-none">
+                            {(currentStep + 1).toString().padStart(2, '0')}/{(steps.length).toString().padStart(2, '0')}
+                        </div>
                     </div>
 
                     <div className="flex justify-between items-stretch gap-8 flex-wrap">
