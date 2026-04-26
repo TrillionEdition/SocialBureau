@@ -29,7 +29,8 @@ export const setUserData = (user) => {
 export const clearAuthData = async () => {
   try {
     // Call backend logout endpoint to clear cookie
-    await fetch(`${process.env.REACT_APP_BASE_URL || "http://localhost:5000"}/user/logout`, {
+    const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+    await fetch(`${baseUrl}/user/logout`, {
       method: "GET",
       credentials: "include", // Include cookies
     });
@@ -62,6 +63,11 @@ export const isPartner = () => {
   const user = getUserData();
   const role = user?.role?.toLowerCase();
   return role === "partnership";
+};
+
+export const isAdmin = () => {
+  const user = getUserData();
+  return user?.role?.toLowerCase() === "admin";
 };
 
 export const canAccessDashboard = () => {
