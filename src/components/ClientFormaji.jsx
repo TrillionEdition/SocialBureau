@@ -341,7 +341,7 @@ const ClientFormaji = () => {
             const ajnoraService = (await import('../../services/ajnoraService')).default;
             await ajnoraService.createEntry({
                 ...formData,
-                project: formData.brandName || 'Ajinora Phase 01'
+                project: formData.brandName || 'Phase 01'
             });
             setIsSubmitted(true);
         } catch (error) {
@@ -384,7 +384,7 @@ const ClientFormaji = () => {
                     <div className="space-y-4">
                         <h2 className="text-6xl font-['Bebas_Neue'] tracking-wider leading-none">Dossier <span className="text-red-600">Transmitted</span></h2>
                         <p className="text-gray-400 text-lg leading-relaxed max-w-lg mx-auto font-medium">
-                            Phase 01 intake for <span className="text-white font-bold">{formData.brandName || formData.legalName}</span> has been securely uploaded to Social Bureau's Strategy Lab.
+                            Phase 01 intake for <span className="text-white font-bold">{formData.brandName || formData.legalName}</span> has been securely uploaded to SocialBureau's Strategy Lab.
                         </p>
                     </div>
 
@@ -415,7 +415,7 @@ const ClientFormaji = () => {
                     </div>
 
                     <div className="pt-4 text-[9px] font-black text-gray-700 uppercase tracking-[0.5em]">
-                        Secure Link Established · Social Bureau Strategy Lab
+                        Secure Link Established · SocialBureau Strategy Lab
                     </div>
                 </motion.div>
             </div>
@@ -474,7 +474,7 @@ const ClientFormaji = () => {
                             className="text-center relative z-10 max-w-full w-full flex flex-col items-center justify-center space-y-4 md:space-y-8"
                         >
                             <div className="flex justify-center">
-                                <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777127379/SB_logo_-_black_1_as6til.png" alt="Social Bureau" className="h-30 sm:h-26 w-auto" />
+                                <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777127379/SB_logo_-_black_1_as6til.png" alt="SocialBureau" className="h-30 sm:h-26 w-auto" />
                             </div>
 
                             <div className="flex items-center gap-4 justify-center">
@@ -491,14 +491,6 @@ const ClientFormaji = () => {
                                 Data Integration Portal
                             </h2>
 
-                            <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow-xl flex items-center gap-6 mx-auto max-w-[90vw] sm:max-w-md my-2 sm:my-6">
-                                <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777124347/ajnorah_bapakr.png" alt="Ajinorah" className="h-12 sm:h-18" />
-                                <div className="h-8 w-px bg-gray-200" />
-                                <div className="text-left overflow-hidden">
-                                    <p className="text-sm sm:text-base font-bold font-['DM_Sans'] truncate">Ajinora Education Consulting</p>
-
-                                </div>
-                            </div>
 
                             <motion.button
                                 whileHover={{ scale: 1.02, translateY: -2 }}
@@ -513,9 +505,9 @@ const ClientFormaji = () => {
                             <div className="flex items-center justify-center gap-4 sm:gap-6 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
                                 <span>API Driven</span>
                                 <div className="w-1 h-1 rounded-full bg-red-600" />
-                                <span>AdTech Intelligence</span>
+                                <span>AdTech Marketing</span>
                                 <div className="w-1 h-1 rounded-full bg-red-600" />
-                                <span>Niche Marketing</span>
+                                <span>strategy Lab</span>
                             </div>
 
                             <div className="pt-4 sm:pt-8 w-full flex justify-center">
@@ -542,32 +534,13 @@ const ClientFormaji = () => {
                 )}
             </AnimatePresence>
 
-            <nav className="sticky top-0 z-[150] bg-[#0A0A0A]/95 border-b border-white/5 px-4 sm:px-6 py-3 sm:py-4">
-                <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-2 sm:gap-4 shrink-0">
-                        <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777127379/SB_logo_-_black_1_as6til.png" alt="SB" className="h-6 sm:h-8 w-auto" />
-                        <div className="h-5 sm:h-6 w-px bg-white/10" />
-                        <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777124347/ajnorah_bapakr.png" alt="Ajinorah" className="h-5 sm:h-6 w-auto" />
-                    </div>
-
-                    <div className="flex items-center gap-2 flex-1 max-w-xs justify-end">
-                        <span className="hidden xs:block text-[9px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-widest shrink-0">Progress</span>
-                        <div className="flex-1 h-1 bg-[#1A1A1A] rounded-full overflow-hidden">
-                            <motion.div
-                                className="h-full bg-red-600"
-                                initial={{ width: 0 }}
-                                animate={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
-                            />
-                        </div>
-                        <span className="text-[10px] font-mono text-red-500 font-bold shrink-0">{Math.round(((currentStep + 1) / steps.length) * 100)}%</span>
-                    </div>
-                </div>
-            </nav>
 
             <div className="max-w-4xl mx-auto px-6 pt-8 pb-16">
                 <header className="mb-8 flex justify-between items-end gap-6 flex-wrap">
                     <div className="space-y-2">
-                        <div className="logo font-['Bebas_Neue'] text-2xl text-red-600 tracking-widest">Social Bureau</div>
+                        <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+                            Social<span className="text-[#ff0000]">B</span>ureau
+                        </a>
                         <h1 className="text-4xl sm:text-5xl md:text-8xl font-['Bebas_Neue'] leading-[0.9] text-white">
                             Client<br />Intake<br /><span className="text-red-600">Form</span>
                         </h1>
@@ -576,7 +549,6 @@ const ClientFormaji = () => {
                     <div className="text-right space-y-2">
                         <span className="bg-red-600 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded">Phase 01 — Discovery</span>
 
-                        <div className="text-[11px] font-bold text-gray-500 uppercase">Ajinora Education Consulting</div>
                     </div>
                 </header>
 
@@ -608,7 +580,7 @@ const ClientFormaji = () => {
                                     )}
                                 </div>
                                 {idx === currentStep && (
-                                    <motion.div 
+                                    <motion.div
                                         layoutId="activeStep"
                                         className="absolute bottom-0 left-0 w-full h-0.5 bg-white/30"
                                     />
@@ -636,7 +608,7 @@ const ClientFormaji = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Legal Company Name <span className="text-red-600">*</span></label>
-                                    <input id="legalName" value={formData.legalName} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="e.g. Ajinora Education Consulting Pvt Ltd" />
+                                    <input id="legalName" value={formData.legalName} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="e.g. ABC Consulting Pvt Ltd" />
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500 flex items-center gap-2">
@@ -664,7 +636,7 @@ const ClientFormaji = () => {
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Brand / Trade Name</label>
-                                    <input id="brandName" value={formData.brandName} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="e.g. Ajinorah" />
+                                    <input id="brandName" value={formData.brandName} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="e.g. ABC" />
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Brand Tagline / Slogan</label>
@@ -878,7 +850,7 @@ const ClientFormaji = () => {
                             </section>
 
                             <div className="bg-[#0e1a0e] border border-[#1a2e1a] rounded p-4 text-[13px] text-[#8fbe8f] leading-relaxed">
-                                <strong className="text-[#aae0aa]">Why we collect this:</strong> Social Bureau has in-house legal expertise to help clients navigate business registration, IP protection, and platform compliance.
+                                <strong className="text-[#aae0aa]">Why we collect this:</strong> SocialBureau has in-house legal expertise to help clients navigate business registration, IP protection, and platform compliance.
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -968,7 +940,7 @@ const ClientFormaji = () => {
                                     </div>
                                     <div className="flex flex-col gap-2">
                                         <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Legal Queries / Areas Needing Support</label>
-                                        <textarea id="legalQuery" value={formData.legalQuery} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all min-h-[80px]" placeholder="Any legal challenges or areas needing Social Bureau guidance" />
+                                        <textarea id="legalQuery" value={formData.legalQuery} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all min-h-[80px]" placeholder="Any legal challenges or areas needing SocialBureau guidance" />
                                     </div>
                                 </div>
                             </div>
@@ -981,11 +953,11 @@ const ClientFormaji = () => {
                             <section className="sec-header">
                                 <div className="text-[10px] font-mono text-red-500 tracking-[0.2em] mb-2 uppercase">03 / 07</div>
                                 <h2 className="text-4xl font-['Bebas_Neue'] tracking-wider text-white">Service Details</h2>
-                                <p className="text-gray-500 text-sm mt-1">Tell us about Ajinora's education consulting offerings.</p>
+                                <p className="text-gray-500 text-sm mt-1">Tell us about what your company/brand offers.</p>
                             </section>
 
                             <div className="flex flex-col gap-2">
-                                <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">What does Ajinora offer? <span className="text-red-600">*</span></label>
+                                <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">What does your company/brand offer? <span className="text-red-600">*</span></label>
                                 <textarea id="coreOffering" value={formData.coreOffering} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all min-h-[110px]" placeholder="Describe your education consulting services in detail..." />
                             </div>
 
@@ -1100,7 +1072,7 @@ const ClientFormaji = () => {
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Key Competitive Advantage</label>
-                                    <textarea id="usp" value={formData.usp} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all min-h-[80px]" placeholder="What makes Ajinora different from other education consultancies?" />
+                                    <textarea id="usp" value={formData.usp} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all min-h-[80px]" placeholder="What makes your company/brand different from other education consultancies?" />
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="flex flex-col gap-2">
@@ -1128,7 +1100,7 @@ const ClientFormaji = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Website URL</label>
-                                    <input id="website" value={formData.website} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="https://ajinora.com" />
+                                    <input id="website" value={formData.website} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="https://abcd.com" />
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Website Status</label>
@@ -1346,7 +1318,7 @@ const ClientFormaji = () => {
                             </div>
 
                             <div className="space-y-4 pt-4">
-                                <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-red-600">Services Needed from Social Bureau</h3>
+                                <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-red-600">Services Needed from SocialBureau</h3>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                     {[
                                         'Social Media Management', 'Meta Ads', 'Google Ads / SEO', 'YouTube Marketing',
@@ -1426,7 +1398,7 @@ const ClientFormaji = () => {
                                         >
                                             <div className="text-2xl font-['Bebas_Neue'] text-red-600">{budget.amount}</div>
                                             <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mt-1">{budget.label}</div>
-                                            <div className="text-[8px] font-mono text-gray-700 mt-1">{budget.range}/mo</div>
+
                                         </button>
                                     ))}
                                 </div>
@@ -1437,7 +1409,6 @@ const ClientFormaji = () => {
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Separate Ad Spend Budget?</label>
                                     <select id="adSpend" value={formData.adSpend} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center]">
                                         <option value="">Select</option>
-                                        <option>Included in above</option>
                                         <option>₹5,000–15,000/mo</option>
                                         <option>₹15,000–30,000/mo</option>
                                         <option>₹30,000–50,000/mo</option>
@@ -1449,11 +1420,9 @@ const ClientFormaji = () => {
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Preferred Contract Duration</label>
                                     <select id="contractDur" value={formData.contractDur} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center]">
                                         <option value="">Select duration</option>
-                                        <option>Month-to-Month</option>
-                                        <option>3 Months</option>
                                         <option>6 Months</option>
                                         <option>12 Months</option>
-                                        <option>Flexible</option>
+                                        <option>More than 1 year</option>
                                     </select>
                                 </div>
                                 <div className="flex flex-col gap-2">
@@ -1478,7 +1447,7 @@ const ClientFormaji = () => {
                             </div>
 
                             <div className="flex flex-col gap-2 pt-4">
-                                <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Anything Else Social Bureau Should Know</label>
+                                <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Anything Else SocialBureau Should Know</label>
                                 <textarea id="anythingElse" value={formData.anythingElse} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all min-h-[100px]" placeholder="Special considerations, brand sensitivities, competitor intel..." />
                             </div>
 
@@ -1672,7 +1641,7 @@ const ClientFormaji = () => {
 
                 <footer className="mt-16 text-center space-y-4">
                     <div className="h-px bg-white/5 w-full" />
-                    <p className="text-[10px] font-bold text-gray-700 uppercase tracking-[0.4em]">Social Bureau · Kerala's API Marketing Agency · socialbureau.in</p>
+                    <p className="text-[10px] font-bold text-gray-700 uppercase tracking-[0.4em]">SocialBureau · World's First API Driven Marketing Agency</p>
                 </footer>
             </div>
         </div>
