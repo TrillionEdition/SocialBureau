@@ -11,8 +11,8 @@ export const OurTeam = () => {
   const { data: teamData, isLoading, isError } = useQuery({
     queryKey: ['team'],
     queryFn: () => teamService.getTeam(),
-    staleTime: 1000 * 60 * 60 * 24,   
-    gcTime:    1000 * 60 * 60 * 24,   
+    staleTime: 1000 * 60 * 60 * 24,
+    gcTime: 1000 * 60 * 60 * 24,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     retry: 1,

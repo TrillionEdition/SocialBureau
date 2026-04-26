@@ -1340,7 +1340,9 @@ const ClientFormaji = () => {
                                         'Social Media Management', 'Meta Ads', 'Google Ads / SEO', 'YouTube Marketing',
                                         'Content Creation', 'Influencer Marketing', 'Website Design / Redesign',
                                         'Brand Identity / Rebranding', 'WhatsApp Marketing', 'CRM & Lead Automation',
-                                        'Email Marketing', 'Legal Digital Asset Recovery', 'Analytics & Reporting', 'PR & Media Coverage'
+                                        'Email Marketing', 'Legal Digital Asset Recovery', 'Analytics & Reporting', 
+                                        'HR & Recruitment Services','API Marketing','Web Development','Niche Marketing',
+                                        'Content Marketing','Performance Marketing','AdTech Marketing','Legal Consulting',
                                     ].map(item => {
                                         const selected = formData.servicesNeeded.find(s => s.label === item);
                                         return (
