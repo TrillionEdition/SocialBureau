@@ -66,6 +66,7 @@ const ClientFormaji = () => {
         // Section 0: Company Profile
         legalName: '',
         brandName: '',
+        brandTagline: '',
         companyType: '',
         incYear: '',
         cin: '',

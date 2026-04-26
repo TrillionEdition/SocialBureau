@@ -377,6 +377,7 @@ function App() {
             <Route path="/api-marketing-dashboard" element={<AdminRoute><ApiMarketingDashboard /></AdminRoute>} />
             <Route path="/media-dashboard" element={<AdminRoute><MediaDashboard /></AdminRoute>} />
             <Route path="/ajnoradashboard" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
+            <Route path="/ajnoradashboard/:id" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
 
 
             <Route path="/analytics" element={<AnalyticsWidget />} />
