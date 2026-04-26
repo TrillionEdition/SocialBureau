@@ -97,7 +97,7 @@ export const generateOptimizedPDF = async (element, fileName = 'document', optio
       useCORS: true,
       logging: false,
       backgroundColor: '#ffffff',
-      windowHeight: elementHeight,
+      windowHeight: element.offsetHeight,
       // Constraint to single page
       canvasWidth: A4_WIDTH_PX,
       canvasHeight: A4_HEIGHT_PX,
