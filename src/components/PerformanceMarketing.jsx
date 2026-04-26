@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Seo from './Seo';
-import { getOptimizedCloudinaryUrl } from '../../utils/cloudinary';
+import { getOptimizedCloudinaryUrl } from '@/utils/cloudinary';
 
 const PerformanceMarketing = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -626,3 +626,5 @@ const PerformanceMarketing = () => {
 };
 
 export default PerformanceMarketing;
+
+

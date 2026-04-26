@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { addCompanyAchievementAPI } from '../../services/companyAchievementService';
+import { addCompanyAchievementAPI } from '@/services/companyAchievementService';
 import { CheckCircle, Award } from 'lucide-react';
 import Footer from './Footer';
 
@@ -143,3 +143,5 @@ const AddAchievementForm = ({ onAchievementAdded }) => {
 };
 
 export default AddAchievementForm;
+
+

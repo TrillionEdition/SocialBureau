@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import clientService from "../../services/clientService";
-import { createClickUpTask } from "../../services/clickupServices";
+import clientService from "@/services/clientService";
+import { createClickUpTask } from "@/services/clickupServices";
 
 export default function ClientDashboard() {
   const [stats, setStats] = useState({
@@ -516,3 +516,5 @@ function DetailField({ label, value }) {
     </div>
   );
 }
+
+

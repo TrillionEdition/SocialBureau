@@ -15,7 +15,7 @@ import {
 } from 'chart.js';
 import { Bar, Line, Doughnut } from 'react-chartjs-2';
 import AdChart from './AdChart';
-import apiLeadService from '../../services/apiLeadService';
+import apiLeadService from '@/services/apiLeadService';
 
 // Register ChartJS components
 ChartJS.register(
@@ -1382,3 +1382,5 @@ const ApiMarketing = () => {
 };
 
 export default ApiMarketing;
+
+

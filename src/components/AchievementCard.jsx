@@ -76,3 +76,4 @@ const AchievementCard = ({ title, description, date, image, category }) => {
 };
 
 export default AchievementCard;
+

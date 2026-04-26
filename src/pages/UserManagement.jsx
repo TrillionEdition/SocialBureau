@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
-import { usersAPI } from "../../services/userServices";
+import { usersAPI } from "@/services/userServices";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 
 const UserManagement = () => {
@@ -105,3 +105,5 @@ const UserManagement = () => {
 };
 
 export default UserManagement;
+
+

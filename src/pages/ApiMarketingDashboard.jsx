@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import apiLeadService from "../../services/apiLeadService";
+import apiLeadService from "@/services/apiLeadService";
 
 export default function ApiMarketingDashboard() {
   const [stats, setStats] = useState({
@@ -336,3 +336,5 @@ function FilterButton({ label, active, onClick }) {
     </button>
   );
 }
+
+

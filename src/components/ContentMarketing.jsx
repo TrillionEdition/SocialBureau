@@ -17,7 +17,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import Seo from "./Seo";
-import { getOptimizedCloudinaryUrl } from "../../utils/cloudinary";
+import { getOptimizedCloudinaryUrl } from "@/utils/cloudinary";
 
 const ContentMarketing = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -845,3 +845,4 @@ const ContentMarketing = () => {
 };
 
 export default ContentMarketing;
+

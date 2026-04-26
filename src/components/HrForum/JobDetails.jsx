@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import * as hrforumService from "../../../services/hrforumService.js";
-import { getUserData } from "../../../utils/authUtils";
+import * as hrforumService from "@/services/hrforumService.js";
+import { getUserData } from "@/utils/authUtils";
 import { 
     Briefcase, 
     MapPin, 
@@ -347,4 +347,6 @@ const DetailItem = ({ icon, label, value }) => (
         </div>
     </div>
 );
+
+
 

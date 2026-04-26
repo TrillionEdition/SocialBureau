@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { blogAPI } from "../../services/blogServices";
+import { blogAPI } from "@/services/blogServices";
 
 export default function LatestBlogs() {
   const { data, isLoading, isError, error } = useQuery({
@@ -60,3 +60,5 @@ export default function LatestBlogs() {
     </div>
   );
 }
+
+

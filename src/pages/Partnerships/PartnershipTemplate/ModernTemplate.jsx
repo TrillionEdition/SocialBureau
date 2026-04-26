@@ -655,3 +655,4 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
 };
 
 export default ModernTemplate;
+

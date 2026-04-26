@@ -5,7 +5,7 @@ import TeamSection from '../components/TeamSection'
 import Testimonials from '../components/Testimonials'
 import Seo from '../components/Seo'
 import { useQuery } from '@tanstack/react-query'
-import { teamService } from '../../services/teamService'
+import { teamService } from '@/services/teamService'
 
 /**
  * OurTeam page
@@ -51,3 +51,5 @@ export const OurTeam = () => {
     </div>
   )
 }
+
+

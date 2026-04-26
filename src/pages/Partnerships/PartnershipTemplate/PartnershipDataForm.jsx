@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Briefcase, Globe, Share2, Image as ImageIcon, Save, ArrowRight, ArrowLeft, CheckCircle, Upload, Loader2, X, Plus, Trash2, Link as LinkIcon, MessageSquare, Layout, Sparkles, LogOut } from "lucide-react";
-import { BASE_URL } from "../../../../utils/urls";
+import { BASE_URL } from "@/utils/urls";
 import { toast } from "react-toastify";
 import Logout from "../../../components/Logout";
 
@@ -510,3 +510,5 @@ const PartnershipDataForm = ({ initialData, onSave }) => {
 };
 
 export default PartnershipDataForm;
+
+

@@ -1003,3 +1003,4 @@ export default function Partner4() {
     </div>
   );
 }
+

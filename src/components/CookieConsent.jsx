@@ -323,3 +323,4 @@ export default function CookieConsent({ forceShow = false }) {
     </AnimatePresence>
   );
 }
+

@@ -18,11 +18,11 @@ import TemplateSelector from './TemplateSelector.jsx';
 import ResumeForm from './ResumeForm.jsx';
 import ResumePreview from './ResumePreview.jsx';
 
-import { downloadResumeSinglePage } from "../../../utils/singlePagePdfGenerator.js";
-import { getAIResumeImprovements, checkResumeQuality, generateAISuggestions } from "../../../services/aiResumeService.js";
+import { downloadResumeSinglePage } from "@/utils/singlePagePdfGenerator";
+import { getAIResumeImprovements, checkResumeQuality, generateAISuggestions } from "@/services/aiResumeService";
 import AIResumeGenerator from './AIResumeGenerator';
 import AICompanionModal from './AICompanionModal'; // Import the new component
-import { downloadResumeAsWord } from "../../../utils/wordGenerator.js";
+import { downloadResumeAsWord } from "@/utils/wordGenerator";
 import PDFExtractor from './PDFExtractor.jsx';
 
 const RESUME_TEMPLATES = {
@@ -464,3 +464,4 @@ const ResumeGenerator = () => {
 };
 
 export default ResumeGenerator;
+

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { ClientreviewService } from '../../services/clientreviewServices';
+import { ClientreviewService } from '@/services/clientreviewServices';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, MessageSquare, User, Plus, X, Quote, Trash2, Edit2 } from 'lucide-react';
 import Navbar from './Navbar';
@@ -442,3 +442,5 @@ const AddReview = () => {
 };
 
 export default AddReview;
+
+

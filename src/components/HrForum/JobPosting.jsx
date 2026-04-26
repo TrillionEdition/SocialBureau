@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import * as hrforumService from "../../../services/hrforumService.js";
-import { getUserData } from "../../../utils/authUtils";
+import * as hrforumService from "@/services/hrforumService.js";
+import { getUserData } from "@/utils/authUtils";
 import {
     ChevronLeft,
     ArrowRight,
@@ -274,4 +274,6 @@ const Input = ({ label, ...props }) => (
         />
     </div>
 );
+
+
 

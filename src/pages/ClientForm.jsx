@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import clientService from "../../services/clientService";
-import { createClickUpTask } from "../../services/clickupServices";
+import clientService from "@/services/clientService";
+import { createClickUpTask } from "@/services/clickupServices";
 import Confetti from "react-confetti";
 
 export default function Clientforms() {
@@ -450,3 +450,4 @@ const CheckboxGroup = ({ title, items, field, form, handleCheckbox }) => (
     </div>
   </div>
 );
+

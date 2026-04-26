@@ -3,7 +3,7 @@ import Footer from "./Footer";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaCrown, FaDownload, FaGem, FaLeaf, FaMapMarkerAlt, FaMedal, FaPiggyBank, FaRocket, FaStar, FaUserGraduate } from "react-icons/fa";
 import { useQuery } from '@tanstack/react-query';
-import { userDetailsAPI, userClickupStatsAPI } from "../../services/clickupServices";
+import { userDetailsAPI, userClickupStatsAPI } from "@/services/clickupServices";
 
 
 const LEVELS = [
@@ -821,3 +821,5 @@ export function StaffDashboard() {
     </>
   );
 }
+
+

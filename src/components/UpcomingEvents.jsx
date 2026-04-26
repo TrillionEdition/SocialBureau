@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getUpcomingEventsAPI, addToGoogleCalendar } from '../../services/eventServices';
+import { getUpcomingEventsAPI, addToGoogleCalendar } from '@/services/eventServices';
 import { Link } from 'react-router-dom';
 
 const UpcomingEvents = ({ limit = 4 }) => {
@@ -107,3 +107,5 @@ const UpcomingEvents = ({ limit = 4 }) => {
 };
 
 export default UpcomingEvents;
+
+

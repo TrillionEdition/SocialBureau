@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getEventsAPI, getEventByIdAPI } from '../../services/eventServices';
+import { getEventsAPI, getEventByIdAPI } from '@/services/eventServices';
 import LoadingSpinner from './LoadingSpinner';
 
 const parseEvents = (data) => {
@@ -130,3 +130,5 @@ const ViewEvents = () => {
 };
 
 export default ViewEvents;
+
+

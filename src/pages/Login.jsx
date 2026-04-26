@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { BASE_URL } from "../../utils/urls";
-import { setUserData } from "../../utils/authUtils";
+import { BASE_URL } from "@/utils/urls";
+import { setUserData } from "@/utils/authUtils";
 import { Mail, Lock, ArrowRight } from "lucide-react";
 
 export const Login = () => {
@@ -316,3 +316,5 @@ export const Login = () => {
     </div>
   );
 };
+
+

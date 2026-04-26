@@ -1,11 +1,11 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { blogAPI } from "../../services/blogServices";
+import { blogAPI } from "@/services/blogServices";
 import Footer from "./Footer";
 import Toast from "./Toast";
 import { useNavigate, useLocation } from "react-router-dom";
 import JoditEditor from "jodit-react";
-import { getUserData } from "../../utils/authUtils";
+import { getUserData } from "@/utils/authUtils";
 
 export default function SubmitBlog() {
   const navigate = useNavigate();
@@ -580,3 +580,5 @@ export default function SubmitBlog() {
     </>
   );
 }
+
+

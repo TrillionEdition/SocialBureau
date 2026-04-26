@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, ExternalLink, Copy, Layout, User, Plus, CheckCircle, Globe, Briefcase, LogOut } from "lucide-react";
-import { BASE_URL } from "../../../../utils/urls";
+import { BASE_URL } from "@/utils/urls";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import Logout from "../../../components/Logout";
 
@@ -194,3 +194,5 @@ const PartnerDashboard = () => {
 };
 
 export default PartnerDashboard;
+
+

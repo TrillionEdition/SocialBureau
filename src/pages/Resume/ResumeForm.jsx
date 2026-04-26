@@ -387,3 +387,4 @@ const ResumeForm = ({ data, onChange, template, onGetSuggestions }) => {
 };
 
 export default ResumeForm;
+

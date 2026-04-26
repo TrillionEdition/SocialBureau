@@ -338,7 +338,7 @@ const ClientFormaji = () => {
 
         try {
             // Import the service dynamically or use it if imported at top
-            const ajnoraService = (await import('../../services/ajnoraService')).default;
+            const ajnoraService = (await import('@/services/ajnoraService')).default;
             await ajnoraService.createEntry({
                 ...formData,
                 project: formData.brandName || 'Phase 01'
@@ -1649,3 +1649,4 @@ const ClientFormaji = () => {
 };
 
 export default ClientFormaji;
+

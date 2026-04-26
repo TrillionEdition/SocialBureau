@@ -82,3 +82,4 @@ const Hero = ({ scrollYProgress }) => {
 };
 
 export default Hero;
+

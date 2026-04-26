@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, BarChart3, AlertCircle, CheckCircle } from 'lucide-react';
-import { checkResumeQuality } from '../../../services/aiResumeService';
+import { checkResumeQuality } from '@/services/aiResumeService';
 
 /**
  * AI Quality Score Display Component
@@ -173,3 +173,5 @@ const AIQualityScore = ({ resumeData, compact = false, autoLoad = true }) => {
 };
 
 export default AIQualityScore;
+
+

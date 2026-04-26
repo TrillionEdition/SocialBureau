@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Trophy, Clock, User } from "lucide-react";
-import { BASE_URL } from "../../utils/urls";
+import { BASE_URL } from "@/utils/urls";
 
 export default function DynamicLeaderboard() {
   const [leaderboard, setLeaderboard] = useState([]);
@@ -409,3 +409,5 @@ export default function DynamicLeaderboard() {
     </div>
   );
 }
+
+

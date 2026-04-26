@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, lazy, Suspense } from "react";
 import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { blogAPI } from "../../services/blogServices";
+import { blogAPI } from "@/services/blogServices";
 import { FaHeart, FaCalendarAlt, FaUser, FaTag, FaTrashAlt } from "react-icons/fa";
 
 // Lazy load non-critical components
@@ -9,7 +9,7 @@ const Footer = lazy(() => import("./Footer"));
 const Seo = lazy(() => import("./Seo"));
 const SchemaMarkup = lazy(() => import("./SchemaMarkup"));
 const Toast = lazy(() => import("./Toast"));
-import { generateBlogPostingSchema } from "../../utils/schema";
+import { generateBlogPostingSchema } from "@/utils/schema";
 import {
   FaWhatsapp,
   FaFacebookF,
@@ -20,7 +20,7 @@ import {
   FaArrowLeft
 } from "react-icons/fa";
 
-import { subscribeNewsletter } from "../../services/newsLetterServices";
+import { subscribeNewsletter } from "@/services/newsLetterServices";
 
 // Utility outside component so it doesn't get recreated on render
 const processContentWithIds = (html, sectionIndex) => {
@@ -732,3 +732,5 @@ export default function BlogDetail() {
     </div>
   );
 }
+
+

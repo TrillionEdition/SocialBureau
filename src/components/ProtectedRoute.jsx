@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../utils/authUtils";
+import { useAuth } from "@/utils/authUtils";
 import LoadingSpinner from "./LoadingSpinner";
 import { Link } from "react-router-dom";
 
@@ -51,3 +51,5 @@ const ProtectedRoute = ({ children }) => {
 };
 
 export default ProtectedRoute;
+
+
