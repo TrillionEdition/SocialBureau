@@ -425,7 +425,7 @@ const ClientFormaji = () => {
     return (
         <div className="min-h-screen bg-[#0A0A0A] text-white font-['DM_Sans'] selection:bg-red-600/30 selection:text-red-500">
             <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
         .noise-overlay {
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
@@ -474,7 +474,7 @@ const ClientFormaji = () => {
                             className="text-center relative z-10 max-w-full w-full flex flex-col items-center justify-center space-y-4 md:space-y-8"
                         >
                             <div className="flex justify-center">
-                                <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777127379/SB_logo_-_black_1_as6til.png" alt="SocialBureau" className="h-30 sm:h-26 w-auto" />
+                                <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_LOGO_BLACK_PNG_iev5qz.png" alt="SocialBureau" className="h-40 sm:h-40 w-auto" />
                             </div>
 
                             <div className="flex items-center gap-4 justify-center">
@@ -513,7 +513,7 @@ const ClientFormaji = () => {
                             <div className="pt-4 sm:pt-8 w-full flex justify-center">
                                 <div className="flex items-center justify-center gap-x-6 sm:gap-x-12 gap-y-4 flex-wrap px-4">
                                     {items.map((item, index) => (
-                                        <div key={index} className="flex items-center">
+                                        <div key={index} className={`items-center ${item.label === 'Discovery Cost' ? 'hidden sm:flex' : 'flex'}`}>
                                             <div className="flex flex-col items-center sm:items-start">
                                                 <span className="text-2xl sm:text-3xl font-bold tracking-wide text-black leading-none">
                                                     {item.value}
@@ -536,19 +536,35 @@ const ClientFormaji = () => {
 
 
             <div className="max-w-4xl mx-auto px-6 pt-8 pb-16">
-                <header className="mb-8 flex justify-between items-end gap-6 flex-wrap">
-                    <div className="space-y-2">
-                        <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
-                            Social<span className="text-[#ff0000]">B</span>ureau
-                        </a>
-                        <h1 className="text-4xl sm:text-5xl md:text-8xl font-['Bebas_Neue'] leading-[0.9] text-white">
-                            Client<br />Intake<br /><span className="text-red-600">Form</span>
-                        </h1>
-                        <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">Kerala's Data-Driven API Marketing Agency</p>
+                <header className="mb-10 pb-5 border-b border-white/5">
+                    <div className="flex items-center gap-4 mb-8">
+                        <img src='https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_sticker-02_1_k3ulwd.png'
+                            className='h-26 w-auto' alt="SocialBureau" />
                     </div>
-                    <div className="text-right space-y-2">
-                        <span className="bg-red-600 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded">Phase 01 — Discovery</span>
 
+                    <div className="flex justify-between items-stretch gap-8 flex-wrap">
+                        <div className="flex-1 min-w-[300px] flex flex-col">
+                            <h1 className="text-[clamp(28px,3.5vw,44px)] font-extrabold tracking-tight leading-[1.1] mb-2 text-white font-['Plus_Jakarta_Sans',sans-serif]">
+                                CLIENT REQUIREMENT <em className="italic text-red-600 font-['Playfair_Display',serif] font-bold">FORM</em>
+                            </h1>
+                            <p className="text-gray-400 text-[14px] max-w-[580px] font-normal leading-[1.7] mt-3 font-['Plus_Jakarta_Sans',sans-serif]">
+                                This form helps us build a customised growth strategy for Ajinorah's brand, expansion, and revenue goals. Please answer as accurately as possible — the more you share, the better we can serve you.
+                            </p>
+                            <div className="mt-auto pt-8">
+                                <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">Kerala's Data-Driven API Marketing Agency</p>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col items-end justify-between">
+                            <div className="hidden sm:block text-7xl font-black text-white/5 tracking-tighter leading-none select-none">
+                                {(currentStep + 1).toString().padStart(2, '0')}/{(steps.length).toString().padStart(2, '0')}
+                            </div>
+                            <div className="mt-auto">
+                                <span className="bg-red-600 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded shadow-lg shadow-red-600/20">
+                                    Phase 01 — Discovery
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </header>
 
@@ -608,7 +624,7 @@ const ClientFormaji = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Legal Company Name <span className="text-red-600">*</span></label>
-                                    <input id="legalName" value={formData.legalName} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="e.g. ABC Consulting Pvt Ltd" />
+                                    <input id="legalName" value={formData.legalName} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="e.g. socialbureau (TrillionEdition LLP)" />
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500 flex items-center gap-2">
@@ -636,7 +652,7 @@ const ClientFormaji = () => {
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Brand / Trade Name</label>
-                                    <input id="brandName" value={formData.brandName} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="e.g. ABC" />
+                                    <input id="brandName" value={formData.brandName} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="e.g. socialbureau" />
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Brand Tagline / Slogan</label>
@@ -1100,7 +1116,7 @@ const ClientFormaji = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Website URL</label>
-                                    <input id="website" value={formData.website} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="https://abcd.com" />
+                                    <input id="website" value={formData.website} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="https://socialbureau.in" />
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Website Status</label>
