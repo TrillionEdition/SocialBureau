@@ -120,10 +120,18 @@ export default function AjnoraDashboard() {
   useEffect(() => {
     if (selectedEntry || id) {
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+      document.body.classList.add('ajnora-dossier-active');
     } else {
       document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
+      document.body.classList.remove('ajnora-dossier-active');
     }
-    return () => { document.body.style.overflow = "unset"; };
+    return () => { 
+      document.body.style.overflow = "unset"; 
+      document.documentElement.style.overflow = "unset";
+      document.body.classList.remove('ajnora-dossier-active');
+    };
   }, [selectedEntry, id]);
 
   useEffect(() => {
@@ -281,6 +289,11 @@ export default function AjnoraDashboard() {
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #e8242a; border-radius: 3px; }
+
+        body.ajnora-dossier-active {
+            overflow: hidden !important;
+            height: 100vh !important;
+        }
       `}</style>
 
       <div className="max-w-7xl mx-auto mb-16">
@@ -375,8 +388,9 @@ export default function AjnoraDashboard() {
                 'bg-blue-600/10 text-blue-500 border-blue-600/20'
               }`}>{entry.status}</span>
               <div className="flex gap-2">
-                <button onClick={() => navigate(`/ajnoradashboard/${entry._id}`)} className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-red-600 transition-all border border-white/10 rounded-full"><Target size={16} /></button>
-                <button onClick={() => handleDelete(entry._id)} className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white hover:text-black transition-all border border-white/10 rounded-full"><X size={16} /></button>
+                <button onClick={() => navigate(`/ajnoradashboard/${entry._id}`)} className="px-6 h-10 flex items-center justify-center bg-white/5 hover:bg-red-600 transition-all border border-white/10 rounded-full text-[10px] font-black uppercase tracking-widest gap-2">
+                  <Target size={14} /> Open Dossier
+                </button>
               </div>
             </div>
           </motion.div>
@@ -389,16 +403,17 @@ export default function AjnoraDashboard() {
             initial={{ opacity: 0, scale: 0.98 }} 
             animate={{ opacity: 1, scale: 1 }} 
             exit={{ opacity: 0, scale: 0.98 }} 
+            data-lenis-prevent
             className="fixed inset-0 z-[200] bg-[#050505] overflow-y-auto"
           >
             {/* HEADER */}
             <div className="sticky top-0 z-[210] bg-[#050505]/95 backdrop-blur-2xl border-b border-white/5 px-8 py-6 flex justify-between items-center">
               <div className="flex items-center gap-6">
-                <button onClick={() => navigate('/ajnoradashboard')} className="flex items-center gap-2 text-white/40 hover:text-red-600 transition-all font-bold uppercase text-[10px] tracking-widest group">
-                  <div className="p-2 rounded-full bg-white/5 group-hover:bg-red-600 group-hover:text-white transition-all">
-                    <ArrowLeft size={16} />
+                <button onClick={() => navigate('/ajnoradashboard')} className="flex items-center gap-2 text-white hover:text-red-600 transition-all font-black uppercase text-[10px] tracking-[0.4em] group">
+                  <div className="p-3 rounded-full bg-white/10 group-hover:bg-red-600 group-hover:text-white transition-all shadow-xl">
+                    <X size={20} />
                   </div>
-                  Return to Registry
+                  CLOSE DOSSIER
                 </button>
                 <div className="h-8 w-px bg-white/10 mx-2" />
                 <div>
@@ -417,7 +432,7 @@ export default function AjnoraDashboard() {
                       {["new", "contacted", "qualified", "converted", "lost"].map(o => <option key={o} value={o}>{o}</option>)}
                     </select>
                 </div>
-                <button onClick={() => handleDelete(selectedEntry._id)} className="p-3 bg-red-600/10 text-red-600 hover:bg-red-600 hover:text-white rounded-full transition-all"><X size={20} /></button>
+                <button onClick={() => navigate('/ajnoradashboard')} className="p-3 bg-white/5 text-white/40 hover:bg-red-600 hover:text-white rounded-full transition-all"><X size={20} /></button>
               </div>
             </div>
 
@@ -477,7 +492,7 @@ export default function AjnoraDashboard() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {(Array.isArray(selectedEntry.partnersList) ? selectedEntry.partnersList : []).map((p, i) => (
                                 <div key={i} className="bg-black/40 p-5 rounded-2xl border border-white/5 flex items-center gap-5 hover:border-red-600/30 transition-all group/partner">
-                                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex-shrink-0 flex items-center justify-center overflow-hidden">
+                                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex-shrink-0 flex-shrink-0 flex items-center justify-center overflow-hidden">
                                         {p.photo?.url ? (
                                             <img src={p.photo.url} alt={p.name} className="w-full h-full object-cover" />
                                         ) : (

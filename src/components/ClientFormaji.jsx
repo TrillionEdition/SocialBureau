@@ -207,17 +207,17 @@ const ClientFormaji = () => {
 
         // Store File object and preview URL instead of manual frontend upload
         const previewUrl = URL.createObjectURL(file);
-        
+
         setFormData(prev => {
             const newList = [...prev.partnersList];
-            newList[index] = { 
-                ...newList[index], 
-                photo: { 
-                    name: file.name, 
-                    url: previewUrl, 
+            newList[index] = {
+                ...newList[index],
+                photo: {
+                    name: file.name,
+                    url: previewUrl,
                     file: file, // Store the raw File object for backend transmission
-                    uploadedAt: new Date().toISOString() 
-                } 
+                    uploadedAt: new Date().toISOString()
+                }
             };
             return { ...prev, partnersList: newList };
         });
@@ -271,7 +271,7 @@ const ClientFormaji = () => {
     const handleFileUpload = async (id, e) => {
         const files = Array.from(e.target.files);
         if (!files.length) return;
-        
+
         // Prepare files for backend transmission
         const preparedFiles = files.map(file => ({
             name: file.name,
@@ -405,9 +405,9 @@ const ClientFormaji = () => {
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                         <a href='/ajnoradashboard'>
-                        <button className="px-10 py-4 bg-red-600 hover:bg-red-700 rounded-full font-black uppercase text-[11px] tracking-widest transition-all shadow-lg shadow-red-600/20">
-                            Access Intelligence Portal
-                        </button>
+                            <button className="px-10 py-4 bg-red-600 hover:bg-red-700 rounded-full font-black uppercase text-[11px] tracking-widest transition-all shadow-lg shadow-red-600/20">
+                                Access Intelligence Portal
+                            </button>
                         </a>
                         <button onClick={() => window.location.reload()} className="px-10 py-4 border border-white/10 hover:bg-white/5 rounded-full font-black uppercase text-[11px] tracking-widest transition-all">
                             New Onboarding
@@ -471,10 +471,10 @@ const ClientFormaji = () => {
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="text-center relative z-10 space-y-6"
+                            className="text-center relative z-10 max-w-full w-full flex flex-col items-center justify-center space-y-4 md:space-y-8"
                         >
-                            <div className="flex justify-center mb-8">
-                                <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777127379/SB_logo_-_black_1_as6til.png" alt="Social Bureau" className="h-12 w-auto" />
+                            <div className="flex justify-center">
+                                <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777127379/SB_logo_-_black_1_as6til.png" alt="Social Bureau" className="h-30 sm:h-26 w-auto" />
                             </div>
 
                             <div className="flex items-center gap-4 justify-center">
@@ -483,20 +483,20 @@ const ClientFormaji = () => {
                                 <div className="h-px w-8 bg-red-600/40" />
                             </div>
 
-                            <h1 className="text-8xl md:text-[10rem] font-['Bebas_Neue'] tracking-tight leading-[0.8]">
+                            <h1 className="text-[16vw] sm:text-[14vw] md:text-[10rem] font-['Bebas_Neue'] tracking-tight leading-[0.8] w-full px-4 break-words">
                                 Client <span className="text-red-600">Intake</span>
                             </h1>
 
-                            <h2 className="text-2xl md:text-3xl font-['Bebas_Neue'] tracking-widest text-gray-400 uppercase">
+                            <h2 className="text-xl sm:text-2xl md:text-3xl font-['Bebas_Neue'] tracking-widest text-gray-400 uppercase">
                                 Data Integration Portal
                             </h2>
 
-                            <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow-xl flex items-center gap-6 mx-auto max-w-md my-10">
-                                <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777124347/ajnorah_bapakr.png" alt="Ajinorah" className="h-10" />
+                            <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow-xl flex items-center gap-6 mx-auto max-w-[90vw] sm:max-w-md my-2 sm:my-6">
+                                <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777124347/ajnorah_bapakr.png" alt="Ajinorah" className="h-12 sm:h-18" />
                                 <div className="h-8 w-px bg-gray-200" />
-                                <div className="text-left">
-                                    <p className="text-sm font-bold font-['DM_Sans']">Ajinora Education Consulting</p>
-                                    <p className="text-[10px] text-gray-500 uppercase tracking-widest font-mono">CLIENT-202-00</p>
+                                <div className="text-left overflow-hidden">
+                                    <p className="text-sm sm:text-base font-bold font-['DM_Sans'] truncate">Ajinora Education Consulting</p>
+
                                 </div>
                             </div>
 
@@ -504,66 +504,62 @@ const ClientFormaji = () => {
                                 whileHover={{ scale: 1.02, translateY: -2 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={() => setIsLandingVisible(false)}
-                                className="group relative inline-flex items-center gap-4 bg-red-600 text-white px-12 py-5 rounded-full font-bold uppercase tracking-widest text-xs shadow-[0_10px_40px_rgba(232,19,42,0.35)] hover:shadow-[0_15px_50px_rgba(232,19,42,0.5)] transition-all overflow-hidden"
+                                className="group relative inline-flex items-center gap-4 bg-red-600 text-white px-10 sm:px-12 py-4 sm:py-5 rounded-full font-bold uppercase tracking-widest text-xs shadow-2xl hover:shadow-red-600/40 transition-all overflow-hidden"
                             >
                                 Begin Onboarding
                                 <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                             </motion.button>
 
-                            <div className="flex items-center justify-center gap-6 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-8">
+                            <div className="flex items-center justify-center gap-4 sm:gap-6 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
                                 <span>API Driven</span>
                                 <div className="w-1 h-1 rounded-full bg-red-600" />
-                                <span>Data First</span>
+                                <span>AdTech Intelligence</span>
                                 <div className="w-1 h-1 rounded-full bg-red-600" />
-                                <span>Strategy Lab</span>
+                                <span>Niche Marketing</span>
                             </div>
 
-                               <div className="mt-10 pt-8 border-t border-gray-200">
-      <div className="flex items-center gap-6 flex-wrap">
-        {items.map((item, index) => (
-          <div key={index} className="flex items-center">
-            
-            {/* Item */}
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold tracking-wide text-black leading-none">
-                {item.value}
-              </span>
-              <span className="text-[10px] uppercase tracking-wider text-gray-400 mt-1">
-                {item.label}
-              </span>
-            </div>
-
-            {/* Separator */}
-            {index !== items.length - 1 && (
-              <div className="w-px h-8 bg-gray-200 mx-6" />
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
+                            <div className="pt-4 sm:pt-8 w-full flex justify-center">
+                                <div className="flex items-center justify-center gap-x-6 sm:gap-x-12 gap-y-4 flex-wrap px-4">
+                                    {items.map((item, index) => (
+                                        <div key={index} className="flex items-center">
+                                            <div className="flex flex-col items-center sm:items-start">
+                                                <span className="text-2xl sm:text-3xl font-bold tracking-wide text-black leading-none">
+                                                    {item.value}
+                                                </span>
+                                                <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-gray-400 mt-1">
+                                                    {item.label}
+                                                </span>
+                                            </div>
+                                            {index !== items.length - 1 && (
+                                                <div className="hidden sm:block w-px h-8 bg-gray-200 mx-4 sm:mx-6" />
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            <nav className="sticky top-0 z-[150] bg-[#0A0A0A]/95 border-b border-white/5 px-6 py-4">
-                <div className="max-w-7xl mx-auto flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777127379/SB_logo_-_black_1_as6til.png" alt="SB" className="h-8 w-auto" />
-                        <div className="h-6 w-px bg-white/10" />
-                        <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777124347/ajnorah_bapakr.png" alt="Ajinorah" className="h-6 w-auto" />
+            <nav className="sticky top-0 z-[150] bg-[#0A0A0A]/95 border-b border-white/5 px-4 sm:px-6 py-3 sm:py-4">
+                <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+                        <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777127379/SB_logo_-_black_1_as6til.png" alt="SB" className="h-6 sm:h-8 w-auto" />
+                        <div className="h-5 sm:h-6 w-px bg-white/10" />
+                        <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777124347/ajnorah_bapakr.png" alt="Ajinorah" className="h-5 sm:h-6 w-auto" />
                     </div>
 
-                    <div className="hidden md:flex items-center gap-2">
-                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Progress</span>
-                        <div className="w-48 h-1 bg-[#1A1A1A] rounded-full overflow-hidden">
+                    <div className="flex items-center gap-2 flex-1 max-w-xs justify-end">
+                        <span className="hidden xs:block text-[9px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-widest shrink-0">Progress</span>
+                        <div className="flex-1 h-1 bg-[#1A1A1A] rounded-full overflow-hidden">
                             <motion.div
                                 className="h-full bg-red-600"
                                 initial={{ width: 0 }}
                                 animate={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
                             />
                         </div>
-                        <span className="text-xs font-mono text-red-500 ml-2 font-bold">{Math.round(((currentStep + 1) / steps.length) * 100)}%</span>
+                        <span className="text-[10px] font-mono text-red-500 font-bold shrink-0">{Math.round(((currentStep + 1) / steps.length) * 100)}%</span>
                     </div>
                 </div>
             </nav>
@@ -572,40 +568,51 @@ const ClientFormaji = () => {
                 <header className="mb-8 flex justify-between items-end gap-6 flex-wrap">
                     <div className="space-y-2">
                         <div className="logo font-['Bebas_Neue'] text-2xl text-red-600 tracking-widest">Social Bureau</div>
-                        <h1 className="text-6xl md:text-8xl font-['Bebas_Neue'] leading-[0.9] text-white">
+                        <h1 className="text-4xl sm:text-5xl md:text-8xl font-['Bebas_Neue'] leading-[0.9] text-white">
                             Client<br />Intake<br /><span className="text-red-600">Form</span>
                         </h1>
                         <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">Kerala's Data-Driven API Marketing Agency</p>
                     </div>
                     <div className="text-right space-y-2">
                         <span className="bg-red-600 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded">Phase 01 — Discovery</span>
-                        <div className="text-[11px] font-mono text-gray-600">CLIENT-2025-001</div>
+
                         <div className="text-[11px] font-bold text-gray-500 uppercase">Ajinora Education Consulting</div>
                     </div>
                 </header>
 
-                <div className="flex gap-0 mb-8 border border-white/5 rounded overflow-hidden">
+                <div className="flex overflow-x-auto no-scrollbar gap-0 mb-8 border border-white/5 rounded overflow-hidden">
                     {steps.map((step, idx) => {
                         const isComplete = getStepStatus(idx);
                         return (
                             <button
                                 key={idx}
                                 onClick={() => goTo(idx)}
-                                className={`flex-1 py-2 text-center transition-all border-r border-white/5 last:border-none ${idx === currentStep
+                                className={`flex-1 min-w-[110px] sm:min-w-0 py-3 sm:py-4 text-center transition-all border-r border-white/5 last:border-none relative group ${idx === currentStep
                                     ? 'bg-red-600 text-white'
                                     : idx < currentStep
                                         ? 'bg-[#1A1A1A] text-gray-400'
                                         : 'bg-[#111] text-gray-600 hover:text-gray-400'
                                     }`}
                             >
-                                <div className="text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-1.5">
-                                    {step.name}
+                                <div className="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 px-2">
+                                    <div className={`${idx === currentStep ? 'text-white' : 'text-red-600/60'} transition-colors`}>
+                                        {step.icon}
+                                    </div>
+                                    <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest truncate">
+                                        {step.name}
+                                    </span>
                                     {isComplete && (
-                                        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}>
+                                        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-1 right-1">
                                             <CheckCircle2 size={10} className={idx === currentStep ? "text-white" : "text-green-500"} />
                                         </motion.div>
                                     )}
                                 </div>
+                                {idx === currentStep && (
+                                    <motion.div 
+                                        layoutId="activeStep"
+                                        className="absolute bottom-0 left-0 w-full h-0.5 bg-white/30"
+                                    />
+                                )}
                             </button>
                         );
                     })}
@@ -676,12 +683,12 @@ const ClientFormaji = () => {
                                     </select>
                                     {formData.companyType === 'Other' && (
                                         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="mt-2">
-                                            <input 
-                                                id="otherCompanyType" 
-                                                value={formData.otherCompanyType} 
-                                                onChange={handleInputChange} 
-                                                className="w-full bg-[#050505] border border-red-600/30 rounded px-4 py-2 text-xs text-red-500 focus:outline-none focus:border-red-600" 
-                                                placeholder="Please specify your company type..." 
+                                            <input
+                                                id="otherCompanyType"
+                                                value={formData.otherCompanyType}
+                                                onChange={handleInputChange}
+                                                className="w-full bg-[#050505] border border-red-600/30 rounded px-4 py-2 text-xs text-red-500 focus:outline-none focus:border-red-600"
+                                                placeholder="Please specify your company type..."
                                             />
                                         </motion.div>
                                     )}
@@ -795,8 +802,8 @@ const ClientFormaji = () => {
                                                 <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3">
                                                     <div className="flex flex-col gap-1">
                                                         <span className="text-[9px] text-gray-600 uppercase font-bold">Name</span>
-                                                        <input 
-                                                            value={partner.name} 
+                                                        <input
+                                                            value={partner.name}
                                                             onChange={(e) => handlePartnerChange(idx, 'name', e.target.value)}
                                                             className="bg-[#111] border border-white/5 rounded px-3 py-1.5 text-xs focus:outline-none focus:border-red-600 transition-all"
                                                             placeholder="Partner Name"
@@ -808,8 +815,8 @@ const ClientFormaji = () => {
                                                             {partner.photo && <span className="text-[8px] text-green-500 font-black">ID PHOTO SECURED</span>}
                                                         </div>
                                                         <div className="flex gap-2">
-                                                            <input 
-                                                                value={partner.role} 
+                                                            <input
+                                                                value={partner.role}
                                                                 onChange={(e) => handlePartnerChange(idx, 'role', e.target.value)}
                                                                 className="flex-1 bg-[#111] border border-white/5 rounded px-3 py-1.5 text-xs focus:outline-none focus:border-red-600 transition-all"
                                                                 placeholder="e.g. Managing Director"
@@ -889,11 +896,11 @@ const ClientFormaji = () => {
                                             {file.label}
                                             {formData.uploadedFiles[file.id]?.length > 0 && <CheckCircle2 size={12} className="text-green-500" />}
                                         </label>
-                                        <div className={`relative group overflow-hidden border border-dashed rounded bg-[#0d0d0d] p-6 text-center transition-all ${formData.uploadedFiles[file.id]?.length > 0 
-                                            ? 'border-green-600/50 bg-green-600/10 shadow-[inset_0_0_20px_rgba(34,197,94,0.05)]' 
+                                        <div className={`relative group overflow-hidden border border-dashed rounded bg-[#0d0d0d] p-6 text-center transition-all ${formData.uploadedFiles[file.id]?.length > 0
+                                            ? 'border-green-600/50 bg-green-600/10 shadow-[inset_0_0_20px_rgba(34,197,94,0.05)]'
                                             : 'border-white/10 hover:border-red-600 hover:bg-[#150000]'}`}>
                                             <input type="file" multiple={file.id === 'partner_port' || file.id === 'other_docs'} onChange={(e) => handleFileUpload(file.id, e)} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
-                                            
+
                                             {formData.uploadedFiles[file.id] && formData.uploadedFiles[file.id].length > 0 ? (
                                                 <>
                                                     <div className="absolute top-2 right-2 flex items-center gap-1.5 bg-green-600 px-2 py-0.5 rounded-full shadow-lg">
@@ -913,7 +920,7 @@ const ClientFormaji = () => {
                                                     <div className="text-[13px] font-bold text-gray-300 uppercase tracking-widest">Upload {file.label}</div>
                                                 </>
                                             )}
-                                            
+
                                             <div className="text-[10px] text-gray-600 mt-1 uppercase tracking-wider">{file.desc}</div>
                                             {formData.uploadedFiles[file.id] && (
                                                 <div className="mt-4 flex flex-wrap justify-center gap-2">
@@ -1479,7 +1486,7 @@ const ClientFormaji = () => {
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Source (How did you hear about us?)</label>
                                     <select id="referralSource" value={formData.referralSource} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center]">
-                                        <option value="">Select</option>
+                                        <option value="">Select Source</option>
                                         <option>Referral from Client</option>
                                         <option>Google Search</option>
                                         <option>Instagram / Social Media</option>
@@ -1490,26 +1497,14 @@ const ClientFormaji = () => {
                                     </select>
                                 </div>
                                 <div className="flex flex-col gap-2">
-                                    <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Referred By (name, if applicable)</label>
-                                    <select id="referralSource" value={formData.referralSource} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center]">
-                                        <option value="">Select source</option>
-                                        <option>Social Media</option>
-                                        <option>Google Search</option>
-                                        <option>Word of Mouth / Referral</option>
-                                        <option>Previous Client</option>
-                                        <option>Other</option>
-                                    </select>
-                                    {formData.referralSource === 'Other' && (
-                                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="mt-2">
-                                            <input 
-                                                id="referredBy" 
-                                                value={formData.referredBy} 
-                                                onChange={handleInputChange} 
-                                                className="w-full bg-[#050505] border border-red-600/30 rounded px-4 py-2 text-xs text-red-500 focus:outline-none focus:border-red-600" 
-                                                placeholder="Please specify how you heard about us..." 
-                                            />
-                                        </motion.div>
-                                    )}
+                                    <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Referred By (name / details)</label>
+                                    <input
+                                        id="referredBy"
+                                        value={formData.referredBy}
+                                        onChange={handleInputChange}
+                                        className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all"
+                                        placeholder="Name of the person or specific event"
+                                    />
                                 </div>
                             </div>
                         </div>
