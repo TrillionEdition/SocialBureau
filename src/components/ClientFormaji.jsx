@@ -537,11 +537,11 @@ const ClientFormaji = () => {
 
             <div className="max-w-4xl mx-auto px-6 pt-8 pb-16">
                 <header className="mb-10 pb-5 border-b border-white/5">
-                    <div className="flex items-center justify-between gap-4 mb-8">
+                    <div className="flex items-center justify-between gap-4 mb-10">
                         <img src='https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_sticker-02_1_k3ulwd.png'
-                            className='h-20 sm:h-26 w-auto' alt="SocialBureau" />
-                        <div className="sm:hidden text-4xl font-black text-white/10 tracking-tighter leading-none select-none">
-                            {(currentStep + 1).toString().padStart(2, '0')}/{(steps.length).toString().padStart(2, '0')}
+                            className='h-26 sm:h-28 w-auto' alt="SocialBureau" />
+                        <div className="sm:hidden text-7xl font-black text-white/10 tracking-[-0.02em] leading-none select-none font-['Bebas_Neue'] mr-8">
+                            {(currentStep + 1).toString().padStart(2, '0')}
                         </div>
                     </div>
 
@@ -559,8 +559,8 @@ const ClientFormaji = () => {
                         </div>
 
                         <div className="flex flex-col items-end justify-between">
-                            <div className="hidden sm:block text-7xl font-black text-white/5 tracking-tighter leading-none select-none">
-                                {(currentStep + 1).toString().padStart(2, '0')}/{(steps.length).toString().padStart(2, '0')}
+                            <div className="hidden sm:block text-[10rem] font-black text-white/10 tracking-[-0.05em] leading-none select-none font-['Bebas_Neue'] mr-16">
+                                {(currentStep + 1).toString().padStart(2, '0')}
                             </div>
                             <div className="mt-auto">
                                 <span className="bg-red-600 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded shadow-lg shadow-red-600/20">
@@ -1343,9 +1343,9 @@ const ClientFormaji = () => {
                                         'Social Media Management', 'Meta Ads', 'Google Ads / SEO', 'YouTube Marketing',
                                         'Content Creation', 'Influencer Marketing', 'Website Design / Redesign',
                                         'Brand Identity / Rebranding', 'WhatsApp Marketing', 'CRM & Lead Automation',
-                                        'Email Marketing', 'Legal Digital Asset Recovery', 'Analytics & Reporting', 
-                                        'HR & Recruitment Services','API Marketing','Web Development','Niche Marketing',
-                                        'Content Marketing','Performance Marketing','AdTech Marketing','Legal Consulting',
+                                        'Email Marketing', 'Legal Digital Asset Recovery', 'Analytics & Reporting',
+                                        'HR & Recruitment Services', 'API Marketing', 'Web Development', 'Niche Marketing',
+                                        'Content Marketing', 'Performance Marketing', 'AdTech Marketing', 'Legal Consulting',
                                     ].map(item => {
                                         const selected = formData.servicesNeeded.find(s => s.label === item);
                                         return (
