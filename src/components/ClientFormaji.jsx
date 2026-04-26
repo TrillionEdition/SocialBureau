@@ -459,7 +459,7 @@ const ClientFormaji = () => {
                     <motion.div
                         exit={{ opacity: 0, scale: 1.05 }}
                         transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-                        className="fixed inset-0 z-[200] bg-white flex flex-col items-center justify-center text-black p-6 overflow-hidden"
+                        className="fixed inset-0 z-[200] bg-white flex flex-col items-center justify-center text-black p-4 sm:p-8 overflow-hidden"
                     >
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-gradient-radial from-red-600/5 to-transparent blur-3xl" />
 
@@ -471,10 +471,10 @@ const ClientFormaji = () => {
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="text-center relative z-10 max-w-full w-full flex flex-col items-center justify-center space-y-4 md:space-y-8"
+                            className="text-center relative z-10 max-w-full w-full flex flex-col items-center justify-center space-y-4 md:space-y-6 pt-4 sm:pt-6"
                         >
                             <div className="flex justify-center">
-                                <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_LOGO_BLACK_PNG_iev5qz.png" alt="SocialBureau" className="h-40 sm:h-40 w-auto" />
+                                <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_LOGO_BLACK_PNG_iev5qz.png" alt="SocialBureau" className="h-16 sm:h-24 md:h-32 w-auto" />
                             </div>
 
                             <div className="flex items-center gap-4 justify-center">
@@ -483,7 +483,7 @@ const ClientFormaji = () => {
                                 <div className="h-px w-8 bg-red-600/40" />
                             </div>
 
-                            <h1 className="text-[16vw] sm:text-[14vw] md:text-[10rem] font-['Bebas_Neue'] tracking-tight leading-[0.8] w-full px-4 break-words">
+                            <h1 className="text-[12vw] sm:text-[10vw] md:text-[7rem] font-['Bebas_Neue'] tracking-tight leading-[0.8] w-full px-4 break-words">
                                 Client <span className="text-red-600">Intake</span>
                             </h1>
 
@@ -510,7 +510,7 @@ const ClientFormaji = () => {
                                 <span>strategy Lab</span>
                             </div>
 
-                            <div className="pt-4 sm:pt-8 w-full flex justify-center">
+                            <div className="pt-2 sm:pt-4 w-full flex justify-center">
                                 <div className="flex items-center justify-center gap-x-6 sm:gap-x-12 gap-y-4 flex-wrap px-4">
                                     {items.map((item, index) => (
                                         <div key={index} className={`items-center ${item.label === 'Discovery Cost' ? 'hidden sm:flex' : 'flex'}`}>

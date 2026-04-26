@@ -5,20 +5,8 @@ import TeamSection from '../components/TeamSection'
 import Testimonials from '../components/Testimonials'
 import Seo from '../components/Seo'
 import { useQuery } from '@tanstack/react-query'
-import { teamService } from '@/services/teamService'
+import { teamService } from '../../services/teamService'
 
-/**
- * OurTeam page
- *
- * Data flow:
- *   React Query (client memory, stale 24 h)
- *     → sessionStorage (browser tab cache, 24 h TTL)
- *       → Backend GET /team (Redis-cached, 24 h TTL)
- *
- * If the API call fails the page falls back to the static
- * data already baked into TeamSection so visitors never see
- * a broken page.
- */
 export const OurTeam = () => {
   const { data: teamData, isLoading, isError } = useQuery({
     queryKey: ['team'],
@@ -51,5 +39,3 @@ export const OurTeam = () => {
     </div>
   )
 }
-
-
