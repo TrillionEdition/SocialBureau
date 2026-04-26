@@ -268,7 +268,7 @@ export default function AjnoraDashboard() {
                     <div className="col-span-2 space-y-4 pt-4 border-t border-white/5">
                         <p className="text-[9px] text-white/20 uppercase font-black tracking-widest">Legal Compliance Status</p>
                         <div className="flex flex-wrap gap-2">
-                           {(selectedEntry.legalChecks || []).map((check, i) => (
+                           {(Array.isArray(selectedEntry.legalChecks) ? selectedEntry.legalChecks : []).map((check, i) => (
                              <span key={i} className="px-3 py-1 bg-green-600/10 border border-green-600/20 text-green-500 text-[10px] font-bold rounded-full flex items-center gap-1.5">
                                <CheckCircle2 size={10} /> {check}
                              </span>
@@ -292,7 +292,7 @@ export default function AjnoraDashboard() {
                     <div className="col-span-2 pt-4 border-t border-white/5">
                         <p className="text-[9px] text-white/20 uppercase font-black tracking-widest mb-2">Directors / Partners</p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {(selectedEntry.partnersList || []).map((p, i) => (
+                            {(Array.isArray(selectedEntry.partnersList) ? selectedEntry.partnersList : []).map((p, i) => (
                                 <div key={i} className="bg-black/40 p-4 rounded-xl border border-white/5 flex items-center gap-4">
                                     <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex-shrink-0 flex items-center justify-center overflow-hidden">
                                         {p.photo?.url ? (
@@ -329,7 +329,7 @@ export default function AjnoraDashboard() {
                     <div className="space-y-4">
                        <p className="text-[9px] text-white/20 uppercase font-black tracking-widest">Market Focus Areas</p>
                        <div className="flex flex-wrap gap-2">
-                          {(selectedEntry.serviceCategories || []).map((cat, i) => (
+                          {(Array.isArray(selectedEntry.serviceCategories) ? selectedEntry.serviceCategories : []).map((cat, i) => (
                             <span key={i} className="px-3 py-1 bg-red-600/10 text-red-500 border border-red-600/20 text-[10px] font-bold rounded">{cat}</span>
                           ))}
                        </div>
@@ -388,7 +388,7 @@ export default function AjnoraDashboard() {
                     <div className="space-y-4">
                        <p className="text-[9px] text-white/20 uppercase font-black tracking-widest">Lead Genesis — Sources & Links</p>
                        <div className="space-y-3">
-                          {(selectedEntry.leadSources || []).map((source, i) => (
+                          {(Array.isArray(selectedEntry.leadSources) ? selectedEntry.leadSources : []).map((source, i) => (
                             <div key={i} className="flex items-center justify-between bg-black/40 p-4 rounded-xl border border-white/5">
                                <div className="flex items-center gap-3">
                                   <div className="w-2 h-2 rounded-full bg-red-600" />
@@ -615,7 +615,7 @@ const DataList = ({ label, items }) => (
   <div>
     <p className="text-[9px] text-white/20 uppercase font-black tracking-widest mb-3">{label}</p>
     <div className="flex flex-wrap gap-2">
-      {(items || []).map((item, i) => (
+      {(Array.isArray(items) ? items : []).map((item, i) => (
         <span key={i} className="px-2 py-1 bg-white/5 text-[10px] font-bold rounded text-white/40 border border-white/5">{item}</span>
       ))}
       {(!items || items.length === 0) && <span className="text-xs text-white/20">—</span>}

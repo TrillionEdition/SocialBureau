@@ -143,7 +143,6 @@ const ClientFormaji = () => {
         anythingElse: '',
         referralSource: '',
         referredBy: '',
-        partnersList: [{ name: '', role: '' }]
     });
 
     const handleListChange = (field, index, value) => {
@@ -205,24 +204,23 @@ const ClientFormaji = () => {
         const file = e.target.files[0];
         if (!file) return;
 
-        setStatus({ msg: `Uploading ${file.name} to secure storage...`, type: 'loading' });
-
-        try {
-            const url = await uploadToCloudinary(file);
-            if (url) {
-                setFormData(prev => {
-                    const newList = [...prev.partnersList];
-                    newList[index] = { 
-                        ...newList[index], 
-                        photo: { name: file.name, url, uploadedAt: new Date().toISOString() } 
-                    };
-                    return { ...prev, partnersList: newList };
-                });
-                setStatus({ msg: 'Partner photo secured.', type: 'success' });
-            }
-        } catch (err) {
-            setStatus({ msg: 'Partner photo upload failed.', type: 'error' });
-        }
+        // Store File object and preview URL instead of manual frontend upload
+        const previewUrl = URL.createObjectURL(file);
+        
+        setFormData(prev => {
+            const newList = [...prev.partnersList];
+            newList[index] = { 
+                ...newList[index], 
+                photo: { 
+                    name: file.name, 
+                    url: previewUrl, 
+                    file: file, // Store the raw File object for backend transmission
+                    uploadedAt: new Date().toISOString() 
+                } 
+            };
+            return { ...prev, partnersList: newList };
+        });
+        setStatus({ msg: 'Partner photo prepared for secure transmission.', type: 'success' });
     };
 
     const handleLinkCheckboxChange = (group, value) => {
@@ -267,58 +265,30 @@ const ClientFormaji = () => {
         }));
     };
 
-    const uploadToCloudinary = async (file) => {
-        const data = new FormData();
-        data.append('file', file);
-        data.append('upload_preset', 'social_bureau');
-        data.append('cloud_name', 'dtwcgfmar');
-
-        try {
-            const res = await fetch('https://api.cloudinary.com/v1_1/dtwcgfmar/image/upload', {
-                method: 'POST',
-                body: data
-            });
-            const result = await res.json();
-            return result.secure_url;
-        } catch (err) {
-            console.error('Upload failed', err);
-            return null;
-        }
-    };
+    // Frontend Cloudinary upload removed - using secure backend upload
 
     const handleFileUpload = async (id, e) => {
         const files = Array.from(e.target.files);
         if (!files.length) return;
         
-        setStatus({ msg: `Uploading ${files.length} asset(s) to secure storage...`, type: 'loading' });
+        // Prepare files for backend transmission
+        const preparedFiles = files.map(file => ({
+            name: file.name,
+            url: URL.createObjectURL(file), // Local preview URL
+            file: file, // Raw File object
+            type: file.type,
+            size: (file.size / 1024).toFixed(2) + ' KB',
+            uploadedAt: new Date().toISOString()
+        }));
 
-        try {
-            const urls = [];
-            for (const file of files) {
-                const url = await uploadToCloudinary(file);
-                if (url) {
-                    urls.push({ 
-                        name: file.name, 
-                        url, 
-                        type: file.type,
-                        size: (file.size / 1024).toFixed(2) + ' KB',
-                        uploadedAt: new Date().toISOString()
-                    });
-                }
+        setFormData(prev => ({
+            ...prev,
+            uploadedFiles: {
+                ...prev.uploadedFiles,
+                [id]: [...(prev.uploadedFiles[id] || []), ...preparedFiles]
             }
-
-            setFormData(prev => ({
-                ...prev,
-                uploadedFiles: {
-                    ...prev.uploadedFiles,
-                    [id]: [...(prev.uploadedFiles[id] || []), ...urls]
-                }
-            }));
-            setStatus({ msg: 'Cloudinary link secured and mapped to intelligence dossier.', type: 'success' });
-        } catch (err) {
-            console.error('File processing error:', err);
-            setStatus({ msg: 'Asset transmission failed. Please check connection.', type: 'error' });
-        }
+        }));
+        setStatus({ msg: 'Assets prepared for secure transmission.', type: 'success' });
     };
 
     const getStepStatus = (idx) => {

@@ -6,7 +6,47 @@ const ajnoraService = {
   // Create new entry
   createEntry: async (data) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/ajnora`, data);
+      let payload = data;
+      let headers = {};
+
+      // If data is not already FormData, check if we need to convert it
+      // In this case, we expect 'data' to be the object from ClientFormaji.jsx
+      const formData = new FormData();
+      
+      Object.keys(data).forEach(key => {
+        if (key === 'uploadedFiles') {
+          // data.uploadedFiles is a map of category: [file objects or {file: File}]
+          Object.keys(data[key]).forEach(category => {
+            const files = data[key][category];
+            files.forEach(fileItem => {
+              const file = fileItem.file || fileItem;
+              if (file instanceof File) {
+                formData.append(category, file);
+              }
+            });
+          });
+        } else if (key === 'partnersList') {
+          // Send partner photos separately and stringify the rest of the list
+          const list = data[key];
+          list.forEach((partner, index) => {
+            if (partner.photo && partner.photo.file instanceof File) {
+              formData.append(`partner_photo_${index}`, partner.photo.file);
+            }
+          });
+          formData.append(key, JSON.stringify(list));
+        } else if (data[key] instanceof File) {
+          formData.append(key, data[key]);
+        } else if (typeof data[key] === 'object' && data[key] !== null) {
+          formData.append(key, JSON.stringify(data[key]));
+        } else {
+          formData.append(key, data[key]);
+        }
+      });
+
+      payload = formData;
+      headers = { 'Content-Type': 'multipart/form-data' };
+
+      const response = await axios.post(`${API_BASE_URL}/ajnora`, payload, { headers });
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;

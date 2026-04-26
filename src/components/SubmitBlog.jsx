@@ -15,24 +15,7 @@ export default function SubmitBlog() {
   const [toast, setToast] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  const uploadToCloudinary = async (file) => {
-    const data = new FormData();
-    data.append('file', file);
-    data.append('upload_preset', 'social_bureau');
-    data.append('cloud_name', 'dtwcgfmar');
-
-    try {
-      const res = await fetch('https://api.cloudinary.com/v1_1/dtwcgfmar/image/upload', {
-        method: 'POST',
-        body: data
-      });
-      const result = await res.json();
-      return result.secure_url;
-    } catch (err) {
-      console.error('Upload failed', err);
-      return null;
-    }
-  };
+  // Frontend upload removed in favor of secure backend upload via multipart/form-data
 
   useEffect(() => {
     const userData = getUserData();
@@ -84,11 +67,13 @@ export default function SubmitBlog() {
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ["blogs"] });
       setToast({ type: "success", message: "Blog submitted successfully!" });
+      setIsUploading(false);
       setTimeout(() => {
         navigate(`/blogs/${response.data.slug}`);
       }, 1500);
     },
     onError: (error) => {
+      setIsUploading(false);
       setToast({ type: "error", message: error.response?.data?.message || 'Failed to submit blog' });
     },
   });
@@ -160,14 +145,9 @@ export default function SubmitBlog() {
     }
 
     setIsUploading(true);
-    setToast({ type: "loading", message: "Securing image link..." });
+    setToast({ type: "loading", message: "Publishing blog and securing assets..." });
 
     try {
-        const imageUrl = await uploadToCloudinary(imageFile);
-        if (!imageUrl) {
-            throw new Error("Failed to secure image link from Cloudinary");
-        }
-
         const contentSection = [{
             type: 'text',
             text: content,
@@ -176,7 +156,7 @@ export default function SubmitBlog() {
 
         const blogData = {
             ...formData,
-            image: imageUrl, // Send URL string
+            image: imageFile, // Pass File object directly to backend API
             content: contentSection,
             keywords,
             childBlogs: selectedChildBlogs,
@@ -186,7 +166,6 @@ export default function SubmitBlog() {
         createMutation.mutate(blogData);
     } catch (err) {
         setToast({ type: "error", message: err.message });
-    } finally {
         setIsUploading(false);
     }
   };
