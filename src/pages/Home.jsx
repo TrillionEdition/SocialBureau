@@ -383,6 +383,14 @@ export const Home = () => {
         canonicalUrl="https://www.socialbureau.in"
       />
       <SchemaMarkup data={homepageSchemas} />
+      <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
+  <img
+    src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777292371/Session_3_sowgsk.jpg"
+    alt="HR Session Poster"
+    className="block w-full h-auto object-cover"
+  />
+  </a>
+</section>
 {/* <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
   <video
   className="block w-full h-auto object-cover"
