@@ -383,15 +383,15 @@ export const Home = () => {
         canonicalUrl="https://www.socialbureau.in"
       />
       <SchemaMarkup data={homepageSchemas} />
-      <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
+      {/* <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
   <img
     src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777292371/Session_3_sowgsk.jpg"
     alt="HR Session Poster"
     className="block w-full h-auto object-cover"
   />
   </a>
-</section>
-{/* <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
+</section> */}
+<section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
   <video
   className="block w-full h-auto object-cover"
   controls
@@ -399,11 +399,11 @@ export const Home = () => {
   loop
   muted
 >
-  <source src="https://res.cloudinary.com/dtwcgfmar/video/upload/v1777006357/Promo_Video_cib4iq.mp4" type="video/mp4" />
+  <source src="https://res.cloudinary.com/dtwcgfmar/video/upload/v1777369437/3141211-uhd_3840_2160_25fps_1_hpggvl.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
   </a>
-</section> */}
+</section>
       {/* --- HERO SECTION --- */}
       <section className="min-h-screen flex flex-col justify-center pt-2 sm:pt-20 relative overflow-hidden">
         {/* Hero Background Gradient Mesh */}
