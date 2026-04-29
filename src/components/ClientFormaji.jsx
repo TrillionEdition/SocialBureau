@@ -275,7 +275,7 @@ const ClientFormaji = () => {
         // Prepare files for backend transmission
         const preparedFiles = files.map(file => ({
             name: file.name,
-            url: URL.createObjectURL(file), // Local preview URL
+            url: URL.createObjectURL(file), 
             file: file, // Raw File object
             type: file.type,
             size: (file.size / 1024).toFixed(2) + ' KB',
