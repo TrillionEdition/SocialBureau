@@ -107,12 +107,12 @@ const StudentPortfolioPopup = () => {
       {/* Floating Trigger Card */}
       {!isOpen && (
         <motion.div
-          initial={{ x: 100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={handleTriggerClick}
-          className="fixed bottom-24 right-6 z-[999] cursor-pointer group"
+          className="fixed bottom-24 right-6 z-[10001] cursor-pointer group"
         >
           <div className="relative overflow-hidden bg-[#0A0A0A]/80 backdrop-blur-xl border border-white/20 p-4 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center gap-4 border-l-4 border-l-[#E8001A]">
             <div className="absolute inset-0 bg-gradient-to-r from-[#E8001A]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
