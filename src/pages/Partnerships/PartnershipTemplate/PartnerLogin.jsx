@@ -126,7 +126,7 @@ const PartnerLogin = () => {
           <p className="text-zinc-500 font-medium text-xs md:text-sm">Sign in to continue your portfolio</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4 bg-zinc-900/50 backdrop-blur-xl p-6 md:p-8 rounded-[24px] md:rounded-[32px] border border-zinc-800 shadow-2xl overflow-y-auto max-h-[60vh] md:max-h-[70vh] custom-scrollbar">
+        <form onSubmit={handleSubmit} className="space-y-2 md:space-y-3 bg-zinc-900/50 backdrop-blur-xl p-5 md:p-8 rounded-[24px] md:rounded-[32px] border border-zinc-800 shadow-2xl">
           {error && (
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
@@ -151,32 +151,32 @@ const PartnerLogin = () => {
 
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-black text-zinc-500 uppercase tracking-[0.2em] mb-2 ml-1">Email Address</label>
+              <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-1 ml-1">Email Address</label>
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
-                <input 
-                  type="email" 
-                  name="email"
-                  placeholder="john@example.com"
-                  className="w-full bg-black border border-zinc-800 rounded-2xl pl-12 pr-4 py-4 text-white placeholder:text-zinc-700 focus:outline-none focus:border-lime-400/50 transition-all font-medium"
-                  onChange={handleChange}
-                  required
-                />
+                  <input 
+                    type="email" 
+                    name="email"
+                    placeholder="john@example.com"
+                    className="w-full bg-black border border-zinc-800 rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-zinc-700 focus:outline-none focus:border-lime-400/50 transition-all font-medium text-sm"
+                    onChange={handleChange}
+                    required
+                  />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-black text-zinc-500 uppercase tracking-[0.2em] mb-2 ml-1">Password</label>
+              <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-1 ml-1">Password</label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
-                <input 
-                  type={showPassword ? "text" : "password"} 
-                  name="password"
-                  placeholder="••••••••"
-                  className="w-full bg-black border border-zinc-800 rounded-2xl pl-12 pr-12 py-4 text-white placeholder:text-zinc-700 focus:outline-none focus:border-lime-400/50 transition-all font-medium"
-                  onChange={handleChange}
-                  required
-                />
+                  <input 
+                    type={showPassword ? "text" : "password"} 
+                    name="password"
+                    placeholder="••••••••"
+                    className="w-full bg-black border border-zinc-800 rounded-xl pl-12 pr-12 py-3 text-white placeholder:text-zinc-700 focus:outline-none focus:border-lime-400/50 transition-all font-medium text-sm"
+                    onChange={handleChange}
+                    required
+                  />
                 <button 
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
@@ -197,7 +197,7 @@ const PartnerLogin = () => {
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full bg-lime-400 text-black font-black py-4 rounded-2xl mt-6 hover:bg-white hover:scale-[1.02] transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:hover:scale-100 shadow-[0_0_30px_rgba(163,230,53,0.2)]"
+            className="w-full bg-lime-400 text-black font-black py-3 rounded-xl mt-4 hover:bg-white hover:scale-[1.02] transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:hover:scale-100 shadow-[0_0_30px_rgba(163,230,53,0.2)]"
           >
             {loading ? (
               <Loader2 className="animate-spin" />
@@ -209,7 +209,7 @@ const PartnerLogin = () => {
             )}
           </button>
 
-          <p className="text-center text-zinc-500 text-sm mt-6">
+          <p className="text-center text-zinc-500 text-[12px] mt-4">
             New partner?{" "}
             <Link to="/partners/register" className="text-lime-400 font-bold hover:text-white transition-colors">
               Create Account
