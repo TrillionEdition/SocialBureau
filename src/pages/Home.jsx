@@ -394,7 +394,6 @@ export const Home = () => {
 <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
   <video
   className="block w-full h-auto object-cover"
-  controls
   autoPlay
   loop
   muted
