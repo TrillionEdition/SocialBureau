@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "@/utils/urls";
 import LoadingSpinner from "../../../components/LoadingSpinner";
@@ -23,6 +23,65 @@ const DynamicPartnershipPage = () => {
   const [editableData, setEditableData] = useState(null);
   const [activeTab, setActiveTab] = useState("styles");
   const [saving, setSaving] = useState(false);
+  const scrollTimeout = useRef(null);
+
+  const sectionMapping = {
+    // Styles
+    heroBg: 'hero-section',
+    heroNameFontSize: 'hero-section',
+    heroSubtitleFontSize: 'hero-section',
+    heroFont: 'hero-section',
+    heroImageScale: 'hero-section',
+    
+    bioBg: 'narrative-section',
+    bioFontSize: 'narrative-section',
+    bioFont: 'narrative-section',
+    
+    projectsBg: 'projects-section',
+    projectTitleFontSize: 'projects-section',
+    projectBodyFontSize: 'projects-section',
+    sectionTitleFontSize: 'projects-section',
+    projectImageScale: 'projects-section',
+    
+    servicesBg: 'expertise-section',
+    serviceTitleFontSize: 'expertise-section',
+    serviceBodyFontSize: 'expertise-section',
+    
+    testimonialsBg: 'testimonials-section',
+    testimonialQuoteFontSize: 'testimonials-section',
+    testimonialAuthorFontSize: 'testimonials-section',
+    testimonialFont: 'testimonials-section',
+    
+    footerBg: 'footer-section',
+    footerTitleFontSize: 'footer-section',
+    footerFont: 'footer-section',
+    moduleFont: 'projects-section',
+    cardFont: 'expertise-section',
+
+    // Content
+    name: 'hero-section',
+    subtitle: 'hero-section',
+    image: 'hero-section',
+    bio: 'narrative-section',
+    projects: 'projects-section',
+    services: 'expertise-section',
+    testimonials: 'testimonials-section',
+    socialLinks: 'footer-section',
+  };
+
+  const scrollToSection = (sectionId) => {
+    if (!sectionId) return;
+    
+    // Use a small timeout to ensure DOM is ready or to debounce
+    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+    
+    scrollTimeout.current = setTimeout(() => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  };
 
   useEffect(() => {
     const fetchPartner = async () => {
@@ -264,6 +323,7 @@ const DynamicPartnershipPage = () => {
                               type="color" 
                               value={editableData.details?.styles?.primaryColor || "#E8001A"}
                               onChange={(e) => handleStyleChange("primaryColor", e.target.value)}
+                              onFocus={() => scrollToSection('hero-section')}
                               className="w-10 h-10 rounded-lg bg-transparent border-none cursor-pointer"
                             />
                             <span className="text-xs font-mono uppercase text-zinc-400">
@@ -278,6 +338,7 @@ const DynamicPartnershipPage = () => {
                               type="color" 
                               value={editableData.details?.styles?.backgroundColor || "#0A0A0A"}
                               onChange={(e) => handleStyleChange("backgroundColor", e.target.value)}
+                              onFocus={() => scrollToSection('hero-section')}
                               className="w-10 h-10 rounded-lg bg-transparent border-none cursor-pointer"
                             />
                             <span className="text-xs font-mono uppercase text-zinc-400">
@@ -285,6 +346,67 @@ const DynamicPartnershipPage = () => {
                             </span>
                           </div>
                         </div>
+                      </div>
+
+                      <div className="space-y-6 bg-zinc-900/30 p-5 rounded-2xl border border-zinc-800/50">
+                        <div className="grid grid-cols-2 gap-8">
+                          <div className="space-y-3">
+                            <div className="flex justify-between items-center">
+                              <span className="text-[10px] font-bold text-zinc-400 uppercase">Film Grain (Noise)</span>
+                              <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.noiseOpacity) || 0) * 100)}%</span>
+                            </div>
+                            <input 
+                              type="range" min="0" max="0.2" step="0.01"
+                              value={parseFloat(editableData.details?.styles?.noiseOpacity) || 0}
+                              onChange={(e) => handleStyleChange("noiseOpacity", e.target.value)}
+                              onFocus={() => scrollToSection('hero-section')}
+                              className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
+                            />
+                          </div>
+                          <div className="space-y-3">
+                            <div className="flex justify-between items-center">
+                              <span className="text-[10px] font-bold text-zinc-400 uppercase">Grid Intensity</span>
+                              <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.gridOpacity) || 0) * 100)}%</span>
+                            </div>
+                            <input 
+                              type="range" min="0" max="1" step="0.05"
+                              value={parseFloat(editableData.details?.styles?.gridOpacity) || 0}
+                              onChange={(e) => handleStyleChange("gridOpacity", e.target.value)}
+                              onFocus={() => scrollToSection('hero-section')}
+                              className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-6">
+                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Section Aesthetics (Backgrounds)</label>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 bg-zinc-900/30 p-5 rounded-2xl border border-zinc-800/50">
+                        {[
+                          { id: "heroBg", label: "Hero" },
+                          { id: "bioBg", label: "Narrative" },
+                          { id: "projectsBg", label: "Portfolio" },
+                          { id: "servicesBg", label: "Expertise" },
+                          { id: "testimonialsBg", label: "Voices" },
+                          { id: "footerBg", label: "Final Call" },
+                        ].map((sec) => (
+                          <div key={sec.id} className="space-y-2">
+                            <span className="text-[9px] font-bold text-zinc-500 block uppercase">{sec.label}</span>
+                            <div className="flex items-center gap-2 bg-zinc-900 p-1.5 rounded-lg border border-zinc-800">
+                              <input 
+                                type="color" 
+                                value={editableData.details?.styles?.[sec.id] || editableData.details?.styles?.backgroundColor || "#0A0A0A"}
+                                onChange={(e) => handleStyleChange(sec.id, e.target.value)}
+                                onFocus={() => scrollToSection(sec.id === 'heroBg' ? 'hero-section' : sec.id === 'bioBg' ? 'narrative-section' : sec.id === 'projectsBg' ? 'projects-section' : sec.id === 'servicesBg' ? 'expertise-section' : sec.id === 'testimonialsBg' ? 'testimonials-section' : 'footer-section')}
+                                className="w-6 h-6 rounded bg-transparent border-none cursor-pointer"
+                              />
+                              <span className="text-[9px] font-mono uppercase text-zinc-400">
+                                {(editableData.details?.styles?.[sec.id] || editableData.details?.styles?.backgroundColor || "#0A0A0A").toUpperCase()}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
@@ -302,6 +424,7 @@ const DynamicPartnershipPage = () => {
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.heroNameFontSize) || 1}
                               onChange={(e) => handleStyleChange("heroNameFontSize", e.target.value)}
+                              onFocus={() => scrollToSection('hero-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -314,6 +437,7 @@ const DynamicPartnershipPage = () => {
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.heroSubtitleFontSize) || 1}
                               onChange={(e) => handleStyleChange("heroSubtitleFontSize", e.target.value)}
+                              onFocus={() => scrollToSection('hero-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -323,7 +447,10 @@ const DynamicPartnershipPage = () => {
                               {["Inter, sans-serif", "'Outfit', sans-serif", "'Space Grotesk', sans-serif", "'Playfair Display', serif", "monospace"].map((f) => (
                                 <button 
                                   key={f}
-                                  onClick={() => handleStyleChange("heroFont", f)}
+                                  onClick={() => {
+                                    handleStyleChange("heroFont", f);
+                                    scrollToSection('hero-section');
+                                  }}
                                   className={`px-3 py-1.5 rounded-lg text-[9px] font-bold border transition-all ${editableData.details?.styles?.heroFont === f ? "bg-white text-black border-white" : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500"}`}
                                   style={{ fontFamily: f }}
                                 >
@@ -348,6 +475,7 @@ const DynamicPartnershipPage = () => {
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.bioFontSize) || 1}
                               onChange={(e) => handleStyleChange("bioFontSize", e.target.value)}
+                              onFocus={() => scrollToSection('narrative-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -357,7 +485,10 @@ const DynamicPartnershipPage = () => {
                               {["Inter, sans-serif", "'Outfit', sans-serif", "'Space Grotesk', sans-serif", "'Playfair Display', serif", "monospace"].map((f) => (
                                 <button 
                                   key={f}
-                                  onClick={() => handleStyleChange("bioFont", f)}
+                                  onClick={() => {
+                                    handleStyleChange("bioFont", f);
+                                    scrollToSection('narrative-section');
+                                  }}
                                   className={`px-3 py-1.5 rounded-lg text-[9px] font-bold border transition-all ${editableData.details?.styles?.bioFont === f ? "bg-white text-black border-white" : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500"}`}
                                   style={{ fontFamily: f }}
                                 >
@@ -382,6 +513,7 @@ const DynamicPartnershipPage = () => {
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.sectionTitleFontSize) || 1}
                               onChange={(e) => handleStyleChange("sectionTitleFontSize", e.target.value)}
+                              onFocus={() => scrollToSection('projects-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -391,7 +523,10 @@ const DynamicPartnershipPage = () => {
                               {["Inter, sans-serif", "'Outfit', sans-serif", "'Space Grotesk', sans-serif", "'Playfair Display', serif", "monospace"].map((f) => (
                                 <button 
                                   key={f}
-                                  onClick={() => handleStyleChange("moduleFont", f)}
+                                  onClick={() => {
+                                    handleStyleChange("moduleFont", f);
+                                    scrollToSection('projects-section');
+                                  }}
                                   className={`px-3 py-1.5 rounded-lg text-[9px] font-bold border transition-all ${editableData.details?.styles?.moduleFont === f ? "bg-white text-black border-white" : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500"}`}
                                   style={{ fontFamily: f }}
                                 >
@@ -421,6 +556,7 @@ const DynamicPartnershipPage = () => {
                                 handleStyleChange("serviceTitleFontSize", e.target.value);
                                 handleStyleChange("projectTitleFontSize", e.target.value);
                               }}
+                              onFocus={() => scrollToSection('expertise-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -436,6 +572,7 @@ const DynamicPartnershipPage = () => {
                                 handleStyleChange("serviceBodyFontSize", e.target.value);
                                 handleStyleChange("projectBodyFontSize", e.target.value);
                               }}
+                              onFocus={() => scrollToSection('expertise-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -445,7 +582,10 @@ const DynamicPartnershipPage = () => {
                               {["Inter, sans-serif", "'Outfit', sans-serif", "'Space Grotesk', sans-serif", "'Playfair Display', serif", "monospace"].map((f) => (
                                 <button 
                                   key={f}
-                                  onClick={() => handleStyleChange("cardFont", f)}
+                                  onClick={() => {
+                                    handleStyleChange("cardFont", f);
+                                    scrollToSection('expertise-section');
+                                  }}
                                   className={`px-3 py-1.5 rounded-lg text-[9px] font-bold border transition-all ${editableData.details?.styles?.cardFont === f ? "bg-white text-black border-white" : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500"}`}
                                   style={{ fontFamily: f }}
                                 >
@@ -470,6 +610,7 @@ const DynamicPartnershipPage = () => {
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.testimonialQuoteFontSize) || 1}
                               onChange={(e) => handleStyleChange("testimonialQuoteFontSize", e.target.value)}
+                              onFocus={() => scrollToSection('testimonials-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -482,6 +623,7 @@ const DynamicPartnershipPage = () => {
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.testimonialAuthorFontSize) || 1}
                               onChange={(e) => handleStyleChange("testimonialAuthorFontSize", e.target.value)}
+                              onFocus={() => scrollToSection('testimonials-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -491,7 +633,10 @@ const DynamicPartnershipPage = () => {
                               {["Inter, sans-serif", "'Outfit', sans-serif", "'Space Grotesk', sans-serif", "'Playfair Display', serif", "monospace"].map((f) => (
                                 <button 
                                   key={f}
-                                  onClick={() => handleStyleChange("testimonialFont", f)}
+                                  onClick={() => {
+                                    handleStyleChange("testimonialFont", f);
+                                    scrollToSection('testimonials-section');
+                                  }}
                                   className={`px-3 py-1.5 rounded-lg text-[9px] font-bold border transition-all ${editableData.details?.styles?.testimonialFont === f ? "bg-white text-black border-white" : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500"}`}
                                   style={{ fontFamily: f }}
                                 >
@@ -516,6 +661,7 @@ const DynamicPartnershipPage = () => {
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.footerTitleFontSize) || 1}
                               onChange={(e) => handleStyleChange("footerTitleFontSize", e.target.value)}
+                              onFocus={() => scrollToSection('footer-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -525,7 +671,10 @@ const DynamicPartnershipPage = () => {
                               {["Inter, sans-serif", "'Outfit', sans-serif", "'Space Grotesk', sans-serif", "'Playfair Display', serif", "monospace"].map((f) => (
                                 <button 
                                   key={f}
-                                  onClick={() => handleStyleChange("footerFont", f)}
+                                  onClick={() => {
+                                    handleStyleChange("footerFont", f);
+                                    scrollToSection('footer-section');
+                                  }}
                                   className={`px-3 py-1.5 rounded-lg text-[9px] font-bold border transition-all ${editableData.details?.styles?.footerFont === f ? "bg-white text-black border-white" : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500"}`}
                                   style={{ fontFamily: f }}
                                 >
@@ -548,6 +697,7 @@ const DynamicPartnershipPage = () => {
                         type="text" 
                         value={editableData.name}
                         onChange={(e) => handleUpdate({ name: e.target.value })}
+                        onFocus={() => scrollToSection('hero-section')}
                         className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-4 text-white focus:border-[#E8001A] outline-none font-bold italic"
                       />
                     </div>
@@ -557,6 +707,7 @@ const DynamicPartnershipPage = () => {
                         type="text" 
                         value={editableData.subtitle}
                         onChange={(e) => handleUpdate({ subtitle: e.target.value })}
+                        onFocus={() => scrollToSection('hero-section')}
                         className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-4 text-white focus:border-[#E8001A] outline-none font-medium italic"
                       />
                     </div>
@@ -565,6 +716,7 @@ const DynamicPartnershipPage = () => {
                       <textarea 
                         value={editableData.details.bio}
                         onChange={(e) => handleUpdate({ details: { ...editableData.details, bio: e.target.value } })}
+                        onFocus={() => scrollToSection('narrative-section')}
                         className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-6 text-white focus:border-[#E8001A] outline-none h-48 resize-none italic font-light leading-relaxed"
                       />
                     </div>

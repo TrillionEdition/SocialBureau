@@ -17,7 +17,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import CookieConsent from "./components/CookieConsent";
 import { ToastContainer } from "react-toastify";
 import Partner1 from "./pages/Partnerships/johnsamuel";
-import GlobalCursor from "./components/GlobalCursor";
 import { Clickup } from "./pages/Clickup";
 import ClientDashboard from "./pages/ClientDashboard";
 import ApiMarketingDashboard from "./pages/ApiMarketingDashboard";
@@ -140,6 +139,11 @@ function ConditionalFooter() {
     "/partnership/cheriyan",
     "/partnership/sakilan",
     "/partnership",
+    "/partners/select-template",
+    "/partners/create-portfolio",
+    "/partners/register",
+    "/partners/login",
+    "/partners/dashboard",
     "/dashboard",
     "/user-management",
     "/analytics",
@@ -155,10 +159,11 @@ function ConditionalFooter() {
     "/candidate-profile"
   ];
 
-  const shouldHide = hideFooterRoutes.some(
-    (route) =>
-      location.pathname === route || location.pathname.startsWith(route + "/"),
-  );
+  const shouldHide = hideFooterRoutes.some((route) => {
+    const normalizedPath = location.pathname.toLowerCase().replace(/\/$/, "");
+    const normalizedRoute = route.toLowerCase().replace(/\/$/, "");
+    return normalizedPath === normalizedRoute || normalizedPath.startsWith(normalizedRoute + "/");
+  });
 
   return shouldHide ? null : <Footer />;
 }
@@ -173,6 +178,11 @@ function ConditionalNavbar() {
     "/partnership/cheriyan",
     "/partnership/sakilan",
     "/partnership",
+    "/partners/select-template",
+    "/partners/create-portfolio",
+    "/partners/register",
+    "/partners/login",
+    "/partners/dashboard",
     "/dashboard",
     "/user-management",
     "/analytics",
@@ -189,19 +199,37 @@ function ConditionalNavbar() {
     "/ajio"
   ];
 
-  const shouldHide = hideNavbarRoutes.some(
-    (route) =>
-      location.pathname === route || location.pathname.startsWith(route + "/"),
-  );
+  const shouldHide = hideNavbarRoutes.some((route) => {
+    const normalizedPath = location.pathname.toLowerCase().replace(/\/$/, "");
+    const normalizedRoute = route.toLowerCase().replace(/\/$/, "");
+    return normalizedPath === normalizedRoute || normalizedPath.startsWith(normalizedRoute + "/");
+  });
 
   return shouldHide ? null : <Navbar />;
 }
 
 function ConditionalChatbot() {
   const location = useLocation();
-  const isPartnershipPage = location.pathname.toLowerCase().startsWith("/partnership");
+  const path = location.pathname.toLowerCase();
+  
+  // Define actual partner slugs that should have the chatbot
+  const actualPartnerSlugs = [
+    "ranjit",
+    "sivaprasad",
+    "partner1",
+    "partner-1",
+    "johnsamuel",
+    "shailesh-sivan",
+    "alen-jacob",
+    "cheriyan",
+    "sakilan"
+  ];
 
-  return isPartnershipPage ? <PartnershipChatbot /> : null;
+  const isActualPartnerPage = actualPartnerSlugs.some(slug => 
+    path === `/partnership/${slug.toLowerCase()}`
+  );
+
+  return isActualPartnerPage ? <PartnershipChatbot /> : null;
 }
 
 const lenisOptions = {
@@ -217,7 +245,6 @@ const lenisOptions = {
 function App() {
   return (
     <ReactLenis root options={lenisOptions}>
-      <GlobalCursor />
       <BrowserRouter>
         <ToastContainer
           position="top-right"

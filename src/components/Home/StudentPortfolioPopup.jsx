@@ -6,29 +6,60 @@ const StudentPortfolioPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState('quiz'); // 'quiz' or 'congrats'
   const [answers, setAnswers] = useState({ q1: '', q2: '', q3: '' });
+  const [correctStatus, setCorrectStatus] = useState({ q1: false, q2: false, q3: false });
   const [error, setError] = useState('');
   const [isCompleted, setIsCompleted] = useState(false);
   const navigate = useNavigate();
+
+  const questions = [
+    {
+      id: 'q1',
+      label: '01. Capital of France?',
+      options: ['London', 'Paris', 'Berlin'],
+      answer: 'Paris'
+    },
+    {
+      id: 'q2',
+      label: '02. Capital of India?',
+      options: ['Mumbai', 'New Delhi', 'Kolkata'],
+      answer: 'New Delhi'
+    },
+    {
+      id: 'q3',
+      label: '03. The "Red Planet"?',
+      options: ['Venus', 'Mars', 'Jupiter'],
+      answer: 'Mars'
+    }
+  ];
 
   useEffect(() => {
     const hasCompleted = localStorage.getItem('student_portfolio_quiz_completed');
     if (hasCompleted) {
       setIsCompleted(true);
-    } else {
-      // Optional: auto-show after 5 seconds if not completed
-      const timer = setTimeout(() => {
-        setIsOpen(true);
-      }, 5000);
-      return () => clearTimeout(timer);
     }
   }, []);
 
   const handleClose = () => {
     setIsOpen(false);
-    // Reset to quiz step if they didn't complete it
     if (step !== 'congrats') {
       setStep('quiz');
       setAnswers({ q1: '', q2: '', q3: '' });
+      setCorrectStatus({ q1: false, q2: false, q3: false });
+      setError('');
+    }
+  };
+
+  const handleOptionSelect = (qid, option) => {
+    const question = questions.find(q => q.id === qid);
+    const isCorrect = option === question.answer;
+    
+    setAnswers(prev => ({ ...prev, [qid]: option }));
+    setCorrectStatus(prev => ({ ...prev, [qid]: isCorrect }));
+    
+    if (!isCorrect) {
+      setError(`Incorrect answer for ${question.label.split('.')[0]}. Try again!`);
+    } else {
+      // Clear error if they picked a correct one and no others are currently in error
       setError('');
     }
   };
@@ -36,35 +67,13 @@ const StudentPortfolioPopup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    const normalize = (str) => str.toLowerCase().trim().replace(/\s+/g, '');
-    
-    const checkAnswer = (input, correct) => {
-      const normalizedInput = normalize(input);
-      const normalizedCorrect = normalize(correct);
-      
-      // Basic check: exact match or contains (for multi-word answers)
-      if (normalizedInput === normalizedCorrect) return true;
-      
-      // For multi-word like New Delhi, check if both parts are present
-      if (correct.toLowerCase() === 'new delhi') {
-        return normalizedInput.includes('delhi') || normalizedInput.includes('newdelhi');
-      }
-      
-      // For single word answers, maybe check if it's very close (optional, keeping it simple for now)
-      return normalizedInput === normalizedCorrect;
-    };
-
-    const isQ1Correct = checkAnswer(answers.q1, 'paris');
-    const isQ2Correct = checkAnswer(answers.q2, 'new delhi');
-    const isQ3Correct = checkAnswer(answers.q3, 'mars');
-
-    if (isQ1Correct && isQ2Correct && isQ3Correct) {
+    if (correctStatus.q1 && correctStatus.q2 && correctStatus.q3) {
       setStep('congrats');
       setError('');
       setIsCompleted(true);
       localStorage.setItem('student_portfolio_quiz_completed', 'true');
     } else {
-      setError('Some answers are incorrect. Please try again!');
+      setError('Please ensure all answers are correct before claiming!');
     }
   };
 
@@ -181,51 +190,51 @@ const StudentPortfolioPopup = () => {
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="space-y-5">
-                        {/* Q1 */}
-                        <div className="group">
-                          <label className="block text-white/70 text-[12px] font-bold mb-2 ml-1 uppercase tracking-wider group-focus-within:text-[#E8001A] transition-colors">
-                            01. Capital of France?
-                          </label>
-                          <input
-                            type="text"
-                            required
-                            value={answers.q1}
-                            onChange={(e) => setAnswers({ ...answers, q1: e.target.value })}
-                            placeholder="Type here..."
-                            className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-[#E8001A]/40 focus:bg-white/[0.06] transition-all"
-                          />
-                        </div>
+                      <div className="space-y-6">
+                        {questions.map((q) => (
+                          <div key={q.id} className="group">
+                            <label className="block text-white/70 text-[10px] font-bold mb-3 ml-1 uppercase tracking-[0.15em] group-focus-within:text-[#E8001A] transition-colors flex items-center gap-2">
+                              {q.label}
+                              {correctStatus[q.id] && (
+                                <motion.span 
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="text-[#E8001A]"
+                                >
+                                  <i className="fas fa-check-circle text-[10px]"></i>
+                                </motion.span>
+                              )}
+                            </label>
+                            
+                            <div className="grid grid-cols-3 gap-2">
+                              {q.options.map((option) => {
+                                const isSelected = answers[q.id] === option;
+                                const isCorrect = q.answer === option;
+                                const showAsError = isSelected && !isCorrect;
+                                const showAsSuccess = isSelected && isCorrect;
 
-                        {/* Q2 */}
-                        <div className="group">
-                          <label className="block text-white/70 text-[12px] font-bold mb-2 ml-1 uppercase tracking-wider group-focus-within:text-[#E8001A] transition-colors">
-                            02. Capital of India?
-                          </label>
-                          <input
-                            type="text"
-                            required
-                            value={answers.q2}
-                            onChange={(e) => setAnswers({ ...answers, q2: e.target.value })}
-                            placeholder="Type here..."
-                            className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-[#E8001A]/40 focus:bg-white/[0.06] transition-all"
-                          />
-                        </div>
-
-                        {/* Q3 */}
-                        <div className="group">
-                          <label className="block text-white/70 text-[12px] font-bold mb-2 ml-1 uppercase tracking-wider group-focus-within:text-[#E8001A] transition-colors">
-                            03. The "Red Planet"?
-                          </label>
-                          <input
-                            type="text"
-                            required
-                            value={answers.q3}
-                            onChange={(e) => setAnswers({ ...answers, q3: e.target.value })}
-                            placeholder="Planet name..."
-                            className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-[#E8001A]/40 focus:bg-white/[0.06] transition-all"
-                          />
-                        </div>
+                                return (
+                                  <button
+                                    key={option}
+                                    type="button"
+                                    onClick={() => handleOptionSelect(q.id, option)}
+                                    className={`px-2 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 border ${
+                                      showAsSuccess 
+                                        ? 'bg-[#E8001A] border-[#E8001A] text-white shadow-[0_8px_16px_rgba(232,0,26,0.2)]'
+                                        : showAsError
+                                        ? 'bg-red-500/10 border-red-500/40 text-red-500'
+                                        : isSelected
+                                        ? 'bg-white/10 border-white/20 text-white'
+                                        : 'bg-white/[0.03] border-white/5 text-white/30 hover:bg-white/[0.06] hover:border-white/10 hover:text-white'
+                                    }`}
+                                  >
+                                    {option}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        ))}
                       </div>
 
                       {error && (

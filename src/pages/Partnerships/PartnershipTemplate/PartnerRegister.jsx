@@ -70,30 +70,27 @@ const PartnerRegister = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4 md:p-6 relative overflow-hidden">
       {/* Background Accents */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-lime-400/10 rounded-full blur-[120px] -mr-64 -mt-64" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-400/10 rounded-full blur-[120px] -ml-64 -mb-64" />
+      <div className="absolute top-0 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-lime-400/10 rounded-full blur-[100px] md:blur-[120px] -mr-32 md:-mr-64 -mt-32 md:-mt-64" />
+      <div className="absolute bottom-0 left-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-blue-400/10 rounded-full blur-[100px] md:blur-[120px] -ml-32 md:-ml-64 -mb-32 md:-mb-64" />
 
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md z-10"
+        className="w-full max-w-md z-10 py-4 md:py-8"
       >
-        <div className="text-center mb-10">
-          <div className="inline-block p-3 rounded-2xl bg-lime-400/10 border border-lime-400/20 mb-4">
-            <User size={32} className="text-lime-400" />
-          </div>
-          <h1 className="text-4xl font-black mb-2">Partner Signup</h1>
-          <p className="text-zinc-500 font-medium">Create your account to build your portfolio</p>
+        <div className="text-center mb-4 md:mb-6">
+          <h1 className="text-2xl md:text-3xl font-black mb-1">Partner Signup</h1>
+          <p className="text-zinc-500 font-medium text-xs md:text-sm">Create your account to build your portfolio</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 bg-zinc-900/50 backdrop-blur-xl p-8 rounded-[32px] border border-zinc-800 shadow-2xl">
+        <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4 bg-zinc-900/50 backdrop-blur-xl p-6 md:p-8 rounded-[24px] md:rounded-[32px] border border-zinc-800 shadow-2xl overflow-y-auto max-h-[60vh] md:max-h-[70vh] custom-scrollbar">
           {error && (
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="p-4 bg-red-400/10 border border-red-400/20 rounded-2xl flex items-center gap-3 text-red-400 text-sm"
+              className="p-3 md:p-4 bg-red-400/10 border border-red-400/20 rounded-xl md:rounded-2xl flex items-center gap-2 md:gap-3 text-red-400 text-[11px] md:text-sm"
             >
               <AlertCircle size={18} />
               {error}
@@ -202,12 +199,29 @@ const PartnerRegister = () => {
           </p>
         </form>
 
-        <div className="mt-12 text-center">
-          <a href="/" className="text-xs uppercase tracking-[0.3em] text-zinc-600 hover:text-white transition-colors">
+        <div className="mt-6 md:mt-8 text-center">
+          <a href="/" className="text-[10px] uppercase tracking-[0.2em] text-zinc-600 hover:text-white transition-colors">
             ← Back to Social Bureau
           </a>
         </div>
       </motion.div>
+
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(163, 230, 53, 0.2);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(163, 230, 53, 0.4);
+        }
+      `}</style>
     </div>
   );
 };

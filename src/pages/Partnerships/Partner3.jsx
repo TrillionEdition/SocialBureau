@@ -168,43 +168,6 @@ const TextReveal = ({ children, delay = 0 }) => {
 
 // --- Sections ---
 
-const CustomCursor = () => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e) => setMousePos({ x: e.clientX, y: e.clientY });
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  const cursorX = useSpring(mousePos.x, { stiffness: 500, damping: 28 });
-  const cursorY = useSpring(mousePos.y, { stiffness: 500, damping: 28 });
-
-  return (
-    <>
-      <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full bg-white mix-blend-difference pointer-events-none z-[9999] hidden md:block"
-        style={{
-          x: cursorX,
-          y: cursorY,
-          translateX: "-50%",
-          translateY: "-50%",
-        }}
-      />
-      <motion.div
-        className="fixed top-0 left-0 w-40 h-40 rounded-full border border-white/20 pointer-events-none z-[9998] hidden md:block"
-        style={{
-          x: cursorX,
-          y: cursorY,
-          translateX: "-50%",
-          translateY: "-50%",
-        }}
-        animate={{ scale: 1 }}
-        transition={{ type: "spring", stiffness: 200, damping: 20 }}
-      />
-    </>
-  );
-};
 
 const Hero = () => {
   return (
@@ -708,7 +671,6 @@ export default function Partner3() {
     <div className="relative min-h-screen bg-[#050505] selection:bg-cyan-400 selection:text-black">
       <AnimatePresence>{isLoading && <LoadingScreen />}</AnimatePresence>
 
-      <CustomCursor />
 
       <main>
         <Hero />

@@ -596,7 +596,7 @@ const ArtifactItem = ({ project }) => {
         rotateX: isHovered ? rotateX : 0,
         rotateY: isHovered ? rotateY : 0,
       }}
-      className="group relative h-[70vh] md:h-[90vh] bg-black overflow-hidden md:cursor-none will-change-transform transform-gpu touch-pan-y"
+      className="group relative h-[70vh] md:h-[90vh] bg-black overflow-hidden will-change-transform transform-gpu touch-pan-y"
     >
       <motion.img
         src={project.image}
@@ -672,31 +672,6 @@ const ArtifactGallery = () => {
   );
 };
 
-const CustomCursor = () => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const springX = useSpring(mousePos.x, { stiffness: 200, damping: 30 });
-  const springY = useSpring(mousePos.y, { stiffness: 200, damping: 30 });
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  return (
-    <motion.div
-      className="fixed top-0 left-0 w-4 h-4 rounded-full bg-[#ff4d00] mix-blend-difference pointer-events-none z-[9999] hidden md:flex items-center justify-center shadow-[0_0_15px_#ff4d00]"
-      style={{
-        x: springX,
-        y: springY,
-        translateX: "-50%",
-        translateY: "-50%",
-      }}
-    />
-  );
-};
 
 const MethodItem = ({ method, index }) => {
   return (
@@ -958,7 +933,6 @@ export default function Partner4() {
 
   return (
     <div className="relative min-h-screen bg-[#fcfcfc] selection:bg-[#ff4d00] selection:text-white">
-      <CustomCursor />
       <AnimatePresence>{isLoading && <LoadingSuspense />}</AnimatePresence>
 
       <main>

@@ -301,7 +301,7 @@ export const AuthPage = () => {
                       >
                         <button
                           type="button"
-                          onClick={() => navigate("/forgot-password")}
+                          onClick={() => navigate("/forgot-password?from=user")}
                           className="text-sm text-gray-500 hover:text-white transition-colors animate-pulse"
                         >
                           Forgot password?

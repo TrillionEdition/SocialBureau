@@ -682,13 +682,10 @@ const BackToTop = ({ visible }) => {
 };
 
 export default function Partner2() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
     };
     window.addEventListener("mousemove", handleMouseMove);
 
@@ -734,21 +731,6 @@ export default function Partner2() {
         <ConnectSection />
       </main>
 
-      {/* Custom Cursor */}
-      <motion.div
-        className="fixed top-0 left-0 w-12 h-12 border border-brand-ink rounded-full pointer-events-none z-[200] hidden md:flex items-center justify-center mix-blend-difference"
-        animate={{
-          x: mousePos.x - 24,
-          y: mousePos.y - 24,
-        }}
-        transition={{ type: "spring", damping: 35, stiffness: 450, mass: 0.5 }}
-      >
-        <motion.div
-          className="w-1.5 h-1.5 bg-brand-ink rounded-full"
-          animate={{ scale: [1, 1.8, 1] }}
-          transition={{ repeat: Infinity, duration: 2.5 }}
-        />
-      </motion.div>
 
       <BackToTop visible={showBackToTop} />
     </div>

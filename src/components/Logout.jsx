@@ -97,7 +97,7 @@ const Logout = () => {
       {/* Desktop Logout Button */}
       <button
         onClick={() => setShowConfirm(true)}
-        className="hidden md:block text-[11px] font-bold text-[#ffffff]/70 hover:text-white transition-colors px-2 py-1 whitespace-nowrap cursor-pointer relative z-[50]"
+        className="hidden md:block text-[10px] font-black uppercase tracking-[0.4em] italic text-white/60 hover:text-white transition-colors px-2 py-1 whitespace-nowrap cursor-pointer relative z-[50]"
       >
         Logout
       </button>

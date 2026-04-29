@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import { useScroll, motion } from "framer-motion";
-import CustomCursor from "./CustomCursor";
 import Hero from "./Hero";
 import RevealTransition from "./RevealTransition";
 
@@ -13,7 +12,6 @@ const AwardWinningExperience = () => {
 
   return (
     <div ref={containerRef} className="relative h-[550vh] bg-black">
-      <CustomCursor />
 
       {/* Sticky Container */}
       <div className="sticky top-0 h-screen w-full overflow-hidden">
