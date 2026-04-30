@@ -252,13 +252,14 @@ const DynamicPartnershipPage = () => {
     }
   };
 
-  if (loading) return <LoadingSpinner />;
-  if (error) return (
-    <div className="h-screen flex items-center justify-center bg-black text-white font-sans">
-      <div className="text-center">
-        <h1 className="text-4xl font-black mb-4 tracking-tighter uppercase italic">404</h1>
-        <p className="text-zinc-500 font-medium uppercase tracking-widest text-xs underline underline-offset-8 decoration-red-500">{error}</p>
-      </div>
+  if (loading || error) return (
+    <div className="relative">
+      <LoadingSpinner />
+      {error && (
+        <div className="absolute bottom-10 left-0 w-full text-center text-white/40 text-xs tracking-widest uppercase animate-pulse">
+          {error}
+        </div>
+      )}
     </div>
   );
 
