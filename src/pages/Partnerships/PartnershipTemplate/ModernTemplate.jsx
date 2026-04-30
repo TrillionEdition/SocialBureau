@@ -189,6 +189,8 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
     fontFamily: "sans-serif",
     headingFontSize: "100%",
     bodyFontSize: "100%",
+    headingColor: "#FFFFFF",
+    paragraphColor: "#FFFFFF",
   };
 
   const activeStyles = { ...defaultStyles, ...styles };
@@ -220,12 +222,16 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
     "--project-image-scale": activeStyles.projectImageScale || "1",
     "--noise-opacity": activeStyles.noiseOpacity || "0",
     "--grid-opacity": activeStyles.gridOpacity || "0",
+    "--grid-color": activeStyles.gridColor || "#FFFFFF",
+    "--hero-text-y": (activeStyles.heroTextY || 0) + "px",
     "--hero-bg": activeStyles.heroBg || activeStyles.backgroundColor,
     "--bio-bg": activeStyles.bioBg || activeStyles.backgroundColor,
     "--projects-bg": activeStyles.projectsBg || activeStyles.backgroundColor,
     "--services-bg": activeStyles.servicesBg || activeStyles.backgroundColor,
     "--testimonials-bg": activeStyles.testimonialsBg || activeStyles.backgroundColor,
     "--footer-bg": activeStyles.footerBg || activeStyles.backgroundColor,
+    "--heading-color": activeStyles.headingColor || "#FFFFFF",
+    "--paragraph-color": activeStyles.paragraphColor || "#FFFFFF",
   };
   
   React.useEffect(() => {
@@ -244,9 +250,11 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
     offset: ["start start", "end start"],
   });
 
-  const heroY = useTransform(heroScroll, [0, 1], ["0%", "40%"]);
+  const heroY = useTransform(heroScroll, [0, 1], ["0%", "50%"]);
   const heroOpacity = useTransform(heroScroll, [0, 0.8], [1, 0]);
-  const heroScale = useTransform(heroScroll, [0, 1], [1, 1.1]);
+  const heroScale = useTransform(heroScroll, [0, 1], [1, 1.3]);
+  const heroBlur = useTransform(heroScroll, [0, 0.5], ["0px", "10px"]);
+  const nextSectionTranslateY = useTransform(heroScroll, [0, 1], ["0%", "-10%"]);
 
   return (
     <>
@@ -263,6 +271,16 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
           .testimonial-font { font-family: var(--testimonial-font) !important; }
           .footer-font { font-family: var(--footer-font) !important; }
           .module-font { font-family: var(--module-font) !important; }
+          
+          h1, h2, h3, h4, h5, h6 {
+            color: var(--heading-color) !important;
+          }
+          p, span, li, a:not(.btn) {
+            color: var(--paragraph-color);
+          }
+          .text-primary-color {
+            color: var(--primary-color) !important;
+          }
         `}
       </style>
       <div 
@@ -278,8 +296,9 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
       <div 
         className="fixed inset-0 pointer-events-none opacity-[var(--grid-opacity)] z-[5] " 
         style={{ 
-          backgroundImage: `linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)`,
-          backgroundSize: '40px 40px'
+          backgroundImage: `linear-gradient(to right, var(--grid-color) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px)`,
+          backgroundSize: '40px 40px',
+          opacity: `calc(var(--grid-opacity) * 0.2)`
         }} 
       />
 
@@ -287,21 +306,21 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
       <section
         id="hero-section"
         ref={heroRef}
-        className={`relative w-full overflow-hidden flex items-center justify-center px-4 md:px-6 ${isPortrait ? "min-h-screen pt-20 pb-8" : "h-screen"}`}
+        className={`relative w-full overflow-hidden flex items-center justify-center px-4 md:px-6 ${isPortrait ? "h-auto pt-24 pb-12" : "h-screen"}`}
         style={{ backgroundColor: 'var(--hero-bg)' }}
       >
         {/* Background Layer with Parallax */}
         <motion.div
-          style={{ y: heroY, opacity: heroOpacity, scale: heroScale }}
+          style={{ y: heroY, opacity: heroOpacity, scale: heroScale, filter: `blur(${heroBlur})` }}
           className="absolute inset-0 z-0 pointer-events-none"
         >
           <img
              src={image || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"} 
              alt={name} 
-             className={`w-full h-full object-cover opacity-30 ${isPortrait ? "blur-3xl" : ""}`}
+             className={`w-full h-full object-cover opacity-30 ${isPortrait ? "blur-2xl" : ""}`}
              style={{ transform: `scale(var(--hero-image-scale))` }}
            />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--bg-color)]/40 to-[var(--bg-color)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--bg-color)]/20 to-[var(--bg-color)]" />
         </motion.div>
 
         <div className="absolute top-8 md:top-12 left-6 md:left-12 z-50 flex items-center gap-4 md:gap-6">
@@ -310,12 +329,18 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
             transition={{ duration: 2, repeat: Infinity }}
             className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-[var(--primary-color)] shadow-[0_0_20px_var(--primary-color)]" 
           />
-          <div className="text-[9px] md:text-[11px] font-black tracking-[0.4em] md:tracking-[0.6em] text-white/60 uppercase italic">
+          <div 
+            className="text-[9px] md:text-[11px] font-black tracking-[0.4em] md:tracking-[0.6em] uppercase italic"
+            style={{ color: 'var(--paragraph-color)', opacity: 0.6 }}
+          >
             {name || "SOCIAL BUREAU PARTNER"}
           </div>
         </div>
 
-        <div className={`max-w-7xl w-full relative z-10 flex flex-col items-center ${isPortrait ? "lg:flex-row lg:items-center lg:justify-center gap-12 md:gap-32" : "text-center"}`}>
+        <div 
+          className={`max-w-7xl w-full relative z-10 flex flex-col items-center ${isPortrait ? "lg:flex-row lg:items-center lg:justify-center" : "text-center"}`}
+          style={{ transform: `translateY(var(--hero-text-y))` }}
+        >
           
           {/* Portrait Image Frame */}
           {isPortrait && (
@@ -329,7 +354,7 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
             </motion.div>
           )}
 
-          <div className={isPortrait ? "flex-1 text-center lg:text-left" : "w-full"}>
+          <div className={`${isPortrait ? "flex-1 text-center lg:text-left mt-12 lg:mt-0" : "w-full mt-12"}`}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -350,21 +375,22 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
                   initial={{ y: "110%" }}
                   animate={{ y: 0 }}
                   transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-black leading-[0.9] tracking-tight text-white uppercase italic pr-4 hero-font"
-                  style={{ fontSize: `calc(var(--hero-name-size) * ${isPortrait ? "clamp(1.2rem, 6.5vw, 6rem)" : "clamp(3rem, 12vw, 12rem)"})` }}
+                  className="font-black leading-[0.9] tracking-tight uppercase italic pr-4 hero-font"
+                  style={{ fontSize: `calc(var(--hero-name-size) * ${isPortrait ? "clamp(1.2rem, 6.5vw, 6rem)" : "clamp(3rem, 12vw, 12rem)"})`, color: 'var(--heading-color)' }}
                 >
                   {name || "IDENTITY."}
                 </motion.h1>
               </div>
               
-              {data.details?.heroDescription && (
+              {data.heroDescription && (
                 <motion.p
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1, delay: 0.5 }}
-                  className="text-[10px] md:text-xs font-black uppercase tracking-[0.4em] text-white/40 italic"
+                  className="text-[10px] md:text-xs font-black uppercase tracking-[0.4em] italic"
+                  style={{ color: 'var(--paragraph-color)', opacity: 0.7 }}
                 >
-                  {data.details.heroDescription}
+                  {data.heroDescription}
                 </motion.p>
               )}
             </div>
@@ -373,17 +399,17 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
       </section>
 
       {/* Narrative Section */}
-      <section 
+      <motion.section 
         id="narrative-section"
-        className="py-20 md:py-40 px-6 md:px-12 lg:px-24 relative z-10"
-        style={{ backgroundColor: 'var(--bio-bg)' }}
+        style={{ y: nextSectionTranslateY, backgroundColor: 'var(--bio-bg)' }}
+        className="py-20 md:py-40 px-6 md:px-12 lg:px-24 relative z-20 shadow-[0_-50px_100px_rgba(0,0,0,0.5)]"
       >
-        {/* Background Decorative Text */}
+        {/* Background Decorative Text - High Speed Parallax */}
         <motion.div 
-          style={{ x: useTransform(heroScroll, [0, 1], ["-10%", "10%"]) }}
-          className="absolute top-1/2 left-0 -translate-y-1/2 text-[40vw] font-black text-white/[0.01] pointer-events-none whitespace-nowrap italic"
+          style={{ x: useTransform(heroScroll, [0.5, 1.5], ["-20%", "20%"]) }}
+          className="absolute top-1/2 left-0 -translate-y-1/2 text-[35vw] font-black text-white/[0.02] pointer-events-none whitespace-nowrap italic tracking-tighter"
         >
-          NARRATIVE NARRATIVE
+          NARRATIVE
         </motion.div>
         
         <div className="max-w-6xl mx-auto relative z-10">
@@ -396,9 +422,9 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
               </div>
               <div className="w-full lg:w-2/3">
                   <AnimatedText 
-                    className="font-bold leading-[1.1] tracking-tight text-white/95 italic uppercase bio-font"
+                    className="font-bold leading-[1.1] tracking-tight italic uppercase bio-font"
                     text={bio || "We exist at the intersection of clinical data and disruptive creativity. Engineering legacies that transcend the digital noise."}
-                    style={{ fontSize: `calc(var(--bio-size) * ${isPortrait ? "2rem" : "4.5rem"})` }}
+                    style={{ fontSize: `calc(var(--bio-size) * ${isPortrait ? "1.4rem" : "2.2rem"})`, color: 'var(--paragraph-color)' }}
                   />
                   <motion.div 
                     initial={{ scaleX: 0 }}
@@ -410,7 +436,7 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
               </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Selected Works Grid */}
       {projects.length > 0 && (
@@ -470,8 +496,8 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
                                 {project.title}
                               </h3>
                               <p 
-                                className="text-white/40 leading-relaxed font-light italic card-font"
-                                style={{ fontSize: `calc(var(--project-body-size) * 0.875rem)` }}
+                                className="leading-relaxed font-light italic card-font"
+                                style={{ fontSize: `calc(var(--project-body-size) * 0.875rem)`, color: 'var(--paragraph-color)', opacity: 0.7 }}
                               >
                                 {project.description}
                               </p>
@@ -525,8 +551,8 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
                     {service.title}
                   </h3>
                   <p 
-                    className="text-white/30 group-hover:text-white/70 leading-relaxed font-light italic card-font"
-                    style={{ fontSize: `calc(var(--service-body-size) * 1.125rem)` }}
+                    className="group-hover:opacity-100 leading-relaxed font-light italic card-font transition-opacity"
+                    style={{ fontSize: `calc(var(--service-body-size) * 1.125rem)`, color: 'var(--paragraph-color)', opacity: 0.7 }}
                   >
                     {service.description}
                   </p>
@@ -565,10 +591,13 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
                         className="bg-white/[0.01] backdrop-blur-3xl p-10 md:p-20 rounded-[48px] md:rounded-[80px] border border-white/5 hover:border-[var(--primary-color)]/20 transition-all duration-1000 flex flex-col justify-between group relative overflow-hidden"
                       >
                           <div className="absolute -top-10 -right-10 w-40 h-40 bg-[var(--primary-color)]/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                          <Quote className="text-white/5 mb-10 md:mb-16 group-hover:text-[var(--primary-color)]/10 transition-colors w-10 md:w-16 h-10 md:h-16 -ml-2" />
+                          <Quote 
+                            className="mb-10 md:mb-16 group-hover:text-[var(--primary-color)]/10 transition-colors w-10 md:w-16 h-10 md:h-16 -ml-2" 
+                            style={{ color: 'var(--paragraph-color)', opacity: 0.05 }}
+                          />
                           <p 
-                            className="font-medium tracking-tight mb-10 md:mb-24 italic leading-[1.2] md:leading-[1.1] text-white/70 group-hover:text-white transition-colors testimonial-font"
-                            style={{ fontSize: `calc(var(--testimonial-quote-size) * ${isPortrait ? "clamp(1rem, 5vw, 1.8rem)" : "2.5rem"})` }}
+                            className="font-medium tracking-tight mb-10 md:mb-24 italic leading-[1.2] md:leading-[1.1] transition-colors testimonial-font"
+                            style={{ fontSize: `calc(var(--testimonial-quote-size) * ${isPortrait ? "clamp(1rem, 5vw, 1.8rem)" : "2.5rem"})`, color: 'var(--paragraph-color)', opacity: 0.7 }}
                           >
                             "{t.quote}"
                           </p>
@@ -606,7 +635,12 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
                     >
                       Let's Build<br /><span className="text-[var(--primary-color)]">Legendary.</span>
                     </PremiumHeading>
-                    <p className="text-white/40 text-base md:text-xl lg:text-2xl font-light italic tracking-tight max-w-xl leading-relaxed">Available for elite collaborations that demand clinical precision and bold execution.</p>
+                    <p 
+                      className="text-base md:text-xl lg:text-2xl font-light italic tracking-tight max-w-xl leading-relaxed"
+                      style={{ color: 'var(--paragraph-color)', opacity: 0.7 }}
+                    >
+                      Available for elite collaborations that demand clinical precision and bold execution.
+                    </p>
                 </div>
                 
                 <div className="flex flex-wrap gap-3 sm:gap-4 md:gap-8">

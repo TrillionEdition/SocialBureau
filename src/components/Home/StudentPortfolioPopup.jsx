@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '@/utils/urls';
 
 const StudentPortfolioPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +10,26 @@ const StudentPortfolioPopup = () => {
   const [correctStatus, setCorrectStatus] = useState({ q1: false, q2: false, q3: false });
   const [error, setError] = useState('');
   const [isCompleted, setIsCompleted] = useState(false);
+  const [stats, setStats] = useState({ totalCount: 0, recentStudents: [] });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/partners/student-stats`);
+        const data = await res.json();
+        if (data.success) {
+          setStats(data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch student stats:", err);
+      }
+    };
+    fetchStats();
+    // Refresh stats every minute
+    const interval = setInterval(fetchStats, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   const questions = [
     {
@@ -78,24 +98,24 @@ const StudentPortfolioPopup = () => {
   };
 
   const handleRedirect = () => {
-    const user = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('partnerToken') || localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
     
-    if (!user || !token) {
-      // Redirect to login with a return path
+    if (token && (user.role === 'admin' || localStorage.getItem('partnerToken'))) {
+      navigate('/partners/dashboard');
+    } else if (!token) {
       navigate('/partners/login?redirect=/partners/create-portfolio');
     } else {
-      // Logged in users go to their portfolio dashboard
       navigate('/partners/dashboard');
     }
     handleClose();
   };
 
   const handleTriggerClick = () => {
-    const user = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('partnerToken') || localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
     
-    if (user && token) {
+    if (token && (user.role === 'admin' || localStorage.getItem('partnerToken'))) {
       navigate('/partners/dashboard');
     } else {
       setIsOpen(true);
@@ -114,21 +134,94 @@ const StudentPortfolioPopup = () => {
           onClick={handleTriggerClick}
           className="fixed bottom-24 right-6 z-[10001] cursor-pointer group"
         >
-          <div className="relative overflow-hidden bg-[#0A0A0A]/80 backdrop-blur-xl border border-white/20 p-4 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center gap-4 border-l-4 border-l-[#E8001A]">
+          {/* Floating Student Circles */}
+          <div className="absolute bottom-full mb-4 right-0 w-64 h-48 pointer-events-none overflow-visible scale-75 md:scale-100 origin-bottom-right">
+            <AnimatePresence>
+              {stats.recentStudents.map((student, index) => {
+                // Determine random-ish but deterministic positions
+                const angle = (index * (360 / stats.recentStudents.length)) * (Math.PI / 180);
+                const radius = 70 + (index % 3) * 25;
+                const x = Math.cos(angle) * radius;
+                // Lift them significantly higher (changed -40 to -110)
+                const y = Math.sin(angle) * (radius * 0.6) - 110;
+                
+                return (
+                  <motion.div
+                    key={student.id}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ 
+                      opacity: 1, 
+                      scale: 1,
+                      x: x,
+                      y: [y, y - 15, y],
+                    }}
+                    whileHover={{ scale: 1.2, zIndex: 50 }}
+                    transition={{ 
+                      opacity: { duration: 0.5 },
+                      scale: { duration: 0.5, delay: index * 0.1 },
+                      y: { 
+                        duration: 3 + (index % 4), 
+                        repeat: Infinity, 
+                        ease: "easeInOut",
+                        delay: index * 0.3
+                      }
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // Use param if it exists, otherwise fallback to ID
+                      const slug = student.param || student.id;
+                      navigate(`/partnership/${slug}`);
+                    }}
+                    className="absolute bottom-0 right-1/2 translate-x-1/2 z-30 cursor-pointer group/bubble pointer-events-auto"
+                  >
+                    <div className="relative">
+                      {/* Name Tooltip */}
+                      <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1 bg-black/80 backdrop-blur-md border border-white/10 rounded-lg text-[8px] text-white font-bold opacity-0 group-hover/bubble:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                        {student.name}
+                      </div>
+                      
+                      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-white/20 overflow-hidden shadow-lg bg-[#111] group-hover/bubble:border-[#E8001A] transition-colors">
+                        <img src={student.image} alt={student.name} className="w-full h-full object-cover" />
+                      </div>
+                      <div className="absolute -top-1 -right-1 w-2.5 h-2.5 md:w-3 md:h-3 bg-[#E8001A] rounded-full border border-[#0A0A0A]" />
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+
+            {/* Main Total Count Circle */}
+            {stats.totalCount > 0 && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate('/partners/students');
+                }}
+                className="absolute -bottom-2 right-0 bg-[#E8001A] text-white w-10 h-10 md:w-14 md:h-14 rounded-full flex flex-col items-center justify-center shadow-[0_10px_30px_rgba(232,0,26,0.5)] border-2 border-white/20 z-20 cursor-pointer pointer-events-auto hover:scale-110 transition-transform"
+              >
+                <span className="text-xs md:text-[14px] font-black leading-none">{stats.totalCount}</span>
+                <span className="text-[6px] md:text-[7px] font-bold uppercase tracking-tighter opacity-80">Students</span>
+              </motion.div>
+            )}
+          </div>
+
+          <div className="relative overflow-hidden bg-[#0A0A0A]/80 backdrop-blur-xl border border-white/20 p-3 md:p-4 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center gap-3 md:gap-4 border-l-4 border-l-[#E8001A]">
             <div className="absolute inset-0 bg-gradient-to-r from-[#E8001A]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             
-            <div className="w-12 h-12 bg-gradient-to-br from-[#E8001A] to-[#FF4444] rounded-2xl flex items-center justify-center text-white shadow-lg">
-              <i className="fas fa-graduation-cap text-xl"></i>
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-[#E8001A] to-[#FF4444] rounded-2xl flex items-center justify-center text-white shadow-lg">
+              <i className="fas fa-graduation-cap text-lg md:text-xl"></i>
             </div>
             
             <div>
-              <div className="text-white font-black text-sm tracking-tight">Free Student Portfolio</div>
+              <div className="text-white font-black text-[11px] md:text-sm tracking-tight">Free Student Portfolio</div>
               <div className="flex items-center gap-2">
-                <span className="text-[#E8001A] text-[10px] font-black uppercase tracking-widest">Unlock Now</span>
+                <span className="text-[#E8001A] text-[9px] md:text-[10px] font-black uppercase tracking-widest">Unlock Now</span>
                 <motion.span 
                   animate={{ x: [0, 5, 0] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
-                  className="text-white/40 text-[10px]"
+                  className="text-white/40 text-[9px] md:text-[10px]"
                 >
                   <i className="fas fa-arrow-right"></i>
                 </motion.span>

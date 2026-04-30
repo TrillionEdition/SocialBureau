@@ -50,24 +50,51 @@ const PartnershipDataForm = () => {
   useEffect(() => {
     const fetchExistingData = async () => {
       const token = localStorage.getItem("token");
-      if (!token) { setFetchingData(false); return; }
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const isAdmin = user.role === "admin";
+      const params = new URLSearchParams(location.search);
+      const targetId = params.get("id");
+
+      if (!token) { 
+        console.log("[PORTFOLIO_FETCH] No token found");
+        setFetchingData(false); 
+        return; 
+      }
+      
       try {
-        const response = await fetch(`${BASE_URL}/partners/my-partnership`, {
+        let endpoint = `${BASE_URL}/partners/my-partnership`;
+        
+        if (isAdmin && targetId) {
+          endpoint = `${BASE_URL}/partners/admin/${targetId}`;
+          console.log(`[PORTFOLIO_FETCH] Admin fetching target ID: ${targetId}`);
+        } else {
+          console.log("[PORTFOLIO_FETCH] Fetching own partnership");
+        }
+
+        const response = await fetch(endpoint, {
           headers: { "Authorization": `Bearer ${token}` }
         });
         const data = await response.json();
+        
         if (data.success && data.data) {
-          setFormData({
+          console.log("[PORTFOLIO_FETCH] Success: Data received", data.data.name);
+          setFormData(prev => ({
+            ...prev,
             ...data.data,
-            details: { ...formData.details, ...(data.data.details || {}) }
-          });
+            details: { 
+              ...prev.details, 
+              ...(data.data.details || {}) 
+            }
+          }));
+        } else {
+          console.log("[PORTFOLIO_FETCH] No data found or error", data.message);
         }
       } catch (err) {
-        console.error("Failed to fetch data", err);
+        console.error("[PORTFOLIO_FETCH] Critical error", err);
       } finally { setFetchingData(false); }
     };
     fetchExistingData();
-  }, []);
+  }, [location.search]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -143,6 +170,12 @@ const PartnershipDataForm = () => {
   const handleFileSelect = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    
+    if (file.size > 3 * 1024 * 1024) {
+      toast.warning("File size too big! Please upload an image smaller than 3MB.");
+      return;
+    }
+
     setUploading(true);
     const data = new FormData();
     data.append("image", file);
@@ -160,6 +193,12 @@ const PartnershipDataForm = () => {
   const handleProjectFileUpload = async (e, index) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    if (file.size > 3 * 1024 * 1024) {
+      toast.warning("File size too big! Please upload an image smaller than 3MB.");
+      return;
+    }
+
     setUploading(true);
     const data = new FormData();
     data.append("image", file);
@@ -180,8 +219,21 @@ const PartnershipDataForm = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${BASE_URL}/partners/my-partnership`, {
-        method: "POST",
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const isAdmin = user.role === "admin";
+      const params = new URLSearchParams(location.search);
+      const targetId = params.get("id");
+
+      let endpoint = `${BASE_URL}/partners/my-partnership`;
+      let method = "POST";
+
+      if (isAdmin && targetId) {
+        endpoint = `${BASE_URL}/partners/${targetId}`;
+        method = "PUT";
+      }
+
+      const response = await fetch(endpoint, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${localStorage.getItem("token")}`

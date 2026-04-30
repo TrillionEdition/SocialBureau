@@ -70,6 +70,7 @@ const ResetPassword = lazy(() =>
   })),
 );
 const Sakilan = lazy(() => import("./pages/Partnerships/sakilan"));
+const Partner2 = lazy(() => import("./pages/Partnerships/Partner2"));
 
 // Lazy-loaded Components
 const AddAchievementForm = lazy(
@@ -128,6 +129,7 @@ const DynamicPartnershipPage = lazy(() => import("./pages/Partnerships/Partnersh
 const PartnerRegister = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerRegister"));
 const PartnerLogin = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerLogin"));
 const PartnerDashboard = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboard"));
+const StudentShowcase = lazy(() => import("./pages/Partnerships/StudentShowcase"));
 
 function ConditionalFooter() {
   const location = useLocation();
@@ -435,8 +437,9 @@ function App() {
             <Route path="/partners/register" element={<PartnerRegister />} />
             <Route path="/partners/login" element={<PartnerLogin />} />
             <Route path="/partners/dashboard" element={<PartnerDashboard />} />
+            <Route path="/partners/students" element={<StudentShowcase />} />
 
-            {/* <Route path="/partnership/Partner2" element={<Partner2 />} /> */}
+            <Route path="/partnership/Partner2" element={<Partner2 />} />
             {/* <Route path="/partnership/Partner3" element={<Partner3 />} />
             <Route path="/partnership/Partner4" element={<Partner4 />} /> */}
 

@@ -11,6 +11,8 @@ const PartnerDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [copiedId, setCopiedId] = useState(null);
+  const [prevCount, setPrevCount] = useState(null);
+  const [notificationSound] = useState(new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"));
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,7 +22,7 @@ const PartnerDashboard = () => {
       return;
     }
 
-    const fetchPartners = async () => {
+    const fetchPartners = async (isInitial = true) => {
       try {
         const token = localStorage.getItem("token");
         const userData = JSON.parse(localStorage.getItem("user") || "{}");
@@ -47,7 +49,14 @@ const PartnerDashboard = () => {
             p.details.bio && 
             !p.param.startsWith("partnership/")
           ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          
           setPartners(templatePortfolios);
+
+          // Play sound if new portfolios added (for admins)
+          if (isAdmin && !isInitial && prevCount !== null && templatePortfolios.length > prevCount) {
+            notificationSound.play().catch(e => console.log("Sound play blocked by browser", e));
+          }
+          setPrevCount(templatePortfolios.length);
         }
       } catch (err) {
         console.error("Failed to fetch portfolios", err);
@@ -55,8 +64,16 @@ const PartnerDashboard = () => {
         setLoading(false);
       }
     };
-    fetchPartners();
-  }, []);
+
+    fetchPartners(true);
+
+    // Setup polling for real-time updates (every 30 seconds)
+    const pollInterval = setInterval(() => {
+      fetchPartners(false);
+    }, 30000);
+
+    return () => clearInterval(pollInterval);
+  }, [prevCount, notificationSound]);
 
   const handleCopy = (slug) => {
     const url = `${window.location.origin}/partnership/${slug}`;
@@ -164,7 +181,7 @@ const PartnerDashboard = () => {
                         {copiedId === item.param ? "Link" : "Link"}
                       </button>
                       <button 
-                        onClick={() => navigate("/partners/create-portfolio")}
+                        onClick={() => navigate(`/partners/create-portfolio?id=${item._id}`)}
                         className="flex items-center justify-center gap-2 py-4 bg-white/5 text-white/40 rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] hover:bg-[#E8001A] hover:text-white transition-all italic border border-white/5"
                       >
                         <Edit3 size={14} /> Edit Portfolio

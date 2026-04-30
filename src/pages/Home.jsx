@@ -383,7 +383,7 @@ export const Home = () => {
         canonicalUrl="https://www.socialbureau.in"
       />
       <SchemaMarkup data={homepageSchemas} />
-      <section className="w-full px-0 h-screen overflow-hidden bg-[#5D0B0B]"> 
+      <section className="w-full px-0"> 
         <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
           {/* Desktop Image */}
           <img
