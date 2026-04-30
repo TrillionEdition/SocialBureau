@@ -138,22 +138,13 @@ const DynamicPartnershipPage = () => {
           setError(data.message || "Portfolio not found");
         }
       } catch (err) {
-        console.error("Fetch error:", err);
-        setError("Failed to load portfolio. Please check your connection.");
+        setError("Failed to load portfolio");
       } finally {
         setLoading(false);
       }
     };
 
-    const timeoutId = setTimeout(() => {
-      if (loading) {
-        setLoading(false);
-        setError("Request timed out. The server might be slow or unreachable.");
-      }
-    }, 12000); // 12 second timeout
-
     fetchPartner();
-    return () => clearTimeout(timeoutId);
   }, [slug]);
 
   const handleUpdate = useCallback((updates) => {
@@ -252,14 +243,13 @@ const DynamicPartnershipPage = () => {
     }
   };
 
-  if (loading || error) return (
-    <div className="relative">
-      <LoadingSpinner />
-      {error && (
-        <div className="absolute bottom-10 left-0 w-full text-center text-white/40 text-xs tracking-widest uppercase animate-pulse">
-          {error}
-        </div>
-      )}
+  if (loading) return <LoadingSpinner />;
+  if (error) return (
+    <div className="h-screen flex items-center justify-center bg-black text-white font-sans">
+      <div className="text-center">
+        <h1 className="text-4xl font-black mb-4 tracking-tighter uppercase italic">404</h1>
+        <p className="text-zinc-500 font-medium uppercase tracking-widest text-xs underline underline-offset-8 decoration-red-500">{error}</p>
+      </div>
     </div>
   );
 

@@ -306,7 +306,7 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
       <section
         id="hero-section"
         ref={heroRef}
-        className={`relative w-full flex items-center justify-center px-4 md:px-6 min-h-[85vh] lg:min-h-screen pt-20 pb-20`}
+        className={`relative w-full flex items-center justify-center px-4 md:px-6 min-h-screen pt-24 pb-12`}
         style={{ backgroundColor: 'var(--hero-bg)' }}
       >
         {/* Background Layer with Parallax */}
@@ -354,7 +354,7 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
             </motion.div>
           )}
 
-          <div className={`${isPortrait ? "flex-1 text-center lg:text-left mt-12 lg:mt-0" : "w-full mt-12"}`}>
+          <div className={`${isPortrait ? "flex-1 text-center lg:text-left mt-20 lg:mt-0" : "w-full mt-20"}`}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
