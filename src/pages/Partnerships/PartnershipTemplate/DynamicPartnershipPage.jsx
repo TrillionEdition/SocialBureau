@@ -138,13 +138,22 @@ const DynamicPartnershipPage = () => {
           setError(data.message || "Portfolio not found");
         }
       } catch (err) {
-        setError("Failed to load portfolio");
+        console.error("Fetch error:", err);
+        setError("Failed to load portfolio. Please check your connection.");
       } finally {
         setLoading(false);
       }
     };
 
+    const timeoutId = setTimeout(() => {
+      if (loading) {
+        setLoading(false);
+        setError("Request timed out. The server might be slow or unreachable.");
+      }
+    }, 12000); // 12 second timeout
+
     fetchPartner();
+    return () => clearTimeout(timeoutId);
   }, [slug]);
 
   const handleUpdate = useCallback((updates) => {

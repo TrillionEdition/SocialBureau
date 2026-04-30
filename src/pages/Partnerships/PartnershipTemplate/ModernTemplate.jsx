@@ -306,13 +306,13 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
       <section
         id="hero-section"
         ref={heroRef}
-        className={`relative w-full overflow-hidden flex items-center justify-center px-4 md:px-6 ${isPortrait ? "h-auto pt-24 pb-12" : "h-screen"}`}
+        className={`relative w-full flex items-center justify-center px-4 md:px-6 min-h-[85vh] lg:min-h-screen pt-20 pb-20`}
         style={{ backgroundColor: 'var(--hero-bg)' }}
       >
         {/* Background Layer with Parallax */}
         <motion.div
           style={{ y: heroY, opacity: heroOpacity, scale: heroScale, filter: `blur(${heroBlur})` }}
-          className="absolute inset-0 z-0 pointer-events-none"
+          className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
         >
           <img
              src={image || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"} 
@@ -338,8 +338,8 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
         </div>
 
         <div 
-          className={`max-w-7xl w-full relative z-10 flex flex-col items-center ${isPortrait ? "lg:flex-row lg:items-center lg:justify-center" : "text-center"}`}
-          style={{ transform: `translateY(var(--hero-text-y))` }}
+          className={`max-w-7xl w-full relative z-10 flex flex-col items-center ${isPortrait ? "lg:flex-row lg:items-center lg:justify-center lg:gap-32" : "text-center"}`}
+          style={{ paddingTop: `var(--hero-text-y)` }}
         >
           
           {/* Portrait Image Frame */}
