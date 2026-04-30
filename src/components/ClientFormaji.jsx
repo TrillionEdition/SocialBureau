@@ -266,8 +266,6 @@ const ClientFormaji = () => {
         }));
     };
 
-    // Frontend Cloudinary upload removed - using secure backend upload
-
     const handleFileUpload = async (id, e) => {
         const files = Array.from(e.target.files);
         if (!files.length) return;
