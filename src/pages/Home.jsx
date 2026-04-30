@@ -384,8 +384,7 @@ export const Home = () => {
       />
       <SchemaMarkup data={homepageSchemas} />
       <section className="w-full px-0"> 
-        <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
-          {/* Desktop Image */}
+        {/* Desktop Image */}
           <img
             src="https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1777464425/nluonseufnpkldxvtlgg_u97aup.png"
             alt="HR Session Poster Desktop"
@@ -397,7 +396,6 @@ export const Home = () => {
             alt="HR Session Poster Mobile"
             className="block sm:hidden w-full h-full object-contain"
           />
-        </a>
       </section>
 {/* <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
   <video
