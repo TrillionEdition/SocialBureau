@@ -266,8 +266,6 @@ const ClientFormaji = () => {
         }));
     };
 
-    // Frontend Cloudinary upload removed - using secure backend upload
-
     const handleFileUpload = async (id, e) => {
         const files = Array.from(e.target.files);
         if (!files.length) return;
@@ -290,6 +288,23 @@ const ClientFormaji = () => {
             }
         }));
         setStatus({ msg: 'Assets prepared for secure transmission.', type: 'success' });
+    };
+
+    const removeUploadedFile = (id, index) => {
+        setFormData(prev => {
+            const files = [...(prev.uploadedFiles[id] || [])];
+            if (files[index]?.url) {
+                URL.revokeObjectURL(files[index].url);
+            }
+            files.splice(index, 1);
+            return {
+                ...prev,
+                uploadedFiles: {
+                    ...prev.uploadedFiles,
+                    [id]: files
+                }
+            };
+        });
     };
 
     const getStepStatus = (idx) => {
@@ -643,6 +658,13 @@ const ClientFormaji = () => {
                                                         <img src={formData.uploadedFiles['logo'][0].url} alt="Logo" className="w-full h-full object-contain" />
                                                     </div>
                                                     <div className="text-[10px] font-bold text-green-500 uppercase tracking-widest">Logo Uploaded</div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => { e.stopPropagation(); removeUploadedFile('logo', 0); }}
+                                                        className="relative z-20 p-1 hover:text-red-500 hover:bg-red-600/10 rounded transition-all text-gray-600"
+                                                    >
+                                                        X
+                                                    </button>
                                                 </>
                                             ) : (
                                                 <>
@@ -825,7 +847,7 @@ const ClientFormaji = () => {
                                                 </div>
                                                 {formData.partnersList.length > 1 && (
                                                     <button onClick={() => removePartner(idx)} className="mt-5 p-1.5 text-gray-700 hover:text-red-600 hover:bg-red-600/10 rounded-lg transition-all">
-                                                        <Trash2 size={14} />
+                                                        <X size={14} />
                                                     </button>
                                                 )}
                                             </div>
@@ -843,7 +865,16 @@ const ClientFormaji = () => {
                                             <div className="relative group overflow-hidden border border-dashed border-white/10 rounded bg-[#0d0d0d] px-4 flex items-center justify-center hover:border-red-600 transition-all">
                                                 <input type="file" onChange={(e) => handleFileUpload('brand_face_img', e)} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
                                                 {formData.uploadedFiles['brand_face_img']?.length > 0 ? (
-                                                    <CheckCircle2 size={16} className="text-green-500" />
+                                                    <>
+                                                        <CheckCircle2 size={16} className="text-green-500" />
+                                                        <button
+                                                            type="button"
+                                                            onClick={(e) => { e.stopPropagation(); removeUploadedFile('brand_face_img', 0); }}
+                                                            className="relative z-20 p-0.5 hover:text-red-500 hover:bg-red-600/10 rounded transition-all text-gray-600"
+                                                        >
+                                                            <X size={10} />
+                                                        </button>
+                                                    </>
                                                 ) : (
                                                     <ImageIcon size={16} className="text-white/20" />
                                                 )}
@@ -919,6 +950,13 @@ const ClientFormaji = () => {
                                                         <div key={i} className="group/item relative flex items-center gap-2 bg-black/40 border border-white/5 pl-2 pr-1 py-1 rounded text-[9px] font-bold text-white/40">
                                                             <FileText size={10} className="text-red-600" />
                                                             <span className="truncate max-w-[100px]">{f.name}</span>
+                                                            <button
+                                                                type="button"
+                                                                onClick={(e) => { e.stopPropagation(); removeUploadedFile(file.id, i); }}
+                                                                className="relative z-20 ml-1 p-0.5 hover:text-red-500 hover:bg-red-600/10 rounded transition-all"
+                                                            >
+                                                                X
+                                                            </button>
                                                         </div>
                                                     ))}
                                                 </div>
