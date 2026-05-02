@@ -26,7 +26,6 @@ import AjnoraDashboard from "./pages/AjnoraDashboard";
 import AjinorahForm from "./components/ClientFormaji";
 import SocialBureauIntro from "./components/Light";
 
-// Lazy-loaded Pages
 const Home = lazy(() =>
   import("./pages/Home").then((module) => ({ default: module.Home })),
 );
