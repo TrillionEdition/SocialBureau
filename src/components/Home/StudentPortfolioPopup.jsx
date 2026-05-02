@@ -99,23 +99,19 @@ const StudentPortfolioPopup = () => {
 
   const handleRedirect = () => {
     const token = localStorage.getItem('partnerToken') || localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
     
-    if (token && (user.role === 'admin' || localStorage.getItem('partnerToken'))) {
+    if (token) {
       navigate('/partners/dashboard');
-    } else if (!token) {
-      navigate('/partners/login?redirect=/partners/create-portfolio');
     } else {
-      navigate('/partners/dashboard');
+      navigate('/partners/login?redirect=/partners/create-portfolio');
     }
     handleClose();
   };
 
   const handleTriggerClick = () => {
     const token = localStorage.getItem('partnerToken') || localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
     
-    if (token && (user.role === 'admin' || localStorage.getItem('partnerToken'))) {
+    if (token) {
       navigate('/partners/dashboard');
     } else {
       setIsOpen(true);

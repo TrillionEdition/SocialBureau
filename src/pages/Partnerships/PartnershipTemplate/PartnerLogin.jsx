@@ -92,16 +92,17 @@ const PartnerLogin = () => {
       const redirectParam = queryParams.get("redirect");
       const isAdmin = data.user?.role?.toLowerCase() === "admin";
       
-      // Default redirection logic
+      // If they have a portfolio or are admin, go to dashboard
+      // Otherwise use the redirect param or default to template selection
       let destination = "/partners/select-template";
       if (hasPortfolio || isAdmin) {
         destination = "/partners/dashboard";
+      } else if (location.state?.from?.pathname || redirectParam) {
+        destination = location.state?.from?.pathname || redirectParam;
       }
 
-      const from = location.state?.from?.pathname || redirectParam || destination;
-
       setTimeout(() => {
-        navigate(from, { replace: true });
+        navigate(destination, { replace: true });
       }, 1000);
     } catch (err) {
       setError(err.message || "Invalid credentials");

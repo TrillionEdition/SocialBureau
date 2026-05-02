@@ -80,17 +80,39 @@ export const Login = () => {
       setSuccess("Login successful ✅");
       window.dispatchEvent(new Event("authChange"));
 
+      // Check if user has an existing portfolio to decide redirection
+      let hasPortfolio = false;
+      try {
+        const portResponse = await fetch(`${BASE_URL}/partners/my-partnership`, {
+          headers: { "Authorization": `Bearer ${data.token}` }
+        });
+        const portData = await portResponse.json();
+        if (portData.success && portData.data) {
+          hasPortfolio = true;
+        }
+      } catch (err) {
+        console.error("Portfolio check failed", err);
+      }
+
       const queryParams = new URLSearchParams(location.search);
       const redirectParam = queryParams.get("redirect");
-      const from = location.state?.from?.pathname || redirectParam || "/";
+      
+      // If they have a portfolio, they should go to the dashboard
+      // Otherwise use the redirect param or default to home
+      let destination = "/";
+      if (hasPortfolio) {
+        destination = "/partners/dashboard";
+      } else if (location.state?.from?.pathname || redirectParam) {
+        destination = location.state?.from?.pathname || redirectParam;
+      }
 
       setTimeout(() => {
         if (data.user?.isEmployee && !data.user?.isVerified) {
           console.log("Employee not verified – navigating to verification");
           navigate("/verify-employee");
         } else {
-          console.log(`Redirecting to previous page: ${from}`);
-          navigate(from, { replace: true });
+          console.log(`Redirecting to: ${destination}`);
+          navigate(destination, { replace: true });
         }
       }, 1000);
     } catch (err) {
