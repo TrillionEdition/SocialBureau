@@ -383,22 +383,22 @@ export const Home = () => {
         canonicalUrl="https://www.socialbureau.in"
       />
       <SchemaMarkup data={homepageSchemas} />
-      {/* <section className="w-full px-0"> 
-        <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer"> */}
+      <section className="w-full px-0"> 
+        <a href='/' target="_blank" rel="noopener noreferrer"> 
           {/* Desktop Image */}
-          {/* <img
-            src="https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1777464425/nluonseufnpkldxvtlgg_u97aup.png"
+          <img
+            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777882017/ChatGPT_Image_May_4_2026_01_32_02_PM_lavtlu.png"
             alt="HR Session Poster Desktop"
             className="hidden sm:block w-full h-full object-cover"
-          /> */}
+          /> 
           {/* Mobile Image */}
-          {/* <img
-            src="https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1777464426/qhkjareqeslfvl1mkahy_ymfdqh.png"
+          <img
+            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777882016/ChatGPT_Image_May_4_2026_01_31_52_PM_d3gsbh.png"
             alt="HR Session Poster Mobile"
             className="block sm:hidden w-full h-full object-contain"
           />
         </a>
-      </section>   */}
+      </section>  
 {/* <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
   <video
   className="block w-full h-auto object-cover"
