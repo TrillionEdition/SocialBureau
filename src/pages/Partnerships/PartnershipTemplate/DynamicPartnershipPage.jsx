@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { BASE_URL } from "@/utils/urls";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import ModernTemplate from "./ModernTemplate";
+import InfluencerTemplate from "./InfluencerTemplate";
 import { Edit3, X, Save, Palette, Type, Maximize2, Check, Layout, Sparkles, Image as ImageIcon, Trash2 } from "lucide-react";
 import { useAuth, fetchWithAuth } from "@/utils/authUtils";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +14,7 @@ import { toast } from "react-toastify";
 const templates = {
   template1: ModernTemplate,
   modern: ModernTemplate,
+  influencer: InfluencerTemplate,
 };
 
 const DynamicPartnershipPage = () => {
@@ -820,6 +822,16 @@ const DynamicPartnershipPage = () => {
                       />
                     </div>
                     <div className="space-y-3">
+                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Hero Description</label>
+                      <input 
+                        type="text" 
+                        value={editableData.details.heroDescription || ""}
+                        onChange={(e) => handleUpdate({ details: { ...editableData.details, heroDescription: e.target.value } })}
+                        onFocus={() => scrollToSection('hero-section')}
+                        className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-4 text-white focus:border-[#E8001A] outline-none font-medium italic"
+                      />
+                    </div>
+                    <div className="space-y-3">
                       <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">About Me (Bio)</label>
                       <textarea 
                         value={editableData.details.bio}
@@ -828,6 +840,52 @@ const DynamicPartnershipPage = () => {
                         className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-6 text-white focus:border-[#E8001A] outline-none h-48 resize-none italic font-light leading-relaxed"
                       />
                     </div>
+
+                    {editableData.templateId === "influencer" && (
+                      <div className="space-y-6 pt-4 border-t border-zinc-800">
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-yellow-500 ml-1">Influencer Authority Stats</label>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                             <span className="text-[8px] font-bold text-zinc-600 uppercase">Total Followers</span>
+                             <input 
+                               type="text" 
+                               value={editableData.details.stats?.followers || ""}
+                               onChange={(e) => handleUpdate({ details: { ...editableData.details, stats: { ...editableData.details.stats, followers: e.target.value } } })}
+                               className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-yellow-500"
+                             />
+                          </div>
+                          <div className="space-y-2">
+                             <span className="text-[8px] font-bold text-zinc-600 uppercase">Engagement %</span>
+                             <input 
+                               type="text" 
+                               value={editableData.details.stats?.engagement || ""}
+                               onChange={(e) => handleUpdate({ details: { ...editableData.details, stats: { ...editableData.details.stats, engagement: e.target.value } } })}
+                               className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-yellow-500"
+                             />
+                          </div>
+                        </div>
+
+                        <div className="space-y-4 pt-4 border-t border-zinc-800">
+                          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-yellow-500 ml-1">Call to Action (Bottom)</label>
+                          <div className="space-y-3">
+                             <span className="text-[8px] font-bold text-zinc-600 uppercase">CTA Title</span>
+                             <input 
+                               type="text" 
+                               value={editableData.details.ctaTitle || ""}
+                               onChange={(e) => handleUpdate({ details: { ...editableData.details, ctaTitle: e.target.value } })}
+                               className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-yellow-500 font-bold italic"
+                             />
+                             <span className="text-[8px] font-bold text-zinc-600 uppercase">CTA Subtitle</span>
+                             <input 
+                               type="text" 
+                               value={editableData.details.ctaSubtitle || ""}
+                               onChange={(e) => handleUpdate({ details: { ...editableData.details, ctaSubtitle: e.target.value } })}
+                               className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-yellow-500 italic"
+                             />
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -1041,6 +1099,124 @@ const DynamicPartnershipPage = () => {
                                 const newProjects = [...editableData.details.projects];
                                 newProjects[idx].description = e.target.value;
                                 handleUpdate({ details: { ...editableData.details, projects: newProjects } });
+                              }}
+                              className="w-full bg-transparent text-[10px] text-zinc-500 italic h-12 resize-none outline-none"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Blog Posts */}
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Blog Posts / News</label>
+                        <button 
+                          onClick={() => handleUpdate({ details: { ...editableData.details, blogPosts: [...(editableData.details.blogPosts || []), { title: "New Post", description: "Excerpt...", image: "", date: "12 Jan 2024", category: "Lifestyle" }] } })}
+                          className="text-[9px] font-black uppercase text-[#E8001A] hover:text-white transition-colors"
+                        >
+                          + Add Post
+                        </button>
+                      </div>
+                      <div className="space-y-3">
+                        {(editableData.details.blogPosts || []).map((post, idx) => (
+                          <div key={idx} className="p-4 bg-zinc-900 rounded-2xl border border-zinc-800 space-y-3">
+                            <div className="flex gap-3">
+                                <div 
+                                  className="w-12 h-12 bg-black rounded-lg overflow-hidden border border-zinc-800 shrink-0 relative group cursor-pointer"
+                                  onClick={() => document.getElementById(`blog-upload-${idx}`).click()}
+                                >
+                                   {post.image ? (
+                                     <img src={post.image} className="w-full h-full object-cover" />
+                                   ) : (
+                                     <div className="w-full h-full flex items-center justify-center text-[8px] text-zinc-800">
+                                       <ImageIcon size={12} />
+                                     </div>
+                                   )}
+                                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                      <ImageIcon size={14} className="text-white" />
+                                   </div>
+                                   <input 
+                                     id={`blog-upload-${idx}`}
+                                     type="file" 
+                                     className="hidden" 
+                                     accept="image/*"
+                                     onChange={async (e) => {
+                                        const file = e.target.files[0];
+                                        if (!file) return;
+                                        setSaving(true);
+                                        const formData = new FormData();
+                                        formData.append("image", file);
+                                        try {
+                                          const response = await fetch(`${BASE_URL}/partners/upload`, {
+                                            method: "POST",
+                                            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+                                            body: formData,
+                                          });
+                                          const data = await response.json();
+                                          if (data.success) {
+                                            const newPosts = [...editableData.details.blogPosts];
+                                            newPosts[idx].image = data.url;
+                                            handleUpdate({ details: { ...editableData.details, blogPosts: newPosts } });
+                                          }
+                                        } finally { setSaving(false); }
+                                     }}
+                                   />
+                                </div>
+                                <div className="flex-1 space-y-2">
+                                   <div className="flex justify-between items-center">
+                                     <input 
+                                       type="text" 
+                                       value={post.title}
+                                       onChange={(e) => {
+                                         const newPosts = [...editableData.details.blogPosts];
+                                         newPosts[idx].title = e.target.value;
+                                         handleUpdate({ details: { ...editableData.details, blogPosts: newPosts } });
+                                       }}
+                                       className="bg-transparent text-sm font-black uppercase italic focus:text-[#E8001A] outline-none w-full"
+                                     />
+                                     <button 
+                                       onClick={() => {
+                                         const newPosts = editableData.details.blogPosts.filter((_, i) => i !== idx);
+                                         handleUpdate({ details: { ...editableData.details, blogPosts: newPosts } });
+                                       }}
+                                       className="text-zinc-600 hover:text-red-500 ml-2"
+                                     >
+                                       <X size={14} />
+                                     </button>
+                                   </div>
+                                   <div className="flex gap-2">
+                                     <input 
+                                       type="text" 
+                                       value={post.date}
+                                       onChange={(e) => {
+                                         const newPosts = [...editableData.details.blogPosts];
+                                         newPosts[idx].date = e.target.value;
+                                         handleUpdate({ details: { ...editableData.details, blogPosts: newPosts } });
+                                       }}
+                                       placeholder="Date"
+                                       className="w-1/2 bg-transparent text-[8px] text-zinc-500 outline-none"
+                                     />
+                                     <input 
+                                       type="text" 
+                                       value={post.category}
+                                       onChange={(e) => {
+                                         const newPosts = [...editableData.details.blogPosts];
+                                         newPosts[idx].category = e.target.value;
+                                         handleUpdate({ details: { ...editableData.details, blogPosts: newPosts } });
+                                       }}
+                                       placeholder="Category"
+                                       className="w-1/2 bg-transparent text-[8px] text-[#E8001A] outline-none text-right"
+                                     />
+                                   </div>
+                                </div>
+                            </div>
+                            <textarea 
+                              value={post.description}
+                              onChange={(e) => {
+                                const newPosts = [...editableData.details.blogPosts];
+                                newPosts[idx].description = e.target.value;
+                                handleUpdate({ details: { ...editableData.details, blogPosts: newPosts } });
                               }}
                               className="w-full bg-transparent text-[10px] text-zinc-500 italic h-12 resize-none outline-none"
                             />

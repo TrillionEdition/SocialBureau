@@ -65,8 +65,13 @@ export const ForgotPassword = () => {
       if (!response.ok) throw new Error(data.message || "Invalid verification code");
 
       setResetToken(data.resetToken);
-      setSuccess("Identity confirmed.");
-      setStep(3);
+      setSuccess("Identity confirmed. Redirecting to reset vault...");
+      
+      setTimeout(() => {
+        const targetPath = `/reset-password/${data.resetToken}`;
+        const search = location.search; // Keeps ?from=partners if present
+        navigate(targetPath + search, { state: location.state });
+      }, 1500);
     } catch (err) {
       setError(err.message);
     } finally {

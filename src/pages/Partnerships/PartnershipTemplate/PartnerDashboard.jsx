@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, ExternalLink, Copy, Layout, User, Plus, CheckCircle, Globe, Briefcase, LogOut, Edit3 } from "lucide-react";
 import { BASE_URL } from "@/utils/urls";
@@ -12,6 +12,8 @@ const PartnerDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [copiedId, setCopiedId] = useState(null);
   const [prevCount, setPrevCount] = useState(null);
+  const [searchParams] = useSearchParams();
+  const typeFilter = searchParams.get("type"); // 'student' or 'influencer'
   const [notificationSound] = useState(new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"));
   const navigate = useNavigate();
 
@@ -44,11 +46,21 @@ const PartnerDashboard = () => {
             portfolioList = [data.data];
           }
 
-          const templatePortfolios = portfolioList.filter(p => 
+          let templatePortfolios = portfolioList.filter(p => 
             p.details && 
-            p.details.bio && 
             !p.param.startsWith("partnership/")
           ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+          // Apply type filter
+          if (typeFilter === "influencer") {
+            templatePortfolios = templatePortfolios.filter(p => 
+              p.category === "influencer" || p.templateId === "influencer"
+            );
+          } else if (typeFilter === "student") {
+            templatePortfolios = templatePortfolios.filter(p => 
+              p.category === "student" || p.templateId !== "influencer"
+            );
+          }
           
           setPartners(templatePortfolios);
 
@@ -95,7 +107,10 @@ const PartnerDashboard = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6 border-b border-white/5 pb-8">
           <div>
-            <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-[0.9] italic">Portfolio<br /><span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent">Management.</span></h1>
+            <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-[0.9] italic">
+              {typeFilter === 'influencer' ? 'Influencer' : typeFilter === 'student' ? 'Student' : 'Portfolio'}<br />
+              <span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent">Management.</span>
+            </h1>
           </div>
           
           <div className="flex flex-col sm:flex-row items-center gap-6 w-full md:w-auto">

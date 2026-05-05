@@ -36,17 +36,13 @@ export const ResetPassword = () => {
     try {
       setLoading(true);
 
-      const response = await fetch(
-        `${BASE_URL}/user/reset-password/${token}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ password }),
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/user/reset-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token, password }),
+      });
 
       const data = await response.json();
 
@@ -54,8 +50,13 @@ export const ResetPassword = () => {
         throw new Error(data.message || "Failed to reset password");
       }
 
-      setSuccess("Password reset successful! Redirecting to login...");
-      setTimeout(() => navigate("/login" + location.search, { state: location.state }), 2000);
+      setSuccess("Password reset successful! Vault secured.");
+      
+      const queryParams = new URLSearchParams(location.search);
+      const fromPartner = queryParams.get("from") === "partners";
+      const loginPath = fromPartner ? "/partners/login" : "/login";
+
+      setTimeout(() => navigate(loginPath + location.search, { state: location.state }), 2000);
     } catch (err) {
       setError(err.message || "Something went wrong");
     } finally {

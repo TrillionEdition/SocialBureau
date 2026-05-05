@@ -30,6 +30,7 @@ const PartnershipDataForm = () => {
       testimonials: [{ quote: "", author: "" }],
       socialLinks: [{ platform: "LinkedIn", url: "" }],
       heroDescription: "",
+      blogPosts: [{ title: "", description: "", image: "", date: "" }],
     },
   });
 
@@ -566,6 +567,87 @@ const PartnershipDataForm = () => {
              </div>
              <div className="rounded-2xl overflow-hidden border border-zinc-100 shadow-xl shadow-zinc-200/50">
                 <img src="/assets/Partnerships/Student/Form/key_projects.png" alt="Projects Preview" className="w-full h-auto" />
+             </div>
+          </div>
+        </section>
+
+        {/* Section: Blog Posts */}
+        <section className="grid lg:grid-cols-2 gap-12 items-start">
+          <div className="space-y-8">
+            <div className="flex justify-between items-center border-b border-zinc-100 pb-4">
+              <div className="flex items-center gap-3">
+                <MessageSquare size={20} className="text-zinc-400" />
+                <h2 className="text-xl font-bold tracking-tight">Blog Posts / News</h2>
+              </div>
+              <button onClick={() => addArrayItem("blogPosts", { title: "", description: "", image: "", date: "" })} className="flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg text-xs font-bold hover:bg-zinc-800 transition-all shadow-sm">
+                <Plus size={14} /> Add Post
+              </button>
+            </div>
+            <div className="grid gap-6">
+              {(formData.details.blogPosts || []).map((post, i) => (
+                <div key={i} className="bg-white border border-zinc-200 p-5 rounded-2xl relative shadow-sm hover:shadow-md transition-all">
+                  <button onClick={() => removeArrayItem("blogPosts", i)} className="absolute top-3 right-3 z-10 p-2 bg-white/80 backdrop-blur shadow-sm rounded-full text-zinc-300 hover:text-red-500 transition-colors"><Trash2 size={14} /></button>
+                  <div className="aspect-video rounded-xl overflow-hidden bg-zinc-50 mb-4 relative group">
+                    {post.image ? <img src={post.image} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-zinc-200 text-sm font-medium">No image</div>}
+                    <label className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/20 transition-opacity cursor-pointer">
+                      <Upload size={24} className="text-white" />
+                      <input type="file" className="hidden" accept="image/*" onChange={async (e) => {
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        setUploading(true);
+                        const data = new FormData();
+                        data.append("image", file);
+                        try {
+                          const response = await fetch(`${BASE_URL}/partners/upload`, {
+                            method: "POST",
+                            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+                            body: data,
+                          });
+                          const res = await response.json();
+                          if (res.success) handleArrayChange("blogPosts", i, "image", res.url);
+                        } catch (err) { toast.error("Upload failed"); } finally { setUploading(false); }
+                      }} />
+                    </label>
+                  </div>
+                  <div className="grid gap-4">
+                    <input
+                      value={post.title}
+                      onChange={(e) => handleArrayChange("blogPosts", i, "title", e.target.value)}
+                      placeholder="Post Title"
+                      className="w-full bg-transparent border-b border-zinc-100 pb-2 text-base font-bold outline-none focus:border-zinc-900"
+                    />
+                    <div className="flex gap-4">
+                      <input
+                        value={post.date}
+                        onChange={(e) => handleArrayChange("blogPosts", i, "date", e.target.value)}
+                        placeholder="Date (e.g. 12 Jan 2024)"
+                        className="flex-1 bg-transparent border-b border-zinc-100 pb-2 text-xs outline-none focus:border-zinc-900"
+                      />
+                      <input
+                        value={post.category}
+                        onChange={(e) => handleArrayChange("blogPosts", i, "category", e.target.value)}
+                        placeholder="Category"
+                        className="flex-1 bg-transparent border-b border-zinc-100 pb-2 text-xs outline-none focus:border-zinc-900"
+                      />
+                    </div>
+                    <textarea
+                      value={post.description}
+                      onChange={(e) => handleArrayChange("blogPosts", i, "description", e.target.value)}
+                      placeholder="Post excerpt..."
+                      className="w-full bg-transparent text-xs text-zinc-500 h-16 outline-none resize-none"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-4 lg:mt-12">
+             <div className="flex items-center gap-2">
+               <div className="w-1.5 h-1.5 rounded-full bg-zinc-900" />
+               <span className="text-[11px] font-black text-zinc-900 uppercase tracking-[0.2em]">Blog Feed Preview</span>
+             </div>
+             <div className="rounded-2xl overflow-hidden border border-zinc-100 shadow-xl shadow-zinc-200/50">
+                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2070&auto=format&fit=crop" alt="Blog Preview" className="w-full h-auto" />
              </div>
           </div>
         </section>

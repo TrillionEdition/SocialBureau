@@ -15,9 +15,17 @@ const templates = [
     tags: ["Clinical", "Glass", "Parallax"]
   },
   {
+    id: "influencer",
+    name: "Influencer",
+    type: "Digital Vessel 02",
+    description: "A professional design for content creators, with focus on social presence and visual storytelling.",
+    preview: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop",
+    tags: ["Creator", "Vibrant", "Social"],
+  },
+  {
     id: "minimal",
     name: "Elite",
-    type: "Digital Vessel 02",
+    type: "Digital Vessel 03",
     description: "A narrative-focused authority engine for executive leaders and visionaries.",
     preview: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1000&auto=format&fit=crop",
     tags: ["Narrative", "Grid", "Typography"],
@@ -152,7 +160,10 @@ const PartnershipTemplateSelector = () => {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => navigate(`/partners/create-portfolio?template=${selected}`)}
+            onClick={() => {
+              const route = selected === "influencer" ? "/partners/create-influencer" : "/partners/create-portfolio";
+              navigate(`${route}?template=${selected}`);
+            }}
             className="group relative px-16 py-6 overflow-hidden rounded-2xl transition-all duration-500"
           >
             {/* Animated Gradient Background */}

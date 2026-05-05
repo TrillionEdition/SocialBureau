@@ -124,10 +124,12 @@ const ViewEvents = lazy(() => import("./components/ViewEvents"));
 const WebDevelopment = lazy(() => import("./components/Home/WebDevelopment"));
 const PartnershipTemplateSelector = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnershipTemplateSelector"));
 const PartnershipDataForm = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnershipDataForm"));
+const InfluencerDataForm = lazy(() => import("./pages/Partnerships/PartnershipTemplate/InfluencerDataForm"));
 const DynamicPartnershipPage = lazy(() => import("./pages/Partnerships/PartnershipTemplate/DynamicPartnershipPage"));
 const PartnerRegister = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerRegister"));
 const PartnerLogin = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerLogin"));
 const PartnerDashboard = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboard"));
+const PartnerDashboardHub = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboardHub"));
 const StudentShowcase = lazy(() => import("./pages/Partnerships/StudentShowcase"));
 
 function ConditionalFooter() {
@@ -433,9 +435,11 @@ function App() {
 
             <Route path="/partners/select-template" element={<PartnershipTemplateSelector />} />
             <Route path="/partners/create-portfolio" element={<PartnershipDataForm />} />
+            <Route path="/partners/create-influencer" element={<InfluencerDataForm />} />
             <Route path="/partners/register" element={<PartnerRegister />} />
             <Route path="/partners/login" element={<PartnerLogin />} />
-            <Route path="/partners/dashboard" element={<PartnerDashboard />} />
+            <Route path="/partners/dashboard" element={<PartnerDashboardHub />} />
+            <Route path="/partners/manage" element={<PartnerDashboard />} />
             <Route path="/partners/students" element={<StudentShowcase />} />
 
             <Route path="/partnership/Partner2" element={<Partner2 />} />
