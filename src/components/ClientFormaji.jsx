@@ -273,7 +273,7 @@ const ClientFormaji = () => {
         // Prepare files for backend transmission
         const preparedFiles = files.map(file => ({
             name: file.name,
-            url: URL.createObjectURL(file), 
+            url: URL.createObjectURL(file),
             file: file, // Raw File object
             type: file.type,
             size: (file.size / 1024).toFixed(2) + ' KB',
@@ -352,12 +352,24 @@ const ClientFormaji = () => {
         setStatus({ msg: 'Submitting and saving to all workspaces...', type: 'loading' });
 
         try {
-            // Import the service dynamically or use it if imported at top
+            // Import services dynamically
             const ajnoraService = (await import('@/services/ajnoraService')).default;
+            const { createClickUpTask } = await import('@/services/clickupServices');
+
+            // 1. Save to Database
             await ajnoraService.createEntry({
                 ...formData,
                 project: formData.brandName || 'Phase 01'
             });
+
+            // 2. Create ClickUp Task
+            await createClickUpTask({
+                clientName: formData.contactName,
+                clientCompany: formData.brandName || formData.legalName,
+                status: 'intake',
+                priority: 2 // Medium priority
+            });
+
             setIsSubmitted(true);
         } catch (error) {
             setStatus({ msg: 'Submission failed: ' + (error.message || error), type: 'error' });
@@ -488,9 +500,11 @@ const ClientFormaji = () => {
                             animate={{ opacity: 1, y: 0 }}
                             className="text-center relative z-10 max-w-full w-full flex flex-col items-center justify-center space-y-4 md:space-y-6 pt-4 sm:pt-6"
                         >
-                            <div className="flex justify-center">
-                                <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_LOGO_BLACK_PNG_iev5qz.png" alt="SocialBureau" className="h-16 sm:h-24 md:h-32 w-auto" />
-                            </div>
+                            <a href='https://socialbureau.in'>
+                                <div className="flex justify-center">
+                                    <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_LOGO_BLACK_PNG_iev5qz.png" alt="SocialBureau" className="h-16 sm:h-24 md:h-32 w-auto" />
+                                </div>
+                            </a>
 
                             <div className="flex items-center gap-4 justify-center">
                                 <div className="h-px w-8 bg-red-600/40" />
