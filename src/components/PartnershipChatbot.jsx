@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
 const PARTNER_DATA = {
+  "ranjit": { name: "Ranjit", email: "ranjit@socialbureau.com" },
+  "sivaprasad": { name: "Siva Prasad", email: "sivaprasad@socialbureau.com" },
   "partner1": { name: "Our Partner", email: "partner1@gmail.com" },
   "partner-1": { name: "Our Partner", email: "partner1@gmail.com" },
   "johnsamuel": { name: "John Samuel", email: "johnsamuel@gmail.com" },
@@ -47,15 +49,7 @@ export default function PartnershipChatbot() {
       },
     ]);
 
-    // Open chat automatically after 3 seconds only on desktop
-    const timer = setTimeout(() => {
-      if (window.innerWidth >= 768) {
-        setIsOpen(true);
-      }
-    }, 3000);
-
-
-    return () => clearTimeout(timer);
+    return () => {};
   }, []);
 
   const handleSend = (e) => {

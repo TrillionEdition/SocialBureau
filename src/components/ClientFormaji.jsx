@@ -266,8 +266,6 @@ const ClientFormaji = () => {
         }));
     };
 
-    // Frontend Cloudinary upload removed - using secure backend upload
-
     const handleFileUpload = async (id, e) => {
         const files = Array.from(e.target.files);
         if (!files.length) return;
@@ -275,7 +273,7 @@ const ClientFormaji = () => {
         // Prepare files for backend transmission
         const preparedFiles = files.map(file => ({
             name: file.name,
-            url: URL.createObjectURL(file), // Local preview URL
+            url: URL.createObjectURL(file), 
             file: file, // Raw File object
             type: file.type,
             size: (file.size / 1024).toFixed(2) + ' KB',
@@ -290,6 +288,23 @@ const ClientFormaji = () => {
             }
         }));
         setStatus({ msg: 'Assets prepared for secure transmission.', type: 'success' });
+    };
+
+    const removeUploadedFile = (id, index) => {
+        setFormData(prev => {
+            const files = [...(prev.uploadedFiles[id] || [])];
+            if (files[index]?.url) {
+                URL.revokeObjectURL(files[index].url);
+            }
+            files.splice(index, 1);
+            return {
+                ...prev,
+                uploadedFiles: {
+                    ...prev.uploadedFiles,
+                    [id]: files
+                }
+            };
+        });
     };
 
     const getStepStatus = (idx) => {
@@ -459,7 +474,7 @@ const ClientFormaji = () => {
                     <motion.div
                         exit={{ opacity: 0, scale: 1.05 }}
                         transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-                        className="fixed inset-0 z-[200] bg-white flex flex-col items-center justify-center text-black p-6 overflow-hidden"
+                        className="fixed inset-0 z-[200] bg-white flex flex-col items-center justify-center text-black p-4 sm:p-8 overflow-hidden"
                     >
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-gradient-radial from-red-600/5 to-transparent blur-3xl" />
 
@@ -471,10 +486,10 @@ const ClientFormaji = () => {
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="text-center relative z-10 max-w-full w-full flex flex-col items-center justify-center space-y-4 md:space-y-8"
+                            className="text-center relative z-10 max-w-full w-full flex flex-col items-center justify-center space-y-4 md:space-y-6 pt-4 sm:pt-6"
                         >
                             <div className="flex justify-center">
-                                <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_LOGO_BLACK_PNG_iev5qz.png" alt="SocialBureau" className="h-40 sm:h-40 w-auto" />
+                                <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_LOGO_BLACK_PNG_iev5qz.png" alt="SocialBureau" className="h-16 sm:h-24 md:h-32 w-auto" />
                             </div>
 
                             <div className="flex items-center gap-4 justify-center">
@@ -483,7 +498,7 @@ const ClientFormaji = () => {
                                 <div className="h-px w-8 bg-red-600/40" />
                             </div>
 
-                            <h1 className="text-[16vw] sm:text-[14vw] md:text-[10rem] font-['Bebas_Neue'] tracking-tight leading-[0.8] w-full px-4 break-words">
+                            <h1 className="text-[12vw] sm:text-[10vw] md:text-[7rem] font-['Bebas_Neue'] tracking-tight leading-[0.8] w-full px-4 break-words">
                                 Client <span className="text-red-600">Intake</span>
                             </h1>
 
@@ -510,7 +525,7 @@ const ClientFormaji = () => {
                                 <span>strategy Lab</span>
                             </div>
 
-                            <div className="pt-4 sm:pt-8 w-full flex justify-center">
+                            <div className="pt-2 sm:pt-4 w-full flex justify-center">
                                 <div className="flex items-center justify-center gap-x-6 sm:gap-x-12 gap-y-4 flex-wrap px-4">
                                     {items.map((item, index) => (
                                         <div key={index} className={`items-center ${item.label === 'Discovery Cost' ? 'hidden sm:flex' : 'flex'}`}>
@@ -537,9 +552,12 @@ const ClientFormaji = () => {
 
             <div className="max-w-4xl mx-auto px-6 pt-8 pb-16">
                 <header className="mb-10 pb-5 border-b border-white/5">
-                    <div className="flex items-center gap-4 mb-8">
+                    <div className="flex items-center justify-between gap-4 mb-10">
                         <img src='https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_sticker-02_1_k3ulwd.png'
-                            className='h-26 w-auto' alt="SocialBureau" />
+                            className='h-26 sm:h-28 w-auto' alt="SocialBureau" />
+                        <div className="sm:hidden text-7xl font-black text-white/10 tracking-[-0.02em] leading-none select-none font-['Bebas_Neue'] mr-8">
+                            {(currentStep + 1).toString().padStart(2, '0')}
+                        </div>
                     </div>
 
                     <div className="flex justify-between items-stretch gap-8 flex-wrap">
@@ -556,8 +574,8 @@ const ClientFormaji = () => {
                         </div>
 
                         <div className="flex flex-col items-end justify-between">
-                            <div className="hidden sm:block text-7xl font-black text-white/5 tracking-tighter leading-none select-none">
-                                {(currentStep + 1).toString().padStart(2, '0')}/{(steps.length).toString().padStart(2, '0')}
+                            <div className="hidden sm:block text-[10rem] font-black text-white/10 tracking-[-0.05em] leading-none select-none font-['Bebas_Neue'] mr-16">
+                                {(currentStep + 1).toString().padStart(2, '0')}
                             </div>
                             <div className="mt-auto">
                                 <span className="bg-red-600 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded shadow-lg shadow-red-600/20">
@@ -640,6 +658,13 @@ const ClientFormaji = () => {
                                                         <img src={formData.uploadedFiles['logo'][0].url} alt="Logo" className="w-full h-full object-contain" />
                                                     </div>
                                                     <div className="text-[10px] font-bold text-green-500 uppercase tracking-widest">Logo Uploaded</div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => { e.stopPropagation(); removeUploadedFile('logo', 0); }}
+                                                        className="relative z-20 p-1 hover:text-red-500 hover:bg-red-600/10 rounded transition-all text-gray-600"
+                                                    >
+                                                        X
+                                                    </button>
                                                 </>
                                             ) : (
                                                 <>
@@ -822,7 +847,7 @@ const ClientFormaji = () => {
                                                 </div>
                                                 {formData.partnersList.length > 1 && (
                                                     <button onClick={() => removePartner(idx)} className="mt-5 p-1.5 text-gray-700 hover:text-red-600 hover:bg-red-600/10 rounded-lg transition-all">
-                                                        <Trash2 size={14} />
+                                                        <X size={14} />
                                                     </button>
                                                 )}
                                             </div>
@@ -840,7 +865,16 @@ const ClientFormaji = () => {
                                             <div className="relative group overflow-hidden border border-dashed border-white/10 rounded bg-[#0d0d0d] px-4 flex items-center justify-center hover:border-red-600 transition-all">
                                                 <input type="file" onChange={(e) => handleFileUpload('brand_face_img', e)} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
                                                 {formData.uploadedFiles['brand_face_img']?.length > 0 ? (
-                                                    <CheckCircle2 size={16} className="text-green-500" />
+                                                    <>
+                                                        <CheckCircle2 size={16} className="text-green-500" />
+                                                        <button
+                                                            type="button"
+                                                            onClick={(e) => { e.stopPropagation(); removeUploadedFile('brand_face_img', 0); }}
+                                                            className="relative z-20 p-0.5 hover:text-red-500 hover:bg-red-600/10 rounded transition-all text-gray-600"
+                                                        >
+                                                            <X size={10} />
+                                                        </button>
+                                                    </>
                                                 ) : (
                                                     <ImageIcon size={16} className="text-white/20" />
                                                 )}
@@ -916,6 +950,13 @@ const ClientFormaji = () => {
                                                         <div key={i} className="group/item relative flex items-center gap-2 bg-black/40 border border-white/5 pl-2 pr-1 py-1 rounded text-[9px] font-bold text-white/40">
                                                             <FileText size={10} className="text-red-600" />
                                                             <span className="truncate max-w-[100px]">{f.name}</span>
+                                                            <button
+                                                                type="button"
+                                                                onClick={(e) => { e.stopPropagation(); removeUploadedFile(file.id, i); }}
+                                                                className="relative z-20 ml-1 p-0.5 hover:text-red-500 hover:bg-red-600/10 rounded transition-all"
+                                                            >
+                                                                X
+                                                            </button>
                                                         </div>
                                                     ))}
                                                 </div>
@@ -1340,7 +1381,9 @@ const ClientFormaji = () => {
                                         'Social Media Management', 'Meta Ads', 'Google Ads / SEO', 'YouTube Marketing',
                                         'Content Creation', 'Influencer Marketing', 'Website Design / Redesign',
                                         'Brand Identity / Rebranding', 'WhatsApp Marketing', 'CRM & Lead Automation',
-                                        'Email Marketing', 'Legal Digital Asset Recovery', 'Analytics & Reporting', 'PR & Media Coverage'
+                                        'Email Marketing', 'Legal Digital Asset Recovery', 'Analytics & Reporting',
+                                        'HR & Recruitment Services', 'API Marketing', 'Web Development', 'Niche Marketing',
+                                        'Content Marketing', 'Performance Marketing', 'AdTech Marketing', 'Legal Consulting',
                                     ].map(item => {
                                         const selected = formData.servicesNeeded.find(s => s.label === item);
                                         return (

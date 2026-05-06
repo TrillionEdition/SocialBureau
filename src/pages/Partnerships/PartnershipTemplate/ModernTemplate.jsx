@@ -61,7 +61,7 @@ const AnimatedText = ({ text, className = "", style = {} }) => {
 
   return (
     <motion.span
-      style={{ display: "inline-block", overflow: "hidden", ...style }}
+      style={{ display: "inline-block", overflow: "hidden", padding: "0.2em 0", ...style }}
       variants={container}
       initial="hidden"
       whileInView="visible"
@@ -71,7 +71,7 @@ const AnimatedText = ({ text, className = "", style = {} }) => {
       {text.split(" ").map((word, index) => (
         <motion.span
           variants={child}
-          style={{ display: "inline-block", marginRight: "0.25em" }}
+          style={{ display: "inline-block", marginRight: "0.25em", paddingBottom: "0.1em" }}
           key={index}
         >
           {word}
@@ -83,7 +83,7 @@ const AnimatedText = ({ text, className = "", style = {} }) => {
 
 const PremiumHeading = ({ children, className = "", style = {} }) => {
   return (
-    <div className="overflow-hidden py-6 -my-4">
+    <div className="overflow-hidden py-10 -my-8 px-4 -mx-4">
       <motion.div
         initial={{ y: "110%", skewY: 7, opacity: 0 }}
         whileInView={{ y: 0, skewY: 0, opacity: 1 }}
@@ -98,40 +98,6 @@ const PremiumHeading = ({ children, className = "", style = {} }) => {
   );
 };
 
-const CustomCursor = () => {
-  const [position, setPosition] = React.useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = React.useState(false);
-
-  React.useEffect(() => {
-    const moveCursor = (e) => setPosition({ x: e.clientX, y: e.clientY });
-    const handleMouseOver = (e) => {
-      if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('button')) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
-      }
-    };
-    window.addEventListener("mousemove", moveCursor);
-    window.addEventListener("mouseover", handleMouseOver);
-    return () => {
-      window.removeEventListener("mousemove", moveCursor);
-      window.removeEventListener("mouseover", handleMouseOver);
-    };
-  }, []);
-
-  return (
-    <motion.div
-      className="fixed top-0 left-0 w-8 h-8 rounded-full border border-[var(--primary-color)] pointer-events-none z-[9999] hidden lg:block mix-blend-difference"
-      animate={{
-        x: position.x - 16,
-        y: position.y - 16,
-        scale: isHovering ? 2.5 : 1,
-        backgroundColor: isHovering ? "rgba(232,0,26,0.1)" : "transparent"
-      }}
-      transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.5 }}
-    />
-  );
-};
 
 const BackToTop = () => {
   const [isVisible, setIsVisible] = React.useState(false);
@@ -223,6 +189,8 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
     fontFamily: "sans-serif",
     headingFontSize: "100%",
     bodyFontSize: "100%",
+    headingColor: "#FFFFFF",
+    paragraphColor: "#FFFFFF",
   };
 
   const activeStyles = { ...defaultStyles, ...styles };
@@ -252,6 +220,18 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
     "--module-font": activeStyles.moduleFont || activeStyles.fontFamily,
     "--hero-image-scale": activeStyles.heroImageScale || "1",
     "--project-image-scale": activeStyles.projectImageScale || "1",
+    "--noise-opacity": activeStyles.noiseOpacity || "0",
+    "--grid-opacity": activeStyles.gridOpacity || "0",
+    "--grid-color": activeStyles.gridColor || "#FFFFFF",
+    "--hero-text-y": (activeStyles.heroTextY || 0) + "px",
+    "--hero-bg": activeStyles.heroBg || activeStyles.backgroundColor,
+    "--bio-bg": activeStyles.bioBg || activeStyles.backgroundColor,
+    "--projects-bg": activeStyles.projectsBg || activeStyles.backgroundColor,
+    "--services-bg": activeStyles.servicesBg || activeStyles.backgroundColor,
+    "--testimonials-bg": activeStyles.testimonialsBg || activeStyles.backgroundColor,
+    "--footer-bg": activeStyles.footerBg || activeStyles.backgroundColor,
+    "--heading-color": activeStyles.headingColor || "#FFFFFF",
+    "--paragraph-color": activeStyles.paragraphColor || "#FFFFFF",
   };
   
   React.useEffect(() => {
@@ -270,9 +250,11 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
     offset: ["start start", "end start"],
   });
 
-  const heroY = useTransform(heroScroll, [0, 1], ["0%", "40%"]);
+  const heroY = useTransform(heroScroll, [0, 1], ["0%", "50%"]);
   const heroOpacity = useTransform(heroScroll, [0, 0.8], [1, 0]);
-  const heroScale = useTransform(heroScroll, [0, 1], [1, 1.1]);
+  const heroScale = useTransform(heroScroll, [0, 1], [1, 1.3]);
+  const heroBlur = useTransform(heroScroll, [0, 0.5], ["0px", "10px"]);
+  const nextSectionTranslateY = useTransform(heroScroll, [0, 1], ["0%", "-10%"]);
 
   return (
     <>
@@ -289,37 +271,56 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
           .testimonial-font { font-family: var(--testimonial-font) !important; }
           .footer-font { font-family: var(--footer-font) !important; }
           .module-font { font-family: var(--module-font) !important; }
+          
+          h1, h2, h3, h4, h5, h6 {
+            color: var(--heading-color) !important;
+          }
+          p, span, li, a:not(.btn) {
+            color: var(--paragraph-color);
+          }
+          .text-primary-color {
+            color: var(--primary-color) !important;
+          }
         `}
       </style>
       <div 
-        className="bg-[#0A0A0A] text-white selection:bg-[var(--primary-color)] selection:text-white font-custom antialiased overflow-x-hidden scroll-smooth"
+        className="text-white selection:bg-[var(--primary-color)] selection:text-white font-custom antialiased overflow-x-hidden scroll-smooth"
       style={{ 
         ...styleVariables, 
         backgroundColor: "var(--bg-color)",
         fontFamily: "var(--font-family)"
       }}
     >
-      <CustomCursor />
-      {/* Dynamic Noise Grain Overlay */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.05] z-[100] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      {/* Background Ambience Layers */}
+      <div className="fixed inset-0 pointer-events-none opacity-[var(--noise-opacity)] z-[60] mix-blend-overlay bg-[url('https://res.cloudinary.com/dtwcgfmar/image/upload/v1710515152/noise_u6p5qg.png')] bg-repeat" />
+      <div 
+        className="fixed inset-0 pointer-events-none opacity-[var(--grid-opacity)] z-[5] " 
+        style={{ 
+          backgroundImage: `linear-gradient(to right, var(--grid-color) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px)`,
+          backgroundSize: '40px 40px',
+          opacity: `calc(var(--grid-opacity) * 0.2)`
+        }} 
+      />
 
       {/* Hero Section */}
       <section
+        id="hero-section"
         ref={heroRef}
-        className={`relative w-full overflow-hidden bg-[#0A0A0A] flex items-center justify-center px-4 md:px-6 ${isPortrait ? "min-h-screen pt-20 pb-8" : "h-screen"}`}
+        className={`relative w-full flex items-center justify-center px-4 md:px-6 min-h-screen pt-24 pb-12`}
+        style={{ backgroundColor: 'var(--hero-bg)' }}
       >
         {/* Background Layer with Parallax */}
         <motion.div
-          style={{ y: heroY, opacity: heroOpacity, scale: heroScale }}
-          className="absolute inset-0 z-0 pointer-events-none"
+          style={{ y: heroY, opacity: heroOpacity, scale: heroScale, filter: `blur(${heroBlur})` }}
+          className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
         >
           <img
              src={image || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"} 
              alt={name} 
-             className={`w-full h-full object-cover opacity-30 ${isPortrait ? "blur-3xl" : ""}`}
+             className={`w-full h-full object-cover opacity-30 ${isPortrait ? "blur-2xl" : ""}`}
              style={{ transform: `scale(var(--hero-image-scale))` }}
            />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/0 via-[#0A0A0A]/40 to-[#0A0A0A]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--bg-color)]/20 to-[var(--bg-color)]" />
         </motion.div>
 
         <div className="absolute top-8 md:top-12 left-6 md:left-12 z-50 flex items-center gap-4 md:gap-6">
@@ -328,12 +329,18 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
             transition={{ duration: 2, repeat: Infinity }}
             className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-[var(--primary-color)] shadow-[0_0_20px_var(--primary-color)]" 
           />
-          <div className="text-[9px] md:text-[11px] font-black tracking-[0.4em] md:tracking-[0.6em] text-white/60 uppercase italic">
+          <div 
+            className="text-[9px] md:text-[11px] font-black tracking-[0.4em] md:tracking-[0.6em] uppercase italic"
+            style={{ color: 'var(--paragraph-color)', opacity: 0.6 }}
+          >
             {name || "SOCIAL BUREAU PARTNER"}
           </div>
         </div>
 
-        <div className={`max-w-7xl w-full relative z-10 flex flex-col items-center ${isPortrait ? "lg:flex-row lg:items-center lg:justify-center gap-12 md:gap-32" : "text-center"}`}>
+        <div 
+          className={`max-w-7xl w-full relative z-10 flex flex-col items-center ${isPortrait ? "lg:flex-row lg:items-center lg:justify-center lg:gap-32" : "text-center"}`}
+          style={{ paddingTop: `var(--hero-text-y)` }}
+        >
           
           {/* Portrait Image Frame */}
           {isPortrait && (
@@ -343,11 +350,11 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
               className="relative w-[280px] sm:w-[320px] md:w-[380px] lg:w-[420px] aspect-[3/4] rounded-[32px] md:rounded-[48px] overflow-hidden shadow-[0_60px_120px_-20px_rgba(232,0,26,0.15)] border border-white/10 p-1.5 md:p-2 bg-white/5 backdrop-blur-3xl z-20"
             >
-               <img src={image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop"} alt={name} className="w-full h-full object-cover rounded-[28px] md:rounded-[40px] transition-all duration-1000" />
+               <img src={image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop"} alt={name} className="w-full h-full object-cover rounded-[28px] md:rounded-[40px] transition-all duration-1000" style={{ transform: `scale(var(--hero-image-scale))` }} />
             </motion.div>
           )}
 
-          <div className={isPortrait ? "flex-1 text-center lg:text-left" : "w-full"}>
+          <div className={`${isPortrait ? "flex-1 text-center lg:text-left mt-20 lg:mt-0" : "w-full mt-20"}`}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -362,56 +369,47 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
               </span>
             </motion.div>
 
-            <div className={`space-y-[-0.1em] md:space-y-[-0.15em] ${isPortrait ? "text-center lg:text-left" : "text-center flex flex-col items-center"}`}>
+            <div className={`space-y-4 ${isPortrait ? "text-center lg:text-left" : "text-center flex flex-col items-center"}`}>
               <div className="overflow-hidden py-2 md:py-4">
                 <motion.h1
                   initial={{ y: "110%" }}
                   animate={{ y: 0 }}
                   transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-black leading-[0.8] tracking-tighter text-white uppercase italic pr-4 hero-font whitespace-nowrap"
-                  style={{ fontSize: `calc(var(--hero-name-size) * ${isPortrait ? "clamp(1.2rem, 6.5vw, 6rem)" : "clamp(3rem, 12vw, 12rem)"})` }}
+                  className="font-black leading-[0.9] tracking-tight uppercase italic pr-4 hero-font"
+                  style={{ fontSize: `calc(var(--hero-name-size) * ${isPortrait ? "clamp(1.2rem, 6.5vw, 6rem)" : "clamp(3rem, 12vw, 12rem)"})`, color: 'var(--heading-color)' }}
                 >
-                  {name?.split(" ")[0] || "IDENTITY."}
+                  {name || "IDENTITY."}
                 </motion.h1>
               </div>
-              {name?.split(" ")[1] && (
-                <div className="overflow-hidden py-2 md:py-4">
-                  <motion.h1
-                    initial={{ y: "110%" }}
-                    animate={{ y: 0 }}
-                    transition={{ duration: 1.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-                    className="font-black leading-[0.8] tracking-tighter text-transparent outline-text uppercase flex items-center justify-center lg:justify-start gap-[0.2em] pr-4 hero-font whitespace-nowrap"
-                    style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)", fontSize: `calc(var(--hero-name-size) * ${isPortrait ? "clamp(1.2rem, 6.5vw, 6rem)" : "clamp(3rem, 12vw, 12rem)"})` }}
-                  >
-                    <span className="text-[var(--primary-color)]/40 font-light italic" /> {name?.split(" ")[1]}
-                  </motion.h1>
-                </div>
+              
+              {data.heroDescription && (
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                  className="text-[10px] md:text-xs font-black uppercase tracking-[0.4em] italic"
+                  style={{ color: 'var(--paragraph-color)', opacity: 0.7 }}
+                >
+                  {data.heroDescription}
+                </motion.p>
               )}
             </div>
           </div>
         </div>
-        
-        {/* Animated Scroll Indicator */}
-        <div className="absolute bottom-8 md:bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 md:gap-6 opacity-30">
-           <div className="text-[7px] md:text-[9px] font-black tracking-[0.4em] md:tracking-[0.5em] uppercase text-[var(--primary-color)]">Descend to Explore</div>
-           <div className="w-px h-12 md:h-20 bg-white/10 relative overflow-hidden">
-               <motion.div 
-                 animate={{ y: ["-100%", "100%"] }}
-                 transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
-                 className="absolute inset-0 bg-[var(--primary-color)]" 
-               />
-           </div>
-        </div>
       </section>
 
       {/* Narrative Section */}
-      <section className="py-20 md:py-40 px-6 md:px-12 lg:px-24 bg-[#0A0A0A] relative z-10 overflow-hidden">
-        {/* Background Decorative Text */}
+      <motion.section 
+        id="narrative-section"
+        style={{ y: nextSectionTranslateY, backgroundColor: 'var(--bio-bg)' }}
+        className="py-20 md:py-40 px-6 md:px-12 lg:px-24 relative z-20 shadow-[0_-50px_100px_rgba(0,0,0,0.5)]"
+      >
+        {/* Background Decorative Text - High Speed Parallax */}
         <motion.div 
-          style={{ x: useTransform(heroScroll, [0, 1], ["-10%", "10%"]) }}
-          className="absolute top-1/2 left-0 -translate-y-1/2 text-[40vw] font-black text-white/[0.01] pointer-events-none whitespace-nowrap italic"
+          style={{ x: useTransform(heroScroll, [0.5, 1.5], ["-20%", "20%"]) }}
+          className="absolute top-1/2 left-0 -translate-y-1/2 text-[35vw] font-black text-white/[0.02] pointer-events-none whitespace-nowrap italic tracking-tighter"
         >
-          NARRATIVE NARRATIVE
+          NARRATIVE
         </motion.div>
         
         <div className="max-w-6xl mx-auto relative z-10">
@@ -424,9 +422,9 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
               </div>
               <div className="w-full lg:w-2/3">
                   <AnimatedText 
-                    className="font-bold leading-[1.1] tracking-tight text-white/95 italic uppercase bio-font"
+                    className="font-bold leading-[1.1] tracking-tight italic uppercase bio-font"
                     text={bio || "We exist at the intersection of clinical data and disruptive creativity. Engineering legacies that transcend the digital noise."}
-                    style={{ fontSize: `calc(var(--bio-size) * ${isPortrait ? "2rem" : "4.5rem"})` }}
+                    style={{ fontSize: `calc(var(--bio-size) * ${isPortrait ? "1.4rem" : "2.2rem"})`, color: 'var(--paragraph-color)' }}
                   />
                   <motion.div 
                     initial={{ scaleX: 0 }}
@@ -438,11 +436,15 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
               </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Selected Works Grid */}
       {projects.length > 0 && (
-        <section className="py-20 md:py-40 px-6 md:px-12 lg:px-24 bg-[#0F0F0F] relative overflow-hidden">
+        <section 
+          id="projects-section"
+          className="py-20 md:py-40 px-6 md:px-12 lg:px-24 relative overflow-hidden"
+          style={{ backgroundColor: 'var(--projects-bg)' }}
+        >
            {/* Parallax Background Title */}
            <motion.div 
               style={{ x: useTransform(heroScroll, [0, 1], ["20%", "-20%"]) }}
@@ -454,12 +456,12 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
            <div className="max-w-7xl mx-auto relative z-10">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-32 border-b border-white/5 pb-8 md:pb-16 gap-8">
                   <PremiumHeading 
-                    className="font-black tracking-tighter uppercase leading-[0.8] md:leading-[0.75] italic module-font"
+                    className="font-black tracking-tighter uppercase leading-[0.9] italic module-font"
                     style={{ fontSize: `calc(var(--section-title-size) * 7vw)` }}
                   >
                     Selected<br /><span className="text-[var(--primary-color)]">Artifacts</span>
                   </PremiumHeading>
-                  <div className="text-[10px] font-black tracking-[0.4em] uppercase text-white/20 hidden md:block italic">02 / Clinical Execution</div>
+                  <div className="text-[10px] font-black tracking-[0.4em] uppercase text-white/20 hidden md:block italic" />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 md:gap-x-20 gap-y-12 md:gap-y-24">
@@ -472,7 +474,7 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
                       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                       className={`group relative ${idx % 2 !== 0 ? "md:mt-24" : ""}`}
                     >
-                        <div className="aspect-[3/2] rounded-[24px] md:rounded-[40px] overflow-hidden bg-zinc-900 border border-white/5 relative mb-6 md:mb-8 shadow-2xl transition-all duration-700 hover:shadow-[var(--primary-color)]/10 max-w-2xl mx-auto">
+                        <div className="aspect-[3/2] rounded-[24px] md:rounded-[40px] overflow-hidden bg-white/5 border border-white/5 relative mb-6 md:mb-8 shadow-2xl transition-all duration-700 hover:shadow-[var(--primary-color)]/10 max-w-2xl mx-auto">
                             {project.image ? (
                                <img 
                                  src={project.image} 
@@ -483,19 +485,19 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
                             ) : (
                               <div className="w-full h-full flex items-center justify-center text-white/5 font-black text-[15vw] md:text-[10vw] italic">{idx + 1}</div>
                             )}
-                             <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700" />
+                             <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-color)]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700" />
                         </div>
                         <div className="flex justify-between items-start pr-4 md:pr-6">
                            <div className="max-w-md">
                               <h3 
-                                className="font-black tracking-tighter uppercase mb-4 md:mb-6 italic leading-none group-hover:text-[var(--primary-color)] transition-colors card-font"
+                                className="font-black tracking-tighter uppercase mb-4 md:mb-6 italic leading-none text-[var(--primary-color)] transition-colors card-font"
                                 style={{ fontSize: `calc(var(--project-title-size) * 2rem)` }}
                               >
                                 {project.title}
                               </h3>
                               <p 
-                                className="text-white/40 leading-relaxed font-light italic card-font"
-                                style={{ fontSize: `calc(var(--project-body-size) * 0.875rem)` }}
+                                className="leading-relaxed font-light italic card-font"
+                                style={{ fontSize: `calc(var(--project-body-size) * 0.875rem)`, color: 'var(--paragraph-color)', opacity: 0.7 }}
                               >
                                 {project.description}
                               </p>
@@ -510,17 +512,21 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
       )}
 
       {/* Expertise Section */}
-      <section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-[#0A0A0A] relative z-10">
+      <section 
+        id="expertise-section"
+        className="py-20 md:py-32 px-6 md:px-12 lg:px-24 relative z-10"
+        style={{ backgroundColor: 'var(--services-bg)' }}
+      >
         <div className="max-w-7xl mx-auto">
            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16 mb-20 md:mb-40">
                <PremiumHeading 
                 className="font-black italic uppercase tracking-tighter leading-none module-font"
-                style={{ fontSize: `calc(var(--section-title-size) * 7vw)`, color: "rgba(255,255,255,0.05)" }}
+                style={{ fontSize: `calc(var(--section-title-size) * 7vw)`, color: "var(--primary-color)" }}
               >
                 Excellence Units
               </PremiumHeading>
                <div className="h-px flex-1 bg-white/5 hidden md:block" />
-               <div className="text-[10px] font-black tracking-[0.4em] uppercase text-[var(--primary-color)] italic">03 / Capacity Matrix</div>
+               <div className="text-[10px] font-black tracking-[0.4em] uppercase text-[var(--primary-color)] italic" />
            </div>
 
            <div className={`grid grid-cols-1 sm:grid-cols-2 ${isEditing ? "xl:grid-cols-3" : "lg:grid-cols-3"} gap-px bg-white/5 border border-white/5 rounded-[32px] md:rounded-[80px] overflow-hidden`}>
@@ -531,24 +537,22 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 1, delay: 0.1 * idx }}
-                className="group p-10 md:p-20 lg:p-24 bg-[#0A0A0A] hover:bg-[var(--primary-color)]/5 transition-all duration-700 flex flex-col justify-between aspect-square relative"
+                className="group p-10 md:p-20 lg:p-24 hover:bg-[var(--primary-color)]/5 transition-all duration-700 flex flex-col justify-between aspect-square relative"
+                style={{ backgroundColor: 'var(--bg-color)' }}
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--primary-color)]/10 blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 
-                <div className="text-[10px] md:text-[11px] font-black tracking-widest text-[var(--primary-color)] mb-8 md:mb-12 flex items-center gap-4 italic uppercase relative z-10">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary-color)] animate-pulse" />
-                  0{idx + 1} // CAPACITY
-                </div>
+                <div className="text-[10px] md:text-[11px] font-black tracking-widest text-[var(--primary-color)] mb-8 md:mb-12 flex items-center gap-4 italic uppercase relative z-10" />
                 <div className="relative z-10">
                   <h3 
-                    className="font-black tracking-tighter mb-6 md:mb-10 uppercase leading-[0.85] italic group-hover:text-[var(--primary-color)] transition-colors break-words overflow-hidden card-font"
+                    className="font-black tracking-tighter mb-6 md:mb-10 uppercase leading-[0.85] italic text-[var(--primary-color)] transition-colors break-words overflow-hidden card-font"
                     style={{ fontSize: `calc(var(--service-title-size) * 2.5rem)` }}
                   >
                     {service.title}
                   </h3>
                   <p 
-                    className="text-white/30 group-hover:text-white/70 leading-relaxed font-light italic card-font"
-                    style={{ fontSize: `calc(var(--service-body-size) * 1.125rem)` }}
+                    className="group-hover:opacity-100 leading-relaxed font-light italic card-font transition-opacity"
+                    style={{ fontSize: `calc(var(--service-body-size) * 1.125rem)`, color: 'var(--paragraph-color)', opacity: 0.7 }}
                   >
                     {service.description}
                   </p>
@@ -561,7 +565,11 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
 
       {/* Testimonials */}
       {testimonials.length > 0 && (
-        <section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-[#0A0A0A] relative overflow-hidden">
+        <section 
+          id="testimonials-section"
+          className="py-24 md:py-48 px-6 md:px-12 lg:px-24 relative overflow-hidden"
+          style={{ backgroundColor: 'var(--testimonials-bg)' }}
+        >
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[800px] h-[300px] sm:h-[800px] bg-[var(--primary-color)]/5 rounded-full blur-[80px] md:blur-[160px] pointer-events-none" />
             
             <div className="max-w-7xl mx-auto relative z-10">
@@ -583,10 +591,13 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
                         className="bg-white/[0.01] backdrop-blur-3xl p-10 md:p-20 rounded-[48px] md:rounded-[80px] border border-white/5 hover:border-[var(--primary-color)]/20 transition-all duration-1000 flex flex-col justify-between group relative overflow-hidden"
                       >
                           <div className="absolute -top-10 -right-10 w-40 h-40 bg-[var(--primary-color)]/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                          <Quote className="text-white/5 mb-10 md:mb-16 group-hover:text-[var(--primary-color)]/10 transition-colors w-10 md:w-16 h-10 md:h-16 -ml-2" />
+                          <Quote 
+                            className="mb-10 md:mb-16 group-hover:text-[var(--primary-color)]/10 transition-colors w-10 md:w-16 h-10 md:h-16 -ml-2" 
+                            style={{ color: 'var(--paragraph-color)', opacity: 0.05 }}
+                          />
                           <p 
-                            className="font-medium tracking-tight mb-10 md:mb-24 italic leading-[1.2] md:leading-[1.1] text-white/70 group-hover:text-white transition-colors testimonial-font"
-                            style={{ fontSize: `calc(var(--testimonial-quote-size) * ${isPortrait ? "clamp(1rem, 5vw, 1.8rem)" : "2.5rem"})` }}
+                            className="font-medium tracking-tight mb-10 md:mb-24 italic leading-[1.2] md:leading-[1.1] transition-colors testimonial-font"
+                            style={{ fontSize: `calc(var(--testimonial-quote-size) * ${isPortrait ? "clamp(1rem, 5vw, 1.8rem)" : "2.5rem"})`, color: 'var(--paragraph-color)', opacity: 0.7 }}
                           >
                             "{t.quote}"
                           </p>
@@ -610,9 +621,13 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
       )}
 
       {/* High-End Footer */}
-      <footer className="bg-[#0A0A0A] py-20 md:py-32 px-6 md:px-12 lg:px-24 relative overflow-hidden">
+      <footer 
+        id="footer-section"
+        className="py-8 px-6 md:px-12 lg:px-24 relative overflow-hidden"
+        style={{ backgroundColor: 'var(--footer-bg)' }}
+      >
         <div className="max-w-7xl mx-auto relative z-10">
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center border-b border-white/5 pb-20 md:pb-32 mb-16 md:mb-32 gap-16 md:gap-24">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center border-b border-white/5 pb-8 mb-8 gap-16 md:gap-24">
                 <div className="space-y-8 md:space-y-12 w-full">
                     <PremiumHeading 
                       className="font-black tracking-tighter uppercase leading-[0.85] md:leading-[0.7] mb-6 md:mb-8 italic footer-font"
@@ -620,7 +635,12 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
                     >
                       Let's Build<br /><span className="text-[var(--primary-color)]">Legendary.</span>
                     </PremiumHeading>
-                    <p className="text-white/40 text-base md:text-xl lg:text-2xl font-light italic tracking-tight max-w-xl leading-relaxed">Available for elite collaborations that demand clinical precision and bold execution.</p>
+                    <p 
+                      className="text-base md:text-xl lg:text-2xl font-light italic tracking-tight max-w-xl leading-relaxed"
+                      style={{ color: 'var(--paragraph-color)', opacity: 0.7 }}
+                    >
+                      Available for elite collaborations that demand clinical precision and bold execution.
+                    </p>
                 </div>
                 
                 <div className="flex flex-wrap gap-3 sm:gap-4 md:gap-8">
@@ -639,11 +659,23 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
                 </div>
             </div>
 
-            <div className="flex flex-col md:flex-row justify-between items-center gap-8 md:gap-12 text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] md:tracking-[0.5em] text-white/10 italic text-center md:text-left">
-                <div>©{new Date().getFullYear()} // {name || "PARTNER"} // SOCIAL BUREAU INFRASTRUCTURE</div>
-                <div className="flex gap-8 md:gap-12">
-                    <a href="#" className="hover:text-[var(--primary-color)] transition-colors">Digital Governance</a>
-                    <a href="#" className="hover:text-[var(--primary-color)] transition-colors">Access Protocols</a>
+            <div className="flex flex-col items-center gap-8 text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] md:tracking-[0.5em] text-white/10 italic text-center">
+                <div className="flex flex-col items-center gap-4">
+                  <p className="text-[11px] font-black text-white/90 uppercase tracking-[0.2em]">
+                    Powered by{" "}
+                    <a
+                      style={{ fontFamily: "MyFont, sans-serif" }}
+                      href="https://socialbureau.in"
+                      className="text-white/80 hover:text-white transition-all duration-300 font-bold tracking-tight relative group inline-block"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span className="relative z-10">
+                        Social<span className="text-red-500">B</span>ureau
+                      </span>
+                      <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-red-500 to-red-700 group-hover:w-full transition-all duration-300"></span>
+                    </a>
+                  </p>
                 </div>
             </div>
         </div>

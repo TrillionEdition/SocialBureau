@@ -373,6 +373,31 @@ export const Home = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const HERO_SCHEDULE = [
+    {
+      date: new Date("2026-05-10T00:00:00"), 
+      desktop: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1777977582/Mothers_Day_poster_jzx9ol.png",
+      mobile: null,
+      alt: "Mother's Day Special"
+    },
+    { 
+      date: new Date("2026-05-06T00:00:00"), 
+      desktop: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1777977582/Password_Day_ilkpc1.png",
+      mobile: null,
+      alt: "World Password Day"
+    },
+    {
+      date: new Date("2024-01-01T00:00:00"), // Default/Current
+      desktop: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1777882017/ChatGPT_Image_May_4_2026_01_32_02_PM_lavtlu.png",
+      mobile: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1777882016/ChatGPT_Image_May_4_2026_01_31_52_PM_d3gsbh.png",
+      alt: "HR Session Poster"
+    }
+  ];
+
+  // Find the current active hero based on date
+  const now = new Date();
+  const currentHero = HERO_SCHEDULE.find(h => now >= h.date) || HERO_SCHEDULE[HERO_SCHEDULE.length - 1];
+
   return (
     <div className="bg-white text-[#1D1D1F] selection:bg-[#E8001A] selection:text-white font-sans antialiased">
       <Seo
@@ -383,15 +408,31 @@ export const Home = () => {
         canonicalUrl="https://www.socialbureau.in"
       />
       <SchemaMarkup data={homepageSchemas} />
+      
+      <section className="w-full px-0"> 
+        <a href='/' target="_blank" rel="noopener noreferrer"> 
+          {/* Desktop Image */}
+          <img
+            src={currentHero.desktop}
+            alt={currentHero.alt}
+            className="hidden sm:block w-full h-full object-cover"
+          /> 
+          {/* Mobile Image */}
+          <img
+            src={currentHero.mobile || currentHero.desktop}
+            alt={currentHero.alt}
+            className={`block sm:hidden w-full object-contain ${currentHero.mobile ? 'h-full' : 'h-auto'}`}
+          />
+        </a>
+      </section>  
 {/* <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
   <video
   className="block w-full h-auto object-cover"
-  controls
   autoPlay
   loop
   muted
 >
-  <source src="https://res.cloudinary.com/dtwcgfmar/video/upload/v1777006357/Promo_Video_cib4iq.mp4" type="video/mp4" />
+  <source src="https://res.cloudinary.com/dtwcgfmar/video/upload/v1777369437/3141211-uhd_3840_2160_25fps_1_hpggvl.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
   </a>

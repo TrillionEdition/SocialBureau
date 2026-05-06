@@ -17,7 +17,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import CookieConsent from "./components/CookieConsent";
 import { ToastContainer } from "react-toastify";
 import Partner1 from "./pages/Partnerships/johnsamuel";
-import GlobalCursor from "./components/GlobalCursor";
 import { Clickup } from "./pages/Clickup";
 import ClientDashboard from "./pages/ClientDashboard";
 import ApiMarketingDashboard from "./pages/ApiMarketingDashboard";
@@ -27,7 +26,6 @@ import AjnoraDashboard from "./pages/AjnoraDashboard";
 import AjinorahForm from "./components/ClientFormaji";
 import SocialBureauIntro from "./components/Light";
 
-// Lazy-loaded Pages
 const Home = lazy(() =>
   import("./pages/Home").then((module) => ({ default: module.Home })),
 );
@@ -71,6 +69,7 @@ const ResetPassword = lazy(() =>
   })),
 );
 const Sakilan = lazy(() => import("./pages/Partnerships/sakilan"));
+const Partner2 = lazy(() => import("./pages/Partnerships/Partner2"));
 
 // Lazy-loaded Components
 const AddAchievementForm = lazy(
@@ -125,10 +124,13 @@ const ViewEvents = lazy(() => import("./components/ViewEvents"));
 const WebDevelopment = lazy(() => import("./components/Home/WebDevelopment"));
 const PartnershipTemplateSelector = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnershipTemplateSelector"));
 const PartnershipDataForm = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnershipDataForm"));
+const InfluencerDataForm = lazy(() => import("./pages/Partnerships/PartnershipTemplate/InfluencerDataForm"));
 const DynamicPartnershipPage = lazy(() => import("./pages/Partnerships/PartnershipTemplate/DynamicPartnershipPage"));
 const PartnerRegister = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerRegister"));
 const PartnerLogin = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerLogin"));
 const PartnerDashboard = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboard"));
+const PartnerDashboardHub = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboardHub"));
+const StudentShowcase = lazy(() => import("./pages/Partnerships/StudentShowcase"));
 
 function ConditionalFooter() {
   const location = useLocation();
@@ -140,6 +142,9 @@ function ConditionalFooter() {
     "/partnership/cheriyan",
     "/partnership/sakilan",
     "/partnership",
+    "/partners/select-template",
+    "/partners/create-portfolio",
+    "/partners/dashboard",
     "/dashboard",
     "/user-management",
     "/analytics",
@@ -155,10 +160,11 @@ function ConditionalFooter() {
     "/candidate-profile"
   ];
 
-  const shouldHide = hideFooterRoutes.some(
-    (route) =>
-      location.pathname === route || location.pathname.startsWith(route + "/"),
-  );
+  const shouldHide = hideFooterRoutes.some((route) => {
+    const normalizedPath = location.pathname.toLowerCase().replace(/\/$/, "");
+    const normalizedRoute = route.toLowerCase().replace(/\/$/, "");
+    return normalizedPath === normalizedRoute || normalizedPath.startsWith(normalizedRoute + "/");
+  });
 
   return shouldHide ? null : <Footer />;
 }
@@ -173,6 +179,9 @@ function ConditionalNavbar() {
     "/partnership/cheriyan",
     "/partnership/sakilan",
     "/partnership",
+    "/partners/select-template",
+    "/partners/create-portfolio",
+    "/partners/dashboard",
     "/dashboard",
     "/user-management",
     "/analytics",
@@ -189,19 +198,37 @@ function ConditionalNavbar() {
     "/ajio"
   ];
 
-  const shouldHide = hideNavbarRoutes.some(
-    (route) =>
-      location.pathname === route || location.pathname.startsWith(route + "/"),
-  );
+  const shouldHide = hideNavbarRoutes.some((route) => {
+    const normalizedPath = location.pathname.toLowerCase().replace(/\/$/, "");
+    const normalizedRoute = route.toLowerCase().replace(/\/$/, "");
+    return normalizedPath === normalizedRoute || normalizedPath.startsWith(normalizedRoute + "/");
+  });
 
   return shouldHide ? null : <Navbar />;
 }
 
 function ConditionalChatbot() {
   const location = useLocation();
-  const isPartnershipPage = location.pathname.toLowerCase().startsWith("/partnership");
+  const path = location.pathname.toLowerCase();
+  
+  // Define actual partner slugs that should have the chatbot
+  const actualPartnerSlugs = [
+    "ranjit",
+    "sivaprasad",
+    "partner1",
+    "partner-1",
+    "johnsamuel",
+    "shailesh-sivan",
+    "alen-jacob",
+    "cheriyan",
+    "sakilan"
+  ];
 
-  return isPartnershipPage ? <PartnershipChatbot /> : null;
+  const isActualPartnerPage = actualPartnerSlugs.some(slug => 
+    path === `/partnership/${slug.toLowerCase()}`
+  );
+
+  return isActualPartnerPage ? <PartnershipChatbot /> : null;
 }
 
 const lenisOptions = {
@@ -217,7 +244,6 @@ const lenisOptions = {
 function App() {
   return (
     <ReactLenis root options={lenisOptions}>
-      <GlobalCursor />
       <BrowserRouter>
         <ToastContainer
           position="top-right"
@@ -409,11 +435,14 @@ function App() {
 
             <Route path="/partners/select-template" element={<PartnershipTemplateSelector />} />
             <Route path="/partners/create-portfolio" element={<PartnershipDataForm />} />
+            <Route path="/partners/create-influencer" element={<InfluencerDataForm />} />
             <Route path="/partners/register" element={<PartnerRegister />} />
             <Route path="/partners/login" element={<PartnerLogin />} />
-            <Route path="/partners/dashboard" element={<PartnerDashboard />} />
+            <Route path="/partners/dashboard" element={<PartnerDashboardHub />} />
+            <Route path="/partners/manage" element={<PartnerDashboard />} />
+            <Route path="/partners/students" element={<StudentShowcase />} />
 
-            {/* <Route path="/partnership/Partner2" element={<Partner2 />} /> */}
+            <Route path="/partnership/Partner2" element={<Partner2 />} />
             {/* <Route path="/partnership/Partner3" element={<Partner3 />} />
             <Route path="/partnership/Partner4" element={<Partner4 />} /> */}
 

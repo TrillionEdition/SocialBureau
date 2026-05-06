@@ -7,24 +7,12 @@ import Seo from '../components/Seo'
 import { useQuery } from '@tanstack/react-query'
 import { teamService } from '@/services/teamService'
 
-/**
- * OurTeam page
- *
- * Data flow:
- *   React Query (client memory, stale 24 h)
- *     → sessionStorage (browser tab cache, 24 h TTL)
- *       → Backend GET /team (Redis-cached, 24 h TTL)
- *
- * If the API call fails the page falls back to the static
- * data already baked into TeamSection so visitors never see
- * a broken page.
- */
 export const OurTeam = () => {
   const { data: teamData, isLoading, isError } = useQuery({
     queryKey: ['team'],
     queryFn: () => teamService.getTeam(),
-    staleTime: 1000 * 60 * 60 * 24,   // 24 hours — treat as fresh for a full day
-    gcTime:    1000 * 60 * 60 * 24,   // keep in React Query cache for 24 hours
+    staleTime: 1000 * 60 * 60 * 24,
+    gcTime: 1000 * 60 * 60 * 24,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     retry: 1,
@@ -51,5 +39,3 @@ export const OurTeam = () => {
     </div>
   )
 }
-
-

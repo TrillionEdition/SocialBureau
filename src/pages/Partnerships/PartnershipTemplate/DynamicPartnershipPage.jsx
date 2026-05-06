@@ -1,9 +1,12 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "@/utils/urls";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import ModernTemplate from "./ModernTemplate";
-import { Edit3, X, Save, Palette, Type, Maximize2, Check, Layout, Sparkles, Image as ImageIcon } from "lucide-react";
+import InfluencerTemplate from "./InfluencerTemplate";
+import { Edit3, X, Save, Palette, Type, Maximize2, Check, Layout, Sparkles, Image as ImageIcon, Trash2 } from "lucide-react";
+import { useAuth, fetchWithAuth } from "@/utils/authUtils";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 
@@ -11,6 +14,7 @@ import { toast } from "react-toastify";
 const templates = {
   template1: ModernTemplate,
   modern: ModernTemplate,
+  influencer: InfluencerTemplate,
 };
 
 const DynamicPartnershipPage = () => {
@@ -23,6 +27,97 @@ const DynamicPartnershipPage = () => {
   const [editableData, setEditableData] = useState(null);
   const [activeTab, setActiveTab] = useState("styles");
   const [saving, setSaving] = useState(false);
+  const { isAdmin } = useAuth();
+  const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this portfolio and the associated user? This action cannot be undone."
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const delRes = await fetchWithAuth(
+        `${BASE_URL}/partners/${partner._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const delData = await delRes.json();
+
+      if (delData.success) {
+        toast.success("Portfolio and user deleted successfully");
+        navigate("/partners/dashboard");
+      } else {
+        toast.error(delData.message || "Failed to delete");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error deleting portfolio");
+    }
+  };
+  const scrollTimeout = useRef(null);
+
+  const sectionMapping = {
+    // Styles
+    heroBg: 'hero-section',
+    heroNameFontSize: 'hero-section',
+    heroSubtitleFontSize: 'hero-section',
+    heroFont: 'hero-section',
+    heroImageScale: 'hero-section',
+    
+    bioBg: 'narrative-section',
+    bioFontSize: 'narrative-section',
+    bioFont: 'narrative-section',
+    
+    projectsBg: 'projects-section',
+    projectTitleFontSize: 'projects-section',
+    projectBodyFontSize: 'projects-section',
+    sectionTitleFontSize: 'projects-section',
+    projectImageScale: 'projects-section',
+    
+    servicesBg: 'expertise-section',
+    serviceTitleFontSize: 'expertise-section',
+    serviceBodyFontSize: 'expertise-section',
+    
+    testimonialsBg: 'testimonials-section',
+    testimonialQuoteFontSize: 'testimonials-section',
+    testimonialAuthorFontSize: 'testimonials-section',
+    testimonialFont: 'testimonials-section',
+    
+    footerBg: 'footer-section',
+    footerTitleFontSize: 'footer-section',
+    footerFont: 'footer-section',
+    moduleFont: 'projects-section',
+    cardFont: 'expertise-section',
+
+    // Content
+    name: 'hero-section',
+    subtitle: 'hero-section',
+    image: 'hero-section',
+    bio: 'narrative-section',
+    projects: 'projects-section',
+    services: 'expertise-section',
+    testimonials: 'testimonials-section',
+    socialLinks: 'footer-section',
+  };
+
+  const scrollToSection = (sectionId) => {
+    if (!sectionId) return;
+    
+    // Use a small timeout to ensure DOM is ready or to debounce
+    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+    
+    scrollTimeout.current = setTimeout(() => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  };
 
   useEffect(() => {
     const fetchPartner = async () => {
@@ -118,8 +213,17 @@ const DynamicPartnershipPage = () => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const response = await fetch(`${BASE_URL}/partners/my-partnership`, {
-        method: "POST",
+      let endpoint = `${BASE_URL}/partners/my-partnership`;
+      let method = "POST";
+
+      // If admin is editing, use the specific partner ID
+      if (isAdmin && partner?._id) {
+        endpoint = `${BASE_URL}/partners/${partner._id}`;
+        method = "PUT";
+      }
+
+      const response = await fetch(endpoint, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -181,8 +285,8 @@ const DynamicPartnershipPage = () => {
           }
         `}
       </style>
-      {/* Edit Trigger - Only for Owner */}
-      {isOwner && !isEditing && (
+      {/* Edit Trigger - For Owner or Admin */}
+      {(isOwner || isAdmin) && !isEditing && (
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -193,6 +297,20 @@ const DynamicPartnershipPage = () => {
           <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
           <Edit3 size={20} className="relative z-10" />
           <span className="text-[10px] font-black uppercase tracking-widest relative z-10 pr-2">Customize</span>
+        </motion.button>
+      )}
+
+      {/* Admin Delete Option */}
+      {isAdmin && (
+        <motion.button
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          onClick={handleDelete}
+          className="fixed top-24 right-8 z-[9998] bg-red-600/20 text-red-500 hover:bg-red-600 hover:text-white p-4 rounded-full shadow-2xl transition-all flex items-center gap-3 backdrop-blur-md border border-red-500/20"
+          title="Delete Portfolio & User"
+        >
+          <Trash2 size={20} />
+          <span className="text-[10px] font-black uppercase tracking-widest pr-2">Delete</span>
         </motion.button>
       )}
 
@@ -264,7 +382,8 @@ const DynamicPartnershipPage = () => {
                               type="color" 
                               value={editableData.details?.styles?.primaryColor || "#E8001A"}
                               onChange={(e) => handleStyleChange("primaryColor", e.target.value)}
-                              className="w-10 h-10 rounded-lg bg-transparent border-none cursor-pointer"
+                              onFocus={() => scrollToSection('hero-section')}
+                              className="w-8 h-8 rounded-lg cursor-pointer border-none p-0 overflow-hidden"
                             />
                             <span className="text-xs font-mono uppercase text-zinc-400">
                               {(editableData.details?.styles?.primaryColor || "#E8001A").toUpperCase()}
@@ -278,13 +397,126 @@ const DynamicPartnershipPage = () => {
                               type="color" 
                               value={editableData.details?.styles?.backgroundColor || "#0A0A0A"}
                               onChange={(e) => handleStyleChange("backgroundColor", e.target.value)}
-                              className="w-10 h-10 rounded-lg bg-transparent border-none cursor-pointer"
+                              onFocus={() => scrollToSection('hero-section')}
+                              className="w-8 h-8 rounded-lg cursor-pointer border-none p-0 overflow-hidden"
                             />
                             <span className="text-xs font-mono uppercase text-zinc-400">
                               {(editableData.details?.styles?.backgroundColor || "#0A0A0A").toUpperCase()}
                             </span>
                           </div>
                         </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-3">
+                          <span className="text-[10px] font-bold text-zinc-600 block uppercase">Heading Color</span>
+                          <div className="flex items-center gap-3 bg-zinc-900 p-2 rounded-xl border border-zinc-800">
+                            <input 
+                              type="color" 
+                              value={editableData.details?.styles?.headingColor || "#FFFFFF"}
+                              onChange={(e) => handleStyleChange("headingColor", e.target.value)}
+                              onFocus={() => scrollToSection('hero-section')}
+                              className="w-8 h-8 rounded-lg cursor-pointer border-none p-0 overflow-hidden"
+                            />
+                            <span className="text-xs font-mono uppercase text-zinc-400">
+                              {(editableData.details?.styles?.headingColor || "#FFFFFF").toUpperCase()}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <span className="text-[10px] font-bold text-zinc-600 block uppercase">Paragraph Color</span>
+                          <div className="flex items-center gap-3 bg-zinc-900 p-2 rounded-xl border border-zinc-800">
+                            <input 
+                              type="color" 
+                              value={editableData.details?.styles?.paragraphColor || "#FFFFFF"}
+                              onChange={(e) => handleStyleChange("paragraphColor", e.target.value)}
+                              onFocus={() => scrollToSection('narrative-section')}
+                              className="w-8 h-8 rounded-lg cursor-pointer border-none p-0 overflow-hidden"
+                            />
+                            <span className="text-xs font-mono uppercase text-zinc-400">
+                              {(editableData.details?.styles?.paragraphColor || "#FFFFFF").toUpperCase()}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-6 bg-zinc-900/30 p-5 rounded-2xl border border-zinc-800/50">
+                        <div className="grid grid-cols-2 gap-8">
+                          <div className="space-y-3">
+                            <div className="flex justify-between items-center">
+                              <span className="text-[10px] font-bold text-zinc-400 uppercase">Noise Intensity</span>
+                              <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.noiseOpacity) || 0) * 100)}%</span>
+                            </div>
+                            <input 
+                              type="range" min="0" max="0.2" step="0.01"
+                              value={parseFloat(editableData.details?.styles?.noiseOpacity) || 0}
+                              onChange={(e) => handleStyleChange("noiseOpacity", e.target.value)}
+                              onFocus={() => scrollToSection('hero-section')}
+                              className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
+                            />
+                          </div>
+                          <div className="space-y-3">
+                           <div className="grid grid-cols-2 gap-4">
+                             <div className="space-y-3">
+                               <div className="flex justify-between items-center">
+                                 <span className="text-[10px] font-bold text-zinc-400 uppercase">Grid Intensity</span>
+                                 <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.gridOpacity) || 0) * 100)}%</span>
+                               </div>
+                               <input 
+                                 type="range" min="0" max="1" step="0.05"
+                                 value={parseFloat(editableData.details?.styles?.gridOpacity) || 0}
+                                 onChange={(e) => handleStyleChange("gridOpacity", e.target.value)}
+                                 onFocus={() => scrollToSection('hero-section')}
+                                 className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
+                               />
+                             </div>
+                             <div className="space-y-3">
+                               <span className="text-[10px] font-bold text-zinc-400 uppercase block">Grid Color</span>
+                               <div className="flex items-center gap-3 bg-zinc-900 p-2 rounded-xl border border-zinc-800">
+                                 <input 
+                                   type="color" 
+                                   value={editableData.details?.styles?.gridColor || "#FFFFFF"}
+                                   onChange={(e) => handleStyleChange("gridColor", e.target.value)}
+                                   className="w-8 h-8 rounded-lg cursor-pointer border-none p-0 overflow-hidden"
+                                 />
+                                 <span className="text-[9px] font-mono uppercase text-zinc-500">
+                                   {(editableData.details?.styles?.gridColor || "#FFFFFF").toUpperCase()}
+                                 </span>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-6">
+                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Section Aesthetics (Backgrounds)</label>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 bg-zinc-900/30 p-5 rounded-2xl border border-zinc-800/50">
+                        {[
+                          { id: "heroBg", label: "Hero" },
+                          { id: "bioBg", label: "Narrative" },
+                          { id: "projectsBg", label: "Portfolio" },
+                          { id: "servicesBg", label: "Expertise" },
+                          { id: "testimonialsBg", label: "Voices" },
+                          { id: "footerBg", label: "Final Call" },
+                        ].map((sec) => (
+                          <div key={sec.id} className="space-y-2">
+                            <span className="text-[9px] font-bold text-zinc-500 block uppercase">{sec.label}</span>
+                            <div className="flex items-center gap-2 bg-zinc-900 p-1.5 rounded-lg border border-zinc-800">
+                              <input 
+                                type="color" 
+                                value={editableData.details?.styles?.[sec.id] || editableData.details?.styles?.backgroundColor || "#0A0A0A"}
+                                onChange={(e) => handleStyleChange(sec.id, e.target.value)}
+                                onFocus={() => scrollToSection(sec.id === 'heroBg' ? 'hero-section' : sec.id === 'bioBg' ? 'narrative-section' : sec.id === 'projectsBg' ? 'projects-section' : sec.id === 'servicesBg' ? 'expertise-section' : sec.id === 'testimonialsBg' ? 'testimonials-section' : 'footer-section')}
+                                className="w-6 h-6 rounded bg-transparent border-none cursor-pointer"
+                              />
+                              <span className="text-[9px] font-mono uppercase text-zinc-400">
+                                {(editableData.details?.styles?.[sec.id] || editableData.details?.styles?.backgroundColor || "#0A0A0A").toUpperCase()}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
@@ -302,6 +534,7 @@ const DynamicPartnershipPage = () => {
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.heroNameFontSize) || 1}
                               onChange={(e) => handleStyleChange("heroNameFontSize", e.target.value)}
+                              onFocus={() => scrollToSection('hero-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -314,6 +547,7 @@ const DynamicPartnershipPage = () => {
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.heroSubtitleFontSize) || 1}
                               onChange={(e) => handleStyleChange("heroSubtitleFontSize", e.target.value)}
+                              onFocus={() => scrollToSection('hero-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -323,7 +557,10 @@ const DynamicPartnershipPage = () => {
                               {["Inter, sans-serif", "'Outfit', sans-serif", "'Space Grotesk', sans-serif", "'Playfair Display', serif", "monospace"].map((f) => (
                                 <button 
                                   key={f}
-                                  onClick={() => handleStyleChange("heroFont", f)}
+                                  onClick={() => {
+                                    handleStyleChange("heroFont", f);
+                                    scrollToSection('hero-section');
+                                  }}
                                   className={`px-3 py-1.5 rounded-lg text-[9px] font-bold border transition-all ${editableData.details?.styles?.heroFont === f ? "bg-white text-black border-white" : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500"}`}
                                   style={{ fontFamily: f }}
                                 >
@@ -348,6 +585,7 @@ const DynamicPartnershipPage = () => {
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.bioFontSize) || 1}
                               onChange={(e) => handleStyleChange("bioFontSize", e.target.value)}
+                              onFocus={() => scrollToSection('narrative-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -357,7 +595,10 @@ const DynamicPartnershipPage = () => {
                               {["Inter, sans-serif", "'Outfit', sans-serif", "'Space Grotesk', sans-serif", "'Playfair Display', serif", "monospace"].map((f) => (
                                 <button 
                                   key={f}
-                                  onClick={() => handleStyleChange("bioFont", f)}
+                                  onClick={() => {
+                                    handleStyleChange("bioFont", f);
+                                    scrollToSection('narrative-section');
+                                  }}
                                   className={`px-3 py-1.5 rounded-lg text-[9px] font-bold border transition-all ${editableData.details?.styles?.bioFont === f ? "bg-white text-black border-white" : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500"}`}
                                   style={{ fontFamily: f }}
                                 >
@@ -370,18 +611,19 @@ const DynamicPartnershipPage = () => {
                       </div>
 
                       {/* Global Modules Typography */}
-                      <div className="space-y-4">
-                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Section: Module Headings</label>
+                    <div className="space-y-4">
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Global Section Titles</label>
                         <div className="space-y-6 bg-zinc-900/30 p-5 rounded-2xl border border-zinc-800/50">
                           <div className="space-y-3">
                             <div className="flex justify-between items-center">
-                              <span className="text-[10px] font-bold text-zinc-400 uppercase">Large Headings</span>
+                              <span className="text-[10px] font-bold text-zinc-400 uppercase">Text Size</span>
                               <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.sectionTitleFontSize) || 1) * 100)}%</span>
                             </div>
                             <input 
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.sectionTitleFontSize) || 1}
                               onChange={(e) => handleStyleChange("sectionTitleFontSize", e.target.value)}
+                              onFocus={() => scrollToSection('projects-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -391,7 +633,10 @@ const DynamicPartnershipPage = () => {
                               {["Inter, sans-serif", "'Outfit', sans-serif", "'Space Grotesk', sans-serif", "'Playfair Display', serif", "monospace"].map((f) => (
                                 <button 
                                   key={f}
-                                  onClick={() => handleStyleChange("moduleFont", f)}
+                                  onClick={() => {
+                                    handleStyleChange("moduleFont", f);
+                                    scrollToSection('projects-section');
+                                  }}
                                   className={`px-3 py-1.5 rounded-lg text-[9px] font-bold border transition-all ${editableData.details?.styles?.moduleFont === f ? "bg-white text-black border-white" : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500"}`}
                                   style={{ fontFamily: f }}
                                 >
@@ -407,11 +652,11 @@ const DynamicPartnershipPage = () => {
                     <div className="space-y-6">
                       {/* Services & Projects Typography */}
                       <div className="space-y-4">
-                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Section: Portfolio Cards (Expertise & Artifacts)</label>
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Skills & Projects (Cards)</label>
                         <div className="space-y-6 bg-zinc-900/30 p-5 rounded-2xl border border-zinc-800/50">
                           <div className="space-y-3">
                             <div className="flex justify-between items-center">
-                              <span className="text-[10px] font-bold text-zinc-400 uppercase">Card Headings</span>
+                              <span className="text-[10px] font-bold text-zinc-400 uppercase">Card Title Size</span>
                               <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.serviceTitleFontSize) || 1) * 100)}%</span>
                             </div>
                             <input 
@@ -421,12 +666,13 @@ const DynamicPartnershipPage = () => {
                                 handleStyleChange("serviceTitleFontSize", e.target.value);
                                 handleStyleChange("projectTitleFontSize", e.target.value);
                               }}
+                              onFocus={() => scrollToSection('expertise-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
                           <div className="space-y-3">
                             <div className="flex justify-between items-center">
-                              <span className="text-[10px] font-bold text-zinc-400 uppercase">Card Descriptions</span>
+                              <span className="text-[10px] font-bold text-zinc-400 uppercase">Card Detail Size</span>
                               <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.serviceBodyFontSize) || 1) * 100)}%</span>
                             </div>
                             <input 
@@ -436,6 +682,7 @@ const DynamicPartnershipPage = () => {
                                 handleStyleChange("serviceBodyFontSize", e.target.value);
                                 handleStyleChange("projectBodyFontSize", e.target.value);
                               }}
+                              onFocus={() => scrollToSection('expertise-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -445,7 +692,10 @@ const DynamicPartnershipPage = () => {
                               {["Inter, sans-serif", "'Outfit', sans-serif", "'Space Grotesk', sans-serif", "'Playfair Display', serif", "monospace"].map((f) => (
                                 <button 
                                   key={f}
-                                  onClick={() => handleStyleChange("cardFont", f)}
+                                  onClick={() => {
+                                    handleStyleChange("cardFont", f);
+                                    scrollToSection('expertise-section');
+                                  }}
                                   className={`px-3 py-1.5 rounded-lg text-[9px] font-bold border transition-all ${editableData.details?.styles?.cardFont === f ? "bg-white text-black border-white" : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500"}`}
                                   style={{ fontFamily: f }}
                                 >
@@ -459,7 +709,7 @@ const DynamicPartnershipPage = () => {
 
                       {/* Testimonials Typography */}
                       <div className="space-y-4">
-                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Section: Testimonials (Voices)</label>
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Testimonials (Feedback)</label>
                         <div className="space-y-6 bg-zinc-900/30 p-5 rounded-2xl border border-zinc-800/50">
                           <div className="space-y-3">
                             <div className="flex justify-between items-center">
@@ -470,6 +720,7 @@ const DynamicPartnershipPage = () => {
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.testimonialQuoteFontSize) || 1}
                               onChange={(e) => handleStyleChange("testimonialQuoteFontSize", e.target.value)}
+                              onFocus={() => scrollToSection('testimonials-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -482,6 +733,7 @@ const DynamicPartnershipPage = () => {
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.testimonialAuthorFontSize) || 1}
                               onChange={(e) => handleStyleChange("testimonialAuthorFontSize", e.target.value)}
+                              onFocus={() => scrollToSection('testimonials-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -491,7 +743,10 @@ const DynamicPartnershipPage = () => {
                               {["Inter, sans-serif", "'Outfit', sans-serif", "'Space Grotesk', sans-serif", "'Playfair Display', serif", "monospace"].map((f) => (
                                 <button 
                                   key={f}
-                                  onClick={() => handleStyleChange("testimonialFont", f)}
+                                  onClick={() => {
+                                    handleStyleChange("testimonialFont", f);
+                                    scrollToSection('testimonials-section');
+                                  }}
                                   className={`px-3 py-1.5 rounded-lg text-[9px] font-bold border transition-all ${editableData.details?.styles?.testimonialFont === f ? "bg-white text-black border-white" : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500"}`}
                                   style={{ fontFamily: f }}
                                 >
@@ -516,6 +771,7 @@ const DynamicPartnershipPage = () => {
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.footerTitleFontSize) || 1}
                               onChange={(e) => handleStyleChange("footerTitleFontSize", e.target.value)}
+                              onFocus={() => scrollToSection('footer-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -525,7 +781,10 @@ const DynamicPartnershipPage = () => {
                               {["Inter, sans-serif", "'Outfit', sans-serif", "'Space Grotesk', sans-serif", "'Playfair Display', serif", "monospace"].map((f) => (
                                 <button 
                                   key={f}
-                                  onClick={() => handleStyleChange("footerFont", f)}
+                                  onClick={() => {
+                                    handleStyleChange("footerFont", f);
+                                    scrollToSection('footer-section');
+                                  }}
                                   className={`px-3 py-1.5 rounded-lg text-[9px] font-bold border transition-all ${editableData.details?.styles?.footerFont === f ? "bg-white text-black border-white" : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500"}`}
                                   style={{ fontFamily: f }}
                                 >
@@ -543,31 +802,90 @@ const DynamicPartnershipPage = () => {
                 {activeTab === "content" && (
                   <div className="space-y-8">
                     <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Full Identity Name</label>
+                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Your Full Name</label>
                       <input 
                         type="text" 
                         value={editableData.name}
                         onChange={(e) => handleUpdate({ name: e.target.value })}
+                        onFocus={() => scrollToSection('hero-section')}
                         className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-4 text-white focus:border-[#E8001A] outline-none font-bold italic"
                       />
                     </div>
                     <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Professional Title</label>
+                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Your Headline / Role</label>
                       <input 
                         type="text" 
                         value={editableData.subtitle}
                         onChange={(e) => handleUpdate({ subtitle: e.target.value })}
+                        onFocus={() => scrollToSection('hero-section')}
                         className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-4 text-white focus:border-[#E8001A] outline-none font-medium italic"
                       />
                     </div>
                     <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Core Narrative (Bio)</label>
+                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Hero Description</label>
+                      <input 
+                        type="text" 
+                        value={editableData.details.heroDescription || ""}
+                        onChange={(e) => handleUpdate({ details: { ...editableData.details, heroDescription: e.target.value } })}
+                        onFocus={() => scrollToSection('hero-section')}
+                        className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-4 text-white focus:border-[#E8001A] outline-none font-medium italic"
+                      />
+                    </div>
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">About Me (Bio)</label>
                       <textarea 
                         value={editableData.details.bio}
                         onChange={(e) => handleUpdate({ details: { ...editableData.details, bio: e.target.value } })}
+                        onFocus={() => scrollToSection('narrative-section')}
                         className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-6 text-white focus:border-[#E8001A] outline-none h-48 resize-none italic font-light leading-relaxed"
                       />
                     </div>
+
+                    {editableData.templateId === "influencer" && (
+                      <div className="space-y-6 pt-4 border-t border-zinc-800">
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-yellow-500 ml-1">Influencer Authority Stats</label>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                             <span className="text-[8px] font-bold text-zinc-600 uppercase">Total Followers</span>
+                             <input 
+                               type="text" 
+                               value={editableData.details.stats?.followers || ""}
+                               onChange={(e) => handleUpdate({ details: { ...editableData.details, stats: { ...editableData.details.stats, followers: e.target.value } } })}
+                               className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-yellow-500"
+                             />
+                          </div>
+                          <div className="space-y-2">
+                             <span className="text-[8px] font-bold text-zinc-600 uppercase">Engagement %</span>
+                             <input 
+                               type="text" 
+                               value={editableData.details.stats?.engagement || ""}
+                               onChange={(e) => handleUpdate({ details: { ...editableData.details, stats: { ...editableData.details.stats, engagement: e.target.value } } })}
+                               className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-yellow-500"
+                             />
+                          </div>
+                        </div>
+
+                        <div className="space-y-4 pt-4 border-t border-zinc-800">
+                          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-yellow-500 ml-1">Call to Action (Bottom)</label>
+                          <div className="space-y-3">
+                             <span className="text-[8px] font-bold text-zinc-600 uppercase">CTA Title</span>
+                             <input 
+                               type="text" 
+                               value={editableData.details.ctaTitle || ""}
+                               onChange={(e) => handleUpdate({ details: { ...editableData.details, ctaTitle: e.target.value } })}
+                               className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-yellow-500 font-bold italic"
+                             />
+                             <span className="text-[8px] font-bold text-zinc-600 uppercase">CTA Subtitle</span>
+                             <input 
+                               type="text" 
+                               value={editableData.details.ctaSubtitle || ""}
+                               onChange={(e) => handleUpdate({ details: { ...editableData.details, ctaSubtitle: e.target.value } })}
+                               className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-yellow-500 italic"
+                             />
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -613,9 +931,24 @@ const DynamicPartnershipPage = () => {
                               <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.heroImageScale) || 1) * 100)}%</span>
                             </div>
                             <input 
-                              type="range" min="1" max="2" step="0.05"
+                              type="range" min="0.2" max="3" step="0.05"
                               value={parseFloat(editableData.details?.styles?.heroImageScale) || 1}
                               onChange={(e) => handleStyleChange("heroImageScale", e.target.value)}
+                              onFocus={() => scrollToSection('hero-section')}
+                              className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
+                            />
+                          </div>
+
+                          <div className="space-y-3">
+                            <div className="flex justify-between items-center">
+                              <span className="text-[10px] font-bold text-zinc-400 uppercase">Hero Text Y-Position</span>
+                              <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.heroTextY) || 0))}px</span>
+                            </div>
+                            <input 
+                              type="range" min="-400" max="400" step="10"
+                              value={parseFloat(editableData.details?.styles?.heroTextY) || 0}
+                              onChange={(e) => handleStyleChange("heroTextY", e.target.value)}
+                              onFocus={() => scrollToSection('hero-section')}
                               className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
                             />
                           </div>
@@ -766,6 +1099,124 @@ const DynamicPartnershipPage = () => {
                                 const newProjects = [...editableData.details.projects];
                                 newProjects[idx].description = e.target.value;
                                 handleUpdate({ details: { ...editableData.details, projects: newProjects } });
+                              }}
+                              className="w-full bg-transparent text-[10px] text-zinc-500 italic h-12 resize-none outline-none"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Blog Posts */}
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Blog Posts / News</label>
+                        <button 
+                          onClick={() => handleUpdate({ details: { ...editableData.details, blogPosts: [...(editableData.details.blogPosts || []), { title: "New Post", description: "Excerpt...", image: "", date: "12 Jan 2024", category: "Lifestyle" }] } })}
+                          className="text-[9px] font-black uppercase text-[#E8001A] hover:text-white transition-colors"
+                        >
+                          + Add Post
+                        </button>
+                      </div>
+                      <div className="space-y-3">
+                        {(editableData.details.blogPosts || []).map((post, idx) => (
+                          <div key={idx} className="p-4 bg-zinc-900 rounded-2xl border border-zinc-800 space-y-3">
+                            <div className="flex gap-3">
+                                <div 
+                                  className="w-12 h-12 bg-black rounded-lg overflow-hidden border border-zinc-800 shrink-0 relative group cursor-pointer"
+                                  onClick={() => document.getElementById(`blog-upload-${idx}`).click()}
+                                >
+                                   {post.image ? (
+                                     <img src={post.image} className="w-full h-full object-cover" />
+                                   ) : (
+                                     <div className="w-full h-full flex items-center justify-center text-[8px] text-zinc-800">
+                                       <ImageIcon size={12} />
+                                     </div>
+                                   )}
+                                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                      <ImageIcon size={14} className="text-white" />
+                                   </div>
+                                   <input 
+                                     id={`blog-upload-${idx}`}
+                                     type="file" 
+                                     className="hidden" 
+                                     accept="image/*"
+                                     onChange={async (e) => {
+                                        const file = e.target.files[0];
+                                        if (!file) return;
+                                        setSaving(true);
+                                        const formData = new FormData();
+                                        formData.append("image", file);
+                                        try {
+                                          const response = await fetch(`${BASE_URL}/partners/upload`, {
+                                            method: "POST",
+                                            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+                                            body: formData,
+                                          });
+                                          const data = await response.json();
+                                          if (data.success) {
+                                            const newPosts = [...editableData.details.blogPosts];
+                                            newPosts[idx].image = data.url;
+                                            handleUpdate({ details: { ...editableData.details, blogPosts: newPosts } });
+                                          }
+                                        } finally { setSaving(false); }
+                                     }}
+                                   />
+                                </div>
+                                <div className="flex-1 space-y-2">
+                                   <div className="flex justify-between items-center">
+                                     <input 
+                                       type="text" 
+                                       value={post.title}
+                                       onChange={(e) => {
+                                         const newPosts = [...editableData.details.blogPosts];
+                                         newPosts[idx].title = e.target.value;
+                                         handleUpdate({ details: { ...editableData.details, blogPosts: newPosts } });
+                                       }}
+                                       className="bg-transparent text-sm font-black uppercase italic focus:text-[#E8001A] outline-none w-full"
+                                     />
+                                     <button 
+                                       onClick={() => {
+                                         const newPosts = editableData.details.blogPosts.filter((_, i) => i !== idx);
+                                         handleUpdate({ details: { ...editableData.details, blogPosts: newPosts } });
+                                       }}
+                                       className="text-zinc-600 hover:text-red-500 ml-2"
+                                     >
+                                       <X size={14} />
+                                     </button>
+                                   </div>
+                                   <div className="flex gap-2">
+                                     <input 
+                                       type="text" 
+                                       value={post.date}
+                                       onChange={(e) => {
+                                         const newPosts = [...editableData.details.blogPosts];
+                                         newPosts[idx].date = e.target.value;
+                                         handleUpdate({ details: { ...editableData.details, blogPosts: newPosts } });
+                                       }}
+                                       placeholder="Date"
+                                       className="w-1/2 bg-transparent text-[8px] text-zinc-500 outline-none"
+                                     />
+                                     <input 
+                                       type="text" 
+                                       value={post.category}
+                                       onChange={(e) => {
+                                         const newPosts = [...editableData.details.blogPosts];
+                                         newPosts[idx].category = e.target.value;
+                                         handleUpdate({ details: { ...editableData.details, blogPosts: newPosts } });
+                                       }}
+                                       placeholder="Category"
+                                       className="w-1/2 bg-transparent text-[8px] text-[#E8001A] outline-none text-right"
+                                     />
+                                   </div>
+                                </div>
+                            </div>
+                            <textarea 
+                              value={post.description}
+                              onChange={(e) => {
+                                const newPosts = [...editableData.details.blogPosts];
+                                newPosts[idx].description = e.target.value;
+                                handleUpdate({ details: { ...editableData.details, blogPosts: newPosts } });
                               }}
                               className="w-full bg-transparent text-[10px] text-zinc-500 italic h-12 resize-none outline-none"
                             />

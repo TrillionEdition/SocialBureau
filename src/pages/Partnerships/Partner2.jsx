@@ -4,14 +4,19 @@
  */
 
 import React, { useState, useEffect, useRef } from "react";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 import {
-  motion,
   useScroll,
   useTransform,
   AnimatePresence,
   useSpring,
 } from "framer-motion";
-import { Plus, ArrowUpRight, Instagram, Linkedin, ArrowUp } from "lucide-react";
+import { Plus, ArrowUpRight, Instagram, Linkedin, ArrowUp, Trash2 } from "lucide-react";
+import { useAuth, fetchWithAuth } from "@/utils/authUtils";
+import { BASE_URL } from "@/utils/urls";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 // --- Constants ---
 const PROJECTS = [
@@ -304,7 +309,7 @@ const ProjectList = () => {
     };
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [mouseX, mouseY]);
 
   return (
     <section className="py-32 md:py-64 px-6 md:px-12 relative z-10 bg-brand-bg">
@@ -682,16 +687,52 @@ const BackToTop = ({ visible }) => {
 };
 
 export default function Partner2() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const { isAdmin } = useAuth();
+  const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this portfolio and the associated user? This action cannot be undone."
+      )
+    ) {
+      return;
+    }
+
+    try {
+      // 1. Get the partner ID first (using the slug 'Partner2')
+      const getRes = await fetch(`${BASE_URL}/partners/Partner2`);
+      const getData = await getRes.json();
+
+      if (!getData.success || !getData.data?._id) {
+        toast.error("Could not find portfolio ID in the database");
+        return;
+      }
+
+      // 2. Delete it
+      const delRes = await fetchWithAuth(
+        `${BASE_URL}/partners/${getData.data._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const delData = await delRes.json();
+
+      if (delData.success) {
+        toast.success("Portfolio and user deleted successfully");
+        navigate("/partners/dashboard");
+      } else {
+        toast.error(delData.message || "Failed to delete");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error deleting portfolio");
+    }
+  };
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-
     const timer = setTimeout(() => setIsLoading(false), 3000);
 
     // Sticky fix: force parents to overflow visible
@@ -709,7 +750,6 @@ export default function Partner2() {
     window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("scroll", handleScroll);
       clearTimeout(timer);
       if (root) root.style.overflow = "";
@@ -734,23 +774,26 @@ export default function Partner2() {
         <ConnectSection />
       </main>
 
-      {/* Custom Cursor */}
-      <motion.div
-        className="fixed top-0 left-0 w-12 h-12 border border-brand-ink rounded-full pointer-events-none z-[200] hidden md:flex items-center justify-center mix-blend-difference"
-        animate={{
-          x: mousePos.x - 24,
-          y: mousePos.y - 24,
-        }}
-        transition={{ type: "spring", damping: 35, stiffness: 450, mass: 0.5 }}
-      >
-        <motion.div
-          className="w-1.5 h-1.5 bg-brand-ink rounded-full"
-          animate={{ scale: [1, 1.8, 1] }}
-          transition={{ repeat: Infinity, duration: 2.5 }}
-        />
-      </motion.div>
 
       <BackToTop visible={showBackToTop} />
+
+      {/* Admin Delete Option */}
+      {isAdmin && (
+        <motion.button
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          whileHover={{ scale: 1.1, backgroundColor: "#ef4444" }}
+          whileTap={{ scale: 0.9 }}
+          onClick={handleDelete}
+          className="fixed top-8 left-8 z-[200] bg-red-600/80 text-white p-4 rounded-full shadow-2xl flex items-center gap-3 backdrop-blur-md border border-white/10"
+          title="Delete Portfolio & User"
+        >
+          <Trash2 size={20} />
+          <span className="text-[10px] font-black uppercase tracking-widest pr-2">
+            Delete Portfolio
+          </span>
+        </motion.button>
+      )}
     </div>
   );
 }

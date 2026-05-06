@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, ExternalLink, Copy, Layout, User, Plus, CheckCircle, Globe, Briefcase, LogOut } from "lucide-react";
+import { Search, ExternalLink, Copy, Layout, User, Plus, CheckCircle, Globe, Briefcase, LogOut, Edit3 } from "lucide-react";
 import { BASE_URL } from "@/utils/urls";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import Logout from "../../../components/Logout";
@@ -11,16 +11,20 @@ const PartnerDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [copiedId, setCopiedId] = useState(null);
+  const [prevCount, setPrevCount] = useState(null);
+  const [searchParams] = useSearchParams();
+  const typeFilter = searchParams.get("type"); // 'student' or 'influencer'
+  const [notificationSound] = useState(new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"));
   const navigate = useNavigate();
 
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (!user) {
-      navigate("/partners/create-portfolio");
+      navigate("/partners/login?redirect=/partners/dashboard");
       return;
     }
 
-    const fetchPartners = async () => {
+    const fetchPartners = async (isInitial = true) => {
       try {
         const token = localStorage.getItem("token");
         const userData = JSON.parse(localStorage.getItem("user") || "{}");
@@ -42,12 +46,29 @@ const PartnerDashboard = () => {
             portfolioList = [data.data];
           }
 
-          const templatePortfolios = portfolioList.filter(p => 
+          let templatePortfolios = portfolioList.filter(p => 
             p.details && 
-            p.details.bio && 
             !p.param.startsWith("partnership/")
           ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+          // Apply type filter
+          if (typeFilter === "influencer") {
+            templatePortfolios = templatePortfolios.filter(p => 
+              p.category === "influencer" || p.templateId === "influencer"
+            );
+          } else if (typeFilter === "student") {
+            templatePortfolios = templatePortfolios.filter(p => 
+              p.category === "student" || p.templateId !== "influencer"
+            );
+          }
+          
           setPartners(templatePortfolios);
+
+          // Play sound if new portfolios added (for admins)
+          if (isAdmin && !isInitial && prevCount !== null && templatePortfolios.length > prevCount) {
+            notificationSound.play().catch(e => console.log("Sound play blocked by browser", e));
+          }
+          setPrevCount(templatePortfolios.length);
         }
       } catch (err) {
         console.error("Failed to fetch portfolios", err);
@@ -55,8 +76,16 @@ const PartnerDashboard = () => {
         setLoading(false);
       }
     };
-    fetchPartners();
-  }, []);
+
+    fetchPartners(true);
+
+    // Setup polling for real-time updates (every 30 seconds)
+    const pollInterval = setInterval(() => {
+      fetchPartners(false);
+    }, 30000);
+
+    return () => clearInterval(pollInterval);
+  }, [prevCount, notificationSound]);
 
   const handleCopy = (slug) => {
     const url = `${window.location.origin}/partnership/${slug}`;
@@ -78,13 +107,10 @@ const PartnerDashboard = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6 border-b border-white/5 pb-8">
           <div>
-            <div className="flex items-center gap-3 mb-4">
-               <div className="w-8 h-8 rounded-lg bg-[#E8001A] flex items-center justify-center text-white shadow-lg shadow-[#E8001A]/20">
-                  <Layout size={18} />
-               </div>
-               <span className="text-[9px] font-black tracking-[0.4em] uppercase text-[#E8001A] italic underline underline-offset-4 decoration-1">Identity Hub</span>
-            </div>
-            <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-[0.9] italic">Portfolio<br /><span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent">Management.</span></h1>
+            <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-[0.9] italic">
+              {typeFilter === 'influencer' ? 'Influencer' : typeFilter === 'student' ? 'Student' : 'Portfolio'}<br />
+              <span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent">Management.</span>
+            </h1>
           </div>
           
           <div className="flex flex-col sm:flex-row items-center gap-6 w-full md:w-auto">
@@ -99,14 +125,16 @@ const PartnerDashboard = () => {
               />
             </div>
             <div className="flex items-center gap-4">
-              <a 
-                href="/partners/select-template" 
-                className="flex items-center justify-center gap-3 px-10 py-5 bg-white text-black font-black rounded-2xl hover:bg-[#E8001A] hover:text-white transition-all transform hover:scale-105 shadow-2xl shadow-white/5 uppercase text-[10px] tracking-widest"
+              <button 
+                onClick={() => navigate("/partners/select-template")} 
+                className="flex items-center justify-center gap-3 px-8 py-5 bg-white text-black font-black rounded-2xl hover:bg-[#E8001A] hover:text-white transition-all transform hover:scale-105 shadow-2xl shadow-white/5 uppercase text-[10px] tracking-widest"
               >
-                <Plus size={18} /> Create New
-              </a>
-              <div className="pl-6 border-l border-white/10">
-                <Logout />
+                <Plus size={18} /> Create Portfolio
+              </button>
+              <div className="pl-6 border-l border-white/10 group">
+                <div className="p-1 rounded-xl group-hover:bg-red-500/10 transition-all border border-transparent group-hover:border-red-500/20">
+                  <Logout />
+                </div>
               </div>
             </div>
           </div>
@@ -157,7 +185,7 @@ const PartnerDashboard = () => {
                   </div>
 
                   {/* Actions */}
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-3 mb-3">
                       <button 
                         onClick={() => handleCopy(item.param)}
                         className={`flex items-center justify-center gap-2 py-4 rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] transition-all ${
@@ -165,17 +193,23 @@ const PartnerDashboard = () => {
                         }`}
                       >
                         {copiedId === item.param ? <CheckCircle size={14} /> : <Copy size={14} />}
-                        {copiedId === item.param ? "Copied" : "Link"}
+                        {copiedId === item.param ? "Link" : "Link"}
                       </button>
-                      <a 
-                        href={`/partnership/${item.param}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 py-4 bg-[#E8001A] text-white rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all shadow-xl shadow-[#E8001A]/20 italic"
+                      <button 
+                        onClick={() => navigate(`/partners/create-portfolio?id=${item._id}`)}
+                        className="flex items-center justify-center gap-2 py-4 bg-white/5 text-white/40 rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] hover:bg-[#E8001A] hover:text-white transition-all italic border border-white/5"
                       >
-                        <ExternalLink size={14} /> View Live
-                      </a>
+                        <Edit3 size={14} /> Edit Portfolio
+                      </button>
                   </div>
+                  <a 
+                    href={`/partnership/${item.param}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 py-4 bg-[#E8001A] text-white rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all shadow-xl shadow-[#E8001A]/20 italic"
+                  >
+                    <ExternalLink size={14} /> View Live
+                  </a>
                 </div>
               </motion.div>
             ))}
