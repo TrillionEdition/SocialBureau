@@ -87,21 +87,58 @@ export default function PartnershipChatbot() {
         ]);
       } else if (step === 1.5) {
         setUserEmail(value);
-        setStep(2);
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: Date.now() + 1,
-            sender: "bot",
-            text: `Thanks! What type of service are you looking for?`,
-            options: [
-              "Social Media Marketing",
-              "Web Development",
-              "SEO & Paid Ads",
-              "Other",
-            ],
-          },
-        ]);
+        
+        // Check if the user already has a meeting scheduled
+        fetch(`${import.meta.env.VITE_API_URL}/partners/check-meeting?email=${value}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.exists) {
+              setStep(1.7);
+              setMessages((prev) => [
+                ...prev,
+                {
+                  id: Date.now() + 1,
+                  sender: "bot",
+                  text: `Welcome back! It looks like you already have a meeting scheduled for ${new Date(data.userDate).toLocaleString()}. Would you like to reschedule it?`,
+                  options: ["Yes, reschedule", "No, keep current"],
+                },
+              ]);
+            } else {
+              setStep(2);
+              setMessages((prev) => [
+                ...prev,
+                {
+                  id: Date.now() + 1,
+                  sender: "bot",
+                  text: `Thanks! What type of service are you looking for?`,
+                  options: [
+                    "Social Media Marketing",
+                    "Web Development",
+                    "SEO & Paid Ads",
+                    "Other",
+                  ],
+                },
+              ]);
+            }
+          })
+          .catch(() => {
+            // Fallback: if check fails or endpoint doesn't exist, proceed normally
+            setStep(2);
+            setMessages((prev) => [
+              ...prev,
+              {
+                id: Date.now() + 1,
+                sender: "bot",
+                text: `Thanks! What type of service are you looking for?`,
+                options: [
+                  "Social Media Marketing",
+                  "Web Development",
+                  "SEO & Paid Ads",
+                  "Other",
+                ],
+              },
+            ]);
+          });
       } else if (step === 3 && value) {
         setStep(4);
         
@@ -130,7 +167,7 @@ export default function PartnershipChatbot() {
               {
                 id: Date.now() + 1,
                 sender: "bot",
-                text: `Wait! It looks like you already have a meeting scheduled recently (${new Date(data.data.userDate).toLocaleString()}). \n\n🔗 Your link: ${data.data.gmeetLink || 'Check your email'}`,
+                text: `Wait! It looks like you already have a meeting scheduled for ${new Date(data.data.userDate).toLocaleString()}. \n\nWe will send the official Google Meet link 12 hours before the meeting starts. Please check your email for the invite!`,
               },
             ]);
             return;
@@ -142,7 +179,7 @@ export default function PartnershipChatbot() {
             {
               id: Date.now() + 1,
               sender: "bot",
-              text: `Great, ${userName}! Your meeting with ${currentPartner.name} is confirmed for ${displayDate}. \n\n🔗 Join link: ${data.gmeetLink}\n\nCheck your email for the calendar invite and meeting details!`,
+              text: `Great, ${userName}! Your meeting with ${currentPartner.name} is registered for ${displayDate}. \n\nWe will send the official Google Meet link to your email (${userEmail}) 12 hours before the meeting starts. \n\nPlease check your email for the confirmation and calendar invite!`,
             },
           ]);
         })
@@ -169,7 +206,30 @@ export default function PartnershipChatbot() {
     setMessages(newMessages);
 
     setTimeout(() => {
-      if (step === 2) {
+      if (step === 1.7) {
+        if (option === "Yes, reschedule") {
+          setStep(3);
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: Date.now() + 1,
+              sender: "bot",
+              text: "No problem! Please select a new preferred date and time.",
+              inputType: "datetime-local",
+            },
+          ]);
+        } else {
+          setStep(4);
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: Date.now() + 1,
+              sender: "bot",
+              text: "Sounds good! We'll see you at your scheduled time. Have a great day!",
+            },
+          ]);
+        }
+      } else if (step === 2) {
         setStep(3);
         setSelectedService(option);
         setMessages((prev) => [
