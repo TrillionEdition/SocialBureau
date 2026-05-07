@@ -33,7 +33,7 @@ export const AboutCompany = () => {
 
   return (
     <section className="bg-white text-black min-h-screen flex flex-col justify-center pt-6 pb-16 px-4 sm:px-6 md:pt-10 md:pb-32 lg:pt-14 lg:pb-48 border-t border-gray-100 relative overflow-hidden">
-      {/* Decorative Red Blur */}
+      {/* Decorative Red Blur...*/}
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[#8D0F16]/5 blur-[120px] rounded-full -z-1" />
 
       <div className="max-w-[1100px] mx-auto w-full">

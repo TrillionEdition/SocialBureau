@@ -61,6 +61,7 @@ const ClientFormaji = () => {
     const [isLandingVisible, setIsLandingVisible] = useState(true);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [status, setStatus] = useState({ msg: '', type: '' });
+    const [allIssues, setAllIssues] = useState({});
 
     const [formData, setFormData] = useState({
         // Section 0: Company Profile
@@ -145,6 +146,15 @@ const ClientFormaji = () => {
         referralSource: '',
         referredBy: '',
     });
+
+    useEffect(() => {
+        const issuesMap = {};
+        [0, 2, 3, 5].forEach(idx => {
+            const issues = getStepIssues(idx);
+            if (issues.length > 0) issuesMap[idx] = issues;
+        });
+        setAllIssues(issuesMap);
+    }, [formData]);
 
     const handleListChange = (field, index, value) => {
         setFormData(prev => {
@@ -273,7 +283,7 @@ const ClientFormaji = () => {
         // Prepare files for backend transmission
         const preparedFiles = files.map(file => ({
             name: file.name,
-            url: URL.createObjectURL(file), 
+            url: URL.createObjectURL(file),
             file: file, // Raw File object
             type: file.type,
             size: (file.size / 1024).toFixed(2) + ' KB',
@@ -329,6 +339,50 @@ const ClientFormaji = () => {
         }
     };
 
+    const getStepIssues = (idx) => {
+        const issues = [];
+        switch (idx) {
+            case 0:
+                if (!formData.legalName) issues.push('Legal Name');
+                if (!formData.companyType) issues.push('Company Type');
+                if (!formData.incYear) issues.push('Year of Incorporation');
+                if (!formData.regAddress) issues.push('Full Address');
+                if (!formData.contactName) issues.push('Contact Person Name');
+                if (!formData.contactPhone) issues.push('Phone / WhatsApp');
+                if (!formData.contactEmail) issues.push('Email Address');
+                break;
+            case 2:
+                if (!formData.coreOffering) issues.push('Core Offering description');
+                if (!formData.targetAudience) issues.push('Primary Target Audience');
+                if (!formData.mktFocus) issues.push('Priority Services for Marketing');
+                if (!formData.currentOps.some(loc => loc && loc.trim() !== '')) issues.push('Operating Location');
+                break;
+            case 3:
+                const hasSocial = Object.values(formData.socialMedia).some(val => val && val.trim() !== '');
+                if (!formData.website && !hasSocial) issues.push('Website or Social Profile');
+                break;
+            case 5:
+                if (!formData.selectedBudget) issues.push('Monthly Marketing Budget');
+                if (!formData.contractDur) issues.push('Contract Duration');
+                if (!formData.startDate) issues.push('Expected Start Date');
+                break;
+            default:
+                break;
+        }
+        return issues;
+    };
+
+    const scanForIssues = () => {
+        const issues = getStepIssues(currentStep);
+        if (issues.length > 0) {
+            setStatus({ msg: `Found ${issues.length} incomplete required fields in this section.`, type: 'error' });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            setStatus({ msg: 'All required fields in this section are complete.', type: 'success' });
+            setTimeout(() => setStatus({ msg: '', type: '' }), 3000);
+        }
+    };
+
     const goTo = (n) => {
         if (n >= 0 && n < steps.length) {
             setCurrentStep(n);
@@ -345,27 +399,53 @@ const ClientFormaji = () => {
                 msg: `⚠ Section "${steps[firstIncomplete].name}" is incomplete. Please complete all required fields before transmission.`,
                 type: 'error'
             });
-            goTo(firstIncomplete);
+            setCurrentStep(firstIncomplete);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
 
         setStatus({ msg: 'Submitting and saving to all workspaces...', type: 'loading' });
 
         try {
-            // Import the service dynamically or use it if imported at top
+            // Import services dynamically
             const ajnoraService = (await import('@/services/ajnoraService')).default;
+            const { createClickUpTask } = await import('@/services/clickupServices');
+
+            // 1. Save to Database
             await ajnoraService.createEntry({
                 ...formData,
                 project: formData.brandName || 'Phase 01'
             });
+
+            // 2. Create ClickUp Task
+            await createClickUpTask({
+                clientName: formData.contactName,
+                clientCompany: formData.brandName || formData.legalName,
+                status: 'intake',
+                priority: 2 // Medium priority
+            });
+
             setIsSubmitted(true);
         } catch (error) {
             setStatus({ msg: 'Submission failed: ' + (error.message || error), type: 'error' });
         }
     };
 
-    const nextStep = () => goTo(currentStep + 1);
-    const prevStep = () => goTo(currentStep - 1);
+    const nextStep = () => {
+        const issues = getStepIssues(currentStep);
+        if (issues.length > 0 && status.type !== 'error') {
+            setStatus({ msg: `Heads up: Some required fields are missing in this section. You can click 'Next' again to skip and return later.`, type: 'error' });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            setStatus({ msg: '', type: '' });
+            goTo(currentStep + 1);
+        }
+    };
+
+    const prevStep = () => {
+        setStatus({ msg: '', type: '' });
+        goTo(currentStep - 1);
+    };
 
     if (isSubmitted) {
         return (
@@ -488,9 +568,11 @@ const ClientFormaji = () => {
                             animate={{ opacity: 1, y: 0 }}
                             className="text-center relative z-10 max-w-full w-full flex flex-col items-center justify-center space-y-4 md:space-y-6 pt-4 sm:pt-6"
                         >
-                            <div className="flex justify-center">
-                                <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_LOGO_BLACK_PNG_iev5qz.png" alt="SocialBureau" className="h-16 sm:h-24 md:h-32 w-auto" />
-                            </div>
+                            <a href='https://socialbureau.in'>
+                                <div className="flex justify-center">
+                                    <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_LOGO_BLACK_PNG_iev5qz.png" alt="SocialBureau" className="h-16 sm:h-24 md:h-32 w-auto" />
+                                </div>
+                            </a>
 
                             <div className="flex items-center gap-4 justify-center">
                                 <div className="h-px w-8 bg-red-600/40" />
@@ -553,8 +635,10 @@ const ClientFormaji = () => {
             <div className="max-w-4xl mx-auto px-6 pt-8 pb-16">
                 <header className="mb-10 pb-5 border-b border-white/5">
                     <div className="flex items-center justify-between gap-4 mb-10">
-                        <img src='https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_sticker-02_1_k3ulwd.png'
-                            className='h-26 sm:h-28 w-auto' alt="SocialBureau" />
+                        <a href ='https://socialbureau.in' target='_blank' rel='noopener noreferrer'>
+                            <img src='https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_sticker-02_1_k3ulwd.png'
+                                className='h-26 sm:h-28 w-auto' alt="SocialBureau" />
+                        </a>
                         <div className="sm:hidden text-7xl font-black text-white/10 tracking-[-0.02em] leading-none select-none font-['Bebas_Neue'] mr-8">
                             {(currentStep + 1).toString().padStart(2, '0')}
                         </div>
@@ -612,6 +696,9 @@ const ClientFormaji = () => {
                                             <CheckCircle2 size={10} className={idx === currentStep ? "text-white" : "text-green-500"} />
                                         </motion.div>
                                     )}
+                                    {allIssues[idx]?.length > 0 && !isComplete && (
+                                        <div className="absolute top-1 left-1 w-2 h-2 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
+                                    )}
                                 </div>
                                 {idx === currentStep && (
                                     <motion.div
@@ -633,16 +720,38 @@ const ClientFormaji = () => {
                     {/* SECTION 0: COMPANY PROFILE */}
                     {currentStep === 0 && (
                         <div className="space-y-6">
-                            <section className="sec-header">
-                                <div className="text-[10px] font-mono text-red-500 tracking-[0.2em] mb-2 uppercase">01 / 07</div>
-                                <h2 className="text-4xl font-['Bebas_Neue'] tracking-wider text-white">Company Profile</h2>
-                                <p className="text-gray-500 text-sm mt-1">Basic company identification, registration details, and office locations.</p>
+                            <section className="sec-header flex items-start justify-between gap-4">
+                                <div>
+                                    <div className="text-[10px] font-mono text-red-500 tracking-[0.2em] mb-2 uppercase">01 / 07</div>
+                                    <h2 className="text-4xl font-['Bebas_Neue'] tracking-wider text-white">Company Profile</h2>
+                                    <p className="text-gray-500 text-sm mt-1">Basic company identification, registration details, and office locations.</p>
+                                </div>
+                                <button type="button" onClick={scanForIssues} className="mt-4 px-4 py-2 border border-white/10 rounded-full text-[9px] font-black uppercase tracking-widest text-gray-500 hover:text-white hover:border-red-600 transition-all flex items-center gap-2 shrink-0">
+                                    <AlertCircle size={12} /> Scan for Issues
+                                </button>
                             </section>
+
+                            {allIssues[currentStep]?.length > 0 && (
+                                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="p-4 bg-red-600/10 border border-red-600/20 rounded-2xl">
+                                    <div className="flex items-center gap-2 text-red-500 mb-2">
+                                        <AlertCircle size={14} />
+                                        <span className="text-[10px] font-black uppercase tracking-widest">Incomplete Required Fields</span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {allIssues[currentStep].map((issue, idx) => (
+                                            <span key={idx} className="px-2 py-1 bg-red-600/20 text-red-500 text-[9px] font-bold rounded-md uppercase tracking-tighter">
+                                                {issue}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            )}
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Legal Company Name <span className="text-red-600">*</span></label>
-                                    <input id="legalName" value={formData.legalName} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="e.g. socialbureau (TrillionEdition LLP)" />
+                                    <input id="legalName" value={formData.legalName} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${!formData.legalName ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="e.g. socialbureau (TrillionEdition LLP)" />
+                                    {!formData.legalName && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500 flex items-center gap-2">
@@ -685,7 +794,7 @@ const ClientFormaji = () => {
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Company Type <span className="text-red-600">*</span></label>
-                                    <select id="companyType" value={formData.companyType} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center]">
+                                    <select id="companyType" value={formData.companyType} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center] ${!formData.companyType ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`}>
                                         <option value="">Select type</option>
                                         <option>Private Limited (Pvt Ltd)</option>
                                         <option>LLP</option>
@@ -694,6 +803,7 @@ const ClientFormaji = () => {
                                         <option>Trust / NGO</option>
                                         <option>Other</option>
                                     </select>
+                                    {!formData.companyType && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                     {formData.companyType === 'Other' && (
                                         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="mt-2">
                                             <input
@@ -708,7 +818,8 @@ const ClientFormaji = () => {
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Year of Incorporation <span className="text-red-600">*</span></label>
-                                    <input id="incYear" value={formData.incYear} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="e.g. 2022" />
+                                    <input id="incYear" value={formData.incYear} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${!formData.incYear ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="e.g. 2022" />
+                                    {!formData.incYear && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">CIN / Registration Number</label>
@@ -728,7 +839,8 @@ const ClientFormaji = () => {
                                 <div className="grid grid-cols-1 gap-6">
                                     <div className="flex flex-col gap-2">
                                         <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Full Address <span className="text-red-600">*</span></label>
-                                        <input id="regAddress" value={formData.regAddress} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="Building, Street, Area" />
+                                        <input id="regAddress" value={formData.regAddress} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${!formData.regAddress ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="Building, Street, Area" />
+                                        {!formData.regAddress && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                         <div className="flex flex-col gap-2">
@@ -781,7 +893,8 @@ const ClientFormaji = () => {
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="flex flex-col gap-2">
                                         <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Contact Person Name <span className="text-red-600">*</span></label>
-                                        <input id="contactName" value={formData.contactName} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="Full name" />
+                                        <input id="contactName" value={formData.contactName} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${!formData.contactName ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="Full name" />
+                                        {!formData.contactName && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                     </div>
                                     <div className="flex flex-col gap-2">
                                         <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Designation</label>
@@ -789,11 +902,13 @@ const ClientFormaji = () => {
                                     </div>
                                     <div className="flex flex-col gap-2">
                                         <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Phone / WhatsApp <span className="text-red-600">*</span></label>
-                                        <input id="contactPhone" value={formData.contactPhone} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="+91 98XXX XXXXX" />
+                                        <input id="contactPhone" value={formData.contactPhone} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${!formData.contactPhone ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="+91 98XXX XXXXX" />
+                                        {!formData.contactPhone && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                     </div>
                                     <div className="flex flex-col gap-2">
                                         <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Email Address <span className="text-red-600">*</span></label>
-                                        <input id="contactEmail" value={formData.contactEmail} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="email@company.com" />
+                                        <input id="contactEmail" value={formData.contactEmail} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${!formData.contactEmail ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="email@company.com" />
+                                        {!formData.contactEmail && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                     </div>
                                 </div>
                             </div>
@@ -893,11 +1008,32 @@ const ClientFormaji = () => {
                     {/* SECTION 1: LEGAL & DOCUMENTS */}
                     {currentStep === 1 && (
                         <div className="space-y-6">
-                            <section className="sec-header">
-                                <div className="text-[10px] font-mono text-red-500 tracking-[0.2em] mb-2 uppercase">02 / 07</div>
-                                <h2 className="text-4xl font-['Bebas_Neue'] tracking-wider text-white">Legal & Documents</h2>
-                                <p className="text-gray-500 text-sm mt-1">Upload incorporation certificates, licenses, and tell us about your legal compliance status.</p>
+                            <section className="sec-header flex items-start justify-between gap-4">
+                                <div>
+                                    <div className="text-[10px] font-mono text-red-500 tracking-[0.2em] mb-2 uppercase">02 / 07</div>
+                                    <h2 className="text-4xl font-['Bebas_Neue'] tracking-wider text-white">Legal & Documents</h2>
+                                    <p className="text-gray-500 text-sm mt-1">Upload incorporation certificates, licenses, and tell us about your legal compliance status.</p>
+                                </div>
+                                <button type="button" onClick={scanForIssues} className="mt-4 px-4 py-2 border border-white/10 rounded-full text-[9px] font-black uppercase tracking-widest text-gray-500 hover:text-white hover:border-red-600 transition-all flex items-center gap-2 shrink-0">
+                                    <AlertCircle size={12} /> Scan for Issues
+                                </button>
                             </section>
+
+                            {allIssues[currentStep]?.length > 0 && (
+                                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="p-4 bg-red-600/10 border border-red-600/20 rounded-2xl">
+                                    <div className="flex items-center gap-2 text-red-500 mb-2">
+                                        <AlertCircle size={14} />
+                                        <span className="text-[10px] font-black uppercase tracking-widest">Incomplete Required Fields</span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {allIssues[currentStep].map((issue, idx) => (
+                                            <span key={idx} className="px-2 py-1 bg-red-600/20 text-red-500 text-[9px] font-bold rounded-md uppercase tracking-tighter">
+                                                {issue}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            )}
 
                             <div className="bg-[#0e1a0e] border border-[#1a2e1a] rounded p-4 text-[13px] text-[#8fbe8f] leading-relaxed">
                                 <strong className="text-[#aae0aa]">Why we collect this:</strong> SocialBureau has in-house legal expertise to help clients navigate business registration, IP protection, and platform compliance.
@@ -1007,15 +1143,37 @@ const ClientFormaji = () => {
                     {/* SECTION 2: SERVICES */}
                     {currentStep === 2 && (
                         <div className="space-y-6">
-                            <section className="sec-header">
-                                <div className="text-[10px] font-mono text-red-500 tracking-[0.2em] mb-2 uppercase">03 / 07</div>
-                                <h2 className="text-4xl font-['Bebas_Neue'] tracking-wider text-white">Service Details</h2>
-                                <p className="text-gray-500 text-sm mt-1">Tell us about what your company/brand offers.</p>
+                            <section className="sec-header flex items-start justify-between gap-4">
+                                <div>
+                                    <div className="text-[10px] font-mono text-red-500 tracking-[0.2em] mb-2 uppercase">03 / 07</div>
+                                    <h2 className="text-4xl font-['Bebas_Neue'] tracking-wider text-white">Service Details</h2>
+                                    <p className="text-gray-500 text-sm mt-1">Tell us about what your company/brand offers.</p>
+                                </div>
+                                <button type="button" onClick={scanForIssues} className="mt-4 px-4 py-2 border border-white/10 rounded-full text-[9px] font-black uppercase tracking-widest text-gray-500 hover:text-white hover:border-red-600 transition-all flex items-center gap-2 shrink-0">
+                                    <AlertCircle size={12} /> Scan for Issues
+                                </button>
                             </section>
+
+                            {allIssues[currentStep]?.length > 0 && (
+                                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="p-4 bg-red-600/10 border border-red-600/20 rounded-2xl">
+                                    <div className="flex items-center gap-2 text-red-500 mb-2">
+                                        <AlertCircle size={14} />
+                                        <span className="text-[10px] font-black uppercase tracking-widest">Incomplete Required Fields</span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {allIssues[currentStep].map((issue, idx) => (
+                                            <span key={idx} className="px-2 py-1 bg-red-600/20 text-red-500 text-[9px] font-bold rounded-md uppercase tracking-tighter">
+                                                {issue}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            )}
 
                             <div className="flex flex-col gap-2">
                                 <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">What does your company/brand offer? <span className="text-red-600">*</span></label>
-                                <textarea id="coreOffering" value={formData.coreOffering} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all min-h-[110px]" placeholder="Describe your education consulting services in detail..." />
+                                <textarea id="coreOffering" value={formData.coreOffering} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all min-h-[110px] ${!formData.coreOffering ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="Describe your education consulting services in detail..." />
+                                {!formData.coreOffering && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                             </div>
 
                             <div className="space-y-4">
@@ -1049,7 +1207,7 @@ const ClientFormaji = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Primary Target Audience <span className="text-red-600">*</span></label>
-                                    <select id="targetAudience" value={formData.targetAudience} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center]">
+                                    <select id="targetAudience" value={formData.targetAudience} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center] ${!formData.targetAudience ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`}>
                                         <option value="">Select audience</option>
                                         <option>School Students (Grades 9–12)</option>
                                         <option>Undergraduate Aspirants</option>
@@ -1059,6 +1217,7 @@ const ClientFormaji = () => {
                                         <option>Institutions / Schools</option>
                                         <option>All of the above</option>
                                     </select>
+                                    {!formData.targetAudience && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Age Group of Primary Target</label>
@@ -1125,7 +1284,8 @@ const ClientFormaji = () => {
                             <div className="space-y-6 pt-6">
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Priority Services for Marketing <span className="text-red-600">*</span></label>
-                                    <textarea id="mktFocus" value={formData.mktFocus} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all min-h-[80px]" placeholder="Tell us which 2–3 services you want to promote most aggressively." />
+                                    <textarea id="mktFocus" value={formData.mktFocus} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all min-h-[80px] ${!formData.mktFocus ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="Tell us which 2–3 services you want to promote most aggressively." />
+                                    {!formData.mktFocus && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Key Competitive Advantage</label>
@@ -1148,16 +1308,38 @@ const ClientFormaji = () => {
                     {/* SECTION 3: DIGITAL PRESENCE */}
                     {currentStep === 3 && (
                         <div className="space-y-6">
-                            <section className="sec-header">
-                                <div className="text-[10px] font-mono text-red-500 tracking-[0.2em] mb-2 uppercase">04 / 07</div>
-                                <h2 className="text-4xl font-['Bebas_Neue'] tracking-wider text-white">Digital Presence</h2>
-                                <p className="text-gray-500 text-sm mt-1">Website, social media platforms, and existing digital assets.</p>
+                            <section className="sec-header flex items-start justify-between gap-4">
+                                <div>
+                                    <div className="text-[10px] font-mono text-red-500 tracking-[0.2em] mb-2 uppercase">04 / 07</div>
+                                    <h2 className="text-4xl font-['Bebas_Neue'] tracking-wider text-white">Digital Presence</h2>
+                                    <p className="text-gray-500 text-sm mt-1">Website, social media platforms, and existing digital assets.</p>
+                                </div>
+                                <button type="button" onClick={scanForIssues} className="mt-4 px-4 py-2 border border-white/10 rounded-full text-[9px] font-black uppercase tracking-widest text-gray-500 hover:text-white hover:border-red-600 transition-all flex items-center gap-2 shrink-0">
+                                    <AlertCircle size={12} /> Scan for Issues
+                                </button>
                             </section>
+
+                            {allIssues[currentStep]?.length > 0 && (
+                                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="p-4 bg-red-600/10 border border-red-600/20 rounded-2xl">
+                                    <div className="flex items-center gap-2 text-red-500 mb-2">
+                                        <AlertCircle size={14} />
+                                        <span className="text-[10px] font-black uppercase tracking-widest">Incomplete Required Fields</span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {allIssues[currentStep].map((issue, idx) => (
+                                            <span key={idx} className="px-2 py-1 bg-red-600/20 text-red-500 text-[9px] font-bold rounded-md uppercase tracking-tighter">
+                                                {issue}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            )}
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Website URL</label>
-                                    <input id="website" value={formData.website} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="https://socialbureau.in" />
+                                    <input id="website" value={formData.website} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${(!formData.website && !Object.values(formData.socialMedia).some(v => v)) ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="https://socialbureau.in" />
+                                    {(!formData.website && !Object.values(formData.socialMedia).some(v => v)) && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Please provide either a Website or Social Profile</span>}
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Website Status</label>
@@ -1268,11 +1450,32 @@ const ClientFormaji = () => {
                     {/* SECTION 4: MARKETING */}
                     {currentStep === 4 && (
                         <div className="space-y-6">
-                            <section className="sec-header">
-                                <div className="text-[10px] font-mono text-red-500 tracking-[0.2em] mb-2 uppercase">05 / 07</div>
-                                <h2 className="text-4xl font-['Bebas_Neue'] tracking-wider text-white">Marketing & Engagement</h2>
-                                <p className="text-gray-500 text-sm mt-1">Current marketing activities, lead generation, and support areas.</p>
+                            <section className="sec-header flex items-start justify-between gap-4">
+                                <div>
+                                    <div className="text-[10px] font-mono text-red-500 tracking-[0.2em] mb-2 uppercase">05 / 07</div>
+                                    <h2 className="text-4xl font-['Bebas_Neue'] tracking-wider text-white">Marketing & Engagement</h2>
+                                    <p className="text-gray-500 text-sm mt-1">Current marketing activities, lead generation, and support areas.</p>
+                                </div>
+                                <button type="button" onClick={scanForIssues} className="mt-4 px-4 py-2 border border-white/10 rounded-full text-[9px] font-black uppercase tracking-widest text-gray-500 hover:text-white hover:border-red-600 transition-all flex items-center gap-2 shrink-0">
+                                    <AlertCircle size={12} /> Scan for Issues
+                                </button>
                             </section>
+
+                            {allIssues[currentStep]?.length > 0 && (
+                                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="p-4 bg-red-600/10 border border-red-600/20 rounded-2xl">
+                                    <div className="flex items-center gap-2 text-red-500 mb-2">
+                                        <AlertCircle size={14} />
+                                        <span className="text-[10px] font-black uppercase tracking-widest">Incomplete Required Fields</span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {allIssues[currentStep].map((issue, idx) => (
+                                            <span key={idx} className="px-2 py-1 bg-red-600/20 text-red-500 text-[9px] font-bold rounded-md uppercase tracking-tighter">
+                                                {issue}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            )}
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="flex flex-col gap-2">
@@ -1432,11 +1635,32 @@ const ClientFormaji = () => {
                     {/* SECTION 5: BUDGET & TIMELINE */}
                     {currentStep === 5 && (
                         <div className="space-y-6">
-                            <section className="sec-header">
-                                <div className="text-[10px] font-mono text-red-500 tracking-[0.2em] mb-2 uppercase">06 / 07</div>
-                                <h2 className="text-4xl font-['Bebas_Neue'] tracking-wider text-white">Budget & Timeline</h2>
-                                <p className="text-gray-500 text-sm mt-1">Monthly marketing investment range and project timelines.</p>
+                            <section className="sec-header flex items-start justify-between gap-4">
+                                <div>
+                                    <div className="text-[10px] font-mono text-red-500 tracking-[0.2em] mb-2 uppercase">06 / 07</div>
+                                    <h2 className="text-4xl font-['Bebas_Neue'] tracking-wider text-white">Budget & Timeline</h2>
+                                    <p className="text-gray-500 text-sm mt-1">Monthly marketing investment range and project timelines.</p>
+                                </div>
+                                <button type="button" onClick={scanForIssues} className="mt-4 px-4 py-2 border border-white/10 rounded-full text-[9px] font-black uppercase tracking-widest text-gray-500 hover:text-white hover:border-red-600 transition-all flex items-center gap-2 shrink-0">
+                                    <AlertCircle size={12} /> Scan for Issues
+                                </button>
                             </section>
+
+                            {allIssues[currentStep]?.length > 0 && (
+                                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="p-4 bg-red-600/10 border border-red-600/20 rounded-2xl">
+                                    <div className="flex items-center gap-2 text-red-500 mb-2">
+                                        <AlertCircle size={14} />
+                                        <span className="text-[10px] font-black uppercase tracking-widest">Incomplete Required Fields</span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {allIssues[currentStep].map((issue, idx) => (
+                                            <span key={idx} className="px-2 py-1 bg-red-600/20 text-red-500 text-[9px] font-bold rounded-md uppercase tracking-tighter">
+                                                {issue}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            )}
 
                             <div className="space-y-4">
                                 <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-red-600">Monthly Marketing Budget</h3>
@@ -1457,10 +1681,14 @@ const ClientFormaji = () => {
                                         >
                                             <div className="text-2xl font-['Bebas_Neue'] text-red-600">{budget.amount}</div>
                                             <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mt-1">{budget.label}</div>
-
                                         </button>
                                     ))}
                                 </div>
+                                {allIssues[currentStep]?.includes('Monthly Marketing Budget') && (
+                                    <div className="mt-2">
+                                        <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter">Required</span>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
@@ -1477,16 +1705,18 @@ const ClientFormaji = () => {
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Preferred Contract Duration</label>
-                                    <select id="contractDur" value={formData.contractDur} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center]">
+                                    <select id="contractDur" value={formData.contractDur} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center] ${!formData.contractDur ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`}>
                                         <option value="">Select duration</option>
                                         <option>6 Months</option>
                                         <option>12 Months</option>
                                         <option>More than 1 year</option>
                                     </select>
+                                    {!formData.contractDur && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Expected Start Date</label>
-                                    <input id="startDate" type="date" value={formData.startDate} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" />
+                                    <input id="startDate" type="date" value={formData.startDate} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${!formData.startDate ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} />
+                                    {!formData.startDate && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">First Priority Milestone</label>
