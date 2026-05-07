@@ -306,7 +306,6 @@ const SoftwareSection = () => {
                 Future&nbsp;
               </span>
 
-              {/* custom underline */}
               <span className="absolute left-0 bottom-[-8px] w-full h-[2px] bg-[#E8001A]/40"></span>
             </span>
             <br />         Of Media.
