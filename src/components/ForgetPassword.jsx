@@ -220,28 +220,30 @@ export const ForgotPassword = () => {
             </div>
 
             <AnimatePresence mode="wait">
-              {error && (
-                <motion.div 
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  className="mb-8 p-5 bg-[#E8001A]/10 border-l-2 border-[#E8001A] flex items-center justify-between group"
-                >
-                  <span className="text-xs text-[#E8001A] font-bold tracking-tight italic uppercase">{error}</span>
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#E8001A] animate-pulse" />
-                </motion.div>
-              )}
+              <div key="status-messages">
+                {error && (
+                  <motion.div 
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    className="mb-8 p-5 bg-[#E8001A]/10 border-l-2 border-[#E8001A] flex items-center justify-between group"
+                  >
+                    <span className="text-xs text-[#E8001A] font-bold tracking-tight italic uppercase">{error}</span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#E8001A] animate-pulse" />
+                  </motion.div>
+                )}
 
-              {success && step !== 4 && (
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="mb-8 p-5 bg-white/5 border-l-2 border-white/20 flex items-center gap-4"
-                >
-                  <CheckCircle2 size={16} className="text-white/40" />
-                  <span className="text-xs text-white/60 font-bold tracking-tight italic uppercase">{success}</span>
-                </motion.div>
-              )}
+                {success && step !== 4 && (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="mb-8 p-5 bg-white/5 border-l-2 border-white/20 flex items-center gap-4"
+                  >
+                    <CheckCircle2 size={16} className="text-white/40" />
+                    <span className="text-xs text-white/60 font-bold tracking-tight italic uppercase">{success}</span>
+                  </motion.div>
+                )}
+              </div>
 
               {/* Step 1: Email */}
               {step === 1 && (
