@@ -66,7 +66,7 @@ export const ForgotPassword = () => {
 
       setResetToken(data.resetToken);
       setSuccess("Identity confirmed. Redirecting to reset vault...");
-      
+
       setTimeout(() => {
         const targetPath = `/reset-password/${data.resetToken}`;
         const search = location.search; // Keeps ?from=partners if present
@@ -126,15 +126,15 @@ export const ForgotPassword = () => {
     <div className="min-h-screen bg-[#080808] text-white flex overflow-hidden font-sans selection:bg-[#E8001A]">
       {/* Left Column: Artistic Hero */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden group">
-        <motion.div 
+        <motion.div
           initial={{ scale: 1.1, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
           className="absolute inset-0"
         >
-          <img 
-            src="/minimalist_digital_agency_hero_1777439418340.png" 
-            alt="Minimalist Architecture" 
+          <img
+            src="/minimalist_digital_agency_hero_1777439418340.png"
+            alt="Minimalist Architecture"
             className="w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-60 transition-all duration-[3s]"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#080808]" />
@@ -162,7 +162,7 @@ export const ForgotPassword = () => {
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/70 to-white/30">account access.</span>
               </h2>
             </motion.div>
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.2 }}
@@ -172,7 +172,7 @@ export const ForgotPassword = () => {
             </motion.p>
           </div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5 }}
@@ -188,7 +188,7 @@ export const ForgotPassword = () => {
       <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-8 md:p-16 relative">
         {/* Background Ambience for Mobile */}
         <div className="absolute top-0 right-0 w-[80%] h-[40%] bg-[#E8001A]/5 blur-[120px] rounded-full pointer-events-none lg:hidden" />
-        
+
         <div className="w-full max-w-md relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -196,8 +196,8 @@ export const ForgotPassword = () => {
             className="mb-12"
           >
             <div className="flex items-center gap-3 mb-6">
-               <div className="w-8 h-[1px] bg-[#E8001A]" />
-               <span className="text-[9px] font-black tracking-[0.4em] text-[#E8001A] uppercase italic">System Access</span>
+              <div className="w-8 h-[1px] bg-[#E8001A]" />
+              <span className="text-[9px] font-black tracking-[0.4em] text-[#E8001A] uppercase italic">System Access</span>
             </div>
             <h1 className="text-3xl font-bold tracking-tight mb-4">
               {step === 4 ? "Password reset" : "Reset your password"}
@@ -213,7 +213,7 @@ export const ForgotPassword = () => {
           <div className="relative">
             {/* Animated Progress Bar */}
             <div className="absolute -top-6 left-0 w-full h-[1px] bg-white/5">
-              <motion.div 
+              <motion.div
                 animate={{ width: `${(step / 4) * 100}%` }}
                 className="h-full bg-[#E8001A] shadow-[0_0_10px_#E8001A]"
               />
@@ -221,7 +221,7 @@ export const ForgotPassword = () => {
 
             <AnimatePresence mode="wait">
               {error && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
@@ -233,7 +233,7 @@ export const ForgotPassword = () => {
               )}
 
               {success && step !== 4 && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="mb-8 p-5 bg-white/5 border-l-2 border-white/20 flex items-center gap-4"
@@ -245,12 +245,12 @@ export const ForgotPassword = () => {
 
               {/* Step 1: Email */}
               {step === 1 && (
-                <motion.form 
+                <motion.form
                   key="step1"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  onSubmit={handleSendOTP} 
+                  onSubmit={handleSendOTP}
                   className="space-y-10"
                 >
                   <div className="group relative">
@@ -277,12 +277,12 @@ export const ForgotPassword = () => {
 
               {/* Step 2: OTP */}
               {step === 2 && (
-                <motion.form 
+                <motion.form
                   key="step2"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  onSubmit={handleVerifyOTP} 
+                  onSubmit={handleVerifyOTP}
                   className="space-y-10"
                 >
                   <div className="group relative">
@@ -305,8 +305,8 @@ export const ForgotPassword = () => {
                     {loading ? "Verifying..." : "Validate Signature"}
                     <ShieldCheck size={16} />
                   </button>
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     onClick={() => setStep(1)}
                     className="w-full text-center text-[9px] font-black uppercase tracking-widest text-white/20 hover:text-[#E8001A] transition-colors italic"
                   >
@@ -317,12 +317,12 @@ export const ForgotPassword = () => {
 
               {/* Step 3: Reset */}
               {step === 3 && (
-                <motion.form 
+                <motion.form
                   key="step3"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  onSubmit={handleResetPassword} 
+                  onSubmit={handleResetPassword}
                   className="space-y-8"
                 >
                   <div className="group relative">
@@ -360,35 +360,35 @@ export const ForgotPassword = () => {
 
               {/* Step 4: Success */}
               {step === 4 && (
-                <motion.div 
+                <motion.div
                   key="step4"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="text-center py-10 space-y-10"
                 >
                   <div className="relative mx-auto w-24 h-24">
-                     <motion.div 
+                    <motion.div
                       animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
                       transition={{ repeat: Infinity, duration: 2 }}
                       className="absolute inset-0 bg-[#E8001A] rounded-full blur-2xl"
-                     />
-                     <div className="relative w-full h-full bg-[#E8001A] flex items-center justify-center">
-                        <CheckCircle2 size={40} className="text-white" strokeWidth={3} />
-                     </div>
+                    />
+                    <div className="relative w-full h-full bg-[#E8001A] flex items-center justify-center">
+                      <CheckCircle2 size={40} className="text-white" strokeWidth={3} />
+                    </div>
                   </div>
                   <div className="space-y-4">
                     <h2 className="text-3xl font-black uppercase tracking-tighter italic">Authorized.</h2>
                     <p className="text-white/40 text-xs italic uppercase tracking-widest">Permanent identity established. Redirecting...</p>
                   </div>
                   <div className="flex justify-center gap-1">
-                     {[...Array(3)].map((_, i) => (
-                       <motion.div 
+                    {[...Array(3)].map((_, i) => (
+                      <motion.div
                         key={i}
                         animate={{ opacity: [0.2, 1, 0.2] }}
                         transition={{ repeat: Infinity, duration: 1, delay: i * 0.2 }}
                         className="w-1.5 h-1.5 bg-[#E8001A]"
-                       />
-                     ))}
+                      />
+                    ))}
                   </div>
                 </motion.div>
               )}
@@ -396,17 +396,17 @@ export const ForgotPassword = () => {
           </div>
 
           <div className="mt-20 pt-10 border-t border-white/5 flex justify-between items-center">
-            <Link 
-              to={fromPartner ? "/partners/login" : "/login"} 
+            <Link
+              to={fromPartner ? "/partners/login" : "/login"}
               className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-white/30 hover:text-white transition-all group italic"
             >
               <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
               Abort Protocol
             </Link>
             <div className="flex gap-2">
-               <div className="w-1.5 h-1.5 bg-[#E8001A]" />
-               <div className="w-1.5 h-1.5 bg-white/10" />
-               <div className="w-1.5 h-1.5 bg-white/10" />
+              <div className="w-1.5 h-1.5 bg-[#E8001A]" />
+              <div className="w-1.5 h-1.5 bg-white/10" />
+              <div className="w-1.5 h-1.5 bg-white/10" />
             </div>
           </div>
         </div>
