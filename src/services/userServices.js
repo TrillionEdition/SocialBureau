@@ -109,7 +109,7 @@ export const updateProfileWithImagesAPI = async (userId, payload) => {
 
 export const logoutUser = async () => {
   const response = await axios.post(
-    `${BASE_URL}/logout`,
+    `${BASE_URL}/user/logout`,
     {},
     { withCredentials: true } // VERY important for cookies
   )
