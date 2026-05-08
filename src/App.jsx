@@ -25,6 +25,8 @@ import PartnershipChatbot from "./components/PartnershipChatbot";
 import AjnoraDashboard from "./pages/AjnoraDashboard";
 import AjinorahForm from "./components/ClientFormaji";
 import SocialBureauIntro from "./components/Light";
+import CDashboard from "./components/ClickupDash/CDashboard";
+
 
 const Home = lazy(() =>
   import("./pages/Home").then((module) => ({ default: module.Home })),
@@ -157,8 +159,10 @@ function ConditionalFooter() {
     "/job-details",
     "/job-listing",
     "/job-applicants",
-    "/candidate-profile"
+    "/candidate-profile",
+    "/client-portal"
   ];
+
 
   const shouldHide = hideFooterRoutes.some((route) => {
     const normalizedPath = location.pathname.toLowerCase().replace(/\/$/, "");
@@ -195,8 +199,10 @@ function ConditionalNavbar() {
     "/job-listing",
     "/job-applicants",
     "/candidate-profile",
-    "/ajio"
+    "/ajio",
+    "/client-portal"
   ];
+
 
   const shouldHide = hideNavbarRoutes.some((route) => {
     const normalizedPath = location.pathname.toLowerCase().replace(/\/$/, "");
@@ -400,6 +406,8 @@ function App() {
 
             <Route path="/client-form" element={<AjinorahForm />} />
             <Route path="/client-dashboard" element={<ClientDashboard />} />
+            <Route path="/client-portal" element={<CDashboard />} />
+
             <Route path="/api-marketing-dashboard" element={<AdminRoute><ApiMarketingDashboard /></AdminRoute>} />
             <Route path="/media-dashboard" element={<AdminRoute><MediaDashboard /></AdminRoute>} />
             <Route path="/ajnoradashboard" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
