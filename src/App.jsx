@@ -25,6 +25,8 @@ import PartnershipChatbot from "./components/PartnershipChatbot";
 import AjnoraDashboard from "./pages/AjnoraDashboard";
 import AjinorahForm from "./components/ClientFormaji";
 import SocialBureauIntro from "./components/Light";
+import CDashboard from "./components/ClickupDash/CDashboard";
+
 
 const Home = lazy(() =>
   import("./pages/Home").then((module) => ({ default: module.Home })),
@@ -131,6 +133,7 @@ const PartnerLogin = lazy(() => import("./pages/Partnerships/PartnershipTemplate
 const PartnerDashboard = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboard"));
 const PartnerDashboardHub = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboardHub"));
 const StudentShowcase = lazy(() => import("./pages/Partnerships/StudentShowcase"));
+const BlogDashboard = lazy(() => import("./pages/BlogDashboard"));
 
 function ConditionalFooter() {
   const location = useLocation();
@@ -157,8 +160,10 @@ function ConditionalFooter() {
     "/job-details",
     "/job-listing",
     "/job-applicants",
-    "/candidate-profile"
+    "/candidate-profile",
+    "/client-portal"
   ];
+
 
   const shouldHide = hideFooterRoutes.some((route) => {
     const normalizedPath = location.pathname.toLowerCase().replace(/\/$/, "");
@@ -195,8 +200,10 @@ function ConditionalNavbar() {
     "/job-listing",
     "/job-applicants",
     "/candidate-profile",
-    "/ajio"
+    "/ajio",
+    "/client-portal"
   ];
+
 
   const shouldHide = hideNavbarRoutes.some((route) => {
     const normalizedPath = location.pathname.toLowerCase().replace(/\/$/, "");
@@ -210,7 +217,7 @@ function ConditionalNavbar() {
 function ConditionalChatbot() {
   const location = useLocation();
   const path = location.pathname.toLowerCase();
-  
+
   // Define actual partner slugs that should have the chatbot
   const actualPartnerSlugs = [
     "ranjit",
@@ -224,7 +231,7 @@ function ConditionalChatbot() {
     "sakilan"
   ];
 
-  const isActualPartnerPage = actualPartnerSlugs.some(slug => 
+  const isActualPartnerPage = actualPartnerSlugs.some(slug =>
     path === `/partnership/${slug.toLowerCase()}`
   );
 
@@ -265,12 +272,17 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/clickup" element={<Clickup />} />
             <Route
               path="/blog/submit"
               element={
-                <AdminRoute>
                   <SubmitBlog />
-                </AdminRoute>
+              }
+            />
+            <Route
+              path="/blog/dashboard"
+              element={
+                  <BlogDashboard />
               }
             />
             <Route path="/contact" element={<Contact />} />
@@ -400,6 +412,8 @@ function App() {
 
             <Route path="/client-form" element={<AjinorahForm />} />
             <Route path="/client-dashboard" element={<ClientDashboard />} />
+            <Route path="/client-portal" element={<CDashboard />} />
+
             <Route path="/api-marketing-dashboard" element={<AdminRoute><ApiMarketingDashboard /></AdminRoute>} />
             <Route path="/media-dashboard" element={<AdminRoute><MediaDashboard /></AdminRoute>} />
             <Route path="/ajnoradashboard" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />

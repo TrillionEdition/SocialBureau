@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu, X, ChevronRight, Trophy, User } from "lucide-react";
+import { Menu, X, ChevronRight, Trophy, User, FileText, BarChart3 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Logout from "./Logout";
 
@@ -351,21 +351,28 @@ export default function Navbar() {
                       onMouseLeave={() => setActiveDropdown(null)}
                     >
                       <div className="flex flex-col">
-                        {(isAdmin || isPartnership) && (
-                          <>
-                            <button
-                              onClick={() => {
-                                handleNavClick("/dashboard");
-                                setActiveDropdown(null);
-                              }}
-                              className="text-[13px] font-medium text-[#f5f5f7]/80 hover:text-white hover:bg-white/10 px-4 py-3 text-left transition-colors flex items-center gap-2"
-                            >
-                              <User size={14} />
-                              Dashboard
-                            </button>
-                            <div className="h-px bg-white/10" />
-                          </>
-                        )}
+                        <button
+                          onClick={() => {
+                            handleNavClick("/blog/dashboard");
+                            setActiveDropdown(null);
+                          }}
+                          className="text-[13px] font-medium text-red-500 hover:text-white hover:bg-red-600 px-4 py-3 text-left transition-colors flex items-center gap-2"
+                        >
+                          <BarChart3 size={14} />
+                          Manage Blogs
+                        </button>
+                        <div className="h-px bg-white/10" />
+                        <button
+                          onClick={() => {
+                            handleNavClick("/blog/submit");
+                            setActiveDropdown(null);
+                          }}
+                          className="text-[13px] font-medium text-[#f5f5f7]/80 hover:text-white hover:bg-white/10 px-4 py-3 text-left transition-colors flex items-center gap-2"
+                        >
+                          <FileText size={14} />
+                          Write a Blog
+                        </button>
+
 
                         <button
                           onClick={() => {
@@ -611,13 +618,23 @@ export default function Navbar() {
                 {isLoggedIn && (
                   <>
                     {(isAdmin || isPartnership) && (
-                      <button
-                        onClick={() => handleNavClick("/dashboard")}
-                        className="flex items-center gap-2 text-[22px] font-semibold text-[#f5f5f7] active:text-[#ff0000] text-left transition-colors"
-                      >
-                        <User size={20} />
-                        Dashboard
-                      </button>
+                      <>
+                        <button
+                          onClick={() => handleNavClick("/blog/dashboard")}
+                          className="flex items-center gap-2 text-[22px] font-semibold text-[#f5f5f7] active:text-[#ff0000] text-left transition-colors"
+                        >
+                          <BarChart3 size={20} />
+                          Manage Blogs
+                        </button>
+                        <button
+                          onClick={() => handleNavClick("/blog/submit")}
+                          className="flex items-center gap-2 text-[22px] font-semibold text-[#f5f5f7] active:text-[#ff0000] text-left transition-colors"
+                        >
+                          <FileText size={20} />
+                          Write a Blog
+                        </button>
+
+                      </>
                     )}
                     <button
                       onClick={() => handleNavClick("/leaderboard")}

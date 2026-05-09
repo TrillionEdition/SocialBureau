@@ -1,11 +1,15 @@
 import React from 'react'
 import Footer from '../components/Footer'
-import { TeamHeader } from '../components/TeamHeader'
 import TeamSection from '../components/TeamSection'
 import Testimonials from '../components/Testimonials'
 import Seo from '../components/Seo'
 import { useQuery } from '@tanstack/react-query'
 import { teamService } from '@/services/teamService'
+import { TeamHeader } from '@/components/Team/TeamHeader'
+// import TeamSecondary from '@/components/Team/TeamSecondary'
+// import TeamHeader from '@/components/Team/TeamHeader'
+// import TeamGrid from '@/components/Team/TeamGrid'
+// import { WorkSection, ContactCTA, TrustedBy } from '@/components/Team/ExtraSections'
 
 export const OurTeam = () => {
   const { data: teamData, isLoading, isError } = useQuery({
@@ -29,6 +33,15 @@ export const OurTeam = () => {
         url="https://www.socialbureau.in/our-team"
       />
       <TeamHeader />
+      {/* <TeamHeader /> */}
+      {/* <TeamSecondary /> */}
+      {/* <TeamGrid 
+        teamData={teamData} 
+        isLoading={isLoading} 
+      /> */}
+      {/* <WorkSection />
+      <ContactCTA />
+      <TrustedBy /> */}
       {/*
         Pass fetched teamData to TeamSection.
         If data is still loading or errored, TeamSection falls back to

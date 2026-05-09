@@ -2,10 +2,8 @@ import React, { useState, useEffect, useMemo, lazy, Suspense } from "react";
 import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { blogAPI } from "@/services/blogServices";
-import { FaHeart, FaCalendarAlt, FaUser, FaTag, FaTrashAlt } from "react-icons/fa";
+import { FaHeart, FaCalendarAlt, FaUser, FaTag, FaTrashAlt, FaEdit } from "react-icons/fa";
 
-// Lazy load non-critical components
-const Footer = lazy(() => import("./Footer"));
 const Seo = lazy(() => import("./Seo"));
 const SchemaMarkup = lazy(() => import("./SchemaMarkup"));
 const Toast = lazy(() => import("./Toast"));
@@ -28,10 +26,9 @@ const processContentWithIds = (html, sectionIndex) => {
 
   let processedHtml = html;
 
-  // Remove excessive line breaks in general
-  processedHtml = processedHtml.replace(/(?:<br\s*\/?>\s*){2,}/gi, '<br/>');
+  // processedHtml = processedHtml.replace(/(?:<br\s*\/?>\s*){2,}/gi, '<br/>');
   // Remove line breaks right before a heading
-  processedHtml = processedHtml.replace(/(?:<br\s*\/?>\s*)+<h/gi, '<h');
+  // processedHtml = processedHtml.replace(/(?:<br\s*\/?>\s*)+<h/gi, '<h');
 
   // Process headings
   processedHtml = processedHtml.replace(/<h([1-6])(?:\s+[^>]*)?>(.*?)<\/h\1>/gi, (match, level, content) => {
@@ -39,12 +36,12 @@ const processContentWithIds = (html, sectionIndex) => {
     if (!textContent) return match;
     const slug = textContent.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/--+/g, '-');
 
-    // Assign specific classes based on heading level (lighter weight, less margin)
-    let headingClasses = "font-medium text-gray-900 mt-6 mb-4 leading-tight max-w-3xl";
-    if (level === "1") headingClasses += " text-3xl md:text-4xl";
-    else if (level === "2") headingClasses += " text-2xl md:text-3xl";
-    else if (level === "3") headingClasses += " text-xl md:text-2xl";
-    else headingClasses += " text-lg md:text-xl";
+    // Assign specific classes based on heading level (Bold and distinct sizes)
+    let headingClasses = "font-bold text-gray-900 mt-10 mb-5 leading-tight max-w-3xl";
+    if (level === "1") headingClasses += " text-4xl md:text-5xl";
+    else if (level === "2") headingClasses += " text-3xl md:text-4xl";
+    else if (level === "3") headingClasses += " text-2xl md:text-3xl";
+    else headingClasses += " text-xl md:text-2xl";
 
     // Add exactly one <br/> before the heading
     return `<br/><h${level} id="section-${sectionIndex}-${slug}" class="${headingClasses}">${content}</h${level}>`;
@@ -52,7 +49,7 @@ const processContentWithIds = (html, sectionIndex) => {
 
   // Process paragraphs to match the requested style if desired
   processedHtml = processedHtml.replace(/<p(?:\s+[^>]*)?>(.*?)<\/p>/gi, (match, content) => {
-    return `<p class="text-xl text-gray-700 mb-4 leading-relaxed max-w-3xl">${content}</p>`;
+    return `<p class="text-xl text-gray-700 mb-6 leading-relaxed max-w-3xl">${content}</p>`;
   });
 
   // Process lists slightly as well
@@ -472,6 +469,20 @@ export default function BlogDetail() {
     return commentUserId === currentUserId;
   };
 
+  // ✅ CHECK IF USER CAN EDIT THIS POST
+  const canEditPost = useMemo(() => {
+    if (!currentUser || !post) return false;
+    
+    // Normalizing IDs for comparison
+    const postUserId = post.user?._id || post.user;
+    const currentUserId = currentUser.id || currentUser._id;
+    
+    const isOwner = postUserId?.toString() === currentUserId?.toString();
+    const isUserAdmin = currentUser.role?.toLowerCase() === 'admin';
+    
+    return isOwner || isUserAdmin;
+  }, [currentUser, post]);
+
   const processedRenderedContent = useMemo(() => {
     if (!post?.content || !Array.isArray(post.content)) return null;
     return post.content.map((section, index) => {
@@ -546,7 +557,19 @@ export default function BlogDetail() {
               <span className="flex items-center gap-1.5"><FaUser className="w-3.5 h-3.5" />{post.author || post.authorName}</span>
             </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">{post.title}</h1>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">{post.title}</h1>
+            
+            {canEditPost && (
+              <button
+                onClick={() => navigate('/blog/submit', { state: { editBlog: post } })}
+                className="flex-shrink-0 flex items-center gap-2 px-6 py-2.5 bg-gray-900 text-white rounded-full hover:bg-red-600 transition-all shadow-lg hover:shadow-red-200"
+              >
+                <FaEdit />
+                <span>Edit Post</span>
+              </button>
+            )}
+          </div>
           <p className="text-xl text-gray-700 mb-8 leading-relaxed max-w-3xl">{post.excerpt}</p>
         </div>
 
@@ -725,10 +748,6 @@ export default function BlogDetail() {
           </div>
         </div>
       </div>
-
-      <Suspense fallback={<div className="h-64 bg-gray-100 animate-pulse rounded-t-3xl mt-20" />}>
-        <Footer />
-      </Suspense>
     </div>
   );
 }

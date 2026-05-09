@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Footer from "./Footer";
 import { jobService } from "@/services/jobService";
+import LoadingSpinner from "./LoadingSpinner";
 
 // Fallback mock details for when backend is uncontactable
 const fallbackJobDetails = {
@@ -57,7 +58,7 @@ export default function CareerDetail() {
     return () => clearInterval(interval);
   }, [job]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-pulse text-red-600 font-bold">Loading Career Opportunity...</div></div>;
+  if (loading) return <LoadingSpinner />;
   if (!job) return <div className="text-center py-20">Job not found.</div>;
 
   return (
