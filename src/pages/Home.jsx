@@ -376,7 +376,7 @@ export const Home = () => {
     {
       date: new Date("2026-05-10T00:00:00"),
       desktop: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1778302961/mothers_day_final_ajbf8w.png",
-      mobile: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1778069397/mothers_day_mobile_view_ol29cu.png",
+      mobile: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1778305472/ChatGPT_Image_May_9_2026_11_11_20_AM_c0vp41.png",
       alt: "Mother's Day Special"
     },
     // {
