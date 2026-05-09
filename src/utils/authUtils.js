@@ -70,6 +70,10 @@ export const isAdmin = () => {
   return user?.role?.toLowerCase() === "admin";
 };
 
+export const canManageJobs = () => {
+  return isAdmin();
+};
+
 export const canAccessDashboard = () => {
   return isAdmin() || isPartner();
 };

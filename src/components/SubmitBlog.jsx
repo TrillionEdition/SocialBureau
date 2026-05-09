@@ -1081,7 +1081,6 @@ export default function SubmitBlog() {
         </div>
       </div>
     </>
-    
   );
 }
 

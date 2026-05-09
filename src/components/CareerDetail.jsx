@@ -168,29 +168,33 @@ export default function CareerDetail() {
               </div>
             )}
 
-            {/* Sticky Application Widget */}
+            {/* Internal Application Widget */}
             <div className="lg:sticky lg:top-8">
-              <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden ring-1 ring-black/5">
-                <div className="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-                  <h3 className="font-bold text-gray-900">Direct Application</h3>
-                  <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
-                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
-                    <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
+              {job.applicationLink ? (
+                <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden ring-1 ring-black/5">
+                  <div className="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                    <h3 className="font-bold text-gray-900">Apply Now</h3>
+                    <div className="flex gap-1.5">
+                      <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+                      <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
+                    </div>
+                  </div>
+                  <div className="h-[600px] lg:h-[70vh]">
+                    <iframe
+                      title="Application Form"
+                      src={job.applicationLink}
+                      className="w-full h-full"
+                      frameBorder="0"
+                      loading="lazy"
+                    />
                   </div>
                 </div>
-                <div className="h-[600px] lg:h-[70vh]">
-                  <iframe
-                    title="Application Form"
-                    src="https://docs.google.com/forms/d/e/1FAIpQLSdTQR9NJZMz3KYMwJSCow0EsGP8zUk_m79i4SqRzWVaHts6aA/viewform?embedded=true"
-                    className="w-full h-full"
-                    frameBorder="0"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
+              ) : (
+                <InternalApplicationForm jobId={job._id} jobTitle={job.title} />
+              )}
               <p className="text-center text-xs text-gray-400 mt-4">
-                By applying, you agree to the employment conditions listed.
+                By applying, you agree to the SocialBureau employment policies.
               </p>
             </div>
 

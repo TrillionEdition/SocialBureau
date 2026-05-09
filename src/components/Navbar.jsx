@@ -52,6 +52,8 @@ export default function Navbar() {
   const [expandedMobileCategory, setExpandedMobileCategory] = useState(null);
   const navigate = useNavigate();
   const { isLoggedIn, isAdmin, isPartnership } = useAuth();
+  // DEBUG: isAdmin is a boolean, not a function
+
 
   const navItems = [
     { label: "Home", href: "/" },
@@ -361,6 +363,18 @@ export default function Navbar() {
                           <BarChart3 size={14} />
                           Manage Blogs
                         </button>
+                        {isAdmin && (
+                          <button
+                            onClick={() => {
+                              handleNavClick("/admin/applications");
+                              setActiveDropdown(null);
+                            }}
+                            className="text-[13px] font-medium text-red-500 hover:text-white hover:bg-red-600 px-4 py-3 text-left transition-colors flex items-center gap-2"
+                          >
+                            <BarChart3 size={14} />
+                            Manage Applications
+                          </button>
+                        )}
                         <div className="h-px bg-white/10" />
                         <button
                           onClick={() => {
