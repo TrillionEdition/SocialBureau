@@ -430,7 +430,7 @@ export const Home = () => {
 </video>
   </a>
 </section> */}
-      {/* --- HERO SECTION --- */}
+      {/* ---- HERO SECTION ---- */}
       <section className="min-h-screen flex flex-col justify-center pt-2 sm:pt-20 relative overflow-hidden">
         {/* Hero Background Gradient Mesh */}
         <div className="absolute inset-0 -z-10 bg-white">
