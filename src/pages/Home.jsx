@@ -387,7 +387,7 @@ export const Home = () => {
     // }
   ];
 
-  // Find the current active hero based on date
+  // Find the current active hero based on date...
   const now = new Date();
   const currentHero = HERO_SCHEDULE.find(h => now >= h.date) || HERO_SCHEDULE[HERO_SCHEDULE.length - 1];
 
