@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { blogAPI } from "@/services/blogServices";
 import { analyticsAPI } from "@/services/analyticsServices";
@@ -58,6 +58,7 @@ const balanceData = [
 ];
 
 const DashboardX = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [range, setRange] = useState("last30Days");
   const [selectedPartnerParam, setSelectedPartnerParam] = useState(null);
@@ -232,6 +233,20 @@ const DashboardX = () => {
           <NavItem icon={<Monitor size={18} />} label="Campaigns" />
           <NavItem icon={<BarChart3 size={18} />} label="Performance" />
           <NavItem icon={<Settings size={18} />} label="API Settings" />
+
+          <div className="pt-6 pb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest px-3">
+            Content Management
+          </div>
+          <NavItem 
+            icon={<BarChart3 size={18} />} 
+            label="Manage Blogs" 
+            onClick={() => navigate('/blog/dashboard')}
+          />
+          <NavItem 
+            icon={<Plus size={18} />} 
+            label="Write a Blog" 
+            onClick={() => navigate('/blog/submit')}
+          />
 
           {user?.role !== "partnership" && (
             <>

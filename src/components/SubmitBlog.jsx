@@ -3,10 +3,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { blogAPI } from "@/services/blogServices";
 import Footer from "./Footer";
 import Toast from "./Toast";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import JoditEditor from "jodit-react";
-import { getUserData } from "@/utils/authUtils";
-import { FaEye, FaArrowLeft, FaEdit, FaTrash, FaCheck, FaTimes, FaCalendarAlt, FaUser, FaUndo, FaRedo } from "react-icons/fa";
+import { getUserData, isAdmin } from "@/utils/authUtils";
+import { FaEye, FaArrowLeft, FaEdit, FaTrash, FaCheck, FaTimes, FaCalendarAlt, FaUser, FaUndo, FaRedo, FaChartBar } from "react-icons/fa";
 
 export default function SubmitBlog() {
   const navigate = useNavigate();
@@ -94,13 +94,37 @@ export default function SubmitBlog() {
     seoDescription: '',
   });
 
-  // Fetch all published blogs for child blog selection
+  // Fetch all blogs for management - admins see everything, users see published (plus their own drafts if API supports)
   const { data: blogsData } = useQuery({
-    queryKey: ["allBlogs"],
-    queryFn: () => blogAPI.getBlogs({ limit: 100, published: true }),
+    queryKey: ["allBlogs", currentUser?.role, currentUser?.email],
+    queryFn: () => blogAPI.getBlogs({ 
+      limit: 100, 
+      published: 'all' 
+    }),
+    enabled: !!currentUser,
   });
 
-  const availableBlogs = blogsData?.data || [];
+  const availableBlogs = useMemo(() => {
+    if (!blogsData || !currentUser) return [];
+    const blogs = Array.isArray(blogsData) ? blogsData : (blogsData.data || []);
+    
+    // Filter by ownership: only show blogs where blog.user matches current user ID
+    // Admins can see everything, others only see their own
+    if (isAdmin()) {
+      console.log(`📊 Admin view: Showing all ${blogs.length} blogs`);
+      return blogs;
+    }
+    
+    const userId = currentUser.id || currentUser._id;
+    const filtered = blogs.filter(blog => {
+      // Check if the blog's user field matches the current user's ID
+      const blogUserId = blog.user?._id || blog.user;
+      return blogUserId?.toString() === userId?.toString();
+    });
+
+    console.log(`📊 User view: Showing ${filtered.length} own blogs out of ${blogs.length} total`);
+    return filtered;
+  }, [blogsData, currentUser]);
 
   // Calculate word count from HTML content
   const wordCount = useMemo(() => {
@@ -110,39 +134,63 @@ export default function SubmitBlog() {
     return plain.split(/\s+/).filter(Boolean).length;
   }, [content]);
 
+  // HANDLE EXTERNAL EDIT REQUESTS (from BlogDetail page)
+  useEffect(() => {
+    if (location.state?.editBlog) {
+      console.log('📝 Initializing external edit request for:', location.state.editBlog.title);
+      handleEdit(location.state.editBlog);
+      // Clear state after reading to prevent re-initializing on refreshes
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
+
   const createMutation = useMutation({
     mutationFn: (data) => blogAPI.createBlog(data),
     onSuccess: (response) => {
+      console.log('✅ Blog created successfully:', response);
       queryClient.invalidateQueries({ queryKey: ["allBlogs"] });
-      setToast({ type: "success", message: isEditing ? "Blog updated successfully!" : "Blog submitted successfully!" });
+      setToast({ type: "success", message: "Blog submitted successfully!" });
       setIsUploading(false);
       setIsEditing(false);
       setEditSlug(null);
-      setTimeout(() => {
-        navigate(`/blogs/${response.data.slug}`);
-      }, 1500);
+      
+      const slug = response?.data?.slug || response?.slug;
+      if (slug) {
+        setTimeout(() => {
+          navigate(`/blogs/${slug}`);
+        }, 1500);
+      }
     },
     onError: (error) => {
+      console.error('❌ Blog creation failed:', error);
       setIsUploading(false);
-      setToast({ type: "error", message: error.response?.data?.message || 'Failed to process blog' });
+      const errorMsg = error.response?.data?.message || error.message || 'Failed to process blog';
+      setToast({ type: "error", message: `Creation Error: ${errorMsg}` });
     },
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ slug, data }) => blogAPI.updateBlog(slug, data),
     onSuccess: (response) => {
+      console.log('✅ Blog updated successfully:', response);
       queryClient.invalidateQueries({ queryKey: ["allBlogs"] });
       setToast({ type: "success", message: "Blog updated successfully!" });
       setIsUploading(false);
       setIsEditing(false);
       setEditSlug(null);
-      setTimeout(() => {
-        navigate(`/blogs/${response.data.slug}`);
-      }, 1500);
+
+      const slug = response?.data?.slug || response?.slug;
+      if (slug) {
+        setTimeout(() => {
+          navigate(`/blogs/${slug}`);
+        }, 1500);
+      }
     },
     onError: (error) => {
+      console.error('❌ Blog update failed:', error);
       setIsUploading(false);
-      setToast({ type: "error", message: error.response?.data?.message || 'Failed to update blog' });
+      const errorMsg = error.response?.data?.message || error.message || 'Failed to update blog';
+      setToast({ type: "error", message: `Update Error: ${errorMsg}` });
     },
   });
 
@@ -164,14 +212,17 @@ export default function SubmitBlog() {
       category: blog.category,
       author: blog.author || '',
       customUrl: blog.slug,
-      seoTitle: blog.seo?.title || '',
-      seoDescription: blog.seo?.description || '',
+      seoTitle: blog.seo?.title || blog.seoTitle || '',
+      seoDescription: blog.seo?.description || blog.seoDescription || '',
     });
+    
     setContent(blog.content[0]?.text || '');
     setImagePreview(blog.image);
     setKeywords(blog.keywords || []);
+    setSelectedChildBlogs(blog.childBlogs?.map(cb => typeof cb === 'object' ? cb._id : cb) || []);
     setIsEditing(true);
     setEditSlug(blog.slug);
+    setImageFile(null); // Clear any pending file upload when editing a new blog
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -223,37 +274,68 @@ export default function SubmitBlog() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('📝 Submitting blog form...', { formData, keywords, selectedChildBlogs });
 
     if (!formData.title.trim()) {
+      console.warn('❌ Submission failed: Title is empty');
       setToast({ type: "error", message: "Title is required" });
       return;
     }
     if (!formData.excerpt.trim()) {
+      console.warn('❌ Submission failed: Excerpt is empty');
       setToast({ type: "error", message: "Excerpt is required" });
       return;
     }
     if (!imageFile && !imagePreview) {
+      console.warn('❌ Submission failed: Image is missing');
       setToast({ type: "error", message: "Featured image is required" });
       return;
     }
 
-    const plainContent = content.replace(/<[^>]*>/g, '').trim();
+    if (imageFile) {
+      const fileSizeInMB = imageFile.size / (1024 * 1024);
+      if (fileSizeInMB > 5) {
+        console.warn(`❌ Submission failed: Image too large (${fileSizeInMB.toFixed(2)}MB)`);
+        setToast({ type: "error", message: "Featured image is too large. Maximum size allowed is 5MB." });
+        return;
+      }
+    }
+
+    // Sync content from on-page editor if in preview mode OR from Jodit ref if in normal mode
+    let currentContent = content;
+    if (showPreview && previewEditRef.current) {
+      currentContent = previewEditRef.current.innerHTML;
+      console.log('🔄 Synced content from preview editor ref');
+      setContent(currentContent);
+    } else if (!showPreview) {
+      // In normal mode, we rely on the state updated by Jodit's onBlur.
+      // Direct instance sync via ref is removed to avoid internal Jodit getter crashes.
+      console.log('📝 Using content from state (normal mode)');
+    }
+
+    const plainContent = currentContent.replace(/<[^>]*>/g, '').trim();
     if (!plainContent) {
+      console.warn('❌ Submission failed: Content is empty');
       setToast({ type: "error", message: "Content is required" });
       return;
     }
-    if (wordCount > 2000) {
-      setToast({ type: "error", message: `Content exceeds maximum word limit. Current: ${wordCount} words, Maximum: 2000 words` });
+    
+    // Recalculate word count for validation
+    const currentWordCount = currentContent.replace(/<[^>]*>/g, ' ').replace(/&nbsp;|\u200B/g, ' ').trim().split(/\s+/).filter(Boolean).length;
+    if (currentWordCount > 2000) {
+      console.warn(`❌ Submission failed: Word count too high (${currentWordCount})`);
+      setToast({ type: "error", message: `Content exceeds maximum word limit. Current: ${currentWordCount} words, Maximum: 2000 words` });
       return;
     }
 
+    console.log('✅ Validation passed. Starting upload...', { currentWordCount });
     setIsUploading(true);
     setToast({ type: "loading", message: isEditing ? "Updating blog..." : "Publishing blog and securing assets..." });
 
     try {
       const contentSection = [{
         type: 'text',
-        text: content,
+        text: currentContent,
         heading: 'none',
       }];
 
@@ -263,7 +345,9 @@ export default function SubmitBlog() {
         content: contentSection,
         keywords,
         childBlogs: selectedChildBlogs,
-        author: formData.author.trim() || 'SocialBureau Team',
+        author: formData.author.trim() || currentUser?.name || 'SocialBureau Team',
+        seoTitle: formData.seoTitle,
+        seoDescription: formData.seoDescription,
       };
 
       if (isEditing) {
@@ -272,7 +356,8 @@ export default function SubmitBlog() {
         createMutation.mutate(blogData);
       }
     } catch (err) {
-      setToast({ type: "error", message: err.message });
+      console.error('🔥 CRITICAL ERROR in handleSubmit:', err);
+      setToast({ type: "error", message: err.message || "An unexpected error occurred" });
       setIsUploading(false);
     }
   };
@@ -984,51 +1069,19 @@ export default function SubmitBlog() {
             </form>
           </div>
 
-          {/* Manage Blogs Section */}
-          <div className="mt-12 bg-black/40 backdrop-blur-xl border border-red-900/30 rounded-2xl p-8 shadow-2xl">
-            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-              <FaEdit className="text-red-600" /> Manage Your Blogs
-            </h2>
-            <div className="grid grid-cols-1 gap-4">
-              {availableBlogs.length === 0 ? (
-                <p className="text-gray-500 italic">No blogs found. Start by creating one above!</p>
-              ) : (
-                availableBlogs.filter(b => b.author === currentUser?.name || !b.author).map(blog => (
-                  <div key={blog._id} className="bg-gray-900/50 border border-gray-800 rounded-xl p-4 flex items-center justify-between hover:border-red-600/50 transition-colors">
-                    <div className="flex items-center gap-4">
-                      <div className="w-16 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gray-800">
-                        <img src={blog.image} alt={blog.title} className="w-full h-full object-cover" />
-                      </div>
-                      <div>
-                        <h3 className="text-white font-semibold line-clamp-1">{blog.title}</h3>
-                        <p className="text-xs text-gray-500">{blog.category} • {new Date(blog.createdAt).toLocaleDateString()}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => handleEdit(blog)}
-                        className="p-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white rounded-lg transition"
-                        title="Edit Blog"
-                      >
-                        <FaEdit size={14} />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(blog.slug)}
-                        className="p-2 bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white rounded-lg transition"
-                        title="Delete Blog"
-                      >
-                        <FaTrash size={14} />
-                      </button>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
+          {/* Link to Dashboard */}
+          <div className="mt-8 text-center">
+            <Link 
+              to="/blog/dashboard"
+              className="inline-flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors py-4 px-8 border border-white/10 rounded-2xl bg-white/5 backdrop-blur-sm"
+            >
+              <FaChartBar /> GO TO BLOG DASHBOARD
+            </Link>
           </div>
         </div>
       </div>
-      <Footer />
     </>
+    // nevver put footer in here 
   );
 }
 
