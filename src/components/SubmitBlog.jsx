@@ -1081,7 +1081,7 @@ export default function SubmitBlog() {
         </div>
       </div>
     </>
-    // nevver put footer in here 
+    
   );
 }
 
