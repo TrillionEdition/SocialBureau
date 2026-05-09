@@ -21,7 +21,7 @@ export default function ClientDashboard() {
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 10000);
+    const interval = setInterval(fetchData, 900000);
     return () => clearInterval(interval);
   }, []);
 
@@ -45,7 +45,7 @@ export default function ClientDashboard() {
         if (c.status !== 'closed_won') return false;
         const createdDate = new Date(c.createdAt);
         return createdDate.getMonth() === thisMonth.getMonth() &&
-               createdDate.getFullYear() === thisMonth.getFullYear();
+          createdDate.getFullYear() === thisMonth.getFullYear();
       }).length;
 
       setStats({
@@ -53,7 +53,7 @@ export default function ClientDashboard() {
         thisMonth: clientList.filter(c => {
           const createdDate = new Date(c.createdAt);
           return createdDate.getMonth() === thisMonth.getMonth() &&
-                 createdDate.getFullYear() === thisMonth.getFullYear();
+            createdDate.getFullYear() === thisMonth.getFullYear();
         }).length,
         inPipeline: intake + qualified + proposal,
         closedThisMonth
@@ -87,14 +87,14 @@ export default function ClientDashboard() {
     try {
       setUpdating(true);
       await clientService.updateClient(clientId, { status: newStatus });
-      
+
       const updatedClient = clients.find(c => c._id === clientId);
       const clientWithNewStatus = { ...updatedClient, status: newStatus };
 
-      setClients(clients.map(c => 
+      setClients(clients.map(c =>
         c._id === clientId ? clientWithNewStatus : c
       ));
-      
+
       setEditingId(null);
       setNewStatus("");
 
@@ -111,7 +111,7 @@ export default function ClientDashboard() {
   const handleCreateClickUpTask = async (client) => {
     try {
       setCreatingTask(client._id);
-      
+
       // Calculate due date (30 days from now if decision timeline not available)
       const dueDate = new Date();
       dueDate.setDate(dueDate.getDate() + 30);
@@ -127,7 +127,7 @@ export default function ClientDashboard() {
       console.log("📋 Sending task data:", taskData);
 
       const response = await createClickUpTask(taskData);
-      
+
       console.log("✅ Task created response:", response);
 
       if (response.success) {
@@ -205,8 +205,8 @@ export default function ClientDashboard() {
       {/* HEADER */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Sales Dashboard</h1>
-        <button 
-          onClick={fetchData} 
+        <button
+          onClick={fetchData}
           className="px-4 py-2 text-sm bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition"
         >
           Refresh
@@ -215,23 +215,23 @@ export default function ClientDashboard() {
 
       {/* STATS */}
       <div className="grid grid-cols-4 gap-4 mb-6">
-        <StatCard 
-          title="Total Leads" 
-          value={stats.totalLeads} 
+        <StatCard
+          title="Total Leads"
+          value={stats.totalLeads}
           subtitle={`+${stats.thisMonth} this month`}
         />
-        <StatCard 
-          title="In Pipeline" 
-          value={stats.inPipeline} 
+        <StatCard
+          title="In Pipeline"
+          value={stats.inPipeline}
           subtitle="Active opportunities"
         />
-        <StatCard 
-          title="Closed This Month" 
-          value={stats.closedThisMonth} 
+        <StatCard
+          title="Closed This Month"
+          value={stats.closedThisMonth}
           subtitle="Won deals"
         />
-        <StatCard 
-          title="Conversion Rate" 
+        <StatCard
+          title="Conversion Rate"
           value={stats.totalLeads > 0 ? ((stats.closedThisMonth / stats.thisMonth * 100) || 0).toFixed(0) : 0}
           subtitle="This month"
           isPercent
@@ -242,18 +242,18 @@ export default function ClientDashboard() {
       <h2 className="text-lg font-semibold mb-3">Sales Pipeline</h2>
 
       <div className="grid grid-cols-3 gap-4 mb-8">
-        <PipelineColumn 
-          title="Intake" 
+        <PipelineColumn
+          title="Intake"
           clients={pipeline.intake}
           onClientClick={handleStatusUpdate}
         />
-        <PipelineColumn 
-          title="Qualified" 
+        <PipelineColumn
+          title="Qualified"
           clients={pipeline.qualified}
           onClientClick={handleStatusUpdate}
         />
-        <PipelineColumn 
-          title="Proposal Sent" 
+        <PipelineColumn
+          title="Proposal Sent"
           clients={pipeline.proposal_sent}
           onClientClick={handleStatusUpdate}
         />
@@ -373,28 +373,28 @@ export default function ClientDashboard() {
                           <DetailField label="Last Name" value={client.last_name} />
                           <DetailField label="Email" value={client.email} />
                           <DetailField label="Phone" value={client.phone || 'N/A'} />
-                          
+
                           {/* Company Information */}
                           <DetailField label="Company" value={client.company_name || 'N/A'} />
                           <DetailField label="Job Title" value={client.job_title || 'N/A'} />
                           <DetailField label="Industry" value={client.industry || 'N/A'} />
                           <DetailField label="Company Size" value={client.company_size || 'N/A'} />
-                          
+
                           {/* Budget & Decision Info */}
                           <DetailField label="Budget Range" value={client.monthly_budget_range || 'N/A'} />
                           <DetailField label="Decision Timeline" value={client.decision_timeline || 'N/A'} />
                           <DetailField label="Decision Authority" value={client.decision_authority ? 'Yes' : 'No'} />
                           <DetailField label="Current Solution" value={client.current_solution || 'N/A'} />
-                          
+
                           {/* Lead Source */}
                           <DetailField label="Lead Source" value={client.lead_source || 'N/A'} />
                           <DetailField label="Referred By" value={client.referred_by || 'N/A'} />
-                          
+
                           {/* Status & Dates */}
                           <DetailField label="Status" value={formatStatus(client.status)} />
                           <DetailField label="Joined Date" value={new Date(client.createdAt).toLocaleDateString()} />
                           <DetailField label="Last Updated" value={client.updatedAt ? new Date(client.updatedAt).toLocaleDateString() : 'N/A'} />
-                          
+
                           {/* Interaction Info */}
                           <DetailField label="Total Interactions" value={client.total_interactions || 0} />
                           <DetailField label="Last Interaction" value={client.last_interaction_date ? new Date(client.last_interaction_date).toLocaleDateString() : 'None'} />
@@ -475,11 +475,10 @@ function FilterButton({ label, active, onClick }) {
   return (
     <button
       onClick={onClick}
-      className={`px-3 py-1 text-xs rounded-lg transition ${
-        active 
-          ? 'bg-indigo-500 text-white' 
+      className={`px-3 py-1 text-xs rounded-lg transition ${active
+          ? 'bg-indigo-500 text-white'
           : 'bg-white border text-gray-700 hover:bg-gray-50'
-      }`}
+        }`}
     >
       {label}
     </button>
@@ -492,8 +491,8 @@ function PipelineColumn({ title, clients, onClientClick }) {
       <h3 className="text-xs font-semibold mb-3 text-gray-700 uppercase">{title} ({clients.length})</h3>
       <div className="space-y-3">
         {clients.slice(0, 5).map((client) => (
-          <div 
-            key={client._id} 
+          <div
+            key={client._id}
             className="bg-white p-3 rounded-lg border text-sm shadow-sm hover:shadow-md transition cursor-pointer"
             onClick={() => onClientClick(client._id, client.status)}
           >

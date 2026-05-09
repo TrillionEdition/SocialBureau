@@ -6,6 +6,7 @@ import Toast from "./Toast";
 import { useNavigate, useLocation } from "react-router-dom";
 import JoditEditor from "jodit-react";
 import { getUserData } from "@/utils/authUtils";
+import { FaEye, FaArrowLeft, FaEdit, FaTrash, FaCheck, FaTimes, FaCalendarAlt, FaUser, FaUndo, FaRedo } from "react-icons/fa";
 
 export default function SubmitBlog() {
   const navigate = useNavigate();
@@ -14,6 +15,52 @@ export default function SubmitBlog() {
   const editor = useRef(null);
   const [toast, setToast] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [isPreviewEditing, setIsPreviewEditing] = useState(false);
+  const [isLivePreview, setIsLivePreview] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editSlug, setEditSlug] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const previewEditRef = useRef(null);
+
+  const applyFormat = (command, value = null) => {
+    document.execCommand(command, false, value);
+    if (previewEditRef.current) {
+      setContent(previewEditRef.current.innerHTML);
+    }
+  };
+
+  // Helper to process content styles similar to BlogDetail.jsx
+  const processPreviewContent = (html) => {
+    if (!html) return html;
+    let processedHtml = html;
+    
+    // Remove excessive line breaks
+    processedHtml = processedHtml.replace(/(?:<br\s*\/?>\s*){2,}/gi, '<br/>');
+    
+    // Process headings with same classes as BlogDetail
+    processedHtml = processedHtml.replace(/<h([1-6])(?:\s+[^>]*)?>(.*?)<\/h\1>/gi, (match, level, content) => {
+      let headingClasses = "font-medium text-gray-900 mt-8 mb-4 leading-tight";
+      if (level === "1") headingClasses += " text-3xl md:text-4xl";
+      else if (level === "2") headingClasses += " text-2xl md:text-3xl";
+      else if (level === "3") headingClasses += " text-xl md:text-2xl";
+      else headingClasses += " text-lg md:text-xl";
+      
+      return `<h${level} class="${headingClasses}">${content}</h${level}>`;
+    });
+
+    // Process paragraphs
+    processedHtml = processedHtml.replace(/<p(?:\s+[^>]*)?>(.*?)<\/p>/gi, (match, content) => {
+      return `<p class="text-xl text-gray-700 mb-6 leading-relaxed">${content}</p>`;
+    });
+
+    // Process lists
+    processedHtml = processedHtml.replace(/<ul(?:\s+[^>]*)?>(.*?)<\/ul>/gi, (match, content) => {
+      return `<ul class="text-xl text-gray-700 mb-6 leading-relaxed list-disc pl-6 space-y-2">${content}</ul>`;
+    });
+    
+    return processedHtml;
+  };
 
   // Frontend upload removed in favor of secure backend upload via multipart/form-data
 
@@ -26,6 +73,7 @@ export default function SubmitBlog() {
       }, 2000);
       return;
     }
+    setCurrentUser(userData);
   }, [navigate, location]);
 
   // Replaced multiple content sections with a single full-featured editor content
@@ -65,18 +113,73 @@ export default function SubmitBlog() {
   const createMutation = useMutation({
     mutationFn: (data) => blogAPI.createBlog(data),
     onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["blogs"] });
-      setToast({ type: "success", message: "Blog submitted successfully!" });
+      queryClient.invalidateQueries({ queryKey: ["allBlogs"] });
+      setToast({ type: "success", message: isEditing ? "Blog updated successfully!" : "Blog submitted successfully!" });
       setIsUploading(false);
+      setIsEditing(false);
+      setEditSlug(null);
       setTimeout(() => {
         navigate(`/blogs/${response.data.slug}`);
       }, 1500);
     },
     onError: (error) => {
       setIsUploading(false);
-      setToast({ type: "error", message: error.response?.data?.message || 'Failed to submit blog' });
+      setToast({ type: "error", message: error.response?.data?.message || 'Failed to process blog' });
     },
   });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ slug, data }) => blogAPI.updateBlog(slug, data),
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: ["allBlogs"] });
+      setToast({ type: "success", message: "Blog updated successfully!" });
+      setIsUploading(false);
+      setIsEditing(false);
+      setEditSlug(null);
+      setTimeout(() => {
+        navigate(`/blogs/${response.data.slug}`);
+      }, 1500);
+    },
+    onError: (error) => {
+      setIsUploading(false);
+      setToast({ type: "error", message: error.response?.data?.message || 'Failed to update blog' });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (slug) => blogAPI.deleteBlog(slug),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["allBlogs"] });
+      setToast({ type: "success", message: "Blog deleted successfully" });
+    },
+    onError: (error) => {
+      setToast({ type: "error", message: error.response?.data?.message || 'Failed to delete blog' });
+    },
+  });
+
+  const handleEdit = (blog) => {
+    setFormData({
+      title: blog.title,
+      excerpt: blog.excerpt,
+      category: blog.category,
+      author: blog.author || '',
+      customUrl: blog.slug,
+      seoTitle: blog.seo?.title || '',
+      seoDescription: blog.seo?.description || '',
+    });
+    setContent(blog.content[0]?.text || '');
+    setImagePreview(blog.image);
+    setKeywords(blog.keywords || []);
+    setIsEditing(true);
+    setEditSlug(blog.slug);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleDelete = (slug) => {
+    if (window.confirm("Are you sure you want to delete this blog?")) {
+      deleteMutation.mutate(slug);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -129,11 +232,11 @@ export default function SubmitBlog() {
       setToast({ type: "error", message: "Excerpt is required" });
       return;
     }
-    if (!imageFile) {
+    if (!imageFile && !imagePreview) {
       setToast({ type: "error", message: "Featured image is required" });
       return;
     }
-    
+
     const plainContent = content.replace(/<[^>]*>/g, '').trim();
     if (!plainContent) {
       setToast({ type: "error", message: "Content is required" });
@@ -145,30 +248,294 @@ export default function SubmitBlog() {
     }
 
     setIsUploading(true);
-    setToast({ type: "loading", message: "Publishing blog and securing assets..." });
+    setToast({ type: "loading", message: isEditing ? "Updating blog..." : "Publishing blog and securing assets..." });
 
     try {
-        const contentSection = [{
-            type: 'text',
-            text: content,
-            heading: 'none',
-        }];
+      const contentSection = [{
+        type: 'text',
+        text: content,
+        heading: 'none',
+      }];
 
-        const blogData = {
-            ...formData,
-            image: imageFile, // Pass File object directly to backend API
-            content: contentSection,
-            keywords,
-            childBlogs: selectedChildBlogs,
-            author: formData.author.trim() || 'SocialBureau Team',
-        };
+      const blogData = {
+        ...formData,
+        image: imageFile || imagePreview,
+        content: contentSection,
+        keywords,
+        childBlogs: selectedChildBlogs,
+        author: formData.author.trim() || 'SocialBureau Team',
+      };
 
+      if (isEditing) {
+        updateMutation.mutate({ slug: editSlug, data: blogData });
+      } else {
         createMutation.mutate(blogData);
+      }
     } catch (err) {
-        setToast({ type: "error", message: err.message });
-        setIsUploading(false);
+      setToast({ type: "error", message: err.message });
+      setIsUploading(false);
     }
   };
+
+  if (showPreview) {
+    return (
+      <div className="bg-gray-50 min-h-screen font-sans text-gray-900 flex relative">
+        <style>{`
+          .blog-content[contenteditable="true"] {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            cursor: text;
+            line-height: 1.6;
+          }
+          .blog-content[contenteditable="true"] h1 {
+            font-size: 2.5rem !important;
+            font-weight: 800 !important;
+            color: #111827 !important;
+            margin-top: 2rem !important;
+            margin-bottom: 1rem !important;
+            display: block !important;
+          }
+          .blog-content[contenteditable="true"] h2 {
+            font-size: 2rem !important;
+            font-weight: 700 !important;
+            color: #111827 !important;
+            margin-top: 1.5rem !important;
+            margin-bottom: 0.75rem !important;
+            display: block !important;
+          }
+          .blog-content[contenteditable="true"] h3 {
+            font-size: 1.5rem !important;
+            font-weight: 600 !important;
+            color: #111827 !important;
+            margin-top: 1.25rem !important;
+            margin-bottom: 0.5rem !important;
+            display: block !important;
+          }
+          .blog-content[contenteditable="true"] p {
+            font-size: 1.25rem !important;
+            color: #374151 !important;
+            margin-bottom: 1.25rem !important;
+            line-height: 1.8 !important;
+          }
+          .blog-content[contenteditable="true"] ul {
+            list-style-type: disc !important;
+            padding-left: 1.5rem !important;
+            margin-bottom: 1.25rem !important;
+          }
+          .blog-content[contenteditable="true"] ol {
+            list-style-type: decimal !important;
+            padding-left: 1.5rem !important;
+            margin-bottom: 1.25rem !important;
+          }
+          ::selection {
+            background-color: #fee2e2 !important;
+            color: #b91c1c !important;
+          }
+        `}</style>
+
+        {/* Sidebar Tools - Fixed on the right */}
+        {isPreviewEditing && (
+          <div className="fixed right-0 top-0 bottom-0 w-72 bg-white border-l border-gray-200 shadow-2xl p-6 z-50 overflow-y-auto animate-in slide-in-from-right duration-300">
+            <div className="flex items-center justify-between mb-8">
+              <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                <FaEdit className="text-red-600" /> Tools
+              </h3>
+              <button
+                onClick={() => setIsPreviewEditing(false)}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              >
+                <FaTimes className="text-gray-400" />
+              </button>
+            </div>
+
+            <div className="space-y-8">
+              {/* Headings */}
+              <div>
+                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 block">Structure</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { label: 'H1 Title', cmd: 'formatBlock', val: 'H1', class: 'text-lg font-bold' },
+                    { label: 'H2 Sub', cmd: 'formatBlock', val: 'H2', class: 'text-md font-bold' },
+                    { label: 'H3 Sec', cmd: 'formatBlock', val: 'H3', class: 'text-sm font-bold' },
+                    { label: 'Para', cmd: 'formatBlock', val: 'P', class: 'text-sm' },
+                  ].map((item, i) => (
+                    <button
+                      key={i}
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        applyFormat(item.cmd, item.val);
+                      }}
+                      className="flex flex-col items-center justify-center p-3 border border-gray-100 rounded-xl hover:border-red-200 hover:bg-red-50 transition-all text-center group"
+                    >
+                      <span className={`text-gray-900 group-hover:text-red-600 ${item.class}`}>{item.val === 'P' ? '¶' : item.val}</span>
+                      <span className="text-[9px] text-gray-400 mt-1">{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Font Size */}
+              <div>
+                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 block">Text Size</label>
+                <div className="flex items-center gap-2">
+                  {[
+                    { label: 'L', val: '6' },
+                    { label: 'M', val: '4' },
+                    { label: 'S', val: '3' },
+                  ].map((size, i) => (
+                    <button
+                      key={i}
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        applyFormat('fontSize', size.val);
+                      }}
+                      className="flex-1 py-2 border border-gray-100 rounded-lg hover:border-red-200 hover:bg-red-50 transition-all font-bold text-gray-700"
+                    >
+                      {size.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Spacing */}
+              <div>
+                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 block">Spacing</label>
+                <button
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    applyFormat('insertHTML', '<br/><br/>');
+                  }}
+                  className="w-full py-3 border border-dashed border-gray-200 rounded-xl hover:border-red-300 hover:bg-red-50 transition-all text-sm text-gray-600 flex items-center justify-center gap-2"
+                >
+                  <span>Add Extra Space</span>
+                </button>
+              </div>
+
+              {/* Actions & History */}
+              <div>
+                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 block">Actions</label>
+                <div className="flex gap-2 mb-3">
+                  <button onMouseDown={(e) => { e.preventDefault(); applyFormat('bold'); }} className="flex-1 p-2 border border-gray-100 rounded-lg hover:bg-gray-50 font-bold">B</button>
+                  <button onMouseDown={(e) => { e.preventDefault(); applyFormat('italic'); }} className="flex-1 p-2 border border-gray-100 rounded-lg hover:bg-gray-50 italic">I</button>
+                  <button onMouseDown={(e) => { e.preventDefault(); applyFormat('underline'); }} className="flex-1 p-2 border border-gray-100 rounded-lg hover:bg-gray-50 underline">U</button>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onMouseDown={(e) => { e.preventDefault(); applyFormat('undo'); }}
+                    className="flex-1 py-2 border border-gray-100 rounded-lg hover:bg-gray-50 text-xs flex items-center justify-center gap-1.5 text-gray-600"
+                  >
+                    <FaUndo size={10} /> Undo
+                  </button>
+                  <button
+                    onMouseDown={(e) => { e.preventDefault(); applyFormat('redo'); }}
+                    className="flex-1 py-2 border border-gray-100 rounded-lg hover:bg-gray-50 text-xs flex items-center justify-center gap-1.5 text-gray-600"
+                  >
+                    <FaRedo size={10} /> Redo
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-12 pt-6 border-t border-gray-100 space-y-3">
+              <button
+                onClick={() => setIsPreviewEditing(false)}
+                className="w-full py-3 bg-red-600 text-white rounded-xl font-bold shadow-lg shadow-red-200 hover:bg-red-700 transition-colors"
+              >
+                Done Editing
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Main Content Area */}
+        <div className={`flex-1 transition-all duration-500 ease-in-out ${isPreviewEditing ? 'pr-72' : ''}`}>
+          <div className="max-w-4xl mx-auto px-4 pt-12">
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+              <button
+                onClick={() => {
+                  setShowPreview(false);
+                  setIsPreviewEditing(false);
+                }}
+                className="flex items-center gap-2 text-gray-500 hover:text-red-600 transition-colors group"
+              >
+                <FaArrowLeft className="group-hover:-translate-x-1 transition-transform" />
+                <span>Back to Editor</span>
+              </button>
+
+              <div className="flex items-center gap-3">
+                {!isPreviewEditing && (
+                  <button
+                    onClick={() => setIsPreviewEditing(true)}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 bg-white text-gray-700 font-medium hover:bg-gray-50 transition-all shadow-sm"
+                  >
+                    <FaEdit /> Edit on Page
+                  </button>
+                )}
+                <button
+                  onClick={handleSubmit}
+                  disabled={isUploading}
+                  className="bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors font-medium shadow-md flex items-center gap-2"
+                >
+                  {isUploading ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <FaCheck />}
+                  {isEditing ? "Update Blog" : "Publish Blog"}
+                </button>
+              </div>
+            </div>
+
+            <div className="mb-8">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-xs font-semibold uppercase tracking-wider text-red-600 bg-red-50 px-3 py-1.5 rounded-full border border-red-100">
+                  {formData.category}
+                </span>
+                <div className="flex items-center gap-6 text-sm text-gray-500">
+                  <span className="flex items-center gap-1.5"><FaCalendarAlt className="w-3.5 h-3.5" /> {new Date().toLocaleDateString()}</span>
+                  <span className="flex items-center gap-1.5"><FaUser className="w-3.5 h-3.5" /> {formData.author || 'SocialBureau Team'}</span>
+                </div>
+              </div>
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                {formData.title || 'Your Blog Title'}
+              </h1>
+              <p className="text-xl text-gray-700 mb-8 leading-relaxed">
+                {formData.excerpt || 'Your blog excerpt will appear here...'}
+              </p>
+            </div>
+
+            {imagePreview && (
+              <div className="mb-10 rounded-2xl overflow-hidden shadow-xl">
+                <img src={imagePreview} alt="Preview" className="w-full h-auto aspect-video object-cover" />
+              </div>
+            )}
+
+            <div className="prose prose-lg max-w-none mb-12">
+              <div
+                ref={previewEditRef}
+                contentEditable={isPreviewEditing}
+                onBlur={(e) => setContent(e.currentTarget.innerHTML)}
+                className={`blog-content min-h-[300px] transition-all duration-300 outline-none ${isPreviewEditing
+                    ? 'bg-white p-8 rounded-2xl ring-4 ring-red-50 shadow-2xl shadow-red-100/20'
+                    : ''
+                  }`}
+                dangerouslySetInnerHTML={{ __html: content || '<p>Your blog content will appear here...</p>' }}
+              />
+              {isPreviewEditing && (
+                <p className="text-center text-xs text-gray-400 mt-4 animate-pulse">
+                  Click anywhere in the text above to start typing. Use the tools on the right for formatting.
+                </p>
+              )}
+            </div>
+
+            {keywords.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-10">
+                {keywords.map((keyword, idx) => (
+                  <span key={idx} className="text-sm bg-gray-200 text-gray-700 px-3 py-1.5 rounded-full">{keyword}</span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -375,7 +742,6 @@ export default function SubmitBlog() {
                       accept="image/jpeg,image/png,image/jpg,image/webp"
                       onChange={handleImageChange}
                       className="hidden"
-                      required={!imageFile}
                     />
                   </label>
                   {imageFile && (
@@ -416,35 +782,58 @@ export default function SubmitBlog() {
                       {wordCount}/2000 words
                     </span>
                   </label>
+                  <button
+                    type="button"
+                    onClick={() => setIsLivePreview(!isLivePreview)}
+                    className={`text-xs px-3 py-1 rounded border transition-colors ${isLivePreview ? 'bg-red-600 border-red-600 text-white' : 'border-gray-600 text-gray-400 hover:text-white'}`}
+                  >
+                    {isLivePreview ? 'Hide Live Preview' : 'Show Live Preview'}
+                  </button>
                 </div>
 
-                <div className="bg-gray-900 border border-gray-700 rounded-lg p-2">
-                  <JoditEditor
-                    ref={editor}
-                    value={content}
-                    onBlur={newContent => setContent(newContent)}
-                    config={{
-                      height: 420,
-                      uploader: { insertImageAsBase64URI: true },
-                      toolbarAdaptive: false,
-                      askBeforePasteFromWord: false,
-                      toolbarSticky: true,
-                      readonly: false,
-                      style: {
-                        color: '#ffffff',
-                        background: '#1f2937'
-                      },
-                      editorCssClass: 'jodit-wysiwyg-custom',
-                      buttons: [
-                        "bold", "italic", "underline", "|",
-                        "ul", "ol", "|",
-                        "fontsize", "paragraph", "|",
-                        "link", "image", "table", "|",
-                        "align", "undo", "redo", "|",
-                        "hr", "eraser", "copyformat"
-                      ]
-                    }}
-                  />
+                <div className={`grid gap-4 ${isLivePreview ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
+                  <div className="bg-gray-900 border border-gray-700 rounded-lg p-2">
+                    <JoditEditor
+                      ref={editor}
+                      value={content}
+                      onBlur={newContent => setContent(newContent)}
+                      config={{
+                        height: 500,
+                        uploader: { insertImageAsBase64URI: true },
+                        toolbarAdaptive: false,
+                        askBeforePasteFromWord: false,
+                        toolbarSticky: true,
+                        readonly: false,
+                        style: {
+                          color: '#ffffff',
+                          background: '#1f2937'
+                        },
+                        editorCssClass: 'jodit-wysiwyg-custom',
+                        buttons: [
+                          "bold", "italic", "underline", "|",
+                          "ul", "ol", "|",
+                          "fontsize", "paragraph", "lineheight", "|",
+                          "link", "image", "table", "|",
+                          "align", "undo", "redo", "|",
+                          "hr", "eraser", "copyformat"
+                        ]
+                      }}
+                    />
+                  </div>
+
+                  {isLivePreview && (
+                    <div className="bg-white rounded-lg p-6 overflow-y-auto max-h-[518px] border border-gray-700 shadow-inner">
+                      <div className="mb-4 pb-2 border-b border-gray-100 flex items-center justify-between">
+                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Live Preview</span>
+                        <span className="text-[10px] text-gray-300 italic">Matches actual blog style</span>
+                      </div>
+                      <div
+                        className="blog-content"
+                        dangerouslySetInnerHTML={{ __html: processPreviewContent(content) || '<p class="text-gray-400 italic">Content preview will appear here...</p>' }}
+                      />
+                    </div>
+                  )}
+                </div>
                   <style>{`
                     .jodit-wysiwyg {
                       color: #ffffff !important;
@@ -520,7 +909,6 @@ export default function SubmitBlog() {
                     }
                   `}</style>
                 </div>
-              </div>
 
               {/* Related/Child Blogs */}
               <div>
@@ -552,31 +940,94 @@ export default function SubmitBlog() {
               </div>
 
               {/* Submit Buttons */}
-              <div className="flex gap-4 pt-4">
+              <div className="flex flex-wrap gap-4 pt-4">
                 <button
                   type="submit"
-                  disabled={createMutation.isPending || isUploading || wordCount > 2000}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 rounded-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={createMutation.isPending || updateMutation.isPending || isUploading || wordCount > 2000}
+                  className="flex-1 min-w-[200px] px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 rounded-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red-900/20"
                 >
-                  {createMutation.isPending || isUploading ? (
+                  {createMutation.isPending || updateMutation.isPending || isUploading ? (
                     <div className="flex items-center justify-center gap-2">
-                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                       {isUploading ? 'Securing Image...' : 'Publishing...'}
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      {isUploading ? 'Processing...' : 'Saving...'}
                     </div>
-                  ) : 'Submit Blog Post'}
+                  ) : isEditing ? 'Update Blog Post' : 'Submit Blog Post'}
                 </button>
+
                 <button
                   type="button"
-                  onClick={() => navigate('/blog')}
-                  className="px-6 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg font-semibold transition"
+                  onClick={() => setShowPreview(true)}
+                  className="px-6 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg font-semibold transition flex items-center gap-2"
                 >
-                  Cancel
+                  <FaEye /> Preview
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (isEditing) {
+                      setIsEditing(false);
+                      setEditSlug(null);
+                      setFormData({ title: '', excerpt: '', category: 'Marketing', author: '', customUrl: '', seoTitle: '', seoDescription: '' });
+                      setContent('');
+                      setImagePreview('');
+                      setImageFile(null);
+                    } else {
+                      navigate('/blog');
+                    }
+                  }}
+                  className="px-6 py-3 bg-gray-900 hover:bg-gray-800 border border-gray-700 rounded-lg font-semibold transition"
+                >
+                  {isEditing ? 'Cancel Edit' : 'Cancel'}
                 </button>
               </div>
             </form>
           </div>
+
+          {/* Manage Blogs Section */}
+          <div className="mt-12 bg-black/40 backdrop-blur-xl border border-red-900/30 rounded-2xl p-8 shadow-2xl">
+            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+              <FaEdit className="text-red-600" /> Manage Your Blogs
+            </h2>
+            <div className="grid grid-cols-1 gap-4">
+              {availableBlogs.length === 0 ? (
+                <p className="text-gray-500 italic">No blogs found. Start by creating one above!</p>
+              ) : (
+                availableBlogs.filter(b => b.author === currentUser?.name || !b.author).map(blog => (
+                  <div key={blog._id} className="bg-gray-900/50 border border-gray-800 rounded-xl p-4 flex items-center justify-between hover:border-red-600/50 transition-colors">
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gray-800">
+                        <img src={blog.image} alt={blog.title} className="w-full h-full object-cover" />
+                      </div>
+                      <div>
+                        <h3 className="text-white font-semibold line-clamp-1">{blog.title}</h3>
+                        <p className="text-xs text-gray-500">{blog.category} • {new Date(blog.createdAt).toLocaleDateString()}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleEdit(blog)}
+                        className="p-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white rounded-lg transition"
+                        title="Edit Blog"
+                      >
+                        <FaEdit size={14} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(blog.slug)}
+                        className="p-2 bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white rounded-lg transition"
+                        title="Delete Blog"
+                      >
+                        <FaTrash size={14} />
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

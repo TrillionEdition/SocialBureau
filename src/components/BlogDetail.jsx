@@ -28,10 +28,9 @@ const processContentWithIds = (html, sectionIndex) => {
 
   let processedHtml = html;
 
-  // Remove excessive line breaks in general
-  processedHtml = processedHtml.replace(/(?:<br\s*\/?>\s*){2,}/gi, '<br/>');
+  // processedHtml = processedHtml.replace(/(?:<br\s*\/?>\s*){2,}/gi, '<br/>');
   // Remove line breaks right before a heading
-  processedHtml = processedHtml.replace(/(?:<br\s*\/?>\s*)+<h/gi, '<h');
+  // processedHtml = processedHtml.replace(/(?:<br\s*\/?>\s*)+<h/gi, '<h');
 
   // Process headings
   processedHtml = processedHtml.replace(/<h([1-6])(?:\s+[^>]*)?>(.*?)<\/h\1>/gi, (match, level, content) => {
@@ -39,12 +38,12 @@ const processContentWithIds = (html, sectionIndex) => {
     if (!textContent) return match;
     const slug = textContent.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/--+/g, '-');
 
-    // Assign specific classes based on heading level (lighter weight, less margin)
-    let headingClasses = "font-medium text-gray-900 mt-6 mb-4 leading-tight max-w-3xl";
-    if (level === "1") headingClasses += " text-3xl md:text-4xl";
-    else if (level === "2") headingClasses += " text-2xl md:text-3xl";
-    else if (level === "3") headingClasses += " text-xl md:text-2xl";
-    else headingClasses += " text-lg md:text-xl";
+    // Assign specific classes based on heading level (Bold and distinct sizes)
+    let headingClasses = "font-bold text-gray-900 mt-10 mb-5 leading-tight max-w-3xl";
+    if (level === "1") headingClasses += " text-4xl md:text-5xl";
+    else if (level === "2") headingClasses += " text-3xl md:text-4xl";
+    else if (level === "3") headingClasses += " text-2xl md:text-3xl";
+    else headingClasses += " text-xl md:text-2xl";
 
     // Add exactly one <br/> before the heading
     return `<br/><h${level} id="section-${sectionIndex}-${slug}" class="${headingClasses}">${content}</h${level}>`;
@@ -52,7 +51,7 @@ const processContentWithIds = (html, sectionIndex) => {
 
   // Process paragraphs to match the requested style if desired
   processedHtml = processedHtml.replace(/<p(?:\s+[^>]*)?>(.*?)<\/p>/gi, (match, content) => {
-    return `<p class="text-xl text-gray-700 mb-4 leading-relaxed max-w-3xl">${content}</p>`;
+    return `<p class="text-xl text-gray-700 mb-6 leading-relaxed max-w-3xl">${content}</p>`;
   });
 
   // Process lists slightly as well
@@ -725,10 +724,6 @@ export default function BlogDetail() {
           </div>
         </div>
       </div>
-
-      <Suspense fallback={<div className="h-64 bg-gray-100 animate-pulse rounded-t-3xl mt-20" />}>
-        <Footer />
-      </Suspense>
     </div>
   );
 }

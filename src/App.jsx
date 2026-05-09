@@ -216,7 +216,7 @@ function ConditionalNavbar() {
 function ConditionalChatbot() {
   const location = useLocation();
   const path = location.pathname.toLowerCase();
-  
+
   // Define actual partner slugs that should have the chatbot
   const actualPartnerSlugs = [
     "ranjit",
@@ -230,7 +230,7 @@ function ConditionalChatbot() {
     "sakilan"
   ];
 
-  const isActualPartnerPage = actualPartnerSlugs.some(slug => 
+  const isActualPartnerPage = actualPartnerSlugs.some(slug =>
     path === `/partnership/${slug.toLowerCase()}`
   );
 
@@ -271,12 +271,11 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/clickup" element={<Clickup />} />
             <Route
               path="/blog/submit"
               element={
-                <AdminRoute>
                   <SubmitBlog />
-                </AdminRoute>
               }
             />
             <Route path="/contact" element={<Contact />} />
