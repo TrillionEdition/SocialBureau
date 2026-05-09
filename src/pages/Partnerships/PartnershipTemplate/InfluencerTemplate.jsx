@@ -268,7 +268,7 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
             {name?.split(" ")[0].toUpperCase() || "CREATIVE"}
           </motion.div>
           <div className="hidden md:flex gap-12 text-[9px] font-black uppercase tracking-[0.4em] italic text-white/40">
-            {["Home", "About", "Portfolio", "Services", "Blog"].map(
+            {["Home", "About", "Portfolio", "Services"].map(
               (item, i) => (
                 <motion.a
                   key={item}
@@ -673,63 +673,6 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
         </div>
       </section>
 
-      {/* Blog/Insights */}
-      <section id="blog" className="py-32 md:py-60 bg-zinc-50 px-6 md:px-16">
-        <div className="max-w-7xl mx-auto">
-          <SectionHeading
-            title="Feed"
-            subtitle="Chronicles & Digital Adventures"
-          />
-
-          <div className="grid md:grid-cols-3 gap-12 md:gap-16">
-            {blogPosts.map((post, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="group bg-white rounded-[48px] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.02)] hover:shadow-[0_40px_100px_rgba(0,0,0,0.1)] transition-all flex flex-col h-full"
-              >
-                <div className="aspect-[4/3] overflow-hidden relative">
-                  <img
-                    src={
-                      post.image ||
-                      `https://images.unsplash.com/photo-${1500000000000 + i * 10000000}?q=80&w=1000&auto=format&fit=crop`
-                    }
-                    alt={post.title}
-                    className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110"
-                  />
-                  <div className="absolute top-8 right-8 px-4 py-2 bg-yellow-500 text-black text-[9px] font-black uppercase tracking-widest italic rounded-full shadow-xl">
-                    {post.category || "Lifestyle"}
-                  </div>
-                </div>
-                <div className="p-10 md:p-12 space-y-6 flex-1 flex flex-col justify-between">
-                  <div className="space-y-4">
-                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-300 italic">
-                      {post.date || "May 2024"}
-                    </span>
-                    <h3 className="text-2xl font-black text-zinc-900 group-hover:text-yellow-500 transition-colors leading-tight uppercase italic tracking-tighter">
-                      {post.title}
-                    </h3>
-                    <p className="text-zinc-500 text-sm font-light italic leading-relaxed line-clamp-3">
-                      {post.description}
-                    </p>
-                  </div>
-                  <div className="pt-8 border-t border-zinc-50">
-                    <a
-                      href="#"
-                      className="inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-zinc-900 group-hover:text-yellow-500 transition-all italic"
-                    >
-                      Read Story <ArrowUpRight size={14} />
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="py-40 md:py-80 px-6 md:px-16 bg-yellow-500 text-center relative overflow-hidden">
