@@ -255,11 +255,13 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
     projects = [],
     testimonials = [],
     socialLinks = [],
+    blogPosts = [],
     image,
     styles = {},
   } = data;
 
   const containerRef = useRef(null);
+
 
   // Default styles
   const defaultStyles = {
@@ -454,150 +456,141 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
         style={{ scaleX, backgroundColor: "var(--primary-color)" }}
       />
 
-      {/* Hero Section */}
+      {/* Hero Section - Deconstructed Editorial Layout */}
       <section
         id="identity-section"
         ref={heroRef}
-        className="relative bg-[#050505] text-white min-h-screen flex flex-col overflow-hidden"
+        className="relative bg-[#050505] text-white h-[100svh] min-h-[600px] flex flex-col lg:flex-row overflow-hidden items-stretch"
       >
         <FloatingElements />
         
-        {/* Floating Navigation */}
-        <nav className="absolute top-0 left-0 right-0 z-50 flex justify-between items-center px-8 md:px-20 py-12">
+        {/* LEFT COLUMN: The Vertical Identity */}
+        <div className="relative w-full lg:w-[12%] xl:w-[10%] border-r border-white/5 flex lg:flex-col items-center justify-between py-8 lg:py-12 px-6 z-30 bg-black">
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-3xl font-black tracking-tighter italic mix-blend-difference"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="text-xl md:text-2xl font-black tracking-tighter italic"
             style={{ color: "var(--primary-color)" }}
           >
             {name?.split(" ")[0].toUpperCase() || "CREATIVE"}
           </motion.div>
-          
-          <div className="hidden md:flex gap-16 text-[10px] font-black uppercase tracking-[0.5em] italic text-white/30 mix-blend-difference">
-            {["Home", "About", "Portfolio", "Services"].map((item, i) => (
-              <motion.a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * i }}
-                className="hover:text-[var(--primary-color)] transition-colors"
-              >
-                {item}
-              </motion.a>
-            ))}
+
+          <div className="hidden lg:flex flex-col items-center gap-8 py-12">
+            <div className="h-24 xl:h-40 w-[1px] bg-gradient-to-b from-white/20 to-transparent" />
+            <span className="text-[7px] xl:text-[8px] font-black uppercase tracking-[0.8em] vertical-text opacity-20 italic">Portfolio 2026</span>
           </div>
 
-          <MagneticButton>
-            <div className="w-14 h-14 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full flex items-center justify-center cursor-pointer hover:bg-[var(--primary-color)] hover:text-black transition-all">
-              <Layers size={20} />
+          <div className="flex flex-col items-center gap-6">
+            <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-all cursor-pointer">
+              <Layers size={14} className="opacity-40" />
             </div>
-          </MagneticButton>
-        </nav>
-
-        {/* Award-Winning Content Layout */}
-        <div className="relative flex-1 flex flex-col items-center justify-center px-6 text-center pt-20">
-          {/* Background Giant Text */}
-          <motion.div
-            style={{ y: heroY, opacity: heroOpacity }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full pointer-events-none select-none z-0"
-          >
-            <h1 className="text-[25vw] font-black text-white/[0.03] leading-none uppercase italic whitespace-nowrap">
-              {name || "AHLAN"}
-            </h1>
-          </motion.div>
-
-          {/* Central Hero Composition */}
-          <div className="relative z-10 w-full max-w-6xl mx-auto">
-            <div className="flex flex-col items-center space-y-8">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                className="relative w-[300px] md:w-[500px] aspect-[4/5] rounded-[60px] overflow-hidden border-[15px] border-white/5 shadow-[0_100px_150px_-50px_rgba(0,0,0,0.8)] group"
-              >
-                <img
-                  src={image || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop"}
-                  alt={name}
-                  className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-1000"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
-              </motion.div>
-
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full space-y-4 pointer-events-none">
-                <TextReveal delay={0.2}>
-                  <h2 
-                    className="text-7xl md:text-[180px] font-black leading-[0.75] tracking-tighter uppercase italic mix-blend-difference"
-                    style={{ fontSize: `calc(180px * var(--hero-name-size))` }}
-                  >
-                    {name?.split(" ")[0] || "AHLAN"}
-                    <br />
-                    <span className="text-[var(--primary-color)]">{name?.split(" ")[1] || ""}</span>
-                  </h2>
-                </TextReveal>
-              </div>
-
-              <div className="space-y-6 pt-12 relative z-20">
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8 }}
-                  className="text-lg md:text-2xl font-black uppercase tracking-[0.5em] italic text-[var(--primary-color)]"
-                >
-                  {subtitle || "Professional Influencer"}
-                </motion.p>
-                
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1 }}
-                  className="flex flex-col items-center gap-8"
-                >
-                  <p className="text-white/40 max-w-sm leading-relaxed text-sm italic">
-                    {data.heroDescription || "Helping brands reach their target audience through authentic storytelling and high-impact visual content."}
-                  </p>
-                  
-                  <div className="flex gap-6">
-                    <button className="px-12 py-6 bg-[var(--primary-color)] text-black font-black uppercase tracking-[0.3em] text-[10px] rounded-full hover:scale-110 transition-all shadow-2xl italic">
-                      Contact Me
-                    </button>
-                    <button className="px-12 py-6 bg-white/5 backdrop-blur-xl border border-white/10 text-white font-black uppercase tracking-[0.3em] text-[10px] rounded-full hover:bg-white/10 transition-all italic">
-                      Media Kit
-                    </button>
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </div>
-
-          {/* Side Stats - Award-Winning Detail */}
-          <div className="absolute left-20 bottom-20 hidden xl:flex flex-col items-start gap-8">
-            {["Followers", "Engagement"].map((stat, i) => (
-              <motion.div
-                key={stat}
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.2 + i * 0.2 }}
-                className="space-y-1"
-              >
-                <span className="text-[8px] font-black uppercase tracking-widest text-white/20 italic">{stat}</span>
-                <span className="block text-4xl font-black italic tracking-tighter" style={{ color: "var(--primary-color)" }}>
-                  {i === 0 ? (data.details?.stats?.followers || "100K+") : (data.details?.stats?.engagement || "5.2%")}
-                </span>
-              </motion.div>
-            ))}
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="absolute bottom-10 right-20 flex items-center gap-6 opacity-20 hidden md:flex"
-        >
-          <span className="text-[8px] font-black uppercase tracking-[0.6em] italic whitespace-nowrap">Scroll Down</span>
-          <div className="w-20 h-[1px] bg-white" />
-        </motion.div>
+        {/* CENTER COLUMN: The Visual Core */}
+        <div className="relative flex-1 flex items-center justify-center p-6 md:p-8 lg:p-12 overflow-hidden">
+          
+          {/* Huge Background Letter - Parallax */}
+          <motion.div
+            style={{ y: useTransform(scrollYProgress, [0, 1], [0, 150]), opacity: 0.05 }}
+            className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none z-0"
+          >
+            <span className="text-[50vw] font-black leading-none uppercase italic tracking-tighter select-none">
+              {name?.charAt(0) || "A"}
+            </span>
+          </motion.div>
+
+          {/* Portrait with reveal effect */}
+          <div className="relative z-10 w-full max-w-[280px] sm:max-w-[400px] lg:max-w-[500px] xl:max-w-[550px] group">
+            <TiltCard>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, rotateY: -10 }}
+                animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+                className="relative aspect-[4/5] max-h-[70vh] overflow-hidden rounded-[20px] md:rounded-[40px] shadow-[0_60px_100px_-30px_rgba(0,0,0,0.8)]"
+              >
+                <motion.img
+                  style={{ scale: heroScale }}
+                  src={image || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop"}
+                  alt={name}
+                  className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-1000"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
+              </motion.div>
+            </TiltCard>
+
+            {/* Overlapping Floating Name */}
+            <div className="absolute -bottom-6 lg:-bottom-12 -left-6 lg:-left-12 z-20 pointer-events-none">
+              <TextReveal delay={0.5}>
+                <h1 
+                  className="text-[clamp(3rem,10vw,8rem)] font-black leading-[0.8] tracking-tighter uppercase italic mix-blend-difference"
+                  style={{ fontSize: `calc(clamp(3rem,10vw,8rem) * var(--hero-name-size))` }}
+                >
+                  {name?.split(" ")[0] || "AHLAN"}<br />
+                  <span className="text-[var(--primary-color)]">{name?.split(" ")[1] || ""}</span>
+                </h1>
+              </TextReveal>
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT COLUMN: The Narrative & Stats */}
+        <div className="relative w-full lg:w-[25%] xl:w-[22%] border-l border-white/5 flex flex-col justify-center p-8 md:p-10 lg:p-12 xl:p-16 z-30 bg-zinc-950/50 backdrop-blur-3xl overflow-y-auto custom-scrollbar">
+          
+          <div className="space-y-10 lg:space-y-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              className="space-y-3"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-[1px] bg-[var(--primary-color)]" />
+                <span className="text-[8px] font-black uppercase tracking-[0.4em] italic text-[var(--primary-color)]">Identity</span>
+              </div>
+              <p className="text-white/40 leading-relaxed text-[11px] italic font-light max-w-[240px]">
+                {data.heroDescription || "Helping brands reach their target audience through authentic storytelling and high-impact visual content."}
+              </p>
+            </motion.div>
+
+            <div className="space-y-8">
+              {[
+                { label: "Community", value: data.details?.stats?.followers || "100K+" },
+                { label: "Engagement", value: data.details?.stats?.engagement || "5.2%" },
+                { label: "Reach", value: data.details?.stats?.reach || "2M+" }
+              ].map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 1 + i * 0.2 }}
+                  className="space-y-0.5 group cursor-default"
+                >
+                  <span className="text-[7px] font-black uppercase tracking-[0.4em] text-white/20 italic block group-hover:text-[var(--primary-color)] transition-colors">{stat.label}</span>
+                  <span className="text-3xl xl:text-4xl font-black italic tracking-tighter block leading-none">
+                    {stat.value}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="space-y-4 pt-6">
+              <MagneticButton>
+                <button className="w-full py-5 bg-[var(--primary-color)] text-black font-black uppercase tracking-[0.3em] text-[9px] rounded-full hover:scale-[1.02] active:scale-95 transition-all shadow-2xl italic">
+                  Contact Me
+                </button>
+              </MagneticButton>
+              <button className="w-full py-5 bg-white/5 border border-white/10 text-white font-black uppercase tracking-[0.3em] text-[9px] rounded-full hover:bg-white/10 transition-all italic">
+                Media Kit
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Floating Decorative Label */}
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 hidden xl:block pointer-events-none opacity-5">
+           <span className="text-[180px] font-black uppercase vertical-text tracking-tighter leading-none italic">EST. 2026</span>
+        </div>
       </section>
 
       {/* About Section */}
@@ -978,6 +971,76 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
         </div>
       </section>
 
+
+      {/* Insights Section */}
+      {blogPosts && blogPosts.length > 0 && (
+        <section
+          id="insights-section"
+          className="py-20 md:py-32 px-6 md:px-16 bg-zinc-950 relative overflow-hidden"
+        >
+          {/* Background Detail */}
+          <div className="absolute top-0 right-0 w-1/2 h-full bg-[var(--primary-color)] opacity-[0.02] -skew-x-12 translate-x-1/2" />
+          
+          <div className="max-w-7xl mx-auto relative z-10">
+            <SectionHeading
+              title="Insights"
+              subtitle="The Narrative Feed"
+              light={true}
+            />
+
+            <motion.div 
+              className="grid md:grid-cols-3 gap-8"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: 0.1 }
+                }
+              }}
+            >
+              {blogPosts.map((post, idx) => (
+                <motion.div
+                  key={idx}
+                  variants={{
+                    hidden: { opacity: 0, y: 30 },
+                    visible: { opacity: 1, y: 0 }
+                  }}
+                  className="group"
+                >
+                  <div className="relative aspect-video rounded-[32px] overflow-hidden bg-white/5 border border-white/10 mb-8">
+                    <img 
+                      src={post.image || "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1000&auto=format&fit=crop"} 
+                      alt={post.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center text-[8px] font-black uppercase tracking-[0.3em] italic">
+                      <span className="text-[var(--primary-color)]">{post.category || "General"}</span>
+                      <span className="text-white/20">{post.date || "2024"}</span>
+                    </div>
+                    <h3 className="text-2xl font-black text-white leading-none uppercase italic tracking-tighter group-hover:text-[var(--primary-color)] transition-colors">
+                      {post.title}
+                    </h3>
+                    <p className="text-white/30 text-[10px] leading-relaxed italic line-clamp-3">
+                      {post.description}
+                    </p>
+                    <div className="pt-4 flex items-center gap-4 text-[9px] font-black uppercase tracking-widest text-white/40 group-hover:text-white transition-colors group-hover:gap-6 transition-all cursor-pointer">
+                      <span>Read Narrative</span>
+                      <ArrowUpRight size={14} className="text-[var(--primary-color)]" />
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       <section 
