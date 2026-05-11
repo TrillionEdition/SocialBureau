@@ -570,7 +570,7 @@ const ClientFormaji = () => {
                         >
                             <a href='https://socialbureau.in'>
                                 <div className="flex justify-center">
-                                    <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_LOGO_BLACK_PNG_iev5qz.png" alt="SocialBureau" className="h-16 sm:h-24 md:h-32 w-auto" />
+                                    <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/SB_LOGO_BLACK_PNG_iev5qz.png" alt="SocialBureau" className="h-16 sm:h-24 md:h-32 w-auto" />
                                 </div>
                             </a>
 
@@ -636,7 +636,7 @@ const ClientFormaji = () => {
                 <header className="mb-10 pb-5 border-b border-white/5">
                     <div className="flex items-center justify-between gap-4 mb-10">
                         <a href ='https://socialbureau.in' target='_blank' rel='noopener noreferrer'>
-                            <img src='https://res.cloudinary.com/dtwcgfmar/image/upload/v1777199141/SB_sticker-02_1_k3ulwd.png'
+                            <img src='https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/SB_sticker-02_1_k3ulwd.png'
                                 className='h-26 sm:h-28 w-auto' alt="SocialBureau" />
                         </a>
                         <div className="sm:hidden text-7xl font-black text-white/10 tracking-[-0.02em] leading-none select-none font-['Bebas_Neue'] mr-8">

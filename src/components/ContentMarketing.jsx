@@ -313,7 +313,7 @@ const ContentMarketing = () => {
           <div className="relative h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
             <img
               src={getOptimizedCloudinaryUrl(
-                "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086614/cup-coffee-with-headphones-notebook-red-background_up2ufi.webp",
+                "https://i.pinimg.com/736x/52/06/bf/5206bfd30afa872b0d625a8566039afe.jpg",
                 1200,
               )}
               alt="Content Marketing Hero"
@@ -374,7 +374,7 @@ const ContentMarketing = () => {
             <div className="h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
               <img
                 src={getOptimizedCloudinaryUrl(
-                  "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086611/Fastion_sg9hqc.webp",
+                  "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Fastion_sg9hqc.webp",
                   1000,
                 )}
                 alt="Strategic Content Creation and Planning"
@@ -416,7 +416,7 @@ const ContentMarketing = () => {
             <div className="lg:col-span-2 h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl">
               <img
                 src={getOptimizedCloudinaryUrl(
-                  "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/alarm-clock-top-laptop-with-copy-space_fl8wmq.webp",
+                  "https://i.pinimg.com/1200x/a9/5f/d6/a95fd6ff1ad3aa25b7c1651be38e3679.jpg",
                   1200,
                 )}
                 alt="Content Creation Services and productivity"
@@ -568,7 +568,7 @@ const ContentMarketing = () => {
             <div className="order-1 lg:order-2 h-[400px] lg:h-[600px] rounded-[2rem] overflow-hidden shadow-2xl relative group">
               <img
                 src={getOptimizedCloudinaryUrl(
-                  "https://res.cloudinary.com/dtwcgfmar/image/upload/v1770978614/Picsart_26-02-10_22-36-15-902_yehobf.jpg",
+                  "https://i.pinimg.com/736x/7e/51/97/7e5197067bba825e41d8f7a2d0bd8697.jpg",
                   1000,
                 )}
                 alt="Content professional working at SocialBureau"
