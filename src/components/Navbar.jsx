@@ -49,6 +49,8 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const [expandedMobileCategory, setExpandedMobileCategory] = useState(null);
   const navigate = useNavigate();
   const { isLoggedIn, isAdmin, isPartnership } = useAuth();
@@ -238,10 +240,31 @@ export default function Navbar() {
   ];
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 10);
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Determine if scrolled enough to change state
+      setIsScrolled(currentScrollY > 10);
+      
+      // Show/Hide logic
+      if (currentScrollY <= 10) {
+        setVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scrolling down and past threshold - hide unless dropdown is open
+        if (!activeDropdown && !mobileMenuOpen) {
+          setVisible(false);
+        }
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling up - show
+        setVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [lastScrollY, activeDropdown, mobileMenuOpen]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -269,9 +292,12 @@ export default function Navbar() {
 
   return (
     <>
-      <nav
+      <motion.nav
         onMouseLeave={() => setActiveDropdown(null)}
-        className="fixed top-0 left-0 right-0 z-100 bg-[#161617]/80 backdrop-blur-xl transition-colors duration-500"
+        initial={{ y: 0 }}
+        animate={{ y: visible ? 0 : -60 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="fixed top-0 left-0 right-0 z-[1000] bg-[#161617]/80 backdrop-blur-xl transition-colors duration-500"
       >
         {/* Top Bar */}
         <div className="w-full px-4 flex items-center h-12">
@@ -527,7 +553,7 @@ export default function Navbar() {
             </motion.div>
           )}
         </AnimatePresence>
-      </nav>
+      </motion.nav>
 
       {/* Mobile Menu */}
       <AnimatePresence>

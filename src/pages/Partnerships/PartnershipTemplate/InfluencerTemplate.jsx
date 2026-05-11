@@ -5,6 +5,7 @@ import {
   useTransform,
   AnimatePresence,
   useSpring,
+  useMotionValue,
 } from "framer-motion";
 import {
   Linkedin,
@@ -77,18 +78,93 @@ const MagneticButton = ({ children, className = "", distance = 0.35 }) => {
 /**
  * Text Mask Reveal Animation
  */
-const TextReveal = ({ children, className = "" }) => (
+const TextReveal = ({ children, className = "", delay = 0 }) => (
   <div className={`overflow-hidden ${className}`}>
     <motion.div
-      initial={{ y: "100%" }}
-      whileInView={{ y: 0 }}
+      initial={{ y: "100%", rotate: 5 }}
+      whileInView={{ y: 0, rotate: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.div>
   </div>
 );
+
+/**
+ * 3D Tilt Card Effect
+ */
+const TiltCard = ({ children, className = "" }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+/**
+ * Floating Background Elements
+ */
+const FloatingElements = () => {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      {[...Array(6)].map((_, i) => (
+        <motion.div
+          key={i}
+          animate={{
+            y: [0, -20, 0],
+            rotate: [0, 10, 0],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            duration: 5 + i,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute opacity-10"
+          style={{
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            color: "var(--primary-color)",
+          }}
+        >
+          <Sparkles size={20 + i * 10} />
+        </motion.div>
+      ))}
+    </div>
+  );
+};
 
 const SectionHeading = ({ title, subtitle, light = false }) => (
   <div className="text-center mb-16 md:mb-24">
@@ -138,6 +214,38 @@ const SocialIcon = ({ platform }) => {
   }
 };
 
+/**
+ * Horizontal Marquee
+ */
+const Marquee = ({ text, reverse = false }) => {
+  return (
+    <div className="py-20 bg-[var(--primary-color)] overflow-hidden flex whitespace-nowrap border-y-4 border-black">
+      <motion.div
+        animate={{ x: reverse ? [0, "100%"] : [0, "-100%"] }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="flex gap-20 items-center pr-20"
+      >
+        {[...Array(10)].map((_, i) => (
+          <span key={i} className="text-6xl md:text-9xl font-black uppercase italic text-black tracking-tighter">
+            {text} •
+          </span>
+        ))}
+      </motion.div>
+      <motion.div
+        animate={{ x: reverse ? [0, "100%"] : [0, "-100%"] }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="flex gap-20 items-center pr-20"
+      >
+        {[...Array(10)].map((_, i) => (
+          <span key={i} className="text-6xl md:text-9xl font-black uppercase italic text-black tracking-tighter">
+            {text} •
+          </span>
+        ))}
+      </motion.div>
+    </div>
+  );
+};
+
 export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
   const {
     name,
@@ -149,7 +257,6 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
     socialLinks = [],
     image,
     styles = {},
-    blogPosts = [],
   } = data;
 
   const containerRef = useRef(null);
@@ -165,10 +272,34 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
   const activeStyles = { ...defaultStyles, ...styles };
 
   const styleVariables = {
-    "--primary-color": activeStyles.primaryColor,
-    "--bg-color": activeStyles.backgroundColor,
-    "--header-color": activeStyles.headerColor,
-    "--font-family": activeStyles.fontFamily,
+    "--primary-color": activeStyles.primaryColor || "#FFC107",
+    "--bg-color": activeStyles.backgroundColor || "#FFFFFF",
+    "--header-color": activeStyles.headerColor || "#1A1A1A",
+    "--font-family": activeStyles.fontFamily || "'Outfit', sans-serif",
+    "--hero-name-size": activeStyles.heroNameFontSize || "1",
+    "--hero-subtitle-size": activeStyles.heroSubtitleFontSize || "1",
+    "--hero-text-y": (activeStyles.heroTextY || 0) + "px",
+    "--hero-image-scale": activeStyles.heroImageScale || "1",
+    "--bio-size": activeStyles.bioFontSize || "1",
+    "--section-title-size": activeStyles.sectionTitleFontSize || "1",
+    "--service-title-size": activeStyles.serviceTitleFontSize || "1",
+    "--service-body-size": activeStyles.serviceBodyFontSize || "1",
+    "--project-title-size": activeStyles.projectTitleFontSize || "1",
+    "--project-body-size": activeStyles.projectBodyFontSize || "1",
+    "--testimonial-quote-size": activeStyles.testimonialQuoteFontSize || "1",
+    "--testimonial-author-size": activeStyles.testimonialAuthorFontSize || "1",
+    "--footer-title-size": activeStyles.footerTitleFontSize || "1",
+    "--bio-bg": activeStyles.bioBg || activeStyles.backgroundColor || "#FFFFFF",
+    "--services-bg": activeStyles.servicesBg || "#f9fafb",
+    "--testimonials-bg": activeStyles.testimonialsBg || activeStyles.backgroundColor || "#FFFFFF",
+    "--footer-bg": activeStyles.footerBg || "#0A0A0A",
+    "--archive-columns": activeStyles.archiveColumns || "3",
+    "--archive-gap": (activeStyles.archiveGap || 32) + "px",
+    "--archive-radius": (activeStyles.archiveRadius || 40) + "px",
+    "--archive-overlay": activeStyles.archiveOverlay || "0.9",
+    "--archive-aspect": activeStyles.archiveAspect || "3/4",
+    "--archive-hover": activeStyles.archiveHover || "zoom",
+    "--archive-style": activeStyles.archiveStyle || "clean",
   };
 
   const heroRef = useRef(null);
@@ -192,7 +323,7 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
   return (
     <div
       ref={containerRef}
-      className="influencer-template min-h-screen font-sans selection:bg-yellow-500 selection:text-black relative"
+      className="influencer-template min-h-screen font-sans selection:bg-yellow-500 selection:text-black relative overflow-x-hidden"
       style={styleVariables}
     >
       <style>
@@ -234,6 +365,75 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
           .masonry-item:nth-child(2n) { grid-row: span 2; }
           .masonry-item:nth-child(3n) { grid-row: span 1.5; }
 
+          /* Gallery Styles */
+          .archive-card {
+            aspect-ratio: var(--archive-aspect);
+            border-radius: var(--archive-radius);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+          }
+
+          .archive-card.style-glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+          }
+
+          .archive-card.style-bordered {
+            border: 4px solid var(--primary-color);
+          }
+
+          .archive-card.style-shadow {
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.5);
+          }
+
+          .archive-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+          }
+
+          /* Hover Effects */
+          .archive-card.hover-zoom:hover .archive-image {
+            transform: scale(1.15);
+          }
+
+          .archive-card.hover-slide .archive-overlay {
+            transform: translateY(10%);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+          }
+
+          .archive-card.hover-slide:hover .archive-overlay {
+            transform: translateY(0);
+          }
+
+          .archive-card.hover-fade .archive-overlay {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+          }
+
+          .archive-card.hover-fade:hover .archive-overlay {
+            opacity: 1;
+          }
+
+          .archive-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,var(--archive-overlay)), rgba(0,0,0,0.3), transparent);
+            opacity: 0;
+            transition: all 0.5s ease;
+          }
+
+          .archive-card:hover .archive-overlay {
+            opacity: 1;
+          }
+
           ::-webkit-scrollbar {
             width: 8px;
           }
@@ -250,156 +450,175 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
       {/* Aesthetic Grain & Progress */}
       <div className="grainy-overlay" />
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-yellow-500 origin-left z-[1000]"
-        style={{ scaleX }}
+        className="fixed top-0 left-0 right-0 h-1 origin-left z-[1000]"
+        style={{ scaleX, backgroundColor: "var(--primary-color)" }}
       />
 
       {/* Hero Section */}
       <section
+        id="identity-section"
         ref={heroRef}
-        className="relative bg-[#0A0A0A] text-white min-h-screen flex flex-col hero-curve overflow-hidden"
+        className="relative bg-[#050505] text-white min-h-screen flex flex-col overflow-hidden"
       >
-        <nav className="relative z-20 flex justify-between items-center px-6 md:px-16 py-10">
+        <FloatingElements />
+        
+        {/* Floating Navigation */}
+        <nav className="absolute top-0 left-0 right-0 z-50 flex justify-between items-center px-8 md:px-20 py-12">
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="text-2xl font-black tracking-tighter text-yellow-500 italic"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-3xl font-black tracking-tighter italic mix-blend-difference"
+            style={{ color: "var(--primary-color)" }}
           >
             {name?.split(" ")[0].toUpperCase() || "CREATIVE"}
           </motion.div>
-          <div className="hidden md:flex gap-12 text-[9px] font-black uppercase tracking-[0.4em] italic text-white/40">
-            {["Home", "About", "Portfolio", "Services"].map(
-              (item, i) => (
-                <motion.a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * i }}
-                  className="hover:text-yellow-500 transition-colors"
-                >
-                  {item}
-                </motion.a>
-              ),
-            )}
+          
+          <div className="hidden md:flex gap-16 text-[10px] font-black uppercase tracking-[0.5em] italic text-white/30 mix-blend-difference">
+            {["Home", "About", "Portfolio", "Services"].map((item, i) => (
+              <motion.a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * i }}
+                className="hover:text-[var(--primary-color)] transition-colors"
+              >
+                {item}
+              </motion.a>
+            ))}
           </div>
+
           <MagneticButton>
-            <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-full flex items-center justify-center cursor-pointer hover:bg-yellow-500 hover:text-black transition-all">
-              <Layers size={18} />
+            <div className="w-14 h-14 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full flex items-center justify-center cursor-pointer hover:bg-[var(--primary-color)] hover:text-black transition-all">
+              <Layers size={20} />
             </div>
           </MagneticButton>
         </nav>
 
-        <div className="flex-1 max-w-7xl mx-auto w-full px-6 md:px-16 grid md:grid-cols-2 items-center gap-20 py-20 relative z-10">
-          <div className="space-y-10">
-            <div className="space-y-4">
+        {/* Award-Winning Content Layout */}
+        <div className="relative flex-1 flex flex-col items-center justify-center px-6 text-center pt-20">
+          {/* Background Giant Text */}
+          <motion.div
+            style={{ y: heroY, opacity: heroOpacity }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full pointer-events-none select-none z-0"
+          >
+            <h1 className="text-[25vw] font-black text-white/[0.03] leading-none uppercase italic whitespace-nowrap">
+              {name || "AHLAN"}
+            </h1>
+          </motion.div>
+
+          {/* Central Hero Composition */}
+          <div className="relative z-10 w-full max-w-6xl mx-auto">
+            <div className="flex flex-col items-center space-y-8">
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="flex items-center gap-4 text-yellow-500"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                className="relative w-[300px] md:w-[500px] aspect-[4/5] rounded-[60px] overflow-hidden border-[15px] border-white/5 shadow-[0_100px_150px_-50px_rgba(0,0,0,0.8)] group"
               >
-                <Zap size={14} fill="currentColor" />
-                <span className="text-[10px] font-black uppercase tracking-[0.5em] italic">
-                  Available for booking
-                </span>
+                <img
+                  src={image || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop"}
+                  alt={name}
+                  className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-1000"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
               </motion.div>
 
-              <div className="space-y-2">
-                <TextReveal>
-                  <h1 className="text-6xl md:text-[120px] font-black leading-[0.8] tracking-tighter uppercase italic">
-                    Hello,
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full space-y-4 pointer-events-none">
+                <TextReveal delay={0.2}>
+                  <h2 
+                    className="text-7xl md:text-[180px] font-black leading-[0.75] tracking-tighter uppercase italic mix-blend-difference"
+                    style={{ fontSize: `calc(180px * var(--hero-name-size))` }}
+                  >
+                    {name?.split(" ")[0] || "AHLAN"}
                     <br />
-                    I'M{" "}
-                    <span className="text-yellow-500">{name || "AHLAN"}</span>
-                  </h1>
+                    <span className="text-[var(--primary-color)]">{name?.split(" ")[1] || ""}</span>
+                  </h2>
                 </TextReveal>
+              </div>
+
+              <div className="space-y-6 pt-12 relative z-20">
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="text-xl md:text-2xl text-white/40 font-black italic tracking-tight uppercase"
+                  transition={{ delay: 0.8 }}
+                  className="text-lg md:text-2xl font-black uppercase tracking-[0.5em] italic text-[var(--primary-color)]"
                 >
                   {subtitle || "Professional Influencer"}
                 </motion.p>
+                
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1 }}
+                  className="flex flex-col items-center gap-8"
+                >
+                  <p className="text-white/40 max-w-sm leading-relaxed text-sm italic">
+                    {data.heroDescription || "Helping brands reach their target audience through authentic storytelling and high-impact visual content."}
+                  </p>
+                  
+                  <div className="flex gap-6">
+                    <button className="px-12 py-6 bg-[var(--primary-color)] text-black font-black uppercase tracking-[0.3em] text-[10px] rounded-full hover:scale-110 transition-all shadow-2xl italic">
+                      Contact Me
+                    </button>
+                    <button className="px-12 py-6 bg-white/5 backdrop-blur-xl border border-white/10 text-white font-black uppercase tracking-[0.3em] text-[10px] rounded-full hover:bg-white/10 transition-all italic">
+                      Media Kit
+                    </button>
+                  </div>
+                </motion.div>
               </div>
             </div>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-              className="text-white/40 max-w-sm leading-relaxed text-sm md:text-base font-light italic"
-            >
-              {data.heroDescription ||
-                "Helping brands reach their target audience through authentic storytelling and high-impact visual content."}
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1 }}
-              className="flex gap-6 pt-6"
-            >
-              <button className="px-12 py-6 bg-yellow-500 text-black font-black uppercase tracking-[0.3em] text-[10px] rounded hover:scale-105 transition-all shadow-[0_20px_50px_rgba(234,179,8,0.2)] italic">
-                Contact Me
-              </button>
-              <button className="px-12 py-6 bg-white/5 border border-white/10 text-white font-black uppercase tracking-[0.3em] text-[10px] rounded hover:bg-white/10 transition-all italic">
-                Media Kit
-              </button>
-            </motion.div>
           </div>
 
-          <motion.div
-            style={{ y: heroY, opacity: heroOpacity, scale: heroScale }}
-            className="relative hidden md:block"
-          >
-            <div className="relative z-10 rounded-[40px] overflow-hidden aspect-[4/5] shadow-[0_50px_100px_rgba(0,0,0,0.5)] border-[12px] border-white/5 group">
-              <img
-                src={
-                  image ||
-                  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop"
-                }
-                alt={name}
-                className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-10">
-                <span className="text-[10px] font-black uppercase tracking-widest text-yellow-500 mb-2 italic">
-                  Creator Identity
+          {/* Side Stats - Award-Winning Detail */}
+          <div className="absolute left-20 bottom-20 hidden xl:flex flex-col items-start gap-8">
+            {["Followers", "Engagement"].map((stat, i) => (
+              <motion.div
+                key={stat}
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.2 + i * 0.2 }}
+                className="space-y-1"
+              >
+                <span className="text-[8px] font-black uppercase tracking-widest text-white/20 italic">{stat}</span>
+                <span className="block text-4xl font-black italic tracking-tighter" style={{ color: "var(--primary-color)" }}>
+                  {i === 0 ? (data.details?.stats?.followers || "100K+") : (data.details?.stats?.engagement || "5.2%")}
                 </span>
-                <h3 className="text-2xl font-black uppercase italic">{name}</h3>
-              </div>
-            </div>
-            {/* Immersive glow */}
-            <div className="absolute -inset-10 bg-yellow-500/20 blur-[100px] -z-10 rounded-full animate-pulse" />
-          </motion.div>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         {/* Scroll Indicator */}
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ repeat: Infinity, duration: 2 }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-20"
+          className="absolute bottom-10 right-20 flex items-center gap-6 opacity-20 hidden md:flex"
         >
-          <div className="w-[1px] h-20 bg-gradient-to-b from-yellow-500 to-transparent" />
-          <span className="text-[8px] font-black uppercase tracking-[0.6em] italic">
-            Scroll Down
-          </span>
+          <span className="text-[8px] font-black uppercase tracking-[0.6em] italic whitespace-nowrap">Scroll Down</span>
+          <div className="w-20 h-[1px] bg-white" />
         </motion.div>
       </section>
 
       {/* About Section */}
       <section
-        id="about"
-        className="py-32 md:py-60 px-6 md:px-16 max-w-7xl mx-auto"
+        id="narrative-section"
+        className="py-20 md:py-32 px-6 md:px-16 max-w-7xl mx-auto relative"
+        style={{ backgroundColor: "var(--bio-bg)" }}
       >
+        <FloatingElements />
         <div className="grid md:grid-cols-2 gap-24 md:gap-40 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="relative"
+            style={{ y: useTransform(totalProgress, [0, 1], [0, -100]) }}
           >
-            <div className="absolute -inset-4 bg-yellow-500/10 rounded-[60px] blur-3xl -z-10" />
+            <div 
+              className="absolute -inset-4 rounded-[60px] blur-3xl -z-10" 
+              style={{ backgroundColor: "var(--primary-color)", opacity: 0.1 }}
+            />
             <div className="relative z-10 rounded-[48px] overflow-hidden shadow-[0_40px_80px_rgba(0,0,0,0.1)] group">
               <img
                 src={
@@ -412,7 +631,8 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
             </div>
             <motion.div
               whileHover={{ scale: 1.1, rotate: 5 }}
-              className="absolute -bottom-10 -right-10 bg-yellow-500 p-10 md:p-14 rounded-[40px] shadow-2xl z-20"
+              className="absolute -bottom-10 -right-10 p-10 md:p-14 rounded-[40px] shadow-2xl z-20"
+              style={{ backgroundColor: "var(--primary-color)" }}
             >
               <span className="block text-6xl font-black text-black leading-none">
                 5+
@@ -426,13 +646,16 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
           <div className="space-y-12">
             <div className="space-y-6">
               <div className="flex items-center gap-6">
-                <div className="w-16 h-[2px] bg-yellow-500" />
-                <span className="text-yellow-500 font-black uppercase tracking-[0.4em] text-[10px] italic">
+                <div className="w-16 h-[2px]" style={{ backgroundColor: "var(--primary-color)" }} />
+                <span className="font-black uppercase tracking-[0.4em] text-[10px] italic" style={{ color: "var(--primary-color)" }}>
                   Creative Force
                 </span>
               </div>
               <TextReveal>
-                <h2 className="text-5xl md:text-7xl font-black text-zinc-900 leading-[0.9] uppercase italic tracking-tighter">
+                <h2 
+                  className="text-5xl md:text-7xl font-black text-zinc-900 leading-[0.9] uppercase italic tracking-tighter"
+                  style={{ fontSize: `calc(4.5rem * var(--section-title-size))` }}
+                >
                   Crafting Digital <br />
                   <span className="text-zinc-300">Narratives</span>
                 </h2>
@@ -444,6 +667,7 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               className="text-zinc-500 leading-relaxed text-lg md:text-xl font-light italic"
+              style={{ fontSize: `calc(1.25rem * var(--bio-size))` }}
             >
               {bio ||
                 "I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth."}
@@ -471,7 +695,17 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
               ))}
             </div>
 
-            <button className="px-12 py-6 bg-zinc-900 text-white font-black uppercase tracking-[0.3em] text-[10px] rounded hover:bg-yellow-500 hover:text-black transition-all italic">
+            <button 
+              className="px-12 py-6 bg-zinc-900 text-white font-black uppercase tracking-[0.3em] text-[10px] rounded transition-all italic"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "var(--primary-color)";
+                e.currentTarget.style.color = "black";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "#18181b";
+                e.currentTarget.style.color = "white";
+              }}
+            >
               Download Media Kit
             </button>
           </div>
@@ -480,10 +714,14 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
 
       {/* Services Section */}
       <section
-        id="services"
-        className="py-32 md:py-60 bg-zinc-50 px-6 md:px-16 relative overflow-hidden"
+        id="solutions-section"
+        className="py-20 md:py-32 px-6 md:px-16 relative overflow-hidden"
+        style={{ backgroundColor: "var(--services-bg)" }}
       >
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-yellow-500/5 -skew-x-12 translate-x-1/2" />
+        <div 
+          className="absolute top-0 right-0 w-1/2 h-full -skew-x-12 translate-x-1/2" 
+          style={{ backgroundColor: "var(--primary-color)", opacity: 0.05 }}
+        />
 
         <div className="max-w-7xl mx-auto relative z-10">
           <SectionHeading
@@ -491,63 +729,99 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
             subtitle="Strategic Collaboration Offerings"
           />
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <motion.div 
+            className="grid md:grid-cols-3 gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.2 }
+              }
+            }}
+          >
             {services.map((service, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0 }
+                }}
                 whileHover={{ y: -20, scale: 1.02 }}
                 className="bg-white p-12 md:p-16 rounded-[48px] shadow-[0_20px_50px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_100px_rgba(0,0,0,0.08)] transition-all border border-zinc-100 flex flex-col justify-between group h-[450px]"
               >
                 <div className="space-y-8">
-                  <div className="w-20 h-20 bg-zinc-50 rounded-[28px] flex items-center justify-center text-zinc-900 group-hover:bg-yellow-500 transition-all duration-700">
+                  <div 
+                    className="w-20 h-20 bg-zinc-50 rounded-[28px] flex items-center justify-center text-zinc-900 transition-all duration-700"
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "var(--primary-color)"}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#f9fafb"}
+                  >
                     <Layers size={32} />
                   </div>
                   <div className="space-y-4">
-                    <h3 className="text-2xl font-black uppercase tracking-tight text-zinc-900 italic leading-none">
+                    <h3 
+                      className="text-2xl font-black uppercase tracking-tight text-zinc-900 italic leading-none"
+                      style={{ fontSize: `calc(1.5rem * var(--service-title-size))` }}
+                    >
                       {service.title}
                     </h3>
-                    <p className="text-zinc-500 text-sm leading-relaxed italic font-light">
+                    <p 
+                      className="text-zinc-500 text-sm leading-relaxed italic font-light"
+                      style={{ fontSize: `calc(0.875rem * var(--service-body-size))` }}
+                    >
                       {service.description}
                     </p>
                   </div>
                 </div>
 
-                <div className="pt-8 flex items-center gap-4 text-[9px] font-black uppercase tracking-widest text-yellow-500 group-hover:gap-6 transition-all">
+                <div 
+                  className="pt-8 flex items-center gap-4 text-[9px] font-black uppercase tracking-widest group-hover:gap-6 transition-all"
+                  style={{ color: "var(--primary-color)" }}
+                >
                   <span>Learn More</span>
                   <ArrowUpRight size={14} />
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
+      <Marquee text={name?.toUpperCase() || "CREATIVE FORCE"} />
+
       {/* Social Media Presence */}
-      <section className="py-32 md:py-60 bg-[#0A0A0A] text-white overflow-hidden relative">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,_rgba(234,179,8,0.05),transparent_50%)]" />
+      <section 
+        id="digital-echo-section"
+        className="py-20 md:py-32 bg-[#0A0A0A] text-white overflow-hidden relative"
+      >
+        <div 
+          className="absolute inset-0" 
+          style={{ background: `radial-gradient(circle_at_30%_50%, var(--primary-color), transparent 50%)`, opacity: 0.05 }}
+        />
 
         <div className="max-w-7xl mx-auto px-6 md:px-16 relative z-10">
           <div className="grid lg:grid-cols-2 gap-24 md:gap-40 items-center">
             <div className="space-y-12">
               <div className="space-y-6">
                 <div className="flex items-center gap-6">
-                  <div className="w-16 h-[2px] bg-yellow-500" />
-                  <span className="text-yellow-500 font-black uppercase tracking-[0.4em] text-[10px] italic">
+                  <div className="w-16 h-[2px]" style={{ backgroundColor: "var(--primary-color)" }} />
+                  <span className="font-black uppercase tracking-[0.4em] text-[10px] italic" style={{ color: "var(--primary-color)" }}>
                     Global Network
                   </span>
                 </div>
                 <TextReveal>
                   <h2 className="text-5xl md:text-8xl font-black leading-[0.85] uppercase italic tracking-tighter">
                     Digital <br />
-                    <span className="text-yellow-500">Echo.</span>
+                    <span style={{ color: "var(--primary-color)", fontSize: `calc(5rem * var(--section-title-size))` }}>Echo.</span>
                   </h2>
                 </TextReveal>
               </div>
-              <p className="text-white/40 text-xl font-light italic max-w-md leading-relaxed">
+              <p 
+                className="text-white/40 text-xl font-light italic max-w-md leading-relaxed"
+                style={{ fontSize: `calc(1.25rem * var(--bio-size))` }}
+              >
                 Bridging the gap between brands and communities across all major
                 social platforms.
               </p>
@@ -559,7 +833,15 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-20 h-20 rounded-[28px] bg-white/5 flex items-center justify-center hover:bg-yellow-500 hover:text-black transition-all duration-700 border border-white/5 group shadow-2xl"
+                      className="w-20 h-20 rounded-[28px] bg-white/5 flex items-center justify-center transition-all duration-700 border border-white/5 group shadow-2xl"
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = "var(--primary-color)";
+                        e.currentTarget.style.color = "black";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                        e.currentTarget.style.color = "white";
+                      }}
                     >
                       <SocialIcon platform={link.platform} />
                     </a>
@@ -568,7 +850,19 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
+            <motion.div 
+              className="grid grid-cols-2 gap-6"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: 0.1 }
+                }
+              }}
+            >
               {[
                 {
                   label: "Instagram",
@@ -597,9 +891,10 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
               ].map((stat, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: i * 0.1, type: "spring" }}
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.8 },
+                    visible: { opacity: 1, scale: 1 }
+                  }}
                   className="bg-white/5 backdrop-blur-3xl p-10 md:p-14 rounded-[48px] border border-white/10 hover:border-yellow-500/50 transition-all group flex flex-col items-center text-center space-y-4"
                 >
                   <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -613,69 +908,83 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
                   </span>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Portfolio Gallery */}
       <section
-        id="portfolio"
-        className="py-32 md:py-60 px-6 md:px-16 max-w-[1600px] mx-auto"
+        id="archive-section"
+        className="py-20 md:py-32 px-6 md:px-16 max-w-[1600px] mx-auto"
+        style={{ backgroundColor: "var(--bg-color)" }}
       >
         <SectionHeading
           title="Archive"
           subtitle="Curated Visual Masterpieces"
         />
 
-        <div className="masonry-grid">
+        <div 
+          className="grid gap-8"
+          style={{ 
+            gridTemplateColumns: `repeat(var(--archive-columns), minmax(0, 1fr))`,
+            gap: `var(--archive-gap)`
+          }}
+        >
           {projects.map((project, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="masonry-item relative group rounded-[40px] overflow-hidden shadow-2xl cursor-none"
-            >
-              <img
-                src={
-                  project.image ||
-                  "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1000&auto=format&fit=crop"
-                }
-                alt={project.title}
-                className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-125"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 flex flex-col justify-end p-12">
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  className="space-y-4"
+            <TiltCard key={idx} className="perspective-1000">
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: idx * 0.1 }}
+                className={`archive-card group hover-${activeStyles.archiveHover || 'zoom'} style-${activeStyles.archiveStyle || 'clean'}`}
+              >
+                <img
+                  src={
+                    project.image ||
+                    "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1000&auto=format&fit=crop"
+                  }
+                  alt={project.title}
+                  className="archive-image"
+                />
+                <div 
+                  className="archive-overlay"
                 >
-                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-yellow-500 italic">
-                    Project Showcase
-                  </span>
-                  <h4 className="text-3xl md:text-4xl font-black uppercase tracking-tighter italic leading-none">
-                    {project.title}
-                  </h4>
-                  <p className="text-white/40 text-sm font-light italic leading-snug">
-                    {project.description}
-                  </p>
-                  <div className="pt-4">
-                    <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center text-black">
-                      <ArrowUpRight size={20} />
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    className="space-y-4"
+                  >
+                    <span className="text-[10px] font-black uppercase tracking-[0.4em] text-yellow-500 italic">
+                      Project Showcase
+                    </span>
+                    <h4 className="text-3xl md:text-4xl font-black uppercase tracking-tighter italic leading-none">
+                      {project.title}
+                    </h4>
+                    <p className="text-white/40 text-sm font-light italic leading-snug">
+                      {project.description}
+                    </p>
+                    <div className="pt-4">
+                      <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center text-black">
+                        <ArrowUpRight size={20} />
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              </div>
-            </motion.div>
+                  </motion.div>
+                </div>
+              </motion.div>
+            </TiltCard>
           ))}
         </div>
       </section>
 
 
       {/* CTA Section */}
-      <section className="py-40 md:py-80 px-6 md:px-16 bg-yellow-500 text-center relative overflow-hidden">
+      <section 
+        id="unleash-section"
+        className="py-24 md:py-40 px-6 md:px-16 text-center relative overflow-hidden"
+        style={{ backgroundColor: "var(--primary-color)" }}
+      >
         {/* Cinematic Background Text */}
         <motion.div
           style={{ x: heroY }}
@@ -687,7 +996,10 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
         <div className="max-w-5xl mx-auto space-y-16 relative z-10">
           <div className="space-y-6">
             <TextReveal>
-              <h2 className="text-7xl md:text-[180px] font-black text-black uppercase tracking-tighter leading-[0.75] italic">
+              <h2 
+                className="text-7xl md:text-[180px] font-black text-black uppercase tracking-tighter leading-[0.75] italic"
+                style={{ fontSize: `calc(11.25rem * var(--footer-title-size))` }}
+              >
                 {data.details?.ctaTitle?.toUpperCase() || "UNLEASH"}
               </h2>
             </TextReveal>
@@ -707,21 +1019,32 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
               }
               className="px-20 py-8 bg-black text-white font-black uppercase tracking-[0.5em] text-xs rounded-full hover:scale-110 transition-all shadow-[0_30px_100px_rgba(0,0,0,0.4)] flex items-center gap-6 mx-auto italic"
             >
-              Start Project <Send size={20} className="text-yellow-500" />
+              Start Project <Send size={20} style={{ color: "var(--primary-color)" }} />
             </button>
           </MagneticButton>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-20 bg-[#0A0A0A] border-t border-white/5 px-6 md:px-16">
+      <footer 
+        className="py-20 border-t border-white/5 px-6 md:px-16"
+        style={{ backgroundColor: "var(--footer-bg)" }}
+      >
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
           <div className="flex gap-6">
             {socialLinks.slice(0, 4).map((link, i) => (
               <a
                 key={i}
                 href={link.url}
-                className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-zinc-500 hover:text-yellow-500 hover:bg-white/10 transition-all"
+                className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-zinc-500 transition-all"
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "var(--primary-color)";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "#71717a";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                }}
               >
                 <SocialIcon platform={link.platform} />
               </a>

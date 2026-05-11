@@ -11,7 +11,15 @@ const StudentPortfolioPopup = () => {
   const [error, setError] = useState('');
   const [isCompleted, setIsCompleted] = useState(false);
   const [stats, setStats] = useState({ totalCount: 0, recentStudents: [] });
+  const [mobileExpanded, setMobileExpanded] = useState(false);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -120,16 +128,69 @@ const StudentPortfolioPopup = () => {
 
   return (
     <>
-      {/* Floating Trigger Card */}
-      {!isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleTriggerClick}
-          className="fixed bottom-24 right-6 z-[10001] cursor-pointer group"
-        >
+      {/* Mobile-only Small Floating Button (Hidden on Desktop) */}
+      <AnimatePresence>
+        {!isOpen && !mobileExpanded && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0, y: 20 }}
+            animate={{ 
+              opacity: 1, 
+              scale: 1, 
+              y: [0, -12, 0] 
+            }}
+            exit={{ opacity: 0, scale: 0, y: 20 }}
+            transition={{
+              y: {
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut"
+              },
+              opacity: { duration: 0.3 },
+              scale: { duration: 0.3 }
+            }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setMobileExpanded(true)}
+            className="md:hidden fixed bottom-6 right-6 z-[10001] w-14 h-14 bg-[#E8001A] rounded-full flex items-center justify-center text-white shadow-2xl border-2 border-white/20 cursor-pointer"
+          >
+            <i className="fas fa-graduation-cap text-xl"></i>
+            {stats.totalCount > 0 && (
+              <div className="absolute -top-1 -right-1 bg-white text-[#E8001A] min-w-[20px] h-5 px-1 rounded-full flex items-center justify-center text-[10px] font-black border border-[#E8001A] shadow-md">
+                {stats.totalCount}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Main Trigger (Desktop: Always, Mobile: only when mobileExpanded is true) */}
+      <AnimatePresence>
+        {!isOpen && (mobileExpanded || !isMobile) && (
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 50 }}
+            className={`fixed bottom-24 md:bottom-24 right-6 z-[10001] ${!mobileExpanded && isMobile ? 'hidden' : 'block'}`}
+          >
+            {/* Close button for mobile expanded state */}
+            {mobileExpanded && (
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setMobileExpanded(false);
+                }}
+                className="md:hidden absolute -top-4 -left-4 w-8 h-8 bg-black/50 backdrop-blur-md rounded-full border border-white/20 text-white flex items-center justify-center z-[10002]"
+              >
+                <i className="fas fa-times text-xs"></i>
+              </button>
+            )}
+
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleTriggerClick}
+              className="cursor-pointer group"
+            >
           {/* Floating Student Circles */}
           <div className="absolute bottom-full mb-4 right-0 w-64 h-48 pointer-events-none overflow-visible scale-75 md:scale-100 origin-bottom-right">
             <AnimatePresence>
@@ -223,9 +284,11 @@ const StudentPortfolioPopup = () => {
                 </motion.span>
               </div>
             </div>
-          </div>
+            </div>
+          </motion.div>
         </motion.div>
-      )}
+        )}
+      </AnimatePresence>
 
       {/* Main Popup Modal */}
       <AnimatePresence>

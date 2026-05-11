@@ -63,46 +63,46 @@ const DynamicPartnershipPage = () => {
 
   const sectionMapping = {
     // Styles
-    heroBg: 'hero-section',
-    heroNameFontSize: 'hero-section',
-    heroSubtitleFontSize: 'hero-section',
-    heroFont: 'hero-section',
-    heroImageScale: 'hero-section',
+    heroBg: 'identity-section',
+    heroNameFontSize: 'identity-section',
+    heroSubtitleFontSize: 'identity-section',
+    heroFont: 'identity-section',
+    heroImageScale: 'identity-section',
     
     bioBg: 'narrative-section',
     bioFontSize: 'narrative-section',
     bioFont: 'narrative-section',
     
-    projectsBg: 'projects-section',
-    projectTitleFontSize: 'projects-section',
-    projectBodyFontSize: 'projects-section',
-    sectionTitleFontSize: 'projects-section',
-    projectImageScale: 'projects-section',
+    projectsBg: 'archive-section',
+    projectTitleFontSize: 'archive-section',
+    projectBodyFontSize: 'archive-section',
+    sectionTitleFontSize: 'archive-section',
+    projectImageScale: 'archive-section',
     
-    servicesBg: 'expertise-section',
-    serviceTitleFontSize: 'expertise-section',
-    serviceBodyFontSize: 'expertise-section',
+    servicesBg: 'solutions-section',
+    serviceTitleFontSize: 'solutions-section',
+    serviceBodyFontSize: 'solutions-section',
     
     testimonialsBg: 'testimonials-section',
     testimonialQuoteFontSize: 'testimonials-section',
     testimonialAuthorFontSize: 'testimonials-section',
     testimonialFont: 'testimonials-section',
     
-    footerBg: 'footer-section',
-    footerTitleFontSize: 'footer-section',
-    footerFont: 'footer-section',
-    moduleFont: 'projects-section',
-    cardFont: 'expertise-section',
+    footerBg: 'unleash-section',
+    footerTitleFontSize: 'unleash-section',
+    footerFont: 'unleash-section',
+    moduleFont: 'archive-section',
+    cardFont: 'solutions-section',
 
     // Content
-    name: 'hero-section',
-    subtitle: 'hero-section',
-    image: 'hero-section',
+    name: 'identity-section',
+    subtitle: 'identity-section',
+    image: 'identity-section',
     bio: 'narrative-section',
-    projects: 'projects-section',
-    services: 'expertise-section',
-    testimonials: 'testimonials-section',
-    socialLinks: 'footer-section',
+    projects: 'archive-section',
+    services: 'solutions-section',
+    testimonials: 'archive-section',
+    socialLinks: 'digital-echo-section',
   };
 
   const scrollToSection = (sectionId) => {
@@ -356,8 +356,8 @@ const DynamicPartnershipPage = () => {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex-1 py-4 flex flex-col items-center gap-2 border-b-2 transition-all ${activeTab === tab.id ? "border-[#E8001A] text-white" : "border-transparent text-zinc-600 hover:text-zinc-400"}`}
-                    style={{ borderBottomColor: activeTab === tab.id ? (editableData.details?.styles?.primaryColor || "#E8001A") : "transparent" }}
+                    className={`flex-1 py-4 flex flex-col items-center gap-2 border-b-2 transition-all ${activeTab === tab.id ? "text-white" : "border-transparent text-zinc-600 hover:text-zinc-400"}`}
+                    style={{ borderBottomColor: activeTab === tab.id ? (editableData.details?.styles?.primaryColor || (editableData.templateId === "influencer" ? "#FFC107" : "#E8001A")) : "transparent" }}
                   >
                     <tab.icon size={18} />
                     <span className="text-[9px] font-black uppercase tracking-widest">{tab.label}</span>
@@ -376,17 +376,17 @@ const DynamicPartnershipPage = () => {
                       <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Global Aesthetics</label>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-3">
-                          <span className="text-[10px] font-bold text-zinc-600 block uppercase">Primary Hue</span>
-                          <div className="flex items-center gap-3 bg-zinc-900 p-2 rounded-xl border border-zinc-800">
+                          <span className="text-[10px] font-bold text-zinc-600 block uppercase">{editableData.templateId === "influencer" ? "Brand Accent" : "Primary Hue"}</span>
+                          <div className={`flex items-center gap-3 bg-zinc-900 p-2 rounded-xl border ${editableData.templateId === "influencer" ? "border-yellow-500/20" : "border-zinc-800"}`}>
                             <input 
                               type="color" 
-                              value={editableData.details?.styles?.primaryColor || "#E8001A"}
+                              value={editableData.details?.styles?.primaryColor || (editableData.templateId === "influencer" ? "#FFC107" : "#E8001A")}
                               onChange={(e) => handleStyleChange("primaryColor", e.target.value)}
                               onFocus={() => scrollToSection('hero-section')}
                               className="w-8 h-8 rounded-lg cursor-pointer border-none p-0 overflow-hidden"
                             />
                             <span className="text-xs font-mono uppercase text-zinc-400">
-                              {(editableData.details?.styles?.primaryColor || "#E8001A").toUpperCase()}
+                              {(editableData.details?.styles?.primaryColor || (editableData.templateId === "influencer" ? "#FFC107" : "#E8001A")).toUpperCase()}
                             </span>
                           </div>
                         </div>
@@ -444,30 +444,30 @@ const DynamicPartnershipPage = () => {
                         <div className="grid grid-cols-2 gap-8">
                           <div className="space-y-3">
                             <div className="flex justify-between items-center">
-                              <span className="text-[10px] font-bold text-zinc-400 uppercase">Noise Intensity</span>
-                              <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.noiseOpacity) || 0) * 100)}%</span>
+                              <span className="text-[10px] font-bold text-zinc-400 uppercase">{editableData.templateId === "influencer" ? "Grain Texture" : "Noise Intensity"}</span>
+                              <span className={`text-[10px] font-mono ${editableData.templateId === "influencer" ? "text-yellow-500" : "text-[#E8001A]"}`}>{Math.round((parseFloat(editableData.details?.styles?.noiseOpacity) || 0) * 100)}%</span>
                             </div>
                             <input 
                               type="range" min="0" max="0.2" step="0.01"
                               value={parseFloat(editableData.details?.styles?.noiseOpacity) || 0}
                               onChange={(e) => handleStyleChange("noiseOpacity", e.target.value)}
                               onFocus={() => scrollToSection('hero-section')}
-                              className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
+                              className={`w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer ${editableData.templateId === "influencer" ? "accent-yellow-500" : "accent-[#E8001A]"}`}
                             />
                           </div>
                           <div className="space-y-3">
                            <div className="grid grid-cols-2 gap-4">
                              <div className="space-y-3">
                                <div className="flex justify-between items-center">
-                                 <span className="text-[10px] font-bold text-zinc-400 uppercase">Grid Intensity</span>
-                                 <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.gridOpacity) || 0) * 100)}%</span>
+                                 <span className="text-[10px] font-bold text-zinc-400 uppercase">{editableData.templateId === "influencer" ? "Canvas Grid" : "Grid Intensity"}</span>
+                                 <span className={`text-[10px] font-mono ${editableData.templateId === "influencer" ? "text-yellow-500" : "text-[#E8001A]"}`}>{Math.round((parseFloat(editableData.details?.styles?.gridOpacity) || 0) * 100)}%</span>
                                </div>
                                <input 
                                  type="range" min="0" max="1" step="0.05"
                                  value={parseFloat(editableData.details?.styles?.gridOpacity) || 0}
                                  onChange={(e) => handleStyleChange("gridOpacity", e.target.value)}
-                                 onFocus={() => scrollToSection('hero-section')}
-                                 className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
+                                 onFocus={() => scrollToSection('identity-section')}
+                                 className={`w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer ${editableData.templateId === "influencer" ? "accent-yellow-500" : "accent-[#E8001A]"}`}
                                />
                              </div>
                              <div className="space-y-3">
@@ -494,12 +494,12 @@ const DynamicPartnershipPage = () => {
                       <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Section Aesthetics (Backgrounds)</label>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 bg-zinc-900/30 p-5 rounded-2xl border border-zinc-800/50">
                         {[
-                          { id: "heroBg", label: "Hero" },
-                          { id: "bioBg", label: "Narrative" },
-                          { id: "projectsBg", label: "Portfolio" },
-                          { id: "servicesBg", label: "Expertise" },
-                          { id: "testimonialsBg", label: "Voices" },
-                          { id: "footerBg", label: "Final Call" },
+                          { id: "heroBg", label: "01. Identity (Hero)", target: "identity-section" },
+                          { id: "bioBg", label: "02. Narrative (About)", target: "narrative-section" },
+                          { id: "servicesBg", label: "03. Solutions (Services)", target: "solutions-section" },
+                          { id: "socialBg", label: "04. Digital Echo (Social)", target: "digital-echo-section" },
+                          { id: "projectsBg", label: "05. Archive (Portfolio)", target: "archive-section" },
+                          { id: "footerBg", label: "06. Unleash (Footer)", target: "unleash-section" },
                         ].map((sec) => (
                           <div key={sec.id} className="space-y-2">
                             <span className="text-[9px] font-bold text-zinc-500 block uppercase">{sec.label}</span>
@@ -508,7 +508,7 @@ const DynamicPartnershipPage = () => {
                                 type="color" 
                                 value={editableData.details?.styles?.[sec.id] || editableData.details?.styles?.backgroundColor || "#0A0A0A"}
                                 onChange={(e) => handleStyleChange(sec.id, e.target.value)}
-                                onFocus={() => scrollToSection(sec.id === 'heroBg' ? 'hero-section' : sec.id === 'bioBg' ? 'narrative-section' : sec.id === 'projectsBg' ? 'projects-section' : sec.id === 'servicesBg' ? 'expertise-section' : sec.id === 'testimonialsBg' ? 'testimonials-section' : 'footer-section')}
+                                onFocus={() => scrollToSection(sec.target)}
                                 className="w-6 h-6 rounded bg-transparent border-none cursor-pointer"
                               />
                               <span className="text-[9px] font-mono uppercase text-zinc-400">
@@ -523,32 +523,32 @@ const DynamicPartnershipPage = () => {
                     <div className="space-y-6">
                       {/* Hero Section Typography */}
                       <div className="space-y-4">
-                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Section: Hero (Identity)</label>
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">SECTION: HERO (IDENTITY)</label>
                         <div className="space-y-6 bg-zinc-900/30 p-5 rounded-2xl border border-zinc-800/50">
                           <div className="space-y-3">
                             <div className="flex justify-between items-center">
                               <span className="text-[10px] font-bold text-zinc-400 uppercase">Primary Name Size</span>
-                              <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.heroNameFontSize) || 1) * 100)}%</span>
+                              <span className={`text-[10px] font-mono ${editableData.templateId === "influencer" ? "text-yellow-500" : "text-[#E8001A]"}`}>{Math.round((parseFloat(editableData.details?.styles?.heroNameFontSize) || 1) * 100)}%</span>
                             </div>
                             <input 
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.heroNameFontSize) || 1}
                               onChange={(e) => handleStyleChange("heroNameFontSize", e.target.value)}
                               onFocus={() => scrollToSection('hero-section')}
-                              className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
+                              className={`w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer ${editableData.templateId === "influencer" ? "accent-yellow-500" : "accent-[#E8001A]"}`}
                             />
                           </div>
                           <div className="space-y-3">
                             <div className="flex justify-between items-center">
                               <span className="text-[10px] font-bold text-zinc-400 uppercase">Subtitle Badge</span>
-                              <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.heroSubtitleFontSize) || 1) * 100)}%</span>
+                              <span className={`text-[10px] font-mono ${editableData.templateId === "influencer" ? "text-yellow-500" : "text-[#E8001A]"}`}>{Math.round((parseFloat(editableData.details?.styles?.heroSubtitleFontSize) || 1) * 100)}%</span>
                             </div>
                             <input 
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.heroSubtitleFontSize) || 1}
                               onChange={(e) => handleStyleChange("heroSubtitleFontSize", e.target.value)}
                               onFocus={() => scrollToSection('hero-section')}
-                              className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
+                              className={`w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer ${editableData.templateId === "influencer" ? "accent-yellow-500" : "accent-[#E8001A]"}`}
                             />
                           </div>
                           <div className="space-y-3">
@@ -574,19 +574,19 @@ const DynamicPartnershipPage = () => {
 
                       {/* Narrative Section Typography */}
                       <div className="space-y-4">
-                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Section: Narrative (Bio)</label>
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">SECTION: ABOUT (BIO)</label>
                         <div className="space-y-6 bg-zinc-900/30 p-5 rounded-2xl border border-zinc-800/50">
                           <div className="space-y-3">
                             <div className="flex justify-between items-center">
                               <span className="text-[10px] font-bold text-zinc-400 uppercase">Bio Font Size</span>
-                              <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.bioFontSize) || 1) * 100)}%</span>
+                              <span className={`text-[10px] font-mono ${editableData.templateId === "influencer" ? "text-yellow-500" : "text-[#E8001A]"}`}>{Math.round((parseFloat(editableData.details?.styles?.bioFontSize) || 1) * 100)}%</span>
                             </div>
                             <input 
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.bioFontSize) || 1}
                               onChange={(e) => handleStyleChange("bioFontSize", e.target.value)}
                               onFocus={() => scrollToSection('narrative-section')}
-                              className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
+                              className={`w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer ${editableData.templateId === "influencer" ? "accent-yellow-500" : "accent-[#E8001A]"}`}
                             />
                           </div>
                           <div className="space-y-3">
@@ -610,32 +610,128 @@ const DynamicPartnershipPage = () => {
                         </div>
                       </div>
 
-                      {/* Global Modules Typography */}
-                    <div className="space-y-4">
-                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Global Section Titles</label>
+                      {/* Archive Section Typography */}
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">SECTION: ARCHIVE (PORTFOLIO)</label>
                         <div className="space-y-6 bg-zinc-900/30 p-5 rounded-2xl border border-zinc-800/50">
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-3">
+                              <span className="text-[10px] font-bold text-zinc-400 uppercase block">Grid Columns</span>
+                              <select 
+                                value={editableData.details?.styles?.archiveColumns || "3"}
+                                onChange={(e) => handleStyleChange("archiveColumns", e.target.value)}
+                                className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none"
+                              >
+                                <option value="1">1 Column</option>
+                                <option value="2">2 Columns</option>
+                                <option value="3">3 Columns</option>
+                                <option value="4">4 Columns</option>
+                              </select>
+                            </div>
+                            <div className="space-y-3">
+                              <span className="text-[10px] font-bold text-zinc-400 uppercase block">Aspect Ratio</span>
+                              <select 
+                                value={editableData.details?.styles?.archiveAspect || "3/4"}
+                                onChange={(e) => handleStyleChange("archiveAspect", e.target.value)}
+                                className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none"
+                              >
+                                <option value="1/1">1:1 Square</option>
+                                <option value="3/4">3:4 Portrait</option>
+                                <option value="4/5">4:5 Tall</option>
+                                <option value="16/9">16:9 Landscape</option>
+                                <option value="auto">Original</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-3">
+                              <span className="text-[10px] font-bold text-zinc-400 uppercase block">Hover Style</span>
+                              <select 
+                                value={editableData.details?.styles?.archiveHover || "zoom"}
+                                onChange={(e) => handleStyleChange("archiveHover", e.target.value)}
+                                className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none"
+                              >
+                                <option value="zoom">Immersive Zoom</option>
+                                <option value="slide">Slide Reveal</option>
+                                <option value="fade">Minimal Fade</option>
+                                <option value="none">Static</option>
+                              </select>
+                            </div>
+                            <div className="space-y-3">
+                              <span className="text-[10px] font-bold text-zinc-400 uppercase block">Card Style</span>
+                              <select 
+                                value={editableData.details?.styles?.archiveStyle || "clean"}
+                                onChange={(e) => handleStyleChange("archiveStyle", e.target.value)}
+                                className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none"
+                              >
+                                <option value="clean">Clean (No Border)</option>
+                                <option value="glass">Glassmorphism</option>
+                                <option value="bordered">Bold Border</option>
+                                <option value="shadow">Deep Shadow</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-3">
+                              <span className="text-[10px] font-bold text-zinc-400 uppercase block">Corner Radius</span>
+                              <input 
+                                type="range" min="0" max="80" step="4"
+                                value={parseInt(editableData.details?.styles?.archiveRadius) || 40}
+                                onChange={(e) => handleStyleChange("archiveRadius", e.target.value)}
+                                className={`w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer ${editableData.templateId === "influencer" ? "accent-yellow-500" : "accent-[#E8001A]"}`}
+                              />
+                            </div>
+                            <div className="space-y-3">
+                              <div className="flex justify-between items-center">
+                                <span className="text-[10px] font-bold text-zinc-400 uppercase">Overlay Dim</span>
+                                <span className={`text-[10px] font-mono ${editableData.templateId === "influencer" ? "text-yellow-500" : "text-[#E8001A]"}`}>{Math.round((parseFloat(editableData.details?.styles?.archiveOverlay) || 0.9) * 100)}%</span>
+                              </div>
+                              <input 
+                                type="range" min="0" max="1" step="0.05"
+                                value={parseFloat(editableData.details?.styles?.archiveOverlay) || 0.9}
+                                onChange={(e) => handleStyleChange("archiveOverlay", e.target.value)}
+                                className={`w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer ${editableData.templateId === "influencer" ? "accent-yellow-500" : "accent-[#E8001A]"}`}
+                              />
+                            </div>
+                          </div>
+
                           <div className="space-y-3">
                             <div className="flex justify-between items-center">
-                              <span className="text-[10px] font-bold text-zinc-400 uppercase">Text Size</span>
-                              <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.sectionTitleFontSize) || 1) * 100)}%</span>
+                              <span className="text-[10px] font-bold text-zinc-400 uppercase">Archive Title Size</span>
+                              <span className={`text-[10px] font-mono ${editableData.templateId === "influencer" ? "text-yellow-500" : "text-[#E8001A]"}`}>{Math.round((parseFloat(editableData.details?.styles?.sectionTitleFontSize) || 1) * 100)}%</span>
                             </div>
                             <input 
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.sectionTitleFontSize) || 1}
                               onChange={(e) => handleStyleChange("sectionTitleFontSize", e.target.value)}
-                              onFocus={() => scrollToSection('projects-section')}
-                              className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
+                              onFocus={() => scrollToSection('archive-section')}
+                              className={`w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer ${editableData.templateId === "influencer" ? "accent-yellow-500" : "accent-[#E8001A]"}`}
+                            />
+                          </div>
+
+                          <div className="space-y-3">
+                            <div className="flex justify-between items-center">
+                              <span className="text-[10px] font-bold text-zinc-400 uppercase">Project Gap</span>
+                              <span className={`text-[10px] font-mono ${editableData.templateId === "influencer" ? "text-yellow-500" : "text-[#E8001A]"}`}>{parseInt(editableData.details?.styles?.archiveGap) || 32}px</span>
+                            </div>
+                            <input 
+                              type="range" min="0" max="100" step="4"
+                              value={parseInt(editableData.details?.styles?.archiveGap) || 32}
+                              onChange={(e) => handleStyleChange("archiveGap", e.target.value)}
+                              className={`w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer ${editableData.templateId === "influencer" ? "accent-yellow-500" : "accent-[#E8001A]"}`}
                             />
                           </div>
                           <div className="space-y-3">
-                            <span className="text-[10px] font-bold text-zinc-600 block uppercase">Section Font</span>
+                            <span className="text-[10px] font-bold text-zinc-600 block uppercase">Archive Font</span>
                             <div className="flex flex-wrap gap-2">
                               {["Inter, sans-serif", "'Outfit', sans-serif", "'Space Grotesk', sans-serif", "'Playfair Display', serif", "monospace"].map((f) => (
                                 <button 
                                   key={f}
                                   onClick={() => {
                                     handleStyleChange("moduleFont", f);
-                                    scrollToSection('projects-section');
+                                    scrollToSection('archive-section');
                                   }}
                                   className={`px-3 py-1.5 rounded-lg text-[9px] font-bold border transition-all ${editableData.details?.styles?.moduleFont === f ? "bg-white text-black border-white" : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500"}`}
                                   style={{ fontFamily: f }}
@@ -652,12 +748,12 @@ const DynamicPartnershipPage = () => {
                     <div className="space-y-6">
                       {/* Services & Projects Typography */}
                       <div className="space-y-4">
-                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Skills & Projects (Cards)</label>
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">SECTION: SOLUTIONS (SERVICES)</label>
                         <div className="space-y-6 bg-zinc-900/30 p-5 rounded-2xl border border-zinc-800/50">
                           <div className="space-y-3">
                             <div className="flex justify-between items-center">
                               <span className="text-[10px] font-bold text-zinc-400 uppercase">Card Title Size</span>
-                              <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.serviceTitleFontSize) || 1) * 100)}%</span>
+                              <span className={`text-[10px] font-mono ${editableData.templateId === "influencer" ? "text-yellow-500" : "text-[#E8001A]"}`}>{Math.round((parseFloat(editableData.details?.styles?.serviceTitleFontSize) || 1) * 100)}%</span>
                             </div>
                             <input 
                               type="range" min="0.5" max="2" step="0.05"
@@ -666,14 +762,14 @@ const DynamicPartnershipPage = () => {
                                 handleStyleChange("serviceTitleFontSize", e.target.value);
                                 handleStyleChange("projectTitleFontSize", e.target.value);
                               }}
-                              onFocus={() => scrollToSection('expertise-section')}
-                              className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
+                              onFocus={() => scrollToSection('solutions-section')}
+                              className={`w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer ${editableData.templateId === "influencer" ? "accent-yellow-500" : "accent-[#E8001A]"}`}
                             />
                           </div>
                           <div className="space-y-3">
                             <div className="flex justify-between items-center">
                               <span className="text-[10px] font-bold text-zinc-400 uppercase">Card Detail Size</span>
-                              <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.serviceBodyFontSize) || 1) * 100)}%</span>
+                              <span className={`text-[10px] font-mono ${editableData.templateId === "influencer" ? "text-yellow-500" : "text-[#E8001A]"}`}>{Math.round((parseFloat(editableData.details?.styles?.serviceBodyFontSize) || 1) * 100)}%</span>
                             </div>
                             <input 
                               type="range" min="0.5" max="2" step="0.05"
@@ -682,8 +778,8 @@ const DynamicPartnershipPage = () => {
                                 handleStyleChange("serviceBodyFontSize", e.target.value);
                                 handleStyleChange("projectBodyFontSize", e.target.value);
                               }}
-                              onFocus={() => scrollToSection('expertise-section')}
-                              className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
+                              onFocus={() => scrollToSection('solutions-section')}
+                              className={`w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer ${editableData.templateId === "influencer" ? "accent-yellow-500" : "accent-[#E8001A]"}`}
                             />
                           </div>
                           <div className="space-y-3">
@@ -694,7 +790,7 @@ const DynamicPartnershipPage = () => {
                                   key={f}
                                   onClick={() => {
                                     handleStyleChange("cardFont", f);
-                                    scrollToSection('expertise-section');
+                                    scrollToSection('solutions-section');
                                   }}
                                   className={`px-3 py-1.5 rounded-lg text-[9px] font-bold border transition-all ${editableData.details?.styles?.cardFont === f ? "bg-white text-black border-white" : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500"}`}
                                   style={{ fontFamily: f }}
@@ -709,70 +805,27 @@ const DynamicPartnershipPage = () => {
 
                       {/* Testimonials Typography */}
                       <div className="space-y-4">
-                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Testimonials (Feedback)</label>
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">SECTION: DIGITAL ECHO (SOCIAL)</label>
                         <div className="space-y-6 bg-zinc-900/30 p-5 rounded-2xl border border-zinc-800/50">
-                          <div className="space-y-3">
-                            <div className="flex justify-between items-center">
-                              <span className="text-[10px] font-bold text-zinc-400 uppercase">Quote Size</span>
-                              <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.testimonialQuoteFontSize) || 1) * 100)}%</span>
-                            </div>
-                            <input 
-                              type="range" min="0.5" max="2" step="0.05"
-                              value={parseFloat(editableData.details?.styles?.testimonialQuoteFontSize) || 1}
-                              onChange={(e) => handleStyleChange("testimonialQuoteFontSize", e.target.value)}
-                              onFocus={() => scrollToSection('testimonials-section')}
-                              className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
-                            />
-                          </div>
-                          <div className="space-y-3">
-                            <div className="flex justify-between items-center">
-                              <span className="text-[10px] font-bold text-zinc-400 uppercase">Author Name</span>
-                              <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.testimonialAuthorFontSize) || 1) * 100)}%</span>
-                            </div>
-                            <input 
-                              type="range" min="0.5" max="2" step="0.05"
-                              value={parseFloat(editableData.details?.styles?.testimonialAuthorFontSize) || 1}
-                              onChange={(e) => handleStyleChange("testimonialAuthorFontSize", e.target.value)}
-                              onFocus={() => scrollToSection('testimonials-section')}
-                              className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
-                            />
-                          </div>
-                          <div className="space-y-3">
-                            <span className="text-[10px] font-bold text-zinc-600 block uppercase">Section Font</span>
-                            <div className="flex flex-wrap gap-2">
-                              {["Inter, sans-serif", "'Outfit', sans-serif", "'Space Grotesk', sans-serif", "'Playfair Display', serif", "monospace"].map((f) => (
-                                <button 
-                                  key={f}
-                                  onClick={() => {
-                                    handleStyleChange("testimonialFont", f);
-                                    scrollToSection('testimonials-section');
-                                  }}
-                                  className={`px-3 py-1.5 rounded-lg text-[9px] font-bold border transition-all ${editableData.details?.styles?.testimonialFont === f ? "bg-white text-black border-white" : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500"}`}
-                                  style={{ fontFamily: f }}
-                                >
-                                  {f.split(",")[0].replace(/'/g, "")}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
+                          <p className="text-[10px] text-zinc-500 uppercase tracking-widest italic text-center">Customize your social presence via the Text tab</p>
                         </div>
                       </div>
 
                       {/* Footer Typography */}
                       <div className="space-y-4">
-                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Section: Final Call (Footer)</label>
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">SECTION: UNLEASH (FOOTER)</label>
                         <div className="space-y-6 bg-zinc-900/30 p-5 rounded-2xl border border-zinc-800/50">
                           <div className="space-y-3">
                             <div className="flex justify-between items-center">
                               <span className="text-[10px] font-bold text-zinc-400 uppercase">Footer Headline</span>
-                              <span className="text-[10px] font-mono text-[#E8001A]">{Math.round((parseFloat(editableData.details?.styles?.footerTitleFontSize) || 1) * 100)}%</span>
+                              <span className={`text-[10px] font-mono ${editableData.templateId === "influencer" ? "text-yellow-500" : "text-[#E8001A]"}`}>{Math.round((parseFloat(editableData.details?.styles?.footerTitleFontSize) || 1) * 100)}%</span>
                             </div>
                             <input 
                               type="range" min="0.5" max="2" step="0.05"
                               value={parseFloat(editableData.details?.styles?.footerTitleFontSize) || 1}
                               onChange={(e) => handleStyleChange("footerTitleFontSize", e.target.value)}
-                              onFocus={() => scrollToSection('footer-section')}
-                              className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E8001A]"
+                              onFocus={() => scrollToSection('unleash-section')}
+                              className={`w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer ${editableData.templateId === "influencer" ? "accent-yellow-500" : "accent-[#E8001A]"}`}
                             />
                           </div>
                           <div className="space-y-3">
@@ -783,7 +836,7 @@ const DynamicPartnershipPage = () => {
                                   key={f}
                                   onClick={() => {
                                     handleStyleChange("footerFont", f);
-                                    scrollToSection('footer-section');
+                                    scrollToSection('unleash-section');
                                   }}
                                   className={`px-3 py-1.5 rounded-lg text-[9px] font-bold border transition-all ${editableData.details?.styles?.footerFont === f ? "bg-white text-black border-white" : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500"}`}
                                   style={{ fontFamily: f }}
@@ -822,28 +875,28 @@ const DynamicPartnershipPage = () => {
                       />
                     </div>
                     <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Hero Description</label>
+                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">{editableData.templateId === "influencer" ? "Hook / Hero Catchphrase" : "Hero Description"}</label>
                       <input 
                         type="text" 
                         value={editableData.details.heroDescription || ""}
                         onChange={(e) => handleUpdate({ details: { ...editableData.details, heroDescription: e.target.value } })}
                         onFocus={() => scrollToSection('hero-section')}
-                        className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-4 text-white focus:border-[#E8001A] outline-none font-medium italic"
+                        className={`w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-4 text-white ${editableData.templateId === "influencer" ? "focus:border-yellow-500" : "focus:border-[#E8001A]"} outline-none font-medium italic`}
                       />
                     </div>
                     <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">About Me (Bio)</label>
+                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">{editableData.templateId === "influencer" ? "Full Narrative (About)" : "About Me (Bio)"}</label>
                       <textarea 
                         value={editableData.details.bio}
                         onChange={(e) => handleUpdate({ details: { ...editableData.details, bio: e.target.value } })}
                         onFocus={() => scrollToSection('narrative-section')}
-                        className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-6 text-white focus:border-[#E8001A] outline-none h-48 resize-none italic font-light leading-relaxed"
+                        className={`w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-6 text-white ${editableData.templateId === "influencer" ? "focus:border-yellow-500" : "focus:border-[#E8001A]"} outline-none h-48 resize-none italic font-light leading-relaxed`}
                       />
                     </div>
 
                     {editableData.templateId === "influencer" && (
                       <div className="space-y-6 pt-4 border-t border-zinc-800">
-                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-yellow-500 ml-1">Influencer Authority Stats</label>
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-yellow-500 ml-1">04. Digital Echo (Authority Stats)</label>
                         <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-2">
                              <span className="text-[8px] font-bold text-zinc-600 uppercase">Total Followers</span>
@@ -866,7 +919,7 @@ const DynamicPartnershipPage = () => {
                         </div>
 
                         <div className="space-y-4 pt-4 border-t border-zinc-800">
-                          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-yellow-500 ml-1">Call to Action (Bottom)</label>
+                          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-yellow-500 ml-1">06. Unleash (Call to Action)</label>
                           <div className="space-y-3">
                              <span className="text-[8px] font-bold text-zinc-600 uppercase">CTA Title</span>
                              <input 
@@ -891,15 +944,15 @@ const DynamicPartnershipPage = () => {
 
                 {activeTab === "layout" && (
                   <div className="space-y-10">
-                    <div className="p-6 bg-zinc-900/50 rounded-[32px] border border-zinc-800 text-center">
-                        <Sparkles className="mx-auto mb-4 text-[#E8001A]" size={32} />
-                        <h3 className="text-sm font-black uppercase italic tracking-tighter mb-2">Adaptive Architecture</h3>
-                        <p className="text-[10px] text-zinc-500 leading-relaxed uppercase tracking-widest font-medium">Layout adjustments are automatically calculated for peak performance.</p>
+                    <div className={`p-6 bg-zinc-900/50 rounded-[32px] border border-zinc-800 text-center`}>
+                        <Sparkles className={`mx-auto mb-4 ${editableData.templateId === "influencer" ? "text-yellow-500" : "text-[#E8001A]"}`} size={32} />
+                        <h3 className="text-sm font-black uppercase italic tracking-tighter mb-2">{editableData.templateId === "influencer" ? "Creator Architecture" : "Adaptive Architecture"}</h3>
+                        <p className="text-[10px] text-zinc-500 leading-relaxed uppercase tracking-widest font-medium">{editableData.templateId === "influencer" ? "Strategic design calculated for high-impact visual presence." : "Layout adjustments are automatically calculated for peak performance."}</p>
                     </div>
 
                      {/* Global Imagery */}
                     <div className="space-y-4">
-                       <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Identity Visual (Hero)</label>
+                       <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">01. Identity Visual (Hero)</label>
                        <div className="space-y-6 bg-zinc-900/30 p-5 rounded-2xl border border-zinc-800/50">
                          <div className="flex gap-4">
                            <div 
@@ -957,7 +1010,7 @@ const DynamicPartnershipPage = () => {
 
                     {/* Artifact Imagery Scale */}
                     <div className="space-y-4">
-                       <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Artifact Media (Global)</label>
+                       <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">05. Archive Media (Projects)</label>
                        <div className="bg-zinc-900/30 p-5 rounded-2xl border border-zinc-800/50 space-y-3">
                           <div className="flex justify-between items-center">
                             <span className="text-[10px] font-bold text-zinc-400 uppercase">Media Resize</span>
@@ -975,10 +1028,10 @@ const DynamicPartnershipPage = () => {
                     {/* Services */}
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Expertise Units</label>
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">{editableData.templateId === "influencer" ? "03. Solutions (Skills)" : "Expertise Units"}</label>
                         <button 
                           onClick={() => handleUpdate({ details: { ...editableData.details, services: [...(editableData.details.services || []), { title: "New Skill", description: "Description here..." }] } })}
-                          className="text-[9px] font-black uppercase text-[#E8001A] hover:text-white transition-colors"
+                          className={`text-[9px] font-black uppercase ${editableData.templateId === "influencer" ? "text-yellow-500" : "text-[#E8001A]"} hover:text-white transition-colors`}
                         >
                           + Add Unit
                         </button>
@@ -995,7 +1048,7 @@ const DynamicPartnershipPage = () => {
                                   newServices[idx].title = e.target.value;
                                   handleUpdate({ details: { ...editableData.details, services: newServices } });
                                 }}
-                                className="bg-transparent text-sm font-black uppercase italic focus:text-[#E8001A] outline-none w-full"
+                                className={`bg-transparent text-sm font-black uppercase italic ${editableData.templateId === "influencer" ? "focus:text-yellow-500" : "focus:text-[#E8001A]"} outline-none w-full`}
                               />
                               <button 
                                 onClick={() => {
@@ -1024,10 +1077,10 @@ const DynamicPartnershipPage = () => {
                     {/* Projects */}
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Artifacts / Projects</label>
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">{editableData.templateId === "influencer" ? "05. Archive (Gallery)" : "Artifacts / Projects"}</label>
                         <button 
                           onClick={() => handleUpdate({ details: { ...editableData.details, projects: [...(editableData.details.projects || []), { title: "New Project", description: "Brief overview...", image: "" }] } })}
-                          className="text-[9px] font-black uppercase text-[#E8001A] hover:text-white transition-colors"
+                          className={`text-[9px] font-black uppercase ${editableData.templateId === "influencer" ? "text-yellow-500" : "text-[#E8001A]"} hover:text-white transition-colors`}
                         >
                           + Add Artifact
                         </button>
@@ -1068,7 +1121,7 @@ const DynamicPartnershipPage = () => {
                                          newProjects[idx].title = e.target.value;
                                          handleUpdate({ details: { ...editableData.details, projects: newProjects } });
                                        }}
-                                       className="bg-transparent text-sm font-black uppercase italic focus:text-[#E8001A] outline-none w-full"
+                                       className={`bg-transparent text-sm font-black uppercase italic ${editableData.templateId === "influencer" ? "focus:text-yellow-500" : "focus:text-[#E8001A]"} outline-none w-full`}
                                      />
                                      <button 
                                        onClick={() => {
@@ -1106,6 +1159,60 @@ const DynamicPartnershipPage = () => {
                         ))}
                       </div>
                     </div>
+
+                    {/* Socials - Influencer Only */}
+                    {editableData.templateId === "influencer" && (
+                      <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Digital Footprint (Socials)</label>
+                          <button 
+                            onClick={() => handleUpdate({ details: { ...editableData.details, socialLinks: [...(editableData.details.socialLinks || []), { platform: "Instagram", url: "" }] } })}
+                            className="text-[9px] font-black uppercase text-yellow-500 hover:text-white transition-colors"
+                          >
+                            + Add Link
+                          </button>
+                        </div>
+                        <div className="space-y-3">
+                          {(editableData.details.socialLinks || []).map((social, idx) => (
+                            <div key={idx} className="flex gap-2 bg-zinc-900 p-3 rounded-xl border border-zinc-800 items-center">
+                              <select 
+                                value={social.platform}
+                                onChange={(e) => {
+                                  const newSocials = [...editableData.details.socialLinks];
+                                  newSocials[idx].platform = e.target.value;
+                                  handleUpdate({ details: { ...editableData.details, socialLinks: newSocials } });
+                                }}
+                                className="bg-transparent text-[10px] font-bold uppercase outline-none text-zinc-400 w-24"
+                              >
+                                {["Instagram", "Twitter", "LinkedIn", "GitHub", "Facebook", "YouTube", "Website"].map(p => (
+                                  <option key={p} value={p} className="bg-zinc-900">{p}</option>
+                                ))}
+                              </select>
+                              <input 
+                                type="text" 
+                                value={social.url}
+                                onChange={(e) => {
+                                  const newSocials = [...editableData.details.socialLinks];
+                                  newSocials[idx].url = e.target.value;
+                                  handleUpdate({ details: { ...editableData.details, socialLinks: newSocials } });
+                                }}
+                                placeholder="Paste link here..."
+                                className="flex-1 bg-transparent text-[10px] text-white outline-none"
+                              />
+                              <button 
+                                onClick={() => {
+                                  const newSocials = editableData.details.socialLinks.filter((_, i) => i !== idx);
+                                  handleUpdate({ details: { ...editableData.details, socialLinks: newSocials } });
+                                }}
+                                className="text-zinc-600 hover:text-red-500"
+                              >
+                                <X size={14} />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                   </div>
                 )}

@@ -75,6 +75,54 @@ const Section = ({ id, className = "", children }) => (
   </section>
 );
 
+const StudentTicker = () => {
+  const [students, setStudents] = useState([]);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/partners/student-stats`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setStudents(data.recentStudents);
+        }
+      })
+      .catch(err => console.error("Ticker fetch error:", err));
+  }, []);
+
+  if (students.length === 0) return null;
+
+  return (
+    <div className="md:hidden bg-[#0A0A0A] py-3 overflow-hidden border-b border-white/5 relative">
+       <div className="relative flex overflow-hidden">
+          <motion.div
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
+            className="flex gap-4 whitespace-nowrap pl-4"
+          >
+            {[...students, ...students, ...students].map((student, idx) => (
+              <Link 
+                key={`${student.id}-${idx}`}
+                to={`/partnership/${student.param || student.id}`}
+                className="flex items-center gap-3 bg-white/[0.03] backdrop-blur-md border border-white/10 pl-1.5 pr-4 py-1.5 rounded-[20px] shadow-2xl active:scale-95 transition-all hover:bg-white/[0.08] hover:border-[#E8001A]/30"
+              >
+                <div className="w-8 h-8 rounded-full overflow-hidden border border-white/10 shadow-lg flex-shrink-0">
+                  <img src={student.image} alt={student.name} className="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[12px] font-black text-white/90 tracking-tight">{student.name}</span>
+                  <span className="text-[8px] font-bold text-white/30 uppercase tracking-widest italic group-hover:text-[#E8001A]">Portfolio</span>
+                </div>
+              </Link>
+            ))}
+          </motion.div>
+          {/* Fades for smooth entry/exit */}
+          <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#0A0A0A] to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#0A0A0A] to-transparent z-10 pointer-events-none" />
+       </div>
+    </div>
+  );
+};
+
 const MarqueeSection = () => {
   const words = ['API Marketing', 'Performance Marketing', 'ClickUp India Partner', 'Social Media Management', 'Influencer Marketing', 'Brand Strategy'];
   return (
@@ -372,13 +420,14 @@ export const Home = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  /*
   const HERO_SCHEDULE = [
-    {
-      date: new Date("2026-05-10T00:00:00"),
-      desktop: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1778302961/mothers_day_final_ajbf8w.png",
-      mobile: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1778305472/ChatGPT_Image_May_9_2026_11_11_20_AM_c0vp41.png",
-      alt: "Mother's Day Special"
-    },
+    // {
+    //   date: new Date("2026-05-10T00:00:00"),
+    //   desktop: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1778302961/mothers_day_final_ajbf8w.png",
+    //   mobile: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1778305472/ChatGPT_Image_May_9_2026_11_11_20_AM_c0vp41.png",
+    //   alt: "Mother's Day Special"
+    // },
     // {
     //   date: new Date("2024-01-01T00:00:00"), // Default/Current
     //   desktop: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1777882017/ChatGPT_Image_May_4_2026_01_32_02_PM_lavtlu.png",
@@ -387,9 +436,24 @@ export const Home = () => {
     // }
   ];
 
+  // Default hero fallback when no schedule is active
+  const defaultHero = {
+    desktop: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1777882017/ChatGPT_Image_May_4_2026_01_32_02_PM_lavtlu.png",
+    mobile: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1777882016/ChatGPT_Image_May_4_2026_01_31_52_PM_d3gsbh.png",
+    alt: "Social Bureau"
+  };
+
   // Find the current active hero based on date
   const now = new Date();
-  const currentHero = HERO_SCHEDULE.find(h => now >= h.date) || HERO_SCHEDULE[HERO_SCHEDULE.length - 1];
+  const currentHero = HERO_SCHEDULE.find(h => now >= h.date) || defaultHero;
+  */
+
+  // Static Hero for Social Bureau
+  const currentHero = {
+    desktop: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1777882017/ChatGPT_Image_May_4_2026_01_32_02_PM_lavtlu.png",
+    mobile: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1777882016/ChatGPT_Image_May_4_2026_01_31_52_PM_d3gsbh.png",
+    alt: "Social Bureau"
+  };
 
   return (
     <div className="bg-white text-[#1D1D1F] selection:bg-[#E8001A] selection:text-white font-sans antialiased">
@@ -401,16 +465,16 @@ export const Home = () => {
         canonicalUrl="https://www.socialbureau.in"
       />
       <SchemaMarkup data={homepageSchemas} />
+      <StudentTicker />
 
+      {/* 
       <section className="w-full px-0">
         <a href='/' target="_blank" rel="noopener noreferrer">
-          {/* Desktop Image */}
           <img
             src={currentHero.desktop}
             alt={currentHero.alt}
             className="hidden sm:block w-full h-full object-cover"
           />
-          {/* Mobile Image */}
           <img
             src={currentHero.mobile || currentHero.desktop}
             alt={currentHero.alt}
@@ -418,6 +482,7 @@ export const Home = () => {
           />
         </a>
       </section>
+      */}
       {/* <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
   <video
   className="block w-full h-auto object-cover"

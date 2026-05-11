@@ -748,6 +748,13 @@ function LatestWebsite() {
       logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769160135/gotri1_heqmvf.png",
       link: "https://gokulamhotels.com/gokulamgrandtrivandrum",
     },
+    {
+      id: 9,
+      name: "Beyond Eco-Living",
+      logo: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/logo%20(2).png",
+      link: "https://beyondecoliving.com/",
+      logoClass: "max-h-16 sm:max-h-20"
+    },
   ];
 
   return (
@@ -786,10 +793,10 @@ function LatestWebsite() {
               <img
                 src={item.logo}
                 alt={item.name}
-                className="
-                max-h-24 sm:max-h-30
+                className={`
+                ${item.logoClass || 'max-h-24 sm:max-h-30'}
                 w-auto object-contain
-              "
+              `}
               />
             </a>
           ))}

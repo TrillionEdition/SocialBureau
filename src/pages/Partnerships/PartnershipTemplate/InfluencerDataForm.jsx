@@ -51,9 +51,20 @@ const InfluencerDataForm = () => {
       stats: {
         followers: "100K+",
         engagement: "5.2%"
+      },
+      styles: {
+        archiveColumns: "3",
+        archiveAspect: "3/4",
+        archiveHover: "zoom",
+        archiveStyle: "clean",
+        archiveRadius: "40",
+        archiveOverlay: "0.9"
       }
     }
   });
+
+  const targetId = searchParams.get("id");
+  const [fetchingData, setFetchingData] = useState(false);
 
   useEffect(() => {
     const userStr = localStorage.getItem("user");
@@ -62,8 +73,50 @@ const InfluencerDataForm = () => {
       return;
     }
     const user = JSON.parse(userStr);
-    setFormData(prev => ({ ...prev, email: user.email }));
-  }, [navigate]);
+    
+    // If we have an ID, fetch existing data
+    if (targetId) {
+      const fetchExistingData = async () => {
+        setFetchingData(true);
+        try {
+          const userStr = localStorage.getItem("user");
+          const user = JSON.parse(userStr || "{}");
+          const isAdmin = user.role === "admin";
+          
+          // Fix: Use correct endpoint based on role. Non-admins should use my-partnership
+          const endpoint = isAdmin 
+            ? `${BASE_URL}/partners/admin/${targetId}` 
+            : `${BASE_URL}/partners/my-partnership`;
+
+          const response = await fetch(endpoint, {
+            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
+          });
+          const data = await response.json();
+          console.log("🔍 INFLUENCER DATA FETCHED:", data);
+          if (data.success && data.data) {
+            console.log("✅ SUCCESS: Data exists for", data.data.name);
+            setFormData(prev => ({
+              ...prev,
+              ...data.data,
+              details: { ...prev.details, ...(data.data.details || {}) }
+            }));
+          } else {
+            console.log("❌ ERROR: Data fetch was unsuccessful", data.message);
+          }
+        } catch (err) {
+          console.error("Fetch error:", err);
+          toast.error("Failed to load portfolio data");
+        } finally {
+          setFetchingData(false);
+        }
+      };
+      fetchExistingData();
+    } else {
+      const userStr = localStorage.getItem("user");
+      const user = JSON.parse(userStr || "{}");
+      setFormData(prev => ({ ...prev, email: user.email || "" }));
+    }
+  }, [navigate, targetId]);
 
   const [checkingSlug, setCheckingSlug] = useState(false);
   const [slugAvailable, setSlugAvailable] = useState(null);
@@ -170,22 +223,32 @@ const InfluencerDataForm = () => {
       return;
     }
 
+    const userStr = localStorage.getItem("user");
+    const user = JSON.parse(userStr || "{}");
+    const isAdmin = user.role === "admin";
+    const isEdit = !!targetId;
+    
+    // Fix: Only use the specific ID route if user is admin. 
+    // Regular users always use /my-partnership for both create and update.
+    const endpoint = (isAdmin && isEdit) ? `${BASE_URL}/partners/${targetId}` : `${BASE_URL}/partners/my-partnership`;
+    const method = (isAdmin && isEdit) ? "PUT" : "POST";
+
     setLoading(true);
     try {
-      const response = await fetch(`${BASE_URL}/partners/my-partnership`, {
-        method: "POST",
+      const response = await fetch(endpoint, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${localStorage.getItem("token")}`
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, category: "influencer" }),
       });
       const data = await response.json();
       if (data.success) {
-        toast.success("Portfolio created successfully!");
+        toast.success(isEdit ? "Portfolio updated successfully!" : "Portfolio created successfully!");
         navigate(`/partnership/${formData.param}`);
       } else {
-        toast.error(data.message || "Failed to create portfolio");
+        toast.error(data.message || "Failed to save portfolio");
       }
     } catch (err) {
       toast.error("Server error");
