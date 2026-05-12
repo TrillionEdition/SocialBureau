@@ -24,7 +24,6 @@ import MediaDashboard from "./pages/MediaDashboard";
 import PartnershipChatbot from "./components/PartnershipChatbot";
 import AjnoraDashboard from "./pages/AjnoraDashboard";
 import AjinorahForm from "./components/ClientFormaji";
-import SocialBureauIntro from "./components/Light";
 import CDashboard from "./components/ClickupDash/CDashboard";
 
 
@@ -287,7 +286,6 @@ function App() {
             />
             <Route path="/contact" element={<Contact />} />
             <Route path="/events" element={<Events />} />
-            <Route path="/social-bureau" element={<SocialBureauIntro />} />
             <Route
               path="/events/manage"
               element={

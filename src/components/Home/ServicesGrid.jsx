@@ -98,7 +98,7 @@ const CombinedServicesGrid = () => {
       title: "AdTech Marketing",
       subtitle: "Engineered for rankings",
       image:
-        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772875813/brian_okelley-removebg-preview-removebg-preview_iquzso.png",
+        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/brian_okelley-removebg-preview-removebg-preview_iquzso.png",
       bg: "bg-gradient-to-br from-[#450a0a] via-[#7f1d1d] to-[#450a0a]",
       text: "text-white",
       link: "/adTech-marketing-agency-in-kochi",
@@ -113,7 +113,7 @@ const CombinedServicesGrid = () => {
       title: "Content Marketing",
       subtitle: "Built for scalable growth",
       image:
-        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772875699/Gemini_Generated_Image_9k6s229k6s229k6s__1_-removebg-preview_kjqfmu.png",
+        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Gemini_Generated_Image_9k6s229k6s229k6s__1_-removebg-preview_kjqfmu.png",
       bg: "bg-gradient-to-br from-[#09090b] via-[#18181b] to-[#09090b]",
       text: "text-white",
       link: "/content-marketing-agency-in-kochi",
@@ -127,7 +127,7 @@ const CombinedServicesGrid = () => {
       subtitle: "Precision over assumptions",
       // NOTE: Consider uploading this image to Cloudinary for better performance
       image:
-        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772876064/Gemini_Generated_Image_gg9jiygg9jiygg9j-removebg-preview_mla06t.png",
+        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Gemini_Generated_Image_gg9jiygg9jiygg9j-removebg-preview_mla06t.png",
       bg: "bg-gradient-to-br from-[#0c0a09] via-[#1c1917] to-[#0c0a09]",
       text: "text-white",
       link: "/niche-marketing-agency-in-kochi",
@@ -141,7 +141,7 @@ const CombinedServicesGrid = () => {
       title: "Performance Marketing",
       subtitle: "Marketing, fully automated",
       image:
-        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772874479/philip-kotler-1024x684-removebg-preview_xugxed.png",
+        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/philip-kotler-1024x684-removebg-preview_xugxed.png",
       bg: "bg-gradient-to-br from-[#450a0a] via-[#7f1d1d] to-[#450a0a]",
       text: "text-white",
       link: "/performance-marketing-agency-in-kochi",
@@ -155,7 +155,7 @@ const CombinedServicesGrid = () => {
       title: "Our Team",
       subtitle: "People behind the product",
       image:
-        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772021150/image-gen_33__converted_jzbrvu.webp",
+        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/image-gen_33__converted_jzbrvu.webp",
       bg: "bg-[#000000]",
       text: "text-white",
       link: "/our-team",
@@ -164,9 +164,9 @@ const CombinedServicesGrid = () => {
       title: "Partnerships",
       subtitle: "Grow stronger, together",
       images: [
-        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159675/dp3_jscnpp.jpg",
+        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/dp3_jscnpp.jpg",
         "/assets/sivaprasad/Siva Prasad.webp",
-        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1771997817/2_1_1_wzl8fc.jpg",
+        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/2_1_1_wzl8fc.jpg",
       ],
       bg: "bg-[#ffffffff]",
       text: "text-[#1D1D1F]",

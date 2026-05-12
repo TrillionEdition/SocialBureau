@@ -124,7 +124,7 @@ export default function Hero() {
                   className="h-full w-full"
                 >
                   <img
-                    src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1773048754/Adobe_Express_-_file_1_s8y5h5.webp"
+                    src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Adobe_Express_-_file_1_s8y5h5.webp"
                     alt="API Driven Marketing"
                     className="h-full w-full object-cover object-top lg:object-[center_20%]"
                     referrerPolicy="no-referrer"
@@ -146,7 +146,7 @@ export default function Hero() {
                     {/* Mobile Image */}
                     <div className="flex justify-center lg:hidden mb-6">
                       <motion.img
-                        src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1764674437/Untitled_design_23_owrydd.png"
+                        src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Untitled_design_23_owrydd.png"
                         alt="decorative"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -206,7 +206,7 @@ export default function Hero() {
 
             {/* Decorative Image - Bottom Right */}
             <motion.img
-              src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1764674437/Untitled_design_23_owrydd.png"
+              src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Untitled_design_23_owrydd.png"
               alt="decorative"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}

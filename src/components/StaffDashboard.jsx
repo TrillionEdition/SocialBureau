@@ -672,7 +672,7 @@ export function StaffDashboard() {
 
                   </div>
                   <div className="flex items-center mt-2">
-                    <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1762926257/b0833156962d005d1ccbee648cba509b_fl58sy.jpg" alt="user_icon" className="h-8 w-8 mr-2 md:mr-5" loading="lazy" />
+                    <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/b0833156962d005d1ccbee648cba509b_fl58sy.jpg" alt="user_icon" className="h-8 w-8 mr-2 md:mr-5" loading="lazy" />
                     <div>
                       <div className="font-medium text-gray-800 text-xs md:text-sm">{review.name}</div>
                       {review.company && (

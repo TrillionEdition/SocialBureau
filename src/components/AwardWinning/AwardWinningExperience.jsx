@@ -16,7 +16,7 @@ const AwardWinningExperience = () => {
       {/* Sticky Container */}
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         {/* Global Noise/Vignette for "Black Screen Effects" */}
-        <div className="absolute inset-0 z-[60] pointer-events-none opacity-[0.05] bg-[url('https://res.cloudinary.com/dtwcgfmar/image/upload/v1710515152/noise_p0xk2w.png')] bg-repeat" />
+        <div className="absolute inset-0 z-[60] pointer-events-none opacity-[0.05] bg-repeat" />
         <div className="absolute inset-0 z-[60] pointer-events-none shadow-[inset_0_0_150px_rgba(0,0,0,1)]" />
 
         {/* Components receiving scroll progress */}

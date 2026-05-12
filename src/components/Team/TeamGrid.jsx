@@ -61,31 +61,31 @@ const TeamGrid = ({ teamData, isLoading }) => {
     {
       name: "Rachel Susan",
       role: "HR",
-      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1770037177/images/af8xbvarrsehbzcxjylq.jpg",
+      image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/af8xbvarrsehbzcxjylq.jpg",
       socials: { linkedin: "#", twitter: "#", instagram: "#" }
     },
     {
       name: "Hasna",
       role: "Asst Web Developer",
-      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1764580735/images/p6piwfsx26mqv3vd6eoz.png",
+      image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/p6piwfsx26mqv3vd6eoz.png",
       socials: { linkedin: "#", twitter: "#", instagram: "#" }
     },
     {
       name: "Hajira K",
       role: "Administration & CMO",
-      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1768816875/SB_ID_Card_Hajira_lrmfvk.png",
+      image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/SB_ID_Card_Hajira_lrmfvk.png",
       socials: { linkedin: "#", twitter: "#", instagram: "#" }
     },
     {
       name: "Elizebath",
       role: "Senior Web Developer",
-      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1762493913/team5_zlamx7.webp",
+      image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/team5_zlamx7.webp",
       socials: { linkedin: "#", twitter: "#", instagram: "#" }
     },
     {
       name: "Reshma Vijayan",
       role: "Web Developer",
-      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1770036743/images/w4eogtldwfqtsoxl94tl.jpg",
+      image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/w4eogtldwfqtsoxl94tl.jpg",
       socials: { linkedin: "#", twitter: "#", instagram: "#" }
     }
   ];

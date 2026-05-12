@@ -210,7 +210,7 @@ const GallerySection = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
       <FadeUp className="lg:col-span-2 lg:row-span-2 rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl relative">
         <a href="https://www.instagram.com/socialbureau.in/">
-          <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776428582/1000094772.jpg_cpm1zi.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Strategy" />
+          <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/1000094772.jpg_cpm1zi.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Strategy" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-10">
             <span className="text-white font-black text-lg sm:text-2xl tracking-tighter">SunTips</span>
           </div>
@@ -218,7 +218,7 @@ const GallerySection = () => (
       </FadeUp>
       <FadeUp delay={0.1} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-square relative">
         <a href="https://www.instagram.com/socialbureau.in/">
-          <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776428582/1000094774.jpg_tvc7le.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Social" />
+          <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/1000094774.jpg_tvc7le.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Social" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
             <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
           </div>
@@ -226,7 +226,7 @@ const GallerySection = () => (
       </FadeUp>
       <FadeUp delay={0.2} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-square relative">
         <a href="https://www.instagram.com/socialbureau.in/">
-          <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776057987/sb_dd4gwn.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Performance" />
+          <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/sb_dd4gwn.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Performance" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
             <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
           </div>
@@ -234,7 +234,7 @@ const GallerySection = () => (
       </FadeUp>
       <FadeUp delay={0.3} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-video lg:aspect-auto relative min-h-[180px] sm:min-h-[240px]">
         <a href="https://www.instagram.com/socialbureau.in/">
-          <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776428582/1000094773.jpg_lbz6ws.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Brand" />
+          <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/1000094773.jpg_lbz6ws.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Brand" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
             <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
           </div>
@@ -242,7 +242,7 @@ const GallerySection = () => (
       </FadeUp>
       <FadeUp delay={0.4} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-video lg:aspect-auto relative min-h-[180px] sm:min-h-[240px]">
         <a href="https://www.instagram.com/socialbureau.in/">
-          <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776428581/1000094771.jpg_hom8pa.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Collaboration" />
+          <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/1000094771.jpg_hom8pa.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Collaboration" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
             <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
           </div>
@@ -250,7 +250,7 @@ const GallerySection = () => (
       </FadeUp>
       <FadeUp delay={0.4} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-video lg:aspect-auto relative min-h-[180px] sm:min-h-[240px]">
         <a href="https://www.instagram.com/socialbureau.in/">
-          <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776428581/1000094775.jpg_dxbmyx.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Collaboration" />
+          <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/1000094775.jpg_dxbmyx.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Collaboration" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
             <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
           </div>
@@ -266,7 +266,7 @@ const FounderSection = () => (
       <FadeUp className="relative max-w-[480px] mx-auto lg:ml-0 w-full">
         <div className="rounded-[28px] sm:rounded-[44px] overflow-hidden border border-black/5 bg-gradient-to-br from-[#FFF0F2] via-[#FFE5EA] to-[#F5E5FF] aspect-[0.82] relative group shadow-2xl">
           <img
-            src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1773048754/Adobe_Express_-_file_1_s8y5h5.webp"
+            src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Adobe_Express_-_file_1_s8y5h5.webp"
             alt="Founder Sham SK"
             className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-110"
           />
@@ -450,8 +450,8 @@ export const Home = () => {
 
   // Static Hero for Social Bureau
   const currentHero = {
-    desktop: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1777882017/ChatGPT_Image_May_4_2026_01_32_02_PM_lavtlu.png",
-    mobile: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1777882016/ChatGPT_Image_May_4_2026_01_31_52_PM_d3gsbh.png",
+    desktop: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT_Image_May_4_2026_01_32_02_PM_lavtlu.png",
+    mobile: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT_Image_May_4_2026_01_31_52_PM_d3gsbh.png",
     alt: "Social Bureau"
   };
 
@@ -574,7 +574,7 @@ export const Home = () => {
             <FadeUp delay={0.4}>
               <div className="rounded-[28px] sm:rounded-[36px] overflow-hidden border border-black/5 bg-[#F0F0F2] aspect-[0.82] relative group shadow-2xl">
                 <img
-                  src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776074252/DSC01171_hsyqoo.jpg"
+                  src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/DSC01171_hsyqoo.jpg"
                   alt="Sham SK"
                   className="w-full h-full object-cover duration-1000 group-hover:scale-110"
                 />
@@ -591,7 +591,7 @@ export const Home = () => {
             <FadeUp delay={0.4}>
               <div className="rounded-[28px] sm:rounded-[36px] overflow-hidden border border-black/5 bg-[#F0F0F2] aspect-[0.82] relative group shadow-2xl">
                 <img
-                  src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776074252/DSC01171_hsyqoo.jpg"
+                  src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/DSC01171_hsyqoo.jpg"
                   alt="Sham SK"
                   className="w-full h-full duration-1000 group-hover:scale-110"
                 />
@@ -701,7 +701,7 @@ export const Home = () => {
               },
               {
                 name: 'WhatsApp Business',
-                img: 'https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776655154/wb_jaisd2.jpg',
+                img: 'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/wb_jaisd2.jpg',
                 href: 'https://business.whatsapp.com/',
                 status: 'Certified Partner',
                 imgClass: 'w-16 sm:w-17'
