@@ -63,7 +63,7 @@ const PartnerDashboardHub = () => {
   ];
 
   return (
-    <div className="h-screen bg-[#050505] text-white selection:bg-red-500 font-sans overflow-hidden flex flex-col">
+    <div className="min-h-screen lg:h-screen bg-[#050505] text-white selection:bg-red-500 font-sans lg:overflow-hidden flex flex-col">
       {/* Background Ambience */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_70%_20%,_rgba(232,0,26,0.05),transparent_50%)]" />
@@ -80,8 +80,8 @@ const PartnerDashboardHub = () => {
         </div>
       </nav>
 
-      <main className="relative z-10 max-w-7xl mx-auto px-6 flex-1 flex flex-col justify-center w-full overflow-hidden">
-        <header className="mb-8 md:mb-12 space-y-2 shrink-0">
+      <main className="relative z-10 max-w-7xl mx-auto px-6 py-12 lg:py-0 flex-1 flex flex-col justify-center w-full">
+        <header className="mb-10 md:mb-16 space-y-3 shrink-0">
            <motion.div
              initial={{ opacity: 0, x: -20 }}
              animate={{ opacity: 1, x: 0 }}
@@ -94,14 +94,14 @@ const PartnerDashboardHub = () => {
              initial={{ opacity: 0, y: 20 }}
              animate={{ opacity: 1, y: 0 }}
              transition={{ delay: 0.1 }}
-             className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] uppercase italic"
+             className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] pt-4 uppercase italic"
            >
              Partner<br />
              <span className="bg-gradient-to-tr from-white via-white/80 to-white/40 bg-clip-text text-transparent">Dashboards.</span>
            </motion.h1>
         </header>
 
-        <div className="grid md:grid-cols-2 gap-4 md:gap-8 flex-1 max-h-[55vh]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:max-h-[60vh] mb-12">
           {cards.map((card, idx) => (
             <motion.div
               key={idx}

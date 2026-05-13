@@ -169,7 +169,7 @@ export const Clickup = () => {
         <a href="https://clickup.com" target="_blank" rel="noopener noreferrer">
         <img
             className="h-10"
-            src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776063984/Subtitle_1_ux5e4d.png"
+            src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Subtitle_1_ux5e4d.png"
             alt="Partner Logo"
             style={{ display: 'block', margin: '0 auto 1.5rem' }}
         />
@@ -401,13 +401,13 @@ export const Clickup = () => {
 ><a href="https://socialbureau.in" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#666', textDecoration: 'none' }}>
   <img 
     className="h-3"
-    src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776064892/Subtitle_2_n7fktm.png"
+    src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Subtitle_2_n7fktm.png"
     alt="SocialBureau"
   /></a>
   — A Venture of <a href="https://trillionedition.com" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#666', textDecoration: 'none' }}>
   <img
     className="h-5"
-    src="https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776064892/Subtitle_3_tzbpmq.png"
+    src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Subtitle_3_tzbpmq.png"
     alt="TrillionEdition"
   />
   </a>

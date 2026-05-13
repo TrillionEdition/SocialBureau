@@ -2,10 +2,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const values = [
-  { number: "01", title: "Excellence", text: "Uncompromising commitment to precision and craft in everything we do.", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772887075/modern-business-building-scenery-touching-sky_i84t8j.webp" },
-  { number: "02", title: "Integrity", text: "Principled leadership that values transparency above all else.", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772887073/0e0c8050-92a9-4f63-b732-8c52cb3dc07c_caspjt.webp" },
-  { number: "03", title: "Innovation", text: "Architecting solutions that define the industries of tomorrow.", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772887074/3923_d8k6kn.webp" },
-  { number: "04", title: "Artistry", text: "Blending data-driven strategy with creative visual mastery.", img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772887074/v655-sasi-21-bwflower_jj47pv.webp" },
+  { number: "01", title: "Excellence", text: "Uncompromising commitment to precision and craft in everything we do.", img: "https://i.pinimg.com/736x/88/8b/1e/888b1e6daf32e195211fb9ba0ffb1d4a.jpg" },
+  { number: "02", title: "Integrity", text: "Principled leadership that values transparency above all else.", img: "https://i.pinimg.com/736x/fe/88/eb/fe88eb2f42a767606d2a43afd15c673f.jpg" },
+  { number: "03", title: "Innovation", text: "Architecting solutions that define the industries of tomorrow.", img: "https://i.pinimg.com/736x/01/7f/8b/017f8bf140ea81a96e4ac8c1eb86ceff.jpg" },
+  { number: "04", title: "Artistry", text: "Blending data-driven strategy with creative visual mastery.", img: "https://i.pinimg.com/736x/7c/42/f0/7c42f05a8ce4a51442b360c9c428fafa.jpg" },
 ];
 
 export default function CareersContent() {

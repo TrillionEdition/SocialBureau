@@ -196,7 +196,11 @@ const PartnerDashboard = () => {
                         {copiedId === item.param ? "Link" : "Link"}
                       </button>
                       <button 
-                        onClick={() => navigate(`/partners/create-portfolio?id=${item._id}`)}
+                        onClick={() => {
+                          const isInfluencer = item.category === "influencer" || item.templateId === "influencer";
+                          const editRoute = isInfluencer ? "/partners/create-influencer" : "/partners/create-portfolio";
+                          navigate(`${editRoute}?id=${item._id}`);
+                        }}
                         className="flex items-center justify-center gap-2 py-4 bg-white/5 text-white/40 rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] hover:bg-[#E8001A] hover:text-white transition-all italic border border-white/5"
                       >
                         <Edit3 size={14} /> Edit Portfolio

@@ -216,7 +216,9 @@ const PartnershipDataForm = () => {
   const addArrayItem = (field, item) => handleDetailChange(field, [...formData.details[field], item]);
   const removeArrayItem = (field, index) => handleDetailChange(field, formData.details[field].filter((_, i) => i !== index));
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("🚀 SAVE BUTTON CLICKED! Current image URL:", formData.image);
     setLoading(true);
     try {
       const user = JSON.parse(localStorage.getItem("user") || "{}");

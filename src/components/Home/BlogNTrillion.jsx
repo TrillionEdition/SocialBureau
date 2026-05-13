@@ -7,7 +7,7 @@ const StaticServicesGrid = () => {
         {
             title: "Blog",
             subtitle: "Insights worth reading",
-            image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772003206/Untitled-design-43.png_kr4ij5.webp",
+            image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Untitled-design-43.png_kr4ij5.webp",
             bg: "bg-white",
             text: "text-[#1D1D1F]",
             link: "/blog",
@@ -17,7 +17,7 @@ const StaticServicesGrid = () => {
         {
             title: "TrillionEdition",
             subtitle: "The next level awaits",
-            image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772003207/Untitled-design-44.png_uc4y4m.webp", // replace with your image
+            image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Untitled-design-44.png_uc4y4m.webp", // replace with your image
             bg: "bg-[#000000]",
             text: "text-white",
             link: "https://www.trillionedition.com/",

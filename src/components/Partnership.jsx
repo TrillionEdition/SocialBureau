@@ -22,7 +22,7 @@ const Partnership = () => {
       category: "Photography",
       status: "Completed",
       image:
-        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769774256/IMG-20251226-WA0002_ch9qzi.jpg",
+        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/IMG-20251226-WA0002_ch9qzi.jpg",
       link: "/partnership/Ranjit",
       subtitle: "Capturing moments through lenses",
       day: "COPYWRITER",
@@ -35,7 +35,7 @@ const Partnership = () => {
       category: "Marketing",
       status: "Completed",
       image:
-        "https://res.cloudinary.com/dtwcgfmar/image/upload/v1774880077/copy_of_image-gen_18_qt9ikl_8b856d.webp",
+        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/copy_of_image-gen_18_qt9ikl_8b856d.webp",
       link: "https://www.jigneshrana.com",
       subtitle: "Digital Entrepreneur · Marketing Expert · Media Architect",
       day: "ENTREPRENEUR",

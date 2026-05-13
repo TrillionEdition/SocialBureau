@@ -51,9 +51,20 @@ const InfluencerDataForm = () => {
       stats: {
         followers: "100K+",
         engagement: "5.2%"
+      },
+      styles: {
+        archiveColumns: "3",
+        archiveAspect: "3/4",
+        archiveHover: "zoom",
+        archiveStyle: "clean",
+        archiveRadius: "40",
+        archiveOverlay: "0.9"
       }
     }
   });
+
+  const targetId = searchParams.get("id");
+  const [fetchingData, setFetchingData] = useState(false);
 
   useEffect(() => {
     const userStr = localStorage.getItem("user");
@@ -62,8 +73,50 @@ const InfluencerDataForm = () => {
       return;
     }
     const user = JSON.parse(userStr);
-    setFormData(prev => ({ ...prev, email: user.email }));
-  }, [navigate]);
+    
+    // If we have an ID, fetch existing data
+    if (targetId) {
+      const fetchExistingData = async () => {
+        setFetchingData(true);
+        try {
+          const userStr = localStorage.getItem("user");
+          const user = JSON.parse(userStr || "{}");
+          const isAdmin = user.role === "admin";
+          
+          // Fix: Use correct endpoint based on role. Non-admins should use my-partnership
+          const endpoint = isAdmin 
+            ? `${BASE_URL}/partners/admin/${targetId}` 
+            : `${BASE_URL}/partners/my-partnership`;
+
+          const response = await fetch(endpoint, {
+            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
+          });
+          const data = await response.json();
+          console.log("🔍 INFLUENCER DATA FETCHED:", data);
+          if (data.success && data.data) {
+            console.log("✅ SUCCESS: Data exists for", data.data.name);
+            setFormData(prev => ({
+              ...prev,
+              ...data.data,
+              details: { ...prev.details, ...(data.data.details || {}) }
+            }));
+          } else {
+            console.log("❌ ERROR: Data fetch was unsuccessful", data.message);
+          }
+        } catch (err) {
+          console.error("Fetch error:", err);
+          toast.error("Failed to load portfolio data");
+        } finally {
+          setFetchingData(false);
+        }
+      };
+      fetchExistingData();
+    } else {
+      const userStr = localStorage.getItem("user");
+      const user = JSON.parse(userStr || "{}");
+      setFormData(prev => ({ ...prev, email: user.email || "" }));
+    }
+  }, [navigate, targetId]);
 
   const [checkingSlug, setCheckingSlug] = useState(false);
   const [slugAvailable, setSlugAvailable] = useState(null);
@@ -170,22 +223,32 @@ const InfluencerDataForm = () => {
       return;
     }
 
+    const userStr = localStorage.getItem("user");
+    const user = JSON.parse(userStr || "{}");
+    const isAdmin = user.role === "admin";
+    const isEdit = !!targetId;
+    
+    // Fix: Only use the specific ID route if user is admin. 
+    // Regular users always use /my-partnership for both create and update.
+    const endpoint = (isAdmin && isEdit) ? `${BASE_URL}/partners/${targetId}` : `${BASE_URL}/partners/my-partnership`;
+    const method = (isAdmin && isEdit) ? "PUT" : "POST";
+
     setLoading(true);
     try {
-      const response = await fetch(`${BASE_URL}/partners/my-partnership`, {
-        method: "POST",
+      const response = await fetch(endpoint, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${localStorage.getItem("token")}`
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, category: "influencer" }),
       });
       const data = await response.json();
       if (data.success) {
-        toast.success("Portfolio created successfully!");
+        toast.success(isEdit ? "Portfolio updated successfully!" : "Portfolio created successfully!");
         navigate(`/partnership/${formData.param}`);
       } else {
-        toast.error(data.message || "Failed to create portfolio");
+        toast.error(data.message || "Failed to save portfolio");
       }
     } catch (err) {
       toast.error("Server error");
@@ -244,15 +307,15 @@ const InfluencerDataForm = () => {
                 <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Portfolio URL Identifier</label>
                   <div className="relative">
-                    <span className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-600 font-bold italic">socialbureau.com/partnership/</span>
+                    <span className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-500 font-bold italic pointer-events-none select-none z-10">socialbureau.com/partnership/</span>
                     <input 
                       type="text" 
                       value={formData.param}
                       onChange={(e) => handleInputChange("param", e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))}
                       placeholder="lara-official"
-                      className={`w-full bg-zinc-900 border ${paramError ? 'border-red-500/50' : slugAvailable ? 'border-green-500/50' : 'border-zinc-800'} rounded-2xl pl-[230px] pr-12 py-5 text-white focus:border-yellow-500 outline-none font-bold italic transition-all`}
+                      className={`w-full bg-zinc-900 border ${paramError ? 'border-red-500/50' : slugAvailable ? 'border-green-500/50' : 'border-zinc-800'} rounded-2xl pl-[260px] pr-12 py-5 text-white focus:border-yellow-500 outline-none font-bold italic transition-all`}
                     />
-                    <div className="absolute right-6 top-1/2 -translate-y-1/2 flex items-center">
+                    <div className="absolute right-6 top-1/2 -translate-y-1/2 flex items-center z-10">
                       {checkingSlug && <div className="w-4 h-4 border-2 border-yellow-500 border-t-transparent rounded-full animate-spin" />}
                       {!checkingSlug && slugAvailable && <Check size={16} className="text-green-500" />}
                       {!checkingSlug && slugAvailable === false && <X size={16} className="text-red-500" />}
@@ -352,7 +415,7 @@ const InfluencerDataForm = () => {
                       value={link.url}
                       onChange={(e) => handleArrayChange("socialLinks", i, "url", e.target.value)}
                       placeholder="Profile URL"
-                      className="w-full bg-transparent text-xs font-medium text-zinc-400 outline-none"
+                      className="w-full bg-transparent text-sm font-medium text-white outline-none placeholder:text-zinc-700"
                     />
                     <input 
                       type="text"
@@ -502,17 +565,33 @@ const InfluencerDataForm = () => {
           {/* Testimonials & Services */}
           <section className="grid lg:grid-cols-2 gap-16">
             <div className="space-y-12">
-               <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-1 bg-yellow-500" />
-                  <span className="text-yellow-500 font-black uppercase tracking-widest text-sm italic">05. Authority</span>
+               <div className="flex justify-between items-end">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-1 bg-yellow-500" />
+                    <span className="text-yellow-500 font-black uppercase tracking-widest text-sm italic">05. Authority</span>
+                  </div>
+                  <h2 className="text-4xl font-black uppercase">Services</h2>
                 </div>
-                <h2 className="text-4xl font-black uppercase">Services</h2>
+                <button 
+                  type="button"
+                  onClick={() => addArrayItem("services", { title: "New Service", description: "" })}
+                  className="px-4 py-2 bg-zinc-900 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-zinc-800 transition-all flex items-center gap-2"
+                >
+                  <Plus size={12} /> Add Service
+                </button>
               </div>
-              <div className="space-y-6">
+              <div className="space-y-8">
                 {formData.details.services.map((service, i) => (
-                  <div key={i} className="flex gap-6 items-start">
-                    <div className="w-12 h-12 bg-zinc-900 rounded-2xl flex items-center justify-center text-yellow-500 shrink-0 italic font-black">S{i+1}</div>
+                  <div key={i} className="flex gap-6 items-start relative group">
+                    <button 
+                      type="button"
+                      onClick={() => removeArrayItem("services", i)}
+                      className="absolute -top-2 -right-2 text-zinc-700 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                    <div className="w-12 h-12 bg-zinc-900 rounded-2xl flex items-center justify-center text-yellow-500 shrink-0 italic font-black group-hover:bg-yellow-500 group-hover:text-black transition-all">S{i+1}</div>
                     <div className="flex-1 space-y-2">
                       <input 
                         type="text" 
@@ -534,16 +613,32 @@ const InfluencerDataForm = () => {
             </div>
 
             <div className="space-y-12">
-               <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-1 bg-yellow-500" />
-                  <span className="text-yellow-500 font-black uppercase tracking-widest text-sm italic">06. Proof</span>
+               <div className="flex justify-between items-end">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-1 bg-yellow-500" />
+                    <span className="text-yellow-500 font-black uppercase tracking-widest text-sm italic">06. Proof</span>
+                  </div>
+                  <h2 className="text-4xl font-black uppercase">Feedback</h2>
                 </div>
-                <h2 className="text-4xl font-black uppercase">Feedback</h2>
+                <button 
+                  type="button"
+                  onClick={() => addArrayItem("testimonials", { quote: "", author: "" })}
+                  className="px-4 py-2 bg-zinc-900 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-zinc-800 transition-all flex items-center gap-2"
+                >
+                  <Plus size={12} /> Add Proof
+                </button>
               </div>
               <div className="space-y-6">
                 {formData.details.testimonials.map((t, i) => (
-                  <div key={i} className="bg-zinc-900 p-8 rounded-[32px] space-y-4">
+                  <div key={i} className="bg-zinc-900 p-8 rounded-[32px] space-y-4 relative group border border-transparent hover:border-yellow-500/10 transition-all">
+                    <button 
+                      type="button"
+                      onClick={() => removeArrayItem("testimonials", i)}
+                      className="absolute top-4 right-4 text-zinc-700 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <Trash2 size={14} />
+                    </button>
                     <textarea 
                       value={t.quote} 
                       onChange={(e) => handleArrayChange("testimonials", i, "quote", e.target.value)}

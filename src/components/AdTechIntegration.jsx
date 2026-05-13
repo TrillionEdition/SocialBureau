@@ -353,11 +353,8 @@ Connect platforms, track ads, and boost ROI with data-driven solutions"
                         transition={{ duration: 1, ease: "easeOut" }}
                         className="relative w-full rounded-2xl overflow-hidden shadow-2xl"
                     >
-                        <video
-                            src="https://res.cloudinary.com/dtwcgfmar/video/upload/v1771998115/freepik_create-a-video_kling_1080p_1-1_24fps_94469_1_twifv9.webm"
-                            autoPlay
-                            muted
-                            loop
+                        <img
+                            src="https://i.pinimg.com/1200x/c4/2f/6b/c42f6b6eca84c555a2a20eda1e8cab52.jpg"
                             title="AdTech Marketing Agency in Kochi, Kerala"
                             alt="AdTech Marketing Agency in Kochi, Kerala"
                             className="w-full h-full object-cover"
@@ -417,7 +414,7 @@ Connect platforms, track ads, and boost ROI with data-driven solutions"
                             transition={{ duration: 0.7, delay: 0.4 }}
                         >
                             <img
-                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772003206/Untitled-design-42.png_h65wfd.webp"
+                                src="https://i.pinimg.com/736x/7e/d6/a5/7ed6a53642c538eb84df5be8166a2c3c.jpg"
                                 alt="AdTech Marketing Agency in Kochi, Kerala"
                                 title="AdTech Marketing Agency in Kochi, Kerala"
                                 className="w-full h-full object-cover"
@@ -546,7 +543,7 @@ Connect platforms, track ads, and boost ROI with data-driven solutions"
                             className="hidden lg:flex justify-center items-center"
                         >
                             <img
-                                src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1772107932/DSC04832_2_1_xxdy8j.webp"
+                                src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/DSC04832_2_1_xxdy8j.webp"
                                 alt="AdTech Marketing Agency in Kochi, Kerala"
                                 title="AdTech Marketing Agency in Kochi, Kerala"
                                 className="w-full max-w-sm rounded-3xl shadow-lg lg:shadow-2xl border-4 border-white/5"

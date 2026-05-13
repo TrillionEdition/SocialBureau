@@ -5,7 +5,7 @@ const jobs = [
         icon: "fas fa-search",
         department: "Digital Growth",
         img: [
-            "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761990714/Artboard_1_du2cpv.jpg",
+            "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Artboard_1_du2cpv.jpg",
         ],
         company: "SocialBureau | TrillionEdition LLP",
         location: "Panampilly, Kochi, Kerala",
@@ -136,7 +136,7 @@ const jobs = [
         icon: "fas fa-video",
         department: "Production",
         img: [
-            "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761804108/SB_Hiring_Poster_2_1_kabpbh.png",
+            "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/SB_Hiring_Poster_2_1_kabpbh.png",
         ],
         company: "SocialBureau | TrillionEdition LLP",
         location: "Panampilly, Kochi, Kerala",

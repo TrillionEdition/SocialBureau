@@ -98,7 +98,7 @@ const Hero = () => {
           <div className="absolute inset-y-0 right-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent translate-x-12 hidden md:block" />
 
           <img
-            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1761640832/Sakhilan_sir_usbgfx.jpg"
+            src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Sakhilan_sir_usbgfx.jpg"
             alt="Sakilan Padmanabhan"
             className="w-full h-full object-contain opacity-70 grayscale hover:grayscale-0 transition-all duration-1000"
             referrerPolicy="no-referrer"
