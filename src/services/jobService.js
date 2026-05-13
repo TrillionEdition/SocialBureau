@@ -13,13 +13,17 @@ export const jobService = {
 
   // GET ALL JOBS
   getJobs: async () => {
-    const res = await axios.get(`${BASE_URL}/job`);
+    const res = await axios.get(`${BASE_URL}/job`, {
+      withCredentials: true,
+    });
     return res.data;
   },
 
   // GET SINGLE JOB
   getJobBySlug: async (slug) => {
-    const res = await axios.get(`${BASE_URL}/job/${slug}`);
+    const res = await axios.get(`${BASE_URL}/job/${slug}`, {
+      withCredentials: true,
+    });
     return res.data;
   },
 

@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import Footer from "./Footer";
 import { jobService } from "@/services/jobService";
 import LoadingSpinner from "./LoadingSpinner";
+import InternalApplicationForm from "./InternalApplicationForm";
 
 // Fallback mock details for when backend is uncontactable
 const fallbackJobDetails = {

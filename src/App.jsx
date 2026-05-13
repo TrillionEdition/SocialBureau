@@ -64,6 +64,7 @@ const AdminCreateJob = lazy(() => import("./pages/CreateJob"));
 const EditUser = lazy(() => import("./pages/EditUser"));
 const DashboardX = lazy(() => import("./pages/DashboardX"));
 const UserManagement = lazy(() => import("./pages/UserManagement"));
+const AllApplications = lazy(() => import("./pages/AllApplications"));
 const ResetPassword = lazy(() =>
 
   import("./pages/ForgetPassword").then((module) => ({
@@ -406,6 +407,14 @@ function App() {
               element={
                 <AdminRoute>
                   <UserManagement />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/applications"
+              element={
+                <AdminRoute>
+                  <AllApplications />
                 </AdminRoute>
               }
             />
