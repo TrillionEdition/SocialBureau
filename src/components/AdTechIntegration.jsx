@@ -354,7 +354,7 @@ Connect platforms, track ads, and boost ROI with data-driven solutions"
                         className="relative w-full rounded-2xl overflow-hidden shadow-2xl"
                     >
                         <img
-                            src="https://i.pinimg.com/1200x/c4/2f/6b/c42f6b6eca84c555a2a20eda1e8cab52.jpg"
+                            src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/service%20page/content%20marketing%201.png"
                             title="AdTech Marketing Agency in Kochi, Kerala"
                             alt="AdTech Marketing Agency in Kochi, Kerala"
                             className="w-full h-full object-cover"

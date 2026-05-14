@@ -78,6 +78,7 @@ export default function AdminCreateJob() {
   const removeImage = () => {
     setSelectedImage(null);
     setImagePreview("");
+    setForm(prev => ({ ...prev, img: [""] }));
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 

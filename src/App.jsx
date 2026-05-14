@@ -133,7 +133,6 @@ const PartnerLogin = lazy(() => import("./pages/Partnerships/PartnershipTemplate
 const PartnerDashboard = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboard"));
 const PartnerDashboardHub = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboardHub"));
 const StudentShowcase = lazy(() => import("./pages/Partnerships/StudentShowcase"));
-const BlogDashboard = lazy(() => import("./pages/BlogDashboard"));
 
 function ConditionalFooter() {
   const location = useLocation();
@@ -277,12 +276,6 @@ function App() {
               path="/blog/submit"
               element={
                   <SubmitBlog />
-              }
-            />
-            <Route
-              path="/blog/dashboard"
-              element={
-                  <BlogDashboard />
               }
             />
             <Route path="/contact" element={<Contact />} />

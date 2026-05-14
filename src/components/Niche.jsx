@@ -251,10 +251,10 @@ const Niche = () => {
                     >
                         <div className="absolute -inset-10 bg-[#920F17]/5 rounded-full blur-[100px]"></div>
                         <img
-                            src="/niche_target.png"
+                            src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/service%20page/Niche%20marketing.png"
                             alt="niche marketing-agency-in-kochi"
                             title='niche marketing-agency-in-kochi'
-                            className="relative w-full h-auto drop-shadow-2xl"
+                            className="relative w-full rounded-[2rem] h-auto drop-shadow-2xl"
                         />
                     </motion.div>
                 </div>

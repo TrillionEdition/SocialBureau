@@ -1068,16 +1068,6 @@ export default function SubmitBlog() {
               </div>
             </form>
           </div>
-
-          {/* Link to Dashboard */}
-          <div className="mt-8 text-center">
-            <Link 
-              to="/blog/dashboard"
-              className="inline-flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors py-4 px-8 border border-white/10 rounded-2xl bg-white/5 backdrop-blur-sm"
-            >
-              <FaChartBar /> GO TO BLOG DASHBOARD
-            </Link>
-          </div>
         </div>
       </div>
     </>

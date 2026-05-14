@@ -238,11 +238,6 @@ const DashboardX = () => {
             Content Management
           </div>
           <NavItem 
-            icon={<BarChart3 size={18} />} 
-            label="Manage Blogs" 
-            onClick={() => navigate('/blog/dashboard')}
-          />
-          <NavItem 
             icon={<Plus size={18} />} 
             label="Write a Blog" 
             onClick={() => navigate('/blog/submit')}

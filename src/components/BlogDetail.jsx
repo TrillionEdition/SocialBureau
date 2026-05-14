@@ -472,14 +472,14 @@ export default function BlogDetail() {
   // ✅ CHECK IF USER CAN EDIT THIS POST
   const canEditPost = useMemo(() => {
     if (!currentUser || !post) return false;
-    
+
     // Normalizing IDs for comparison
     const postUserId = post.user?._id || post.user;
     const currentUserId = currentUser.id || currentUser._id;
-    
+
     const isOwner = postUserId?.toString() === currentUserId?.toString();
     const isUserAdmin = currentUser.role?.toLowerCase() === 'admin';
-    
+
     return isOwner || isUserAdmin;
   }, [currentUser, post]);
 
@@ -559,7 +559,7 @@ export default function BlogDetail() {
           </div>
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">{post.title}</h1>
-            
+
             {canEditPost && (
               <button
                 onClick={() => navigate('/blog/submit', { state: { editBlog: post } })}
