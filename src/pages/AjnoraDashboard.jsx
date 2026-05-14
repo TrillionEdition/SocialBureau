@@ -64,7 +64,9 @@ const FIELD_LABELS = {
   coreOffering: "Core Business Offering",
   serviceCategories: "Service Categories",
   otherServices: "Other Services",
+  customServices: "Manually Added Services",
   targetAudience: "Primary Target Audience",
+  targetAudienceOther: "Specific Target Audience (Other)",
   ageGroup: "Target Age Group",
   geoExpansion: "Geographic Expansion Plans",
   currentOps: "Current Operational Zones",
@@ -205,7 +207,7 @@ export default function AjnoraDashboard() {
           {value.map((item, i) => {
             if (typeof item === 'object' && item !== null) {
               const label = item.label || item.service || item.name || '';
-              const detail = item.link || (item.subServices ? item.subServices.join(', ') : '') || item.role || '';
+              const detail = item.link || (item.subServices ? item.subServices.join(', ') : '') || item.role || item.description || '';
               return (
                 <div key={i} className="px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-xs shadow-xl group/item hover:border-red-600/40 transition-all min-w-[200px]">
                   <div className="flex flex-col gap-2">

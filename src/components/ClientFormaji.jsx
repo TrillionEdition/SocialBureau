@@ -62,6 +62,7 @@ const ClientFormaji = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [status, setStatus] = useState({ msg: '', type: '' });
     const [allIssues, setAllIssues] = useState({});
+    const [touchedSteps, setTouchedSteps] = useState([]);
 
     const [formData, setFormData] = useState({
         // Section 0: Company Profile
@@ -98,7 +99,9 @@ const ClientFormaji = () => {
         coreOffering: '',
         serviceCategories: [],
         otherServices: '',
+        customServices: [{ name: '', description: '' }],
         targetAudience: '',
+        targetAudienceOther: '',
         ageGroup: '',
         geoExpansion: '',
         currentOps: [''],
@@ -208,6 +211,28 @@ const ClientFormaji = () => {
         setFormData(prev => ({
             ...prev,
             partnersList: prev.partnersList.filter((_, i) => i !== index)
+        }));
+    };
+
+    const handleCustomServiceChange = (index, field, value) => {
+        setFormData(prev => {
+            const newList = [...prev.customServices];
+            newList[index] = { ...newList[index], [field]: value };
+            return { ...prev, customServices: newList };
+        });
+    };
+
+    const addCustomService = () => {
+        setFormData(prev => ({
+            ...prev,
+            customServices: [...prev.customServices, { name: '', description: '' }]
+        }));
+    };
+
+    const removeCustomService = (index) => {
+        setFormData(prev => ({
+            ...prev,
+            customServices: prev.customServices.filter((_, i) => i !== index)
         }));
     };
 
@@ -373,6 +398,7 @@ const ClientFormaji = () => {
     };
 
     const scanForIssues = () => {
+        setTouchedSteps(prev => prev.includes(currentStep) ? prev : [...prev, currentStep]);
         const issues = getStepIssues(currentStep);
         if (issues.length > 0) {
             setStatus({ msg: `Found ${issues.length} incomplete required fields in this section.`, type: 'error' });
@@ -391,6 +417,7 @@ const ClientFormaji = () => {
     };
 
     const submitAll = async () => {
+        setTouchedSteps([0, 1, 2, 3, 4, 5]);
         const incompleteSteps = [0, 1, 2, 3, 5].filter(idx => !getStepStatus(idx));
 
         if (incompleteSteps.length > 0) {
@@ -432,6 +459,7 @@ const ClientFormaji = () => {
     };
 
     const nextStep = () => {
+        setTouchedSteps(prev => prev.includes(currentStep) ? prev : [...prev, currentStep]);
         const issues = getStepIssues(currentStep);
         if (issues.length > 0 && status.type !== 'error') {
             setStatus({ msg: `Heads up: Some required fields are missing in this section. You can click 'Next' again to skip and return later.`, type: 'error' });
@@ -635,11 +663,11 @@ const ClientFormaji = () => {
             <div className="max-w-4xl mx-auto px-6 pt-8 pb-16">
                 <header className="mb-10 pb-5 border-b border-white/5">
                     <div className="flex items-center justify-between gap-4 mb-10">
-                        <a href ='https://socialbureau.in' target='_blank' rel='noopener noreferrer'>
+                        <a href='https://socialbureau.in' target='_blank' rel='noopener noreferrer'>
                             <img src='https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/SB_sticker-02_1_k3ulwd.png'
                                 className='h-26 sm:h-28 w-auto' alt="SocialBureau" />
                         </a>
-                        <div className="sm:hidden text-7xl font-black text-white/10 tracking-[-0.02em] leading-none select-none font-['Bebas_Neue'] mr-8">
+                        <div className="sm:hidden text-7xl font-black text-white/10 tracking-wide leading-none select-none font-['Bebas_Neue'] mr-8">
                             {(currentStep + 1).toString().padStart(2, '0')}
                         </div>
                     </div>
@@ -650,15 +678,14 @@ const ClientFormaji = () => {
                                 CLIENT REQUIREMENT <em className="italic text-red-600 font-['Playfair_Display',serif] font-bold">FORM</em>
                             </h1>
                             <p className="text-gray-400 text-[14px] max-w-[580px] font-normal leading-[1.7] mt-3 font-['Plus_Jakarta_Sans',sans-serif]">
-                                This form helps us build a customised growth strategy for Ajinorah's brand, expansion, and revenue goals. Please answer as accurately as possible — the more you share, the better we can serve you.
-                            </p>
+                                This form helps us understand your business, goals, and growth opportunities so we can create a customized strategy tailored to your brand, expansion plans, and revenue objectives. Please answer as accurately as possible — the more details you share, the better we can support your success.                            </p>
                             <div className="mt-auto pt-8">
                                 <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">Kerala's Data-Driven API Marketing Agency</p>
                             </div>
                         </div>
 
                         <div className="flex flex-col items-end justify-between">
-                            <div className="hidden sm:block text-[10rem] font-black text-white/10 tracking-[-0.05em] leading-none select-none font-['Bebas_Neue'] mr-16">
+                            <div className="hidden sm:block text-[10rem] font-black text-white/10 tracking-wide leading-none select-none font-['Bebas_Neue'] mr-16">
                                 {(currentStep + 1).toString().padStart(2, '0')}
                             </div>
                             <div className="mt-auto">
@@ -696,7 +723,7 @@ const ClientFormaji = () => {
                                             <CheckCircle2 size={10} className={idx === currentStep ? "text-white" : "text-green-500"} />
                                         </motion.div>
                                     )}
-                                    {allIssues[idx]?.length > 0 && !isComplete && (
+                                    {allIssues[idx]?.length > 0 && !isComplete && touchedSteps.includes(idx) && (
                                         <div className="absolute top-1 left-1 w-2 h-2 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
                                     )}
                                 </div>
@@ -731,7 +758,7 @@ const ClientFormaji = () => {
                                 </button>
                             </section>
 
-                            {allIssues[currentStep]?.length > 0 && (
+                            {allIssues[currentStep]?.length > 0 && touchedSteps.includes(currentStep) && (
                                 <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="p-4 bg-red-600/10 border border-red-600/20 rounded-2xl">
                                     <div className="flex items-center gap-2 text-red-500 mb-2">
                                         <AlertCircle size={14} />
@@ -750,8 +777,8 @@ const ClientFormaji = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Legal Company Name <span className="text-red-600">*</span></label>
-                                    <input id="legalName" value={formData.legalName} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${!formData.legalName ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="e.g. socialbureau (TrillionEdition LLP)" />
-                                    {!formData.legalName && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
+                                    <input id="legalName" value={formData.legalName} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${(!formData.legalName && touchedSteps.includes(currentStep)) ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="e.g. socialbureau (TrillionEdition LLP)" />
+                                    {!formData.legalName && touchedSteps.includes(currentStep) && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500 flex items-center gap-2">
@@ -794,7 +821,7 @@ const ClientFormaji = () => {
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Company Type <span className="text-red-600">*</span></label>
-                                    <select id="companyType" value={formData.companyType} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center] ${!formData.companyType ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`}>
+                                    <select id="companyType" value={formData.companyType} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center] ${(!formData.companyType && touchedSteps.includes(currentStep)) ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`}>
                                         <option value="">Select type</option>
                                         <option>Private Limited (Pvt Ltd)</option>
                                         <option>LLP</option>
@@ -803,7 +830,7 @@ const ClientFormaji = () => {
                                         <option>Trust / NGO</option>
                                         <option>Other</option>
                                     </select>
-                                    {!formData.companyType && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
+                                    {!formData.companyType && touchedSteps.includes(currentStep) && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                     {formData.companyType === 'Other' && (
                                         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="mt-2">
                                             <input
@@ -818,8 +845,8 @@ const ClientFormaji = () => {
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Year of Incorporation <span className="text-red-600">*</span></label>
-                                    <input id="incYear" value={formData.incYear} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${!formData.incYear ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="e.g. 2022" />
-                                    {!formData.incYear && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
+                                    <input id="incYear" value={formData.incYear} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${(!formData.incYear && touchedSteps.includes(currentStep)) ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="e.g. 2022" />
+                                    {!formData.incYear && touchedSteps.includes(currentStep) && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">CIN / Registration Number</label>
@@ -839,8 +866,8 @@ const ClientFormaji = () => {
                                 <div className="grid grid-cols-1 gap-6">
                                     <div className="flex flex-col gap-2">
                                         <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Full Address <span className="text-red-600">*</span></label>
-                                        <input id="regAddress" value={formData.regAddress} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${!formData.regAddress ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="Building, Street, Area" />
-                                        {!formData.regAddress && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
+                                        <input id="regAddress" value={formData.regAddress} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${(!formData.regAddress && touchedSteps.includes(currentStep)) ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="Building, Street, Area" />
+                                        {!formData.regAddress && touchedSteps.includes(currentStep) && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                         <div className="flex flex-col gap-2">
@@ -893,8 +920,8 @@ const ClientFormaji = () => {
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="flex flex-col gap-2">
                                         <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Contact Person Name <span className="text-red-600">*</span></label>
-                                        <input id="contactName" value={formData.contactName} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${!formData.contactName ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="Full name" />
-                                        {!formData.contactName && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
+                                        <input id="contactName" value={formData.contactName} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${(!formData.contactName && touchedSteps.includes(currentStep)) ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="Full name" />
+                                        {!formData.contactName && touchedSteps.includes(currentStep) && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                     </div>
                                     <div className="flex flex-col gap-2">
                                         <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Designation</label>
@@ -902,13 +929,13 @@ const ClientFormaji = () => {
                                     </div>
                                     <div className="flex flex-col gap-2">
                                         <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Phone / WhatsApp <span className="text-red-600">*</span></label>
-                                        <input id="contactPhone" value={formData.contactPhone} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${!formData.contactPhone ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="+91 98XXX XXXXX" />
-                                        {!formData.contactPhone && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
+                                        <input id="contactPhone" value={formData.contactPhone} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${(!formData.contactPhone && touchedSteps.includes(currentStep)) ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="+91 98XXX XXXXX" />
+                                        {!formData.contactPhone && touchedSteps.includes(currentStep) && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                     </div>
                                     <div className="flex flex-col gap-2">
                                         <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Email Address <span className="text-red-600">*</span></label>
-                                        <input id="contactEmail" value={formData.contactEmail} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${!formData.contactEmail ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="email@company.com" />
-                                        {!formData.contactEmail && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
+                                        <input id="contactEmail" value={formData.contactEmail} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${(!formData.contactEmail && touchedSteps.includes(currentStep)) ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="email@company.com" />
+                                        {!formData.contactEmail && touchedSteps.includes(currentStep) && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                     </div>
                                 </div>
                             </div>
@@ -1019,7 +1046,7 @@ const ClientFormaji = () => {
                                 </button>
                             </section>
 
-                            {allIssues[currentStep]?.length > 0 && (
+                            {allIssues[currentStep]?.length > 0 && touchedSteps.includes(currentStep) && (
                                 <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="p-4 bg-red-600/10 border border-red-600/20 rounded-2xl">
                                     <div className="flex items-center gap-2 text-red-500 mb-2">
                                         <AlertCircle size={14} />
@@ -1154,7 +1181,7 @@ const ClientFormaji = () => {
                                 </button>
                             </section>
 
-                            {allIssues[currentStep]?.length > 0 && (
+                            {allIssues[currentStep]?.length > 0 && touchedSteps.includes(currentStep) && (
                                 <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="p-4 bg-red-600/10 border border-red-600/20 rounded-2xl">
                                     <div className="flex items-center gap-2 text-red-500 mb-2">
                                         <AlertCircle size={14} />
@@ -1172,64 +1199,157 @@ const ClientFormaji = () => {
 
                             <div className="flex flex-col gap-2">
                                 <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">What does your company/brand offer? <span className="text-red-600">*</span></label>
-                                <textarea id="coreOffering" value={formData.coreOffering} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all min-h-[110px] ${!formData.coreOffering ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="Describe your education consulting services in detail..." />
-                                {!formData.coreOffering && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
+                                <textarea id="coreOffering" value={formData.coreOffering} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all min-h-[110px] ${(!formData.coreOffering && touchedSteps.includes(currentStep)) ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="Describe your primary business products or services in detail..." />
+                                {!formData.coreOffering && touchedSteps.includes(currentStep) && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                             </div>
 
                             <div className="space-y-4">
                                 <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-red-600">Service Categories You Offer</h3>
                                 <div className="flex flex-wrap gap-2">
                                     {[
-                                        'Abroad Study Counseling', 'Domestic Admission Counseling', 'IELTS / TOEFL Coaching',
-                                        'UPSC / PSC Coaching', 'School Admissions', 'Engineering / Medical Counseling',
-                                        'MBA / Management Programs', 'Skill Development', 'Career Counseling',
-                                        'Scholarship Assistance', 'Visa Processing Support', 'Online Courses', 'Corporate Training'
-                                    ].map(item => (
-                                        <button
-                                            key={item}
-                                            type="button"
-                                            onClick={() => handleCheckboxChange('serviceCategories', item)}
-                                            className={`px-3 py-2 rounded text-[11px] font-bold transition-all border ${formData.serviceCategories.includes(item)
-                                                ? 'bg-[#150000] border-red-600 text-white'
-                                                : 'bg-[#111] border-white/5 text-gray-500 hover:border-white/10'
-                                                }`}
-                                        >
-                                            {formData.serviceCategories.includes(item) && '✓ '} {item}
-                                        </button>
-                                    ))}
+                                        "Entertainment",
+                                        "Education",
+                                        "IT Services",
+                                        "Consultation",
+                                        "Automobile Sales",
+                                        "Real Estate",
+                                        "Healthcare",
+                                        "Finance",
+                                        "Marketing",
+                                        "E-commerce",
+                                        "Construction",
+                                        "Travel & Tourism",
+                                        "Hospitality",
+                                        "Food & Restaurant",
+                                        "Media & Advertising",
+                                        "Manufacturing",
+                                        "Logistics",
+                                        "Retail",
+                                        "Fashion",
+                                        "Telecommunications",
+                                        "Legal Services",
+                                        "Event Management",
+                                        "Fitness & Wellness",
+                                        "Beauty & Salon",
+                                        "Insurance",
+                                        "Banking",
+                                        "Training & Coaching",
+                                        "Software Development",
+                                        "Digital Services",
+                                        "Business Solutions"].map(item => (
+                                            <button
+                                                key={item}
+                                                type="button"
+                                                onClick={() => handleCheckboxChange('serviceCategories', item)}
+                                                className={`px-3 py-2 rounded text-[11px] font-bold transition-all border ${formData.serviceCategories.includes(item)
+                                                    ? 'bg-[#150000] border-red-600 text-white'
+                                                    : 'bg-[#111] border-white/5 text-gray-500 hover:border-white/10'
+                                                    }`}
+                                            >
+                                                {formData.serviceCategories.includes(item) && '✓ '} {item}
+                                            </button>
+                                        ))}
                                 </div>
-                                <div className="flex flex-col gap-2">
-                                    <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Other Services (not listed above)</label>
-                                    <input id="otherServices" value={formData.otherServices} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="Describe any additional services" />
+                                <div className="space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Other Services (add manually)</label>
+                                        <button 
+                                            type="button"
+                                            onClick={addCustomService} 
+                                            className="text-[10px] font-black uppercase tracking-widest text-red-600 hover:opacity-70 flex items-center gap-1"
+                                        >
+                                            <Plus size={12} /> Add Service
+                                        </button>
+                                    </div>
+                                    <div className="grid grid-cols-1 gap-3">
+                                        {formData.customServices.map((service, idx) => (
+                                            <div key={idx} className="bg-black/20 p-4 rounded-xl border border-white/5 relative group">
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div className="flex flex-col gap-1">
+                                                        <span className="text-[9px] text-gray-600 uppercase font-bold">Service Name</span>
+                                                        <input
+                                                            value={service.name}
+                                                            onChange={(e) => handleCustomServiceChange(idx, 'name', e.target.value)}
+                                                            className="bg-[#111] border border-white/5 rounded px-3 py-1.5 text-xs focus:outline-none focus:border-red-600 transition-all"
+                                                            placeholder="e.g. Specialized Research"
+                                                        />
+                                                    </div>
+                                                    <div className="flex flex-col gap-1">
+                                                        <span className="text-[9px] text-gray-600 uppercase font-bold">Brief Description</span>
+                                                        <div className="flex gap-2">
+                                                            <input
+                                                                value={service.description}
+                                                                onChange={(e) => handleCustomServiceChange(idx, 'description', e.target.value)}
+                                                                className="flex-1 bg-[#111] border border-white/5 rounded px-3 py-1.5 text-xs focus:outline-none focus:border-red-600 transition-all"
+                                                                placeholder="Tell us a bit more..."
+                                                            />
+                                                            {formData.customServices.length > 1 && (
+                                                                <button 
+                                                                    type="button"
+                                                                    onClick={() => removeCustomService(idx)} 
+                                                                    className="p-1.5 text-gray-700 hover:text-red-600 hover:bg-red-600/10 rounded-lg transition-all"
+                                                                >
+                                                                    <Trash2 size={14} />
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Primary Target Audience <span className="text-red-600">*</span></label>
-                                    <select id="targetAudience" value={formData.targetAudience} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center] ${!formData.targetAudience ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`}>
-                                        <option value="">Select audience</option>
-                                        <option>School Students (Grades 9–12)</option>
-                                        <option>Undergraduate Aspirants</option>
-                                        <option>Postgraduate Aspirants</option>
-                                        <option>Working Professionals</option>
-                                        <option>Parents</option>
-                                        <option>Institutions / Schools</option>
-                                        <option>All of the above</option>
-                                    </select>
-                                    {!formData.targetAudience && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
+                                    <div className="flex flex-col sm:flex-row gap-3">
+                                        <select 
+                                            id="targetAudience" 
+                                            value={formData.targetAudience} 
+                                            onChange={handleInputChange} 
+                                            className={`flex-1 bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center] ${(!formData.targetAudience && touchedSteps.includes(currentStep)) ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`}
+                                        >
+                                            <option value="">Select audience</option>
+                                            <option>B2C (Direct Consumers)</option>
+                                            <option>B2B (Business to Business)</option>
+                                            <option>B2G (Business to Government)</option>
+                                            <option>High Net Worth Individuals (HNIs)</option>
+                                            <option>Working Professionals</option>
+                                            <option>Students / Youth</option>
+                                            <option>Small Business Owners</option>
+                                            <option>Corporate Executives</option>
+                                            <option>All of the above</option>
+                                            <option value="Other">Other (Specify)</option>
+                                        </select>
+
+                                        {formData.targetAudience === 'Other' && (
+                                            <motion.input
+                                                initial={{ opacity: 0, x: -10 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                id="targetAudienceOther"
+                                                value={formData.targetAudienceOther}
+                                                onChange={handleInputChange}
+                                                className="flex-1 bg-[#111] border border-red-600/30 focus:border-red-600 rounded px-4 py-2 text-sm focus:outline-none transition-all"
+                                                placeholder="Please specify your target audience"
+                                            />
+                                        )}
+                                    </div>
+                                    {!formData.targetAudience && touchedSteps.includes(currentStep) && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                 </div>
-                                <div className="flex flex-col gap-2">
+                                {/* <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Age Group of Primary Target</label>
                                     <select id="ageGroup" value={formData.ageGroup} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center]">
                                         <option value="">Select range</option>
+                                        <option>Below 10 years</option>
                                         <option>13–17 years</option>
                                         <option>18–24 years</option>
                                         <option>25–35 years</option>
                                         <option>35+ years</option>
                                         <option>Multiple segments</option>
                                     </select>
-                                </div>
+                                </div> */}
                             </div>
 
                             <div className="pt-6 border-l-2 border-red-600 pl-6 space-y-6">
@@ -1284,8 +1404,8 @@ const ClientFormaji = () => {
                             <div className="space-y-6 pt-6">
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Priority Services for Marketing <span className="text-red-600">*</span></label>
-                                    <textarea id="mktFocus" value={formData.mktFocus} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all min-h-[80px] ${!formData.mktFocus ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="Tell us which 2–3 services you want to promote most aggressively." />
-                                    {!formData.mktFocus && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
+                                    <textarea id="mktFocus" value={formData.mktFocus} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all min-h-[80px] ${(!formData.mktFocus && touchedSteps.includes(currentStep)) ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="Tell us which 2–3 services you want to promote most aggressively." />
+                                    {!formData.mktFocus && touchedSteps.includes(currentStep) && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Key Competitive Advantage</label>
@@ -1319,7 +1439,7 @@ const ClientFormaji = () => {
                                 </button>
                             </section>
 
-                            {allIssues[currentStep]?.length > 0 && (
+                            {allIssues[currentStep]?.length > 0 && touchedSteps.includes(currentStep) && (
                                 <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="p-4 bg-red-600/10 border border-red-600/20 rounded-2xl">
                                     <div className="flex items-center gap-2 text-red-500 mb-2">
                                         <AlertCircle size={14} />
@@ -1338,8 +1458,8 @@ const ClientFormaji = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Website URL</label>
-                                    <input id="website" value={formData.website} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${(!formData.website && !Object.values(formData.socialMedia).some(v => v)) ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="https://socialbureau.in" />
-                                    {(!formData.website && !Object.values(formData.socialMedia).some(v => v)) && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Please provide either a Website or Social Profile</span>}
+                                    <input id="website" value={formData.website} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${(!formData.website && !Object.values(formData.socialMedia).some(v => v) && touchedSteps.includes(currentStep)) ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="https://socialbureau.in" />
+                                    {(!formData.website && !Object.values(formData.socialMedia).some(v => v) && touchedSteps.includes(currentStep)) && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Please provide either a Website or Social Profile</span>}
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Website Status</label>
@@ -1461,7 +1581,7 @@ const ClientFormaji = () => {
                                 </button>
                             </section>
 
-                            {allIssues[currentStep]?.length > 0 && (
+                            {allIssues[currentStep]?.length > 0 && touchedSteps.includes(currentStep) && (
                                 <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="p-4 bg-red-600/10 border border-red-600/20 rounded-2xl">
                                     <div className="flex items-center gap-2 text-red-500 mb-2">
                                         <AlertCircle size={14} />
@@ -1646,7 +1766,7 @@ const ClientFormaji = () => {
                                 </button>
                             </section>
 
-                            {allIssues[currentStep]?.length > 0 && (
+                            {allIssues[currentStep]?.length > 0 && touchedSteps.includes(currentStep) && (
                                 <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="p-4 bg-red-600/10 border border-red-600/20 rounded-2xl">
                                     <div className="flex items-center gap-2 text-red-500 mb-2">
                                         <AlertCircle size={14} />
@@ -1684,7 +1804,7 @@ const ClientFormaji = () => {
                                         </button>
                                     ))}
                                 </div>
-                                {allIssues[currentStep]?.includes('Monthly Marketing Budget') && (
+                                {allIssues[currentStep]?.includes('Monthly Marketing Budget') && touchedSteps.includes(currentStep) && (
                                     <div className="mt-2">
                                         <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter">Required</span>
                                     </div>
@@ -1705,18 +1825,18 @@ const ClientFormaji = () => {
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Preferred Contract Duration</label>
-                                    <select id="contractDur" value={formData.contractDur} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center] ${!formData.contractDur ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`}>
+                                    <select id="contractDur" value={formData.contractDur} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M0 0l5 6 5-6z%27 fill=%27%23666%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center] ${(!formData.contractDur && touchedSteps.includes(currentStep)) ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`}>
                                         <option value="">Select duration</option>
                                         <option>6 Months</option>
                                         <option>12 Months</option>
                                         <option>More than 1 year</option>
                                     </select>
-                                    {!formData.contractDur && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
+                                    {!formData.contractDur && touchedSteps.includes(currentStep) && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Expected Start Date</label>
-                                    <input id="startDate" type="date" value={formData.startDate} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${!formData.startDate ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} />
-                                    {!formData.startDate && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
+                                    <input id="startDate" type="date" value={formData.startDate} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all ${(!formData.startDate && touchedSteps.includes(currentStep)) ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} />
+                                    {!formData.startDate && touchedSteps.includes(currentStep) && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">First Priority Milestone</label>
@@ -1811,6 +1931,20 @@ const ClientFormaji = () => {
                                     ))}
                                 </div>
                             </div>
+
+                            {formData.customServices.some(s => s.name || s.description) && (
+                                <div className="bg-[#111] border border-white/5 rounded-2xl p-6 hover:border-red-600/30 transition-all">
+                                    <h4 className="text-[10px] font-black uppercase tracking-widest text-red-600 mb-4 flex items-center gap-2"><Briefcase size={12} /> Custom Services</h4>
+                                    <div className="space-y-3">
+                                        {formData.customServices.map((service, i) => (service.name || service.description) && (
+                                            <div key={i} className="border-b border-white/5 pb-2 last:border-none">
+                                                <p className="text-[12px] font-bold text-gray-200">{service.name || 'Unnamed Service'}</p>
+                                                <p className="text-[10px] text-gray-500 mt-1 uppercase">{service.description || 'No description provided'}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="bg-[#111] border border-white/5 rounded-2xl p-6 hover:border-red-600/30 transition-all">
                                 <h4 className="text-[10px] font-black uppercase tracking-widest text-red-600 mb-4 flex items-center gap-2"><FileText size={12} /> Uploaded Intelligence Assets</h4>
