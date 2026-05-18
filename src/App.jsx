@@ -134,7 +134,6 @@ const PartnerLogin = lazy(() => import("./pages/Partnerships/PartnershipTemplate
 const PartnerDashboard = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboard"));
 const PartnerDashboardHub = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboardHub"));
 const StudentShowcase = lazy(() => import("./pages/Partnerships/StudentShowcase"));
-const BlogDashboard = lazy(() => import("./pages/BlogDashboard"));
 const TeamDashboard = lazy(() => import("./pages/TeamDashboard"));
 const AdminTeamDashboard = lazy(() => import("./pages/AdminTeamDashboard"));
 
