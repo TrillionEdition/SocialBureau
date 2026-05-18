@@ -7,7 +7,7 @@ import { generateHomepageSchemas } from "@/utils/schema";
 import Testimonials from '@/components/Testimonials';
 import mediaWaitlistService from "@/services/mediaWaitlistService";
 import Toast from "../components/Toast";
-import StudentPortfolioPopup from '../components/Home/StudentPortfolioPopup';
+import PortfolioPopup from '../components/Home/PortfolioPopup';
 
 const handleJoinWaitingList = async ({ onResult } = {}) => {
   let email = null;
@@ -1098,7 +1098,7 @@ export const Home = () => {
       </section>
 
       <Testimonials className="w-full" />
-      <StudentPortfolioPopup />
+      <PortfolioPopup />
     </div>
   );
 };

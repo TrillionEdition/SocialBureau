@@ -55,7 +55,8 @@ const NotFound = lazy(() =>
 const Careers = lazy(() => import("./pages/Careers").then(module => ({ default: module.Careers })));
 const OurTeam = lazy(() => import("./pages/OurTeam").then(module => ({ default: module.OurTeam })));
 const OurWork = lazy(() => import("./pages/OurWork").then(module => ({ default: module.OurWork })));
-const Team = lazy(() => import("./pages/Team").then(module => ({ default: module.Team })));
+const Team = lazy(() => import("./pages/Team/index").then(module => ({ default: module.Team })));
+const EmployeePage = lazy(() => import("./pages/Team/EmployeePage"));
 const ATSChecker = lazy(() => import("./pages/Resume/ATSChecker"));
 const ResumeGenerator = lazy(() => import("./pages/Resume/ResumeGenerator"));
 const AuthPage = lazy(() => import("./pages/UserRegistration"));
@@ -134,6 +135,8 @@ const PartnerDashboard = lazy(() => import("./pages/Partnerships/PartnershipTemp
 const PartnerDashboardHub = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboardHub"));
 const StudentShowcase = lazy(() => import("./pages/Partnerships/StudentShowcase"));
 const BlogDashboard = lazy(() => import("./pages/BlogDashboard"));
+const TeamDashboard = lazy(() => import("./pages/TeamDashboard"));
+const AdminTeamDashboard = lazy(() => import("./pages/AdminTeamDashboard"));
 
 function ConditionalFooter() {
   const location = useLocation();
@@ -161,7 +164,9 @@ function ConditionalFooter() {
     "/job-listing",
     "/job-applicants",
     "/candidate-profile",
-    "/client-portal"
+    "/client-portal",
+    "/team/admin",
+    "/team/dashboard"
   ];
 
 
@@ -315,6 +320,10 @@ function App() {
             <Route path="/disclaimer" element={<Disclaimer />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/our-team" element={<OurTeam />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/team/:slug" element={<EmployeePage />} />
+            <Route path="/team/dashboard" element={<ProtectedRoute><TeamDashboard /></ProtectedRoute>} />
+            <Route path="/team/admin" element={<AdminRoute><AdminTeamDashboard /></AdminRoute>} />
             <Route path="/our-works" element={<OurWork />} />
             <Route path="/achievements" element={<CompanyAchievements />} />
             <Route path="/ats-checker" element={<ATSChecker />} />

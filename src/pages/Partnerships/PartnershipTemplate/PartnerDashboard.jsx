@@ -54,11 +54,11 @@ const PartnerDashboard = () => {
           // Apply type filter
           if (typeFilter === "influencer") {
             templatePortfolios = templatePortfolios.filter(p => 
-              p.category === "influencer" || p.templateId === "influencer"
+              p.category === "influencer" && p.templateId === "influencer"
             );
           } else if (typeFilter === "student") {
             templatePortfolios = templatePortfolios.filter(p => 
-              p.category === "student" || p.templateId !== "influencer"
+              p.templateId !== "influencer" // If it's not the influencer template, it's a student/standard portfolio
             );
           }
           

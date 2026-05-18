@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 export const getUserData = () => {
   try {
-    const userData = localStorage.getItem("userData");
+    const userData = localStorage.getItem("userData") || localStorage.getItem("user");
     return userData ? JSON.parse(userData) : null;
   } catch (error) {
     console.error("Error parsing user data:", error);
@@ -122,7 +122,7 @@ export const useAuth = () => {
   return {
     currentUser,
     isAuthenticated: !!currentUser,
-    isEmployee: currentUser?.isEmployee === true,
+    isEmployee: currentUser?.isEmployee === true || (!!currentUser && currentUser.role?.toLowerCase() !== 'partnership' && currentUser.role?.toLowerCase() !== 'partner'),
     isAdmin: currentUser?.role?.toLowerCase() === "admin",
     isPartner:
       currentUser?.role?.toLowerCase() === "partner" ||

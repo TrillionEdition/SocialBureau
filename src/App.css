@@ -2,6 +2,12 @@
 
 @import "tailwindcss";
 
+@theme {
+  --color-brand-pink: #ff3358;
+  --color-brand-purple: #8b5cf6;
+  --color-brand-dark: #0a0514;
+}
+
 
 :root {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -353,4 +359,11 @@ html.lenis body {
   .bg-radial-gradient {
     background-image: radial-gradient(var(--tw-gradient-stops));
   }
+}
+
+/* Reduce visibility of form placeholder texts globally */
+input::placeholder,
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.25) !important;
+  opacity: 1 !important;
 }
