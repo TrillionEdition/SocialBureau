@@ -264,7 +264,7 @@ const PerformanceMarketing = () => {
                         <div className="absolute -inset-4 bg-[#7E0A11]/10 blur-3xl rounded-full"></div>
                         <div className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-gray-50">
                             <img
-                                src="/performance_dashboard.png"
+                                src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/service%20page/data%20led%20growth%20image.png"
                                 alt="performance-marketing-agency-in-kochi"
                                 title='performance-marketing-agency-in-kochi'
                                 className="w-full h-full object-cover"
@@ -405,13 +405,13 @@ const PerformanceMarketing = () => {
                                 ))}
                             </div>
                         </motion.div>
-                        
-                            <img
-                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772022966/PMO_converted_yhchbh.webp", 1000)}
-                                alt="performance-marketing-agency-in-kochi"
-                                title='performance-marketing-agency-in-kochi'
-                                className="w-full h-full object-cover"
-                            />
+
+                        <img
+                            src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772022966/PMO_converted_yhchbh.webp", 1000)}
+                            alt="performance-marketing-agency-in-kochi"
+                            title='performance-marketing-agency-in-kochi'
+                            className="w-full h-full object-cover"
+                        />
                     </div>
                 </div>
             </section>
@@ -445,8 +445,8 @@ const PerformanceMarketing = () => {
                                     whileHover={{ x: 10 }}
                                     onClick={() => setActiveCaseStudy(index)}
                                     className={`w-full text-left p-6 rounded-2xl transition-all ${activeCaseStudy === index
-                                            ? 'bg-[#7E0A11] text-white shadow-xl shadow-[#7E0A11]/20'
-                                            : 'bg-white text-[#1d1d1f] hover:bg-gray-100'
+                                        ? 'bg-[#7E0A11] text-white shadow-xl shadow-[#7E0A11]/20'
+                                        : 'bg-white text-[#1d1d1f] hover:bg-gray-100'
                                         }`}
                                 >
                                     <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md mb-2 inline-block ${activeCaseStudy === index ? 'bg-white/20 text-white' : 'bg-gray-100 text-[#7E0A11]'

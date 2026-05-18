@@ -24,7 +24,6 @@ import MediaDashboard from "./pages/MediaDashboard";
 import PartnershipChatbot from "./components/PartnershipChatbot";
 import AjnoraDashboard from "./pages/AjnoraDashboard";
 import AjinorahForm from "./components/ClientFormaji";
-import SocialBureauIntro from "./components/Light";
 import CDashboard from "./components/ClickupDash/CDashboard";
 
 
@@ -65,6 +64,7 @@ const AdminCreateJob = lazy(() => import("./pages/CreateJob"));
 const EditUser = lazy(() => import("./pages/EditUser"));
 const DashboardX = lazy(() => import("./pages/DashboardX"));
 const UserManagement = lazy(() => import("./pages/UserManagement"));
+const AllApplications = lazy(() => import("./pages/AllApplications"));
 const ResetPassword = lazy(() =>
 
   import("./pages/ForgetPassword").then((module) => ({
@@ -284,15 +284,8 @@ function App() {
                   <SubmitBlog />
               }
             />
-            <Route
-              path="/blog/dashboard"
-              element={
-                  <BlogDashboard />
-              }
-            />
             <Route path="/contact" element={<Contact />} />
             <Route path="/events" element={<Events />} />
-            <Route path="/social-bureau" element={<SocialBureauIntro />} />
             <Route
               path="/events/manage"
               element={
@@ -415,6 +408,14 @@ function App() {
               element={
                 <AdminRoute>
                   <UserManagement />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/applications"
+              element={
+                <AdminRoute>
+                  <AllApplications />
                 </AdminRoute>
               }
             />

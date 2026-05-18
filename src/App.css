@@ -352,7 +352,6 @@ html.lenis body {
   opacity: 0.05;
   z-index: 9999;
   pointer-events: none;
-  background-image: url("https://res.cloudinary.com/dtwcgfmar/image/upload/v1710515152/noise_u6p5qg.png");
 }
 
 @layer utilities {

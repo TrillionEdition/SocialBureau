@@ -411,6 +411,18 @@ export default function Navbar() {
                           <BarChart3 size={14} />
                           Manage Blogs
                         </button>
+                        {isAdmin && (
+                          <button
+                            onClick={() => {
+                              handleNavClick("/admin/applications");
+                              setActiveDropdown(null);
+                            }}
+                            className="text-[13px] font-medium text-red-500 hover:text-white hover:bg-red-600 px-4 py-3 text-left transition-colors flex items-center gap-2"
+                          >
+                            <BarChart3 size={14} />
+                            Manage Applications
+                          </button>
+                        )}
                         <div className="h-px bg-white/10" />
                         <button
                           onClick={() => {
@@ -678,13 +690,6 @@ export default function Navbar() {
                     )}
                     {(isAdmin || isPartnership) && (
                       <>
-                        <button
-                          onClick={() => handleNavClick("/blog/dashboard")}
-                          className="flex items-center gap-2 text-[22px] font-semibold text-[#f5f5f7] active:text-[#ff0000] text-left transition-colors"
-                        >
-                          <BarChart3 size={20} />
-                          Manage Blogs
-                        </button>
                         <button
                           onClick={() => handleNavClick("/blog/submit")}
                           className="flex items-center gap-2 text-[22px] font-semibold text-[#f5f5f7] active:text-[#ff0000] text-left transition-colors"

@@ -21,7 +21,7 @@ const WhoWeAre = () => {
                 viewport={{ once: true }}
               >
                 <div className="relative group aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-[#f5f5f7] border border-gray-100 shadow-xl transition-all duration-700 hover:border-[#8D0F16]/50">
-                  <img src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1771840422/sham-alen_ied4s5.webp" alt="sham-allen" className="w-full h-full object-cover" />
+                  <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/sham-alen_ied4s5.webp" alt="sham-allen" className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#8D0F16]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 </div>
                 <div className="absolute -bottom-4 -right-4 w-24 h-24 border-r-4 border-b-4 border-[#8D0F16] rounded-br-3xl -z-10" />

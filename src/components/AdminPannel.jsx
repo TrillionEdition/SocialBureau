@@ -14,6 +14,7 @@ const AdminPanel = () => {
         { title: "Algorithms", desc: "Manage API Marketing leads", link: "/api-marketing-dashboard" },
         { title: "Client Dashboard", desc: "Manage client data", link: "/client-dashboard" },
         { title: "Media", desc: "Future of Media waitlist entries", link: "/media-dashboard" },
+        { title: "Applications", desc: "Review candidate resumes and profiles", link: "/admin/applications" },
 
     ];
 

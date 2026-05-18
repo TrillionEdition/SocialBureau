@@ -11,7 +11,7 @@ const templates = [
     name: "Modernist",
     type: "Digital Vessel 01",
     description: "A high-impact, clinical architecture designed for world-class digital dominance.",
-    preview: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1777442207/portfolio1_rgyorf.png",
+    preview: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/portfolio1_rgyorf.webp",
     tags: ["Clinical", "Glass", "Parallax"]
   },
   {

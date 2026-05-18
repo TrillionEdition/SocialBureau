@@ -71,7 +71,7 @@ const StudentShowcase = () => {
       {/* --- EXTRAORDINARY UI ELEMENTS --- */}
       
       {/* Noise Texture Overlay */}
-      <div className="absolute inset-0 pointer-events-none z-[1] opacity-[0.03] mix-blend-overlay bg-[url('https://res.cloudinary.com/dtwcgfmar/image/upload/v1777520000/noise.png')]" />
+      <div className="absolute inset-0 pointer-events-none z-[1] opacity-[0.03] mix-blend-overlay " />
       
       {/* Cinematic Background Image */}
       <motion.div 

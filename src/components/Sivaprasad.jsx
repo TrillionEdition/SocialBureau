@@ -88,8 +88,8 @@ export default function Sivaprasad() {
   const [navOpen, setNavOpen] = useState(false);
   const [selectedReel, setSelectedReel] = useState(null);
   const reelSources = [
-    'https://res.cloudinary.com/dtwcgfmar/video/upload/v1776750412/AQOm9-TKSETF6u9l0nAQpjHsbAhXRYiNGURHO24GziELFESRAfPmZ3VX4ZBR9f688oXf0552oU3C64zxdTEwPX8NpN7LfDa0aMU0TaPDrQ_hncnv7.webm',
-    'https://res.cloudinary.com/dtwcgfmar/video/upload/v1776754163/2cbb-d78b-4b2d-8061-c34797622b99_ifkkfg.webm',
+    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/AQOm9-TKSETF6u9l0nAQpjHsbAhXRYiNGURHO24GziELFESRAfPmZ3VX4ZBR9f688oXf0552oU3C64zxdTEwPX8NpN7LfDa0aMU0TaPDrQ_hncnv7.webm',
+    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/2cbb-d78b-4b2d-8061-c34797622b99_ifkkfg.webm',
     '/assets/sivaprasad/reel.webm',
     '/assets/sivaprasad/reel (1).webm',
     '/assets/sivaprasad/reel (2).webm',
@@ -336,7 +336,7 @@ Submitted via: Sivaprasad portfolio
                   {/* Additional external carousel slides (converted to JSX) */}
                   <a className="reel-card carousel-slide" href="https://www.youtube.com/watch?v=xuFS7zkd_0g">
                     <video className="reel-media" autoPlay muted loop playsInline preload="metadata" aria-label="Siva video">
-                      <source src="https://res.cloudinary.com/dtwcgfmar/video/upload/v1776751790/videoplayback_yugfzu.webm" type="video/webm" />
+                      <source src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/videoplayback_yugfzu.webm" type="video/webm" />
                       Your browser does not support the video tag.
                     </video>
                   </a>
@@ -345,20 +345,20 @@ Submitted via: Sivaprasad portfolio
 
                   <a className="reel-card carousel-slide" href="https://www.facebook.com/share/v/1C2z6SJk47/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)', textDecoration: 'none', background: 'linear-gradient(135deg, rgba(10,10,10,0.06), rgba(26,26,26,0.04))'}}>
                     <video className="reel-media" autoPlay muted loop playsInline preload="none" aria-label="Siva video">
-                      <source src="https://res.cloudinary.com/dtwcgfmar/video/upload/v1776754163/2cbb-d78b-4b2d-8061-c34797622b99_ifkkfg.webm" type="video/webm" />
+                      <source src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/2cbb-d78b-4b2d-8061-c34797622b99_ifkkfg.webm" type="video/webm" />
                       Your browser does not support the video tag.
                     </video>
                   </a>
 
                   <a className="reel-card carousel-slide" href="https://youtu.be/g6Owyh2-oRI?si=MKOnIpNgP8QzxKfG" style={{width: '360px', flex: '0 0 360px'}}>
                     <video className="reel-media" autoPlay muted loop playsInline preload="metadata" aria-label="Siva video" style={{width: '100%', height: '100%'}}>
-                      <source src="https://res.cloudinary.com/dtwcgfmar/video/upload/v1776755536/videoplayback_1_online-video-cutter.com_hgcdmu.webm" type="video/webm" />
+                      <source src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/videoplayback_1_online-video-cutter.com_hgcdmu.webm" type="video/webm" />
                       Your browser does not support the video tag.
                     </video>
                   </a>
 <a className="reel-card carousel-slide" href="https://www.instagram.com/reel/DVogZB9DwtS/?igsh=OXFnNmtiMm1lZnA3" target="_blank" rel="noopener noreferrer" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)', textDecoration: 'none', background: 'linear-gradient(135deg, rgba(10,10,10,0.06), rgba(26,26,26,0.04))'}}>
                     <video className="reel-media" autoPlay muted loop playsInline preload="none" aria-label="Siva video">
-                      <source src="https://res.cloudinary.com/dtwcgfmar/video/upload/v1776750412/AQOm9-TKSETF6u9l0nAQpjHsbAhXRYiNGURHO24GziELFESRAfPmZ3VX4ZBR9f688oXf0552oU3C64zxdTEwPX8NpN7LfDa0aMU0TaPDrQ_hncnv7.webm" type="video/webm" />
+                      <source src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/AQOm9-TKSETF6u9l0nAQpjHsbAhXRYiNGURHO24GziELFESRAfPmZ3VX4ZBR9f688oXf0552oU3C64zxdTEwPX8NpN7LfDa0aMU0TaPDrQ_hncnv7.webm" type="video/webm" />
                       Your browser does not support the video tag.
                     </video>
                   </a>

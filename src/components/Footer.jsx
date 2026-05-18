@@ -28,7 +28,6 @@ export default function Footer() {
     title: "Resources",
     items: [
       { label: "Blog", href: "/blog" },
-      { label: "Manage Blogs", href: "/blog/dashboard" },
       { label: "Write a Blog", href: "/blog/submit" },
       { label: "Careers", href: "/careers" },
       { label: "Partners", href: "/partners" },

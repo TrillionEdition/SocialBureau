@@ -14,14 +14,14 @@ export default function QASection() {
   
   const experts = [
     {
-      name: "Amal",
-      title: "DM",
-      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1767762347/amal_fnathg.jpg"
+      name: "Hajira",
+      title: "Admin",
+      image: "https://cdn-icons-png.flaticon.com/512/9187/9187604.png"
     },
     {
-      name: "Muhsin",
-      title: "SEO",
-      image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1767762340/muhsin_pcrnxx.jpg"
+      name: "Athira",
+      title: "PMO",
+      image: "https://cdn-icons-png.flaticon.com/512/9131/9131478.png"
     }
   ];
 

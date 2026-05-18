@@ -292,7 +292,7 @@ export const ModernTemplate = ({ data, isEditing, onUpdate }) => {
       }}
     >
       {/* Background Ambience Layers */}
-      <div className="fixed inset-0 pointer-events-none opacity-[var(--noise-opacity)] z-[60] mix-blend-overlay bg-[url('https://res.cloudinary.com/dtwcgfmar/image/upload/v1710515152/noise_u6p5qg.png')] bg-repeat" />
+      <div className="fixed inset-0 pointer-events-none opacity-[var(--noise-opacity)] z-[60] mix-blend-overlay bg-repeat" />
       <div 
         className="fixed inset-0 pointer-events-none opacity-[var(--grid-opacity)] z-[5] " 
         style={{ 

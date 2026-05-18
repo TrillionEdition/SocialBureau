@@ -146,7 +146,7 @@ function HeroEditorial() {
         {/* Right Image Section */}
         <div className="relative flex flex-col items-center lg:items-end">
           <img
-            src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159675/dp3_jscnpp.jpg"
+            src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/dp3_jscnpp.jpg"
             className="w-full max-h-[70vh] lg:max-h-[900px] object-contain lg:object-cover"
             alt="Looplogik"
           />
@@ -178,9 +178,9 @@ function HeroEditorial() {
 }
 
 const cards = [
-  { img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159381/stone_tkleic.webp", title: "Work samples", link: "https://looplogik.wordpress.com/2025/07/20/work-samples-2" },
-  { img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159399/happy_k6bfsg.jpg", title: "The best things in life are free", link: "https://looplogik.wordpress.com/2025/07/19/the-best-things-in-life-are-free-2" },
-  { img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159504/workout_jcqzvd.webp", title: "D1 FORTIFICATION -social media", link: "https://looplogik.wordpress.com/2025/07/19/d1-fortification-social-media-2" },
+  { img: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/stone_tkleic.webp", title: "Work samples", link: "https://looplogik.wordpress.com/2025/07/20/work-samples-2" },
+  { img: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/happy_k6bfsg.jpg", title: "The best things in life are free", link: "https://looplogik.wordpress.com/2025/07/19/the-best-things-in-life-are-free-2" },
+  { img: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/workout_jcqzvd.webp", title: "D1 FORTIFICATION -social media", link: "https://looplogik.wordpress.com/2025/07/19/d1-fortification-social-media-2" },
 ];
 
 function MobileCard() {
@@ -387,76 +387,76 @@ const blogs = [
     id: 1,
     title: "Fauna Of Mirrors",
     category: "UI Interface",
-    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769158228/fau_tlfwd0.jpg",
+    image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/fau_tlfwd0.jpg",
     link: "https://looplogik.wordpress.com/2025/06/25/fauna-of-mirrors",
   },
   {
     id: 2,
     title: "Lonesome and Blue",
     category: "UI Interface",
-    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769158257/alonely_ieyd8d.jpg",
+    image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/alonely_ieyd8d.jpg",
     link: "https://looplogik.wordpress.com/2025/06/25/lonesome-and-blue",
   },
   {
     id: 3,
     title: "Swansong",
     category: "UI Interface",
-    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769158463/bird4_sbqrpw.jpg",
+    image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/bird4_sbqrpw.jpg",
     link: "https://looplogik.wordpress.com/2025/06/25/swansong",
   },
   {
     id: 4,
     title: "About DC Kizhakemuri",
     category: "UI Interface",
-    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159114/dcbooks_ocgxh4.png",
+    image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/dcbooks_ocgxh4.png",
     link: "https://looplogik.wordpress.com/2025/04/09/about-dc-kizhakemuri-2",
   },
   {
     id: 5,
     title: "Ammu,Kunju and Pandi",
     category: "UI Interface",
-    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769158977/cow_eduajj.png",
+    image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/cow_eduajj.png",
     link: "https://looplogik.wordpress.com/2025/06/25/ammukunju-and-pandi",
   },
   {
     id: 6,
     title: "Kerala Literature Festival website",
     category: "UI Interface",
-    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159211/klv_v04eik.png",
+    image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/klv_v04eik.png",
     link: "https://looplogik.wordpress.com/2025/07/24/kerala-literature-festival-website-2",
   },
   {
     id: 7,
     title: "Going Home",
     category: "UI Interface",
-    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769158760/home_amc5vk.jpg",
+    image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/home_amc5vk.jpg",
     link: "https://looplogik.wordpress.com/2025/06/25/going-home-2",
   },
   {
     id: 8,
     title: "Historical consequences of maritime trade in Kochi",
     category: "UI Interface",
-    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769158815/kochi1_hc2ymq.jpg",
+    image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/kochi1_hc2ymq.jpg",
     link: "https://looplogik.wordpress.com/2025/06/25/historical-consequences-of-maritime-trade-in-kochi",
   },
   {
     id: 9,
     title: "Backyard Musings- A life the world forgot",
     category: "UI Interface",
-    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772255541/yard_1_bgjdbk.webp",
+    image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/yard_1_bgjdbk.webp",
     link: "https://looplogik.wordpress.com/2026/01/05/backyard-musings-a-life-the-world-forgot",
   }, {
     id: 10,
     title: "B.Arch – DC School of Architecture and Design",
     category: "UI Interface",
-    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772255541/dcschool_q8uxtf.webp",
+    image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/dcschool_q8uxtf.webp",
     link: "https://looplogik.wordpress.com/2025/05/13/b-arch-dc-school-of-architecture-and-design-blog-post",
   },
   {
     id: 11,
     title: "Integrated Business Consultants – Brochure",
     category: "UI Interface",
-    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769157941/image-gen_7_g4ewu6.png",
+    image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/image-gen_7_g4ewu6.png",
     link: "https://looplogik.wordpress.com/2026/01/23/integrated-business-consultants-brochure",
   },
   {
@@ -470,14 +470,14 @@ const blogs = [
     id: 13,
     title: "Fauna of Mirrors and other stories",
     category: "Uncategorized",
-    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776140797/fauna_x9veyg.webp",
+    image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/fauna_x9veyg.webp",
     link: "https://looplogik.wordpress.com/2026/04/13/fauna-of-mirrors-and-other-stories-work-in-progress",
   },
   {
     id: 14,
     title: "Beyond Eco-Living- an excerpt",
     category: "Uncategorized",
-    image: "https://res.cloudinary.com/dtwcgfmar/image/upload/q_auto/f_auto/v1776423489/ChatGPT_Image_Apr_17_2026_04_27_00_PM_1_rkmruq.png",
+    image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT_Image_Apr_17_2026_04_27_00_PM_1_rkmruq.png",
     link: "https://looplogik.wordpress.com/2026/03/14/beyond-eco-living-an-excerpt",
   },
 ];
@@ -703,49 +703,49 @@ function LatestWebsite() {
     {
       id: 1,
       name: "DC Kizhakemuri Foundation",
-      logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159913/dcbookslogo_rocnra.jpg",
+      logo: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/dcbookslogo_rocnra.jpg",
       link: "https://dckf.in",
     },
     {
       id: 2,
       name: "DC Books",
-      logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159945/cdd_pqfvbx.jpg",
+      logo: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/cdd_pqfvbx.jpg",
       link: "https://dcbooks.com",
     },
     {
       id: 3,
       name: "Chandy's Drizzle Drops",
-      logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159962/cwwm_xixzyh.jpg",
+      logo: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/cwwm_xixzyh.jpg",
       link: "https://chandysdrizzledrops.com",
     },
     {
       id: 4,
       name: "Chandy's Windy Woods",
-      logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159991/tpmunnar_tpuz59.png",
+      logo: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/tpmunnar_tpuz59.png",
       link: "https://www.chandyswindywoods.com/overview.html",
     },
     {
       id: 5,
       name: "Planet Munnar",
-      logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769160007/gkozhi_wyulqa.png",
+      logo: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/gkozhi_wyulqa.png",
       link: "https://planetmunnar.com",
     },
     {
       id: 6,
       name: "Gokulam Grand Kozhikode",
-      logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769160007/gkozhi_wyulqa.png",
+      logo: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/gkozhi_wyulqa.png",
       link: "https://gokulamhotels.com/gokulam-grand-kozhikode",
     },
     {
       id: 7,
       name: "Gokulam Grand Kumarakom",
-      logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769160025/gk2_kua1lm.jpg",
+      logo: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/gk2_kua1lm.jpg",
       link: "https://gokulamhotels.com/gokulamgrandkumarakom",
     },
     {
       id: 8,
       name: "Gokulam Grand Trivandrum",
-      logo: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1769160135/gotri1_heqmvf.png",
+      logo: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/gotri1_heqmvf.png",
       link: "https://gokulamhotels.com/gokulamgrandtrivandrum",
     },
     {
@@ -870,7 +870,7 @@ Submitted via: Website Contact Form
           {/* IMAGE PANEL */}
           <div className="relative h-[420px] lg:h-auto">
             <img
-              src="https://res.cloudinary.com/dtwcgfmar/image/upload/v1769159320/p10_sgwvkq.jpg"
+              src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/p10_sgwvkq.jpg"
               alt="Contact"
               className="w-full h-full object-cover"
             />
@@ -1127,7 +1127,7 @@ const videosData = [
     title: "Ramayana Patashala from Ranjit Chettur",
     youtubeId: "https://www.youtube.com/embed/516Ku0G_1EE?si=y433VXgwVukg9R5j",
     category: "Design Process",
-    youtube_img: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772255541/UtubeRanjith1_pb3tlt.webp",
+    youtube_img: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/UtubeRanjith1_pb3tlt.webp",
   },
   {
     id: 2,

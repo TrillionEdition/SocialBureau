@@ -184,33 +184,27 @@ const ContentMarketing = () => {
   const whyChooseUs = [
     {
       icon: Target,
-      title: "Strategy-First Content Planning",
+      title: "Strategy-First Planning",
       description:
-        "We begin every engagement with structured planning rather than execution-first publishing. Content decisions are guided by audience intent, search behavior, and business priorities to ensure every asset has a clear purpose and measurable role. This approach reduces wasted effort and helps content contribute directly to long-term growth instead of short-lived visibility.",
+        "Structured planning guided by audience intent and business priorities for measurable growth.",
     },
     {
       icon: RefreshCw,
-      title: "Authority-Driven Content Systems",
+      title: "Authority-Driven Systems",
       description:
-        "Instead of isolated pieces, we build interconnected content frameworks that strengthen relevance and credibility over time. Each asset supports a broader narrative, helping brands establish consistency and recognition within their space. This system-based approach supports stronger trust signals across search engines and discovery platforms.",
+        "Interconnected content frameworks that strengthen brand relevance and trust over time.",
     },
     {
       icon: FileText,
-      title: "Performance-Aligned Execution",
+      title: "Performance Execution",
       description:
-        "Content is created with outcomes in mind, not assumptions. We align structure, messaging, and format with how users discover, evaluate, and act on information across digital touchpoints. This ensures content supports engagement, enquiry quality, and decision-stage confidence.",
-    },
-    {
-      icon: Share2,
-      title: "Integrated Distribution Thinking",
-      description:
-        "Visibility is planned from the start, not treated as an afterthought. We consider where and how content will be discovered, shared, and consumed while shaping the asset itself. This integrated thinking helps content gain traction naturally instead of depending on repeated promotion.",
+        "Content execution mapped to how users discover, evaluate, and act across touchpoints.",
     },
     {
       icon: TrendingUp,
-      title: "Continuous Optimization and Learning",
+      title: "Continuous Optimization",
       description:
-        "Content performance is reviewed regularly to understand what resonates and where improvements are needed. Insights from real user behavior guide refinements in structure, messaging, and conversion pathways. This ongoing process allows content to evolve, remain relevant, and deliver increasing value over time.",
+        "Ongoing reviews and data-driven refinements ensure your content remains relevant and effective.",
     },
   ];
 
@@ -313,7 +307,7 @@ const ContentMarketing = () => {
           <div className="relative h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
             <img
               src={getOptimizedCloudinaryUrl(
-                "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086614/cup-coffee-with-headphones-notebook-red-background_up2ufi.webp",
+                "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/service%20page/content%20marketing.jpg",
                 1200,
               )}
               alt="Content Marketing Hero"
@@ -374,7 +368,7 @@ const ContentMarketing = () => {
             <div className="h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
               <img
                 src={getOptimizedCloudinaryUrl(
-                  "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086611/Fastion_sg9hqc.webp",
+                  "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/service%20page/Content%20marketing%202.jpg",
                   1000,
                 )}
                 alt="Strategic Content Creation and Planning"
@@ -416,7 +410,7 @@ const ContentMarketing = () => {
             <div className="lg:col-span-2 h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl">
               <img
                 src={getOptimizedCloudinaryUrl(
-                  "https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/alarm-clock-top-laptop-with-copy-space_fl8wmq.webp",
+                  "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/service%20page/Content%20marketing%203.png",
                   1200,
                 )}
                 alt="Content Creation Services and productivity"
@@ -535,48 +529,72 @@ const ContentMarketing = () => {
         style={{ zIndex: 40 }}
       >
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="order-2 lg:order-1">
-              <span className="text-[0.75rem] tracking-[0.05em] uppercase text-gray-500 font-semibold mb-4 block">
-                Why Choose Us
-              </span>
-              <h2 className="text-4xl lg:text-5xl font-semibold leading-[1.1] tracking-[-0.015em] mb-10 text-black">
-                Content Marketing agency in Kochi
-              </h2>
+          <div className="text-center mb-20">
+            <span className="text-[0.75rem] tracking-[0.05em] uppercase text-gray-500 font-semibold mb-4 block">
+              Why Choose Us
+            </span>
+            <h2 className="text-4xl lg:text-5xl font-semibold leading-[1.1] tracking-[-0.015em] text-black">
+              Content Marketing agency in Kochi
+            </h2>
+          </div>
 
-              <div className="space-y-8">
-                {whyChooseUs.map((feature, index) => {
-                  const Icon = feature.icon;
-                  return (
-                    <div key={index} className="flex gap-6">
-                      <div className="flex-shrink-0 w-12 h-12 bg-[#920F17]/5 rounded-xl flex items-center justify-center">
-                        <Icon className="w-6 h-6 text-[#920F17]" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold mb-2">
-                          {feature.title}
-                        </h3>
-                        <p className="text-[#515154] leading-relaxed">
-                          {feature.description}
-                        </p>
-                      </div>
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            {/* Left side items */}
+            <div className="space-y-16 lg:text-right order-2 lg:order-1 lg:col-span-3">
+              {whyChooseUs.slice(0, 2).map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <div key={index} className="flex flex-col lg:items-end gap-4">
+                    <div className="w-12 h-12 bg-[#920F17]/5 rounded-xl flex items-center justify-center">
+                      <Icon className="w-6 h-6 text-[#920F17]" />
                     </div>
-                  );
-                })}
-              </div>
+                    <div>
+                      <h3 className="text-xl font-semibold mb-2">
+                        {feature.title}
+                      </h3>
+                      <p className="text-[#515154] leading-relaxed text-sm max-w-xs lg:ml-auto">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            <div className="order-1 lg:order-2 h-[400px] lg:h-[600px] rounded-[2rem] overflow-hidden shadow-2xl relative group">
+
+            {/* Center image (Floating PNG) */}
+            <div className="order-1 lg:order-2 relative group flex justify-center items-center lg:col-span-6">
               <img
                 src={getOptimizedCloudinaryUrl(
-                  "https://res.cloudinary.com/dtwcgfmar/image/upload/v1770978614/Picsart_26-02-10_22-36-15-902_yehobf.jpg",
+                  "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/service%20page/content%20marketing%204.png",
                   1000,
                 )}
                 alt="Content professional working at SocialBureau"
-                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                className="w-full max-w-[700px] h-auto transition-transform duration-700 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            </div>
+
+            {/* Right side items */}
+            <div className="space-y-16 order-3 lg:col-span-3">
+              {whyChooseUs.slice(2, 4).map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <div key={index} className="flex flex-col gap-4">
+                    <div className="w-12 h-12 bg-[#920F17]/5 rounded-xl flex items-center justify-center">
+                      <Icon className="w-6 h-6 text-[#920F17]" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold mb-2">
+                        {feature.title}
+                      </h3>
+                      <p className="text-[#515154] leading-relaxed text-sm max-w-xs">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

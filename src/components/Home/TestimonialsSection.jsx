@@ -4,21 +4,21 @@ const TestimonialsSection = ({
     videosList = [
         {
             id: "1",
-            thumbnail: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1762162088/SB_Testimonail_Rimshad_vxakgn.jpg",
+            thumbnail: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/SB_Testimonail_Rimshad_vxakgn.jpg",
             title: "Rimshad M",
             description: "Graphics Designer",
             link: "https://youtu.be/eBJnlmTuuIk?si=CYTR9TTw6uxhnniB",
         },
         {
             id: "2",
-            thumbnail: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1765429124/Aneek_oertfd.png",
+            thumbnail: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Aneek_oertfd.png",
             title: "Aneek",
             description: "Performance Marketer",
             link: "https://youtu.be/-FZtOCgZP2Y?si=v0_zYYa9NDJPF1Zk",
         },
         {
             id: "3",
-            thumbnail: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1761906713/SB_Testimonial_YouTube_Thumbanil_Elizebath_loehcz.png",
+            thumbnail: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/SB_Testimonial_YouTube_Thumbanil_Elizebath_loehcz.png",
             title: "Elizebath Thomas",
             description: "Web Developer",
             link: "https://youtu.be/gNebMaTqoQg?si=7uUvk1H389lKdBdJ",
