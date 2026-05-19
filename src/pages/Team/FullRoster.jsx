@@ -38,12 +38,12 @@ export const FullRoster = () => {
           const others = apiMembers.filter(m => !ordered.find(om => String(om._id) === String(m._id)));
           setMembers([...ordered, ...others]);
         } else {
-          const { TEAM_MEMBERS } = await import("./Constants");
+          const { TEAM_MEMBERS } = await import("./constants");
           setMembers(TEAM_MEMBERS);
         }
       } catch (err) {
         console.error("Fetch failed, using static data", err);
-        const { TEAM_MEMBERS } = await import("./Constants");
+        const { TEAM_MEMBERS } = await import("./constants");
         setMembers(TEAM_MEMBERS);
       } finally {
         setLoading(false);
