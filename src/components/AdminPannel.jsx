@@ -15,7 +15,8 @@ const AdminPanel = () => {
         { title: "Client Dashboard", desc: "Manage client data", link: "/client-dashboard" },
         { title: "Media", desc: "Future of Media waitlist entries", link: "/media-dashboard" },
         { title: "Applications", desc: "Review candidate resumes and profiles", link: "/admin/applications" },
-
+        { title: "ClickUp Clients", desc: "Provision and manage client portals", link: "/admin/clickup-clients" },
+        { title: "Lottery Claims", desc: "Process payments and cash wins for lottery spinners", link: "/admin/lottery-claims" },
     ];
 
     return (

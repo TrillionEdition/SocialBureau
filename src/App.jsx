@@ -25,7 +25,10 @@ import PartnershipChatbot from "./components/PartnershipChatbot";
 import AjnoraDashboard from "./pages/AjnoraDashboard";
 import AjinorahForm from "./components/ClientFormaji";
 import CDashboard from "./components/ClickupDash/CDashboard";
-
+import CLogin from "./components/ClickupDash/CLogin";
+import AdminClickupClients from "./components/ClickupDash/AdminClickupClients";
+import SpinWheel from "./components/Lottery/LotterySpinner";
+import LotteryClaims from "./pages/LotteryClaims";
 
 const Home = lazy(() =>
   import("./pages/Home").then((module) => ({ default: module.Home })),
@@ -160,7 +163,8 @@ function ConditionalFooter() {
     "/job-listing",
     "/job-applicants",
     "/candidate-profile",
-    "/client-portal"
+    "/client-portal",
+    "/client-login"
   ];
 
 
@@ -200,7 +204,8 @@ function ConditionalNavbar() {
     "/job-applicants",
     "/candidate-profile",
     "/ajio",
-    "/client-portal"
+    "/client-portal",
+    "/client-login"
   ];
 
 
@@ -275,7 +280,7 @@ function App() {
             <Route
               path="/blog/submit"
               element={
-                  <SubmitBlog />
+                <SubmitBlog />
               }
             />
             <Route path="/contact" element={<Contact />} />
@@ -413,9 +418,12 @@ function App() {
             <Route path="/client-form" element={<AjinorahForm />} />
             <Route path="/client-dashboard" element={<ClientDashboard />} />
             <Route path="/client-portal" element={<CDashboard />} />
-
+            <Route path="/client-login" element={<CLogin />} />
+            <Route path="/admin/clickup-clients" element={<AdminRoute><AdminClickupClients /></AdminRoute>} />
+            <Route path="/lottery" element={<SpinWheel />} />
             <Route path="/api-marketing-dashboard" element={<AdminRoute><ApiMarketingDashboard /></AdminRoute>} />
             <Route path="/media-dashboard" element={<AdminRoute><MediaDashboard /></AdminRoute>} />
+            <Route path="/admin/lottery-claims" element={<AdminRoute><LotteryClaims /></AdminRoute>} />
             <Route path="/ajnoradashboard" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
             <Route path="/ajnoradashboard/:id" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
 
