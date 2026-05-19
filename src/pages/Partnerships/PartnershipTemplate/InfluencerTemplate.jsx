@@ -11,12 +11,16 @@ import {
   Linkedin,
   Twitter,
   Instagram,
+  Youtube,
   Github,
   Globe,
   ExternalLink,
   Quote,
   ArrowUpRight,
   ArrowUp,
+  ArrowRight,
+  Send,
+  ChevronUp,
   Sparkles,
   ChevronDown,
   Edit3,
@@ -28,9 +32,7 @@ import {
   Mail,
   MapPin,
   Phone,
-  Send,
   Facebook,
-  Youtube,
   MessageSquare,
   Users,
   TrendingUp,
@@ -171,7 +173,8 @@ const SectionHeading = ({ title, subtitle, light = false }) => (
     <div className="flex flex-col items-center gap-4">
       <TextReveal>
         <h2
-          className={`text-5xl md:text-8xl font-black uppercase tracking-tighter leading-none ${light ? "text-white" : "text-zinc-900"}`}
+          className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-none relative z-10"
+          style={{ color: "var(--heading-color)" }}
         >
           {title}
         </h2>
@@ -180,12 +183,14 @@ const SectionHeading = ({ title, subtitle, light = false }) => (
         initial={{ width: 0 }}
         whileInView={{ width: "80px" }}
         viewport={{ once: true }}
-        className="h-1.5 bg-yellow-500 rounded-full"
+        className="h-1.5 rounded-full"
+        style={{ backgroundColor: "var(--primary-color)" }}
       />
       {subtitle && (
         <TextReveal>
           <p
-            className={`mt-4 max-w-2xl text-[10px] md:text-xs uppercase tracking-[0.5em] font-black italic ${light ? "text-zinc-500" : "text-zinc-400"}`}
+            className="mt-4 max-w-2xl text-[10px] md:text-xs uppercase tracking-[0.5em] font-black italic"
+            style={{ color: "var(--paragraph-color)", opacity: 0.5 }}
           >
             {subtitle}
           </p>
@@ -302,6 +307,9 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
     "--archive-aspect": activeStyles.archiveAspect || "3/4",
     "--archive-hover": activeStyles.archiveHover || "zoom",
     "--archive-style": activeStyles.archiveStyle || "clean",
+    "--grid-opacity": activeStyles.gridOpacity || "0.08",
+    "--grid-color": activeStyles.gridColor || "rgba(128,128,128,0.2)",
+    "--noise-opacity": activeStyles.noiseOpacity || "0.03",
   };
 
   const heroRef = useRef(null);
@@ -322,6 +330,20 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
     restDelta: 0.001,
   });
 
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 1000);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div
       ref={containerRef}
@@ -340,11 +362,23 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
           .grainy-overlay {
             background-image: url("https://grainy-gradients.vercel.app/noise.svg");
             filter: contrast(150%) brightness(1000%);
-            opacity: 0.03;
+            opacity: var(--noise-opacity);
             pointer-events: none;
             position: fixed;
             inset: 0;
-            z-index: 999;
+            z-index: 1;
+          }
+
+          .grid-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;
+            opacity: var(--grid-opacity);
+            background-image: 
+              linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+              linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+            background-size: 60px 60px;
           }
 
           .hero-curve {
@@ -359,9 +393,9 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
 
           .masonry-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            grid-auto-rows: 250px;
-            gap: 24px;
+            grid-template-columns: repeat(var(--archive-columns), 1fr);
+            grid-auto-rows: min-content;
+            gap: var(--archive-gap);
           }
 
           .masonry-item:nth-child(2n) { grid-row: span 2; }
@@ -451,6 +485,7 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
 
       {/* Aesthetic Grain & Progress */}
       <div className="grainy-overlay" />
+      <div className="grid-overlay" />
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 origin-left z-[1000]"
         style={{ scaleX, backgroundColor: "var(--primary-color)" }}
@@ -460,12 +495,16 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
       <section
         id="identity-section"
         ref={heroRef}
-        className="relative bg-[#050505] text-white h-[100svh] min-h-[600px] flex flex-col lg:flex-row overflow-hidden items-stretch"
+        className="relative h-[100svh] min-h-[600px] flex flex-col lg:flex-row overflow-hidden items-stretch"
+        style={{ backgroundColor: "var(--bg-color)", color: "var(--heading-color)" }}
       >
         <FloatingElements />
         
         {/* LEFT COLUMN: The Vertical Identity */}
-        <div className="relative w-full lg:w-[12%] xl:w-[10%] border-r border-white/5 flex lg:flex-col items-center justify-between py-8 lg:py-12 px-6 z-30 bg-black">
+        <div 
+          className="relative w-full lg:w-[12%] xl:w-[10%] border-r border-white/5 flex lg:flex-col items-center justify-between py-8 lg:py-12 px-6 z-30"
+          style={{ backgroundColor: "rgba(0,0,0,0.2)" }}
+        >
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -580,8 +619,12 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
                   Contact Me
                 </button>
               </MagneticButton>
-              <button className="w-full py-5 bg-white/5 border border-white/10 text-white font-black uppercase tracking-[0.3em] text-[9px] rounded-full hover:bg-white/10 transition-all italic">
-                Media Kit
+              <button className="relative w-full py-5 bg-[#0F0F0F] border border-white/5 text-white font-black uppercase tracking-[0.3em] text-[9px] rounded-full hover:scale-[1.02] active:scale-95 transition-all group overflow-hidden italic">
+                <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="relative z-10 flex items-center justify-center gap-3">
+                  Media Kit
+                  <Sparkles size={10} className="text-yellow-500" />
+                </div>
               </button>
             </div>
           </div>
@@ -596,8 +639,8 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
       {/* About Section */}
       <section
         id="narrative-section"
-        className="py-20 md:py-32 px-6 md:px-16 max-w-7xl mx-auto relative"
-        style={{ backgroundColor: "var(--bio-bg)" }}
+        className="py-20 md:py-32 px-6 md:px-16 max-w-7xl mx-auto relative z-10"
+        style={{ backgroundColor: "#FFFFFF" }}
       >
         <FloatingElements />
         <div className="grid md:grid-cols-2 gap-24 md:gap-40 items-center">
@@ -612,14 +655,15 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
               className="absolute -inset-4 rounded-[60px] blur-3xl -z-10" 
               style={{ backgroundColor: "var(--primary-color)", opacity: 0.1 }}
             />
-            <div className="relative z-10 rounded-[48px] overflow-hidden shadow-[0_40px_80px_rgba(0,0,0,0.1)] group">
+            <div className="relative z-20 rounded-[48px] overflow-hidden shadow-[0_40px_80px_rgba(0,0,0,0.1)] group">
               <img
                 src={
-                  image ||
+                  data.aboutImage ||
+                  data.image ||
                   "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop"
                 }
                 alt="About"
-                className="w-full h-auto transition-transform duration-1000 group-hover:scale-110"
+                className="w-full h-auto transition-transform duration-1000 group-hover:scale-110 relative z-10"
               />
             </div>
             <motion.div
@@ -628,10 +672,10 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
               style={{ backgroundColor: "var(--primary-color)" }}
             >
               <span className="block text-6xl font-black text-black leading-none">
-                5+
+                {data.experienceBadge || "5+"}
               </span>
               <span className="text-[10px] font-black uppercase tracking-widest text-black/40 italic">
-                Years Experience
+                {data.experienceLabel || "Years Experience"}
               </span>
             </motion.div>
           </motion.div>
@@ -646,11 +690,39 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
               </div>
               <TextReveal>
                 <h2 
-                  className="text-5xl md:text-7xl font-black text-zinc-900 leading-[0.9] uppercase italic tracking-tighter"
-                  style={{ fontSize: `calc(4.5rem * var(--section-title-size))` }}
+                  className="text-5xl md:text-8xl font-black leading-[0.85] uppercase italic tracking-tighter"
+                  style={{ 
+                    color: "#111",
+                    fontSize: `calc(5rem * var(--section-title-size))` 
+                  }}
                 >
-                  Crafting Digital <br />
-                  <span className="text-zinc-300">Narratives</span>
+                  {data.narrativeHeading ? (
+                    <>
+                      {data.narrativeHeading.split(" ").slice(0, -1).join(" ")} <br />
+                      <span 
+                        style={{ 
+                          color: "transparent",
+                          WebkitTextStroke: "1px #111",
+                          opacity: 0.2
+                        }}
+                      >
+                        {data.narrativeHeading.split(" ").slice(-1)}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      Crafting Digital <br />
+                      <span 
+                        style={{ 
+                          color: "transparent",
+                          WebkitTextStroke: "1px #111",
+                          opacity: 0.2
+                        }}
+                      >
+                        Narratives
+                      </span>
+                    </>
+                  )}
                 </h2>
               </TextReveal>
             </div>
@@ -659,10 +731,13 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="text-zinc-500 leading-relaxed text-lg md:text-xl font-light italic"
-              style={{ fontSize: `calc(1.25rem * var(--bio-size))` }}
+              className="leading-relaxed text-lg md:text-xl font-light italic"
+              style={{ 
+                color: "#555", 
+                fontSize: `calc(1.25rem * var(--bio-size))` 
+              }}
             >
-              {bio ||
+              {data.bio ||
                 "I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth."}
             </motion.p>
 
@@ -670,18 +745,20 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
               {[
                 {
                   label: "Community",
-                  value: data.details?.stats?.followers || "100K+",
+                  value: data.stats?.followers || "100K+",
                 },
                 {
                   label: "Engagement",
-                  value: data.details?.stats?.engagement || "5.2%",
+                  value: data.stats?.engagement || "5.2%",
                 },
               ].map((stat, i) => (
                 <div key={i}>
-                  <span className="block text-[10px] font-black uppercase tracking-widest text-zinc-300 mb-2 italic">
+                  <span className="block text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2 italic">
                     {stat.label}
                   </span>
-                  <span className="text-4xl font-black text-zinc-900 tracking-tighter italic">
+                  <span 
+                    className="text-4xl md:text-5xl font-black tracking-tighter italic text-[#111]"
+                  >
                     {stat.value}
                   </span>
                 </div>
@@ -689,17 +766,13 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
             </div>
 
             <button 
-              className="px-12 py-6 bg-zinc-900 text-white font-black uppercase tracking-[0.3em] text-[10px] rounded transition-all italic"
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "var(--primary-color)";
-                e.currentTarget.style.color = "black";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#18181b";
-                e.currentTarget.style.color = "white";
-              }}
+              className="relative px-12 py-6 bg-[#0F0F0F] text-white font-black uppercase tracking-[0.4em] text-[10px] rounded-xl hover:scale-105 transition-all shadow-[0_20px_50px_rgba(0,0,0,0.3)] group overflow-hidden border border-white/5 italic"
             >
-              Download Media Kit
+              <div className="absolute inset-0 bg-gradient-to-tr from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="relative z-10 flex items-center justify-center gap-3">
+                Download Media Kit
+                <Sparkles size={12} className="text-yellow-500" />
+              </div>
             </button>
           </div>
         </div>
@@ -708,19 +781,35 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
       {/* Services Section */}
       <section
         id="solutions-section"
-        className="py-20 md:py-32 px-6 md:px-16 relative overflow-hidden"
-        style={{ backgroundColor: "var(--services-bg)" }}
+        className="py-20 md:py-32 px-6 md:px-16 relative z-10 overflow-hidden"
+        style={{ backgroundColor: "#fcfcfc" }}
       >
         <div 
-          className="absolute top-0 right-0 w-1/2 h-full -skew-x-12 translate-x-1/2" 
-          style={{ backgroundColor: "var(--primary-color)", opacity: 0.05 }}
+          className="absolute top-0 right-0 w-[80%] h-full -skew-x-12 translate-x-1/4" 
+          style={{ backgroundColor: "var(--primary-color)", opacity: 0.03 }}
+        />
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-[0.03]"
+          style={{ 
+            backgroundImage: `radial-gradient(circle at 20% 20%, var(--primary-color) 0%, transparent 50%)`
+          }}
         />
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <SectionHeading
-            title="Solutions"
-            subtitle="Strategic Collaboration Offerings"
-          />
+          <div className="text-center mb-16 md:mb-24">
+            <div className="flex flex-col items-center gap-4">
+              <TextReveal>
+                <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-none text-zinc-900">
+                  Solutions
+                </h2>
+              </TextReveal>
+              <div className="h-1.5 w-20 rounded-full" style={{ backgroundColor: "var(--primary-color)" }} />
+              <TextReveal>
+                <p className="mt-4 max-w-2xl text-[10px] md:text-xs uppercase tracking-[0.5em] font-black italic text-zinc-400">
+                  Strategic Collaboration Offerings
+                </p>
+              </TextReveal>
+            </div>
+          </div>
 
           <motion.div 
             className="grid md:grid-cols-3 gap-8"
@@ -742,27 +831,37 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
                   hidden: { opacity: 0, y: 30 },
                   visible: { opacity: 1, y: 0 }
                 }}
-                whileHover={{ y: -20, scale: 1.02 }}
-                className="bg-white p-12 md:p-16 rounded-[48px] shadow-[0_20px_50px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_100px_rgba(0,0,0,0.08)] transition-all border border-zinc-100 flex flex-col justify-between group h-[450px]"
+                whileHover={{ y: -15 }}
+                className="p-10 md:p-14 rounded-[40px] shadow-[0_10px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_40px_100px_rgba(0,0,0,0.12)] transition-all duration-500 border border-zinc-200/60 flex flex-col justify-between group h-[480px] relative z-20 overflow-hidden"
+                style={{ backgroundColor: "#FFFFFF" }}
               >
-                <div className="space-y-8">
-                  <div 
-                    className="w-20 h-20 bg-zinc-50 rounded-[28px] flex items-center justify-center text-zinc-900 transition-all duration-700"
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "var(--primary-color)"}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#f9fafb"}
-                  >
-                    <Layers size={32} />
+                {/* Hover Background Accent */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-500/5 rounded-full translate-x-16 -translate-y-16 group-hover:scale-[10] transition-transform duration-1000" />
+                
+                <div className="relative z-10 space-y-10">
+                  <div className="flex justify-between items-start">
+                    <div 
+                      className="w-20 h-20 rounded-[28px] flex items-center justify-center transition-all duration-700 bg-[#f8f8f8] text-zinc-900 group-hover:bg-yellow-500 group-hover:scale-110 border border-zinc-100"
+                    >
+                      <Layers size={32} />
+                    </div>
+                    <span className="text-4xl font-black text-zinc-200 group-hover:text-yellow-500/30 transition-colors duration-700 italic">
+                      0{idx + 1}
+                    </span>
                   </div>
-                  <div className="space-y-4">
+
+                  <div className="space-y-5">
                     <h3 
-                      className="text-2xl font-black uppercase tracking-tight text-zinc-900 italic leading-none"
-                      style={{ fontSize: `calc(1.5rem * var(--service-title-size))` }}
+                      className="text-3xl font-black uppercase tracking-tighter italic leading-tight text-zinc-900 group-hover:text-yellow-600 transition-colors"
+                      style={{ 
+                        fontSize: `calc(1.75rem * var(--service-title-size))` 
+                      }}
                     >
                       {service.title}
                     </h3>
                     <p 
-                      className="text-zinc-500 text-sm leading-relaxed italic font-light"
-                      style={{ fontSize: `calc(0.875rem * var(--service-body-size))` }}
+                      className="text-zinc-500 text-sm leading-relaxed italic font-light group-hover:text-zinc-600"
+                      style={{ fontSize: `calc(0.9rem * var(--service-body-size))` }}
                     >
                       {service.description}
                     </p>
@@ -787,7 +886,8 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
       {/* Social Media Presence */}
       <section 
         id="digital-echo-section"
-        className="py-20 md:py-32 bg-[#0A0A0A] text-white overflow-hidden relative"
+        className="py-20 md:py-32 overflow-hidden relative"
+        style={{ backgroundColor: "var(--bg-color)", color: "var(--heading-color)" }}
       >
         <div 
           className="absolute inset-0" 
@@ -833,7 +933,7 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
-                        e.currentTarget.style.color = "white";
+                        e.currentTarget.style.color = "var(--heading-color)";
                       }}
                     >
                       <SocialIcon platform={link.platform} />
@@ -909,13 +1009,24 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
       {/* Portfolio Gallery */}
       <section
         id="archive-section"
-        className="py-20 md:py-32 px-6 md:px-16 max-w-[1600px] mx-auto"
-        style={{ backgroundColor: "var(--bg-color)" }}
+        className="py-20 md:py-32 px-6 md:px-16 max-w-[1600px] mx-auto relative z-10"
+        style={{ backgroundColor: "#FFFFFF" }}
       >
-        <SectionHeading
-          title="Archive"
-          subtitle="Curated Visual Masterpieces"
-        />
+        <div className="text-center mb-16 md:mb-24">
+          <div className="flex flex-col items-center gap-4">
+            <TextReveal>
+              <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-none text-zinc-900">
+                Archive
+              </h2>
+            </TextReveal>
+            <div className="h-1.5 w-20 rounded-full" style={{ backgroundColor: "var(--primary-color)" }} />
+            <TextReveal>
+              <p className="mt-4 max-w-2xl text-[10px] md:text-xs uppercase tracking-[0.5em] font-black italic text-zinc-400">
+                Curated Visual Masterpieces
+              </p>
+            </TextReveal>
+          </div>
+        </div>
 
         <div 
           className="grid gap-8"
@@ -976,7 +1087,8 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
       {blogPosts && blogPosts.length > 0 && (
         <section
           id="insights-section"
-          className="py-20 md:py-32 px-6 md:px-16 bg-zinc-950 relative overflow-hidden"
+          className="py-20 md:py-32 px-6 md:px-16 relative z-10 overflow-hidden"
+          style={{ backgroundColor: "var(--bg-color)" }}
         >
           {/* Background Detail */}
           <div className="absolute top-0 right-0 w-1/2 h-full bg-[var(--primary-color)] opacity-[0.02] -skew-x-12 translate-x-1/2" />
@@ -1045,7 +1157,7 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
       {/* CTA Section */}
       <section 
         id="unleash-section"
-        className="py-24 md:py-40 px-6 md:px-16 text-center relative overflow-hidden"
+        className="py-24 md:py-40 px-6 md:px-16 text-center relative z-10 overflow-hidden"
         style={{ backgroundColor: "var(--primary-color)" }}
       >
         {/* Cinematic Background Text */}
@@ -1090,7 +1202,7 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
 
       {/* Footer */}
       <footer 
-        className="py-20 border-t border-white/5 px-6 md:px-16"
+        className="py-20 border-t border-white/5 px-6 md:px-16 relative z-10"
         style={{ backgroundColor: "var(--footer-bg)" }}
       >
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
@@ -1123,6 +1235,22 @@ export const InfluencerTemplate = ({ data, isEditing, onUpdate }) => {
           </div>
         </div>
       </footer>
+
+      {/* Back to Top */}
+      <AnimatePresence>
+        {showBackToTop && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            onClick={scrollToTop}
+            className="fixed bottom-8 right-8 z-[9999] w-14 h-14 bg-white text-black rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all group overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-yellow-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+            <ChevronUp size={24} className="relative z-10" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -120,7 +120,18 @@ export const AuthPage = () => {
       window.dispatchEvent(new Event("authChange"));
       const queryParams = new URLSearchParams(location.search);
       const redirectParam = queryParams.get("redirect");
-      const from = location.state?.from?.pathname || redirectParam || "/";
+      let from = location.state?.from?.pathname || redirectParam;
+
+      if (!from) {
+        if (data.user.role === 'admin') {
+          from = "/team/admin";
+        } else if (data.user.isEmployee) {
+          from = "/team/dashboard";
+        } else {
+          from = "/";
+        }
+      }
+
       setTimeout(() => navigate(from, { replace: true }), 1500);
     } catch (err) {
       setError(err.message);
@@ -155,10 +166,22 @@ export const AuthPage = () => {
         window.dispatchEvent(new Event("authChange"));
         
         // Handle redirection
-        const queryParams = new URLSearchParams(location.search);
-        const redirectParam = queryParams.get("redirect");
-        const from = location.state?.from?.pathname || redirectParam || "/";
-        setTimeout(() => navigate(from, { replace: true }), 1500);
+      // Handle redirection
+      const queryParams = new URLSearchParams(location.search);
+      const redirectParam = queryParams.get("redirect");
+      let from = location.state?.from?.pathname || redirectParam;
+
+      if (!from) {
+        if (data.user.role === 'admin') {
+          from = "/team/admin";
+        } else if (data.user.isEmployee) {
+          from = "/team/dashboard";
+        } else {
+          from = "/";
+        }
+      }
+
+      setTimeout(() => navigate(from, { replace: true }), 1500);
       } else {
         // If auto-login fails for some reason, just go to login page
         setTimeout(() => {

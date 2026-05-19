@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, ChevronRight, Trophy, User, FileText, BarChart3 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Logout from "./Logout";
@@ -8,6 +8,7 @@ const useAuth = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isPartnership, setIsPartnership] = useState(false);
+  const [isEmployee, setIsEmployee] = useState(false);
 
   useEffect(() => {
     const checkAuth = () => {
@@ -16,7 +17,8 @@ const useAuth = () => {
       const userData = rawData ? JSON.parse(rawData) : null;
       setIsLoggedIn(!!userData);
       setIsAdmin(userData?.role?.toLowerCase() === "admin");
-      setIsPartnership(userData?.role?.toLowerCase() === "partnership");
+      setIsPartnership(userData?.role?.toLowerCase() === "partnership" || userData?.role?.toLowerCase() === "partner");
+      setIsEmployee(userData?.isEmployee === true || (!!userData && userData.role?.toLowerCase() !== "partnership" && userData.role?.toLowerCase() !== "partner"));
     };
 
     checkAuth();
@@ -29,7 +31,7 @@ const useAuth = () => {
     };
   }, []);
 
-  return { isLoggedIn, isAdmin, isPartnership };
+  return { isLoggedIn, isAdmin, isPartnership, isEmployee };
 };
 
 // Color scheme for category cards
@@ -52,10 +54,11 @@ export default function Navbar() {
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [expandedMobileCategory, setExpandedMobileCategory] = useState(null);
-  const navigate = useNavigate();
-  const { isLoggedIn, isAdmin, isPartnership } = useAuth();
-  // DEBUG: isAdmin is a boolean, not a function
-
+   const navigate = useNavigate();
+  const location = useLocation();
+  const { isLoggedIn, isAdmin, isPartnership, isEmployee } = useAuth();
+  
+  const isTeamPage = location.pathname === '/team';
 
   const navItems = [
     { label: "Home", href: "/" },
@@ -327,8 +330,8 @@ export default function Navbar() {
                   initial="rest"
                 >
                   {/* Original Text - slides up on hover */}
-                  <motion.span
-                    className="block text-white/90"
+                   <motion.span
+                    className={`block ${isTeamPage && item.label === 'Team' ? 'text-brand-pink font-bold' : 'text-white/90'}`}
                     variants={{
                       rest: { y: 0 },
                       hover: { y: -24 },
@@ -355,8 +358,15 @@ export default function Navbar() {
           </div>
 
           {/* Far-right desktop actions - dropdown menu or simple login */}
-          <div className="hidden md:flex items-center shrink-0 pl-3 relative">
-            {isLoggedIn ? (
+           <div className="hidden md:flex items-center shrink-0 pl-3 relative">
+            {isTeamPage ? (
+              <button
+                onClick={() => handleNavClick("/careers")}
+                className="bg-brand-pink text-white px-5 py-2 rounded-full text-[11px] font-black tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(255,51,88,0.3)] cursor-pointer"
+              >
+                WORK WITH US
+              </button>
+            ) : isLoggedIn ? (
               <div className="relative">
                 <button
                   onMouseEnter={() => setActiveDropdown("userMenu")}
@@ -379,6 +389,28 @@ export default function Navbar() {
                       onMouseLeave={() => setActiveDropdown(null)}
                     >
                       <div className="flex flex-col">
+                        {isEmployee && (
+                          <button
+                            onClick={() => {
+                              handleNavClick("/team/dashboard");
+                              setActiveDropdown(null);
+                            }}
+                            className="text-[13px] font-medium text-brand-pink hover:text-white hover:bg-brand-pink px-4 py-3 text-left transition-colors flex items-center gap-2"
+                          >
+                            <BarChart3 size={14} />
+                            Team Dashboard
+                          </button>
+                        )}
+                        <button
+                          onClick={() => {
+                            handleNavClick("/blog/dashboard");
+                            setActiveDropdown(null);
+                          }}
+                          className="text-[13px] font-medium text-red-500 hover:text-white hover:bg-red-600 px-4 py-3 text-left transition-colors flex items-center gap-2"
+                        >
+                          <BarChart3 size={14} />
+                          Manage Blogs
+                        </button>
                         {isAdmin && (
                           <button
                             onClick={() => {
@@ -647,6 +679,15 @@ export default function Navbar() {
               <div className="mt-6 pt-6 border-t border-white/10 flex flex-col gap-3">
                 {isLoggedIn && (
                   <>
+                    {isEmployee && (
+                      <button
+                        onClick={() => handleNavClick("/team/dashboard")}
+                        className="flex items-center gap-2 text-[22px] font-semibold text-brand-pink active:text-white text-left transition-colors"
+                      >
+                        <BarChart3 size={20} />
+                        Team Dashboard
+                      </button>
+                    )}
                     {(isAdmin || isPartnership) && (
                       <>
                         <button
