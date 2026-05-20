@@ -90,22 +90,33 @@ export default function Sivaprasad() {
   const reelSources = [
     'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/AQOm9-TKSETF6u9l0nAQpjHsbAhXRYiNGURHO24GziELFESRAfPmZ3VX4ZBR9f688oXf0552oU3C64zxdTEwPX8NpN7LfDa0aMU0TaPDrQ_hncnv7.webm',
     'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/2cbb-d78b-4b2d-8061-c34797622b99_ifkkfg.webm',
-    '/assets/sivaprasad/reel.webm',
-    '/assets/sivaprasad/reel (1).webm',
-    '/assets/sivaprasad/reel (2).webm',
-    '/assets/sivaprasad/reel (3).webm',
-    '/assets/sivaprasad/reel (4).webm',
-    '/assets/sivaprasad/reel (5).webm',
-    '/assets/sivaprasad/reel (6).webm',
-    '/assets/sivaprasad/reel (7).webm',
-    '/assets/sivaprasad/reel (8).webm',
+    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel.webm',
+    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(1).webm',
+    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(2).webm',
+    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(3).webm',
+    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(4).webm',
+    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(5).webm',
+    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(6).webm',
+    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(7).webm',
+    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(8).webm',
   ];
   const baseCount = reelSources.length;
   const [slotIndices, setSlotIndices] = useState(() => Array.from({ length: baseCount }, (_, i) => i));
   const videoRefs = useRef([]);
-  const collageSources = Array.from({ length: 10 }, (_, i) => `/assets/sivaprasad/image${i + 1}.webp`);
+
+  const collageSources = [
+    "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/image1.webp",
+    "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/image2.webp",
+    "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/image3.webp",
+    "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/image4.webp",
+    "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/image5.webp",
+    "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/image6.webp",
+    "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/image7.webp",
+    "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/image9.webp",
+    "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/image10.webp"
+  ];
   const [collageStart, setCollageStart] = useState(0);
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -197,7 +208,7 @@ Submitted via: Sivaprasad portfolio
   // When slotIndices change, reload videos in place so the new src is used
   useEffect(() => {
     videoRefs.current.forEach((v) => {
-      try { if (v && typeof v.load === 'function') { v.load(); v.play().catch(() => {}); } } catch (e) {}
+      try { if (v && typeof v.load === 'function') { v.load(); v.play().catch(() => { }); } } catch (e) { }
     });
   }, [slotIndices]);
 
@@ -217,12 +228,12 @@ Submitted via: Sivaprasad portfolio
               <a href="#journey" className="reveal fade-up inline-block mt-8 px-8 py-3 rounded-full bg-yellow-400 text-black font-semibold transform hover:-translate-y-1 transition">Explore My Journey</a>
             </div>
             <div className="hero-image reveal fade-left">
-              <img src="/assets/sivaprasad/Siva Prasad.webp" alt="Sivaprasad portrait" className="w-full rounded-xl shadow-2xl object-cover" loading="lazy" />
+              <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/Siva%20Prasad.webp" alt="Sivaprasad portrait" className="w-full rounded-xl shadow-2xl object-cover" loading="lazy" />
             </div>
           </div>
         </div>
         <div className="scroll-indicator absolute bottom-12 left-1/2 -translate-x-1/2 opacity-0 animate-fadeIn animate-bounce">
-          <svg viewBox="0 0 30 50" className="w-8 h-12 stroke-yellow-400 fill-none"><rect x="1" y="1" width="28" height="48" rx="14" strokeWidth="2"/></svg>
+          <svg viewBox="0 0 30 50" className="w-8 h-12 stroke-yellow-400 fill-none"><rect x="1" y="1" width="28" height="48" rx="14" strokeWidth="2" /></svg>
         </div>
       </section>
 
@@ -259,12 +270,12 @@ Submitted via: Sivaprasad portfolio
       <section id="cricket-section" className="cricket-section bg-gradient-to-b from-gray-900 to-gray-800 py-20">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-8 items-start">
           <div>
-            <img src="/assets/sivaprasad/KBT.webp" alt="Kochin Blue Tigers" className="w-auto sm:h-50 md:w-50 md:h-auto rounded-lg shadow-lg mb-6" />
+            <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/KBT.webp" alt="Kochin Blue Tigers" className="w-auto sm:h-50 md:w-50 md:h-auto rounded-lg shadow-lg mb-6" />
             <h3 className="text-yellow-400 font-playfair text-2xl">Co-owner & Director — Kochin Blue Tigers</h3>
             <p className="mt-3 text-gray-400">He is the co-owner and Director of Kochin Blue Tigers, champions of KCL Season 2...</p>
           </div>
           <div>
-            <img src="/assets/sivaprasad/ecl.webp" alt="ECL" className="w-auto h-50 rounded-lg shadow-lg mb-6" />
+            <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/ecl.webp" alt="ECL" className="w-auto h-50 rounded-lg shadow-lg mb-6" />
             <h3 className="text-yellow-400 font-playfair text-2xl">Owner — Trivandrum Franchise (ECL)</h3>
             <p className="mt-3 text-gray-400">Sivaprasad is the sole owner of the Trivandrum franchise in the Entrepreneurs Cricket League...</p>
           </div>
@@ -283,15 +294,15 @@ Submitted via: Sivaprasad portfolio
               <span className="venture-tag inline-block mt-4 px-4 py-2 rounded-full text-yellow-300 border border-yellow-600/20 text-sm">Media Tech</span>
             </div>
             <a className="venture-card bg-gray-800 p-6 rounded-2xl reveal" href="https://www.yellowcloudonline.com">
-              <div className="venture-icon w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center mb-4"><img src="/assets/sivaprasad/yellow cloud.webp" alt="Yellow Cloud" className="w-16"/></div>
+              <div className="venture-icon w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center mb-4"><img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/yellow%20cloud.webp" alt="Yellow Cloud" className="w-16" /></div>
               <h3 className="font-playfair text-2xl">Yellow Cloud Mental Health</h3>
               <p className="text-gray-400 mt-2">Virtual mental health platform serving Global Malayalees...</p>
               <span className="venture-tag inline-block mt-4 px-4 py-2 rounded-full text-yellow-300 border border-yellow-600/20 text-sm">Healthcare</span>
             </a>
             <a className="venture-card bg-gray-800 p-6 rounded-2xl reveal" href="https://end2endsolutions.in">
               <div className="venture-icons flex gap-3 mb-4">
-                <img src="/assets/sivaprasad/E2E.webp" alt="E2E" className="w-20 rounded" />
-                <img src="/assets/sivaprasad/asiasat.webp" alt="Asiasat" className="w-20 rounded" />
+                <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/E2E.webp" alt="E2E" className="w-20 rounded" />
+                <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/asiasat.webp" alt="Asiasat" className="w-20 rounded" />
               </div>
               <h3 className="font-playfair text-2xl">End2End Solutions & Asiasat</h3>
               <p className="text-gray-400 mt-2">Distribution contracts with BBC Global News, TV Today Network...</p>
@@ -341,47 +352,47 @@ Submitted via: Sivaprasad portfolio
                     </video>
                   </a>
 
-                  
 
-                  <a className="reel-card carousel-slide" href="https://www.facebook.com/share/v/1C2z6SJk47/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)', textDecoration: 'none', background: 'linear-gradient(135deg, rgba(10,10,10,0.06), rgba(26,26,26,0.04))'}}>
+
+                  <a className="reel-card carousel-slide" href="https://www.facebook.com/share/v/1C2z6SJk47/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)', textDecoration: 'none', background: 'linear-gradient(135deg, rgba(10,10,10,0.06), rgba(26,26,26,0.04))' }}>
                     <video className="reel-media" autoPlay muted loop playsInline preload="none" aria-label="Siva video">
                       <source src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/2cbb-d78b-4b2d-8061-c34797622b99_ifkkfg.webm" type="video/webm" />
                       Your browser does not support the video tag.
                     </video>
                   </a>
 
-                  <a className="reel-card carousel-slide" href="https://youtu.be/g6Owyh2-oRI?si=MKOnIpNgP8QzxKfG" style={{width: '360px', flex: '0 0 360px'}}>
-                    <video className="reel-media" autoPlay muted loop playsInline preload="metadata" aria-label="Siva video" style={{width: '100%', height: '100%'}}>
+                  <a className="reel-card carousel-slide" href="https://youtu.be/g6Owyh2-oRI?si=MKOnIpNgP8QzxKfG" style={{ width: '360px', flex: '0 0 360px' }}>
+                    <video className="reel-media" autoPlay muted loop playsInline preload="metadata" aria-label="Siva video" style={{ width: '100%', height: '100%' }}>
                       <source src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/videoplayback_1_online-video-cutter.com_hgcdmu.webm" type="video/webm" />
                       Your browser does not support the video tag.
                     </video>
                   </a>
-<a className="reel-card carousel-slide" href="https://www.instagram.com/reel/DVogZB9DwtS/?igsh=OXFnNmtiMm1lZnA3" target="_blank" rel="noopener noreferrer" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)', textDecoration: 'none', background: 'linear-gradient(135deg, rgba(10,10,10,0.06), rgba(26,26,26,0.04))'}}>
+                  <a className="reel-card carousel-slide" href="https://www.instagram.com/reel/DVogZB9DwtS/?igsh=OXFnNmtiMm1lZnA3" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)', textDecoration: 'none', background: 'linear-gradient(135deg, rgba(10,10,10,0.06), rgba(26,26,26,0.04))' }}>
                     <video className="reel-media" autoPlay muted loop playsInline preload="none" aria-label="Siva video">
                       <source src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/AQOm9-TKSETF6u9l0nAQpjHsbAhXRYiNGURHO24GziELFESRAfPmZ3VX4ZBR9f688oXf0552oU3C64zxdTEwPX8NpN7LfDa0aMU0TaPDrQ_hncnv7.webm" type="video/webm" />
                       Your browser does not support the video tag.
                     </video>
                   </a>
                   {[
-                    '/assets/sivaprasad/reel.webm',
-                    '/assets/sivaprasad/reel (1).webm',
-                    '/assets/sivaprasad/reel (2).webm',
-                    '/assets/sivaprasad/reel (3).webm',
-                    '/assets/sivaprasad/reel (4).webm',
-                    '/assets/sivaprasad/reel (5).webm',
-                    '/assets/sivaprasad/reel (6).webm',
-                    '/assets/sivaprasad/reel (7).webm',
-                    '/assets/sivaprasad/reel (8).webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel.webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(1).webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(2).webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(3).webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(4).webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(5).webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(6).webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(7).webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(8).webm',
                   ].concat([
-                    '/assets/sivaprasad/reel.webm',
-                    '/assets/sivaprasad/reel (1).webm',
-                    '/assets/sivaprasad/reel (2).webm',
-                    '/assets/sivaprasad/reel (3).webm',
-                    '/assets/sivaprasad/reel (4).webm',
-                    '/assets/sivaprasad/reel (5).webm',
-                    '/assets/sivaprasad/reel (6).webm',
-                    '/assets/sivaprasad/reel (7).webm',
-                    '/assets/sivaprasad/reel (8).webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel.webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(1).webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(2).webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(3).webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(4).webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(5).webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(6).webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(7).webm',
+                    'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/sivaprasad/reel%20(8).webm',
                   ]).map((src, i) => (
                     <div key={i} className="reel-card relative" onClick={() => setSelectedReel(src)}>
                       <video
@@ -390,8 +401,8 @@ Submitted via: Sivaprasad portfolio
                         muted
                         loop
                         playsInline
-                        onMouseEnter={(e) => { try { e.currentTarget.play(); } catch {} }}
-                        onMouseLeave={(e) => { try { e.currentTarget.pause(); e.currentTarget.currentTime = 0; } catch {} }}
+                        onMouseEnter={(e) => { try { e.currentTarget.play(); } catch { } }}
+                        onMouseLeave={(e) => { try { e.currentTarget.pause(); e.currentTarget.currentTime = 0; } catch { } }}
                         onClick={(e) => { e.stopPropagation(); setSelectedReel(src); }}
                         preload="metadata"
                       />
@@ -411,7 +422,7 @@ Submitted via: Sivaprasad portfolio
           </div>
         )}
       </section>
-      
+
 
       {/* Images Gallery */}
       <section id="gallery" className="image-showcase bg-gray-900 py-20">
@@ -419,19 +430,19 @@ Submitted via: Sivaprasad portfolio
           <div className="image-grid grid md:grid-cols-3 gap-4 mt-8">
             <div className="collage-grid col-span-3 grid grid-cols-6 gap-2 mt-4">
               <div className="collage-item reveal fade-up col-span-4 row-span-2">
-                <img src={collageSources[(collageStart + 0) % collageSources.length]} alt="c1" className="w-full h-full object-cover rounded"/>
+                <img src={collageSources[(collageStart + 0) % collageSources.length]} alt="c1" className="w-full h-full object-cover rounded" />
               </div>
               <div className="collage-item reveal fade-up">
-                <img src={collageSources[(collageStart + 1) % collageSources.length]} alt="c2" className="w-full h-full object-cover rounded"/>
+                <img src={collageSources[(collageStart + 1) % collageSources.length]} alt="c2" className="w-full h-full object-cover rounded" />
               </div>
               <div className="collage-item reveal fade-up">
-                <img src={collageSources[(collageStart + 2) % collageSources.length]} alt="c3" className="w-full h-full object-cover rounded"/>
+                <img src={collageSources[(collageStart + 2) % collageSources.length]} alt="c3" className="w-full h-full object-cover rounded" />
               </div>
               <div className="collage-item reveal fade-up">
-                <img src={collageSources[(collageStart + 3) % collageSources.length]} alt="c4" className="w-full h-full object-cover rounded"/>
+                <img src={collageSources[(collageStart + 3) % collageSources.length]} alt="c4" className="w-full h-full object-cover rounded" />
               </div>
               <div className="collage-item reveal fade-up">
-                <img src={collageSources[(collageStart + 4) % collageSources.length]} alt="c5" className="w-full h-full object-cover rounded"/>
+                <img src={collageSources[(collageStart + 4) % collageSources.length]} alt="c5" className="w-full h-full object-cover rounded" />
               </div>
             </div>
           </div>

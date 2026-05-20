@@ -25,7 +25,10 @@ import PartnershipChatbot from "./components/PartnershipChatbot";
 import AjnoraDashboard from "./pages/AjnoraDashboard";
 import AjinorahForm from "./components/ClientFormaji";
 import CDashboard from "./components/ClickupDash/CDashboard";
-
+import CLogin from "./components/ClickupDash/CLogin";
+import AdminClickupClients from "./components/ClickupDash/AdminClickupClients";
+import SpinWheel from "./components/Lottery/LotterySpinner";
+import LotteryClaims from "./pages/LotteryClaims";
 
 const Home = lazy(() =>
   import("./pages/Home").then((module) => ({ default: module.Home })),
@@ -54,7 +57,7 @@ const NotFound = lazy(() =>
 const Careers = lazy(() => import("./pages/Careers").then(module => ({ default: module.Careers })));
 const OurTeam = lazy(() => import("./pages/OurTeam").then(module => ({ default: module.OurTeam })));
 const OurWork = lazy(() => import("./pages/OurWork").then(module => ({ default: module.OurWork })));
-const Team = lazy(() => import("./pages/Team/index").then(module => ({ default: module.Team })));
+const Team = lazy(() => import("./pages/Team").then(module => ({ default: module.Team })));
 const EmployeePage = lazy(() => import("./pages/Team/EmployeePage"));
 const ATSChecker = lazy(() => import("./pages/Resume/ATSChecker"));
 const ResumeGenerator = lazy(() => import("./pages/Resume/ResumeGenerator"));
@@ -64,6 +67,8 @@ const AdminCreateJob = lazy(() => import("./pages/CreateJob"));
 const EditUser = lazy(() => import("./pages/EditUser"));
 const DashboardX = lazy(() => import("./pages/DashboardX"));
 const UserManagement = lazy(() => import("./pages/UserManagement"));
+const TeamDashboard = lazy(() => import("./pages/TeamDashboard"));
+const AdminTeamDashboard = lazy(() => import("./pages/AdminTeamDashboard"));
 const AllApplications = lazy(() => import("./pages/AllApplications"));
 const ResetPassword = lazy(() =>
 
@@ -134,22 +139,12 @@ const PartnerLogin = lazy(() => import("./pages/Partnerships/PartnershipTemplate
 const PartnerDashboard = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboard"));
 const PartnerDashboardHub = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboardHub"));
 const StudentShowcase = lazy(() => import("./pages/Partnerships/StudentShowcase"));
-const TeamDashboard = lazy(() => import("./pages/TeamDashboard"));
-const AdminTeamDashboard = lazy(() => import("./pages/AdminTeamDashboard"));
 
 function ConditionalFooter() {
   const location = useLocation();
   const hideFooterRoutes = [
-    "/partnership/partner-1",
-    "/partnership/JohnSamuel",
-    "/partnership/shailesh-sivan",
-    "/partnership/alen-jacob",
-    "/partnership/cheriyan",
-    "/partnership/sakilan",
     "/partnership",
-    "/partners/select-template",
-    "/partners/create-portfolio",
-    "/partners/dashboard",
+    "/partners",
     "/dashboard",
     "/user-management",
     "/analytics",
@@ -165,7 +160,13 @@ function ConditionalFooter() {
     "/candidate-profile",
     "/team/admin",
     "/team/dashboard",
-    "/team/"
+    "/team/",
+    "/client-portal",
+    "/client-login",
+    "/client-dashboard",
+    "/admin",
+    "/ajnoradashboard",
+    "/lottery"
   ];
 
 
@@ -181,16 +182,8 @@ function ConditionalFooter() {
 function ConditionalNavbar() {
   const location = useLocation();
   const hideNavbarRoutes = [
-    "/partnership/Partner1",
-    "/partnership/JohnSamuel",
-    "/partnership/shailesh-sivan",
-    "/partnership/alen-jacob",
-    "/partnership/cheriyan",
-    "/partnership/sakilan",
     "/partnership",
-    "/partners/select-template",
-    "/partners/create-portfolio",
-    "/partners/dashboard",
+    "/partners",
     "/dashboard",
     "/user-management",
     "/analytics",
@@ -204,8 +197,12 @@ function ConditionalNavbar() {
     "/job-listing",
     "/job-applicants",
     "/candidate-profile",
-    "/ajio",
-    "/client-portal"
+    "/client-portal",
+    "/client-login",
+    "/client-dashboard",
+    "/admin",
+    "/ajnoradashboard",
+    "/lottery"
   ];
 
 
@@ -280,7 +277,7 @@ function App() {
             <Route
               path="/blog/submit"
               element={
-                  <SubmitBlog />
+                <SubmitBlog />
               }
             />
             <Route path="/contact" element={<Contact />} />
@@ -312,10 +309,6 @@ function App() {
             <Route path="/disclaimer" element={<Disclaimer />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/our-team" element={<OurTeam />} />
-            <Route path="/team" element={<Team />} />
-            <Route path="/team/:slug" element={<EmployeePage />} />
-            <Route path="/team/dashboard" element={<ProtectedRoute><TeamDashboard /></ProtectedRoute>} />
-            <Route path="/team/admin" element={<AdminRoute><AdminTeamDashboard /></AdminRoute>} />
             <Route path="/our-works" element={<OurWork />} />
             <Route path="/achievements" element={<CompanyAchievements />} />
             <Route path="/ats-checker" element={<ATSChecker />} />
@@ -370,6 +363,26 @@ function App() {
             />
             <Route path="/dashboard" element={<DashboardX />} />
 
+            <Route path="/team" element={<Team />} />
+            <Route path="/team/:slug" element={<EmployeePage />} />
+
+            <Route
+              path="/team/dashboard"
+              element={
+                <ProtectedRoute>
+                  <TeamDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/team/admin"
+              element={
+                <AdminRoute>
+                  <AdminTeamDashboard />
+                </AdminRoute>
+              }
+            />
+
             <Route
               path="/admin"
               element={
@@ -422,9 +435,12 @@ function App() {
             <Route path="/client-form" element={<AjinorahForm />} />
             <Route path="/client-dashboard" element={<ClientDashboard />} />
             <Route path="/client-portal" element={<CDashboard />} />
-
+            <Route path="/client-login" element={<CLogin />} />
+            <Route path="/admin/clickup-clients" element={<AdminRoute><AdminClickupClients /></AdminRoute>} />
+            <Route path="/lottery" element={<SpinWheel />} />
             <Route path="/api-marketing-dashboard" element={<AdminRoute><ApiMarketingDashboard /></AdminRoute>} />
             <Route path="/media-dashboard" element={<AdminRoute><MediaDashboard /></AdminRoute>} />
+            <Route path="/admin/lottery-claims" element={<AdminRoute><LotteryClaims /></AdminRoute>} />
             <Route path="/ajnoradashboard" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
             <Route path="/ajnoradashboard/:id" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
 

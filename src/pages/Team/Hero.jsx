@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
-import { TEAM_MEMBERS } from "./Constants";
+import { TEAM_MEMBERS } from "./constants";
 
 export const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
