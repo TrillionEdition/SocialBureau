@@ -102,7 +102,9 @@ const AdminClickupClients = () => {
     try {
       if (selectedUser) {
         // Update
-        const response = await axios.put(`${BASE_URL}/user/${selectedUser._id || selectedUser.id}`, formData);
+        const payload = { ...formData };
+        if (!payload.password) delete payload.password;
+        const response = await axios.put(`${BASE_URL}/user/${selectedUser._id || selectedUser.id}`, payload);
         setSuccess('Client updated successfully!');
       } else {
         // Create
@@ -332,22 +334,22 @@ const AdminClickupClients = () => {
                     </div>
                   </div>
 
-                  {!selectedUser && (
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">Initial Password</label>
-                      <div className="relative">
-                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" size={16} />
-                        <input
-                          type="text"
-                          required={!selectedUser}
-                          value={formData.password}
-                          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                          className="w-full bg-white/[0.03] border border-white/5 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-indigo-500/50 transition-all"
-                          placeholder="Strong initial password"
-                        />
-                      </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">
+                      {selectedUser ? 'Change Password (leave blank to keep current)' : 'Initial Password'}
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" size={16} />
+                      <input
+                        type="text"
+                        required={!selectedUser}
+                        value={formData.password}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        className="w-full bg-white/[0.03] border border-white/5 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-indigo-500/50 transition-all"
+                        placeholder={selectedUser ? "Enter new password to change" : "Strong initial password"}
+                      />
                     </div>
-                  )}
+                  </div>
 
                   <div className="p-6 bg-white/[0.02] border border-white/5 rounded-[32px] space-y-6">
                     <p className="text-[10px] font-black text-indigo-500 uppercase tracking-[0.2em] mb-4">ClickUp Integration Parameters</p>

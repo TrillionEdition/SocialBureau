@@ -57,21 +57,50 @@ export const getClickUpChat = async (viewId) => {
   return response.data;
 }
 
-export const postClickUpChat = async (viewId, commentText) => {
+export const postClickUpChat = async (viewId, commentText, token = null) => {
+  // If the frontend has the user's personal ClickUp token stored, send it to backend to prefer that identity
+  let localToken = null;
+  try {
+    const u = localStorage.getItem('userData') || localStorage.getItem('user');
+    if (u) {
+      const parsed = JSON.parse(u);
+      localToken = parsed?.clickupToken || null;
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  const headers = {};
+  const finalToken = token || localToken;
+  if (finalToken) headers['X-Clickup-Token'] = finalToken;
+
   const response = await axios.post(`${BASE_URL}/clickup/chat-messages/${viewId}`, {
     comment_text: commentText
-  });
+  }, { headers });
   return response.data;
 }
 
-export const uploadClickUpAttachment = async (viewId, file) => {
+export const uploadClickUpAttachment = async (viewId, file, token = null) => {
   const formData = new FormData();
   formData.append('attachment', file);
 
-  const response = await axios.post(`${BASE_URL}/clickup/chat-messages/${viewId}/attachment`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
+  let localToken = null;
+  try {
+    const u = localStorage.getItem('userData') || localStorage.getItem('user');
+    if (u) {
+      const parsed = JSON.parse(u);
+      localToken = parsed?.clickupToken || null;
     }
+  } catch (e) {}
+
+  const headers = {
+    'Content-Type': 'multipart/form-data'
+  };
+  const finalToken = token || localToken;
+  if (finalToken) headers['X-Clickup-Token'] = finalToken;
+
+  const response = await axios.post(`${BASE_URL}/clickup/chat-messages/${viewId}/attachment`, formData, {
+    headers
   });
   return response.data;
 }

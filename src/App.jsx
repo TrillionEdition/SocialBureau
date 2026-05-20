@@ -66,6 +66,8 @@ const AdminCreateJob = lazy(() => import("./pages/CreateJob"));
 const EditUser = lazy(() => import("./pages/EditUser"));
 const DashboardX = lazy(() => import("./pages/DashboardX"));
 const UserManagement = lazy(() => import("./pages/UserManagement"));
+const TeamDashboard = lazy(() => import("./pages/TeamDashboard"));
+const AdminTeamDashboard = lazy(() => import("./pages/AdminTeamDashboard"));
 const AllApplications = lazy(() => import("./pages/AllApplications"));
 const ResetPassword = lazy(() =>
 
@@ -140,16 +142,8 @@ const StudentShowcase = lazy(() => import("./pages/Partnerships/StudentShowcase"
 function ConditionalFooter() {
   const location = useLocation();
   const hideFooterRoutes = [
-    "/partnership/partner-1",
-    "/partnership/JohnSamuel",
-    "/partnership/shailesh-sivan",
-    "/partnership/alen-jacob",
-    "/partnership/cheriyan",
-    "/partnership/sakilan",
     "/partnership",
-    "/partners/select-template",
-    "/partners/create-portfolio",
-    "/partners/dashboard",
+    "/partners",
     "/dashboard",
     "/user-management",
     "/analytics",
@@ -164,7 +158,11 @@ function ConditionalFooter() {
     "/job-applicants",
     "/candidate-profile",
     "/client-portal",
-    "/client-login"
+    "/client-login",
+    "/client-dashboard",
+    "/admin",
+    "/ajnoradashboard",
+    "/lottery"
   ];
 
 
@@ -180,16 +178,8 @@ function ConditionalFooter() {
 function ConditionalNavbar() {
   const location = useLocation();
   const hideNavbarRoutes = [
-    "/partnership/Partner1",
-    "/partnership/JohnSamuel",
-    "/partnership/shailesh-sivan",
-    "/partnership/alen-jacob",
-    "/partnership/cheriyan",
-    "/partnership/sakilan",
     "/partnership",
-    "/partners/select-template",
-    "/partners/create-portfolio",
-    "/partners/dashboard",
+    "/partners",
     "/dashboard",
     "/user-management",
     "/analytics",
@@ -203,9 +193,12 @@ function ConditionalNavbar() {
     "/job-listing",
     "/job-applicants",
     "/candidate-profile",
-    "/ajio",
     "/client-portal",
-    "/client-login"
+    "/client-login",
+    "/client-dashboard",
+    "/admin",
+    "/ajnoradashboard",
+    "/lottery"
   ];
 
 
@@ -365,6 +358,23 @@ function App() {
               element={<WebDevelopment />}
             />
             <Route path="/dashboard" element={<DashboardX />} />
+
+            <Route
+              path="/team/dashboard"
+              element={
+                <ProtectedRoute>
+                  <TeamDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/team/admin"
+              element={
+                <AdminRoute>
+                  <AdminTeamDashboard />
+                </AdminRoute>
+              }
+            />
 
             <Route
               path="/admin"

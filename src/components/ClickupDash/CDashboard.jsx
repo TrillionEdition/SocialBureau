@@ -206,12 +206,6 @@ const CDashboard = () => {
           let sender = comment.user?.username || 'Unknown';
           let content = rawContent;
 
-          // Try to extract attribution: "[Sent by Name]: Message"
-          const attributionMatch = rawContent.match(/^\[Sent by (.*?)\]: (.*)/s);
-          if (attributionMatch) {
-            sender = attributionMatch[1];
-            content = attributionMatch[2];
-          }
 
           // Extract attachments from rich-text comment array if present (supports both standard attachments and inline images)
           let parsedAttachments = [];
@@ -310,7 +304,7 @@ const CDashboard = () => {
     try {
       console.log("📤 Starting file upload:", file.name);
       setLoadingMessages(true);
-      const response = await uploadClickUpAttachment(CHAT_VIEW_ID, file);
+      const response = await uploadClickUpAttachment(CHAT_VIEW_ID, file, currentUser?.clickupToken || null);
       console.log("✅ Upload response:", response);
       if (response.success) {
         fetchMessages();
@@ -326,7 +320,7 @@ const CDashboard = () => {
   const handleSendMessage = async () => {
     if (!newMessage.trim()) return;
     try {
-      const response = await postClickUpChat(CHAT_VIEW_ID, newMessage);
+      const response = await postClickUpChat(CHAT_VIEW_ID, newMessage, currentUser?.clickupToken || null);
       if (response.success) {
         setNewMessage('');
         fetchMessages();

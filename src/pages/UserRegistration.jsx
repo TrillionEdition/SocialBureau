@@ -124,7 +124,7 @@ export const AuthPage = () => {
 
       if (!from) {
         if (data.user.role === 'admin') {
-          from = "/team/admin";
+          from = "/admin";
         } else if (data.user.isEmployee) {
           from = "/team/dashboard";
         } else {
@@ -173,7 +173,7 @@ export const AuthPage = () => {
 
       if (!from) {
         if (data.user.role === 'admin') {
-          from = "/team/admin";
+          from = "/admin";
         } else if (data.user.isEmployee) {
           from = "/team/dashboard";
         } else {
