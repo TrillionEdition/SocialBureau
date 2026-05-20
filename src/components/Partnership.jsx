@@ -17,6 +17,66 @@ const Partnership = () => {
       year: "2026",
     },
     {
+      id: 4,
+      title: "SUJAYA PARVATHY",
+      category: "Media",
+      status: "Completed",
+      image: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1779272802/Sujaya_partner_mdyteh.png",
+      link: "https://www.sujayaparvathy.com/",
+      subtitle: "Creative Director · Media & Content",
+      day: "CREATOR",
+      month: "MEDIA",
+      year: "2025",
+    },
+    {
+      id: 5,
+      title: "RUPA INDUKURI",
+      category: "Media",
+      status: "Completed",
+      image: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1779272787/roopa_partner_image_ilceog.png",
+      link: "https://www.rupaindukuri.com/",
+      subtitle: "Photographer · Visual Storyteller",
+      day: "PHOTOGRAPHY",
+      month: "CREATIVE",
+      year: "2025",
+    },
+    {
+      id: 6,
+      title: "ANIL AYROOR",
+      category: "Media",
+      status: "Completed",
+      image: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1779271909/hero_image1_qahaud.png",
+      link: "https://www.anilayroor.com/",
+      subtitle: "Photographer · Visual Artist",
+      day: "PHOTOGRAPHER",
+      month: "ARTIST",
+      year: "2025",
+    },
+    {
+      id: 7,
+      title: "ANOOP JOHN",
+      category: "Media",
+      status: "Completed",
+      image: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1779272793/Anoop_John_partner_nub0eq.png",
+      link: "https://www.anoopjohnofficial.com/",
+      subtitle: "Filmmaker · Cinematographer",
+      day: "CINEMATOGRAPHY",
+      month: "PRODUCTION",
+      year: "2025",
+    },
+    {
+      id: 8,
+      title: "VIJAY REDDY",
+      category: "Marketing",
+      status: "Completed",
+      image: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1779272229/vijay_uznpef.jpg",
+      link: "https://www.vijayreddyvennam.com/",
+      subtitle: "Marketing Strategist · Growth Architect",
+      day: "MARKETING",
+      month: "STRATEGY",
+      year: "2025",
+    },
+    {
       id: 2,
       title: "RANJIT",
       category: "Photography",
@@ -45,6 +105,7 @@ const Partnership = () => {
   ];
 
   const [dynamicPartners, setDynamicPartners] = useState([]);
+  const [heroItems, setHeroItems] = useState(portfolioData);
   const [fetching, setFetching] = useState(false);
 
   //state
@@ -54,17 +115,22 @@ const Partnership = () => {
   const [activeHeroIndex, setActiveHeroIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
 
+  // Reset active index when hero items change to avoid out-of-bounds
+  useEffect(() => {
+    setActiveHeroIndex(0);
+  }, [heroItems.length]);
+
   useEffect(() => {
     if (!isPlaying) return;
 
     const interval = setInterval(() => {
       setActiveHeroIndex((prev) =>
-        prev === portfolioData.length - 1 ? 0 : prev + 1,
+        prev === heroItems.length - 1 ? 0 : prev + 1,
       );
     }, 4000); // 4s per slide
 
     return () => clearInterval(interval);
-  }, [isPlaying, portfolioData.length]);
+  }, [isPlaying, heroItems.length]);
 
   useEffect(() => {
     const fetchDynamicPartners = async () => {
@@ -74,7 +140,22 @@ const Partnership = () => {
         const data = await response.json();
         if (data.success) {
           // Filter out the free ones as per user request
-          setDynamicPartners(data.data.filter(p => p.isFree));
+          const dyn = data.data.filter(p => p.isFree);
+          setDynamicPartners(dyn);
+          // Merge into hero items so hero shows all members
+          const mapped = dyn.map(p => ({
+            id: `dyn-${p._id}`,
+            title: p.name || p.title || 'Partner',
+            category: p.category || 'Media',
+            status: p.status || 'Completed',
+            image: p.image,
+            link: p.param ? `/partnership/${p.param}` : (p.link || '#'),
+            subtitle: p.subtitle || p.description || '',
+            day: p.role || '',
+            month: p.category || '',
+            year: p.year || '2025'
+          }));
+          setHeroItems([...portfolioData, ...mapped]);
         }
       } catch (err) {
         console.error("Failed to fetch dynamic partners", err);
@@ -96,7 +177,7 @@ const Partnership = () => {
     "Marketing",
     "Media",
   ];
-  const activeHeroItem = portfolioData[activeHeroIndex];
+  const activeHeroItem = heroItems[activeHeroIndex] || portfolioData[0];
   // Filter logic
   const filteredData = useMemo(() => {
     return portfolioData.filter((item) => {
@@ -141,15 +222,42 @@ const Partnership = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-700 via-gray-800 to-gray-900 text-white">
       {/* HERO SECTION - Fashion Exhibition Style */}
       <section className="relative min-h-screen md:h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 md:px-8">
-        {/* Background Image Overlay */}
+        {/* Background slideshow (fading) showing active partner images */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-800 via-transparent to-gray-800 z-10"></div>
-          <img
-            key={activeHeroItem.id}
-            src={activeHeroItem.image}
-            alt={activeHeroItem.title}
-            className="w-full h-full object-cover opacity-40 transition-all duration-700"
-          />
+          {heroItems.map((h, idx) => (
+            <div
+              key={h.id}
+              className="absolute inset-0"
+              style={{
+                backgroundImage: h.image ? `url("${encodeURI(h.image)}")` : undefined,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                opacity: idx === activeHeroIndex ? 1 : 0,
+                transition: 'opacity 900ms ease-in-out',
+                transform: 'scale(1.02)'
+              }}
+            />
+          ))}
+
+          {/* Enhanced overlay: darken + subtle grid + gradient for readability */}
+          <div className="absolute inset-0 z-10">
+            {/* Strong dark tint with slight blur */}
+            <div className="absolute inset-0 bg-black/55 backdrop-blur-sm" />
+
+            {/* Subtle grid pattern to add texture */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                backgroundImage:
+                  'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)',
+                backgroundSize: '80px 80px'
+              }}
+            />
+
+            {/* Soft edge gradient to frame content */}
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-900/30 via-transparent to-gray-900/30" />
+          </div>
         </div>
 
         {/* Navigation Bar */}
@@ -173,6 +281,16 @@ const Partnership = () => {
             {/* Left Column - Responsive */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
               <div className="space-y-6 md:space-y-8">
+                {/* Partner portrait inside hero (visible) */}
+                {activeHeroItem?.image && (
+                  <div className="mb-4 flex items-center justify-center md:justify-start">
+                    <img
+                      src={activeHeroItem.image}
+                      alt={activeHeroItem.title}
+                      className="w-44 h-44 md:w-56 md:h-56 rounded-[28px] object-cover shadow-2xl border border-white/5"
+                    />
+                  </div>
+                )}
                 {/* Number Badge */}
                 <div className="inline-block">
                   <div className="bg-lime-300 text-gray-900 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black px-4 sm:px-6 py-2 sm:py-3 inline-block">
@@ -497,19 +615,7 @@ const Partnership = () => {
           </div>
         )}
 
-        {/* GET STARTED CTA */}
-        <div className="max-w-7xl mx-auto flex flex-col items-center justify-center mt-32 relative z-10">
-           <div className="bg-gradient-to-br from-zinc-900 to-black border border-white/5 p-12 rounded-[40px] text-center w-full max-w-3xl">
-              <h3 className="text-3xl font-bold mb-6">Want to create your own?</h3>
-              <p className="text-gray-400 mb-10">Generate a premium, ready-made portfolio page in minutes. Completely free for our partners.</p>
-              <button 
-                onClick={() => window.location.href = "/partners/select-template"}
-                className="px-10 py-4 bg-lime-400 text-black font-black rounded-full hover:bg-white transition-all scale-110 shadow-[0_0_30px_rgba(163,230,53,0.3)]"
-              >
-                Get Started Now
-              </button>
-           </div>
-        </div>
+        {/* CTA removed per request */}
 
         <style>{`
           @keyframes fadeIn {

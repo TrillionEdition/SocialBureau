@@ -144,7 +144,6 @@ function ConditionalFooter() {
   const location = useLocation();
   const hideFooterRoutes = [
     "/partnership",
-    "/partners",
     "/dashboard",
     "/user-management",
     "/analytics",
@@ -183,7 +182,6 @@ function ConditionalNavbar() {
   const location = useLocation();
   const hideNavbarRoutes = [
     "/partnership",
-    "/partners",
     "/dashboard",
     "/user-management",
     "/analytics",
