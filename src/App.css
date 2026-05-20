@@ -6,6 +6,13 @@
   --color-brand-pink: #ff3358;
   --color-brand-purple: #8b5cf6;
   --color-brand-dark: #0a0514;
+  --color-brand-blue: #2380DC;
+  --color-bg-dark: #05010B;
+  --color-card-dark: #0B0118;
+  --color-card-purple: #0B0118;
+  --color-accent-green: #4ADE80;
+  --color-accent-red: #F43F5E;
+  --color-accent-blue: #06B6D4;
 }
 
 
@@ -365,4 +372,47 @@ input::placeholder,
 textarea::placeholder {
   color: rgba(255, 255, 255, 0.25) !important;
   opacity: 1 !important;
+}
+
+/* Employee Page specific styles */
+.glass-card {
+  background: rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.glass-card-purple {
+  background: linear-gradient(180deg, rgba(30, 17, 62, 0.35) 0%, rgba(12, 5, 25, 0.7) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-linear-to-r from-[#8A0699] to-[#CB1387];
+}
+
+.btn-typo {
+  @apply font-sans font-medium text-[12px] leading-none tracking-normal;
+}
+
+.btn-glass-primary {
+  @apply bg-linear-to-r from-[#8A0699] to-[#2380DC] hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-[#8A0699]/20 rounded-[14px] font-sans font-medium text-[12px] leading-none tracking-normal;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }

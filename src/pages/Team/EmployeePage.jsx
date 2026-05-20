@@ -1,51 +1,331 @@
-import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  ArrowLeft,
-  Loader2,
-  Clock,
-  CheckCircle2,
-  Cpu,
-  Award,
-  Globe,
-  ExternalLink,
-  Calendar,
-  Layers,
-  ArrowUpRight,
-  TrendingUp,
-  User,
-  Shield,
-  Star,
-  Activity,
-  Share2,
-  Download,
-  Mail
-} from "lucide-react";
-import { toast } from "react-toastify";
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { 
+  BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid
+} from 'recharts';
+import { motion } from 'framer-motion';
+import { 
+  Mail, Calendar, MousePointer2, FileText, ChevronRight, CheckCircle2, 
+  Users, MapPin, Clock, Star, Play, MessageCircle, Plus, ArrowLeft, Share2, Download, Loader2, Sparkles
+} from 'lucide-react';
+import { clsx } from 'clsx';
+import { toast } from 'react-toastify';
+import Footer from '../../components/Footer';
+
+function cn(...inputs) {
+  return clsx(inputs);
+}
+
+const CustomTooltip = ({ active, payload, label, color }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div 
+        className="px-4 py-3 rounded-2xl border border-white/10 shadow-xl flex flex-col gap-0.5 min-w-[95px]"
+        style={{
+          background: 'rgba(14, 6, 22, 0.9)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)'
+        }}
+      >
+        <span className="text-[10px] font-black text-white uppercase tracking-wider">{label}</span>
+        <span className="text-[9px] font-black uppercase tracking-widest mt-0.5" style={{ color: color }}>
+          value : <span className="text-white">{payload[0].value}</span>
+        </span>
+      </div>
+    );
+  }
+  return null;
+};
+
+// --- Static Fallback / Mock Data ---
+
+const activityData = [
+  { name: 'MON', value: 12 },
+  { name: 'TUE', value: 11 },
+  { name: 'WED', value: 13 },
+  { name: 'THU', value: 14 },
+  { name: 'FRI', value: 12 },
+  { name: 'SAT', value: 5 },
+  { name: 'SUN', value: 3 },
+];
+
+const taskCompletionData = [
+  { name: 'JAN', value: 25 },
+  { name: 'FEB', value: 35 },
+  { name: 'MAR', value: 15 },
+  { name: 'APR', value: 45 },
+  { name: 'MAY', value: 30 },
+];
+
+const workingHoursData = [
+  { name: 'JAN', value: 160 },
+  { name: 'FEB', value: 175 },
+  { name: 'MAR', value: 140 },
+  { name: 'APR', value: 186 },
+  { name: 'MAY', value: 170 },
+];
+
+const efficiencyScoreData = [
+  { name: 'JAN', efficiency: 25, delivery: 22, csat: 18 },
+  { name: 'FEB', efficiency: 27, delivery: 24, csat: 20 },
+  { name: 'MAR', efficiency: 26, delivery: 22, csat: 21 },
+  { name: 'APR', efficiency: 22, delivery: 18, csat: 15 },
+  { name: 'MAY', efficiency: 28, delivery: 24, csat: 19 },
+  { name: 'JUN', efficiency: 32, delivery: 26, csat: 24 },
+  { name: 'JUL', efficiency: 35, delivery: 28, csat: 22 },
+  { name: 'AUG', efficiency: 38, delivery: 31, csat: 28 },
+  { name: 'SEP', efficiency: 42, delivery: 34, csat: 32 },
+  { name: 'OCT', efficiency: 45, delivery: 36, csat: 30 },
+];
+
+const attendanceData = Array.from({ length: 31 }, (_, i) => {
+  const dayNum = i + 1;
+  const isWeekend = [3, 10, 17, 24, 31].includes(dayNum);
+  const isUpcoming = dayNum > 20;
+
+  let status = 'present';
+  if (isUpcoming) {
+    status = 'upcoming';
+  } else if (dayNum === 1) {
+    status = 'holiday';
+  } else if (isWeekend) {
+    status = 'weekend';
+  } else if (dayNum === 7 || dayNum === 11 || dayNum === 14 || dayNum === 18) {
+    status = 'leave';
+  } else if (dayNum === 8) {
+    status = 'half';
+  }
+
+  return {
+    id: i,
+    status,
+    date: `May ${dayNum}, 2026`,
+    day: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date(2026, 4, dayNum).getDay()]
+  };
+});
+
+const expertiseData = [
+  { name: 'API Marketing Strategy', progress: 85, color: '#F43F5E' },
+  { name: 'Performance Marketing', progress: 65, color: '#A855F7' },
+  { name: 'AEO / GEO / SEO', progress: 92, color: '#06B6D4' },
+  { name: 'Content Strategy', progress: 80, color: '#F59E0B' },
+  { name: 'ClickUp Architecture', progress: 70, color: '#3B82F6' },
+  { name: 'Social Media Management', progress: 88, color: '#EAB308' },
+  { name: 'Brand Strategy', progress: 75, color: '#EC4899' },
+];
+
+// --- Sub Components ---
+
+const SectionTitle = ({ title, subtitle, color, barColor = "bg-brand-purple" }) => (
+  <div className="flex items-center gap-2 mb-6">
+    <div className={cn("w-1 h-6 rounded-full", barColor)} />
+    <h2 className={cn("text-[11px] font-semibold tracking-[0.2em] uppercase", color || "text-gray-400")}>{title}</h2>
+    {subtitle && <span className="text-[10px] text-gray-600 font-semibold uppercase tracking-widest ml-2 opacity-50">{subtitle}</span>}
+    <div className="flex-1 h-[1px] bg-white/5 ml-4" />
+  </div>
+);
+
+const GlassCard = ({ children, className, variant = 'default' }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 50, scale: 0.97 }}
+    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+    viewport={{ once: true, margin: "-80px" }}
+    transition={{ type: "spring", stiffness: 45, damping: 12, mass: 1 }}
+    className={cn(variant === 'purple' ? "glass-card-purple" : "glass-card", "p-6", className)}
+  >
+    {children}
+  </motion.div>
+);
+
+const StatItem = ({ label, value, color }) => (
+  <div className="flex flex-col items-center justify-center py-6 px-8 min-w-[130px] border-r border-white/5 last:border-0 grow transition-all hover:bg-white/5">
+    <span className={cn("text-3xl md:text-4xl lg:text-5xl font-black mb-2 drop-shadow-sm tracking-tight", color)}>{value}</span>
+    <span className="text-[10px] md:text-[11px] text-gray-400 font-bold tracking-[0.2em] uppercase">{label}</span>
+  </div>
+);
+
+const CircularProgress = ({ value, label, subLabel, color }) => {
+  const radius = 40;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (value / 100) * circumference;
+
+  return (
+    <div className="border border-white/10 rounded-[28px] p-6 flex flex-col items-center text-center flex-1 shadow-lg shadow-black/20" style={{ background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
+      <span className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.15em] mb-6">{label}</span>
+      <div className="relative w-28 h-28 mb-6">
+        <svg className="w-full h-full -rotate-90">
+          <circle
+            cx="56"
+            cy="56"
+            r={radius}
+            fill="transparent"
+            stroke="rgba(255, 255, 255, 0.05)"
+            strokeWidth="8"
+          />
+          <circle
+            cx="56"
+            cy="56"
+            r={radius}
+            fill="transparent"
+            stroke={color}
+            strokeWidth="8"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            style={{ filter: `drop-shadow(0 0 6px ${color}33)` }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-lg font-black leading-none" style={{ color: color }}>{value}%</span>
+        </div>
+      </div>
+      <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">{subLabel}</span>
+    </div>
+  );
+};
+
+const InnovationCard = ({ type, date, title, content, likes, comments }) => {
+  const handleCopyUrl = (e) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      toast.success('🔗 Link copied!', { position: 'bottom-right', autoClose: 2000, theme: 'dark' });
+    });
+  };
+  return (
+    <div className="glass-card mb-4 p-5 hover:bg-white/10 transition-all cursor-pointer group relative">
+      <div className="flex justify-between items-start mb-3">
+        <span className={cn("px-3 py-1 rounded-[30px] btn-typo uppercase", 
+          type === 'INNOVATION' ? 'bg-[#441649]/40 text-purple-400 border border-purple-500/30' :
+          type === 'CASE STUDY' ? 'bg-[#102C1A]/48 text-green-400 border border-green-500/30' :
+          'bg-[#112240]/60 text-blue-400 border border-blue-500/30'
+        )}>
+          {type}
+        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] text-gray-500 font-medium uppercase">{date}</span>
+          {/* Copy URL Button - appears on card hover */}
+          <button
+            onClick={handleCopyUrl}
+            className="relative opacity-0 group-hover:opacity-100 transition-all duration-300 scale-75 group-hover:scale-100 w-7 h-7 rounded-lg flex items-center justify-center border border-white/10 bg-white/5 hover:bg-[#0099c2]/20 hover:border-[#0099c2]/50 hover:shadow-[0_0_12px_rgba(0,153,194,0.35)] active:scale-95"
+            title="Copy URL"
+            aria-label="Copy page URL"
+          >
+            {/* Chain link SVG */}
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#0099c2] transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <h3 className="text-sm font-semibold mb-2 group-hover:text-brand-purple transition-colors">{title}</h3>
+      <p className="text-xs text-gray-400 leading-relaxed mb-4 line-clamp-2">{content}</p>
+      <div className="flex items-center gap-4 text-[10px] text-gray-500 font-medium">
+        <span className="flex items-center gap-1 group-hover:text-brand-pink transition-colors"><Star className="w-3 h-3" /> {likes}</span>
+        <span className="flex items-center gap-1 group-hover:text-brand-blue transition-colors"><MessageCircle className="w-3 h-3" /> {comments}</span>
+      </div>
+    </div>
+  );
+};
+
+// --- Main Employee Page Component ---
 
 const EmployeePage = () => {
   const { slug } = useParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [isDemoMode, setIsDemoMode] = useState(false);
+
+  const fallbackData = {
+    member: {
+      name: "SHAM SK",
+      role: "Founder & CEO",
+      bgText: "SHAM SK",
+      image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/Team/bulcmcbtguawhkw9f7oo.webp",
+      cardImage: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/Team/dgox61jo9mebikejqe2i.webp",
+      image1: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/TeamPage/Rectangle%2098.png",
+      description: "Redefining how brands Attract, Pull & Influence — through data, systems, and relentless execution.",
+      tagline: "Founder & CEO · World's First API Marketing Consultant",
+      bgColor: "#ff3358",
+      socials: {
+        linkedin: "https://linkedin.com",
+        instagram: "https://instagram.com",
+        twitter: "https://twitter.com"
+      }
+    },
+    clickup: {
+      totalHours: 186,
+      worksDone: 47,
+      efficiency: 94,
+      onTime: 47,
+      csat: 66
+    },
+    user: {
+      doj: "2019-01-15",
+      emp_id: "000000000",
+      location: "Kochi, Kerala",
+      department: "Leadership & Strategy",
+      followers: "2,671",
+      efficiency: "94%",
+      onTime: "47%",
+      csat: "66%",
+      tasksPerMonth: "47",
+      hoursPerMonth: "186 HRS",
+      tenure: "6YR",
+      clientsCount: "18+",
+      rating: "4.9",
+      projectsCount: "12+"
+    }
+  };
 
   useEffect(() => {
     const fetchMemberDetails = async () => {
       try {
         setLoading(true);
-        // Fetch from our new endpoint that handles both Mongo details & ClickUp stats
-        const response = await fetch(`http://localhost:5000/clickup/member-details?slug=${slug}`);
-        const resData = await response.json();
-        
-        if (response.ok && resData.member) {
-          setData(resData);
-        } else {
-          setError(resData.message || "Failed to load employee details.");
-        }
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            // 1) Try the authenticated endpoint first (include credentials so cookies are sent).
+            // If the user is logged in and cookies are present, backend will return ClickUp metrics.
+            try {
+              const authResp = await fetch(`${API_URL}/clickup/member-details?slug=${slug}`, {
+                credentials: 'include',
+                headers: { 'Accept': 'application/json' }
+              });
+              const authJson = await authResp.json().catch(() => ({}));
+              if (authResp.ok && authJson.member) {
+                setData(authJson);
+                setIsDemoMode(false);
+                return;
+              }
+              // If 401 or other failure, we'll fall back to public endpoint below
+            } catch (e) {
+              console.warn('Authenticated member-details fetch failed:', e?.message || e);
+            }
+
+            // 2) Try the public endpoint (no auth) to get DB member info for visitors
+            try {
+              const publicResp = await fetch(`${API_URL}/clickup/public-member-details?slug=${slug}`);
+              const publicJson = await publicResp.json().catch(() => ({}));
+              if (publicResp.ok && publicJson.member) {
+                setData({ member: publicJson.member });
+                setIsDemoMode(false);
+                return;
+              }
+            } catch (e) {
+              console.warn('Public member-details fetch failed:', e?.message || e);
+            }
+
+            // 3) Final fallback to visual mock (Sham SK)
+            setData(fallbackData);
+            setIsDemoMode(true);
       } catch (err) {
-        console.error("Error fetching employee details:", err);
-        setError("Network error. Please try again later.");
+        console.error("Error fetching employee details. Loading visual mock mode.", err);
+        setData(fallbackData);
+        setIsDemoMode(true);
       } finally {
         setLoading(false);
       }
@@ -53,435 +333,926 @@ const EmployeePage = () => {
 
     if (slug) {
       fetchMemberDetails();
+    } else {
+      setData(fallbackData);
+      setIsDemoMode(true);
+      setLoading(false);
     }
   }, [slug]);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-brand-dark flex flex-col items-center justify-center gap-4 text-white relative overflow-hidden">
-        {/* Background Decor */}
+      <div className="min-h-screen bg-[#05010B] flex flex-col items-center justify-center gap-4 text-white relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-          <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-brand-purple/10 blur-[150px] rounded-full animate-pulse" />
-          <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-brand-pink/5 blur-[150px] rounded-full animate-pulse" />
+          <div className="absolute top-[-10%] right-[-15%] w-[65vw] h-[65vw] bg-gradient-to-br from-[#4d10a4]/20 to-transparent blur-[160px] rounded-full" />
         </div>
-        <Loader2 className="w-12 h-12 text-[#ff3358] animate-spin relative z-10" />
-        <span className="text-xs font-black tracking-[0.3em] uppercase text-white/30 relative z-10 animate-pulse">
+        <Loader2 className="w-10 h-10 text-brand-purple animate-spin relative z-10" />
+        <span className="text-sm font-semibold tracking-widest uppercase text-white/50 relative z-10 animate-pulse">
           Retrieving Real-Time Roster Data
         </span>
       </div>
     );
   }
 
-  if (error || !data || !data.member) {
-    return (
-      <div className="min-h-screen bg-brand-dark flex flex-col items-center justify-center gap-6 text-white relative p-6">
-        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-          <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-brand-purple/10 blur-[150px] rounded-full" />
-          <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-[#ff3358]/5 blur-[150px] rounded-full" />
-        </div>
-        <Globe className="w-16 h-16 text-[#ff3358] animate-bounce relative z-10" />
-        <div className="text-center relative z-10 max-w-md">
-          <h2 className="text-3xl font-black uppercase tracking-tight font-roboto scale-y-[1.2] mb-2">
-            Profile <span className="text-[#ff3358]">Not Found</span>
-          </h2>
-          <p className="text-white/40 text-sm font-medium tracking-wide">
-            {error || "The requested individual employee page is not available or does not exist."}
-          </p>
-        </div>
-        <Link
-          to="/team"
-          className="relative z-10 px-8 py-4 bg-white/5 border border-white/10 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-[#ff3358] hover:text-white transition-all flex items-center gap-3"
-        >
-          <ArrowLeft className="w-4 h-4" /> Back to Team
-        </Link>
-      </div>
-    );
-  }
+  const member = data?.member || fallbackData.member;
+  const clickup = data?.clickup || fallbackData.clickup;
+  const user = data?.user || data?.member?.user || fallbackData.user;
 
-  const { member, clickup } = data;
-  const user = member.user || {};
+  const hoursLogged = clickup && !clickup.error ? Number(clickup.totalHours || fallbackData.clickup.totalHours).toFixed(1) : fallbackData.clickup.totalHours;
+  const tasksCompleted = clickup && !clickup.error ? (clickup.worksDone || fallbackData.clickup.worksDone) : fallbackData.clickup.worksDone;
 
-  // Formatter for total hours
-  const hoursLogged = clickup && !clickup.error ? Number(clickup.totalHours || 0).toFixed(1) : "0.0";
-  const tasksCompleted = clickup && !clickup.error ? clickup.worksDone || 0 : 0;
-  const clickupTasks = clickup && !clickup.error ? clickup.tasks || [] : [];
+  const activeActivityData = clickup && clickup.activityData ? clickup.activityData : activityData;
+  const activeTaskCompletionData = clickup && clickup.taskCompletionData ? clickup.taskCompletionData : taskCompletionData;
+  const activeWorkingHoursData = clickup && clickup.workingHoursData ? clickup.workingHoursData : workingHoursData;
+  const activeAttendanceData = clickup && clickup.attendanceData ? clickup.attendanceData : attendanceData;
+  const activeEfficiencyScoreData = clickup && clickup.efficiencyScoreData ? clickup.efficiencyScoreData : efficiencyScoreData;
+  
+  const maxScoreVal = Math.max(...activeEfficiencyScoreData.map(d => Math.max(d.efficiency || 0, d.delivery || 0, d.csat || 0)));
+  const yTicks = maxScoreVal > 50 ? [0, 20, 40, 60, 80, 100] : [0, 10, 20, 30, 40, 50];
+  const yDomain = maxScoreVal > 50 ? [0, 100] : [0, 50];
+
+  const attendancePresent = activeAttendanceData.filter(d => d.status === 'present').length;
+  const attendanceHalf = activeAttendanceData.filter(d => d.status === 'half').length;
+  const attendanceLeave = activeAttendanceData.filter(d => d.status === 'leave').length;
+  const attendanceBalance = activeAttendanceData.filter(d => d.status === 'upcoming').length;
 
   return (
-    <div className="min-h-screen bg-brand-dark selection:bg-brand-pink selection:text-white text-white relative overflow-hidden pb-32">
-      {/* Background Decor */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-brand-purple/10 blur-[150px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-[#ff3358]/5 blur-[150px] rounded-full" />
+    <div className="min-h-screen selection:bg-brand-purple/30 text-white relative overflow-hidden font-sans">
+      
+      {/* Background Decor Layer - Perfectly matches the linear gradient and grid colors */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-0 overflow-hidden"
+        style={{
+          background: 'linear-gradient(180deg, #441649 0%, #160F2C 45%, #2A1440 75%, #20133C 100%)'
+        }}
+      >
         {/* Subtle grid line effect */}
-        <div className="absolute inset-0 opacity-[0.02]" 
-             style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '120px 120px' }} 
+        <div className="absolute inset-0 opacity-[0.03]" 
+             style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '100px 100px' }} 
         />
       </div>
 
-      {/* Floating Navigation/Header */}
-      <div className="w-full max-w-7xl mx-auto px-6 md:px-12 py-8 relative z-20 flex justify-between items-center">
-        {/* Left */}
-        <Link
-          to="/team"
-          className="group text-white/70 hover:text-white font-medium flex items-center gap-3 transition-all"
-        >
-          <div className="p-2 rounded-full border border-white/20 group-hover:border-white/40 transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-          </div>
-          <span className="text-sm font-medium tracking-wide">Back to Team</span>
-        </Link>
+      {/* Preview Notice */}
+      {isDemoMode && (
+        <div className="bg-[#CB1387]/10 border-b border-[#CB1387]/20 text-center py-2 relative z-50 text-xs font-semibold text-[#CB1387] tracking-wider uppercase flex items-center justify-center gap-2">
+          <Sparkles className="w-4.5 h-4.5 animate-spin" /> Interactive Preview Mode: Sham SK Profile Design
+        </div>
+      )}
+
+      {/* --- HERO SECTION WITH HEADER INTEGRATED --- */}
+      <section className="relative w-full md:h-screen min-h-[850px] md:min-h-0 overflow-hidden flex flex-col justify-between bg-transparent pb-12 pt-8">
+        {/* Background Image Layer - Covers Header down to Stats Ribbon perfectly */}
+        <div 
+          className="absolute inset-0 z-0 bg-no-repeat bg-cover bg-center opacity-40 mix-blend-lighten pointer-events-none"
+          style={{ backgroundImage: 'url(https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/TeamPage/syudjvadmoda2nj1albg.png)' }}
+        />
         
-        {/* Center Logo */}
-        <div className="absolute left-1/2 -translate-x-1/2 font-serif text-3xl font-bold tracking-tight select-none cursor-pointer">
-          Social<span className="text-[#ff3358]">B</span>ureau
-        </div>
 
-        {/* Right */}
-        <div className="flex items-center gap-4 hidden md:flex">
-          <button className="px-6 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white/90 text-[10px] font-bold tracking-widest flex items-center gap-2 transition-all">
-            <Share2 className="w-3.5 h-3.5" /> SHARE
-          </button>
-          <button className="px-6 py-2.5 rounded-full bg-[#ff3358] hover:bg-[#ff1f4b] text-white text-[10px] font-bold tracking-widest flex items-center gap-2 transition-all shadow-[0_5px_20px_rgba(255,51,88,0.3)]">
-            <Download className="w-3.5 h-3.5" /> PORTFOLIO PDF
-          </button>
-        </div>
-      </div>
 
-      {/* Hero Section */}
-      <div className="w-full max-w-6xl mx-auto px-6 md:px-12 mt-8 mb-20 relative z-10 flex flex-col items-center">
-        
-        {/* Background Name */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-black text-white/[0.02] whitespace-nowrap pointer-events-none select-none z-0 tracking-tighter uppercase leading-none mt-10 font-roboto">
-          {member.name}
-        </div>
-
-        {/* Top Tags */}
-        <div className="flex items-center gap-4 mb-10 z-10">
-          <div className="px-5 py-2 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-[10px] font-bold tracking-widest uppercase flex items-center gap-2">
-            <CheckCircle2 className="w-3.5 h-3.5" /> VERIFIED PRO
-          </div>
-          <div className="px-5 py-2 rounded-full border border-green-500/30 bg-green-500/10 text-green-400 text-[10px] font-bold tracking-widest uppercase flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" /> Active Now
-          </div>
-        </div>
-
-        {/* Main Hero Content */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16 z-10 w-full relative">
+        {/* Centered Content Wrapper - Perfectly scaled to fill spaces dynamically */}
+        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 relative z-10 flex flex-col justify-between grow mt-4 pb-6">
           
-          {/* Image Block */}
-          <div className="w-64 h-64 md:w-[22rem] md:h-[22rem] rounded-[2.5rem] overflow-hidden flex-shrink-0 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative border border-white/5">
-            <div className="absolute inset-0 bg-[#e32230] z-0" />
-            <div className="absolute inset-0 flex items-center justify-center z-10 opacity-40 mix-blend-overlay" />
-            {member.image ? (
-              <img src={member.image} alt={member.name} className="w-full h-full object-cover relative z-20" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center relative z-20">
-                <User className="w-24 h-24 text-white/30" />
+          <div className="relative flex flex-col md:flex-row items-center gap-12 md:gap-20 pt-10 md:pt-14 grow justify-center">
+            {/* Perfectly Proportioned Profile Card */}
+            <motion.div 
+              initial={{ scale: 0.85, opacity: 0, rotate: -3 }}
+              animate={{ 
+                scale: 1, 
+                opacity: 1,
+                rotate: 0,
+                y: [0, -12, 0]
+              }}
+              transition={{
+                scale: { type: "spring", stiffness: 50, damping: 12 },
+                opacity: { duration: 0.6 },
+                rotate: { type: "spring", stiffness: 50, damping: 12 },
+                y: {
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }
+              }}
+              className="relative group shrink-0"
+            >
+              <div className="w-[280px] h-[280px] md:w-[320px] md:h-[320px] rounded-[40px] overflow-hidden relative border border-white/10 shadow-2xl bg-black">
+                {/* Internal Watermark */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-10 select-none z-0">
+                  <span className="text-8xl font-black text-white leading-none rotate-90 scale-150 uppercase">{member.name}</span>
+                </div>
+                <img 
+                  src={member.cardImage || member.image || "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/Team/cfg8edyz3kmmxjhqt98y.webp"} 
+                  alt={member.name} 
+                  className="w-full h-full object-cover relative z-10 transition-all duration-700"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-20" />
               </div>
-            )}
-          </div>
+              {/* Glow */}
+              <div className="absolute -inset-4 bg-brand-purple/20 blur-3xl -z-10 animate-pulse" />
+            </motion.div>
 
-          {/* Text Content */}
-          <div className="flex flex-col justify-center text-center md:text-left flex-1 max-w-2xl">
-            <h1 className="text-6xl md:text-[6.5rem] font-black uppercase tracking-tighter leading-[0.9] mb-4 font-roboto scale-y-[1.1] transform-origin-left text-white">
-              {member.name}
-            </h1>
-            <p className="text-white/60 text-sm md:text-base font-medium mb-4 tracking-wide">
-              {member.role}
-            </p>
-            <p className="text-white/40 italic text-sm md:text-base max-w-xl mb-10 leading-relaxed font-serif">
-              "{member.description || 'Redefining how brands Attract, Pull & Influence — through data, systems, and relentless execution.'}"
-            </p>
-
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-4 justify-center md:justify-start">
-              <button className="px-8 py-3.5 rounded-full bg-[#ff3358]/80 hover:bg-[#ff3358] border border-[#ff3358] text-white text-[11px] font-bold tracking-widest flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(255,51,88,0.2)]">
-                <Mail className="w-4 h-4" /> MESSAGE
-              </button>
-              <button className="px-8 py-3.5 rounded-full bg-transparent hover:bg-purple-900/20 border border-purple-500/30 text-purple-300 text-[11px] font-bold tracking-widest flex items-center gap-2 transition-all">
-                <Calendar className="w-4 h-4" /> BOOK SESSION
-              </button>
-              <button className="px-8 py-3.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white/60 hover:text-white text-[11px] font-bold tracking-widest transition-all">
-                CLICKUP
-              </button>
-              <button className="px-8 py-3.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white/60 hover:text-white text-[11px] font-bold tracking-widest flex items-center gap-2 transition-all">
-                PDF <Download className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Stats Bar */}
-      <div className="w-full max-w-[85rem] mx-auto px-6 z-10 relative mb-20">
-        <div className="bg-white/[0.02] backdrop-blur-3xl border border-white/10 rounded-[2rem] p-6 flex flex-wrap justify-between items-center gap-4 shadow-2xl relative overflow-hidden">
-          {/* subtle glow */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#ff3358]/5 via-purple-500/5 to-transparent z-0 pointer-events-none" />
-          
-          <div className="flex flex-col items-center flex-1 relative z-10 border-r border-white/10 last:border-0 border-dashed py-2">
-            <span className="text-[2.5rem] font-black text-[#ff3358] tracking-tighter">12+</span>
-            <span className="text-[10px] text-white/40 font-black tracking-widest uppercase mt-1">PROJECTS</span>
-          </div>
-
-          <div className="flex flex-col items-center flex-1 relative z-10 border-r border-white/10 last:border-0 border-dashed py-2">
-            <span className="text-[2.5rem] font-black text-purple-400 tracking-tighter">{tasksCompleted}</span>
-            <span className="text-[10px] text-white/40 font-black tracking-widest uppercase mt-1">TASKS/MO</span>
-          </div>
-
-          <div className="flex flex-col items-center flex-1 relative z-10 border-r border-white/10 last:border-0 border-dashed py-2">
-            <span className="text-[2.5rem] font-black text-blue-400 tracking-tighter">{hoursLogged}H</span>
-            <span className="text-[10px] text-white/40 font-black tracking-widest uppercase mt-1">HOURS/MO</span>
-          </div>
-
-          <div className="flex flex-col items-center flex-1 relative z-10 border-r border-white/10 last:border-0 border-dashed py-2">
-            <span className="text-[2.5rem] font-black text-green-400 tracking-tighter">94%</span>
-            <span className="text-[10px] text-white/40 font-black tracking-widest uppercase mt-1">EFFICIENCY</span>
-          </div>
-
-          <div className="flex flex-col items-center flex-1 relative z-10 border-r border-white/10 last:border-0 border-dashed py-2">
-            <span className="text-[2.5rem] font-black text-yellow-400 tracking-tighter">6YR</span>
-            <span className="text-[10px] text-white/40 font-black tracking-widest uppercase mt-1">TENURE</span>
-          </div>
-
-          <div className="flex flex-col items-center flex-1 relative z-10 border-r border-white/10 last:border-0 border-dashed py-2">
-            <span className="text-[2.5rem] font-black text-pink-400 tracking-tighter">{user.clients?.length || 18}+</span>
-            <span className="text-[10px] text-white/40 font-black tracking-widest uppercase mt-1">CLIENTS</span>
-          </div>
-
-          <div className="flex flex-col items-center flex-1 relative z-10 border-r border-white/10 last:border-0 border-dashed py-2 border-none">
-            <span className="text-[2.5rem] font-black text-orange-400 tracking-tighter flex items-center">4.9<Star className="w-5 h-5 ml-1 mb-1 fill-orange-400 text-orange-400" /></span>
-            <span className="text-[10px] text-white/40 font-black tracking-widest uppercase mt-1">RATING</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Profile Showcase Grid */}
-      <div className="w-full max-w-6xl mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12">
-        
-        {/* LEFT COLUMN: Activity & Stacks (Lg: col-span-8) */}
-        <div className="lg:col-span-8 flex flex-col gap-12">
-
-          {/* ClickUp Task Feed */}
-          {clickup && !clickup.error && clickupTasks.length > 0 && (
-            <section className="space-y-6">
-              <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#ff3358] flex items-center gap-2">
-                <Layers className="w-4 h-4 text-[#ff3358]" /> Real-time Deliverables Feed
-              </h3>
-              
-              <div className="bg-white/5 border border-white/5 rounded-[2.5rem] p-8 space-y-4">
-                {clickupTasks.map((task) => (
-                  <div 
-                    key={task.id} 
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/10 transition-all group/task"
-                  >
-                    <div className="flex flex-col gap-1.5 flex-1 min-w-0">
-                      <div className="flex items-center gap-3">
-                        <span 
-                          className="px-2.5 py-0.5 rounded text-[8px] font-black uppercase tracking-widest font-mono"
-                          style={{ 
-                            backgroundColor: `${task.statusColor || '#3498db'}20`, 
-                            color: task.statusColor || '#3498db',
-                            border: `1px solid ${task.statusColor || '#3498db'}30` 
-                          }}
-                        >
-                          {task.status || "In Progress"}
-                        </span>
-                        <span className="text-[10px] text-white/40 font-bold font-mono">ID: {task.id}</span>
-                      </div>
-                      <h4 className="font-bold text-sm text-white group-hover/task:text-[#ff3358] transition-colors truncate">
-                        {task.title}
-                      </h4>
-                    </div>
-
-                    <div className="flex items-center gap-4 flex-shrink-0 justify-between sm:justify-end">
-                      {task.due && (
-                        <div className="flex items-center gap-1.5 text-white/40 text-xs font-medium">
-                          <Calendar className="w-3.5 h-3.5" />
-                          <span>{task.due}</span>
-                        </div>
-                      )}
-                      
-                      {task.url && (
-                        <a 
-                          href={task.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="px-4 py-2 bg-white/5 hover:bg-[#ff3358] text-white/70 hover:text-white rounded-lg text-[10px] font-black uppercase tracking-widest border border-white/10 transition-all flex items-center gap-1.5 group/link"
-                        >
-                          Details
-                          <ArrowUpRight className="w-3 h-3 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                ))}
+            {/* Intro Text - Balanced Sizing to fill space */}
+            <div className="flex-1 text-center md:text-left relative">
+              <div className="flex flex-wrap justify-center md:justify-start gap-3 mb-6">
+                <span className="bg-[#112240]/60 text-blue-400 border border-blue-500/20 px-5 py-1.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5" /> VERIFIED PRO
+                </span>
+                <span className="bg-[#102C1A]/48 text-green-400 border border-green-500/20 px-5 py-1.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" /> Active Now
+                </span>
               </div>
-            </section>
-          )}
-
-          {/* Tools & Core Stack */}
-          {user.tools && user.tools.length > 0 && (
-            <section className="space-y-6">
-              <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#ff3358] flex items-center gap-2">
-                <Cpu className="w-4 h-4 text-[#ff3358]" /> Technical Arsenal & Stack
-              </h3>
-              
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                {user.tools.map((tool, idx) => (
-                  <div 
-                    key={idx}
-                    className="bg-white/5 border border-white/5 hover:border-[#ff3358]/30 rounded-2xl p-5 hover:bg-white/10 hover:shadow-[0_10px_30px_rgba(255,51,88,0.05)] transition-all duration-300 group/tool flex flex-col justify-between"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-xl mb-4 group-hover/tool:scale-110 transition-transform">
-                      {tool.icon ? (
-                        <img src={tool.icon} alt={tool.toolName} className="w-6 h-6 object-contain" />
-                      ) : (
-                        <Cpu className="w-5 h-5 text-white/20" />
-                      )}
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-xs uppercase tracking-wider group-hover/tool:text-[#ff3358] transition-colors">{tool.toolName}</h4>
-                      {tool.url && (
-                        <a 
-                          href={tool.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-[9px] text-white/30 uppercase tracking-widest font-black hover:text-white transition-colors mt-1 block flex items-center gap-1"
-                        >
-                          Stack Profile <ExternalLink className="w-2.5 h-2.5" />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* Client Portfolio */}
-          {user.clients && user.clients.length > 0 && (
-            <section className="space-y-6">
-              <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#ff3358] flex items-center gap-2">
-                <Globe className="w-4 h-4 text-[#ff3358]" /> Brands & Clients Served
-              </h3>
-              
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
-                {user.clients.map((client, idx) => (
-                  <div 
-                    key={idx}
-                    className="bg-white/5 border border-white/5 hover:border-white/10 rounded-2xl p-6 flex flex-col items-center justify-center gap-4 text-center group/client transition-all"
-                  >
-                    <div className="w-14 h-14 bg-white/5 border border-white/5 rounded-full overflow-hidden flex items-center justify-center text-white/20 font-black text-lg group-hover/client:scale-105 transition-all">
-                      {client.logo ? (
-                        <img src={client.logo} alt={client.name} className="w-full h-full object-cover" />
-                      ) : (
-                        client.name.substring(0, 2).toUpperCase()
-                      )}
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-xs uppercase tracking-wider">{client.name}</h4>
-                      {client.website && (
-                        <a 
-                          href={client.website}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-[9px] text-[#ff3358] hover:text-white uppercase tracking-widest font-black mt-1 block"
-                        >
-                          Visit Site
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
-
-        </div>
-
-        {/* RIGHT COLUMN: Socials & Badges (Lg: col-span-4) */}
-        <div className="lg:col-span-4 flex flex-col gap-8">
-          
-          {/* Social Channels */}
-          {member.socials && (
-            <div className="bg-white/5 border border-white/5 rounded-[2.5rem] p-8 space-y-6">
-               <h4 className="text-xs font-black uppercase tracking-[0.3em] text-[#ff3358] flex items-center gap-2">
-                <Globe className="w-4 h-4 text-[#ff3358]" /> Connect
-              </h4>
-              <div className="flex gap-4 w-full z-10 relative">
-                {member.socials.linkedin && (
-                  <a
-                    href={member.socials.linkedin}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-[#ff3358] hover:text-white transition-all text-white/60 hover:scale-110 flex-1 flex justify-center"
-                  >
-                    <i className="fab fa-linkedin-in text-lg" />
-                  </a>
-                )}
-                {member.socials.instagram && (
-                  <a
-                    href={member.socials.instagram}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-[#ff3358] hover:text-white transition-all text-white/60 hover:scale-110 flex-1 flex justify-center"
-                  >
-                    <i className="fab fa-instagram text-lg" />
-                  </a>
-                )}
-                {member.socials.twitter && (
-                  <a
-                    href={member.socials.twitter}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-[#ff3358] hover:text-white transition-all text-white/60 hover:scale-110 flex-1 flex justify-center"
-                  >
-                    <i className="fab fa-twitter text-lg" />
-                  </a>
-                )}
-              </div>
-
-              {/* Copy link option */}
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(window.location.href);
-                  toast.success("Profile link copied!");
-                }}
-                className="w-full mt-4 py-4 bg-white/5 hover:bg-white text-white/70 hover:text-black font-black uppercase tracking-widest text-[9px] rounded-2xl border border-white/10 hover:border-white transition-all z-10"
+              <motion.h1 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-5xl md:text-7xl lg:text-[5.5rem] font-black mb-4 tracking-tighter text-white font-display uppercase leading-[0.9]"
               >
-                Share Profile Path
-              </button>
+                {member.name}
+              </motion.h1>
+              <p className="text-gray-400 font-bold mb-4 text-xl md:text-2xl uppercase tracking-[0.1em]">
+                {member.tagline || `${member.role} · API Marketing Consultant`}
+              </p>
+              <p className="text-gray-500 text-sm md:text-base italic max-w-xl leading-relaxed mb-8 opacity-70">
+                "{member.description}"
+              </p>
+              
+              <div className="flex flex-wrap justify-center md:justify-start gap-3">
+                <button className="bg-[#E11D48] hover:bg-[#BE123C] text-white px-8 py-3.5 rounded-[12px] text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-2 shadow-lg shadow-red-500/20">
+                  <Mail className="w-4 h-4" /> MESSAGE
+                </button>
+                <button className="bg-[#0B0118]/80 hover:bg-[#1A0B2E] text-purple-400 border border-purple-500/20 px-8 py-3.5 rounded-[12px] text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-2">
+                  <Calendar className="w-4 h-4" /> BOOK SESSION
+                </button>
+                <button className="bg-white/5 hover:bg-white/10 text-gray-400 border border-white/10 px-8 py-3.5 rounded-[12px] text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] transition-all">
+                  CLICKUP
+                </button>
+                <button className="bg-white/5 hover:bg-white/10 text-gray-400 border border-white/10 px-8 py-3.5 rounded-[12px] text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-2">
+                  PDF <FileText className="w-4 h-4" />
+                </button>
+              </div>
             </div>
-          )}
+          </div>
 
-          {/* Achievements Block */}
-          {user.achievements && user.achievements.length > 0 && (
-            <div className="bg-white/5 border border-white/5 rounded-[2.5rem] p-8 space-y-6">
-              <h4 className="text-xs font-black uppercase tracking-[0.3em] text-[#ff3358] flex items-center gap-2">
-                <Award className="w-4 h-4 text-[#ff3358]" /> Awards & Badges
-              </h4>
+          {/* Stats Ribbon - Anchored dynamically with mt-auto and extra bottom margin */}
+          <motion.div 
+            initial={{ y: 40, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="mt-auto mb-8 md:mb-12 bg-[#1A0B2E]/60 backdrop-blur-xl border border-white/10 rounded-[32px] flex flex-wrap divide-x divide-white/5 overflow-hidden relative z-10"
+          >
+            <StatItem label="Projects" value={user.projectsCount || "12+"} color="text-red-500" />
+            <StatItem label="Tasks/Mo" value={tasksCompleted || "47"} color="text-purple-500" />
+            <StatItem label="Hours/Mo" value={hoursLogged || "186H"} color="text-blue-500" />
+            <StatItem label="Efficiency" value={user.efficiency || "94%"} color="text-green-500" />
+            <StatItem label="Tenure" value={user.tenure || "6YR"} color="text-yellow-500" />
+            <StatItem label="Clients" value={user.clientsCount || "18+"} color="text-pink-500" />
+            <StatItem label="Rating" value={user.rating || "4.9★"} color="text-orange-500" />
+          </motion.div>
 
-              <div className="space-y-4">
-                {user.achievements.map((ach, idx) => (
-                  <div key={idx} className="flex gap-4 items-start group/ach pb-4 border-b border-white/5 last:border-0 last:pb-0">
-                    <div className="w-10 h-10 bg-gradient-to-br from-[#ff3358] to-[#ff5c7a] rounded-xl flex items-center justify-center flex-shrink-0 shadow-[0_10px_20px_rgba(255,51,88,0.2)]">
-                      <Star className="w-4 h-4 text-white" />
-                    </div>
-                    <div className="space-y-1">
-                      <h5 className="font-bold text-xs uppercase tracking-wider group-hover/ach:text-[#ff3358] transition-colors">
-                        {ach.title}
-                      </h5>
-                      <p className="text-[10px] text-white/40 font-medium leading-relaxed">
-                        {ach.description}
-                      </p>
-                    </div>
+        </div>
+      </section>
+
+      {/* --- DASHBOARD CONTENT WITH STAGGERED REVEALS --- */}
+      <motion.main 
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={{
+          hidden: {},
+          show: {
+            transition: {
+              staggerChildren: 0.15
+            }
+          }
+        }}
+        className="max-w-[1440px] mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12 relative z-10"
+      >
+        
+        {/* LEFT COLUMN: Performance visuals */}
+        <motion.div 
+          variants={{
+            hidden: { opacity: 0, y: 80, scale: 0.98 },
+            show: { 
+              opacity: 1, 
+              y: 0, 
+              scale: 1,
+              transition: { type: "spring", stiffness: 45, damping: 12 }
+            }
+          }}
+          className="lg:col-span-9 grid grid-cols-1 md:grid-cols-12 gap-8"
+        >
+          
+          <div className="md:col-span-7">
+            <GlassCard variant="purple" className="p-8 h-full">
+              <SectionTitle title="Performance Overview" barColor="bg-yellow-500" />
+              <div className="grid grid-cols-2 gap-4 mb-10">
+                {[
+                  { label: 'EFFICIENCY', val: user.efficiency || '94%', color: 'border-white/5 text-accent-red bg-white/2' },
+                  { label: 'ON-TIME', val: user.onTime || '91%', color: 'border-white/5 text-accent-green bg-white/2' },
+                  { label: 'CSAT', val: user.csat || '98%', color: 'border-white/5 text-brand-purple bg-white/2' },
+                  { label: 'TASKS/MO', val: tasksCompleted || '47', color: 'border-white/5 text-brand-blue bg-white/2' }
+                ].map((item) => (
+                  <div key={item.label} className={cn("p-4 rounded-2xl border transition-all hover:bg-white/5", item.color)}>
+                    <div className="text-[14px] font-bold mb-1 tracking-tighter">{item.val}</div>
+                    <div className="text-[9px] font-semibold tracking-widest opacity-60 uppercase">{item.label}</div>
                   </div>
                 ))}
               </div>
-            </div>
-          )}
 
-        </div>
+              <SectionTitle title="This Week Activity" barColor="bg-yellow-500" />
+              <div className="h-48">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={activeActivityData} margin={{ left: -30 }}>
+                    <CartesianGrid vertical={false} stroke="rgba(255,255,255,0.05)" />
+                    <XAxis 
+                      dataKey="name" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{fontSize: 10, fill: '#4B5563', fontWeight: '700'}} 
+                      dy={10}
+                    />
+                    <YAxis 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{fontSize: 10, fill: '#4B5563', fontWeight: '700'}}
+                      ticks={[0, 4, 8, 12]}
+                    />
+                    <Tooltip content={<CustomTooltip color="#F43F5E" />} cursor={{ stroke: 'rgba(255, 255, 255, 0.1)', strokeWidth: 1 }} />
+                    <Line type="monotone" dataKey="value" stroke="#F43F5E" strokeWidth={3} dot={{ r: 4, fill: '#F43F5E', strokeWidth: 0 }} activeDot={{ r: 6 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </GlassCard>
+          </div>
+
+          {/* 3D Illustration Column */}
+          <div className="md:col-span-5">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="h-full rounded-[48px] overflow-hidden border border-[#0088ff] bg-[#0a0316] flex items-center justify-center p-8 min-h-[400px] relative group shadow-[0_0_20px_rgba(0,136,255,0.15)]"
+            >
+              <motion.img 
+                animate={{ 
+                  y: [0, -20, 0],
+                  rotate: [0, 1, 0, -1, 0]
+                }}
+                transition={{ 
+                  duration: 6, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+                src={member.image1 || "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/TeamPage/Rectangle%2098.png"} 
+                alt="3D Analytics" 
+                className="w-full h-full object-contain rounded-[1.5rem] drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)] relative z-10 scale-105 transition-transform duration-700 ease-out"
+              />
+            </motion.div>
+          </div>
+
+          <div className="md:col-span-6">
+            <GlassCard variant="purple">
+              <div className="mb-6">
+                <SectionTitle title="Task Completion" barColor="bg-accent-red" />
+                <div className="text-3xl font-black text-accent-red tracking-tighter -mt-4">{tasksCompleted || "47"} TASKS</div>
+              </div>
+              <div className="h-48 mt-8">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={activeTaskCompletionData} margin={{ left: -30 }}>
+                    <CartesianGrid vertical={false} stroke="rgba(255,255,255,0.05)" />
+                    <Tooltip content={<CustomTooltip color="#F43F5E" />} cursor={{ fill: 'rgba(255, 255, 255, 0.03)', radius: [6, 6, 0, 0] }} />
+                    <XAxis 
+                      dataKey="name" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{fontSize: 10, fill: '#4B5563', fontWeight: '700'}} 
+                      dy={10}
+                    />
+                    <YAxis 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{fontSize: 10, fill: '#4B5563', fontWeight: '700'}}
+                      ticks={[0, 10, 20, 30, 40, 50]}
+                    />
+                    <Bar dataKey="value" fill="rgba(244, 63, 94, 0.1)" radius={[6, 6, 0, 0]} stroke="#F43F5E" strokeWidth={1} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </GlassCard>
+          </div>
+
+          <div className="md:col-span-6">
+            <GlassCard variant="purple">
+              <div className="mb-6">
+                <SectionTitle title="Working Hours" barColor="bg-brand-purple" />
+                <div className="text-3xl font-black text-brand-purple tracking-tighter -mt-4">{hoursLogged || "186"} HRS</div>
+              </div>
+              <div className="h-48 mt-8">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={activeWorkingHoursData} margin={{ left: -20 }}>
+                    <CartesianGrid vertical={false} stroke="rgba(255,255,255,0.05)" />
+                    <Tooltip content={<CustomTooltip color="#A855F7" />} cursor={{ fill: 'rgba(255, 255, 255, 0.03)', radius: [6, 6, 0, 0] }} />
+                    <XAxis 
+                      dataKey="name" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{fontSize: 10, fill: '#4B5563', fontWeight: '700'}} 
+                      dy={10}
+                    />
+                    <YAxis 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{fontSize: 10, fill: '#4B5563', fontWeight: '700'}}
+                      ticks={[0, 40, 80, 120, 160, 200]}
+                    />
+                    <Bar dataKey="value" fill="rgba(168, 85, 247, 0.1)" radius={[6, 6, 0, 0]} stroke="#A855F7" strokeWidth={1} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </GlassCard>
+          </div>
+
+          <div className="md:col-span-12">
+            <div className="bg-card-dark border border-white/5 rounded-[32px] p-8">
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-4 bg-orange-600 rounded-full" />
+                  <h2 className="text-[11px] font-bold tracking-[0.2em] uppercase text-gray-400">EFFICIENCY & DELIVERY SCORE</h2>
+                </div>
+                <div className="bg-green-500/10 text-green-500 text-[9px] px-4 py-1.5 rounded-full border border-green-500/20 font-bold uppercase tracking-widest flex items-center gap-2">
+                   <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" /> LIVE
+                </div>
+              </div>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={activeEfficiencyScoreData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                    <CartesianGrid vertical={false} stroke="rgba(255,255,255,0.05)" />
+                    <XAxis 
+                      dataKey="name" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{fontSize: 11, fill: '#4B5563', fontWeight: '700'}} 
+                      dy={10}
+                    />
+                    <YAxis 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{fontSize: 11, fill: '#4B5563', fontWeight: '700'}}
+                      domain={yDomain}
+                      ticks={yTicks}
+                    />
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: '#0B0515', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '16px' }}
+                    />
+                    <Line type="monotone" dataKey="efficiency" stroke="#F43F5E" strokeWidth={3} dot={{ r: 4, fill: '#F43F5E', strokeWidth: 0 }} activeDot={{ r: 6 }} />
+                    <Line type="monotone" dataKey="delivery" stroke="#A855F7" strokeWidth={3} dot={{ r: 4, fill: '#A855F7', strokeWidth: 0 }} activeDot={{ r: 6 }} />
+                    <Line type="monotone" dataKey="csat" stroke="#22C55E" strokeWidth={3} dot={{ r: 4, fill: '#22C55E', strokeWidth: 0 }} activeDot={{ r: 6 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+
+          <div className="md:col-span-12">
+            <GlassCard variant="purple" className="!overflow-visible">
+              <SectionTitle title={`Attendance - ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`} />
+              <div className="grid grid-cols-7 md:grid-cols-10 gap-3">
+                 {activeAttendanceData.map((d) => {
+                    const label = d.date ? `${d.date} (${d.day})` : `Day ${d.id + 1}`;
+                    const statusText = d.status.replace('-', ' ').toUpperCase();
+                    
+                    return (
+                      <div 
+                        key={d.id}
+                        className="relative group aspect-square"
+                      >
+                        <div 
+                          className={cn(
+                           "w-full h-full rounded-xl shadow-xl transition-all duration-300 hover:scale-110 cursor-help",
+                           d.status === 'present' ? 'bg-gradient-to-br from-green-600 to-green-800 border border-green-400/20' :
+                           d.status === 'leave' ? 'bg-gradient-to-br from-red-500 to-red-700 border border-red-400/20' :
+                           d.status === 'half' ? 'bg-gradient-to-br from-orange-600 to-orange-800 border border-orange-400/20' :
+                           d.status === 'upcoming' ? 'bg-gradient-to-br from-[#0099c2]/20 to-[#0099c2]/5 border border-[#0099c2] shadow-[0_0_10px_rgba(0,153,194,0.3)]' :
+                           'bg-[#112240] border border-white/5 opacity-70'
+                          )}
+                        />
+                        {/* Custom Premium Glassmorphic Tooltip */}
+                        <div className="absolute bottom-[125%] left-1/2 -translate-x-1/2 w-48 p-3 rounded-2xl border border-white/10 shadow-2xl backdrop-blur-xl opacity-0 scale-95 pointer-events-none transition-all duration-300 group-hover:opacity-100 group-hover:scale-100 z-30 flex flex-col gap-1 items-center text-center"
+                             style={{
+                               background: 'linear-gradient(135deg, rgba(20, 10, 35, 0.95) 0%, rgba(10, 5, 20, 0.98) 100%)',
+                               boxShadow: '0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1)'
+                             }}>
+                          <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{label}</span>
+                          <span className={cn(
+                            "text-[10px] font-black tracking-[0.1em] px-2 py-0.5 rounded-full uppercase border",
+                            d.status === 'present' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
+                            d.status === 'leave' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
+                            d.status === 'half' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
+                            d.status === 'upcoming' ? 'bg-gray-500/10 text-gray-400 border-gray-500/20' :
+                            'bg-cyan-500/10 text-cyan-400 border-cyan-500/20'
+                          )}>
+                            {statusText}
+                          </span>
+                          {/* Triangle Arrow */}
+                          <div className="absolute top-full left-1/2 -translate-x-1/2 border-[6px] border-transparent border-t-[#0a0514]" />
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+
+              {/* Legend */}
+              <div className="flex flex-wrap gap-5 mt-10 mb-10">
+                {[
+                  {l:'Leave', c:'bg-gradient-to-br from-red-500 to-red-700'}, 
+                  {l:'Present', c:'bg-gradient-to-br from-green-600 to-green-800'}, 
+                  {l:'Half Day', c:'bg-gradient-to-br from-orange-600 to-orange-800'}, 
+                  {l:'Weekend', c:'bg-[#112240]'},
+                  {l:'Upcoming', c:'bg-gradient-to-br from-[#0099c2]/20 to-[#0099c2]/5 border border-[#0099c2] shadow-[0_0_10px_rgba(0,153,194,0.3)]'}
+                ].map(i => (
+                  <div key={i.l} className="flex items-center gap-2">
+                    <div className={cn("w-3.5 h-3.5 rounded-[4px] shadow-sm", i.c)} />
+                    <span className="text-[10px] text-gray-500 font-bold tracking-wider uppercase">{i.l}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Summary Stats */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {[
+                  {l:'PRESENT', v: attendancePresent.toString(), c:'text-green-500'}, 
+                  {l:'HALF DAY', v: attendanceHalf.toString(), c:'text-orange-500'}, 
+                  {l:'LEAVE', v: attendanceLeave.toString(), c:'text-red-500'}, 
+                  {l:'BALANCE', v: attendanceBalance.toString(), c:'text-cyan-500'}
+                ].map(i => (
+                  <div key={i.l} className="bg-white/2 border border-white/5 rounded-2xl p-4 flex flex-col items-center justify-center gap-0.5 hover:bg-white/5 transition-colors">
+                    <span className={cn("text-lg font-black leading-none", i.c)}>{i.v}</span>
+                    <span className="text-[9px] text-gray-500 font-bold tracking-[0.2em] uppercase">{i.l}</span>
+                  </div>
+                ))}
+              </div>
+            </GlassCard>
+          </div>
+
+          <div className="md:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <CircularProgress value={clickup && clickup.efficiency ? clickup.efficiency : (Number(user.efficiency?.replace('%', '')) || 94)} label="TASK EFFICIENCY" subLabel="Out of 100%" color="#EF4444" />
+            <CircularProgress value={clickup && clickup.onTime ? clickup.onTime : (Number(user.onTime?.replace('%', '')) || 91)} label="ON-TIME DELIVERY" subLabel="Delivery Score" color="#22C55E" />
+            <CircularProgress value={clickup && clickup.csat ? clickup.csat : (Number(user.csat?.replace('%', '')) || 98)} label="CLIENT SATISFACTION" subLabel="CSAT Score" color="#A855F7" />
+          </div>
+
+          <div className="md:col-span-12">
+            <div className="bg-card-dark border border-white/5 rounded-[32px] p-10 overflow-visible">
+               <div className="flex items-center gap-2 mb-10">
+                  <div className="w-1 h-4 bg-brand-blue rounded-full" />
+                  <h2 className="text-[11px] font-bold tracking-[0.2em] uppercase text-gray-400">ACTIVE TIME HEATMAP</h2>
+               </div>
+               <div className="space-y-3 pb-10 border-b border-white/5 mb-8">
+               {(() => {
+                  // 10 slots × 54 min starting at 9:30 AM IST
+                  const slotLabels = Array.from({ length: 10 }, (_, i) => {
+                    const startMin = 9 * 60 + 30 + i * 54;
+                    const endMin   = startMin + 54;
+                    const fmt = (m) => {
+                      const h = Math.floor(m / 60), min = m % 60;
+                      const ampm = h < 12 ? 'AM' : 'PM';
+                      return `${h % 12 === 0 ? 12 : h % 12}:${String(min).padStart(2,'0')} ${ampm}`;
+                    };
+                    return `${fmt(startMin)} – ${fmt(endMin)}`;
+                  });
+                  const levelLabel = l => l === 0 ? 'LOW' : l === 1 ? 'MED' : 'PEAK';
+                  const levelColor = l => l === 0
+                    ? 'text-gray-400 border-gray-500/30 bg-gray-500/10'
+                    : l === 1
+                    ? 'text-[#0f9ebb] border-[#0f9ebb]/40 bg-[#0f9ebb]/10'
+                    : 'text-[#0099c2] border-[#0099c2]/40 bg-[#0099c2]/10';
+
+                  return ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map(day => {
+                    const dayData = clickup && clickup.heatmapData && clickup.heatmapData[day]
+                      ? clickup.heatmapData[day]
+                      : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2];
+                    return (
+                      <div key={day} className="flex items-center gap-6">
+                        <span className="text-[11px] text-gray-600 w-10 font-bold uppercase tracking-widest">{day}</span>
+                        <div className="flex gap-2 flex-1">
+                          {dayData.map((level, i) => (
+                            <div key={i} className="relative group flex-1 h-9">
+                              <div
+                                className={cn(
+                                  "w-full h-full rounded-lg transition-all duration-300 hover:brightness-125 cursor-pointer",
+                                  level === 0 ? 'bg-[#0B1528] border border-[#142C44]' :
+                                  level === 1 ? 'bg-[#0f5a73]' :
+                                  'bg-[#0099c2]'
+                                )}
+                              />
+                              {/* Hover Tooltip */}
+                              <div
+                                className="absolute bottom-[130%] left-1/2 -translate-x-1/2 w-40 p-2.5 rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl opacity-0 scale-95 pointer-events-none transition-all duration-200 group-hover:opacity-100 group-hover:scale-100 z-50 flex flex-col gap-1 items-center text-center"
+                                style={{
+                                  background: 'linear-gradient(135deg, rgba(20,10,35,0.97) 0%, rgba(10,5,20,0.99) 100%)',
+                                  boxShadow: '0 8px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08)'
+                                }}
+                              >
+                                <span className="text-[9px] text-gray-500 font-bold uppercase tracking-widest">{day}</span>
+                                <span className="text-[10px] text-white font-bold">{slotLabels[i]}</span>
+                                <span className={cn("text-[9px] font-black tracking-widest px-2 py-0.5 rounded-full border uppercase", levelColor(level))}>
+                                  {levelLabel(level)}
+                                </span>
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-[#0a0514]" />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  });
+               })()}
+               
+               </div>
+               <div className="flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest">
+                  <span className="text-gray-500">MON - SAT  |  9:30AM - 6:30PM IST</span>
+                  <div className="flex gap-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-3.5 h-3.5 bg-[#0B1528] border border-[#142C44] rounded-[4px]" />
+                      <span className="text-gray-600">LOW</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-3.5 h-3.5 bg-[#0f5a73] rounded-[4px]" />
+                      <span className="text-gray-600">MED</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-3.5 h-3.5 bg-[#0099c2] rounded-[4px]" />
+                      <span className="text-gray-600">PEAK</span>
+                    </div>
+                  </div>
+               </div>
+            </div>
+          </div>
+
+          <div className="md:col-span-12">
+             <GlassCard variant="purple">
+                <SectionTitle title="Core Expertise" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                   {expertiseData.map((exp) => (
+                     <div key={exp.name} className="space-y-3 group">
+                       <div className="flex justify-between items-center">
+                          <span className="text-xs font-semibold text-gray-300 uppercase tracking-[0.15em] group-hover:text-white transition-colors">{exp.name}</span>
+                       </div>
+                       <div className="w-full h-2.5 bg-white/10 rounded-full overflow-hidden shadow-inner p-[1px]">
+                          <motion.div 
+                            initial={{ width: 0 }} 
+                            whileInView={{ width: `${exp.progress}%` }} 
+                            transition={{ duration: 1.2, ease: "easeOut" }}
+                            className="h-full rounded-full shadow-lg" 
+                            style={{ backgroundColor: exp.color }}
+                          />
+                       </div>
+                     </div>
+                   ))}
+                </div>
+             </GlassCard>
+          </div>
+
+          <div className="md:col-span-12">
+             <GlassCard variant="purple" className="!p-0 bg-[#0B0118] border-white/5">
+                <div className="p-8 border-b border-white/5">
+                  <div className="flex items-center gap-3">
+                    <div className="w-[3px] h-4 bg-brand-pink" />
+                    <h2 className="text-[10px] font-bold tracking-[0.25em] uppercase text-gray-500">CAREER TIMELINE</h2>
+                  </div>
+                </div>
+                
+                <div className="divide-y divide-white/5">
+                   {[
+                     { title: 'Founded Social Bureau', desc: "Kerala's first API Marketing agency", date: 'JAN 2019', badge: 'MILESTONE', color: 'bg-red-600', badgeColor: 'bg-red-950/30 text-red-700 border-red-900/30' },
+                     { title: 'Coined API Marketing', desc: "Attract - Pull - Influence framework launch", date: 'MAR 2020', badge: 'INNOVATION', color: 'bg-purple-600', badgeColor: 'bg-purple-950/30 text-purple-700 border-purple-900/30' },
+                     { title: 'First News Channel Client', desc: "NwsTamil24x7 digital growth strategy", date: 'AUG 2021', badge: 'CLIENT WIN', color: 'bg-green-600', badgeColor: 'bg-green-950/30 text-green-700 border-green-900/30' },
+                     { title: 'ClickUp India Partner', desc: "Official ClickUp reselling partnership", date: 'FEB 2022', badge: 'PARTNERSHIP', color: 'bg-yellow-400', badgeColor: 'bg-yellow-950/30 text-yellow-700 border-yellow-900/30' },
+                     { title: '13-Organic Sales - Suntips', desc: "Zero ad spend campaign milestone", date: 'OCT 2024', badge: 'ACHIEVEMENT', color: 'bg-cyan-500', badgeColor: 'bg-cyan-950/30 text-cyan-700 border-cyan-900/30' },
+                     { title: 'Kerala Election 2026 Dashboard', desc: "Broadcast - quality live results platform", date: 'JAN 2026', badge: 'LAUNCH', color: 'bg-pink-600', badgeColor: 'bg-pink-950/30 text-pink-700 border-pink-900/30' },
+                   ].map((item, i) => (
+                     <motion.div 
+                       key={i} 
+                       initial={{ opacity: 0, x: -10 }}
+                       whileInView={{ opacity: 1, x: 0 }}
+                       transition={{ delay: i * 0.1 }}
+                       className="relative p-8 flex items-center gap-8 group hover:bg-white/[0.02] transition-colors"
+                     >
+                       {/* Circle Indicator */}
+                       <div className="relative flex items-center justify-center shrink-0">
+                         <div className="w-7 h-7 rounded-full border border-white/10 flex items-center justify-center">
+                            <div className={cn("w-3 h-3 rounded-full shadow-[0_0_10px_rgba(0,0,0,0.5)]", item.color)} />
+                         </div>
+                       </div>
+
+                       {/* Content */}
+                       <div className="flex-1">
+                          <h4 className="text-sm font-bold text-white mb-0.5 tracking-tight group-hover:text-white transition-colors">{item.title}</h4>
+                          <p className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400 transition-colors uppercase tracking-tight">{item.desc}</p>
+                          <span className="text-[9px] text-gray-600 font-bold tracking-[0.1em] mt-1.5 block uppercase">{item.date}</span>
+                       </div>
+
+                       {/* Badge */}
+                       <div className={cn("px-5 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-widest min-w-[124px] text-center", item.badgeColor)}>
+                         {item.badge}
+                       </div>
+                     </motion.div>
+                   ))}
+                </div>
+             </GlassCard>
+          </div>
+        </motion.div>
+
+        {/* RIGHT COLUMN: Sidebar info */}
+        <motion.div 
+          variants={{
+            hidden: { opacity: 0, y: 80, scale: 0.98 },
+            show: { 
+              opacity: 1, 
+              y: 0, 
+              scale: 1,
+              transition: { type: "spring", stiffness: 45, damping: 12 }
+            }
+          }}
+          className="lg:col-span-3 space-y-8"
+        >
+          
+          <GlassCard variant="purple" className="space-y-4 !p-4">
+            {[
+              { icon: <Users className="w-4 h-4 text-accent-red" />, label: 'Department', value: user.department || 'Leadership & Strategy' },
+              { icon: <Clock className="w-4 h-4 text-accent-red" />, label: 'Joined', value: user.doj ? new Date(user.doj).toLocaleDateString('en-US', { year: 'numeric', month: 'long' }) : 'January 2019' },
+              { icon: <MapPin className="w-4 h-4 text-accent-red" />, label: 'Location', value: user.location || 'Kochi, Kerala' },
+              { icon: <MousePointer2 className="w-4 h-4 text-accent-red" />, label: 'Member ID', value: user.emp_id || '000000000' }
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-4 group border-b border-white/5 last:border-0 pb-4 last:pb-0">
+                <div className="w-10 h-10 flex items-center justify-center bg-white/2 rounded-xl group-hover:bg-accent-red/10 transition-all border border-white/5">
+                  {item.icon}
+                </div>
+                <div>
+                  <div className="text-[9px] text-gray-500 font-semibold uppercase tracking-[0.2em] mb-0.5 opacity-60">{item.label}</div>
+                  <div className="text-[11px] font-semibold text-white tracking-wide">{item.value}</div>
+                </div>
+              </div>
+            ))}
+          </GlassCard>
+
+          <GlassCard variant="purple" className="!p-4">
+            <SectionTitle title="Live Projects" />
+            <div className="space-y-4">
+               {[
+                 { title: 'Kerala Election 2026', label: 'NEWS MALAYALAM', progress: 78, color: 'bg-red-500' },
+                 { title: 'API Marketing v2', label: 'SUNTIPS', progress: 62, color: 'bg-pink-500' },
+                 { title: 'ClickUp Architecture', label: 'WORKFLOW', progress: 85, color: 'bg-blue-500' }
+               ].map((p, i) => (
+                 <div key={i} className="p-4 rounded-2xl border border-white/5 bg-white/2 hover:bg-white/5 transition-all group relative">
+                    <div className="flex justify-between items-start mb-2">
+                       <span className="text-[8px] text-orange-600 font-bold tracking-widest uppercase">{p.label}</span>
+                       <div className="bg-green-500/10 text-green-500 px-2 py-0.5 rounded-full border border-green-500/20 text-[7px] font-bold uppercase tracking-widest flex items-center gap-1">
+                          <div className="w-1.5 h-1.5 rounded-full bg-green-500" /> ACTIVE
+                       </div>
+                    </div>
+                    <h4 className="text-[11px] font-bold text-white mb-3">{p.title}</h4>
+                    
+                    <div className="w-full h-[2px] bg-white/10 rounded-full overflow-hidden mb-2">
+                       <motion.div 
+                         initial={{ width: 0 }} 
+                         whileInView={{ width: `${p.progress}%` }} 
+                         transition={{ duration: 1, ease: "easeOut" }}
+                         className={cn("h-full", p.color)} 
+                       />
+                    </div>
+                    <div className="flex justify-between text-[8px] font-medium uppercase tracking-widest text-gray-500">
+                       <span>Progress</span>
+                       <span className="text-white">{p.progress}%</span>
+                    </div>
+                 </div>
+               ))}
+            </div>
+          </GlassCard>
+
+          <GlassCard variant="purple" className="text-center !p-6 border-white/10 rounded-[28px] shadow-xl" style={{ background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
+            <div className="text-[10px] text-gray-500 font-bold tracking-[0.25em] uppercase mb-1 opacity-50">PROFILE FOLLOWERS</div>
+            <div className="text-5xl font-black text-[#CB1387] tracking-tight mb-6 mt-2">{user.followers || "2,671"}</div>
+            <div className="grid grid-cols-3 gap-2.5">
+               {[
+                 { val: '+142', label: 'THIS WEEK', color: 'text-green-500' },
+                 { val: user.rating ? `${user.rating}★` : '4.9★', label: 'RATING', color: 'text-white' },
+                 { val: user.clientsCount || '18+', label: 'CLIENTS', color: 'text-blue-400' }
+               ].map(i => (
+                 <div key={i.label} className="bg-[#0E0616]/80 p-3 rounded-2xl border border-white/10 group hover:bg-white/[0.08] transition-all">
+                   <div className={cn("text-xs font-black", i.color)}>{i.val}</div>
+                   <div className="text-[8px] text-gray-500 font-bold tracking-widest uppercase opacity-60 mt-1">{i.label}</div>
+                 </div>
+               ))}
+            </div>
+          </GlassCard>
+
+          <div className="space-y-4">
+             <div className="flex items-center gap-2 mb-6">
+               <div className="w-[3px] h-4 bg-brand-pink rounded-full" />
+               <h2 className="text-[10px] font-bold tracking-[0.25em] uppercase text-gray-500">BOOK CONSULTATION</h2>
+             </div>
+             {['30 MIN -', '60 MIN -', 'FULL DAY -'].map((time, i) => (
+               <div key={i} className="border border-white/10 rounded-[28px] p-6 flex flex-col items-center text-center group cursor-pointer hover:border-[#8A0699]/40 hover:scale-[1.02] transition-all shadow-xl shadow-black/20" style={{ background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
+                 <h4 className="text-3xl font-black text-white tracking-tight mb-0.5">{time}</h4>
+                 <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest opacity-60 mb-6">Strategy Session</p>
+                 <button className="w-full max-w-[200px] h-10 bg-gradient-to-r from-[#8A0699] to-[#2380DC] text-[9px] font-black text-white rounded-full flex items-center justify-center gap-2 transition-all uppercase tracking-widest hover:brightness-110 active:scale-95 shadow-lg shadow-brand-purple/20">
+                   Book Now <ChevronRight className="w-3.5 h-3.5" />
+                 </button>
+               </div>
+             ))}
+          </div>
+
+          <GlassCard variant="purple">
+            <SectionTitle title="Clients Managed" />
+            <div className="grid grid-cols-3 gap-3">
+               {Array.from({length: 6}).map((_, i) => (
+                 <div key={i} className="aspect-video bg-white/5 border border-white/10 rounded-2xl animate-pulse" />
+               ))}
+            </div>
+          </GlassCard>
+
+          <GlassCard variant="purple">
+             <SectionTitle title="Hobbies & Interests" />
+             <div className="flex flex-wrap gap-2.5">
+                {['Innovation', 'Automation', 'Fitness', 'Coffee', 'Strategy', 'Tech', 'Music', 'Travel'].map(h => (
+                   <span key={h} className="btn-typo text-gray-400 px-5 py-2 rounded-full border border-white/10 hover:border-brand-purple/60 hover:text-white transition-all cursor-default uppercase bg-white/5">
+                     {h}
+                   </span>
+                ))}
+             </div>
+          </GlassCard>
+
+          <GlassCard variant="purple">
+             <div className="flex items-center gap-2 mb-6">
+                <div className="w-1 h-6 rounded-full bg-yellow-500" />
+                <h2 className="text-[11px] font-semibold tracking-[0.2em] uppercase text-gray-400">RECENT ACTIVITY</h2>
+             </div>
+             <div className="space-y-6">
+                {[
+                  { label: 'Completed', project: '"Election Dashboard Live"', time: '2 hours ago', color: 'bg-green-500' },
+                  { label: 'Started', project: '"Suntips Q3 Campaign"', time: 'yesterday', color: 'bg-red-500' },
+                  { label: 'Started', project: '"Suntips Q3 Campaign"', time: 'yesterday', color: 'bg-purple-600' },
+                  { label: 'Started', project: '"Suntips Q3 Campaign"', time: 'yesterday', color: 'bg-yellow-500' },
+                ].map((act, i) => (
+                  <div key={i} className="flex flex-col border-b border-white/5 pb-4 last:border-0 last:pb-0">
+                     <div className="flex items-center gap-2 mb-1">
+                        <div className={cn("w-1.5 h-1.5 rounded-full", act.color)} />
+                        <div className="text-[13px] leading-tight">
+                           <span className="text-gray-500 mr-1">{act.label}</span> 
+                           <span className="text-white">{act.project}</span>
+                        </div>
+                     </div>
+                     <div className="text-[11px] text-gray-500 ml-3.5">{act.time}</div>
+                  </div>
+                ))}
+             </div>
+          </GlassCard>
+
+          <button className="w-full h-24 rounded-[32px] bg-linear-to-r from-[#441649] to-[#112240] hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-3 border border-white/10 shadow-2xl">
+             <FileText className="w-5 h-5 text-gray-400" />
+             <span className="text-sm font-medium text-white tracking-wide uppercase">DOWNLOAD PORTFOLIO PDF</span>
+          </button>
+
+        </motion.div>
+      </motion.main>
+
+      {/* --- EXTRA BOTTOM SECTIONS WITH STAGGERED REVEALS --- */}
+      <motion.section 
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={{
+          hidden: {},
+          show: {
+            transition: {
+              staggerChildren: 0.15
+            }
+          }
+        }}
+        className="max-w-7xl mx-auto px-4 md:px-8 mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10"
+      >
+        
+        <motion.div 
+          variants={{
+            hidden: { opacity: 0, y: 50, scale: 0.98 },
+            show: { 
+              opacity: 1, 
+              y: 0, 
+              scale: 1,
+              transition: { type: "spring", stiffness: 45, damping: 12 }
+            }
+          }}
+          className="lg:col-span-8 space-y-8"
+        >
+           <div className="flex justify-between items-center mb-6">
+             <SectionTitle title="Innovation Feed" />
+             <button className="flex items-center gap-2 btn-typo text-gray-500 hover:text-white transition-all uppercase bg-white/5 px-4 py-2 rounded-full border border-white/5">
+               <Plus className="w-3.5 h-3.5" /> POST
+             </button>
+           </div>
+           <div className="space-y-6">
+             <InnovationCard 
+               type="INNOVATION"
+               date="May 7, 2026"
+               title="API Marketing v2: E - Commerce Framework"
+               content="Expanding Atract-Pull-Influence to D2C brands - mapping customer journeys across 7 digital touchpoints."
+               likes={34}
+               comments={12}
+             />
+             <InnovationCard 
+               type="CASE STUDY"
+               date="May 7, 2026"
+               title="Kerala Election 2026 Dashboard Architecture"
+               content="Behind the scenes of building a high-availability broadcast dashboard using React and real-time WebSockets."
+               likes={56}
+               comments={28}
+             />
+             <InnovationCard 
+               type="INSIGHT"
+               date="May 7, 2026"
+               title="The Future of GEO (Generative Engine Optimization)"
+               content="How to prepare your brand for AI-driven search engines like Perplexity and Gemini."
+               likes={89}
+               comments={45}
+             />
+           </div>
+           <button className="w-full glass-card py-6 btn-typo uppercase text-gray-500 hover:text-white hover:bg-white/5 transition-all border-white/5">
+             + SHARE INNOVATION
+           </button>
+        </motion.div>
+
+        <motion.div 
+          variants={{
+            hidden: { opacity: 0, y: 50, scale: 0.98 },
+            show: { 
+              opacity: 1, 
+              y: 0, 
+              scale: 1,
+              transition: { type: "spring", stiffness: 45, damping: 12 }
+            }
+          }}
+          className="lg:col-span-4 space-y-8"
+        >
+           <SectionTitle title="Bureau - Voices Podcasts" />
+           <div className="space-y-6">
+              {[1, 2, 3].map(i => (
+                <div key={i} className="glass-card-purple flex items-center gap-5 group cursor-pointer p-5 hover:scale-[1.02] transition-all border-white/10">
+                  <div className={cn("w-20 h-20 rounded-2xl flex items-center justify-center transition-all text-white shadow-2xl relative overflow-hidden", 
+                    i === 1 ? 'bg-[#8A0699]' : 
+                    i === 2 ? 'bg-[#22C55E]' : 
+                    'bg-[#F43F5E]'
+                  )}>
+                    <Play className="w-8 h-8 fill-current relative z-10 group-hover:scale-125 transition-transform" />
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-semibold text-brand-purple mb-1 uppercase tracking-widest">EP 0{i}</div>
+                    <h4 className="text-sm font-semibold text-white mb-2 leading-tight group-hover:text-brand-purple transition-colors">How API Marketing Rewrites the Rules</h4>
+                    <div className="flex items-center gap-4 text-[10px] text-gray-500 font-medium uppercase tracking-widest opacity-60">
+                      <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> 42 min</span>
+                      <span>Sham SK</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+           </div>
+
+           <SectionTitle title="Event Portal" />
+           <div className="space-y-6">
+              {[
+                { d: '14', m: 'MAY', t: 'API Marketing Master Class', c: 'purple' },
+                { d: '22', m: 'MAY', t: 'API Marketing Master Class', c: 'yellow' },
+                { d: '05', m: 'JUN', t: 'API Marketing Master Class', c: 'red' },
+                { d: '18', m: 'JUN', t: 'API Marketing Master Class', c: 'green' }
+              ].map((ev, i) => (
+                <div key={i} className="glass-card flex items-center gap-6 p-5 hover:bg-white/5 transition-all border-white/10 group">
+                  <div className={cn("w-16 h-16 rounded-2xl flex flex-col items-center justify-center shadow-lg transition-transform group-hover:-rotate-6", 
+                    ev.c === 'purple' ? 'bg-purple-500/10 text-purple-500 border border-purple-500/20' :
+                    ev.c === 'yellow' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' :
+                    ev.c === 'red' ? 'bg-red-500/10 text-red-500 border border-red-500/20' :
+                    'bg-green-500/10 text-green-500 border border-green-500/20'
+                  )}>
+                    <span className="text-2xl font-semibold leading-none mb-0.5">{ev.d}</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-widest">{ev.m}</span>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-xs font-semibold text-white mb-1 group-hover:text-brand-purple transition-colors uppercase tracking-tight">{ev.t}</h4>
+                    <p className="text-[10px] text-gray-500 font-medium uppercase tracking-widest opacity-60">Free webinar - Kerala owners</p>
+                  </div>
+                  <div className={cn("w-2.5 h-2.5 rounded-full shadow-lg", 
+                    ev.c === 'purple' ? 'bg-purple-500 shadow-purple-500/20' :
+                    ev.c === 'yellow' ? 'bg-yellow-500 shadow-yellow-500/20' :
+                    ev.c === 'red' ? 'bg-red-500 shadow-red-500/20' :
+                    'bg-green-500 shadow-green-500/20'
+                  )} />
+                </div>
+              ))}
+           </div>
+         </motion.div>
+      </motion.section>
+      
+      <div className="relative z-10">
+        <Footer />
       </div>
     </div>
   );

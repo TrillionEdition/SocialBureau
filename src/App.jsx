@@ -163,9 +163,9 @@ function ConditionalFooter() {
     "/job-listing",
     "/job-applicants",
     "/candidate-profile",
-    "/client-portal",
     "/team/admin",
-    "/team/dashboard"
+    "/team/dashboard",
+    "/team/"
   ];
 
 
