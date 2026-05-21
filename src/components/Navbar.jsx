@@ -226,17 +226,6 @@ export default function Navbar() {
     {
       label: "Partnership",
       href: "/partners",
-      columns: [
-        {
-          title: "Partnership",
-          items: [
-            { label: "Ranjit", href: "/partnership/Ranjit" },
-            { label: "Sivaprasad", href: "/partnership/Sivaprasad" },
-            { label: "John Samuel", href: "/partnership/JohnSamuel" },
-            { label: "Jignesh Rana", href: "https://www.jigneshrana.com" },
-          ],
-        },
-      ],
     },
 
     { label: "Team", href: "/our-team" },

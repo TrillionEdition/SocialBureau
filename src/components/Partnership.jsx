@@ -17,6 +17,19 @@ const Partnership = () => {
       year: "2026",
     },
     {
+      id: 10,
+      title: "SAKILAN",
+      category: "Media",
+      status: "Completed",
+      image:
+        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Sakhilan_sir_usbgfx.jpg",
+      link: "/partnership/Sakilan",
+      subtitle: "Digital Entrepreneur",
+      day: "ENTREPRENEUR",
+      month: "CHAIRMAN",
+      year: "2026",
+    },
+    {
       id: 4,
       title: "SUJAYA PARVATHY",
       category: "Media",
@@ -76,19 +89,7 @@ const Partnership = () => {
       month: "STRATEGY",
       year: "2025",
     },
-    {
-      id: 2,
-      title: "RANJIT",
-      category: "Photography",
-      status: "Completed",
-      image:
-        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/IMG-20251226-WA0002_ch9qzi.jpg",
-      link: "/partnership/Ranjit",
-      subtitle: "Capturing moments through lenses",
-      day: "COPYWRITER",
-      month: "CONTENT WRITER",
-      year: "2025",
-    },
+    
     {
       id: 3,
       title: "JIGNESH RANA",
@@ -101,6 +102,19 @@ const Partnership = () => {
       day: "ENTREPRENEUR",
       month: "MARKETING EXPERT",
       year: "2026",
+    },
+    {
+      id: 2,
+      title: "RANJIT",
+      category: "Photography",
+      status: "Completed",
+      image:
+        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/IMG-20251226-WA0002_ch9qzi.jpg",
+      link: "/partnership/Ranjit",
+      subtitle: "Capturing moments through lenses",
+      day: "COPYWRITER",
+      month: "CONTENT WRITER",
+      year: "2025",
     },
   ];
 
