@@ -13,7 +13,7 @@ const PartnerDashboard = () => {
   const [copiedId, setCopiedId] = useState(null);
   const [prevCount, setPrevCount] = useState(null);
   const [searchParams] = useSearchParams();
-  const typeFilter = searchParams.get("type"); // 'student' or 'influencer'
+  const typeFilter = searchParams.get("type"); 
   const [notificationSound] = useState(new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"));
   const navigate = useNavigate();
 

@@ -58,7 +58,7 @@ const Section = ({ title, data }) => (
     </h2>
 
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 place-items-center">
-      {data.map((member, i) => (
+      {(data || []).map((member, i) => (
         <TeamCard key={i} {...member} />
       ))}
     </div>
@@ -72,7 +72,7 @@ const ExEmployeeSection = ({ data }) => (
     </h2>
 
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 place-items-center">
-      {data.map((member, i) => (
+      {(data || []).map((member, i) => (
         <ExEmployeeImage key={i} image={member.image} />
       ))}
     </div>
@@ -241,7 +241,7 @@ const staticTeamData = {
     },
   ],
 };
-  const data = propData || staticTeamData;
+  const data = { ...staticTeamData, ...(propData || {}) };
   return (
     <div className="bg-[#0B0B0B] px-6 md:px-24 pb-10">
       <Section title="Leadership Team" data={data.leadership} />

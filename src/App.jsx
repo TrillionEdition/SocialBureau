@@ -58,6 +58,7 @@ const Careers = lazy(() => import("./pages/Careers").then(module => ({ default: 
 const OurTeam = lazy(() => import("./pages/OurTeam").then(module => ({ default: module.OurTeam })));
 const OurWork = lazy(() => import("./pages/OurWork").then(module => ({ default: module.OurWork })));
 const Team = lazy(() => import("./pages/Team").then(module => ({ default: module.Team })));
+const EmployeePage = lazy(() => import("./pages/Team/EmployeePage"));
 const ATSChecker = lazy(() => import("./pages/Resume/ATSChecker"));
 const ResumeGenerator = lazy(() => import("./pages/Resume/ResumeGenerator"));
 const AuthPage = lazy(() => import("./pages/UserRegistration"));
@@ -143,7 +144,6 @@ function ConditionalFooter() {
   const location = useLocation();
   const hideFooterRoutes = [
     "/partnership",
-    "/partners",
     "/dashboard",
     "/user-management",
     "/analytics",
@@ -157,6 +157,9 @@ function ConditionalFooter() {
     "/job-listing",
     "/job-applicants",
     "/candidate-profile",
+    "/team/admin",
+    "/team/dashboard",
+    "/team/",
     "/client-portal",
     "/client-login",
     "/client-dashboard",
@@ -179,7 +182,6 @@ function ConditionalNavbar() {
   const location = useLocation();
   const hideNavbarRoutes = [
     "/partnership",
-    "/partners",
     "/dashboard",
     "/user-management",
     "/analytics",
@@ -358,6 +360,9 @@ function App() {
               element={<WebDevelopment />}
             />
             <Route path="/dashboard" element={<DashboardX />} />
+
+            <Route path="/team" element={<Team />} />
+            <Route path="/team/:slug" element={<EmployeePage />} />
 
             <Route
               path="/team/dashboard"
