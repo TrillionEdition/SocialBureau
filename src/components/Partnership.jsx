@@ -80,7 +80,7 @@ const Partnership = () => {
     {
       id: 8,
       title: "VIJAY REDDY",
-      category: "Marketing",
+      category: "Media",
       status: "Completed",
       image: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1779272229/vijay_uznpef.jpg",
       link: "https://www.vijayreddyvennam.com/",
