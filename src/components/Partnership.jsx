@@ -22,7 +22,7 @@ const Partnership = () => {
       category: "Media",
       status: "Completed",
       image:
-        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Sakhilan_sir_usbgfx.jpg",
+        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/image%20(12).png",
       link: "/partnership/Sakilan",
       subtitle: "Digital Entrepreneur",
       day: "ENTREPRENEUR",
