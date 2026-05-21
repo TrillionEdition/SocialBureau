@@ -35,30 +35,6 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-// --- MOCK DATA ---
-const MOCK_REPORTS = [
-  { id: 1, title: 'Q2 Content Strategy', date: '2026-05-01', type: 'PDF', size: '2.4 MB', version: 'v2.1' },
-  { id: 2, title: 'Social Media Growth Plan', date: '2026-04-15', type: 'PDF', size: '1.8 MB', version: 'v1.0' },
-  { id: 3, title: 'SEO Audit & Keyword Research', date: '2026-04-02', type: 'PDF', size: '4.2 MB', version: 'v1.2' },
-  { id: 4, title: 'Brand Identity Guidelines', date: '2026-03-20', type: 'PDF', size: '8.5 MB', version: 'v3.0' },
-];
-
-const MOCK_TASKS = [
-  { id: 'cu-1', title: 'Optimize Landing Page Hero Section', status: 'In Progress', deadline: '2026-05-10', priority: 'High', assignee: 'Alex R.' },
-  { id: 'cu-2', title: 'Weekly Analytics Report Generation', status: 'To Do', deadline: '2026-05-12', priority: 'Medium', assignee: 'Sarah M.' },
-  { id: 'cu-3', title: 'Email Newsletter Design', status: 'Review', deadline: '2026-05-08', priority: 'High', assignee: 'Alex R.' },
-  { id: 'cu-4', title: 'Competitor Backlink Analysis', status: 'Completed', deadline: '2026-05-01', priority: 'Low', assignee: 'John D.' },
-];
-
-
-const MOCK_ACTIVITY = [
-  { id: 1, user: 'Alex R.', action: 'created a new task', target: 'Homepage Design System', type: 'create', time: '2026-05-15T12:30:00Z' },
-  { id: 2, user: 'Sarah M.', action: 'uploaded an activity', target: 'Brand Guidelines v2.pdf', type: 'upload', time: '2026-05-15T09:15:00Z' },
-  { id: 3, user: 'System', action: 'completed the task', target: 'Domain Migration', type: 'complete', time: '2026-05-14T16:45:00Z' },
-  { id: 4, user: 'John D.', action: 'sent a message in', target: 'Strategy Channel', type: 'message', time: '2026-05-14T11:20:00Z' },
-  { id: 5, user: 'Sarah M.', action: 'created a new task', target: 'Competitor Analysis', type: 'create', time: '2026-05-13T14:10:00Z' },
-  { id: 6, user: 'Alex R.', action: 'sent a mail to', target: 'Project Stakeholders', type: 'mail', time: '2026-05-13T09:05:00Z' },
-];
 
 // --- UTILS ---
 const timeAgo = (dateValue) => {
@@ -352,7 +328,6 @@ const CDashboard = () => {
 
   const tabs = [
     { id: 'Overview', icon: LayoutDashboard },
-    { id: 'Reports', icon: FileText },
     { id: 'Tasks', icon: CheckSquare },
     { id: 'Channels', icon: MessageSquare },
     { id: 'Activity', icon: Activity },
@@ -722,17 +697,14 @@ const OverviewTab = ({ setActiveTab, tasks, loadingTasks, stats, messages, activ
           <h1 className="text-3xl font-bold mb-2">Welcome back, {currentUser?.name?.split(' ')[0] || 'Client'}</h1>
           <p className="text-gray-400">Here's what's happening with your project today.</p>
         </div>
-        <button className={styles.buttonPrimary} onClick={() => setActiveTab('Reports')}>
-          <Plus size={18} className="inline mr-2" /> New Strategy Request
-        </button>
+        
       </div>
 
       {/* STATS ROW */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
           { label: 'Active Tasks', value: loadingTasks ? '...' : (stats.activeTasks || 0), icon: CheckSquare, color: 'text-blue-400', bg: 'bg-blue-400/10' },
-          { label: 'Pending Reports', value: '03', icon: FileText, color: 'text-purple-400', bg: 'bg-purple-400/10' },
-          { label: 'Unread Messages', value: '05', icon: MessageSquare, color: 'text-pink-400', bg: 'bg-pink-400/10' },
+                    { label: 'Unread Messages', value: '05', icon: MessageSquare, color: 'text-pink-400', bg: 'bg-pink-400/10' },
           { label: 'Project Progress', value: loadingTasks ? '...' : `${stats.velocity}%`, icon: Activity, color: 'text-emerald-400', bg: 'bg-emerald-400/10' },
         ].map((stat, i) => (
           <div key={i} className={styles.card}>
@@ -740,7 +712,6 @@ const OverviewTab = ({ setActiveTab, tasks, loadingTasks, stats, messages, activ
               <div className={`p-3 rounded-xl ${stat.bg} ${stat.color}`}>
                 <stat.icon size={24} />
               </div>
-              <MoreVertical size={18} className="text-gray-600" />
             </div>
             <p className="text-gray-400 text-sm mb-1">{stat.label}</p>
             <h3 className="text-2xl font-bold">{stat.value}</h3>
@@ -852,52 +823,6 @@ const OverviewTab = ({ setActiveTab, tasks, loadingTasks, stats, messages, activ
     </div>
   );
 };
-
-const ReportsTab = () => (
-  <div className="flex flex-col gap-8">
-    <div className="flex items-center justify-between">
-      <h1 className="text-3xl font-bold">Strategy Reports</h1>
-      <div className="flex gap-4">
-        <button className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-sm font-medium hover:bg-white/10 transition-all">
-          Request Revision
-        </button>
-        <button className={styles.buttonPrimary}>
-          Upload Asset
-        </button>
-      </div>
-    </div>
-
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-      {MOCK_REPORTS.map((report) => (
-        <div key={report.id} className={styles.card + " group"}>
-          <div className="mb-6 flex justify-between items-start">
-            <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center text-red-400">
-              <FileText size={24} />
-            </div>
-            <span className="text-[10px] bg-indigo-500/10 text-indigo-400 px-2 py-1 rounded-full font-bold">{report.version}</span>
-          </div>
-          <h3 className="font-bold mb-2 group-hover:text-indigo-400 transition-colors">{report.title}</h3>
-          <p className="text-xs text-gray-500 flex items-center gap-2 mb-6">
-            <Calendar size={12} /> {report.date} • {report.size}
-          </p>
-          <button className="w-full flex items-center justify-center gap-2 bg-white/5 border border-white/10 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/10 transition-all">
-            <Download size={16} /> Download {report.type}
-          </button>
-        </div>
-      ))}
-    </div>
-
-    <div className="mt-8">
-      <h3 className="text-xl font-bold mb-6">Archived & Record Keeping</h3>
-      <div className="bg-white/5 rounded-2xl p-8 border border-dashed border-white/10 text-center">
-        <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-500">
-          <Clock size={24} />
-        </div>
-        <p className="text-gray-400 max-w-xs mx-auto">All historical versions of your reports are stored here for easy record keeping.</p>
-      </div>
-    </div>
-  </div>
-);
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
