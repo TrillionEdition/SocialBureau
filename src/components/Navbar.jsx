@@ -164,7 +164,7 @@ export default function Navbar() {
           title: "About",
           items: [
             { label: "About Us", href: "/about" },
-            { label: "Our Team", href: "/our-team" },
+            { label: "Our Team", href: "/team" },
             { label: "Work", href: "#" },
           ],
         },
@@ -228,7 +228,7 @@ export default function Navbar() {
       href: "/partners",
     },
 
-    { label: "Team", href: "/our-team" },
+    { label: "Team", href: "/team" },
     { label: "Enquiry", href: "/enquiry-form" },
     { label: "Support", href: "/contact" },
   ];
