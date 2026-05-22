@@ -31,6 +31,8 @@ import { PieChart, Pie, Sector, Cell, Tooltip, ResponsiveContainer } from 'recha
 import { useAuth } from '@/utils/authUtils';
 import { BASE_URL } from '@/utils/urls';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../Navbar';
+import Footer from '../Footer';
 
 
 
@@ -102,6 +104,7 @@ const CDashboard = () => {
   const [messages, setMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [newMessage, setNewMessage] = useState('');
+  const [sendingMessage, setSendingMessage] = useState(false);
   const CHAT_VIEW_ID = currentUser?.clickupChatViewId || "current";
   const [generalActivity, setGeneralActivity] = useState([]);
   const [loadingGeneralActivity, setLoadingGeneralActivity] = useState(true);
@@ -172,15 +175,27 @@ const CDashboard = () => {
       setLoadingMessages(true);
       const response = await getClickUpChat(CHAT_VIEW_ID);
       if (response.success) {
+        // Sort Comments chronologically (oldest first, newest last) so that new messages appear at the bottom
+        const sortedComments = [...response.comments].sort((a, b) => parseInt(a.date) - parseInt(b.date));
+
         // Map ClickUp comments to our message format
-        const mappedMessages = response.comments.map(comment => {
+        const mappedMessages = sortedComments.map(comment => {
           const rawContent = (
-            comment.comment_text || 
-            comment.commentContent || 
+            comment.comment_text ||
+            comment.commentContent ||
             (Array.isArray(comment.comment) ? comment.comment.map(p => p.text || '').join('') : '')
           ).trim();
           let sender = comment.user?.username || 'Unknown';
           let content = rawContent;
+
+          const prefixMatch = content.match(/^\[([^\]\n]+)\]:\s*([\s\S]*)$/);
+          if (prefixMatch) {
+            const parsedSenderName = prefixMatch[1].trim();
+            if (parsedSenderName) {
+              sender = parsedSenderName;
+              content = prefixMatch[2].trim();
+            }
+          }
 
 
           // Extract attachments from rich-text comment array if present (supports both standard attachments and inline images)
@@ -242,9 +257,10 @@ const CDashboard = () => {
             attachments: allAttachments,
             time: new Date(parseInt(comment.date)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             isMe:
-              ['Alex R.', 'You', 'Web Asst', currentUser?.name, sender].includes(sender) ||
+              sender.trim().toLowerCase() === (currentUser?.name || '').trim().toLowerCase() ||
+              sender.trim().toLowerCase() === 'you' ||
               String(comment.user?.id) === String(currentUser?.clickupId) ||
-              comment.user?.email === currentUser?.email
+              (comment.user?.email && comment.user?.email === currentUser?.email)
           };
         });
         console.log("Mapped messages:", mappedMessages);
@@ -294,8 +310,9 @@ const CDashboard = () => {
   };
 
   const handleSendMessage = async () => {
-    if (!newMessage.trim()) return;
+    if (!newMessage.trim() || sendingMessage) return;
     try {
+      setSendingMessage(true);
       const response = await postClickUpChat(CHAT_VIEW_ID, newMessage, currentUser?.clickupToken || null);
       if (response.success) {
         setNewMessage('');
@@ -303,6 +320,8 @@ const CDashboard = () => {
       }
     } catch (error) {
       console.error("Failed to send message:", error);
+    } finally {
+      setSendingMessage(false);
     }
   };
 
@@ -343,346 +362,351 @@ const CDashboard = () => {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.glassOverlay} />
+    <>
+      <Navbar />
+      <div className={styles.container}>
 
-      {/* --- SIDEBAR --- */}
-      <aside className={styles.sidebar}>
-        <div className="flex items-center gap-3 px-2">
-          <div className="w-10 h-10 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center font-bold text-xl">
-            S
-          </div>
-          <span className="text-xl font-bold tracking-tight">SocialBureau</span>
-        </div>
+        <div className={styles.glassOverlay} />
 
-        <nav className="flex flex-col gap-2">
-          {tabs.map((tab) => (
-            <div
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`${styles.navItem} ${activeTab === tab.id ? styles.navItemActive : styles.navItemInactive}`}
-            >
-              <tab.icon size={20} />
-              <span className="font-medium">{tab.id}</span>
+        {/* --- SIDEBAR --- */}
+        <aside className={styles.sidebar}>
+          <div className="flex items-center gap-3 px-2">
+            <div className="w-10 h-10 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center font-bold text-xl">
+              S
             </div>
-          ))}
-        </nav>
-
-        <div className="mt-auto pt-8 border-t border-white/5">
-          <div className="bg-white/5 rounded-2xl p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
-              <User size={20} />
-            </div>
-            <div className="flex-1 overflow-hidden">
-              <p className="text-sm font-semibold truncate">{currentUser?.name || "Premium Client"}</p>
-              <p className="text-[10px] text-gray-500 uppercase tracking-wider">{currentUser?.role || "Client"} Plan</p>
-            </div>
-            <button
-              onClick={handleLogout}
-              className="p-2 text-gray-500 hover:text-red-400 transition-colors bg-white/5 rounded-lg"
-              title="Logout"
-            >
-              <LogOut size={16} />
-            </button>
-          </div>
-        </div>
-      </aside>
-
-      {/* --- MAIN CONTENT --- */}
-      <main className={styles.main}>
-        {/* TOP BAR */}
-        <header className="h-20 border-b border-white/5 flex items-center justify-between px-8 bg-[#0a0a0c]/80 backdrop-blur-md z-10">
-          <div className="flex items-center gap-2 text-gray-400">
-            <span>Dashboard</span>
-            <ChevronRight size={14} />
-            <span className="text-white font-medium">{activeTab}</span>
+            <span className="text-xl font-bold tracking-tight">SocialBureau</span>
           </div>
 
-          <div className="flex items-center gap-6">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
-              <input
-                type="text"
-                placeholder="Search everything..."
-                className="bg-white/5 border border-white/10 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-indigo-500/50 w-64"
-              />
-            </div>
-            <button
-              className="relative p-2 text-gray-400 hover:text-white transition-colors"
-              onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-            >
-              <Bell size={22} />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-[#0a0a0c]" />
-            </button>
-          </div>
-        </header>
-
-        {/* CONTENT AREA */}
-        <div className="flex-1 overflow-y-auto p-8">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-            >
-              {activeTab === 'Overview' && <OverviewTab setActiveTab={setActiveTab} tasks={tasks} loadingTasks={loadingTasks} stats={stats} messages={messages} activity={generalActivity} loadingActivity={loadingGeneralActivity} />}
-              {activeTab === 'Reports' && <ReportsTab />}
-              {activeTab === 'Tasks' && <TasksTab tasks={tasks} loadingTasks={loadingTasks} onRefresh={fetchTasks} onSelectTask={setSelectedTask} stats={stats} />}
-
-              {activeTab === 'Channels' && (
-                <ChannelsTab
-                  messages={messages}
-                  loading={loadingMessages}
-                  newMessage={newMessage}
-                  setNewMessage={setNewMessage}
-                  onSendMessage={handleSendMessage}
-                  onRefresh={fetchMessages}
-                  onOpenTask={handleOpenTask}
-                  onFileUpload={handleFileUpload}
-                />
-              )}
-              {activeTab === 'Activity' && <ActivityTab activity={generalActivity} loading={loadingGeneralActivity} onRefresh={fetchGeneralActivity} />}
-
-            </motion.div>
-
-          </AnimatePresence>
-        </div>
-
-        {/* TASK DETAILS MODAL */}
-        <AnimatePresence>
-          {selectedTask && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setSelectedTask(null)}
-                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-              />
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                className="relative w-full max-w-2xl bg-[#16161a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
+          <nav className="flex flex-col gap-2">
+            {tabs.map((tab) => (
+              <div
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`${styles.navItem} ${activeTab === tab.id ? styles.navItemActive : styles.navItemInactive}`}
               >
-                <div className="p-8 border-b border-white/5 flex justify-between items-start text-white">
-                  <div>
-                    <div className="flex items-center gap-3 mb-2">
-                      <span
-                        className="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase"
-                        style={{ backgroundColor: `${selectedTask.statusColor}20`, color: selectedTask.statusColor }}
-                      >
-                        {selectedTask.status}
-                      </span>
-                      <span className="text-gray-500 text-xs">{selectedTask.id}</span>
-                    </div>
-                    <h2 className="text-2xl font-bold">{selectedTask.title}</h2>
-                  </div>
-                  <button
-                    onClick={() => setSelectedTask(null)}
-                    className="p-2 text-gray-500 hover:text-white transition-colors hover:bg-white/5 rounded-full"
-                  >
-                    <X size={24} />
-                  </button>
-                </div>
+                <tab.icon size={20} />
+                <span className="font-medium">{tab.id}</span>
+              </div>
+            ))}
+          </nav>
 
-                <div className="p-8 space-y-8 text-white">
-                  {/* MODAL TABS */}
-                  <div className="flex gap-6 border-b border-white/5 pb-4">
-                    {['Overview', 'Activity'].map((t) => (
-                      <button
-                        key={t}
-                        onClick={() => setModalTab(t)}
-                        className={`text-sm font-bold tracking-wider uppercase pb-2 transition-all relative ${modalTab === t ? 'text-indigo-400' : 'text-gray-500 hover:text-gray-300'
-                          }`}
-                      >
-                        {t}
-                        {modalTab === t && (
-                          <motion.div layoutId="modalTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500" />
-                        )}
-                      </button>
-                    ))}
-                  </div>
-
-                  {modalTab === 'Overview' && (
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="space-y-8"
-                    >
-                      <div className="grid grid-cols-2 gap-8">
-                        <div>
-                          <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Total Time Spent</p>
-                          <div className="flex items-center gap-3">
-                            <div className="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl">
-                              <Clock size={24} />
-                            </div>
-                            <span className="text-3xl font-bold">{selectedTask.timeSpent}</span>
-                          </div>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Team Assigned</p>
-                          <div className="flex -space-x-2">
-                            {selectedTask.assignees.map((a, i) => (
-                              <div
-                                key={i}
-                                className="w-10 h-10 rounded-full border-2 border-[#16161a] flex items-center justify-center text-xs font-bold shadow-lg"
-                                style={{ backgroundColor: a.color }}
-                                title={a.name}
-                              >
-                                {a.initials}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Work Completed / Description</p>
-                        <div className="bg-white/5 border border-white/5 rounded-2xl p-6 text-gray-300 text-sm leading-relaxed max-h-60 overflow-y-auto custom-scrollbar">
-                          {selectedTask.description ? (
-                            <div dangerouslySetInnerHTML={{ __html: selectedTask.description.replace(/\n/g, '<br />') }} />
-                          ) : (
-                            "No detailed breakdown provided for this task yet."
-                          )}
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {modalTab === 'Activity' && (
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="space-y-6"
-                    >
-                      {loadingActivity ? (
-                        <div className="flex flex-col items-center py-12 gap-4">
-                          <RefreshCw size={24} className="animate-spin text-indigo-500" />
-                          <p className="text-gray-500 text-sm font-medium tracking-wide">Syncing project feed...</p>
-                        </div>
-                      ) : (
-                        <div className="space-y-8 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar">
-                          {/* COMBINED FEED */}
-
-                          {/* FILES GALLERY - HIGHER CLARITY */}
-                          {taskActivity?.attachments.length > 0 && (
-                            <div className="space-y-4">
-                              <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Deliverables & Files</p>
-                              <div className="grid grid-cols-1 gap-4">
-                                {taskActivity.attachments.map((file) => (
-                                  <a
-                                    key={file.id}
-                                    href={file.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="group bg-[#0a0a0c] border border-white/5 rounded-2xl overflow-hidden hover:border-indigo-500/50 transition-all"
-                                  >
-                                    <div className="aspect-video relative overflow-hidden bg-black/40">
-                                      {file.thumbnail_large || file.thumbnail_small ? (
-                                        <img
-                                          src={`${BASE_URL}/clickup/image-proxy?url=${encodeURIComponent(file.thumbnail_large || file.thumbnail_small)}`}
-                                          alt={file.title}
-                                          className="w-full h-full object-contain group-hover:scale-105 transition-all duration-700"
-                                          onError={(e) => {
-                                            const directUrl = file.thumbnail_large || file.thumbnail_small;
-                                            if (e.target.src !== directUrl) {
-                                              e.target.src = directUrl;
-                                            }
-                                          }}
-                                        />
-                                      ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-indigo-400/30">
-                                          <FileText size={64} />
-                                        </div>
-                                      )}
-                                      <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <ExternalLink size={18} />
-                                      </div>
-                                    </div>
-                                    <div className="p-4 flex items-center justify-between">
-                                      <div>
-                                        <p className="text-sm font-bold">{file.title}</p>
-                                        <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Uploaded to ClickUp</p>
-                                      </div>
-                                      <button className="px-3 py-1.5 bg-indigo-500/10 text-indigo-400 rounded-lg text-xs font-bold">
-                                        View Full Size
-                                      </button>
-                                    </div>
-                                  </a>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* TIME LOGS & COMMENTS MIXED */}
-                          <div className="space-y-6">
-                            <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Activity Timeline</p>
-
-                            {[
-                              ...(taskActivity?.timeEntries.map(e => ({ ...e, type: 'time', dateObj: new Date(e.start) })) || []),
-                              ...(taskActivity?.comments.map(c => ({ ...c, type: 'comment', dateObj: new Date(c.date) })) || [])
-                            ].sort((a, b) => b.dateObj - a.dateObj).map((item, idx) => (
-                              <div key={idx} className="relative pl-8 border-l border-white/5 pb-6 last:pb-0">
-                                <div className="absolute left-[-5px] top-0 w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]" />
-
-                                {item.type === 'time' ? (
-                                  <div className="bg-white/5 border border-white/5 rounded-2xl p-4 hover:bg-white/[0.07] transition-all">
-                                    <div className="flex justify-between items-center mb-2">
-                                      <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Time Logged</span>
-                                      <span className="text-[10px] text-gray-500 font-medium">{timeAgo(item.start)}</span>
-                                    </div>
-                                    <p className="text-sm">
-                                      <span className="font-bold text-white">{item.user}</span> worked for <span className="text-indigo-400 font-bold">{item.duration}</span>
-                                    </p>
-                                  </div>
-                                ) : (
-                                  <div className="bg-white/5 border border-white/5 rounded-2xl p-4 hover:bg-white/[0.07] transition-all">
-                                    <div className="flex justify-between items-center mb-2">
-                                      <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Comment / Update</span>
-                                      <span className="text-[10px] text-gray-500 font-medium">{timeAgo(item.date)}</span>
-                                    </div>
-                                    <p className="text-sm font-bold mb-1 text-white">{item.user}</p>
-                                    <p className="text-sm text-gray-400 leading-relaxed italic border-l-2 border-white/10 pl-3 py-1">
-                                      "{item.text}"
-                                    </p>
-                                  </div>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-
-                          {!taskActivity?.attachments.length && !taskActivity?.timeEntries.length && !taskActivity?.comments.length && (
-                            <div className="text-center py-20 text-gray-500">
-                              No activity records found for this task.
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </motion.div>
-                  )}
-
-                  <div className="flex gap-4 pt-4">
-                    <button className="flex-1 bg-white/5 border border-white/10 py-3 rounded-xl font-bold hover:bg-white/10 transition-all">
-                      Request Status Update
-                    </button>
-                    <button
-                      onClick={() => window.open(`https://app.clickup.com/t/${selectedTask.id}`, '_blank')}
-                      className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 py-3 rounded-xl font-bold shadow-lg shadow-indigo-600/20 active:scale-95 transition-all"
-                    >
-                      View full ClickUp thread
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
+          <div className="mt-auto pt-8 border-t border-white/5">
+            <div className="bg-white/5 rounded-2xl p-4 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                <User size={20} />
+              </div>
+              <div className="flex-1 overflow-hidden">
+                <p className="text-sm font-semibold truncate">{currentUser?.name || "Premium Client"}</p>
+                <p className="text-[10px] text-gray-500 uppercase tracking-wider">{currentUser?.role || "Client"} Plan</p>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="p-2 text-gray-500 hover:text-red-400 transition-colors bg-white/5 rounded-lg"
+                title="Logout"
+              >
+                <LogOut size={16} />
+              </button>
             </div>
-          )}
-        </AnimatePresence>
-      </main>
+          </div>
+        </aside>
 
-    </div>
+        {/* --- MAIN CONTENT --- */}
+        <main className={styles.main}>
+          {/* TOP BAR */}
+          <header className="h-20 border-b border-white/5 flex items-center justify-between px-8 bg-[#0a0a0c]/80 backdrop-blur-md z-10">
+            <div className="flex items-center gap-2 text-gray-400">
+              <span>Dashboard</span>
+              <ChevronRight size={14} />
+              <span className="text-white font-medium">{activeTab}</span>
+            </div>
+
+            <div className="flex items-center gap-6">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                <input
+                  type="text"
+                  placeholder="Search everything..."
+                  className="bg-white/5 border border-white/10 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-indigo-500/50 w-64"
+                />
+              </div>
+              <button
+                className="relative p-2 text-gray-400 hover:text-white transition-colors"
+                onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+              >
+                <Bell size={22} />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-[#0a0a0c]" />
+              </button>
+            </div>
+          </header>
+
+          {/* CONTENT AREA */}
+          <div className="flex-1 overflow-y-auto p-8">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                {activeTab === 'Overview' && <OverviewTab setActiveTab={setActiveTab} tasks={tasks} loadingTasks={loadingTasks} stats={stats} messages={messages} activity={generalActivity} loadingActivity={loadingGeneralActivity} />}
+                {activeTab === 'Reports' && <ReportsTab />}
+                {activeTab === 'Tasks' && <TasksTab tasks={tasks} loadingTasks={loadingTasks} onRefresh={fetchTasks} onSelectTask={setSelectedTask} stats={stats} />}
+
+                {activeTab === 'Channels' && (
+                  <ChannelsTab
+                    messages={messages}
+                    loading={loadingMessages || sendingMessage}
+                    newMessage={newMessage}
+                    setNewMessage={setNewMessage}
+                    onSendMessage={handleSendMessage}
+                    onRefresh={fetchMessages}
+                    onOpenTask={handleOpenTask}
+                    onFileUpload={handleFileUpload}
+                  />
+                )}
+                {activeTab === 'Activity' && <ActivityTab activity={generalActivity} loading={loadingGeneralActivity} onRefresh={fetchGeneralActivity} />}
+
+              </motion.div>
+
+            </AnimatePresence>
+          </div>
+
+          {/* TASK DETAILS MODAL */}
+          <AnimatePresence>
+            {selectedTask && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setSelectedTask(null)}
+                  className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                />
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                  className="relative w-full max-w-2xl bg-[#16161a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
+                >
+                  <div className="p-8 border-b border-white/5 flex justify-between items-start text-white">
+                    <div>
+                      <div className="flex items-center gap-3 mb-2">
+                        <span
+                          className="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase"
+                          style={{ backgroundColor: `${selectedTask.statusColor}20`, color: selectedTask.statusColor }}
+                        >
+                          {selectedTask.status}
+                        </span>
+                        <span className="text-gray-500 text-xs">{selectedTask.id}</span>
+                      </div>
+                      <h2 className="text-2xl font-bold">{selectedTask.title}</h2>
+                    </div>
+                    <button
+                      onClick={() => setSelectedTask(null)}
+                      className="p-2 text-gray-500 hover:text-white transition-colors hover:bg-white/5 rounded-full"
+                    >
+                      <X size={24} />
+                    </button>
+                  </div>
+
+                  <div className="p-8 space-y-8 text-white">
+                    {/* MODAL TABS */}
+                    <div className="flex gap-6 border-b border-white/5 pb-4">
+                      {['Overview', 'Activity'].map((t) => (
+                        <button
+                          key={t}
+                          onClick={() => setModalTab(t)}
+                          className={`text-sm font-bold tracking-wider uppercase pb-2 transition-all relative ${modalTab === t ? 'text-indigo-400' : 'text-gray-500 hover:text-gray-300'
+                            }`}
+                        >
+                          {t}
+                          {modalTab === t && (
+                            <motion.div layoutId="modalTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+
+                    {modalTab === 'Overview' && (
+                      <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="space-y-8"
+                      >
+                        <div className="grid grid-cols-2 gap-8">
+                          <div>
+                            <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Total Time Spent</p>
+                            <div className="flex items-center gap-3">
+                              <div className="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl">
+                                <Clock size={24} />
+                              </div>
+                              <span className="text-3xl font-bold">{selectedTask.timeSpent}</span>
+                            </div>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Team Assigned</p>
+                            <div className="flex -space-x-2">
+                              {selectedTask.assignees.map((a, i) => (
+                                <div
+                                  key={i}
+                                  className="w-10 h-10 rounded-full border-2 border-[#16161a] flex items-center justify-center text-xs font-bold shadow-lg"
+                                  style={{ backgroundColor: a.color }}
+                                  title={a.name}
+                                >
+                                  {a.initials}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Work Completed / Description</p>
+                          <div className="bg-white/5 border border-white/5 rounded-2xl p-6 text-gray-300 text-sm leading-relaxed max-h-60 overflow-y-auto custom-scrollbar">
+                            {selectedTask.description ? (
+                              <div dangerouslySetInnerHTML={{ __html: selectedTask.description.replace(/\n/g, '<br />') }} />
+                            ) : (
+                              "No detailed breakdown provided for this task yet."
+                            )}
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {modalTab === 'Activity' && (
+                      <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="space-y-6"
+                      >
+                        {loadingActivity ? (
+                          <div className="flex flex-col items-center py-12 gap-4">
+                            <RefreshCw size={24} className="animate-spin text-indigo-500" />
+                            <p className="text-gray-500 text-sm font-medium tracking-wide">Syncing project feed...</p>
+                          </div>
+                        ) : (
+                          <div className="space-y-8 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar">
+                            {/* COMBINED FEED */}
+
+                            {/* FILES GALLERY - HIGHER CLARITY */}
+                            {taskActivity?.attachments.length > 0 && (
+                              <div className="space-y-4">
+                                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Deliverables & Files</p>
+                                <div className="grid grid-cols-1 gap-4">
+                                  {taskActivity.attachments.map((file) => (
+                                    <a
+                                      key={file.id}
+                                      href={file.url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="group bg-[#0a0a0c] border border-white/5 rounded-2xl overflow-hidden hover:border-indigo-500/50 transition-all"
+                                    >
+                                      <div className="aspect-video relative overflow-hidden bg-black/40">
+                                        {file.thumbnail_large || file.thumbnail_small ? (
+                                          <img
+                                            src={`${BASE_URL}/clickup/image-proxy?url=${encodeURIComponent(file.thumbnail_large || file.thumbnail_small)}`}
+                                            alt={file.title}
+                                            className="w-full h-full object-contain group-hover:scale-105 transition-all duration-700"
+                                            onError={(e) => {
+                                              const directUrl = file.thumbnail_large || file.thumbnail_small;
+                                              if (e.target.src !== directUrl) {
+                                                e.target.src = directUrl;
+                                              }
+                                            }}
+                                          />
+                                        ) : (
+                                          <div className="w-full h-full flex items-center justify-center text-indigo-400/30">
+                                            <FileText size={64} />
+                                          </div>
+                                        )}
+                                        <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                                          <ExternalLink size={18} />
+                                        </div>
+                                      </div>
+                                      <div className="p-4 flex items-center justify-between">
+                                        <div>
+                                          <p className="text-sm font-bold">{file.title}</p>
+                                          <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Uploaded to ClickUp</p>
+                                        </div>
+                                        <button className="px-3 py-1.5 bg-indigo-500/10 text-indigo-400 rounded-lg text-xs font-bold">
+                                          View Full Size
+                                        </button>
+                                      </div>
+                                    </a>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* TIME LOGS & COMMENTS MIXED */}
+                            <div className="space-y-6">
+                              <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Activity Timeline</p>
+
+                              {[
+                                ...(taskActivity?.timeEntries.map(e => ({ ...e, type: 'time', dateObj: new Date(e.start) })) || []),
+                                ...(taskActivity?.comments.map(c => ({ ...c, type: 'comment', dateObj: new Date(c.date) })) || [])
+                              ].sort((a, b) => b.dateObj - a.dateObj).map((item, idx) => (
+                                <div key={idx} className="relative pl-8 border-l border-white/5 pb-6 last:pb-0">
+                                  <div className="absolute left-[-5px] top-0 w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]" />
+
+                                  {item.type === 'time' ? (
+                                    <div className="bg-white/5 border border-white/5 rounded-2xl p-4 hover:bg-white/[0.07] transition-all">
+                                      <div className="flex justify-between items-center mb-2">
+                                        <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Time Logged</span>
+                                        <span className="text-[10px] text-gray-500 font-medium">{timeAgo(item.start)}</span>
+                                      </div>
+                                      <p className="text-sm">
+                                        <span className="font-bold text-white">{item.user}</span> worked for <span className="text-indigo-400 font-bold">{item.duration}</span>
+                                      </p>
+                                    </div>
+                                  ) : (
+                                    <div className="bg-white/5 border border-white/5 rounded-2xl p-4 hover:bg-white/[0.07] transition-all">
+                                      <div className="flex justify-between items-center mb-2">
+                                        <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Comment / Update</span>
+                                        <span className="text-[10px] text-gray-500 font-medium">{timeAgo(item.date)}</span>
+                                      </div>
+                                      <p className="text-sm font-bold mb-1 text-white">{item.user}</p>
+                                      <p className="text-sm text-gray-400 leading-relaxed italic border-l-2 border-white/10 pl-3 py-1">
+                                        "{item.text}"
+                                      </p>
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+
+                            {!taskActivity?.attachments.length && !taskActivity?.timeEntries.length && !taskActivity?.comments.length && (
+                              <div className="text-center py-20 text-gray-500">
+                                No activity records found for this task.
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </motion.div>
+                    )}
+
+                    <div className="flex gap-4 pt-4">
+                      <button className="flex-1 bg-white/5 border border-white/10 py-3 rounded-xl font-bold hover:bg-white/10 transition-all">
+                        Request Status Update
+                      </button>
+                      <button
+                        onClick={() => window.open(`https://app.clickup.com/t/${selectedTask.id}`, '_blank')}
+                        className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 py-3 rounded-xl font-bold shadow-lg shadow-indigo-600/20 active:scale-95 transition-all"
+                      >
+                        View full ClickUp thread
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            )}
+          </AnimatePresence>
+        </main>
+
+      </div>
+      <Footer />
+    </>
   );
 };
 
@@ -697,14 +721,14 @@ const OverviewTab = ({ setActiveTab, tasks, loadingTasks, stats, messages, activ
           <h1 className="text-3xl font-bold mb-2">Welcome back, {currentUser?.name?.split(' ')[0] || 'Client'}</h1>
           <p className="text-gray-400">Here's what's happening with your project today.</p>
         </div>
-        
+
       </div>
 
       {/* STATS ROW */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
           { label: 'Active Tasks', value: loadingTasks ? '...' : (stats.activeTasks || 0), icon: CheckSquare, color: 'text-blue-400', bg: 'bg-blue-400/10' },
-                    { label: 'Unread Messages', value: '05', icon: MessageSquare, color: 'text-pink-400', bg: 'bg-pink-400/10' },
+          { label: 'Unread Messages', value: '05', icon: MessageSquare, color: 'text-pink-400', bg: 'bg-pink-400/10' },
           { label: 'Project Progress', value: loadingTasks ? '...' : `${stats.velocity}%`, icon: Activity, color: 'text-emerald-400', bg: 'bg-emerald-400/10' },
         ].map((stat, i) => (
           <div key={i} className={styles.card}>
@@ -777,18 +801,18 @@ const OverviewTab = ({ setActiveTab, tasks, loadingTasks, stats, messages, activ
                     <div className="flex flex-col gap-2 mt-2">
                       {msg.attachments.slice(0, 1).map((file) => {
                         const fileExt = (
-                          file.extension || 
-                          file.title?.split('.').pop() || 
-                          file.url?.split('?')[0].split('.').pop() || 
+                          file.extension ||
+                          file.title?.split('.').pop() ||
+                          file.url?.split('?')[0].split('.').pop() ||
                           ''
                         ).toLowerCase();
                         const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'heic', 'heif', 'svg'].includes(fileExt) ||
-                                        !!file.thumbnail_large ||
-                                        !!file.thumbnail_small;
+                          !!file.thumbnail_large ||
+                          !!file.thumbnail_small;
                         if (!isImage) return null;
                         const rawUrl = file.thumbnail_large || file.thumbnail_small || file.url;
                         const proxiedUrl = `${BASE_URL}/clickup/image-proxy?url=${encodeURIComponent(rawUrl)}`;
-                        
+
                         return (
                           <div key={file.id} className="mt-2 rounded-xl overflow-hidden border border-white/10 bg-black/20 max-w-xs group/img cursor-pointer relative">
                             <img
@@ -1061,7 +1085,12 @@ const TasksTab = ({ tasks, loadingTasks, onRefresh, onSelectTask, stats }) => {
 
 const ChannelsTab = ({ messages, loading, newMessage, setNewMessage, onSendMessage, onRefresh, onOpenTask, onFileUpload }) => {
   const fileInputRef = React.useRef(null);
+  const scrollContainerRef = React.useRef(null);
+  const lastMessageRef = React.useRef(null);
   const { currentUser } = useAuth();
+
+  const [visibleCount, setVisibleCount] = React.useState(20);
+  const [isLoadingOlder, setIsLoadingOlder] = React.useState(false);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -1069,6 +1098,109 @@ const ChannelsTab = ({ messages, loading, newMessage, setNewMessage, onSendMessa
       onFileUpload(file);
     }
   };
+
+  // Scroll to bottom helper
+  const scrollToBottom = () => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    // Prefer scrolling the last message into view for smooth behavior
+    if (lastMessageRef.current && typeof lastMessageRef.current.scrollIntoView === 'function') {
+      try {
+        lastMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        return;
+      } catch (err) {
+        // fallthrough to direct scroll
+      }
+    }
+
+    // Fallback: scroll container to bottom
+    try {
+      container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+    } catch (e) {
+      container.scrollTop = container.scrollHeight;
+    }
+  };
+
+  // Track message length for scrolling
+  const prevMessagesLength = React.useRef(messages.length);
+
+  React.useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    // Scroll to bottom on initial mount (when messages load the first time)
+    if (prevMessagesLength.current === 0 && messages.length > 0) {
+      // initial load -> show bottom
+      scrollToBottom();
+      // Fallback: if images or assets change height after render, ensure we still land at bottom
+      setTimeout(() => scrollToBottom(), 250);
+    } else if (messages.length > prevMessagesLength.current) {
+      // New incoming message -> always reveal the newest message
+      // (brings the latest message into view by scrolling to bottom)
+      setTimeout(scrollToBottom, 50);
+    }
+    prevMessagesLength.current = messages.length;
+  }, [messages]);
+
+  // Handle scroll-up lazy loading
+  const handleScroll = (e) => {
+    const container = e.currentTarget;
+
+    // When the user scrolls to the absolute top of the container and there are more older messages
+    if (container.scrollTop === 0 && messages.length > visibleCount && !isLoadingOlder) {
+      setIsLoadingOlder(true);
+
+      // Capture the height before loading more elements
+      const previousScrollHeight = container.scrollHeight;
+
+      // Simulate a small delay (800ms) for an elegant transition
+      setTimeout(() => {
+        setVisibleCount(prev => Math.min(prev + 20, messages.length));
+        setIsLoadingOlder(false);
+
+        // Adjust the scroll height to prevent jumpiness
+        setTimeout(() => {
+          container.scrollTop = container.scrollHeight - previousScrollHeight;
+        }, 30);
+      }, 800);
+    }
+  };
+
+  // Lightweight polling to refresh channel messages in near-real-time.
+  const pollingRef = React.useRef(null);
+
+  React.useEffect(() => {
+    // Poll every 5 seconds
+    pollingRef.current = setInterval(() => {
+      if (!loading) onRefresh();
+    }, 5000);
+
+    return () => {
+      if (pollingRef.current) clearInterval(pollingRef.current);
+    };
+  }, [loading, onRefresh]);
+
+  // Wrap send to ensure we refresh after a message is sent.
+  const handleSendClick = React.useCallback(() => {
+    if (loading) return;
+    try {
+      // Ensure the view sticks to bottom when user sends
+      setTimeout(scrollToBottom, 30);
+      const maybePromise = onSendMessage();
+      if (maybePromise && typeof maybePromise.then === 'function') {
+        maybePromise.then(() => { onRefresh(); setTimeout(scrollToBottom, 100); }).catch(() => { setTimeout(onRefresh, 700); setTimeout(scrollToBottom, 500); });
+      } else {
+        // If not async, refresh shortly after
+        setTimeout(() => { onRefresh(); scrollToBottom(); }, 700);
+      }
+    } catch (err) {
+      setTimeout(() => { onRefresh(); scrollToBottom(); }, 700);
+    }
+  }, [onSendMessage, onRefresh, loading]);
+
+  // Take only the latest `visibleCount` messages (renders oldest at top, newest at bottom)
+  const renderedMessages = messages.slice(-visibleCount);
 
   return (
     <div className="flex flex-col h-[calc(100vh-180px)]">
@@ -1095,8 +1227,12 @@ const ChannelsTab = ({ messages, loading, newMessage, setNewMessage, onSendMessa
       </div>
 
       <div className="flex-1 bg-[#111114] border border-white/5 rounded-2xl overflow-hidden shadow-2xl relative flex flex-col">
-        {/* Messages List Area */}
-        <div className="flex-1 p-6 overflow-y-auto custom-scrollbar space-y-6">
+        {/* Messages List Area (WhatsApp Style Scroll & Alignments) */}
+        <div
+          ref={scrollContainerRef}
+          onScroll={handleScroll}
+          className="flex-1 p-6 overflow-y-auto custom-scrollbar space-y-6"
+        >
           {loading && messages.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center gap-4">
               <RefreshCw size={32} className="animate-spin text-indigo-500" />
@@ -1109,11 +1245,23 @@ const ChannelsTab = ({ messages, loading, newMessage, setNewMessage, onSendMessa
             </div>
           ) : (
             <>
+              {/* Premium Simulated Loading Spinner for Older Comments */}
+              {isLoadingOlder && (
+                <div className="flex justify-center items-center py-4 gap-2 text-indigo-400">
+                  <RefreshCw size={16} className="animate-spin" />
+                  <span className="text-xs font-semibold tracking-wider uppercase opacity-85">Loading older messages...</span>
+                </div>
+              )}
+
               <div className="text-center mb-6">
                 <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-md">Live Channel Feed</span>
               </div>
-              {messages.map((msg) => (
-                <div key={msg.id} className={`flex flex-col ${msg.isMe ? 'items-end' : 'items-start'}`}>
+
+              {renderedMessages.map((msg, idx) => (
+                <div
+                  key={msg.id}
+                  ref={idx === renderedMessages.length - 1 ? lastMessageRef : null}
+                  className={`flex flex-col ${msg.isMe ? 'items-end' : 'items-start'}`}>
                   <div className="flex items-baseline gap-2 mb-1 px-1">
                     <span className={`text-xs font-bold ${msg.isMe ? 'text-indigo-400' : 'text-gray-400'}`}>{msg.sender}</span>
                     <span className="text-[10px] text-gray-500">{msg.time}</span>
@@ -1126,14 +1274,14 @@ const ChannelsTab = ({ messages, loading, newMessage, setNewMessage, onSendMessa
                       <div className="flex flex-col gap-2 mt-2">
                         {msg.attachments.map((file) => {
                           const fileExt = (
-                            file.extension || 
-                            file.title?.split('.').pop() || 
-                            file.url?.split('?')[0].split('.').pop() || 
+                            file.extension ||
+                            file.title?.split('.').pop() ||
+                            file.url?.split('?')[0].split('.').pop() ||
                             ''
                           ).toLowerCase();
-                          const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'heic', 'heif', 'svg'].includes(fileExt) || 
-                                          !!file.thumbnail_large || 
-                                          !!file.thumbnail_small;
+                          const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'heic', 'heif', 'svg'].includes(fileExt) ||
+                            !!file.thumbnail_large ||
+                            !!file.thumbnail_small;
                           const rawUrl = file.thumbnail_large || file.thumbnail_small || file.url;
                           const proxiedUrl = `${BASE_URL}/clickup/image-proxy?url=${encodeURIComponent(rawUrl)}`;
 
@@ -1146,6 +1294,7 @@ const ChannelsTab = ({ messages, loading, newMessage, setNewMessage, onSendMessa
                                     alt={file.title}
                                     className="max-h-[300px] w-full object-cover rounded-lg cursor-pointer transition-transform hover:scale-[1.01]"
                                     onClick={() => window.open(file.url, '_blank')}
+                                    onLoad={() => setTimeout(scrollToBottom, 60)}
                                     onError={(e) => {
                                       if (e.target.src !== rawUrl) {
                                         e.target.src = rawUrl;
@@ -1199,13 +1348,14 @@ const ChannelsTab = ({ messages, loading, newMessage, setNewMessage, onSendMessa
           <input
             type="text"
             value={newMessage}
+            disabled={loading}
             onChange={(e) => setNewMessage(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && onSendMessage()}
-            placeholder="Type your message..."
-            className="flex-1 bg-[#0a0a0c] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-indigo-500/50 transition-all text-white placeholder-gray-500"
+            onKeyDown={(e) => e.key === 'Enter' && !loading && handleSendClick()}
+            placeholder={loading ? "Sending..." : "Type your message..."}
+            className="flex-1 bg-[#0a0a0c] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-indigo-500/50 transition-all text-white placeholder-gray-500 disabled:opacity-50"
           />
           <button
-            onClick={onSendMessage}
+            onClick={handleSendClick}
             disabled={!newMessage.trim() || loading}
             className="bg-gradient-to-r from-indigo-600 to-purple-600 p-3 rounded-xl hover:shadow-lg hover:shadow-indigo-500/30 transition-all active:scale-95 disabled:opacity-50 disabled:grayscale"
           >

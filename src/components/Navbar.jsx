@@ -165,14 +165,12 @@ export default function Navbar() {
           items: [
             { label: "About Us", href: "/about" },
             { label: "Our Team", href: "/our-team" },
-            { label: "Work", href: "#" },
           ],
         },
         {
           title: "Community",
           items: [
             { label: "Blog", href: "/blog" },
-            { label: "Partners", href: "/partners" },
           ],
         },
       ],

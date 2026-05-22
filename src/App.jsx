@@ -66,6 +66,7 @@ const Verification = lazy(() => import("./pages/UserVerification"));
 const AdminCreateJob = lazy(() => import("./pages/CreateJob"));
 const EditUser = lazy(() => import("./pages/EditUser"));
 const DashboardX = lazy(() => import("./pages/DashboardX"));
+const BlogDashboard = lazy(() => import("./pages/Blog/BlogDashboard"));
 const UserManagement = lazy(() => import("./pages/UserManagement"));
 const TeamDashboard = lazy(() => import("./pages/TeamDashboard"));
 const AdminTeamDashboard = lazy(() => import("./pages/AdminTeamDashboard"));
@@ -276,6 +277,12 @@ function App() {
               path="/blog/submit"
               element={
                 <SubmitBlog />
+              }
+            />
+            <Route
+              path="/blog/dashboard"
+              element={
+                <BlogDashboard />
               }
             />
             <Route path="/contact" element={<Contact />} />

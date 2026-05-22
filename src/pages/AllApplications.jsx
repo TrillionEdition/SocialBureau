@@ -4,6 +4,7 @@ import { BASE_URL } from "@/utils/urls";
 import { FileText, Mail, Phone, Calendar, Search, Filter, Trash2, User, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
+import Navbar from "@/components/Navbar";
 
 const AllApplications = () => {
   const [applications, setApplications] = useState([]);
@@ -11,7 +12,7 @@ const AllApplications = () => {
   const [processingId, setProcessingId] = useState(null);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  
+
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -37,7 +38,7 @@ const AllApplications = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this application? This will also remove the resume file.")) return;
-    
+
     try {
       setProcessingId(id);
       await axios.delete(`${BASE_URL}/hr-applications/${id}`, { withCredentials: true });
@@ -64,13 +65,13 @@ const AllApplications = () => {
   };
 
   const filteredApps = applications.filter((app) => {
-    const matchesSearch = 
+    const matchesSearch =
       app.candidateName?.toLowerCase().includes(search.toLowerCase()) ||
       app.candidateEmail?.toLowerCase().includes(search.toLowerCase()) ||
       app.jobId?.title?.toLowerCase().includes(search.toLowerCase());
-    
+
     const matchesStatus = statusFilter === "all" || app.status === statusFilter;
-    
+
     return matchesSearch && matchesStatus;
   });
 
@@ -90,8 +91,9 @@ const AllApplications = () => {
 
   return (
     <div className="min-h-screen bg-[#fafafa] text-[#1a1a1a] pt-32 pb-20 px-6">
+      <Navbar />
       <div className="max-w-7xl mx-auto">
-        
+
         {/* Header */}
         <header className="mb-12 flex flex-col md:flex-row justify-between items-baseline gap-4">
           <div>
@@ -107,9 +109,9 @@ const AllApplications = () => {
         <div className="bg-white p-6 rounded-[32px] shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row gap-6 items-center justify-between">
           <div className="relative w-full md:w-96">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-            <input 
-              type="text" 
-              placeholder="Search by name, email or role..." 
+            <input
+              type="text"
+              placeholder="Search by name, email or role..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
               className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-6 py-4 text-sm outline-none focus:border-red-500/30 transition-all"
@@ -118,7 +120,7 @@ const AllApplications = () => {
 
           <div className="flex items-center gap-4 w-full md:w-auto">
             <Filter className="text-gray-400" size={18} />
-            <select 
+            <select
               value={statusFilter}
               onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
               className="bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 text-sm font-bold uppercase tracking-widest outline-none focus:border-red-500/30 transition-all cursor-pointer"
@@ -151,7 +153,7 @@ const AllApplications = () => {
                   className={`bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm hover:shadow-xl transition-all group ${processingId === app._id ? 'opacity-50 pointer-events-none' : ''}`}
                 >
                   <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
-                    
+
                     {/* Candidate Info */}
                     <div className="flex items-start gap-6">
                       <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center shrink-0">
@@ -167,7 +169,7 @@ const AllApplications = () => {
                         <p className="text-red-600 font-black text-xs uppercase tracking-widest mb-4">
                           Applied for: {app.jobId?.title || "Unknown Role"}
                         </p>
-                        
+
                         <div className="flex flex-wrap gap-6 text-sm font-medium text-gray-500">
                           <span className="flex items-center gap-2">
                             <Mail size={16} className="text-gray-300" /> {app.candidateEmail}
@@ -176,7 +178,7 @@ const AllApplications = () => {
                             <Phone size={16} className="text-gray-300" /> {app.candidatePhone}
                           </span>
                           <span className="flex items-center gap-2">
-                            <Calendar size={16} className="text-gray-300" /> 
+                            <Calendar size={16} className="text-gray-300" />
                             {new Date(app.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                           </span>
                         </div>
@@ -185,18 +187,18 @@ const AllApplications = () => {
 
                     {/* Actions */}
                     <div className="flex flex-wrap items-center gap-4 w-full lg:w-auto border-t lg:border-t-0 pt-6 lg:pt-0">
-                      <a 
-                        href={app.resumeUrl} 
-                        target="_blank" 
+                      <a
+                        href={app.resumeUrl}
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 bg-gray-900 text-white px-8 py-4 rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-black transition-all active:scale-95"
                       >
                         <FileText size={16} />
                         Resume
                       </a>
-                      
+
                       <div className="flex-1 lg:flex-none relative">
-                        <select 
+                        <select
                           value={app.status}
                           onChange={(e) => handleUpdateStatus(app._id, e.target.value)}
                           className="w-full lg:w-auto bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 text-[10px] font-black uppercase tracking-widest outline-none focus:border-red-500/30 transition-all cursor-pointer appearance-none"
@@ -208,7 +210,7 @@ const AllApplications = () => {
                         </select>
                       </div>
 
-                      <button 
+                      <button
                         onClick={() => handleDelete(app._id)}
                         className="flex-1 lg:flex-none p-4 rounded-2xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all active:scale-95"
                         title="Delete Application"
@@ -233,31 +235,30 @@ const AllApplications = () => {
             {/* Pagination Controls */}
             {totalPages > 1 && (
               <div className="mt-12 flex items-center justify-center gap-4">
-                <button 
+                <button
                   onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
                   className="p-4 rounded-2xl bg-white border border-gray-100 shadow-sm disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-50 transition-all"
                 >
                   <ChevronLeft size={20} />
                 </button>
-                
+
                 <div className="flex gap-2">
                   {[...Array(totalPages)].map((_, i) => (
                     <button
                       key={i}
                       onClick={() => setCurrentPage(i + 1)}
-                      className={`w-12 h-12 rounded-2xl font-black text-xs transition-all ${
-                        currentPage === i + 1 
-                          ? "bg-red-600 text-white shadow-lg shadow-red-600/20" 
+                      className={`w-12 h-12 rounded-2xl font-black text-xs transition-all ${currentPage === i + 1
+                          ? "bg-red-600 text-white shadow-lg shadow-red-600/20"
                           : "bg-white border border-gray-100 text-gray-400 hover:border-red-500/30"
-                      }`}
+                        }`}
                     >
                       {i + 1}
                     </button>
                   ))}
                 </div>
 
-                <button 
+                <button
                   onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
                   className="p-4 rounded-2xl bg-white border border-gray-100 shadow-sm disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-50 transition-all"

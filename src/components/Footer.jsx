@@ -196,6 +196,10 @@ export default function Footer() {
                 Copyright © 2025 Social Bureau. All rights reserved.
               </p>
             </div>
+            <img className="h-30"
+              src="https://pub-7b4bafb3da7d4c758183e371fbae58c2.r2.dev/fa6dbee8-2117-40a6-a15b-c1bec5d21fad%20(1).png"
+              alt="meta-logo"
+            />
             <div className="flex gap-4 flex-wrap justify-center md:justify-end">
               <Link
                 to="/privacy-policy"

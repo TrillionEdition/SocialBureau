@@ -100,7 +100,7 @@ const InfluencerDataForm = () => {
     if (isAdmin) {
       setPaymentVerified(true);
       setShowPayment(false);
-    } 
+    }
     // If creating new and not admin, check if user has already paid in the past
     else if (!targetId) {
       const fetchUserStatus = async () => {
@@ -297,10 +297,10 @@ const InfluencerDataForm = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ 
-          ...formData, 
+        body: JSON.stringify({
+          ...formData,
           category: "influencer",
-          hasPaid: paymentVerified 
+          hasPaid: paymentVerified
         }),
       });
       const data = await response.json();
@@ -409,7 +409,7 @@ const InfluencerDataForm = () => {
         {/* Animated Background Gradients */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-yellow-500/10 rounded-full blur-[120px] -mr-64 -mt-64 animate-pulse pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-yellow-500/5 rounded-full blur-[120px] -ml-64 -mb-64 pointer-events-none" />
-        
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -422,7 +422,7 @@ const InfluencerDataForm = () => {
             </div>
 
             <div className="space-y-4 text-center">
-              
+
               <h2 className="text-3xl xs:text-4xl sm:text-5xl font-black uppercase tracking-tighter italic leading-[0.9]">
                 Secure Your <br />
                 <span className="text-yellow-500">Digital Identity.</span>
@@ -501,7 +501,7 @@ const InfluencerDataForm = () => {
                 )}
               </button>
 
-              
+
             </div>
           </div>
 
@@ -739,17 +739,17 @@ const InfluencerDataForm = () => {
                   />
                 </label>
               </div>
-              
+
               {/* Experience Badge Control Overlay */}
               <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-yellow-500 rounded-[40px] p-6 flex flex-col justify-center items-center text-black shadow-2xl z-20 group-hover:scale-105 transition-transform border-8 border-[#0A0A0A]">
-                <input 
+                <input
                   type="text"
                   value={formData.details.experienceBadge}
                   onChange={(e) => handleDetailsChange("experienceBadge", e.target.value)}
                   className="bg-transparent border-none text-4xl font-black italic text-center w-full outline-none placeholder:text-black/20"
                   placeholder="5+"
                 />
-                <input 
+                <input
                   type="text"
                   value={formData.details.experienceLabel}
                   onChange={(e) => handleDetailsChange("experienceLabel", e.target.value)}

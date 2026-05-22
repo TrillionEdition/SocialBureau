@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Lock, ArrowRight, ShieldCheck, Sparkles, User, LayoutDashboard, MessageSquare } from 'lucide-react';
+import { Mail, Lock, ArrowRight, ShieldCheck, Sparkles, User, LayoutDashboard, MessageSquare, Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '@/utils/urls';
 import { useAuth } from '@/utils/authUtils';
+import Navbar from '../Navbar';
 
 const CLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -20,7 +22,7 @@ const CLogin = () => {
     setError('');
 
     try {
-      const response = await axios.post(`${BASE_URL}/user/login`, { email, password });
+      const response = await axios.post(`${BASE_URL}/user/login`, { email, password }, { withCredentials: true });
       if (response.data.token) {
         login(response.data.user);
         navigate('/client-portal');
@@ -35,6 +37,7 @@ const CLogin = () => {
 
   return (
     <div className="min-h-screen w-full bg-[#050505] text-white flex flex-col items-center justify-center relative overflow-hidden font-sans">
+     <Navbar/>
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600/10 rounded-full blur-[120px]" />
@@ -95,13 +98,16 @@ const CLogin = () => {
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" size={18} />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-white/[0.03] border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-indigo-500/50 transition-all placeholder:text-gray-700"
+                  className="w-full bg-white/[0.03] border border-white/5 rounded-2xl py-4 pl-12 pr-12 text-sm focus:outline-none focus:border-indigo-500/50 transition-all placeholder:text-gray-700"
                   required
                 />
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600">
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
             </div>
 
@@ -144,6 +150,7 @@ const CLogin = () => {
           </p>
         </div>
       </motion.div>
+      
     </div>
   );
 };
