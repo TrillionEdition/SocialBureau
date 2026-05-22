@@ -562,7 +562,7 @@ export default function Sakilan() {
           index={1}
           title="News Tamil 24x7"
           description="A leading voice in Tamil journalism, providing deep insights and breaking news to audiences across the state and the diaspora."
-          image="https://play-lh.googleusercontent.com/jJzvw46BAAcWl2OGHiegCKrhKKOpHRlhdcrDdeoDth9-8-ph3r2oTVDtF9w99o6_-dO5=w600-h300-pc0xffffff-pd"
+          image="https://yt3.googleusercontent.com/X2uO0_Bis8CH3IVH2Wa3HZTbR2ilArRjhzDTZQNn11oG9WdIqxFJ275CtF2hRZCmikWdHyv-qA=s900-c-k-c0x00ffffff-no-rj"
         />
         <AudienceImpact />
         <Feature
