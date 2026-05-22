@@ -24,6 +24,7 @@ const [showPassword, setShowPassword] = useState(false);
     try {
       const response = await axios.post(`${BASE_URL}/user/login`, { email, password }, { withCredentials: true });
       if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
         login(response.data.user);
         navigate('/client-portal');
       }
