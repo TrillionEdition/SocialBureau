@@ -6,18 +6,31 @@ const Partnership = () => {
   const portfolioData = [
     {
       id: 1,
-      title: "SIVAPRASAD",
+      title: "RUPA INDUKURI",
       category: "Media",
       status: "Completed",
-      image: "/assets/home/Siva Prasad.jpg",
-      link: "/partnership/Sivaprasad",
-      subtitle: "Media Entrepreneur · Visionary Leader · Industry Pioneer",
-      day: "ENTREPRENEUR",
-      month: "VISIONARY LEADER",
-      year: "2026",
+      image: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1779272787/roopa_partner_image_ilceog.png",
+      link: "https://www.rupaindukuri.com/",
+      subtitle: "Digital Head · COO",
+      day: "DIGITAL HEAD",
+      month: "COO",
+      year: "2025",
     },
     {
-      id: 10,
+      id: 2,
+      title: "SUJAYA PARVATHY",
+      category: "Media",
+      status: "Completed",
+      image: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1779272802/Sujaya_partner_mdyteh.png",
+      link: "https://www.sujayaparvathy.com/",
+      subtitle: "Journalist · Chief Editor",
+      day: "JOURNALIST",
+      month: "Chief Editor",
+      year: "2025",
+    },
+
+    {
+      id: 3,
       title: "SAKILAN",
       category: "Media",
       status: "Completed",
@@ -29,30 +42,35 @@ const Partnership = () => {
       month: "CHAIRMAN",
       year: "2026",
     },
+
     {
       id: 4,
-      title: "SUJAYA PARVATHY",
-      category: "Media",
+      title: "SHAM S K",
+      category: "Marketing",
       status: "Completed",
-      image: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1779272802/Sujaya_partner_mdyteh.png",
-      link: "https://www.sujayaparvathy.com/",
-      subtitle: "Creative Director · Media & Content",
-      day: "CREATOR",
-      month: "MEDIA",
-      year: "2025",
+      image:
+        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/DSC01171_hsyqoo.jpg",
+      link: "https://shamsk.trillionedition.com/",
+      subtitle: "Digital Entrepreneur · Marketing Expert · Media Architect",
+      day: "ENTREPRENEUR",
+      month: "API MARKETING EXPERT",
+      year: "2026",
     },
+
     {
       id: 5,
-      title: "RUPA INDUKURI",
-      category: "Media",
+      title: "JIGNESH RANA",
+      category: "Marketing",
       status: "Completed",
-      image: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1779272787/roopa_partner_image_ilceog.png",
-      link: "https://www.rupaindukuri.com/",
-      subtitle: "Photographer · Visual Storyteller",
-      day: "PHOTOGRAPHY",
-      month: "CREATIVE",
-      year: "2025",
+      image:
+        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/copy_of_image-gen_18_qt9ikl_8b856d.webp",
+      link: "https://www.jigneshrana.com",
+      subtitle: "Digital Entrepreneur · Marketing Expert · Media Architect",
+      day: "ENTREPRENEUR",
+      month: "CO-FOUNDER & DIRECTOR",
+      year: "2026",
     },
+
     {
       id: 6,
       title: "ANIL AYROOR",
@@ -60,9 +78,9 @@ const Partnership = () => {
       status: "Completed",
       image: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1779271909/hero_image1_qahaud.png",
       link: "https://www.anilayroor.com/",
-      subtitle: "Photographer · Visual Artist",
-      day: "PHOTOGRAPHER",
-      month: "ARTIST",
+      subtitle: "Co-Founder · COO",
+      day: "MD",
+      month: "MEDIA ARCHITECT",
       year: "2025",
     },
     {
@@ -72,9 +90,9 @@ const Partnership = () => {
       status: "Completed",
       image: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1779272793/Anoop_John_partner_nub0eq.png",
       link: "https://www.anoopjohnofficial.com/",
-      subtitle: "Filmmaker · Cinematographer",
+      subtitle: "Filmmaker · Cinematographer · Media Architect",
       day: "CINEMATOGRAPHY",
-      month: "PRODUCTION",
+      month: "Creative Director",
       year: "2025",
     },
     {
@@ -84,27 +102,26 @@ const Partnership = () => {
       status: "Completed",
       image: "https://res.cloudinary.com/dpfpenhqc/image/upload/q_auto/f_auto/v1779272229/vijay_uznpef.jpg",
       link: "https://www.vijayreddyvennam.com/",
-      subtitle: "Marketing Strategist · Growth Architect",
-      day: "MARKETING",
-      month: "STRATEGY",
-      year: "2025",
-    },
-    
-    {
-      id: 3,
-      title: "JIGNESH RANA",
-      category: "Marketing",
-      status: "Completed",
-      image:
-        "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/copy_of_image-gen_18_qt9ikl_8b856d.webp",
-      link: "https://www.jigneshrana.com",
-      subtitle: "Digital Entrepreneur · Marketing Expert · Media Architect",
-      day: "ENTREPRENEUR",
-      month: "MARKETING EXPERT",
+      subtitle: "Designated Partner · Director",
+      day: "DESIGNATED PARTNER",
+      month: "DIRECTOR",
       year: "2026",
     },
     {
-      id: 2,
+      id: 9,
+      title: "SIVAPRASAD",
+      category: "Media",
+      status: "Completed",
+      image: "/assets/home/Siva Prasad.jpg",
+      link: "/partnership/Sivaprasad",
+      subtitle: "Media Entrepreneur · Visionary Leader · Industry Pioneer",
+      day: "ENTREPRENEUR",
+      month: "VISIONARY LEADER",
+      year: "2026",
+    },
+
+    {
+      id: 10,
       title: "RANJIT",
       category: "Photography",
       status: "Completed",
@@ -184,10 +201,8 @@ const Partnership = () => {
 
   const categories = [
     "All",
-    "Design",
-    "Development",
+    // "Creative",
     "Photography",
-    "Video",
     "Marketing",
     "Media",
   ];
@@ -543,7 +558,7 @@ const Partnership = () => {
               >
                 Reset Filters
               </button>
-                                </div>
+            </div>
           )}
 
           {/* Pagination */}
@@ -605,25 +620,25 @@ const Partnership = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {dynamicPartners.map((item, index) => (
-                 <div
-                   key={item._id}
-                   onClick={() => window.location.href = `/partnership/${item.param}`}
-                   className="group bg-zinc-900/50 border border-zinc-800 rounded-3xl p-6 hover:bg-zinc-800/80 transition-all duration-500 cursor-pointer hover:border-blue-400/50 shadow-xl"
-                 >
-                   <div className="aspect-video rounded-2xl overflow-hidden mb-6 bg-zinc-800">
-                     <img 
-                       src={item.image || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop"} 
-                       alt={item.name}
-                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
-                     />
-                   </div>
-                   <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors uppercase">{item.name}</h3>
-                   <p className="text-zinc-500 text-sm mb-6 line-clamp-2">{item.subtitle}</p>
-                   <div className="flex items-center justify-between text-[10px] font-bold tracking-widest uppercase text-zinc-600">
-                      <span>{item.category || "Consultant"}</span>
-                      <span className="flex items-center gap-1 text-blue-400">View Portfolio <ChevronRight size={12}/></span>
-                   </div>
-                 </div>
+                <div
+                  key={item._id}
+                  onClick={() => window.location.href = `/partnership/${item.param}`}
+                  className="group bg-zinc-900/50 border border-zinc-800 rounded-3xl p-6 hover:bg-zinc-800/80 transition-all duration-500 cursor-pointer hover:border-blue-400/50 shadow-xl"
+                >
+                  <div className="aspect-video rounded-2xl overflow-hidden mb-6 bg-zinc-800">
+                    <img
+                      src={item.image || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop"}
+                      alt={item.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors uppercase">{item.name}</h3>
+                  <p className="text-zinc-500 text-sm mb-6 line-clamp-2">{item.subtitle}</p>
+                  <div className="flex items-center justify-between text-[10px] font-bold tracking-widest uppercase text-zinc-600">
+                    <span>{item.category || "Consultant"}</span>
+                    <span className="flex items-center gap-1 text-blue-400">View Portfolio <ChevronRight size={12} /></span>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
