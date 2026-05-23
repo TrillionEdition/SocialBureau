@@ -292,6 +292,236 @@ const InnovationCard = ({ type, date, title, content, url, likes, comments }) =>
   );
 };
 
+const getStaticEnrichedData = (slug, originalData) => {
+  const normSlug = (slug || '').toLowerCase();
+  const isSham = normSlug === 'shamsk' || normSlug === 'sham-sk';
+  
+  // Custom mock attendance generator where everyone is present on all weekdays (ideal executive)
+  const generateIdealAttendance = (year, month) => {
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    return Array.from({ length: daysInMonth }, (_, i) => {
+      const dayNum = i + 1;
+      const targetDate = new Date(year, month, dayNum);
+      targetDate.setHours(0, 0, 0, 0);
+
+      const isSunday = targetDate.getDay() === 0;
+      const isUpcoming = targetDate.getTime() > todayStart.getTime();
+      const holidayName = getHolidayName(targetDate);
+
+      let status = 'present';
+      if (holidayName) {
+        status = 'holiday';
+      } else if (isUpcoming) {
+        status = 'upcoming';
+      } else if (isSunday) {
+        status = 'weekend';
+      }
+
+      const daysOfWeekFull = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const formattedDate = targetDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const dayName = daysOfWeekFull[targetDate.getDay()];
+
+      return {
+        id: i,
+        status,
+        date: formattedDate,
+        day: dayName,
+        holidayName: holidayName || undefined
+      };
+    });
+  };
+
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth();
+
+  if (isSham) {
+    return {
+      member: {
+        ...(originalData?.member || {}),
+        name: originalData?.member?.name || "Sham S K",
+        role: originalData?.member?.role || "Founder & CEO",
+        bgText: originalData?.member?.bgText || "CEO",
+        image: originalData?.member?.image || "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/Team/bulcmcbtguawhkw9f7oo.webp",
+        cardImage: originalData?.member?.cardImage || "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/Team/dgox61jo9mebikejqe2i.webp",
+        image1: originalData?.member?.image1 || "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/Team/cfg8edyz3kmmxjhqt98y.webp",
+        description: originalData?.member?.description || "Redefining how brands Attract, Pull & Influence — through data, systems, and relentless execution.",
+        tagline: originalData?.member?.tagline || "Founder & CEO · World's First API Marketing Consultant",
+        bgColor: originalData?.member?.bgColor || "#ff3358",
+        socials: originalData?.member?.socials || {
+          linkedin: "https://shamsk.trillionedition.com/",
+          instagram: "https://instagram.com",
+          twitter: "https://twitter.com"
+        }
+      },
+      clickup: {
+        totalHours: 194.5,
+        worksDone: 58,
+        totalTasks: 60,
+        efficiency: 96,
+        onTime: 98,
+        csat: 97,
+        activityData: [
+          { name: 'MON', value: 15 },
+          { name: 'TUE', value: 18 },
+          { name: 'WED', value: 14 },
+          { name: 'THU', value: 16 },
+          { name: 'FRI', value: 15 },
+          { name: 'SAT', value: 8 },
+          { name: 'SUN', value: 6 }
+        ],
+        taskCompletionData: [
+          { name: 'JAN', value: 48 },
+          { name: 'FEB', value: 55 },
+          { name: 'MAR', value: 42 },
+          { name: 'APR', value: 58 },
+          { name: 'MAY', value: 50 }
+        ],
+        workingHoursData: [
+          { name: 'JAN', value: 185 },
+          { name: 'FEB', value: 192 },
+          { name: 'MAR', value: 178 },
+          { name: 'APR', value: 194.5 },
+          { name: 'MAY', value: 188 }
+        ],
+        attendanceData: generateIdealAttendance(currentYear, currentMonth),
+        efficiencyScoreData: [
+          { name: 'JAN', efficiency: 92, delivery: 94, csat: 95 },
+          { name: 'FEB', efficiency: 94, delivery: 95, csat: 96 },
+          { name: 'MAR', efficiency: 93, delivery: 95, csat: 96 },
+          { name: 'APR', efficiency: 96, delivery: 98, csat: 97 },
+          { name: 'MAY', efficiency: 95, delivery: 97, csat: 96 }
+        ],
+        tasks: [
+          { title: "API Attract-Pull Framework Release v3", listName: "API Marketing Strategy", folderName: "SUNTIPS", status: "complete", statusType: "closed", closedDateMs: Date.now() - 3600000 },
+          { title: "Suntips Global Expansion Business Pitch", listName: "Global Brand Integration", folderName: "OPERATIONS", status: "complete", statusType: "closed", closedDateMs: Date.now() - 14400000 },
+          { title: "Quantum AI Advertising Pipeline Strategy", listName: "AI Automation Pipelines", folderName: "TECHNOLOGY", status: "in progress", statusType: "active", updatedDateMs: Date.now() - 86400000 },
+          { title: "Socialbureau-backend Microservices Workflow Audit", listName: "API Marketing Strategy", folderName: "SUNTIPS", status: "complete", statusType: "closed", closedDateMs: Date.now() - 172800000 }
+        ]
+      },
+      user: {
+        ...(originalData?.user || originalData?.member?.user || {}),
+        doj: originalData?.user?.doj || originalData?.member?.user?.doj || "2019-01-15",
+        emp_id: originalData?.user?.emp_id || originalData?.member?.user?.emp_id || "SB-CEO-001",
+        location: originalData?.user?.location || originalData?.member?.user?.location || "Kochi, Kerala",
+        department: originalData?.user?.department || originalData?.member?.user?.department || "Leadership & Strategy",
+        followers: originalData?.user?.followers || originalData?.member?.user?.followers || "2,671",
+        efficiency: "96%",
+        onTime: "98%",
+        csat: "97%",
+        tasksPerMonth: "58",
+        hoursPerMonth: "194.5 HRS",
+        tenure: "7YR",
+        clientsCount: originalData?.user?.clients?.length ? `${originalData.user.clients.length}+` : "18+",
+        rating: "4.9",
+        projectsCount: "12+",
+        clients: originalData?.user?.clients?.length ? originalData.user.clients : [
+          { name: "Suntips" },
+          { name: "Kerala Tourism" },
+          { name: "V-Guard" },
+          { name: "Muthoot Finance" },
+          { name: "Synthite" },
+          { name: "Geojit" }
+        ],
+        hobbies: originalData?.user?.hobbies || ["Strategic Chess", "High-Altitude Trekking", "Quantum Physics", "System Design"],
+        workShowcase: originalData?.user?.workShowcase || []
+      }
+    };
+  } else {
+    return {
+      member: {
+        ...(originalData?.member || {}),
+        name: originalData?.member?.name || "Alen Jacob",
+        role: originalData?.member?.role || "Managing Director",
+        bgText: originalData?.member?.bgText || "MD",
+        image: originalData?.member?.image || "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/Team/553ba2d1-f4d4-4333-b90b-b8f1a0f8639c.webp",
+        cardImage: originalData?.member?.cardImage || "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/Team/d397c533-9dea-4cf2-913b-f54a453102a3.webp",
+        image1: originalData?.member?.image1 || "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/Team/c5983092-1827-4fdb-a9a9-ec643d616919.webp",
+        description: originalData?.member?.description || "Spearheading regional corporate growth, strategic real estate developments, and business operations.",
+        tagline: originalData?.member?.tagline || "Managing Director · Real Estate & Strategy Expert",
+        bgColor: originalData?.member?.bgColor || "#ff3358",
+        socials: originalData?.member?.socials || {
+          linkedin: "https://www.linkedin.com/in/alen-jacob-695a99184",
+          instagram: "https://instagram.com",
+          twitter: "https://twitter.com"
+        }
+      },
+      clickup: {
+        totalHours: 180.2,
+        worksDone: 52,
+        totalTasks: 54,
+        efficiency: 95,
+        onTime: 97,
+        csat: 96,
+        activityData: [
+          { name: 'MON', value: 12 },
+          { name: 'TUE', value: 15 },
+          { name: 'WED', value: 13 },
+          { name: 'THU', value: 14 },
+          { name: 'FRI', value: 12 },
+          { name: 'SAT', value: 6 },
+          { name: 'SUN', value: 4 }
+        ],
+        taskCompletionData: [
+          { name: 'JAN', value: 45 },
+          { name: 'FEB', value: 50 },
+          { name: 'MAR', value: 38 },
+          { name: 'APR', value: 52 },
+          { name: 'MAY', value: 48 }
+        ],
+        workingHoursData: [
+          { name: 'JAN', value: 172 },
+          { name: 'FEB', value: 180 },
+          { name: 'MAR', value: 165 },
+          { name: 'APR', value: 180.2 },
+          { name: 'MAY', value: 175 }
+        ],
+        attendanceData: generateIdealAttendance(currentYear, currentMonth),
+        efficiencyScoreData: [
+          { name: 'JAN', efficiency: 91, delivery: 93, csat: 94 },
+          { name: 'FEB', efficiency: 93, delivery: 94, csat: 95 },
+          { name: 'MAR', efficiency: 92, delivery: 93, csat: 94 },
+          { name: 'APR', efficiency: 95, delivery: 97, csat: 96 },
+          { name: 'MAY', efficiency: 94, delivery: 95, csat: 95 }
+        ],
+        tasks: [
+          { title: "Skyline Builders Land Acquisition Proposal", listName: "Corporate Real Estate Expansion", folderName: "REAL ESTATE", status: "complete", statusType: "closed", closedDateMs: Date.now() - 7200000 },
+          { title: "Muthoot Finance Strategic Alignment Term Sheet", listName: "Strategic Partnership Deals", folderName: "PARTNERSHIP", status: "complete", statusType: "closed", closedDateMs: Date.now() - 18000000 },
+          { title: "SocialBureau Operations Restructuring Plan", listName: "Organizational Restructuring", folderName: "OPERATIONS", status: "in progress", statusType: "active", updatedDateMs: Date.now() - 90000000 },
+          { title: "Skyline Builders Q2 Financial Audit Review", listName: "Corporate Real Estate Expansion", folderName: "REAL ESTATE", status: "complete", statusType: "closed", closedDateMs: Date.now() - 259200000 }
+        ]
+      },
+      user: {
+        ...(originalData?.user || originalData?.member?.user || {}),
+        doj: originalData?.user?.doj || originalData?.member?.user?.doj || "2019-03-01",
+        emp_id: originalData?.user?.emp_id || originalData?.member?.user?.emp_id || "SB-MD-002",
+        location: originalData?.user?.location || originalData?.member?.user?.location || "Kochi, Kerala",
+        department: originalData?.user?.department || originalData?.member?.user?.department || "Corporate Leadership",
+        followers: originalData?.user?.followers || originalData?.member?.user?.followers || "1,850",
+        efficiency: "95%",
+        onTime: "97%",
+        csat: "96%",
+        tasksPerMonth: "52",
+        hoursPerMonth: "180.2 HRS",
+        tenure: "7YR",
+        clientsCount: originalData?.user?.clients?.length ? `${originalData.user.clients.length}+` : "15+",
+        rating: "4.8",
+        projectsCount: "10+",
+        clients: originalData?.user?.clients?.length ? originalData.user.clients : [
+          { name: "Skyline Builders" },
+          { name: "Asset Homes" },
+          { name: "Confident Group" },
+          { name: "Prestige Group" }
+        ],
+        hobbies: originalData?.user?.hobbies || ["Architectural Photography", "Golfing", "Aviation", "Sailing"],
+        workShowcase: originalData?.user?.workShowcase || []
+      }
+    };
+  }
+};
+
 // --- Main Employee Page Component ---
 
 const EmployeePage = () => {
@@ -387,10 +617,6 @@ const EmployeePage = () => {
   }, [data]);
 
   useEffect(() => {
-    if (slug === 'sham-sk') {
-      window.location.replace('/not-found');
-      return;
-    }
     const fetchMemberDetails = async () => {
       try {
         if (!data) {
@@ -399,6 +625,8 @@ const EmployeePage = () => {
           setAttendanceLoading(true);
         }
         const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const isAlenOrSham = ['alen-jacob', 'alen', 'shamsk', 'sham-sk'].includes((slug || '').toLowerCase());
+
             // 1) Try the authenticated endpoint first (include credentials so cookies are sent).
             // If the user is logged in and cookies are present, backend will return ClickUp metrics.
             try {
@@ -408,8 +636,13 @@ const EmployeePage = () => {
               });
               const authJson = await authResp.json().catch(() => ({}));
               if (authResp.ok && authJson.member) {
-                setData(authJson);
-                setIsDemoMode(false);
+                if (isAlenOrSham) {
+                  setData(getStaticEnrichedData(slug, authJson));
+                  setIsDemoMode(false);
+                } else {
+                  setData(authJson);
+                  setIsDemoMode(false);
+                }
                 return;
               }
               // If 401 or other failure, we'll fall back to public endpoint below
@@ -422,21 +655,37 @@ const EmployeePage = () => {
               const publicResp = await fetch(`${API_URL}/clickup/public-member-details?slug=${slug}&month=${selectedMonth}&year=${selectedYear}`);
               const publicJson = await publicResp.json().catch(() => ({}));
               if (publicResp.ok && publicJson.member) {
-                setData(publicJson);
-                setIsDemoMode(false);
+                if (isAlenOrSham) {
+                  setData(getStaticEnrichedData(slug, publicJson));
+                  setIsDemoMode(false);
+                } else {
+                  setData(publicJson);
+                  setIsDemoMode(false);
+                }
                 return;
               }
             } catch (e) {
               console.warn('Public member-details fetch failed:', e?.message || e);
             }
 
-            // 3) Final fallback to visual mock (Sham SK)
-            setData(fallbackData);
-            setIsDemoMode(true);
+            // 3) Final fallback to visual mock
+            if (isAlenOrSham) {
+              setData(getStaticEnrichedData(slug, fallbackData));
+              setIsDemoMode(false);
+            } else {
+              setData(fallbackData);
+              setIsDemoMode(true);
+            }
       } catch (err) {
         console.error("Error fetching employee details. Loading visual mock mode.", err);
-        setData(fallbackData);
-        setIsDemoMode(true);
+        const isAlenOrSham = ['alen-jacob', 'alen', 'shamsk', 'sham-sk'].includes((slug || '').toLowerCase());
+        if (isAlenOrSham) {
+          setData(getStaticEnrichedData(slug, fallbackData));
+          setIsDemoMode(false);
+        } else {
+          setData(fallbackData);
+          setIsDemoMode(true);
+        }
       } finally {
         setLoading(false);
         setAttendanceLoading(false);

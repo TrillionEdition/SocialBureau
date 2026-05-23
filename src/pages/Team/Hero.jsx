@@ -180,12 +180,10 @@ export const Hero = () => {
             </motion.p>
 
             <motion.div variants={textVariants} transition={{ delay: 0.4 }} className="flex flex-wrap gap-3">
-              {!(current.id === 'sham-sk' || current.slug === 'sham-sk' || current.email === 'ceo@socialbureau.in') && (
-                <Link to={`/team/${current.slug || current.id}`} className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full text-[11px] font-black tracking-widest hover:scale-105 active:scale-95 transition-all">
-                  <Play className="w-3 h-3 fill-current" />
-                  VIEW FULL PROFILE
-                </Link>
-              )}
+              <Link to={`/team/${(current.id === 'sham-sk' || current.slug === 'sham-sk' || current.email === 'ceo@socialbureau.in') ? 'shamsk' : (current.slug || current.id)}`} className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full text-[11px] font-black tracking-widest hover:scale-105 active:scale-95 transition-all">
+                <Play className="w-3 h-3 fill-current" />
+                VIEW FULL PROFILE
+              </Link>
               <button className="bg-white/10 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full text-[11px] font-black tracking-widest hover:bg-white/20 transition-all">
                 MORE INFO
               </button>
