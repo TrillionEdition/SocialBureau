@@ -387,6 +387,10 @@ const EmployeePage = () => {
   }, [data]);
 
   useEffect(() => {
+    if (slug === 'sham-sk') {
+      window.location.replace('/not-found');
+      return;
+    }
     const fetchMemberDetails = async () => {
       try {
         if (!data) {

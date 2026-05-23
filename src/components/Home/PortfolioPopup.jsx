@@ -191,10 +191,15 @@ const PortfolioPopup = () => {
                             key={student.id}
                             initial={{ opacity: 0, scale: 0 }}
                             animate={{ opacity: 1, scale: 1, x, y: [y, y - 10, y] }}
+                            whileHover={{ scale: 1.2, zIndex: 50 }}
                             transition={{ y: { duration: 3 + (index % 4), repeat: Infinity, ease: "easeInOut", delay: index * 0.3 } }}
-                            className="absolute bottom-0 right-1/2 translate-x-1/2"
+                            className="absolute bottom-0 right-1/2 translate-x-1/2 pointer-events-auto cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/partnership/${student.param || student.id}`);
+                            }}
                           >
-                            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-white/20 overflow-hidden shadow-lg bg-[#111]">
+                            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-white/20 hover:border-[#E8001A] overflow-hidden shadow-lg bg-[#111] transition-all">
                               <img src={student.image} alt={student.name} className="w-full h-full object-cover" />
                             </div>
                           </motion.div>
