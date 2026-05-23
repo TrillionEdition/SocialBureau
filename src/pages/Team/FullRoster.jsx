@@ -182,9 +182,6 @@ export const FullRoster = () => {
                       </div>
                     </div>
                   </Link>
-                
-
-                {/* Social Links (outside the main link to be independently clickable) */}
                 <div className="p-8 pt-6 border-t border-white/5 flex gap-4 relative z-30">
                   <a href={member.socials?.linkedin} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white hover:bg-white/5 transition-all">
                     <Linkedin className="w-3.5 h-3.5" />
