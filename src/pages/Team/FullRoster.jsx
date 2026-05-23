@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Linkedin, Instagram, Twitter, Loader2 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { BASE_URL } from "@/utils/urls";
 
 export const FullRoster = () => {
@@ -131,7 +132,7 @@ export const FullRoster = () => {
                   delay: (index % 3) * 0.1,
                   ease: [0.22, 1, 0.36, 1]
                 }}
-                className="group relative bg-[#120c1d] rounded-3xl overflow-hidden border border-white/5 hover:border-white/20 transition-colors flex flex-col h-full will-change-transform shadow-2xl"
+                className="group relative bg-[#120c1d] rounded-[40px] overflow-hidden border border-white/5 hover:border-white/20 transition-colors flex flex-col h-full will-change-transform shadow-2xl"
                 style={{ 
                   backfaceVisibility: "hidden", 
                   transformStyle: "preserve-3d",
@@ -145,63 +146,54 @@ export const FullRoster = () => {
                     style={{ backgroundColor: member.bgColor || '#ff3358' }}
                   />
                 </div>
-                {/* Image Section */}
-                <div className="relative aspect-square overflow-hidden bg-gray-900">
-                  {/* Background Text Decor */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-20 group-hover:scale-110 transition-transform duration-700">
-                    <span className="text-8xl font-black text-white/20 whitespace-nowrap rotate-[-15deg] uppercase">
-                      {member.name.split(' ')[0]}
-                    </span>
-                  </div>
-                  
-                  {/* Background Color Blob */}
-                  <div 
-                    className="absolute inset-0 opacity-40 mix-blend-overlay group-hover:opacity-60 transition-opacity"
-                    style={{ backgroundColor: member.bgColor || '#ff3358' }}
-                  />
 
-                  {/* Person Image */}
-                  <img
-                    src={member.image1 || member.image}
-                    alt={member.name}
-                    className="relative z-10 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                </div>
-
-                {/* Info Section */}
-                <div className="p-8 flex flex-col flex-1">
-                  <h3 className="text-2xl font-black text-white mb-1 tracking-tight font-roboto">
-                    {member.name}
-                  </h3>
-                  <p className="text-[11px] font-bold text-white/40 tracking-[0.2em] uppercase mb-6">
-                    {member.role}
-                  </p>
-
-                  <div className="flex flex-wrap gap-2 mb-8 mt-auto relative z-20">
-                    {(member.tags || []).slice(0, 3).map((tag, tIdx) => (
-                      <motion.span 
-                        key={tag} 
-                        initial={{ opacity: 0, x: -10 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.4 + (tIdx * 0.1) }}
-                        className="px-3 py-1 bg-white/5 rounded-full text-[9px] font-bold text-white/30 tracking-widest group-hover:text-white/60 group-hover:bg-white/10 transition-colors"
-                      >
-                        {tag}
-                      </motion.span>
-                    ))}
+                <Link to={`/team/${member.slug || member.id}`} className="flex flex-col flex-1 h-full">
+                  {/* Image Section */}
+                  <div className="relative aspect-square overflow-hidden bg-gray-900">
+                    {/* Person Image */}
+                    <img
+                      src={member.image1 || member.image}
+                      alt={member.name}
+                      className="relative z-10 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
                   </div>
 
-                  <div className="flex gap-4 border-t border-white/5 pt-6">
-                    <a href={member.socials?.linkedin} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white hover:bg-white/5 transition-all">
-                      <Linkedin className="w-3.5 h-3.5" />
-                    </a>
-                    <a href={member.socials?.instagram} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white hover:bg-white/5 transition-all">
-                      <Instagram className="w-3.5 h-3.5" />
-                    </a>
-                    <a href={member.socials?.twitter} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white hover:bg-white/5 transition-all">
-                      <Twitter className="w-3.5 h-3.5" />
-                    </a>
+                  {/* Info Section */}
+                  <div className="p-8 pb-0 flex flex-col flex-1">
+                    <h3 className="text-2xl font-black text-white mb-1 tracking-tight font-roboto">
+                      {member.name}
+                    </h3>
+                    <p className="text-[11px] font-bold text-white/40 tracking-[0.2em] uppercase mb-6">
+                      {member.role}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 mb-8 mt-auto relative z-20">
+                      {(member.tags || []).slice(0, 3).map((tag, tIdx) => (
+                        <motion.span 
+                          key={tag} 
+                          initial={{ opacity: 0, x: -10 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.4 + (tIdx * 0.1) }}
+                          className="px-3 py-1 bg-white/5 rounded-full text-[9px] font-bold text-white/30 tracking-widest group-hover:text-white/60 group-hover:bg-white/10 transition-colors"
+                        >
+                          {tag}
+                        </motion.span>
+                      ))}
+                    </div>
                   </div>
+                </Link>
+
+                {/* Social Links (outside the main link to be independently clickable) */}
+                <div className="p-8 pt-6 border-t border-white/5 flex gap-4 relative z-30">
+                  <a href={member.socials?.linkedin} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white hover:bg-white/5 transition-all">
+                    <Linkedin className="w-3.5 h-3.5" />
+                  </a>
+                  <a href={member.socials?.instagram} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white hover:bg-white/5 transition-all">
+                    <Instagram className="w-3.5 h-3.5" />
+                  </a>
+                  <a href={member.socials?.twitter} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white hover:bg-white/5 transition-all">
+                    <Twitter className="w-3.5 h-3.5" />
+                  </a>
                 </div>
               </motion.div>
             ))}
