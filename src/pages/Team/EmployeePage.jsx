@@ -972,6 +972,13 @@ const EmployeePage = () => {
           background: 'linear-gradient(180deg, #441649 0%, #160F2C 45%, #2A1440 75%, #20133C 100%)'
         }}
       >
+        {/* Mobile-only static background image layer */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.12] md:hidden"
+          style={{
+            backgroundImage: 'url("https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/TeamPage/image%20(40)%20(1).png")'
+          }}
+        />
         {/* Subtle grid line effect */}
         <div className="absolute inset-0 opacity-[0.03]" 
              style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '100px 100px' }} 
@@ -987,9 +994,13 @@ const EmployeePage = () => {
 
       {/* --- HERO SECTION WITH HEADER INTEGRATED --- */}
       <section className="relative w-full lg:h-screen lg:min-h-[750px] overflow-hidden flex flex-col justify-between bg-transparent pb-6 pt-6 md:pb-12 md:pt-8">
-        {/* Background Image Layer - Covers Header down to Stats Ribbon perfectly */}
+        {/* Background Image Layer - Static backdrop for Mobile, dynamic coverUrl for Desktop */}
         <div 
-          className="absolute inset-0 z-0 bg-no-repeat bg-cover bg-center opacity-40 mix-blend-lighten pointer-events-none"
+          className="absolute inset-0 z-0 bg-no-repeat bg-cover bg-center opacity-40 mix-blend-lighten pointer-events-none md:hidden"
+          style={{ backgroundImage: 'url("https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/TeamPage/image%20(40)%20(1).png")' }}
+        />
+        <div 
+          className="absolute inset-0 z-0 bg-no-repeat bg-cover bg-center opacity-40 mix-blend-lighten pointer-events-none hidden md:block"
           style={{ backgroundImage: `url(${coverUrl})` }}
         />
         
