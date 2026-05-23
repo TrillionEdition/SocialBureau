@@ -952,6 +952,18 @@ Submitted via: Website Contact Form
 
         </div>
       </div>
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-8">
+        <div className="flex flex-row items-center gap-3 text-[9px] md:text-[11px] font-bold text-muted uppercase tracking-[0.2em] mt-6 justify-start w-full text-left">
+          <span>POWERED BY</span>
+          <a href="https://www.socialbureau.in/enquiry-form" target="_blank" rel="noopener noreferrer" className="flex justify-start items-center">
+            <img
+              src="https://www.socialbureau.in/assets/logo.webp"
+              alt="SocialBureau"
+              className="h-5 md:h-8 w-auto"
+            />
+          </a>
+        </div>
+      </div>
     </section>
   );
 }

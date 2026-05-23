@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 import { BASE_URL } from '@/utils/urls';
+import Navbar from '../Navbar';
 
 axios.defaults.withCredentials = true;
 
@@ -141,6 +142,7 @@ const AdminClickupClients = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white p-8 md:p-12 font-sans">
+      <Navbar/>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">

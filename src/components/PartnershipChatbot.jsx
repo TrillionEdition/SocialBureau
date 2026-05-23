@@ -191,7 +191,7 @@ export default function PartnershipChatbot() {
               {
                 id: Date.now() + 1,
                 sender: "bot",
-                text: `Wait! It looks like you already have a meeting scheduled for ${new Date(data.data.userDate).toLocaleString()}. \n\nWe will send the official Google Meet link 30 minutes before the meeting starts. Please check your email for the invite!`,
+                text: `Wait! It looks like you already have a meeting scheduled for ${new Date(data.data.userDate).toLocaleString()}. \n\nWe will send the official Google Meet link 10 minutes before the meeting starts. Please check your email for the invite!`,
               },
             ]);
             return;
@@ -203,7 +203,7 @@ export default function PartnershipChatbot() {
             {
               id: Date.now() + 1,
               sender: "bot",
-              text: `Great, ${userName}! Your meeting with ${currentPartner.name} is registered for ${displayDate}. \n\nWe will send the official Google Meet link to your email (${userEmail}) 30 minutes before the meeting starts. \n\nPlease check your email for the confirmation and calendar invite!`,
+              text: `Great, ${userName}! Your meeting with ${currentPartner.name} is registered for ${displayDate}. \n\nWe will send the official Google Meet link to your email (${userEmail}) 10 minutes before the meeting starts. \n\nPlease check your email for the confirmation and calendar invite!`,
             },
           ]);
         })

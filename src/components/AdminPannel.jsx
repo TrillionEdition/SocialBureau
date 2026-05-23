@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
+import Navbar from './Navbar';
 
 const AdminPanel = () => {
     const adminTools = [
@@ -22,6 +23,7 @@ const AdminPanel = () => {
 
     return (
         <div className="min-h-screen bg-white text-[#1d1d1f] font-sans antialiased">
+            <Navbar />
             {/* Editorial Header */}
             <div className="max-w-[1400px] mx-auto px-6 md:px-12 pt-32 pb-20">
                 <header className="border-b border-gray-100 pb-12">

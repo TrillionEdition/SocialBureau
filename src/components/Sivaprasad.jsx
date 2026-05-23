@@ -81,6 +81,20 @@ const inlineStyles = `
 @media (max-width: 900px) {
   .hero { padding: 4rem 0; }
 }
+
+/* Footer social icons */
+.site-footer { border-top: 1px solid rgba(255,255,255,0.04); }
+.footer-inner { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+.footer-powered { display:flex; align-items:center; gap:0.75rem; color: #9CA3AF; font-weight:700; letter-spacing:0.12em; }
+.social-icons { display:flex; gap:0.75rem; align-items:center; }
+.social-icon { width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; border-radius:8px; color: #9CA3AF; background: rgba(255,255,255,0.02); transition: transform .18s ease, color .18s ease, background .18s ease; }
+.social-icon:hover { color: #111827; background: linear-gradient(90deg, #FDE68A, #FACC15); transform: translateY(-3px); }
+
+@media (max-width:640px) {
+  .footer-inner { flex-direction:column; align-items:center; text-align:center; }
+  .footer-powered { justify-content:center; }
+  .social-icons { justify-content:center; margin-top:0.5rem; }
+}
 `;
 
 export default function Sivaprasad() {
@@ -538,7 +552,34 @@ Submitted via: Sivaprasad portfolio
           </div>
         </div>
       )}
+<div className="max-w-7xl mx-auto px-6 md:px-12 py-8 site-footer">
+        <div className="footer-inner">
+          <div className="footer-powered text-[9px] md:text-[11px] mt-2 md:mt-6">
+            <span>POWERED BY</span>
+            <a href="https://www.socialbureau.in/enquiry-form" target="_blank" rel="noopener noreferrer" className="flex justify-start items-center">
+              <img
+                src="https://www.socialbureau.in/assets/logo.webp"
+                alt="SocialBureau"
+                className="h-5 md:h-8 w-auto"
+              />
+            </a>
+          </div>
 
+          <div className="social-icons" aria-label="Social links">
+            <a className="social-icon" href="https://www.linkedin.com/in/sivaprasad-m-040567238/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0V8zm7.5 0h4.8v2.2h.1c.67-1.3 2.3-2.7 4.7-2.7C23.4 7.5 24 10 24 14.2V24h-5V15c0-2.2-.04-5-3-5-3 0-3.5 2.4-3.5 4.8V24H7.5V8z"/></svg>
+            </a>
+
+            <a className="social-icon" href="https://www.instagram.com/sivaprasad_yc/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm10.5 3.25a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5zM12 7.5a4.5 4.5 0 11.001 9.001A4.5 4.5 0 0112 7.5z"/></svg>
+            </a>
+
+            <a className="social-icon" href="https://www.facebook.com/share/18k3B5q8q1" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M22 12c0-5.522-4.477-10-10-10S2 6.478 2 12c0 4.991 3.657 9.128 8.438 9.877v-6.987H7.898v-2.89h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.89h-2.33V22C18.343 21.128 22 16.991 22 12z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

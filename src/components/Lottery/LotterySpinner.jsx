@@ -97,15 +97,18 @@ export default function SpinWheel() {
         }
 
         try {
-            await axios.post(`${BASE_URL}/lottery/claim`, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
-            setSubmitted(true);
+            // Let axios set the Content-Type (including boundary) for multipart/form-data
+            const resp = await axios.post(`${BASE_URL}/lottery/claim`, formData);
+            if (resp && resp.status === 201) {
+                setSubmitted(true);
+            } else {
+                console.error("Unexpected response from server:", resp);
+                alert("Failed to submit claim. Please try again.");
+            }
         } catch (error) {
-            console.error("Error submitting details", error);
-            alert("Failed to submit claim. Please try again.");
+            console.error("Error submitting details", error.response || error.message || error);
+            const serverMsg = error?.response?.data?.message;
+            alert(serverMsg || "Failed to submit claim. Please try again.");
         } finally {
             setSubmitting(false);
         }

@@ -237,9 +237,9 @@ const DashboardX = () => {
           <div className="pt-6 pb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest px-3">
             Content Management
           </div>
-          <NavItem 
-            icon={<Plus size={18} />} 
-            label="Write a Blog" 
+          <NavItem
+            icon={<Plus size={18} />}
+            label="Write a Blog"
             onClick={() => navigate('/blog/submit')}
           />
 

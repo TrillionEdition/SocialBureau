@@ -165,14 +165,12 @@ export default function Navbar() {
           items: [
             { label: "About Us", href: "/about" },
             { label: "Our Team", href: "/our-team" },
-            { label: "Work", href: "#" },
           ],
         },
         {
           title: "Community",
           items: [
             { label: "Blog", href: "/blog" },
-            { label: "Partners", href: "/partners" },
           ],
         },
       ],
@@ -226,20 +224,9 @@ export default function Navbar() {
     {
       label: "Partnership",
       href: "/partners",
-      columns: [
-        {
-          title: "Partnership",
-          items: [
-            { label: "Ranjit", href: "/partnership/Ranjit" },
-            { label: "Sivaprasad", href: "/partnership/Sivaprasad" },
-            { label: "John Samuel", href: "/partnership/JohnSamuel" },
-            { label: "Jignesh Rana", href: "https://www.jigneshrana.com" },
-          ],
-        },
-      ],
     },
 
-    { label: "Team", href: "/our-team" },
+    { label: "Team", href: "/team" },
     { label: "Enquiry", href: "/enquiry-form" },
     { label: "Support", href: "/contact" },
   ];

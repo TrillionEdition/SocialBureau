@@ -93,16 +93,22 @@ const Hero = () => {
         style={{ y, scale, opacity }}
         className="absolute inset-0 z-0 flex items-center justify-center px-6 md:px-24 lg:px-48"
       >
-        <div className="relative w-full h-full max-w-4xl mx-auto flex items-center justify-center">
+        <div className="absolute inset-0">
+          <picture>
+            <source
+              srcSet="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/image%20(12).png"
+              media="(max-width: 767px)"
+            />
+            <img
+              src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/9a6639ab-2c3e-49ea-9bde-742bbc7b92fe.png"
+              alt="Sakilan Padmanabhan"
+              className="w-full h-full object-cover opacity-70 grayscale hover:grayscale-0 transition-all duration-1000"
+              referrerPolicy="no-referrer"
+            />
+          </picture>
+
           <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent -translate-x-12 hidden md:block" />
           <div className="absolute inset-y-0 right-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent translate-x-12 hidden md:block" />
-
-          <img
-            src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Sakhilan_sir_usbgfx.jpg"
-            alt="Sakilan Padmanabhan"
-            className="w-full h-full object-contain opacity-70 grayscale hover:grayscale-0 transition-all duration-1000"
-            referrerPolicy="no-referrer"
-          />
         </div>
       </motion.div>
 
@@ -116,7 +122,7 @@ const Hero = () => {
           >
             Managing Director & Chairman
           </motion.div>
-          <h1 className="font-display text-5xl md:text-7xl lg:text-[12vw] font-bold leading-[0.8] tracking-tighter text-white">
+          <h1 className="font-display text-5xl md:text-7xl lg:text-[10vw] font-bold leading-[0.8] tracking-tighter text-white">
             <div className="overflow-hidden">
               <motion.span
                 initial={{ y: "100%" }}
@@ -157,8 +163,8 @@ const Statement = () => {
     <section className="py-12 md:py-32 px-6 md:px-12 bg-black">
       <div className="max-w-5xl mx-auto">
         <TextReveal className="font-display text-3xl md:text-6xl font-medium leading-[1.1] tracking-tight text-white">
-          Sakilan Padmanabhan leads multiple ventures including TCCL — the team
-          behind News Tamil 24x7 — and MUA Technologies. Known for strategic
+          Sakilan Padmanabhan leads multiple ventures including TCCL, the team
+          behind News Tamil 24x7 and MUA Technologies. Known for strategic
           leadership and media innovation, he builds products that connect with
           audiences across Tamil Nadu and beyond.
         </TextReveal>
@@ -187,7 +193,7 @@ const Feature = ({ id, title, description, image, index, path = "#" }) => {
                 isInView ? { opacity: 0.4, x: 0 } : { opacity: 0, x: -20 }
               }
               transition={{ duration: 0.8 }}
-              className="text-xs font-bold uppercase tracking-[0.4em] text-white/40 block"
+              className="text-xs font-bold uppercase tracking-[0.4em] text-gray block"
             >
               0{index + 1} // Venture
             </motion.span>
@@ -201,7 +207,7 @@ const Feature = ({ id, title, description, image, index, path = "#" }) => {
                 isInView ? { opacity: 0.6, y: 0 } : { opacity: 0, y: 20 }
               }
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-lg md:text-xl text-white/60 leading-relaxed max-w-md"
+              className="text-lg md:text-xl text-gray leading-relaxed max-w-md"
             >
               {description}
             </motion.p>
@@ -384,10 +390,17 @@ const Footer = () => {
               Sakilan.P
             </motion.h2>
             <div className="flex gap-6">
-              {[Linkedin, Twitter, Youtube, Instagram].map((Icon, i) => (
+              {[
+                { Icon: Linkedin, href: "https://www.linkedin.com/in/sakilan-padmanabhan-727b1437a/" },
+                { Icon: Twitter, href: "https://x.com/sakilantccl" },
+                { Icon: Youtube, href: "https://www.youtube.com/@NewsTamil24X7TV" },
+                { Icon: Instagram, href: "https://www.instagram.com/newstamil24x7digital/" },
+              ].map(({ Icon, href }, i) => (
                 <MagneticButton key={i}>
                   <a
-                    href="#"
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="p-4 border border-white/10 rounded-full hover:bg-white hover:text-black transition-all block text-white"
                   >
                     <Icon size={20} />
@@ -441,7 +454,7 @@ const Footer = () => {
               </h4>
               <div className="space-y-4 text-lg text-white/60">
                 <p className="hover:text-white transition-colors cursor-pointer">
-                  contact@sakilan.p
+                  sakilantccl@icloud.com
                 </p>
                 <p className="pt-8 text-sm opacity-40">Chennai, India</p>
               </div>
@@ -549,7 +562,7 @@ export default function Sakilan() {
           index={1}
           title="News Tamil 24x7"
           description="A leading voice in Tamil journalism, providing deep insights and breaking news to audiences across the state and the diaspora."
-          image="https://play-lh.googleusercontent.com/jJzvw46BAAcWl2OGHiegCKrhKKOpHRlhdcrDdeoDth9-8-ph3r2oTVDtF9w99o6_-dO5=w600-h300-pc0xffffff-pd"
+          image="https://yt3.googleusercontent.com/X2uO0_Bis8CH3IVH2Wa3HZTbR2ilArRjhzDTZQNn11oG9WdIqxFJ275CtF2hRZCmikWdHyv-qA=s900-c-k-c0x00ffffff-no-rj"
         />
         <AudienceImpact />
         <Feature
@@ -569,7 +582,22 @@ export default function Sakilan() {
           image="https://media.licdn.com/dms/image/v2/D5622AQFaKGbmlDjpUQ/feedshare-shrink_800/feedshare-shrink_800/0/1716978534465?e=2147483647&v=beta&t=5w-niTNAJ4t13HVpayhv1PgOaenuKUZepSJSnkUHDXg"
         />
       </main>
+
+      
+
       <Footer />
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-8">
+        <div className="flex flex-row items-center gap-3 text-[9px] md:text-[11px] font-bold text-muted uppercase tracking-[0.2em] mt-6 justify-start w-full text-left">
+          <span>POWERED BY</span>
+          <a href="https://www.socialbureau.in/enquiry-form" target="_blank" rel="noopener noreferrer" className="flex justify-start items-center">
+            <img
+              src="https://www.socialbureau.in/assets/logo.webp"
+              alt="SocialBureau"
+              className="h-5 md:h-8 w-auto"
+            />
+          </a>
+        </div>
+      </div>
       <BackToTop />
     </div>
   );
