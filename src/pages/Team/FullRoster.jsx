@@ -182,7 +182,7 @@ export const FullRoster = () => {
                       </div>
                     </div>
                   </Link>
-                )}
+                
 
                 {/* Social Links (outside the main link to be independently clickable) */}
                 <div className="p-8 pt-6 border-t border-white/5 flex gap-4 relative z-30">
