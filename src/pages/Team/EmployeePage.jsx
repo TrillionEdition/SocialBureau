@@ -17,6 +17,7 @@ import { clsx } from 'clsx';
 import { toast } from 'react-toastify';
 import Footer from '../../components/Footer';
 import ResumeModal from '../Resume/ResumeModal';
+import BookSessionModal from './BookSessionModal';
 
 function cn(...inputs) {
   return clsx(inputs);
@@ -88,10 +89,10 @@ const PUBLIC_HOLIDAYS_2026 = {
   '2026-01-01': 'New Year',
   '2026-01-26': 'Republic Day',
   '2026-03-20': 'Eid-ul-Fitr (Ramadan)',
-  '2026-04-02': 'Maundy Thursday',
   '2026-04-03': 'Good Friday',
   '2026-04-14': 'Vishu',
   '2026-05-01': 'Labour Day',
+  '2026-05-28': 'Bakrid (Eid al-Adha)',
   '2026-08-15': 'Independence Day',
   '2026-08-28': 'Uthradam (First Onam)',
   '2026-08-29': 'Thiruvonam',
@@ -534,6 +535,7 @@ const EmployeePage = () => {
   const [attendanceLoading, setAttendanceLoading] = useState(false);
   const [coverUrl, setCoverUrl] = useState('https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/TeamPage/syudjvadmoda2nj1albg.png');
   const [showResumeModal, setShowResumeModal] = useState(false);
+  const [showBookSessionModal, setShowBookSessionModal] = useState(false);
 
   const handlePrevMonth = () => {
     if (selectedMonth === 0) {
@@ -709,7 +711,7 @@ const EmployeePage = () => {
         </div>
         <Loader2 className="w-10 h-10 text-brand-purple animate-spin relative z-10" />
         <span className="text-sm font-semibold tracking-widest uppercase text-white/50 relative z-10 animate-pulse">
-          Retrieving Real-Time Roster Data
+          Retrieving Real-Time Data
         </span>
       </div>
     );
@@ -718,6 +720,15 @@ const EmployeePage = () => {
   const member = data?.member || fallbackData.member;
   const clickup = data?.clickup || fallbackData.clickup;
   const user = data?.user || data?.member?.user || fallbackData.user;
+
+  const isAlenOrSham = ['alen-jacob', 'alen', 'shamsk', 'sham-sk'].includes((slug || '').toLowerCase());
+  const showStaticFallback = isDemoMode || isAlenOrSham;
+
+  const hasInnovations = (user && Array.isArray(user.innovations) && user.innovations.length > 0) || showStaticFallback;
+  const hasPodcasts = (user && Array.isArray(user.podcasts) && user.podcasts.length > 0) || showStaticFallback;
+  const hasEvents = (user && Array.isArray(user.events) && user.events.length > 0) || showStaticFallback;
+  const hasRightColumn = hasPodcasts || hasEvents;
+  const hasBottomSection = hasInnovations || hasRightColumn;
 
   const resumeData = {
     personalInfo: {
@@ -1080,7 +1091,10 @@ const EmployeePage = () => {
                 >
                   <Mail className="w-4 h-4" /> MESSAGE
                 </a>
-                <button className="bg-[#0B0118]/80 hover:bg-[#1A0B2E] text-purple-400 border border-purple-500/20 px-8 py-3.5 rounded-[12px] text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-2">
+                <button 
+                  onClick={() => setShowBookSessionModal(true)}
+                  className="bg-[#0B0118]/80 hover:bg-[#1A0B2E] text-purple-400 border border-purple-500/20 px-8 py-3.5 rounded-[12px] text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-2"
+                >
                   <Calendar className="w-4 h-4" /> BOOK SESSION
                 </button>
                 <button 
@@ -1098,7 +1112,7 @@ const EmployeePage = () => {
             initial={{ y: 40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="mt-auto mb-4 md:mb-8 bg-[#1A0B2E]/60 backdrop-blur-xl border border-white/10 rounded-[32px] grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-wrap overflow-hidden relative z-10 w-full"
+            className="mt-auto mb-4 md:mb-8 bg-[#1A0B2E]/60 backdrop-blur-xl border border-white/10 rounded-[32px] grid grid-cols-2 gap-y-2 py-2 md:py-0 sm:grid-cols-3 lg:flex lg:flex-wrap overflow-hidden relative z-10 w-full"
           >
             <StatItem label="Projects" value={user.projectsCount || "12+"} color="text-red-500" />
             <StatItem label="Tasks/Mo" value={typeof tasksCompleted === 'number' ? tasksCompleted : (fallbackData.clickup.worksDone || "0")} color="text-purple-500" />
@@ -1523,9 +1537,9 @@ const EmployeePage = () => {
                })()}
                
                </div>
-               <div className="flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest">
-                  <span className="text-gray-500">MON - SAT  |  9:30AM - 6:30PM IST</span>
-                  <div className="flex gap-6">
+               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-[11px] font-bold uppercase tracking-widest">
+                  <span className="text-gray-500 whitespace-nowrap">MON - SAT  |  9:30AM - 6:30PM IST</span>
+                  <div className="flex flex-wrap gap-x-6 gap-y-2">
                     <div className="flex items-center gap-3">
                       <div className="w-3.5 h-3.5 bg-[#0B1528] border border-[#142C44] rounded-[4px]" />
                       <span className="text-gray-600">LOW</span>
@@ -1543,39 +1557,41 @@ const EmployeePage = () => {
             </div>
           </div>
 
-          <div className="md:col-span-12">
-             <GlassCard variant="purple">
-                <SectionTitle title="Core Expertise" />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                   {((user && Array.isArray(user.tools) && user.tools.length > 0)
-                     ? user.tools.map((tool, idx) => {
-                         const colors = ['#F43F5E', '#A855F7', '#06B6D4', '#F59E0B', '#3B82F6', '#EAB308', '#EC4899'];
-                         return {
-                           name: tool.toolName,
-                           progress: typeof tool.level === 'number' ? tool.level : (85 + (idx * 3) % 11),
-                           color: colors[idx % colors.length]
-                         };
-                       })
-                     : expertiseData
-                   ).map((exp) => (
-                     <div key={exp.name} className="space-y-3 group">
-                       <div className="flex justify-between items-center">
-                          <span className="text-xs font-semibold text-gray-300 uppercase tracking-[0.15em] group-hover:text-white transition-colors">{exp.name}</span>
+          {((user && Array.isArray(user.tools) && user.tools.length > 0) || showStaticFallback) && (
+            <div className="md:col-span-12">
+               <GlassCard variant="purple">
+                  <SectionTitle title="Core Expertise" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                     {((user && Array.isArray(user.tools) && user.tools.length > 0)
+                       ? user.tools.map((tool, idx) => {
+                           const colors = ['#F43F5E', '#A855F7', '#06B6D4', '#F59E0B', '#3B82F6', '#EAB308', '#EC4899'];
+                           return {
+                             name: tool.toolName,
+                             progress: typeof tool.level === 'number' ? tool.level : (85 + (idx * 3) % 11),
+                             color: colors[idx % colors.length]
+                           };
+                         })
+                       : expertiseData
+                     ).map((exp) => (
+                       <div key={exp.name} className="space-y-3 group">
+                         <div className="flex justify-between items-center">
+                            <span className="text-xs font-semibold text-gray-300 uppercase tracking-[0.15em] group-hover:text-white transition-colors">{exp.name}</span>
+                         </div>
+                         <div className="w-full h-2.5 bg-white/10 rounded-full overflow-hidden shadow-inner p-[1px]">
+                            <motion.div 
+                              initial={{ width: 0 }} 
+                              whileInView={{ width: `${exp.progress}%` }} 
+                              transition={{ duration: 1.2, ease: "easeOut" }}
+                              className="h-full rounded-full shadow-lg" 
+                              style={{ backgroundColor: exp.color }}
+                            />
+                         </div>
                        </div>
-                       <div className="w-full h-2.5 bg-white/10 rounded-full overflow-hidden shadow-inner p-[1px]">
-                          <motion.div 
-                            initial={{ width: 0 }} 
-                            whileInView={{ width: `${exp.progress}%` }} 
-                            transition={{ duration: 1.2, ease: "easeOut" }}
-                            className="h-full rounded-full shadow-lg" 
-                            style={{ backgroundColor: exp.color }}
-                          />
-                       </div>
-                     </div>
-                   ))}
-                </div>
-             </GlassCard>
-          </div>
+                     ))}
+                  </div>
+               </GlassCard>
+            </div>
+          )}
 
           {/* Education Section */}
           {user.education && user.education.length > 0 && (
@@ -1659,66 +1675,68 @@ const EmployeePage = () => {
             </div>
           )}
 
-          <div className="md:col-span-12">
-             <GlassCard variant="purple" className="!p-0 bg-[#0B0118] border-white/5">
-                <div className="p-8 border-b border-white/5">
-                  <div className="flex items-center gap-3">
-                    <div className="w-[3px] h-4 bg-brand-pink" />
-                    <h2 className="text-[10px] font-bold tracking-[0.25em] uppercase text-gray-500">CAREER TIMELINE</h2>
+          {((user && Array.isArray(user.achievements) && user.achievements.length > 0) || showStaticFallback) && (
+            <div className="md:col-span-12">
+               <GlassCard variant="purple" className="!p-0 bg-[#0B0118] border-white/5">
+                  <div className="p-8 border-b border-white/5">
+                    <div className="flex items-center gap-3">
+                      <div className="w-[3px] h-4 bg-brand-pink" />
+                      <h2 className="text-[10px] font-bold tracking-[0.25em] uppercase text-gray-500">CAREER TIMELINE</h2>
+                    </div>
                   </div>
-                </div>
-                   <div className="divide-y divide-white/5">
-                   {((user && Array.isArray(user.achievements) && user.achievements.length > 0)
-                     ? user.achievements.map((ach) => {
-                         const styles = getBadgeStyles(ach.image);
-                         return {
-                           title: ach.title,
-                           desc: ach.description,
-                           date: ach.date || formatTimelineDate(ach.createdAt),
-                           badge: (ach.image || 'ACHIEVEMENT').toUpperCase(),
-                           color: styles.color,
-                           badgeColor: styles.badgeColor
-                         };
-                       })
-                     : [
-                         { title: 'Founded Social Bureau', desc: "Kerala's first API Marketing agency", date: 'JAN 2019', badge: 'MILESTONE', color: 'bg-red-600', badgeColor: 'bg-red-950/30 text-red-700 border-red-900/30' },
-                         { title: 'Coined API Marketing', desc: "Attract - Pull - Influence framework launch", date: 'MAR 2020', badge: 'INNOVATION', color: 'bg-purple-600', badgeColor: 'bg-purple-950/30 text-purple-700 border-purple-900/30' },
-                         { title: 'First News Channel Client', desc: "NwsTamil24x7 digital growth strategy", date: 'AUG 2021', badge: 'CLIENT WIN', color: 'bg-green-600', badgeColor: 'bg-green-950/30 text-green-700 border-green-900/30' },
-                         { title: 'ClickUp India Partner', desc: "Official ClickUp reselling partnership", date: 'FEB 2022', badge: 'PARTNERSHIP', color: 'bg-yellow-400', badgeColor: 'bg-yellow-950/30 text-yellow-700 border-yellow-900/30' },
-                         { title: '13-Organic Sales - Suntips', desc: "Zero ad spend campaign milestone", date: 'OCT 2024', badge: 'ACHIEVEMENT', color: 'bg-cyan-500', badgeColor: 'bg-cyan-950/30 text-cyan-700 border-cyan-900/30' },
-                         { title: 'Kerala Election 2026 Dashboard', desc: "Broadcast - quality live results platform", date: 'JAN 2026', badge: 'LAUNCH', color: 'bg-pink-600', badgeColor: 'bg-pink-950/30 text-pink-700 border-pink-900/30' },
-                       ]
-                   ).map((item, i) => (
-                     <motion.div 
-                       key={i} 
-                       initial={{ opacity: 0, x: -10 }}
-                       whileInView={{ opacity: 1, x: 0 }}
-                       transition={{ delay: i * 0.1 }}
-                       className="relative p-4 md:p-8 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 group hover:bg-white/[0.02] transition-colors text-center sm:text-left"
-                     >
-                       {/* Circle Indicator */}
-                       <div className="relative flex items-center justify-center shrink-0 self-center sm:self-auto">
-                         <div className="w-7 h-7 rounded-full border border-white/10 flex items-center justify-center">
-                            <div className={cn("w-3 h-3 rounded-full shadow-[0_0_10px_rgba(0,0,0,0.5)]", item.color)} />
+                     <div className="divide-y divide-white/5">
+                     {((user && Array.isArray(user.achievements) && user.achievements.length > 0)
+                       ? user.achievements.map((ach) => {
+                           const styles = getBadgeStyles(ach.image);
+                           return {
+                             title: ach.title,
+                             desc: ach.description,
+                             date: ach.date || formatTimelineDate(ach.createdAt),
+                             badge: (ach.image || 'ACHIEVEMENT').toUpperCase(),
+                             color: styles.color,
+                             badgeColor: styles.badgeColor
+                           };
+                         })
+                       : [
+                           { title: 'Founded Social Bureau', desc: "Kerala's first API Marketing agency", date: 'JAN 2019', badge: 'MILESTONE', color: 'bg-red-600', badgeColor: 'bg-red-950/30 text-red-700 border-red-900/30' },
+                           { title: 'Coined API Marketing', desc: "Attract - Pull - Influence framework launch", date: 'MAR 2020', badge: 'INNOVATION', color: 'bg-purple-600', badgeColor: 'bg-purple-950/30 text-purple-700 border-purple-900/30' },
+                           { title: 'First News Channel Client', desc: "NwsTamil24x7 digital growth strategy", date: 'AUG 2021', badge: 'CLIENT WIN', color: 'bg-green-600', badgeColor: 'bg-green-950/30 text-green-700 border-green-900/30' },
+                           { title: 'ClickUp India Partner', desc: "Official ClickUp reselling partnership", date: 'FEB 2022', badge: 'PARTNERSHIP', color: 'bg-yellow-400', badgeColor: 'bg-yellow-950/30 text-yellow-700 border-yellow-900/30' },
+                           { title: '13-Organic Sales - Suntips', desc: "Zero ad spend campaign milestone", date: 'OCT 2024', badge: 'ACHIEVEMENT', color: 'bg-cyan-500', badgeColor: 'bg-cyan-950/30 text-cyan-700 border-cyan-900/30' },
+                           { title: 'Kerala Election 2026 Dashboard', desc: "Broadcast - quality live results platform", date: 'JAN 2026', badge: 'LAUNCH', color: 'bg-pink-600', badgeColor: 'bg-pink-950/30 text-pink-700 border-pink-900/30' },
+                         ]
+                     ).map((item, i) => (
+                       <motion.div 
+                         key={i} 
+                         initial={{ opacity: 0, x: -10 }}
+                         whileInView={{ opacity: 1, x: 0 }}
+                         transition={{ delay: i * 0.1 }}
+                         className="relative p-4 md:p-8 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 group hover:bg-white/[0.02] transition-colors text-center sm:text-left"
+                       >
+                         {/* Circle Indicator */}
+                         <div className="relative flex items-center justify-center shrink-0 self-center sm:self-auto">
+                           <div className="w-7 h-7 rounded-full border border-white/10 flex items-center justify-center">
+                              <div className={cn("w-3 h-3 rounded-full shadow-[0_0_10px_rgba(0,0,0,0.5)]", item.color)} />
+                           </div>
                          </div>
-                       </div>
- 
-                       {/* Content */}
-                       <div className="flex-1">
-                          <h4 className="text-sm font-bold text-white mb-0.5 tracking-tight group-hover:text-white transition-colors">{item.title}</h4>
-                          <p className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400 transition-colors uppercase tracking-tight">{item.desc}</p>
-                          <span className="text-[9px] text-gray-600 font-bold tracking-[0.1em] mt-1.5 block uppercase">{item.date}</span>
-                       </div>
- 
-                       {/* Badge */}
-                       <div className={cn("px-5 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-widest sm:min-w-[124px] text-center self-start sm:self-auto mx-auto sm:mx-0", item.badgeColor)}>
-                         {item.badge}
-                       </div>
-                      </motion.div>
-                    ))}
-                </div>
-             </GlassCard>
-          </div>
+    
+                         {/* Content */}
+                         <div className="flex-1">
+                            <h4 className="text-sm font-bold text-white mb-0.5 tracking-tight group-hover:text-white transition-colors">{item.title}</h4>
+                            <p className="text-[10px] text-gray-500 font-medium group-hover:text-gray-400 transition-colors uppercase tracking-tight">{item.desc}</p>
+                            <span className="text-[9px] text-gray-600 font-bold tracking-[0.1em] mt-1.5 block uppercase">{item.date}</span>
+                         </div>
+    
+                         {/* Badge */}
+                         <div className={cn("px-5 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-widest sm:min-w-[124px] text-center self-start sm:self-auto mx-auto sm:mx-0", item.badgeColor)}>
+                           {item.badge}
+                         </div>
+                        </motion.div>
+                      ))}
+                  </div>
+               </GlassCard>
+            </div>
+          )}
         </motion.div>
 
         {/* RIGHT COLUMN: Sidebar info */}
@@ -1806,15 +1824,33 @@ const EmployeePage = () => {
                <div className="w-[3px] h-4 bg-brand-pink rounded-full" />
                <h2 className="text-[10px] font-bold tracking-[0.25em] uppercase text-gray-500">BOOK CONSULTATION</h2>
              </div>
-             {['30 MIN -', '60 MIN -', 'FULL DAY -'].map((time, i) => (
-               <div key={i} className="border border-white/10 rounded-[28px] p-4 md:p-6 flex flex-col items-center text-center group cursor-pointer hover:border-[#8A0699]/40 hover:scale-[1.02] transition-all shadow-xl shadow-black/20" style={{ background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
-                 <h4 className="text-3xl font-black text-white tracking-tight mb-0.5">{time}</h4>
-                 <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest opacity-60 mb-6">Strategy Session</p>
-                 <button className="w-full max-w-[200px] h-10 bg-gradient-to-r from-[#8A0699] to-[#2380DC] text-[9px] font-black text-white rounded-full flex items-center justify-center gap-2 transition-all uppercase tracking-widest hover:brightness-110 active:scale-95 shadow-lg shadow-brand-purple/20">
-                   Book Now <ChevronRight className="w-3.5 h-3.5" />
-                 </button>
-               </div>
-             ))}
+             {[
+               { time: '30 MIN', price: member.consultations?.price30Min },
+               { time: '60 MIN', price: member.consultations?.price60Min },
+               { time: 'FULL DAY', price: member.consultations?.priceFullDay }
+             ].map((session, i) => {
+               // Ensure accurate display of the price or keep hyphen clean
+               const hasPrice = session.price && session.price.trim() !== "";
+               const formattedPrice = hasPrice ? (session.price.startsWith("₹") ? session.price : `₹${session.price}`) : '';
+               const titleText = hasPrice ? `${session.time} - ${formattedPrice}` : `${session.time} -`;
+
+               return (
+                 <div 
+                   key={i} 
+                   onClick={() => {
+                     setShowBookSessionModal(true);
+                   }}
+                   className="border border-white/10 rounded-[28px] p-4 md:p-6 flex flex-col items-center text-center group cursor-pointer hover:border-[#8A0699]/40 hover:scale-[1.02] transition-all shadow-xl shadow-black/20" 
+                   style={{ background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
+                 >
+                   <h4 className="text-3xl font-black text-white tracking-tight mb-0.5">{titleText}</h4>
+                   <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest opacity-60 mb-6">Strategy Session</p>
+                   <button className="w-full max-w-[200px] h-10 bg-gradient-to-r from-[#8A0699] to-[#2380DC] text-[9px] font-black text-white rounded-full flex items-center justify-center gap-2 transition-all uppercase tracking-widest hover:brightness-110 active:scale-95 shadow-lg shadow-brand-purple/20">
+                     Book Now <ChevronRight className="w-3.5 h-3.5" />
+                   </button>
+                 </div>
+               );
+             })}
           </div>
 
           <GlassCard variant="purple">
@@ -1892,7 +1928,7 @@ const EmployeePage = () => {
       </motion.main>
 
       {/* --- WORK SHOWCASE SECTION --- */}
-       {((user && Array.isArray(user.workShowcase) && user.workShowcase.length > 0) || true) && (
+        {((user && Array.isArray(user.workShowcase) && user.workShowcase.length > 0) || showStaticFallback) && (
          <motion.section 
            initial={{ opacity: 0, y: 50 }}
            whileInView={{ opacity: 1, y: 0 }}
@@ -2004,219 +2040,232 @@ const EmployeePage = () => {
                );
              })}
            </div>
-         </motion.section>
-       )}
-
-      {/* --- EXTRA BOTTOM SECTIONS WITH STAGGERED REVEALS --- */}
-      <motion.section 
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={{
-          hidden: {},
-          show: {
-            transition: {
-              staggerChildren: 0.15
-            }
-          }
-        }}
-        className="max-w-[1440px] mx-auto px-4 md:px-8 mt-8 md:mt-12 pb-12 md:pb-24 grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 relative z-10"
-      >
-        
-        <motion.div 
+          </motion.section>
+        )}
+            {/* --- EXTRA BOTTOM SECTIONS WITH STAGGERED REVEALS --- */}
+      {hasBottomSection && (
+        <motion.section 
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
           variants={{
-            hidden: { opacity: 0, y: 50, scale: 0.98 },
-            show: { 
-              opacity: 1, 
-              y: 0, 
-              scale: 1,
-              transition: { type: "spring", stiffness: 45, damping: 12 }
+            hidden: {},
+            show: {
+              transition: {
+                staggerChildren: 0.15
+              }
             }
           }}
-          className="lg:col-span-8 space-y-8"
+          className="max-w-[1440px] mx-auto px-4 md:px-8 mt-8 md:mt-12 pb-12 md:pb-24 grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 relative z-10"
         >
-           <div className="flex justify-between items-center mb-6">
-             <SectionTitle title="Innovation Feed" />
-             <button className="flex items-center gap-2 btn-typo text-gray-500 hover:text-white transition-all uppercase bg-white/5 px-4 py-2 rounded-full border border-white/5">
-               <Plus className="w-3.5 h-3.5" /> POST
-             </button>
-           </div>
-           <div className="space-y-6">
-              {user && Array.isArray(user.innovations) && user.innovations.length > 0 ? (
-                user.innovations.map((inn, idx) => (
-                  <InnovationCard 
-                    key={idx}
-                    type={inn.type}
-                    date={inn.date}
-                    title={inn.title}
-                    content={inn.content}
-                    url={inn.url}
-                    likes={inn.likes || 0}
-                    comments={inn.comments || 0}
-                  />
-                ))
-              ) : (
-                <>
-                  <InnovationCard 
-                    type="INNOVATION"
-                    date="May 7, 2026"
-                    title="API Marketing v2: E - Commerce Framework"
-                    content="Expanding Atract-Pull-Influence to D2C brands - mapping customer journeys across 7 digital touchpoints."
-                    likes={34}
-                    comments={12}
-                  />
-                  <InnovationCard 
-                    type="CASE STUDY"
-                    date="May 7, 2026"
-                    title="Kerala Election 2026 Dashboard Architecture"
-                    content="Behind the scenes of building a high-availability broadcast dashboard using React and real-time WebSockets."
-                    likes={56}
-                    comments={28}
-                  />
-                  <InnovationCard 
-                    type="INSIGHT"
-                    date="May 7, 2026"
-                    title="The Future of GEO (Generative Engine Optimization)"
-                    content="How to prepare your brand for AI-driven search engines like Perplexity and Gemini."
-                    likes={89}
-                    comments={45}
-                  />
-                </>
-              )}
-            </div>
-           <button className="w-full glass-card py-6 btn-typo uppercase text-gray-500 hover:text-white hover:bg-white/5 transition-all border-white/5">
-             + SHARE INNOVATION
-           </button>
-        </motion.div>
+          
+          {hasInnovations && (
+            <motion.div 
+              variants={{
+                hidden: { opacity: 0, y: 50, scale: 0.98 },
+                show: { 
+                  opacity: 1, 
+                  y: 0, 
+                  scale: 1,
+                  transition: { type: "spring", stiffness: 45, damping: 12 }
+                }
+              }}
+              className={cn("space-y-8", hasRightColumn ? "lg:col-span-8" : "lg:col-span-12")}
+            >
+               <div className="flex justify-between items-center mb-6">
+                 <SectionTitle title="Innovation Feed" />
+                 <button className="flex items-center gap-2 btn-typo text-gray-500 hover:text-white transition-all uppercase bg-white/5 px-4 py-2 rounded-full border border-white/5">
+                   <Plus className="w-3.5 h-3.5" /> POST
+                 </button>
+               </div>
+               <div className="space-y-6">
+                  {user && Array.isArray(user.innovations) && user.innovations.length > 0 ? (
+                    user.innovations.map((inn, idx) => (
+                      <InnovationCard 
+                        key={idx}
+                        type={inn.type}
+                        date={inn.date}
+                        title={inn.title}
+                        content={inn.content}
+                        url={inn.url}
+                        likes={inn.likes || 0}
+                        comments={inn.comments || 0}
+                      />
+                    ))
+                  ) : (
+                    <>
+                      <InnovationCard 
+                        type="INNOVATION"
+                        date="May 7, 2026"
+                        title="API Marketing v2: E - Commerce Framework"
+                        content="Expanding Atract-Pull-Influence to D2C brands - mapping customer journeys across 7 digital touchpoints."
+                        likes={34}
+                        comments={12}
+                      />
+                      <InnovationCard 
+                        type="CASE STUDY"
+                        date="May 7, 2026"
+                        title="Kerala Election 2026 Dashboard Architecture"
+                        content="Behind the scenes of building a high-availability broadcast dashboard using React and real-time WebSockets."
+                        likes={56}
+                        comments={28}
+                      />
+                      <InnovationCard 
+                        type="INSIGHT"
+                        date="May 7, 2026"
+                        title="The Future of GEO (Generative Engine Optimization)"
+                        content="How to prepare your brand for AI-driven search engines like Perplexity and Gemini."
+                        likes={89}
+                        comments={45}
+                      />
+                    </>
+                  )}
+               </div>
+               <button className="w-full glass-card py-6 btn-typo uppercase text-gray-500 hover:text-white hover:bg-white/5 transition-all border-white/5">
+                 + SHARE INNOVATION
+               </button>
+            </motion.div>
+          )}
 
-        <motion.div 
-          variants={{
-            hidden: { opacity: 0, y: 50, scale: 0.98 },
-            show: { 
-              opacity: 1, 
-              y: 0, 
-              scale: 1,
-              transition: { type: "spring", stiffness: 45, damping: 12 }
-            }
-          }}
-          className="lg:col-span-4 space-y-8"
-        >
-           <SectionTitle title="Bureau - Voices Podcasts" />
-           <div className="space-y-6">
-              {((user && Array.isArray(user.podcasts) && user.podcasts.length > 0)
-                ? user.podcasts.map((pod, idx) => (
-                    <a 
-                      key={idx} 
-                      href={pod.url || '#'} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="glass-card-purple flex items-center gap-5 group cursor-pointer p-5 hover:scale-[1.02] transition-all border-white/10 block"
-                    >
-                      <div className={cn("w-20 h-20 rounded-2xl flex items-center justify-center transition-all text-white shadow-2xl relative overflow-hidden bg-brand-purple", 
-                        idx % 3 === 0 ? 'bg-[#8A0699]' : 
-                        idx % 3 === 1 ? 'bg-[#22C55E]' : 
-                        'bg-[#F43F5E]'
-                      )}>
-                        <Play className="w-8 h-8 fill-current relative z-10 group-hover:scale-125 transition-transform" />
-                        <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-                      </div>
-                      <div>
-                        <div className="text-[10px] font-semibold text-brand-purple mb-1 uppercase tracking-widest">
-                          EP {String(pod.episodeNo || (idx + 1)).padStart(2, '0')}
-                        </div>
-                        <h4 className="text-sm font-semibold text-white mb-2 leading-tight group-hover:text-brand-purple transition-colors">
-                          {pod.title || 'How API Marketing Rewrites the Rules'}
-                        </h4>
-                        <div className="flex items-center gap-4 text-[10px] text-gray-500 font-medium uppercase tracking-widest opacity-60">
-                          <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {pod.duration || '42 min'}</span>
-                          <span>{pod.host || 'Sham SK'}</span>
-                        </div>
-                      </div>
-                    </a>
-                  ))
-                : [1, 2, 3].map(i => (
-                    <div key={i} className="glass-card-purple flex items-center gap-5 group cursor-pointer p-5 hover:scale-[1.02] transition-all border-white/10">
-                      <div className={cn("w-20 h-20 rounded-2xl flex items-center justify-center transition-all text-white shadow-2xl relative overflow-hidden", 
-                        i === 1 ? 'bg-[#8A0699]' : 
-                        i === 2 ? 'bg-[#22C55E]' : 
-                        'bg-[#F43F5E]'
-                      )}>
-                        <Play className="w-8 h-8 fill-current relative z-10 group-hover:scale-125 transition-transform" />
-                        <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-                      </div>
-                      <div>
-                        <div className="text-[10px] font-semibold text-brand-purple mb-1 uppercase tracking-widest">EP 0{i}</div>
-                        <h4 className="text-sm font-semibold text-white mb-2 leading-tight group-hover:text-brand-purple transition-colors">How API Marketing Rewrites the Rules</h4>
-                        <div className="flex items-center gap-4 text-[10px] text-gray-500 font-medium uppercase tracking-widest opacity-60">
-                          <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> 42 min</span>
-                          <span>Sham SK</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-              )}
-           </div>
+          {hasRightColumn && (
+            <motion.div 
+              variants={{
+                hidden: { opacity: 0, y: 50, scale: 0.98 },
+                show: { 
+                  opacity: 1, 
+                  y: 0, 
+                  scale: 1,
+                  transition: { type: "spring", stiffness: 45, damping: 12 }
+                }
+              }}
+              className={cn("space-y-8", hasInnovations ? "lg:col-span-4" : "lg:col-span-12")}
+            >
+               {hasPodcasts && (
+                 <>
+                   <SectionTitle title="Bureau - Voices Podcasts" />
+                   <div className="space-y-6">
+                      {((user && Array.isArray(user.podcasts) && user.podcasts.length > 0)
+                        ? user.podcasts.map((pod, idx) => (
+                            <a 
+                              key={idx} 
+                              href={pod.url || '#'} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="glass-card-purple flex items-center gap-5 group cursor-pointer p-5 hover:scale-[1.02] transition-all border-white/10 block"
+                            >
+                              <div className={cn("w-20 h-20 rounded-2xl flex items-center justify-center transition-all text-white shadow-2xl relative overflow-hidden bg-brand-purple", 
+                                idx % 3 === 0 ? 'bg-[#8A0699]' : 
+                                idx % 3 === 1 ? 'bg-[#22C55E]' : 
+                                'bg-[#F43F5E]'
+                              )}>
+                                <Play className="w-8 h-8 fill-current relative z-10 group-hover:scale-125 transition-transform" />
+                                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+                              </div>
+                              <div>
+                                <div className="text-[10px] font-semibold text-brand-purple mb-1 uppercase tracking-widest">
+                                  EP {String(pod.episodeNo || (idx + 1)).padStart(2, '0')}
+                                </div>
+                                <h4 className="text-sm font-semibold text-white mb-2 leading-tight group-hover:text-brand-purple transition-colors">
+                                  {pod.title || 'How API Marketing Rewrites the Rules'}
+                                </h4>
+                                <div className="flex items-center gap-4 text-[10px] text-gray-500 font-medium uppercase tracking-widest opacity-60">
+                                  <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {pod.duration || '42 min'}</span>
+                                  <span>{pod.host || 'Sham SK'}</span>
+                                </div>
+                              </div>
+                            </a>
+                          ))
+                        : [1, 2, 3].map(i => (
+                            <div key={i} className="glass-card-purple flex items-center gap-5 group cursor-pointer p-5 hover:scale-[1.02] transition-all border-white/10">
+                              <div className={cn("w-20 h-20 rounded-2xl flex items-center justify-center transition-all text-white shadow-2xl relative overflow-hidden", 
+                                i === 1 ? 'bg-[#8A0699]' : 
+                                i === 2 ? 'bg-[#22C55E]' : 
+                                'bg-[#F43F5E]'
+                              )}>
+                                <Play className="w-8 h-8 fill-current relative z-10 group-hover:scale-125 transition-transform" />
+                                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+                              </div>
+                              <div>
+                                <div className="text-[10px] font-semibold text-brand-purple mb-1 uppercase tracking-widest">EP 0{i}</div>
+                                <h4 className="text-sm font-semibold text-white mb-2 leading-tight group-hover:text-brand-purple transition-colors">How API Marketing Rewrites the Rules</h4>
+                                <div className="flex items-center gap-4 text-[10px] text-gray-500 font-medium uppercase tracking-widest opacity-60">
+                                  <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> 42 min</span>
+                                  <span>Sham SK</span>
+                                </div>
+                              </div>
+                            </div>
+                          ))
+                      )}
+                   </div>
+                 </>
+               )}
 
-           <SectionTitle title="Event Portal" />
-           <div className="space-y-6">
-              {((user && Array.isArray(user.events) && user.events.length > 0)
-                ? user.events.map((ev, idx) => (
-                    <div key={idx} className="glass-card flex items-center gap-6 p-5 hover:bg-white/5 transition-all border-white/10 group">
-                      <div className={cn("w-16 h-16 rounded-2xl flex flex-col items-center justify-center shadow-lg transition-transform group-hover:-rotate-6", 
-                        ev.category === 'purple' ? 'bg-purple-500/10 text-purple-500 border border-purple-500/20' :
-                        ev.category === 'yellow' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' :
-                        ev.category === 'red' ? 'bg-red-500/10 text-red-500 border border-red-500/20' :
-                        'bg-green-500/10 text-green-500 border border-green-500/20'
-                      )}>
-                        <span className="text-2xl font-semibold leading-none mb-0.5">{ev.date || '14'}</span>
-                        <span className="text-[10px] font-semibold uppercase tracking-widest">{ev.month || 'MAY'}</span>
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="text-xs font-semibold text-white mb-1 group-hover:text-brand-purple transition-colors uppercase tracking-tight">{ev.title || 'API Marketing Master Class'}</h4>
-                        <p className="text-[10px] text-gray-500 font-medium uppercase tracking-widest opacity-60">{ev.details || 'Free webinar - Kerala owners'}</p>
-                      </div>
-                      <div className={cn("w-2.5 h-2.5 rounded-full shadow-lg", 
-                        ev.category === 'purple' ? 'bg-purple-500 shadow-purple-500/20' :
-                        ev.category === 'yellow' ? 'bg-yellow-500 shadow-yellow-500/20' :
-                        ev.category === 'red' ? 'bg-red-500 shadow-red-500/20' :
-                        'bg-green-500 shadow-green-500/20'
-                      )} />
-                    </div>
-                  ))
-                : [
-                    { d: '14', m: 'MAY', t: 'API Marketing Master Class', c: 'purple' },
-                    { d: '22', m: 'MAY', t: 'API Marketing Master Class', c: 'yellow' },
-                    { d: '05', m: 'JUN', t: 'API Marketing Master Class', c: 'red' },
-                    { d: '18', m: 'JUN', t: 'API Marketing Master Class', c: 'green' }
-                  ].map((ev, i) => (
-                    <div key={i} className="glass-card flex items-center gap-6 p-5 hover:bg-white/5 transition-all border-white/10 group">
-                      <div className={cn("w-16 h-16 rounded-2xl flex flex-col items-center justify-center shadow-lg transition-transform group-hover:-rotate-6", 
-                        ev.c === 'purple' ? 'bg-purple-500/10 text-purple-500 border border-purple-500/20' :
-                        ev.c === 'yellow' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' :
-                        ev.c === 'red' ? 'bg-red-500/10 text-red-500 border border-red-500/20' :
-                        'bg-green-500/10 text-green-500 border border-green-500/20'
-                      )}>
-                        <span className="text-2xl font-semibold leading-none mb-0.5">{ev.d}</span>
-                        <span className="text-[10px] font-semibold uppercase tracking-widest">{ev.m}</span>
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="text-xs font-semibold text-white mb-1 group-hover:text-brand-purple transition-colors uppercase tracking-tight">{ev.t}</h4>
-                        <p className="text-[10px] text-gray-500 font-medium uppercase tracking-widest opacity-60">Free webinar - Kerala owners</p>
-                      </div>
-                      <div className={cn("w-2.5 h-2.5 rounded-full shadow-lg", 
-                        ev.c === 'purple' ? 'bg-purple-500 shadow-purple-500/20' :
-                        ev.c === 'yellow' ? 'bg-yellow-500 shadow-yellow-500/20' :
-                        ev.c === 'red' ? 'bg-red-500 shadow-red-500/20' :
-                        'bg-green-500 shadow-green-500/20'
-                      )} />
-                    </div>
-                  ))
-              )}
-           </div>
-         </motion.div>
-      </motion.section>
+               {hasEvents && (
+                 <>
+                   <SectionTitle title="Event Portal" />
+                   <div className="space-y-6">
+                      {((user && Array.isArray(user.events) && user.events.length > 0)
+                        ? user.events.map((ev, idx) => (
+                            <div key={idx} className="glass-card flex items-center gap-6 p-5 hover:bg-white/5 transition-all border-white/10 group">
+                              <div className={cn("w-16 h-16 rounded-2xl flex flex-col items-center justify-center shadow-lg transition-transform group-hover:-rotate-6", 
+                                ev.category === 'purple' ? 'bg-purple-500/10 text-purple-500 border border-purple-500/20' :
+                                ev.category === 'yellow' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' :
+                                ev.category === 'red' ? 'bg-red-500/10 text-red-500 border border-red-500/20' :
+                                'bg-green-500/10 text-green-500 border border-green-500/20'
+                              )}>
+                                <span className="text-2xl font-semibold leading-none mb-0.5">{ev.date || '14'}</span>
+                                <span className="text-[10px] font-semibold uppercase tracking-widest">{ev.month || 'MAY'}</span>
+                              </div>
+                              <div className="flex-1">
+                                <h4 className="text-xs font-semibold text-white mb-1 group-hover:text-brand-purple transition-colors uppercase tracking-tight">{ev.title || 'API Marketing Master Class'}</h4>
+                                <p className="text-[10px] text-gray-500 font-medium uppercase tracking-widest opacity-60">{ev.details || 'Free webinar - Kerala owners'}</p>
+                              </div>
+                              <div className={cn("w-2.5 h-2.5 rounded-full shadow-lg", 
+                                ev.category === 'purple' ? 'bg-purple-500 shadow-purple-500/20' :
+                                ev.category === 'yellow' ? 'bg-yellow-500 shadow-yellow-500/20' :
+                                ev.category === 'red' ? 'bg-red-500 shadow-red-500/20' :
+                                'bg-green-500 shadow-green-500/20'
+                              )} />
+                            </div>
+                          ))
+                        : [
+                            { d: '14', m: 'MAY', t: 'API Marketing Master Class', c: 'purple' },
+                            { d: '22', m: 'MAY', t: 'API Marketing Master Class', c: 'yellow' },
+                            { d: '05', m: 'JUN', t: 'API Marketing Master Class', c: 'red' },
+                            { d: '18', m: 'JUN', t: 'API Marketing Master Class', c: 'green' }
+                          ].map((ev, i) => (
+                            <div key={i} className="glass-card flex items-center gap-6 p-5 hover:bg-white/5 transition-all border-white/10 group">
+                              <div className={cn("w-16 h-16 rounded-2xl flex flex-col items-center justify-center shadow-lg transition-transform group-hover:-rotate-6", 
+                                ev.c === 'purple' ? 'bg-purple-500/10 text-purple-500 border border-purple-500/20' :
+                                ev.c === 'yellow' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' :
+                                ev.c === 'red' ? 'bg-red-500/10 text-red-500 border border-red-500/20' :
+                                'bg-green-500/10 text-green-500 border border-green-500/20'
+                              )}>
+                                <span className="text-2xl font-semibold leading-none mb-0.5">{ev.d}</span>
+                                <span className="text-[10px] font-semibold uppercase tracking-widest">{ev.m}</span>
+                              </div>
+                              <div className="flex-1">
+                                <h4 className="text-xs font-semibold text-white mb-1 group-hover:text-brand-purple transition-colors uppercase tracking-tight">{ev.t}</h4>
+                                <p className="text-[10px] text-gray-500 font-medium uppercase tracking-widest opacity-60">Free webinar - Kerala owners</p>
+                              </div>
+                              <div className={cn("w-2.5 h-2.5 rounded-full shadow-lg", 
+                                ev.c === 'purple' ? 'bg-purple-500 shadow-purple-500/20' :
+                                ev.c === 'yellow' ? 'bg-yellow-500 shadow-yellow-500/20' :
+                                ev.c === 'red' ? 'bg-red-500 shadow-red-500/20' :
+                                'bg-green-500 shadow-green-500/20'
+                              )} />
+                            </div>
+                          ))
+                      )}
+                   </div>
+                 </>
+               )}
+            </motion.div>
+          )}
+        </motion.section>
+      )}
       
-      <div className="relative z-10">
+      <div className="relative z-10 bg-[#f5f5f7]">
         <Footer />
       </div>
 
@@ -2224,6 +2273,14 @@ const EmployeePage = () => {
         <ResumeModal 
           data={resumeData} 
           onClose={() => setShowResumeModal(false)} 
+        />
+      )}
+
+      {showBookSessionModal && (
+        <BookSessionModal
+          partnerName={member.name}
+          partnerEmail={user.email || member.email || member.user?.email || "team@socialbureau.in"}
+          onClose={() => setShowBookSessionModal(false)}
         />
       )}
     </div>

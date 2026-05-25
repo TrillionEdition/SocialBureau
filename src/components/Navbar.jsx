@@ -58,7 +58,7 @@ export default function Navbar() {
   const location = useLocation();
   const { isLoggedIn, isAdmin, isPartnership, isEmployee } = useAuth();
   
-  const isTeamPage = location.pathname === '/team';
+  const isTeamPage = location.pathname.startsWith('/team');
 
   const navItems = [
     { label: "Home", href: "/" },
@@ -348,7 +348,7 @@ export default function Navbar() {
            <div className="hidden md:flex items-center shrink-0 pl-3 relative">
             {isTeamPage ? (
               <button
-                onClick={() => handleNavClick("/careers")}
+                onClick={() => handleNavClick("/contact")}
                 className="bg-brand-pink text-white px-5 py-2 rounded-full text-[11px] font-black tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(255,51,88,0.3)] cursor-pointer"
               >
                 WORK WITH US

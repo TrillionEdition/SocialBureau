@@ -71,7 +71,6 @@ export const FullRoster = () => {
     <section className="relative pt-12 md:pt-20 pb-20 px-6 bg-[#0a0510] overflow-hidden">
       {/* Background Decor */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(59,130,246,0.1)_0%,transparent_50%)]" />
-      <div className="absolute left-1/2 top-0 h-full w-[1px] border-l border-dashed border-blue-500/30 -translate-x-1/2 z-0 hidden lg:block" />
       
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
@@ -182,7 +181,6 @@ export const FullRoster = () => {
                       </div>
                     </div>
                   </Link>
-                )}
 
                 {/* Social Links (outside the main link to be independently clickable) */}
                 <div className="p-8 pt-6 border-t border-white/5 flex gap-4 relative z-30">
