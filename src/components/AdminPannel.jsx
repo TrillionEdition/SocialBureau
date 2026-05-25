@@ -7,6 +7,7 @@ const AdminPanel = () => {
     const adminTools = [
         { title: "Journal", desc: "Write and publish new articles", link: "/blog/submit" },
         { title: "Events", desc: "Manage global company activations", link: "/events/manage" },
+        { title: "Manage Employees", desc: "Manage company roster and employee profiles", link: "/team/admin" },
         { title: "Directory", desc: "Permissions and staff management", link: "/user-management" },
         { title: "Careers", desc: "Post and curate job openings", link: "/jobs/create" },
         { title: "Milestones", desc: "Update company achievements", link: "/achievements-form" },

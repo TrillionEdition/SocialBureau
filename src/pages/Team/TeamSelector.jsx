@@ -185,44 +185,8 @@ export const TeamSelector = () => {
                     className={`w-full h-full object-cover transition-all duration-700 ${isSelected ? "scale-110" : "scale-100"}`}
                   />
                   
-                  {/* Content Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-5 z-20">
-                    <motion.div
-                      animate={isSelected ? { y: 0, opacity: 1 } : { y: 20, opacity: 0.8 }}
-                      transition={{ duration: 0.4 }}
-                    >
-                      <p className="text-[9px] md:text-[10px] font-black tracking-[0.2em] text-white/60 uppercase leading-none mb-2">
-                        {member.role}
-                      </p>
-                      <h3 className="text-sm md:text-lg font-black tracking-tighter text-white uppercase mb-3 font-roboto leading-tight">
-                        {member.name}
-                      </h3>
-                    </motion.div>
-
-                    {/* Tags - Hidden on mobile unless it's the very front card and selected */}
-                    <AnimatePresence>
-                      {isSelected && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          className="flex flex-wrap gap-1 md:gap-2 mt-2 pt-2 md:pt-4 border-t border-white/10"
-                        >
-                          {member.tags.slice(0, isMobile ? 2 : 3).map((tag, tIdx) => (
-                            <motion.span
-                              key={tag}
-                              initial={{ scale: 0, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
-                              transition={{ delay: 0.3 + (tIdx * 0.1) }}
-                              className="px-1.5 py-0.5 bg-white/10 rounded-full text-[7px] md:text-[8px] font-bold text-white/90 tracking-widest uppercase"
-                            >
-                              {tag}
-                            </motion.span>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
+                  {/* Card Glow Border */}
+                  <div className="absolute inset-0 border border-white/10 rounded-xl pointer-events-none z-20" />
                 </div>
               </motion.div>
             );

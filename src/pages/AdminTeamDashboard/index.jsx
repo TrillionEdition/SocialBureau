@@ -17,6 +17,7 @@ import {
   X,
   Trash2,
   UserCircle,
+  UserPlus,
   Image as ImageIcon,
   Camera,
   Upload,
@@ -26,7 +27,6 @@ import {
   Linkedin,
   Tag,
   Hash,
-  UserPlus,
   Briefcase,
   Cpu,
   Eye,
@@ -35,8 +35,14 @@ import {
   Plus,
   ArrowLeft,
   Award,
+  GraduationCap,
+  Heart,
+  Mic,
+  Calendar,
+  Sparkles,
 } from "lucide-react";
 import teamService from "../TeamDashboard/teamService";
+import clientService from "../../services/clientService";
 import { toast } from "react-toastify";
 
 const AdminTeamDashboard = () => {
@@ -46,6 +52,8 @@ const AdminTeamDashboard = () => {
   const [editingMember, setEditingMember] = useState(null);
   const [saving, setSaving] = useState(false);
   const [tagInput, setTagInput] = useState("");
+  const [hobbyInput, setHobbyInput] = useState("");
+  const [newMemberHobbyInput, setNewMemberHobbyInput] = useState("");
   const [showAddPassword, setShowAddPassword] = useState(false);
   const [showEditPassword, setShowEditPassword] = useState(false);
 
@@ -60,6 +68,10 @@ const AdminTeamDashboard = () => {
   });
 
   const [activeView, setActiveView] = useState("roster");
+  const [availableClients, setAvailableClients] = useState([]);
+  const [clientsLoading, setClientsLoading] = useState(false);
+  const [showClientDropdown, setShowClientDropdown] = useState(false);
+  const [showEditClientDropdown, setShowEditClientDropdown] = useState(false);
   const [newMember, setNewMember] = useState({
     name: "",
     email: "",
@@ -90,6 +102,14 @@ const AdminTeamDashboard = () => {
     idCard: "",
     tools: [],
     clients: [],
+    achievements: [],
+    hobbies: [],
+    education: [],
+    certifications: [],
+    podcasts: [],
+    events: [],
+    innovations: [],
+    workShowcase: [],
     slug: "",
   });
 
@@ -104,6 +124,7 @@ const AdminTeamDashboard = () => {
     tools: [],
     clients: [],
     achievements: [],
+    workShowcase: [],
   });
 
   useEffect(() => {
@@ -117,6 +138,7 @@ const AdminTeamDashboard = () => {
         tools: selectedEmployeePage.user?.tools || [],
         clients: selectedEmployeePage.user?.clients || [],
         achievements: selectedEmployeePage.user?.achievements || [],
+        workShowcase: selectedEmployeePage.user?.workShowcase || [],
       });
     }
   }, [selectedEmployeePage]);
@@ -315,10 +337,7 @@ const AdminTeamDashboard = () => {
             bgText: pageConfigForm.bgText,
             description: pageConfigForm.description,
             isPublic: pageConfigForm.isPublic,
-            clickupId: pageConfigForm.clickupId ? Number(pageConfigForm.clickupId) : null,
-            tools: pageConfigForm.tools,
-            clients: pageConfigForm.clients,
-            achievements: pageConfigForm.achievements
+            clickupId: pageConfigForm.clickupId ? Number(pageConfigForm.clickupId) : null
           })
         });
 
@@ -493,238 +512,7 @@ const AdminTeamDashboard = () => {
               </div>
             </section>
 
-            {/* 2. Technical Arsenal & Stack (Tools) */}
-            <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative">
-              <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-6">
-                <div className="flex items-center gap-3">
-                  <Cpu className="text-[#ff3358] w-6 h-6" />
-                  <h3 className="text-lg font-black tracking-tight uppercase">TECHNICAL ARSENAL</h3>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => handleAddField("tools", { toolName: "", url: "", icon: "", description: "" })}
-                  className="px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#ff3358] text-white text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                  Add Tool
-                </button>
-              </div>
 
-              {(pageConfigForm.tools || []).length === 0 ? (
-                <div className="text-center py-10 bg-black/20 rounded-2xl border border-white/5">
-                  <p className="text-xs text-white/30 uppercase tracking-widest font-black">No tech stack tools added yet.</p>
-                </div>
-              ) : (
-                <div className="space-y-6">
-                  {(pageConfigForm.tools || []).map((tool, idx) => (
-                    <div key={idx} className="bg-black/30 border border-white/5 rounded-2xl p-6 relative group/tool">
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveField("tools", idx)}
-                        className="absolute top-4 right-4 p-2 bg-white/5 rounded-lg hover:bg-red-500 hover:text-white text-white/40 transition-all opacity-0 group-hover/tool:opacity-100"
-                        title="Remove Tool"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="flex flex-col gap-2">
-                          <label className="text-[9px] text-white/30 uppercase font-bold tracking-wider">Tool Name</label>
-                          <input
-                            type="text"
-                            placeholder="e.g. Figma, React, ClickUp"
-                            value={tool.toolName || ""}
-                            onChange={(e) => handleUpdateFieldItem("tools", idx, "toolName", e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-[#ff3358] outline-none text-xs transition-all font-bold"
-                          />
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                          <label className="text-[9px] text-white/30 uppercase font-bold tracking-wider">Icon (Emoji or URL)</label>
-                          <input
-                            type="text"
-                            placeholder="e.g. 🎨, ⚡, React logo URL"
-                            value={tool.icon || ""}
-                            onChange={(e) => handleUpdateFieldItem("tools", idx, "icon", e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-[#ff3358] outline-none text-xs transition-all"
-                          />
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                          <label className="text-[9px] text-white/30 uppercase font-bold tracking-wider">Website URL</label>
-                          <input
-                            type="text"
-                            placeholder="e.g. https://figma.com"
-                            value={tool.url || ""}
-                            onChange={(e) => handleUpdateFieldItem("tools", idx, "url", e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-[#ff3358] outline-none text-xs transition-all font-mono"
-                          />
-                        </div>
-
-                        <div className="flex flex-col gap-2 md:col-span-3">
-                          <label className="text-[9px] text-white/30 uppercase font-bold tracking-wider">Brief Description</label>
-                          <input
-                            type="text"
-                            placeholder="e.g. User interface design and component system styling..."
-                            value={tool.description || ""}
-                            onChange={(e) => handleUpdateFieldItem("tools", idx, "description", e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-[#ff3358] outline-none text-xs transition-all font-medium"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </section>
-
-            {/* 3. Brands & Clients Served */}
-            <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative">
-              <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-6">
-                <div className="flex items-center gap-3">
-                  <Users className="text-[#ff3358] w-6 h-6" />
-                  <h3 className="text-lg font-black tracking-tight uppercase">BRANDS & CLIENTS SERVED</h3>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => handleAddField("clients", { name: "", logo: "", website: "" })}
-                  className="px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#ff3358] text-white text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                  Add Client
-                </button>
-              </div>
-
-              {(pageConfigForm.clients || []).length === 0 ? (
-                <div className="text-center py-10 bg-black/20 rounded-2xl border border-white/5">
-                  <p className="text-xs text-white/30 uppercase tracking-widest font-black">No client brands added yet.</p>
-                </div>
-              ) : (
-                <div className="space-y-6">
-                  {(pageConfigForm.clients || []).map((client, idx) => (
-                    <div key={idx} className="bg-black/30 border border-white/5 rounded-2xl p-6 relative group/client">
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveField("clients", idx)}
-                        className="absolute top-4 right-4 p-2 bg-white/5 rounded-lg hover:bg-red-500 hover:text-white text-white/40 transition-all opacity-0 group-hover/client:opacity-100"
-                        title="Remove Client"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="flex flex-col gap-2">
-                          <label className="text-[9px] text-white/30 uppercase font-bold tracking-wider">Client / Brand Name</label>
-                          <input
-                            type="text"
-                            placeholder="e.g. Acme Corp, Ajinorah"
-                            value={client.name || ""}
-                            onChange={(e) => handleUpdateFieldItem("clients", idx, "name", e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-[#ff3358] outline-none text-xs transition-all font-bold"
-                          />
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                          <label className="text-[9px] text-white/30 uppercase font-bold tracking-wider">Brand Logo URL</label>
-                          <input
-                            type="text"
-                            placeholder="e.g. https://domain.com/logo.png"
-                            value={client.logo || ""}
-                            onChange={(e) => handleUpdateFieldItem("clients", idx, "logo", e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-[#ff3358] outline-none text-xs transition-all font-mono"
-                          />
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                          <label className="text-[9px] text-white/30 uppercase font-bold tracking-wider">Website</label>
-                          <input
-                            type="text"
-                            placeholder="e.g. https://brand.com"
-                            value={client.website || ""}
-                            onChange={(e) => handleUpdateFieldItem("clients", idx, "website", e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-[#ff3358] outline-none text-xs transition-all font-mono"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </section>
-
-            {/* 4. Achievements & Milestones */}
-            <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative">
-              <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-6">
-                <div className="flex items-center gap-3">
-                  <Award className="text-[#ff3358] w-6 h-6" />
-                  <h3 className="text-lg font-black tracking-tight uppercase">ACHIEVEMENTS & AWARDS</h3>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => handleAddField("achievements", { title: "", description: "", image: "" })}
-                  className="px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#ff3358] text-white text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                  Add Achievement
-                </button>
-              </div>
-
-              {(pageConfigForm.achievements || []).length === 0 ? (
-                <div className="text-center py-10 bg-black/20 rounded-2xl border border-white/5">
-                  <p className="text-xs text-white/30 uppercase tracking-widest font-black">No achievements or award milestones added.</p>
-                </div>
-              ) : (
-                <div className="space-y-6">
-                  {(pageConfigForm.achievements || []).map((ach, idx) => (
-                    <div key={idx} className="bg-black/30 border border-white/5 rounded-2xl p-6 relative group/ach">
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveField("achievements", idx)}
-                        className="absolute top-4 right-4 p-2 bg-white/5 rounded-lg hover:bg-red-500 hover:text-white text-white/40 transition-all opacity-0 group-hover/ach:opacity-100"
-                        title="Remove Achievement"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="flex flex-col gap-2 md:col-span-2">
-                          <label className="text-[9px] text-white/30 uppercase font-bold tracking-wider">Achievement / Award Title</label>
-                          <input
-                            type="text"
-                            placeholder="e.g. Employee of the Month Q1 2026, Best UX Innovation Award"
-                            value={ach.title || ""}
-                            onChange={(e) => handleUpdateFieldItem("achievements", idx, "title", e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-[#ff3358] outline-none text-xs transition-all font-bold"
-                          />
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                          <label className="text-[9px] text-white/30 uppercase font-bold tracking-wider">Certificate / Badge Icon URL</label>
-                          <input
-                            type="text"
-                            placeholder="e.g. https://domain.com/badge.png"
-                            value={ach.image || ""}
-                            onChange={(e) => handleUpdateFieldItem("achievements", idx, "image", e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-[#ff3358] outline-none text-xs transition-all font-mono"
-                          />
-                        </div>
-
-                        <div className="flex flex-col gap-2 md:col-span-3">
-                          <label className="text-[9px] text-white/30 uppercase font-bold tracking-wider">Description</label>
-                          <textarea
-                            placeholder="Describe this milestone, the criteria, or impact..."
-                            rows={3}
-                            value={ach.description || ""}
-                            onChange={(e) => handleUpdateFieldItem("achievements", idx, "description", e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-[#ff3358] outline-none text-xs transition-all font-medium resize-none leading-relaxed"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </section>
           </div>
 
           {/* Right Column - Preview Box */}
@@ -823,7 +611,25 @@ const AdminTeamDashboard = () => {
 
   useEffect(() => {
     fetchMembers();
+    fetchAvailableClients();
   }, []);
+
+  const fetchAvailableClients = async () => {
+    try {
+      setClientsLoading(true);
+      const response = await clientService.getAllClients();
+      if (response.success && Array.isArray(response.data)) {
+        setAvailableClients(response.data);
+      } else if (Array.isArray(response)) {
+        setAvailableClients(response);
+      }
+    } catch (err) {
+      console.error('Error fetching clients:', err);
+      toast.error('Failed to load clients');
+    } finally {
+      setClientsLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (editingMember) {
@@ -883,6 +689,60 @@ const AdminTeamDashboard = () => {
       toast.error("Update failed");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const [sectionSaving, setSectionSaving] = useState("");
+
+  const handleSaveSection = async (sectionKey) => {
+    try {
+      setSectionSaving(sectionKey);
+      const token = localStorage.getItem("token");
+      const response = await teamService.updateMemberById(
+        editingMember._id,
+        editingMember,
+        token,
+      );
+      if (response.success) {
+        toast.success("Section saved successfully");
+        setMembers((prev) =>
+          prev.map((m) => (m._id === editingMember._id ? response.data : m)),
+        );
+        const member = response.data;
+        setEditingMember({
+          ...member,
+          email: member.user?.email || "",
+          emp_id: member.user?.emp_id || "",
+          phone: member.user?.phone || "",
+          clickupId: member.user?.clickupId || "",
+          rate: member.user?.rate || "",
+          doj: member.user?.doj ? member.user.doj.split('T')[0] : "",
+          isEmployee: member.user?.isEmployee || false,
+          coverImage: member.user?.coverImage || "",
+          idCard: member.user?.idCard || "",
+          tools: member.user?.tools || [],
+          clients: member.user?.clients || [],
+          achievements: member.user?.achievements || [],
+          hobbies: member.user?.hobbies || [],
+          education: member.user?.education || [],
+          certifications: member.user?.certifications || [],
+          podcasts: member.user?.podcasts || [],
+          events: member.user?.events || [],
+          innovations: member.user?.innovations || [],
+          workShowcase: member.user?.workShowcase || [],
+          tags: member.tags || [],
+          category: member.category || [],
+          socials: member.socials || {
+            linkedin: "",
+            instagram: "",
+            twitter: "",
+          },
+        });
+      }
+    } catch (err) {
+      toast.error("Failed to save section");
+    } finally {
+      setSectionSaving("");
     }
   };
 
@@ -1020,6 +880,13 @@ const AdminTeamDashboard = () => {
           idCard: "",
           tools: [],
           clients: [],
+          achievements: [],
+          hobbies: [],
+          education: [],
+          certifications: [],
+          podcasts: [],
+          events: [],
+          innovations: [],
         });
         fetchMembers();
         setActiveView("roster");
@@ -1072,7 +939,7 @@ const AdminTeamDashboard = () => {
   const handleAddClientField = () => {
     setNewMember((prev) => ({
       ...prev,
-      clients: [...(prev.clients || []), { name: "", companyName: "", email: "", website: "", logo: "", status: "active", notes: "" }]
+      clients: [...(prev.clients || []), { name: "", logo: "", website: "", status: "active" }]
     }));
   };
 
@@ -1088,6 +955,13 @@ const AdminTeamDashboard = () => {
     setNewMember((prev) => ({
       ...prev,
       clients: (prev.clients || []).filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleEditClientFieldAdd = () => {
+    setEditingMember((prev) => ({
+      ...prev,
+      clients: [...(prev.clients || []), { name: "", logo: "", website: "", status: "active" }]
     }));
   };
 
@@ -1113,13 +987,6 @@ const AdminTeamDashboard = () => {
     }));
   };
 
-  const handleEditClientFieldAdd = () => {
-    setEditingMember((prev) => ({
-      ...prev,
-      clients: [...(prev.clients || []), { name: "", companyName: "", email: "", website: "", logo: "", status: "active", notes: "" }]
-    }));
-  };
-
   const handleEditClientFieldChange = (index, field, value) => {
     setEditingMember((prev) => {
       const clients = [...(prev.clients || [])];
@@ -1133,6 +1000,340 @@ const AdminTeamDashboard = () => {
       ...prev,
       clients: (prev.clients || []).filter((_, i) => i !== index)
     }));
+  };
+
+  // --- NEW FIELD HELPERS (Achievements/Milestones) ---
+  const handleAddAchievementField = () => {
+    setNewMember((prev) => ({
+      ...prev,
+      achievements: [...(prev.achievements || []), { title: "", description: "", image: "MILESTONE", date: "" }]
+    }));
+  };
+
+  const handleAchievementFieldChange = (index, field, value) => {
+    setNewMember((prev) => {
+      const achievements = [...(prev.achievements || [])];
+      achievements[index] = { ...achievements[index], [field]: value };
+      return { ...prev, achievements };
+    });
+  };
+
+  const handleRemoveAchievementField = (index) => {
+    setNewMember((prev) => ({
+      ...prev,
+      achievements: (prev.achievements || []).filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleEditAchievementFieldAdd = () => {
+    setEditingMember((prev) => ({
+      ...prev,
+      achievements: [...(prev.achievements || []), { title: "", description: "", image: "MILESTONE", date: "" }]
+    }));
+  };
+
+  const handleEditAchievementFieldChange = (index, field, value) => {
+    setEditingMember((prev) => {
+      const achievements = [...(prev.achievements || [])];
+      achievements[index] = { ...achievements[index], [field]: value };
+      return { ...prev, achievements };
+    });
+  };
+
+  const handleEditAchievementFieldRemove = (index) => {
+    setEditingMember((prev) => ({
+      ...prev,
+      achievements: (prev.achievements || []).filter((_, i) => i !== index)
+    }));
+  };
+
+  // --- NEW FIELD HELPERS (Hobbies) ---
+  const handleHobbyAdd = (e) => {
+    if (e.key === "Enter" && hobbyInput.trim()) {
+      e.preventDefault();
+      const hobbies = editingMember.hobbies || [];
+      if (!hobbies.includes(hobbyInput.trim().toUpperCase())) {
+        setEditingMember((prev) => ({
+          ...prev,
+          hobbies: [...hobbies, hobbyInput.trim().toUpperCase()],
+        }));
+      }
+      setHobbyInput("");
+    }
+  };
+
+  const removeHobby = (hobbyToRemove) => {
+    setEditingMember((prev) => ({
+      ...prev,
+      hobbies: (prev.hobbies || []).filter((h) => h !== hobbyToRemove),
+    }));
+  };
+
+  const handleNewMemberHobbyAdd = (e) => {
+    if (e.key === "Enter" && newMemberHobbyInput.trim()) {
+      e.preventDefault();
+      const hobbies = newMember.hobbies || [];
+      if (!hobbies.includes(newMemberHobbyInput.trim().toUpperCase())) {
+        setNewMember((prev) => ({
+          ...prev,
+          hobbies: [...hobbies, newMemberHobbyInput.trim().toUpperCase()],
+        }));
+      }
+      setNewMemberHobbyInput("");
+    }
+  };
+
+  const removeNewMemberHobby = (hobbyToRemove) => {
+    setNewMember((prev) => ({
+      ...prev,
+      hobbies: (prev.hobbies || []).filter((h) => h !== hobbyToRemove),
+    }));
+  };
+
+  // --- NEW FIELD HELPERS (Education & Certifications) ---
+  const handleAddEducation = () => {
+    setEditingMember((prev) => ({
+      ...prev,
+      education: [...(prev.education || []), { degree: '', institution: '', year: '', grade: '' }]
+    }));
+  };
+  const handleEducationChange = (idx, field, value) => {
+    setEditingMember((prev) => {
+      const updated = [...(prev.education || [])];
+      updated[idx] = { ...updated[idx], [field]: value };
+      return { ...prev, education: updated };
+    });
+  };
+  const removeEducation = (idx) => {
+    setEditingMember((prev) => ({
+      ...prev,
+      education: (prev.education || []).filter((_, i) => i !== idx)
+    }));
+  };
+
+  const handleAddCertification = () => {
+    setEditingMember((prev) => ({
+      ...prev,
+      certifications: [...(prev.certifications || []), { name: '', issuedBy: '', year: '', credentialUrl: '' }]
+    }));
+  };
+  const handleCertificationChange = (idx, field, value) => {
+    setEditingMember((prev) => {
+      const updated = [...(prev.certifications || [])];
+      updated[idx] = { ...updated[idx], [field]: value };
+      return { ...prev, certifications: updated };
+    });
+  };
+  const removeCertification = (idx) => {
+    setEditingMember((prev) => ({
+      ...prev,
+      certifications: (prev.certifications || []).filter((_, i) => i !== idx)
+    }));
+  };
+
+  // --- NEW FIELD HELPERS (Voices Podcasts) ---
+  const handleAddPodcastField = () => {
+    setNewMember((prev) => ({
+      ...prev,
+      podcasts: [...(prev.podcasts || []), { episodeNo: (prev.podcasts?.length || 0) + 1, title: "", duration: "", url: "", host: "Sham SK" }]
+    }));
+  };
+
+  const handlePodcastFieldChange = (index, field, value) => {
+    setNewMember((prev) => {
+      const podcasts = [...(prev.podcasts || [])];
+      podcasts[index] = { ...podcasts[index], [field]: value };
+      return { ...prev, podcasts };
+    });
+  };
+
+  const handleRemovePodcastField = (index) => {
+    setNewMember((prev) => ({
+      ...prev,
+      podcasts: (prev.podcasts || []).filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleEditPodcastFieldAdd = () => {
+    setEditingMember((prev) => ({
+      ...prev,
+      podcasts: [...(prev.podcasts || []), { episodeNo: (prev.podcasts?.length || 0) + 1, title: "", duration: "", url: "", host: "Sham SK" }]
+    }));
+  };
+
+  const handleEditPodcastFieldChange = (index, field, value) => {
+    setEditingMember((prev) => {
+      const podcasts = [...(prev.podcasts || [])];
+      podcasts[index] = { ...podcasts[index], [field]: value };
+      return { ...prev, podcasts };
+    });
+  };
+
+  const handleEditPodcastFieldRemove = (index) => {
+    setEditingMember((prev) => ({
+      ...prev,
+      podcasts: (prev.podcasts || []).filter((_, i) => i !== index)
+    }));
+  };
+
+  // --- NEW FIELD HELPERS (Event Portal) ---
+  const handleAddEventField = () => {
+    setNewMember((prev) => ({
+      ...prev,
+      events: [...(prev.events || []), { date: "", month: "", title: "", details: "", category: "purple" }]
+    }));
+  };
+
+  const handleEventFieldChange = (index, field, value) => {
+    setNewMember((prev) => {
+      const events = [...(prev.events || [])];
+      events[index] = { ...events[index], [field]: value };
+      return { ...prev, events };
+    });
+  };
+
+  const handleRemoveEventField = (index) => {
+    setNewMember((prev) => ({
+      ...prev,
+      events: (prev.events || []).filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleEditEventFieldAdd = () => {
+    setEditingMember((prev) => ({
+      ...prev,
+      events: [...(prev.events || []), { date: "", month: "", title: "", details: "", category: "purple" }]
+    }));
+  };
+
+  const handleEditEventFieldChange = (index, field, value) => {
+    setEditingMember((prev) => {
+      const events = [...(prev.events || [])];
+      events[index] = { ...events[index], [field]: value };
+      return { ...prev, events };
+    });
+  };
+
+  const handleEditEventFieldRemove = (index) => {
+    setEditingMember((prev) => ({
+      ...prev,
+      events: (prev.events || []).filter((_, i) => i !== index)
+    }));
+  };
+
+  // --- NEW FIELD HELPERS (Innovation Feed) ---
+  const handleAddInnovationField = () => {
+    setNewMember((prev) => ({
+      ...prev,
+      innovations: [...(prev.innovations || []), { type: "INNOVATION", date: "", title: "", content: "", url: "", likes: 0, comments: 0 }]
+    }));
+  };
+
+  const handleInnovationFieldChange = (index, field, value) => {
+    setNewMember((prev) => {
+      const innovations = [...(prev.innovations || [])];
+      innovations[index] = { ...innovations[index], [field]: value };
+      return { ...prev, innovations };
+    });
+  };
+
+  const handleRemoveInnovationField = (index) => {
+    setNewMember((prev) => ({
+      ...prev,
+      innovations: (prev.innovations || []).filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleEditInnovationFieldAdd = () => {
+    setEditingMember((prev) => ({
+      ...prev,
+      innovations: [...(prev.innovations || []), { type: "INNOVATION", date: "", title: "", content: "", url: "", likes: 0, comments: 0 }]
+    }));
+  };
+
+  const handleEditInnovationFieldChange = (index, field, value) => {
+    setEditingMember((prev) => {
+      const innovations = [...(prev.innovations || [])];
+      innovations[index] = { ...innovations[index], [field]: value };
+      return { ...prev, innovations };
+    });
+  };
+
+  const handleEditInnovationFieldRemove = (index) => {
+    setEditingMember((prev) => ({
+      ...prev,
+      innovations: (prev.innovations || []).filter((_, i) => i !== index)
+    }));
+  };
+
+  // --- NEW FIELD HELPERS (Work Showcase) ---
+  const handleAddWorkShowcaseField = () => {
+    setNewMember((prev) => ({
+      ...prev,
+      workShowcase: [...(prev.workShowcase || []), { category: "", title: "", description: "", images: [], link: "" }]
+    }));
+  };
+
+  const handleWorkShowcaseFieldChange = (index, field, value) => {
+    setNewMember((prev) => {
+      const workShowcase = [...(prev.workShowcase || [])];
+      workShowcase[index] = { ...workShowcase[index], [field]: value };
+      return { ...prev, workShowcase };
+    });
+  };
+
+  const handleRemoveWorkShowcaseField = (index) => {
+    setNewMember((prev) => ({
+      ...prev,
+      workShowcase: (prev.workShowcase || []).filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleEditWorkShowcaseFieldAdd = () => {
+    setEditingMember((prev) => ({
+      ...prev,
+      workShowcase: [...(prev.workShowcase || []), { category: "", title: "", description: "", images: [], link: "" }]
+    }));
+  };
+
+  const handleEditWorkShowcaseFieldChange = (index, field, value) => {
+    setEditingMember((prev) => {
+      const workShowcase = [...(prev.workShowcase || [])];
+      workShowcase[index] = { ...workShowcase[index], [field]: value };
+      return { ...prev, workShowcase };
+    });
+  };
+
+  const handleEditWorkShowcaseFieldRemove = (index) => {
+    setEditingMember((prev) => ({
+      ...prev,
+      workShowcase: (prev.workShowcase || []).filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleWorkShowcaseImageUpload = async (e, index, isEdit = false) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    toast.info("Uploading showcase image to Cloudflare...");
+    try {
+      const token = localStorage.getItem("token");
+      const response = await teamService.uploadImage(file, token);
+      if (response && response.success) {
+        if (isEdit) {
+          const currentImages = editingMember.workShowcase[index].images || [];
+          handleEditWorkShowcaseFieldChange(index, "images", [...currentImages, response.url]);
+        } else {
+          const currentImages = newMember.workShowcase[index].images || [];
+          handleWorkShowcaseFieldChange(index, "images", [...currentImages, response.url]);
+        }
+        toast.success("Showcase image uploaded successfully!");
+      } else {
+        toast.error("Upload failed.");
+      }
+    } catch (error) {
+      toast.error("Upload failed: " + error.message);
+    }
   };
 
 
@@ -1170,6 +1371,29 @@ const AdminTeamDashboard = () => {
   const triggerUpload = (fieldName) => {
     setActiveUploadField(fieldName);
     fileInputRef.current?.click();
+  };
+
+  const handleClientLogoUpload = async (e, index, isEdit = false) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    toast.info("Uploading client logo to Cloudflare...");
+    try {
+      const token = localStorage.getItem("token");
+      const response = await teamService.uploadImage(file, token);
+      if (response && response.success) {
+        if (isEdit) {
+          handleEditClientFieldChange(index, "logo", response.url);
+        } else {
+          handleClientFieldChange(index, "logo", response.url);
+        }
+        toast.success("Client logo uploaded successfully!");
+      } else {
+        toast.error("Upload failed.");
+      }
+    } catch (error) {
+      toast.error("Upload failed: " + error.message);
+    }
   };
 
   const categories = [
@@ -1352,6 +1576,12 @@ const AdminTeamDashboard = () => {
                             idCard: member.user?.idCard || "",
                             tools: member.user?.tools || [],
                             clients: member.user?.clients || [],
+                            achievements: member.user?.achievements || [],
+                            hobbies: member.user?.hobbies || [],
+                            podcasts: member.user?.podcasts || [],
+                            events: member.user?.events || [],
+                            innovations: member.user?.innovations || [],
+                            workShowcase: member.user?.workShowcase || [],
                             tags: member.tags || [],
                             category: member.category || [],
                             socials: member.socials || {
@@ -1688,40 +1918,36 @@ const AdminTeamDashboard = () => {
                     </h2>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-4">
-                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                        Hero Portrait (PNG)
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    {/* Hero Portrait */}
+                    <div className="space-y-2">
+                      <label className="text-[9px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1 block">
+                        HERO
                       </label>
-                      <div className="relative group/img aspect-[4/5] rounded-3xl bg-white/5 border border-white/10 overflow-hidden flex flex-col items-center justify-center p-4">
+                      <div className="relative aspect-[4/5] rounded-2xl bg-white/5 border border-white/10 overflow-hidden group/img flex items-center justify-center">
                         {uploading.image ? (
-                          <Loader2 className="animate-spin text-brand-pink" size={40} />
+                          <Loader2 className="animate-spin text-brand-pink" size={20} />
                         ) : newMember.image ? (
                           <>
                             <img
                               src={newMember.image}
-                              className="w-full h-full object-contain"
+                              className="w-full h-full object-cover"
                               alt="Hero"
                             />
-                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center gap-2">
                               <button
                                 type="button"
                                 onClick={() => triggerUpload("image")}
-                                className="p-4 bg-brand-pink rounded-full hover:scale-110 transition-transform"
+                                className="p-2 bg-brand-pink rounded-full hover:scale-110 transition-transform"
                               >
-                                <Camera size={24} />
+                                <Camera size={16} />
                               </button>
                               <button
                                 type="button"
-                                onClick={() =>
-                                  setNewMember((prev) => ({
-                                    ...prev,
-                                    image: "",
-                                  }))
-                                }
-                                className="p-4 bg-white/10 rounded-full hover:bg-red-500 transition-colors"
+                                onClick={() => setNewMember((prev) => ({ ...prev, image: "" }))}
+                                className="p-2 bg-white/10 rounded-full hover:bg-red-500 transition-colors"
                               >
-                                <X size={24} />
+                                <X size={16} />
                               </button>
                             </div>
                           </>
@@ -1729,136 +1955,133 @@ const AdminTeamDashboard = () => {
                           <button
                             type="button"
                             onClick={() => triggerUpload("image")}
-                            className="flex flex-col items-center gap-4 group/btn"
+                            className="flex flex-col items-center gap-2 group/btn w-full h-full justify-center"
                           >
-                            <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center group-hover/btn:bg-brand-pink/20 transition-colors">
-                              <Upload
-                                className="text-white/40 group-hover/btn:text-brand-pink"
-                                size={32}
-                              />
-                            </div>
-                            <span className="text-[10px] font-black tracking-widest text-white/20">
-                              UPLOAD HERO
-                            </span>
+                            <Upload className="text-white/40 group-hover/btn:text-brand-pink" size={18} />
+                            <span className="text-[7px] font-black tracking-widest text-white/20 text-center">UPLOAD</span>
                           </button>
                         )}
                       </div>
                     </div>
 
-                    <div className="space-y-8">
-                      <div className="space-y-4">
-                        <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                          Card Background
-                        </label>
-                        <div className="relative h-40 rounded-3xl bg-white/5 border border-white/10 overflow-hidden group/card flex items-center justify-center">
-                          {uploading.cardImage ? (
-                            <Loader2 className="animate-spin text-brand-pink" size={24} />
-                          ) : newMember.cardImage ? (
-                            <>
-                              <img
-                                src={newMember.cardImage}
-                                className="w-full h-full object-cover"
-                                alt="Card"
-                              />
-                              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/card:opacity-100 transition-opacity flex items-center justify-center gap-4">
-                                <button
-                                  type="button"
-                                  onClick={() => triggerUpload("cardImage")}
-                                  className="p-3 bg-brand-pink rounded-full hover:scale-110 transition-transform"
-                                >
-                                  <Camera size={18} />
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    setNewMember((prev) => ({
-                                      ...prev,
-                                      cardImage: "",
-                                    }))
-                                  }
-                                  className="p-3 bg-white/10 rounded-full hover:bg-red-500 transition-colors"
-                                >
-                                  <X size={18} />
-                                </button>
-                              </div>
-                            </>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={() => triggerUpload("cardImage")}
-                              className="flex flex-col items-center gap-2 group/btn"
-                            >
-                              <Upload
-                                className="text-white/40 group-hover/btn:text-brand-pink"
-                                size={24}
-                              />
-                              <span className="text-[8px] font-black tracking-widest text-white/20">
-                                UPLOAD CARD BG
-                              </span>
-                            </button>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="space-y-4">
-                        <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                          Full Profile Image
-                        </label>
-                        <div className="relative h-40 rounded-3xl bg-white/5 border border-white/10 overflow-hidden group/card flex items-center justify-center">
-                          {uploading.image1 ? (
-                            <Loader2 className="animate-spin text-brand-pink" size={24} />
-                          ) : newMember.image1 ? (
-                            <>
-                              <img
-                                src={newMember.image1}
-                                className="w-full h-full object-cover"
-                                alt="Profile 1"
-                              />
-                              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/card:opacity-100 transition-opacity flex items-center justify-center gap-4">
-                                <button
-                                  type="button"
-                                  onClick={() => triggerUpload("image1")}
-                                  className="p-3 bg-brand-pink rounded-full hover:scale-110 transition-transform"
-                                >
-                                  <Camera size={18} />
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    setNewMember((prev) => ({
-                                      ...prev,
-                                      image1: "",
-                                    }))
-                                  }
-                                  className="p-3 bg-white/10 rounded-full hover:bg-red-500 transition-colors"
-                                >
-                                  <X size={18} />
-                                </button>
-                              </div>
-                            </>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={() => triggerUpload("image1")}
-                              className="flex flex-col items-center gap-2 group/btn"
-                            >
-                              <Upload
-                                className="text-white/40 group-hover/btn:text-brand-pink"
-                                size={24}
-                              />
-                              <span className="text-[8px] font-black tracking-widest text-white/20">
-                                UPLOAD DETAIL IMAGE
-                              </span>
-                            </button>
-                          )}
-                        </div>
+                    {/* Card Background */}
+                    <div className="space-y-2">
+                      <label className="text-[9px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1 block">
+                        CARD BG
+                      </label>
+                      <div className="relative aspect-square rounded-2xl bg-white/5 border border-white/10 overflow-hidden group/card flex items-center justify-center">
+                        {uploading.cardImage ? (
+                          <Loader2 className="animate-spin text-brand-pink" size={20} />
+                        ) : newMember.cardImage ? (
+                          <>
+                            <img src={newMember.cardImage} className="w-full h-full object-cover" alt="Card" />
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/card:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                              <button type="button" onClick={() => triggerUpload("cardImage")} className="p-2 bg-brand-pink rounded-full hover:scale-110 transition-transform">
+                                <Camera size={16} />
+                              </button>
+                              <button type="button" onClick={() => setNewMember((prev) => ({ ...prev, cardImage: "" }))} className="p-2 bg-white/10 rounded-full hover:bg-red-500 transition-colors">
+                                <X size={16} />
+                              </button>
+                            </div>
+                          </>
+                        ) : (
+                          <button type="button" onClick={() => triggerUpload("cardImage")} className="flex flex-col items-center gap-2 group/btn w-full h-full justify-center">
+                            <Upload className="text-white/40 group-hover/btn:text-brand-pink" size={18} />
+                            <span className="text-[7px] font-black tracking-widest text-white/20 text-center">UPLOAD</span>
+                          </button>
+                        )}
                       </div>
                     </div>
 
+                    {/* Profile Image */}
+                    <div className="space-y-2">
+                      <label className="text-[9px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1 block">
+                        PROFILE
+                      </label>
+                      <div className="relative aspect-square rounded-2xl bg-white/5 border border-white/10 overflow-hidden group/card flex items-center justify-center">
+                        {uploading.image1 ? (
+                          <Loader2 className="animate-spin text-brand-pink" size={20} />
+                        ) : newMember.image1 ? (
+                          <>
+                            <img src={newMember.image1} className="w-full h-full object-cover" alt="Profile" />
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/card:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                              <button type="button" onClick={() => triggerUpload("image1")} className="p-2 bg-brand-pink rounded-full hover:scale-110 transition-transform">
+                                <Camera size={16} />
+                              </button>
+                              <button type="button" onClick={() => setNewMember((prev) => ({ ...prev, image1: "" }))} className="p-2 bg-white/10 rounded-full hover:bg-red-500 transition-colors">
+                                <X size={16} />
+                              </button>
+                            </div>
+                          </>
+                        ) : (
+                          <button type="button" onClick={() => triggerUpload("image1")} className="flex flex-col items-center gap-2 group/btn w-full h-full justify-center">
+                            <Upload className="text-white/40 group-hover/btn:text-brand-pink" size={18} />
+                            <span className="text-[7px] font-black tracking-widest text-white/20 text-center">UPLOAD</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Cover Image */}
+                    <div className="space-y-2">
+                      <label className="text-[9px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1 block">
+                        COVER
+                      </label>
+                      <div className="relative aspect-square rounded-2xl bg-white/5 border border-white/10 overflow-hidden group/card flex items-center justify-center">
+                        {uploading.coverImage ? (
+                          <Loader2 className="animate-spin text-brand-pink" size={20} />
+                        ) : newMember.coverImage ? (
+                          <>
+                            <img src={newMember.coverImage} className="w-full h-full object-cover" alt="Cover" />
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/card:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                              <button type="button" onClick={() => triggerUpload("coverImage")} className="p-2 bg-brand-pink rounded-full hover:scale-110 transition-transform">
+                                <Camera size={16} />
+                              </button>
+                              <button type="button" onClick={() => setNewMember((prev) => ({ ...prev, coverImage: "" }))} className="p-2 bg-white/10 rounded-full hover:bg-red-500 transition-colors">
+                                <X size={16} />
+                              </button>
+                            </div>
+                          </>
+                        ) : (
+                          <button type="button" onClick={() => triggerUpload("coverImage")} className="flex flex-col items-center gap-2 group/btn w-full h-full justify-center">
+                            <Upload className="text-white/40 group-hover/btn:text-brand-pink" size={18} />
+                            <span className="text-[7px] font-black tracking-widest text-white/20 text-center">UPLOAD</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* ID Card / Certificate */}
+                    <div className="space-y-2">
+                      <label className="text-[9px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1 block">
+                        ID CARD
+                      </label>
+                      <div className="relative aspect-square rounded-2xl bg-white/5 border border-white/10 overflow-hidden group/card flex items-center justify-center">
+                        {uploading.idCard ? (
+                          <Loader2 className="animate-spin text-brand-pink" size={20} />
+                        ) : newMember.idCard ? (
+                          <>
+                            <img src={newMember.idCard} className="w-full h-full object-cover" alt="ID Card" />
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/card:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                              <button type="button" onClick={() => triggerUpload("idCard")} className="p-2 bg-brand-pink rounded-full hover:scale-110 transition-transform">
+                                <Camera size={16} />
+                              </button>
+                              <button type="button" onClick={() => setNewMember((prev) => ({ ...prev, idCard: "" }))} className="p-2 bg-white/10 rounded-full hover:bg-red-500 transition-colors">
+                                <X size={16} />
+                              </button>
+                            </div>
+                          </>
+                        ) : (
+                          <button type="button" onClick={() => triggerUpload("idCard")} className="flex flex-col items-center gap-2 group/btn w-full h-full justify-center">
+                            <Upload className="text-white/40 group-hover/btn:text-brand-pink" size={18} />
+                            <span className="text-[7px] font-black tracking-widest text-white/20 text-center">UPLOAD</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </section>
 
-                {/* Social Networks */}
                 <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl">
                   <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8">
                     <LinkIcon className="text-brand-pink" size={28} />
@@ -1909,6 +2132,78 @@ const AdminTeamDashboard = () => {
                         placeholder="Twitter Profile URL"
                       />
                     </div>
+                  </div>
+                </section>
+
+
+                {/* Tools Section */}
+                <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+                  <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8 justify-between">
+                    <div className="flex items-center gap-3">
+                      <Cpu className="text-brand-pink" size={28} />
+                      <h2 className="text-2xl font-black tracking-tight uppercase">
+                        Tools
+                      </h2>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddToolField}
+                      className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2 animate-pulse hover:animate-none"
+                    >
+                      + Add Tool
+                    </button>
+                  </div>
+
+                  <div className="space-y-6">
+                    {(!newMember.tools || newMember.tools.length === 0) ? (
+                      <p className="text-sm text-white/30 text-center py-6 font-medium italic">
+                        No tools added yet. Click "+ Add Tool" to define professional expertise.
+                      </p>
+                    ) : (
+                      <div className="grid grid-cols-1 gap-6">
+                        {(newMember.tools || []).map((tool, idx) => (
+                          <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative group/item">
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveToolField(idx)}
+                              className="absolute top-4 right-4 text-white/30 hover:text-[#ff3358] transition-colors p-1"
+                            >
+                              <X size={16} />
+                            </button>
+
+                            <div className="grid grid-cols-1 gap-6">
+                              <div className="space-y-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Tool Name *
+                                </label>
+                                <input
+                                  type="text"
+                                  required
+                                  value={tool.toolName}
+                                  onChange={(e) => handleToolFieldChange(idx, "toolName", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                  placeholder="e.g. Photoshop, VS Code, Figma"
+                                />
+                              </div>
+
+                              <div className="space-y-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Proficiency Level ({tool.level !== undefined ? tool.level : 85}%)
+                                </label>
+                                <input
+                                  type="range"
+                                  min="0"
+                                  max="100"
+                                  value={tool.level !== undefined ? tool.level : 85}
+                                  onChange={(e) => handleToolFieldChange(idx, "level", parseInt(e.target.value))}
+                                  className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-brand-pink animate-pulse hover:animate-none"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </section>
               </div>
@@ -2030,119 +2325,6 @@ const AdminTeamDashboard = () => {
                     ))}
                   </div>
                 </section>
-                {/* Tools Section */}
-                <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
-                  <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8 justify-between">
-                    <div className="flex items-center gap-3">
-                      <Cpu className="text-brand-pink" size={28} />
-                      <h2 className="text-2xl font-black tracking-tight uppercase">
-                        Tools
-                      </h2>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={handleAddToolField}
-                      className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2 animate-pulse hover:animate-none"
-                    >
-                      + Add Tool
-                    </button>
-                  </div>
-
-                  <div className="space-y-6">
-                    {(!newMember.tools || newMember.tools.length === 0) ? (
-                      <p className="text-sm text-white/30 text-center py-6 font-medium italic">
-                        No tools added yet. Click "+ Add Tool" to define professional expertise.
-                      </p>
-                    ) : (
-                      <div className="grid grid-cols-1 gap-6">
-                        {(newMember.tools || []).map((tool, idx) => (
-                          <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative group/item">
-                            <button
-                              type="button"
-                              onClick={() => handleRemoveToolField(idx)}
-                              className="absolute top-4 right-4 text-white/30 hover:text-[#ff3358] transition-colors p-1"
-                            >
-                              <X size={16} />
-                            </button>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                              <div className="space-y-2">
-                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                                  Tool Name *
-                                </label>
-                                <input
-                                  type="text"
-                                  required
-                                  value={tool.toolName}
-                                  onChange={(e) => handleToolFieldChange(idx, "toolName", e.target.value)}
-                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
-                                  placeholder="e.g. Photoshop, VS Code, Figma"
-                                />
-                              </div>
-
-                              <div className="space-y-2">
-                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                                  Tool URL
-                                </label>
-                                <input
-                                  type="text"
-                                  value={tool.url || ""}
-                                  onChange={(e) => handleToolFieldChange(idx, "url", e.target.value)}
-                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
-                                  placeholder="e.g. https://figma.com"
-                                />
-                              </div>
-
-                              <div className="space-y-2 md:col-span-2">
-                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                                  Tool Icon (Paste URL or Upload)
-                                </label>
-                                <div className="flex items-center gap-4">
-                                  <input
-                                    type="text"
-                                    value={tool.icon || ""}
-                                    onChange={(e) => handleToolFieldChange(idx, "icon", e.target.value)}
-                                    className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
-                                    placeholder="e.g. https://cdn.com/icon.png"
-                                  />
-                                  <button
-                                    type="button"
-                                    onClick={async () => {
-                                      const input = document.createElement("input");
-                                      input.type = "file";
-                                      input.accept = "image/*";
-                                      input.onchange = async (e) => {
-                                        const file = e.target.files[0];
-                                        if (file) {
-                                          toast.info("Uploading tool icon...");
-                                          try {
-                                            const token = localStorage.getItem("token");
-                                            const response = await teamService.uploadImage(file, token);
-                                            if (response.success) {
-                                              handleToolFieldChange(idx, "icon", response.url);
-                                              toast.success("Tool icon uploaded!");
-                                            }
-                                          } catch (error) {
-                                            toast.error("Tool icon upload failed.");
-                                          }
-                                        }
-                                      };
-                                      input.click();
-                                    }}
-                                    className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-5 py-3 text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap"
-                                  >
-                                    <Upload size={14} />
-                                    Choose File
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </section>
 
                 {/* Clients Handled Section */}
                 <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
@@ -2158,7 +2340,7 @@ const AdminTeamDashboard = () => {
                       onClick={handleAddClientField}
                       className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2 animate-pulse hover:animate-none"
                     >
-                      + Add Client
+                      <Plus size={14} /> + Add Client
                     </button>
                   </div>
 
@@ -2168,9 +2350,9 @@ const AdminTeamDashboard = () => {
                         No clients added yet. Click "+ Add Client" to link client portfolios.
                       </p>
                     ) : (
-                      <div className="grid grid-cols-1 gap-6">
+                      <div className="grid grid-cols-1 gap-4">
                         {(newMember.clients || []).map((client, idx) => (
-                          <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative group/item">
+                          <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-4 relative group/item">
                             <button
                               type="button"
                               onClick={() => handleRemoveClientField(idx)}
@@ -2179,57 +2361,116 @@ const AdminTeamDashboard = () => {
                               <X size={16} />
                             </button>
 
+                            <div className="space-y-2">
+                              <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                Client Name *
+                              </label>
+                              <input
+                                type="text"
+                                required
+                                value={client.name}
+                                onChange={(e) => handleClientFieldChange(idx, "name", e.target.value)}
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                placeholder="e.g. Nike, Google, Ajnora"
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </section>
+
+                {/* Career Timeline Section */}
+                <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+                  <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8 justify-between">
+                    <div className="flex items-center gap-3">
+                      <Award className="text-brand-pink" size={28} />
+                      <h2 className="text-2xl font-black tracking-tight uppercase">
+                        Career Timeline (Achievements)
+                      </h2>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddAchievementField}
+                      className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2 animate-pulse hover:animate-none"
+                    >
+                      + Add Milestone
+                    </button>
+                  </div>
+
+                  <div className="space-y-6">
+                    {(!newMember.achievements || newMember.achievements.length === 0) ? (
+                      <p className="text-sm text-white/30 text-center py-6 font-medium italic">
+                        No milestones added yet. Click "+ Add Milestone" to construct the career timeline.
+                      </p>
+                    ) : (
+                      <div className="grid grid-cols-1 gap-6">
+                        {(newMember.achievements || []).map((ach, idx) => (
+                          <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative group/item">
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveAchievementField(idx)}
+                              className="absolute top-4 right-4 text-white/30 hover:text-[#ff3358] transition-colors p-1"
+                            >
+                              <X size={16} />
+                            </button>
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                               <div className="space-y-2">
                                 <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                                  Client Name *
+                                  Milestone Title *
                                 </label>
                                 <input
                                   type="text"
                                   required
-                                  value={client.name}
-                                  onChange={(e) => handleClientFieldChange(idx, "name", e.target.value)}
+                                  value={ach.title}
+                                  onChange={(e) => handleAchievementFieldChange(idx, "title", e.target.value)}
                                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
-                                  placeholder="e.g. Nike, Google"
+                                  placeholder="e.g. Lead Developer, Raised Seed Round"
                                 />
                               </div>
 
                               <div className="space-y-2">
                                 <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                                  Company Name
+                                  Milestone Date/Year (Custom)
                                 </label>
                                 <input
                                   type="text"
-                                  value={client.companyName || ""}
-                                  onChange={(e) => handleClientFieldChange(idx, "companyName", e.target.value)}
+                                  value={ach.date || ""}
+                                  onChange={(e) => handleAchievementFieldChange(idx, "date", e.target.value)}
                                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
-                                  placeholder="e.g. Nike Inc."
+                                  placeholder="e.g. JAN 2019, 2024"
                                 />
                               </div>
 
                               <div className="space-y-2">
                                 <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                                  Client Email
+                                  Badge Category
                                 </label>
-                                <input
-                                  type="email"
-                                  value={client.email || ""}
-                                  onChange={(e) => handleClientFieldChange(idx, "email", e.target.value)}
-                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
-                                  placeholder="e.g. contact@client.com"
-                                />
+                                <select
+                                  value={ach.image || "MILESTONE"}
+                                  onChange={(e) => handleAchievementFieldChange(idx, "image", e.target.value)}
+                                  className="w-full bg-[#16161a] border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold appearance-none"
+                                >
+                                  <option value="MILESTONE">Milestone</option>
+                                  <option value="INNOVATION">Innovation</option>
+                                  <option value="CLIENT WIN">Client Win</option>
+                                  <option value="PARTNERSHIP">Partnership</option>
+                                  <option value="ACHIEVEMENT">Achievement</option>
+                                  <option value="LAUNCH">Launch</option>
+                                </select>
                               </div>
 
-                              <div className="space-y-2">
+                              <div className="space-y-2 md:col-span-2">
                                 <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                                  Client Website
+                                  Description
                                 </label>
-                                <input
-                                  type="text"
-                                  value={client.website || ""}
-                                  onChange={(e) => handleClientFieldChange(idx, "website", e.target.value)}
-                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
-                                  placeholder="e.g. https://client.com"
+                                <textarea
+                                  value={ach.description || ""}
+                                  onChange={(e) => handleAchievementFieldChange(idx, "description", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white h-20 resize-none"
+                                  placeholder="Provide short details about this milestone..."
                                 />
                               </div>
                             </div>
@@ -2239,6 +2480,526 @@ const AdminTeamDashboard = () => {
                     )}
                   </div>
                 </section>
+
+                {/* Hobbies & Interests Section */}
+                <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+                  <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8">
+                    <Heart className="text-brand-pink" size={28} />
+                    <h2 className="text-2xl font-black tracking-tight uppercase">
+                      Hobbies & Interests
+                    </h2>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                        Add Hobby (Press Enter)
+                      </label>
+                      <input
+                        type="text"
+                        value={newMemberHobbyInput}
+                        onChange={(e) => setNewMemberHobbyInput(e.target.value)}
+                        onKeyDown={handleNewMemberHobbyAdd}
+                        placeholder="e.g. GAMING, HIKING, TRAVELING"
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:border-brand-pink outline-none transition-all font-medium"
+                      />
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {(!newMember.hobbies || newMember.hobbies.length === 0) ? (
+                        <p className="text-xs text-white/30 italic">No hobbies added yet.</p>
+                      ) : (
+                        newMember.hobbies.map((hobby) => (
+                          <motion.span
+                            layout
+                            key={hobby}
+                            className="flex items-center gap-2 px-4 py-2 bg-brand-pink/10 border border-brand-pink/20 rounded-xl text-[10px] font-black text-brand-pink uppercase tracking-widest"
+                          >
+                            {hobby}
+                            <button
+                              type="button"
+                              onClick={() => removeNewMemberHobby(hobby)}
+                              className="hover:text-white transition-colors opacity-60 hover:opacity-100"
+                            >
+                              <X size={12} />
+                            </button>
+                          </motion.span>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                </section>
+
+                {/* Innovation Feed Section */}
+                <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+                  <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8 justify-between">
+                    <div className="flex items-center gap-3">
+                      <Sparkles className="text-brand-pink" size={28} />
+                      <h2 className="text-2xl font-black tracking-tight uppercase">
+                        Innovation Feed
+                      </h2>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddInnovationField}
+                      className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2 animate-pulse hover:animate-none"
+                    >
+                      + Add Entry
+                    </button>
+                  </div>
+
+                  <div className="space-y-6">
+                    {(!newMember.innovations || newMember.innovations.length === 0) ? (
+                      <p className="text-sm text-white/30 text-center py-6 font-medium italic">
+                        No innovation feed entries added yet. Click "+ Add Entry" to add innovations.
+                      </p>
+                    ) : (
+                      <div className="grid grid-cols-1 gap-6">
+                        {(newMember.innovations || []).map((inn, idx) => (
+                          <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative group/item">
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveInnovationField(idx)}
+                              className="absolute top-4 right-4 text-white/30 hover:text-[#ff3358] transition-colors p-1"
+                            >
+                              <X size={16} />
+                            </button>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              <div className="space-y-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Type
+                                </label>
+                                <select
+                                  value={inn.type || "INNOVATION"}
+                                  onChange={(e) => handleInnovationFieldChange(idx, "type", e.target.value)}
+                                  className="w-full bg-[#16161a] border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold appearance-none"
+                                >
+                                  <option value="INNOVATION">Innovation</option>
+                                  <option value="CASE STUDY">Case Study</option>
+                                  <option value="INSIGHT">Insight</option>
+                                </select>
+                              </div>
+
+                              <div className="space-y-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Date
+                                </label>
+                                <input
+                                  type="text"
+                                  value={inn.date || ""}
+                                  onChange={(e) => handleInnovationFieldChange(idx, "date", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                  placeholder="e.g. May 2026"
+                                />
+                              </div>
+
+                              <div className="space-y-2 md:col-span-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Title *
+                                </label>
+                                <input
+                                  type="text"
+                                  required
+                                  value={inn.title || ""}
+                                  onChange={(e) => handleInnovationFieldChange(idx, "title", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                  placeholder="e.g. Next-Gen AI Agent Framework"
+                                />
+                              </div>
+
+                              <div className="space-y-2 md:col-span-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Content / Description *
+                                </label>
+                                <textarea
+                                  required
+                                  value={inn.content || ""}
+                                  onChange={(e) => handleInnovationFieldChange(idx, "content", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white h-24 resize-none"
+                                  placeholder="Provide description of this innovation entry..."
+                                />
+                              </div>
+
+                              <div className="space-y-2 md:col-span-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Attachment Link / URL
+                                </label>
+                                <input
+                                  type="text"
+                                  value={inn.url || ""}
+                                  onChange={(e) => handleInnovationFieldChange(idx, "url", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
+                                  placeholder="e.g. https://github.com/... or https://medium.com/..."
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </section>
+
+                {/* Work Showcase Section */}
+                <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+                  <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8 justify-between">
+                    <div className="flex items-center gap-3">
+                      <Layout className="text-brand-pink" size={28} />
+                      <h2 className="text-2xl font-black tracking-tight uppercase">
+                        Work Showcase
+                      </h2>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddWorkShowcaseField}
+                      className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2 animate-pulse hover:animate-none"
+                    >
+                      + Add Showcase
+                    </button>
+                  </div>
+
+                  <div className="space-y-6">
+                    {(!newMember.workShowcase || newMember.workShowcase.length === 0) ? (
+                      <p className="text-sm text-white/30 text-center py-6 font-medium italic">
+                        No work showcase entries added yet. Click "+ Add Showcase" to add items.
+                      </p>
+                    ) : (
+                      <div className="grid grid-cols-1 gap-6">
+                        {(newMember.workShowcase || []).map((work, idx) => (
+                          <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative group/item">
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveWorkShowcaseField(idx)}
+                              className="absolute top-4 right-4 text-white/30 hover:text-[#ff3358] transition-colors p-1"
+                            >
+                              <X size={16} />
+                            </button>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              <div className="space-y-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Category (e.g. CONTENT CAMPAIGN)
+                                </label>
+                                <input
+                                  type="text"
+                                  required
+                                  value={work.category || ""}
+                                  onChange={(e) => handleWorkShowcaseFieldChange(idx, "category", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                  placeholder="e.g. CONTENT CAMPAIGN"
+                                />
+                              </div>
+
+                              <div className="space-y-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Title *
+                                </label>
+                                <input
+                                  type="text"
+                                  required
+                                  value={work.title || ""}
+                                  onChange={(e) => handleWorkShowcaseFieldChange(idx, "title", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                  placeholder="e.g. E-Commerce Brand Growth"
+                                />
+                              </div>
+
+                              <div className="space-y-2 md:col-span-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Website Link (Optional - for Developers)
+                                </label>
+                                <input
+                                  type="text"
+                                  value={work.link || ""}
+                                  onChange={(e) => handleWorkShowcaseFieldChange(idx, "link", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
+                                  placeholder="e.g. https://myproject.com"
+                                />
+                              </div>
+
+                              <div className="space-y-2 md:col-span-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Content / Description *
+                                </label>
+                                <textarea
+                                  required
+                                  value={work.description || ""}
+                                  onChange={(e) => handleWorkShowcaseFieldChange(idx, "description", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white h-24 resize-none"
+                                  placeholder="Provide description of this showcase entry..."
+                                />
+                              </div>
+
+                              {/* Upload Showcase Images */}
+                              <div className="space-y-2 md:col-span-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1 block">
+                                  Showcase Images (Max 3, Square placeholders)
+                                </label>
+                                <div className="grid grid-cols-3 gap-4">
+                                  {(work.images || []).map((imgUrl, imgIdx) => (
+                                    <div key={imgIdx} className="relative aspect-square bg-white/5 border border-white/10 rounded-2xl overflow-hidden group">
+                                      <img src={imgUrl} className="w-full h-full object-cover" alt="" />
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          const newImages = work.images.filter((_, i) => i !== imgIdx);
+                                          handleWorkShowcaseFieldChange(idx, "images", newImages);
+                                        }}
+                                        className="absolute top-2 right-2 p-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                                      >
+                                        <X size={12} />
+                                      </button>
+                                    </div>
+                                  ))}
+                                  {(!work.images || work.images.length < 3) && (
+                                    <div className="aspect-square bg-white/5 border border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center relative hover:bg-white/[0.08] transition-all">
+                                      <label className="flex flex-col items-center gap-2 text-white/30 hover:text-white/60 transition-colors cursor-pointer w-full h-full justify-center">
+                                        <Upload size={20} />
+                                        <span className="text-[8px] font-black tracking-widest uppercase text-center">Upload Square</span>
+                                        <input
+                                          type="file"
+                                          accept="image/*"
+                                          className="hidden"
+                                          onChange={(e) => handleWorkShowcaseImageUpload(e, idx, false)}
+                                        />
+                                      </label>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </section>
+
+                {/* Voices Podcasts Section */}
+                <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+                  <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8 justify-between">
+                    <div className="flex items-center gap-3">
+                      <Mic className="text-brand-pink" size={28} />
+                      <h2 className="text-2xl font-black tracking-tight uppercase">
+                        Bureau - Voices Podcasts
+                      </h2>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddPodcastField}
+                      className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2 animate-pulse hover:animate-none"
+                    >
+                      + Add Episode
+                    </button>
+                  </div>
+
+                  <div className="space-y-6">
+                    {(!newMember.podcasts || newMember.podcasts.length === 0) ? (
+                      <p className="text-sm text-white/30 text-center py-6 font-medium italic">
+                        No episodes added yet. Click "+ Add Episode" to add podcasts.
+                      </p>
+                    ) : (
+                      <div className="grid grid-cols-1 gap-6">
+                        {(newMember.podcasts || []).map((podcast, idx) => (
+                          <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative group/item">
+                            <button
+                              type="button"
+                              onClick={() => handleRemovePodcastField(idx)}
+                              className="absolute top-4 right-4 text-white/30 hover:text-[#ff3358] transition-colors p-1"
+                            >
+                              <X size={16} />
+                            </button>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              <div className="space-y-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Episode No
+                                </label>
+                                <input
+                                  type="number"
+                                  required
+                                  value={podcast.episodeNo || (idx + 1)}
+                                  onChange={(e) => handlePodcastFieldChange(idx, "episodeNo", parseInt(e.target.value) || (idx + 1))}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                  placeholder="e.g. 1"
+                                />
+                              </div>
+
+                              <div className="space-y-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Episode Title *
+                                </label>
+                                <input
+                                  type="text"
+                                  required
+                                  value={podcast.title}
+                                  onChange={(e) => handlePodcastFieldChange(idx, "title", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                  placeholder="e.g. Building Social Bureau V2"
+                                />
+                              </div>
+
+                              <div className="space-y-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Duration
+                                </label>
+                                <input
+                                  type="text"
+                                  value={podcast.duration || ""}
+                                  onChange={(e) => handlePodcastFieldChange(idx, "duration", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
+                                  placeholder="e.g. 45:20"
+                                />
+                              </div>
+
+                              <div className="space-y-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Host Name
+                                </label>
+                                <input
+                                  type="text"
+                                  value={podcast.host || ""}
+                                  onChange={(e) => handlePodcastFieldChange(idx, "host", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
+                                  placeholder="e.g. Sham SK"
+                                />
+                              </div>
+
+                              <div className="space-y-2 md:col-span-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Audio/Video URL
+                                </label>
+                                <input
+                                  type="text"
+                                  value={podcast.url || ""}
+                                  onChange={(e) => handlePodcastFieldChange(idx, "url", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
+                                  placeholder="e.g. https://youtube.com/... or soundcloud.com/..."
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </section>
+
+                {/* Event Portal Section */}
+                <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+                  <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8 justify-between">
+                    <div className="flex items-center gap-3">
+                      <Calendar className="text-brand-pink" size={28} />
+                      <h2 className="text-2xl font-black tracking-tight uppercase">
+                        Event Portal
+                      </h2>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddEventField}
+                      className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2 animate-pulse hover:animate-none"
+                    >
+                      + Add Event
+                    </button>
+                  </div>
+
+                  <div className="space-y-6">
+                    {(!newMember.events || newMember.events.length === 0) ? (
+                      <p className="text-sm text-white/30 text-center py-6 font-medium italic">
+                        No events added yet. Click "+ Add Event" to publish schedule.
+                      </p>
+                    ) : (
+                      <div className="grid grid-cols-1 gap-6">
+                        {(newMember.events || []).map((evt, idx) => (
+                          <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative group/item">
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveEventField(idx)}
+                              className="absolute top-4 right-4 text-white/30 hover:text-[#ff3358] transition-colors p-1"
+                            >
+                              <X size={16} />
+                            </button>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                              <div className="space-y-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Day/Date *
+                                </label>
+                                <input
+                                  type="text"
+                                  required
+                                  value={evt.date}
+                                  onChange={(e) => handleEventFieldChange(idx, "date", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                  placeholder="e.g. 24"
+                                />
+                              </div>
+
+                              <div className="space-y-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Month Abbreviation *
+                                </label>
+                                <input
+                                  type="text"
+                                  required
+                                  value={evt.month}
+                                  onChange={(e) => handleEventFieldChange(idx, "month", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                  placeholder="e.g. OCT"
+                                />
+                              </div>
+
+                              <div className="space-y-2">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Color Category
+                                </label>
+                                <select
+                                  value={evt.category || "purple"}
+                                  onChange={(e) => handleEventFieldChange(idx, "category", e.target.value)}
+                                  className="w-full bg-[#16161a] border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold appearance-none"
+                                >
+                                  <option value="purple">Purple</option>
+                                  <option value="yellow">Yellow</option>
+                                  <option value="red">Red</option>
+                                  <option value="green">Green</option>
+                                </select>
+                              </div>
+
+                              <div className="space-y-2 md:col-span-3">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Event Title *
+                                </label>
+                                <input
+                                  type="text"
+                                  required
+                                  value={evt.title}
+                                  onChange={(e) => handleEventFieldChange(idx, "title", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                  placeholder="e.g. Hackathon Kickoff"
+                                />
+                              </div>
+
+                              <div className="space-y-2 md:col-span-3">
+                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                  Details
+                                </label>
+                                <textarea
+                                  value={evt.details || ""}
+                                  onChange={(e) => handleEventFieldChange(idx, "details", e.target.value)}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white h-20 resize-none"
+                                  placeholder="Provide short details about this event..."
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </section>
+
+
 
                 {/* Action Buttons */}
                 <div className="flex flex-col gap-4 pt-4">
@@ -2275,48 +3036,59 @@ const AdminTeamDashboard = () => {
               className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm pointer-events-auto"
               onWheel={(e) => e.stopPropagation()}
             >
-              <div className="min-h-full p-4 sm:p-6 md:p-12">
+              <div className="min-h-full p-1 sm:p-2 md:p-4">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className="bg-brand-dark border border-white/10 rounded-[32px] w-full max-w-6xl shadow-2xl relative mx-auto mt-10 md:mt-16 mb-24"
+                className="bg-[#0b0a0f] border border-white/10 rounded-3xl w-full max-w-full shadow-2xl relative mx-auto my-4 overflow-hidden"
               >
-                <div className="p-8 border-b border-white/5 flex justify-between items-center bg-brand-dark/95 backdrop-blur-md">
-                  <h2 className="text-2xl font-black uppercase tracking-tighter">
+                {/* Background Decor */}
+                <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden rounded-3xl">
+                  <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-brand-purple/10 blur-[150px] rounded-full" />
+                  <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-[#ff3358]/5 blur-[150px] rounded-full" />
+                  
+                  {/* Subtle grid line effect */}
+                  <div className="absolute inset-0 opacity-[0.03]" 
+                       style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '100px 100px' }} 
+                  />
+                </div>
+
+                <div className="px-4 md:px-5 py-3 md:py-4 border-b border-white/5 flex justify-between items-center bg-[#0b0a0f]/90 backdrop-blur-md sticky top-0 z-10 relative">
+                  <h2 className="text-lg md:text-xl font-black uppercase tracking-tight">
                     Edit Member Profile
                   </h2>
                   <button
                     onClick={() => setEditingMember(null)}
-                    className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                    className="p-1.5 hover:bg-white/10 rounded-full transition-colors ml-4 flex-shrink-0"
                   >
-                    <X className="w-6 h-6" />
+                    <X className="w-5 h-5 md:w-6 md:h-6" />
                   </button>
                 </div>
 
-                <div className="p-8">
+                <div className="px-3 md:px-5 py-3 md:py-4 max-h-[calc(100vh-140px)] overflow-y-auto relative z-10">
                   <form
                     onSubmit={handleUpdateMember}
-                    className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+                    className="grid grid-cols-1 lg:grid-cols-6 gap-3 md:gap-4"
                   >
                     {/* Left Column */}
-                    <div className="lg:col-span-2 space-y-8">
+                    <div className="lg:col-span-3 space-y-2.5 md:space-y-3">
                       {/* Authentication & HR Details */}
-                <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                    <Shield size={80} />
+                <section className="bg-white/5 border border-white/10 rounded-2xl p-5 md:p-6 backdrop-blur-3xl shadow-xl relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 p-4 opacity-3 group-hover:opacity-5 transition-opacity">
+                    <Shield size={60} />
                   </div>
 
-                  <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8">
-                    <Shield className="text-brand-pink" size={28} />
-                    <h2 className="text-2xl font-black tracking-tight uppercase">
-                      AUTHENTICATION & HR DETAILS
+                  <div className="flex items-center gap-2 mb-4 md:mb-5 border-b border-white/10 pb-4">
+                    <Shield className="text-brand-pink" size={20} />
+                    <h2 className="text-sm md:text-base font-black tracking-tight uppercase">
+                      Authentication & HR
                     </h2>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                    <div className="space-y-1.5 md:space-y-2">
+                      <label className="text-[8px] md:text-[9px] font-bold tracking-[0.15em] text-white/40 uppercase ml-0.5">
                         ClickUp ID
                       </label>
                       <input
@@ -2324,13 +3096,13 @@ const AdminTeamDashboard = () => {
                         name="clickupId"
                         value={editingMember.clickupId || ""}
                         onChange={handleInputChange}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none focus:border-[#ff3358] transition-all"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-xs outline-none focus:border-[#ff3358] transition-all"
                         placeholder="123456"
                       />
                     </div>
 
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                    <div className="space-y-1.5 md:space-y-2">
+                      <label className="text-[8px] md:text-[9px] font-bold tracking-[0.15em] text-white/40 uppercase ml-0.5">
                         Employee ID
                       </label>
                       <input
@@ -2338,13 +3110,13 @@ const AdminTeamDashboard = () => {
                         name="emp_id"
                         value={editingMember.emp_id || ""}
                         onChange={handleInputChange}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none focus:border-[#ff3358] transition-all"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-xs outline-none focus:border-[#ff3358] transition-all"
                         placeholder="sb-web-01"
                       />
                     </div>
 
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                    <div className="space-y-1.5 md:space-y-2">
+                      <label className="text-[8px] md:text-[9px] font-bold tracking-[0.15em] text-white/40 uppercase ml-0.5">
                         Email *
                       </label>
                       <input
@@ -2353,14 +3125,14 @@ const AdminTeamDashboard = () => {
                         required
                         value={editingMember.email || ""}
                         onChange={handleInputChange}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none focus:border-[#ff3358] transition-all"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-xs outline-none focus:border-[#ff3358] transition-all"
                         placeholder="employee@socialbureau.in"
                       />
                     </div>
 
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                        Password (min 5 chars) *
+                    <div className="space-y-1.5 md:space-y-2">
+                      <label className="text-[8px] md:text-[9px] font-bold tracking-[0.15em] text-white/40 uppercase ml-0.5">
+                        Password (5+ chars) *
                       </label>
                       
                       <div className="relative">
@@ -2369,35 +3141,35 @@ const AdminTeamDashboard = () => {
                         name="password"
                         value={editingMember.password || ""}
                         onChange={handleInputChange}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none focus:border-[#ff3358] transition-all"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-xs outline-none focus:border-[#ff3358] transition-all pr-9"
                         placeholder="••••••••"
                       />
                         <button
                           type="button"
                           onClick={() => setShowEditPassword(!showEditPassword)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors p-0.5"
                         >
-                          {showEditPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                          {showEditPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                         </button>
                       </div>
                     </div>
 
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                    <div className="space-y-1.5 md:space-y-2">
+                      <label className="text-[8px] md:text-[9px] font-bold tracking-[0.15em] text-white/40 uppercase ml-0.5">
                         Phone Number
                       </label>
                       <input
                         type="number"
                         name="phone"
-                        value={editingMember.phone || "" || ""}
+                        value={editingMember.phone || ""}
                         onChange={handleInputChange}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none focus:border-[#ff3358] transition-all"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-xs outline-none focus:border-[#ff3358] transition-all"
                         placeholder="9876543210"
                       />
                     </div>
 
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                    <div className="space-y-1.5 md:space-y-2">
+                      <label className="text-[8px] md:text-[9px] font-bold tracking-[0.15em] text-white/40 uppercase ml-0.5">
                         Date of Joining (DOJ)
                       </label>
                       <input
@@ -2405,55 +3177,70 @@ const AdminTeamDashboard = () => {
                         name="doj"
                         value={editingMember.doj || ""}
                         onChange={handleInputChange}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none focus:border-[#ff3358] transition-all text-white/40"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-xs outline-none focus:border-[#ff3358] transition-all text-white/40"
                       />
                     </div>
 
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                        Rate (per hour / monthly)
+                    <div className="space-y-1.5 md:space-y-2">
+                      <label className="text-[8px] md:text-[9px] font-bold tracking-[0.15em] text-white/40 uppercase ml-0.5">
+                        Rate (hourly/monthly)
                       </label>
                       <input
                         type="number"
                         name="rate"
                         value={editingMember.rate || ""}
                         onChange={handleInputChange}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none focus:border-[#ff3358] transition-all"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-xs outline-none focus:border-[#ff3358] transition-all"
                         placeholder="50"
                       />
                     </div>
 
-                    <div className="flex items-center space-x-3 pt-6">
+                    <div className="flex items-center space-x-2 md:space-x-3 pt-3 md:pt-4 col-span-full">
                       <input
                         type="checkbox"
                         name="isEmployee"
                         id="isEmployee"
                         checked={editingMember.isEmployee}
                         onChange={(e) => setEditingMember(prev => ({ ...prev, isEmployee: e.target.checked }))}
-                        className="w-5 h-5 rounded border-white/10 bg-white/5 text-[#ff3358] focus:ring-0 focus:ring-offset-0 transition-all cursor-pointer"
+                        className="w-4 h-4 rounded border-white/10 bg-white/5 text-[#ff3358] focus:ring-0 focus:ring-offset-0 transition-all cursor-pointer"
                       />
-                      <label htmlFor="isEmployee" className="text-sm font-bold text-white cursor-pointer select-none">
+                      <label htmlFor="isEmployee" className="text-xs md:text-sm font-bold text-white cursor-pointer select-none">
                         Is Employee?
                       </label>
+                    </div>
+                    <div className="flex justify-end mt-3 md:mt-4 col-span-full">
+                      <button
+                        type="button"
+                        onClick={() => handleSaveSection('auth')}
+                        disabled={sectionSaving === 'auth'}
+                        className="px-4 py-2 bg-brand-pink text-white rounded-lg text-xs md:text-sm font-bold disabled:opacity-50 flex items-center gap-2"
+                      >
+                        {sectionSaving === 'auth' ? (
+                          <Loader2 className="w-3 h-3 animate-spin" />
+                        ) : (
+                          <Save className="w-3 h-3" />
+                        )}
+                        Save
+                      </button>
                     </div>
                   </div>
                 </section>
 
-                      <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                          <UserCircle size={80} />
+                      <section className="bg-white/5 border border-white/10 rounded-2xl p-5 md:p-6 backdrop-blur-3xl shadow-xl relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 p-4 opacity-3 group-hover:opacity-5 transition-opacity">
+                          <UserCircle size={60} />
                         </div>
 
-                        <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8">
-                          <UserCircle className="text-brand-pink" size={28} />
-                          <h2 className="text-2xl font-black tracking-tight uppercase">
-                            PERSONAL IDENTITY
+                        <div className="flex items-center gap-2 mb-4 md:mb-5 border-b border-white/10 pb-4">
+                          <UserCircle className="text-brand-pink" size={20} />
+                          <h2 className="text-sm md:text-base font-black tracking-tight uppercase">
+                            Personal Identity
                           </h2>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                          <div className="space-y-3">
-                            <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                          <div className="space-y-1.5 md:space-y-2">
+                            <label className="text-[8px] md:text-[9px] font-bold tracking-[0.15em] text-white/40 uppercase ml-0.5">
                               Full Name
                             </label>
                             <input
@@ -2461,13 +3248,13 @@ const AdminTeamDashboard = () => {
                               name="name"
                               value={editingMember.name || ""}
                               onChange={handleInputChange}
-                              className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:border-brand-pink focus:bg-white/10 outline-none transition-all font-medium text-lg"
+                              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 focus:border-brand-pink focus:bg-white/10 outline-none transition-all font-medium text-xs"
                               placeholder="Enter name"
                               required
                             />
                           </div>
-                          <div className="space-y-3">
-                            <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                          <div className="space-y-1.5 md:space-y-2">
+                            <label className="text-[8px] md:text-[9px] font-bold tracking-[0.15em] text-white/40 uppercase ml-0.5">
                               Professional Role
                             </label>
                             <input
@@ -2475,13 +3262,13 @@ const AdminTeamDashboard = () => {
                               name="role"
                               value={editingMember.role || ""}
                               onChange={handleInputChange}
-                              className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:border-brand-pink focus:bg-white/10 outline-none transition-all font-medium text-lg"
-                              placeholder="e.g. Senior Web Developer"
+                              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 focus:border-brand-pink focus:bg-white/10 outline-none transition-all font-medium text-xs"
+                              placeholder="e.g. Senior Developer"
                               required
                             />
                           </div>
-                          <div className="space-y-3">
-                            <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                          <div className="space-y-1.5 md:space-y-2">
+                            <label className="text-[8px] md:text-[9px] font-bold tracking-[0.15em] text-white/40 uppercase ml-0.5">
                               Visual Background Text
                             </label>
                             <input
@@ -2489,67 +3276,66 @@ const AdminTeamDashboard = () => {
                               name="bgText"
                               value={editingMember.bgText || ""}
                               onChange={handleInputChange}
-                              className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:border-brand-pink focus:bg-white/10 outline-none transition-all font-medium tracking-wide"
-                              placeholder="e.g. TECHNOLOGY / DESIGN"
+                              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 focus:border-brand-pink focus:bg-white/10 outline-none transition-all font-medium text-xs"
+                              placeholder="e.g. TECHNOLOGY"
                             />
                           </div>
-                          <div className="space-y-3">
-                            <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                              Employee Page Slug (URL Path)
+                          <div className="space-y-1.5 md:space-y-2">
+                            <label className="text-[8px] md:text-[9px] font-bold tracking-[0.15em] text-white/40 uppercase ml-0.5">
+                              Page Slug (URL)
                             </label>
                             <input
                               type="text"
                               name="slug"
                               value={editingMember.slug || ""}
                               onChange={handleInputChange}
-                              className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:border-brand-pink focus:bg-white/10 outline-none transition-all font-medium tracking-wide font-mono"
+                              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 focus:border-brand-pink focus:bg-white/10 outline-none transition-all font-medium text-xs font-mono"
                               placeholder="john-doe"
                             />
                           </div>
-                          <div className="space-y-3 md:col-span-2">
-                            <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                              Hero Section Description
+                          <div className="space-y-1.5 md:space-y-2 md:col-span-2">
+                            <label className="text-[8px] md:text-[9px] font-bold tracking-[0.15em] text-white/40 uppercase ml-0.5">
+                              Bio
                             </label>
                             <textarea
                               name="description"
                               value={editingMember.description || ""}
                               onChange={handleInputChange}
-                              rows={3}
-                              className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:border-brand-pink focus:bg-white/10 outline-none transition-all font-medium tracking-wide resize-none"
-                              placeholder="Write a short professional bio..."
+                              rows={2}
+                              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 focus:border-brand-pink focus:bg-white/10 outline-none transition-all font-medium text-xs resize-none"
+                              placeholder="Professional bio..."
                             />
                           </div>
-                          <div className="space-y-3">
-                            <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                              Card Glow Color
+                          <div className="space-y-1.5 md:space-y-2">
+                            <label className="text-[8px] md:text-[9px] font-bold tracking-[0.15em] text-white/40 uppercase ml-0.5">
+                              Card Color
                             </label>
-                            <div className="flex gap-4 items-center">
+                            <div className="flex gap-2 items-center">
                               <input
                                 type="color"
                                 name="bgColor"
                                 value={editingMember.bgColor || "#ff3358"}
                                 onChange={handleInputChange}
-                                className="w-16 h-16 bg-transparent border-none cursor-pointer rounded-xl overflow-hidden"
+                                className="w-12 h-12 bg-transparent border-none cursor-pointer rounded-lg overflow-hidden"
                               />
                               <input
                                 type="text"
                                 name="bgColor"
                                 value={editingMember.bgColor || ""}
                                 onChange={handleInputChange}
-                                className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:border-brand-pink outline-none transition-all font-mono text-sm"
+                                className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 focus:border-brand-pink outline-none transition-all font-mono text-xs"
                                 placeholder="#HEXCODE"
                               />
                             </div>
                           </div>
-                          <div className="space-y-3 md:col-span-2">
-                            <div className="flex items-center justify-between bg-white/5 border border-white/10 rounded-2xl p-6">
-                              <div>
-                                <h3 className="text-sm font-bold tracking-widest uppercase mb-1">
-                                  Baked Background Text
+                          <div className="space-y-1.5 md:space-y-2 md:col-span-2">
+                            <div className="flex items-center justify-between bg-white/5 border border-white/10 rounded-lg p-3 md:p-4">
+                              <div className="flex-1">
+                                <h3 className="text-xs font-bold tracking-widest uppercase mb-0.5">
+                                  Baked Text
                                 </h3>
-                                <p className="text-[10px] text-white/30 uppercase tracking-widest">
-                                  Enable to show floating text behind your
-                                  portrait
+                                <p className="text-[8px] text-white/30 uppercase tracking-widest">
+                                  Show background text
                                 </p>
                               </div>
                               <button
@@ -2560,38 +3346,53 @@ const AdminTeamDashboard = () => {
                                     hasBakedText: !prev.hasBakedText,
                                   }))
                                 }
-                                className={`w-14 h-8 rounded-full transition-all relative ${editingMember.hasBakedText ? "bg-brand-pink" : "bg-white/10"}`}
+                                className={`w-12 h-6 rounded-full transition-all relative flex-shrink-0 ${editingMember.hasBakedText ? "bg-brand-pink" : "bg-white/10"}`}
                               >
                                 <motion.div
                                   animate={{
-                                    x: editingMember.hasBakedText ? 28 : 4,
+                                    x: editingMember.hasBakedText ? 24 : 3,
                                   }}
-                                  className="absolute top-1 w-6 h-6 bg-white rounded-full shadow-lg"
+                                  className="absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-lg"
                                 />
                               </button>
                             </div>
                           </div>
                         </div>
+                        <div className="flex justify-end mt-6">
+                          <button
+                            type="button"
+                            onClick={() => handleSaveSection('identity')}
+                            disabled={sectionSaving === 'identity'}
+                            className="px-5 py-3 bg-brand-pink text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2"
+                          >
+                            {sectionSaving === 'identity' ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Save className="w-4 h-4" />
+                            )}
+                            Save
+                          </button>
+                        </div>
                       </section>
 
-                      <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl">
-                        <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8">
-                          <ImageIcon className="text-brand-pink" size={28} />
-                          <h2 className="text-2xl font-black tracking-tight uppercase">
-                            MEDIA ASSETS
+                      <section className="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-5 backdrop-blur-3xl shadow-xl lg:col-span-3">
+                        <div className="flex items-center gap-2 mb-3 md:mb-4 border-b border-white/10 pb-3">
+                          <ImageIcon className="text-brand-pink" size={18} />
+                          <h2 className="text-xs md:text-sm font-black tracking-tight uppercase">
+                            Media Assets
                           </h2>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                          <div className="space-y-4">
-                            <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                              Hero Portrait (PNG)
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
+                          <div className="space-y-1.5 md:space-y-2">
+                            <label className="text-[7px] md:text-[8px] font-bold tracking-[0.12em] text-white/40 uppercase ml-0.5">
+                              Hero
                             </label>
-                            <div className="relative group/img aspect-[4/5] rounded-3xl bg-white/5 border border-white/10 overflow-hidden flex flex-col items-center justify-center p-4">
+                            <div className="relative h-32 md:h-48 rounded-lg bg-white/5 border border-white/10 overflow-hidden flex flex-col items-center justify-center p-1 group/img">
                               {uploading.image ? (
                                 <Loader2
                                   className="animate-spin text-brand-pink"
-                                  size={40}
+                                  size={20}
                                 />
                               ) : editingMember.image ? (
                                 <>
@@ -2600,13 +3401,13 @@ const AdminTeamDashboard = () => {
                                     className="w-full h-full object-contain"
                                     alt="Hero"
                                   />
-                                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center gap-1">
                                     <button
                                       type="button"
                                       onClick={() => triggerUpload("image")}
-                                      className="p-4 bg-brand-pink rounded-full hover:scale-110 transition-transform"
+                                      className="p-1 bg-brand-pink rounded-full hover:scale-105 transition-transform"
                                     >
-                                      <Camera size={24} />
+                                      <Camera size={12} />
                                     </button>
                                     <button
                                       type="button"
@@ -2616,9 +3417,9 @@ const AdminTeamDashboard = () => {
                                           image: "",
                                         }))
                                       }
-                                      className="p-4 bg-white/10 rounded-full hover:bg-red-500 transition-colors"
+                                      className="p-1 bg-white/10 rounded-full hover:bg-red-500 transition-colors"
                                     >
-                                      <X size={24} />
+                                      <X size={12} />
                                     </button>
                                   </div>
                                 </>
@@ -2626,110 +3427,612 @@ const AdminTeamDashboard = () => {
                                 <button
                                   type="button"
                                   onClick={() => triggerUpload("image")}
-                                  className="flex flex-col items-center gap-4 group/btn"
+                                  className="flex flex-col items-center gap-1 group/btn text-center"
                                 >
-                                  <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center group-hover/btn:bg-brand-pink/20 transition-colors">
+                                  <div className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center group-hover/btn:bg-brand-pink/20 transition-colors">
                                     <Upload
                                       className="text-white/40 group-hover/btn:text-brand-pink"
-                                      size={32}
+                                      size={12}
                                     />
                                   </div>
-                                  <span className="text-[10px] font-black tracking-widest text-white/20">
-                                    UPLOAD HERO
+                                  <span className="text-[6px] font-black tracking-widest text-white/20">
+                                    ADD
                                   </span>
                                 </button>
                               )}
                             </div>
                           </div>
 
-                          <div className="space-y-8">
-                            <div className="space-y-4">
-                              <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                                Card Background
-                              </label>
-                              <div className="relative h-40 rounded-3xl bg-white/5 border border-white/10 overflow-hidden group/card flex items-center justify-center">
-                                {uploading.cardImage ? (
-                                  <Loader2
-                                    className="animate-spin text-brand-pink"
-                                    size={24}
+                          <div className="space-y-1.5 md:space-y-2">
+                            <label className="text-[7px] md:text-[8px] font-bold tracking-[0.12em] text-white/40 uppercase ml-0.5">
+                              Card BG
+                            </label>
+                            <div className="relative aspect-[3/4] rounded-lg bg-white/5 border border-white/10 overflow-hidden group/card flex items-center justify-center">
+                              {uploading.cardImage ? (
+                                <Loader2
+                                  className="animate-spin text-brand-pink"
+                                  size={20}
+                                />
+                              ) : editingMember.cardImage ? (
+                                <>
+                                  <img
+                                    src={editingMember.cardImage}
+                                    className="w-full h-full object-cover"
+                                    alt="Card"
                                   />
-                                ) : editingMember.cardImage ? (
-                                  <>
-                                    <img
-                                      src={editingMember.cardImage}
-                                      className="w-full h-full object-cover"
-                                      alt="Card"
-                                    />
-                                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/card:opacity-100 transition-opacity flex items-center justify-center gap-4">
-                                      <button
-                                        type="button"
-                                        onClick={() =>
-                                          triggerUpload("cardImage")
-                                        }
-                                        className="p-2 bg-brand-pink rounded-full"
-                                      >
-                                        <Upload size={16} />
-                                      </button>
-                                    </div>
-                                  </>
-                                ) : (
-                                  <button
-                                    type="button"
-                                    onClick={() => triggerUpload("cardImage")}
-                                    className="text-[10px] font-black tracking-widest text-white/20 uppercase"
-                                  >
-                                    Upload Card
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-
-                            <div className="space-y-4">
-                              <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
-                                Full Profile Image
-                              </label>
-                              <div className="relative h-40 rounded-3xl bg-white/5 border border-white/10 overflow-hidden group/full flex items-center justify-center">
-                                {uploading.image1 ? (
-                                  <Loader2
-                                    className="animate-spin text-brand-pink"
-                                    size={24}
-                                  />
-                                ) : editingMember.image1 ? (
-                                  <>
-                                    <img
-                                      src={editingMember.image1}
-                                      className="w-full h-full object-cover"
-                                      alt="Full"
-                                    />
-                                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/full:opacity-100 transition-opacity flex items-center justify-center gap-4">
-                                      <button
-                                        type="button"
-                                        onClick={() => triggerUpload("image1")}
-                                        className="p-2 bg-brand-pink rounded-full"
-                                      >
-                                        <Upload size={16} />
-                                      </button>
-                                    </div>
-                                  </>
-                                ) : (
-                                  <button
-                                    type="button"
-                                    onClick={() => triggerUpload("image1")}
-                                    className="text-[10px] font-black tracking-widest text-white/20 uppercase"
-                                  >
-                                    Upload Profile
-                                  </button>
-                                )}
-                              </div>
+                                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/card:opacity-100 transition-opacity flex items-center justify-center gap-1">
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        triggerUpload("cardImage")
+                                      }
+                                      className="p-1 bg-brand-pink rounded-full"
+                                    >
+                                      <Upload size={10} />
+                                    </button>
+                                  </div>
+                                </>
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={() => triggerUpload("cardImage")}
+                                  className="text-[6px] font-black tracking-widest text-white/20 uppercase text-center"
+                                >
+                                  Upload
+                                </button>
+                              )}
                             </div>
                           </div>
 
+                          <div className="space-y-1.5 md:space-y-2">
+                            <label className="text-[7px] md:text-[8px] font-bold tracking-[0.12em] text-white/40 uppercase ml-0.5">
+                              Profile
+                            </label>
+                            <div className="relative aspect-[3/4] rounded-lg bg-white/5 border border-white/10 overflow-hidden group/full flex items-center justify-center">
+                              {uploading.image1 ? (
+                                <Loader2
+                                  className="animate-spin text-brand-pink"
+                                  size={20}
+                                />
+                              ) : editingMember.image1 ? (
+                                <>
+                                  <img
+                                    src={editingMember.image1}
+                                    className="w-full h-full object-cover"
+                                    alt="Profile"
+                                  />
+                                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/full:opacity-100 transition-opacity flex items-center justify-center gap-1">
+                                    <button
+                                      type="button"
+                                      onClick={() => triggerUpload("image1")}
+                                      className="p-1 bg-brand-pink rounded-full"
+                                    >
+                                      <Upload size={10} />
+                                    </button>
+                                  </div>
+                                </>
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={() => triggerUpload("image1")}
+                                  className="text-[6px] font-black tracking-widest text-white/20 uppercase text-center"
+                                >
+                                  Upload
+                                </button>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="space-y-1.5 md:space-y-2">
+                            <label className="text-[7px] md:text-[8px] font-bold tracking-[0.12em] text-white/40 uppercase ml-0.5">
+                              Cover
+                            </label>
+                            <div className="relative h-32 md:h-48 rounded-lg bg-white/5 border border-white/10 overflow-hidden group/cover flex items-center justify-center">
+                              {uploading.coverImage ? (
+                                <Loader2
+                                  className="animate-spin text-brand-pink"
+                                  size={20}
+                                />
+                              ) : editingMember.coverImage ? (
+                                <>
+                                  <img
+                                    src={editingMember.coverImage}
+                                    className="w-full h-full object-cover"
+                                    alt="Cover"
+                                  />
+                                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/cover:opacity-100 transition-opacity flex items-center justify-center gap-1">
+                                    <button
+                                      type="button"
+                                      onClick={() => triggerUpload("coverImage")}
+                                      className="p-1 bg-brand-pink rounded-full"
+                                    >
+                                      <Upload size={10} />
+                                    </button>
+                                  </div>
+                                </>
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={() => triggerUpload("coverImage")}
+                                  className="text-[6px] font-black tracking-widest text-white/20 uppercase text-center"
+                                >
+                                  Upload
+                                </button>
+                              )}
+                            </div>
+                          </div>
                         </div>
                       </section>
+                      
+                      {/* ID Card / Certificate Section */}
+                      <section className="space-y-1.5 md:space-y-2 max-w-xs">
+                        <label className="text-[7px] md:text-[8px] font-bold tracking-[0.12em] text-white/40 uppercase ml-0.5">
+                          ID Card / Certificate
+                        </label>
+                        <div className="relative aspect-square rounded-lg bg-white/5 border border-white/10 overflow-hidden group/idcard flex items-center justify-center">
+                          {uploading.idCard ? (
+                            <Loader2 className="animate-spin text-brand-pink" size={20} />
+                          ) : editingMember.idCard ? (
+                            <>
+                              <img
+                                src={editingMember.idCard}
+                                className="w-full h-full object-cover"
+                                alt="ID Card"
+                              />
+                              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/idcard:opacity-100 transition-opacity flex items-center justify-center gap-1">
+                                <button
+                                  type="button"
+                                  onClick={() => triggerUpload("idCard")}
+                                  className="p-1 bg-brand-pink rounded-full"
+                                >
+                                  <Upload size={10} />
+                                </button>
+                              </div>
+                            </>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => triggerUpload("idCard")}
+                              className="text-[6px] font-black tracking-widest text-white/20 uppercase text-center"
+                            >
+                              Upload
+                            </button>
+                          )}
+                        </div>
+                      </section>
+                      
+                      {/* Education Section */}
+                      <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl">
+                        <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8 justify-between">
+                          <div className="flex items-center gap-3">
+                            <GraduationCap className="text-brand-pink" size={28} />
+                            <h2 className="text-2xl font-black tracking-tight uppercase">Education</h2>
+                          </div>
+                          <button type="button" onClick={handleAddEducation} className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2">
+                            <Plus size={14} /> Add Entry
+                          </button>
+                        </div>
+                        <div className="space-y-6">
+                          {(!editingMember.education || editingMember.education.length === 0) ? (
+                            <p className="text-xs text-white/30 italic text-center py-6">No education entries added yet. Click "+ Add Entry" to begin.</p>
+                          ) : (
+                            editingMember.education.map((edu, idx) => (
+                              <div key={idx} className="relative bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
+                                <button type="button" onClick={() => removeEducation(idx)} className="absolute top-4 right-4 p-1 hover:bg-red-500/20 rounded-lg transition-colors text-white/40 hover:text-red-400">
+                                  <X size={14} />
+                                </button>
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div className="space-y-1">
+                                    <label className="text-[9px] font-bold tracking-widest text-white/40 uppercase">Degree / Qualification</label>
+                                    <input type="text" value={edu.degree || ''} onChange={(e) => handleEducationChange(idx, 'degree', e.target.value)} placeholder="e.g. B.Tech Computer Science" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-pink outline-none transition-all" />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <label className="text-[9px] font-bold tracking-widest text-white/40 uppercase">Institution</label>
+                                    <input type="text" value={edu.institution || ''} onChange={(e) => handleEducationChange(idx, 'institution', e.target.value)} placeholder="e.g. IIT Delhi" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-pink outline-none transition-all" />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <label className="text-[9px] font-bold tracking-widest text-white/40 uppercase">Year (Graduation)</label>
+                                    <input type="text" value={edu.year || ''} onChange={(e) => handleEducationChange(idx, 'year', e.target.value)} placeholder="e.g. 2020" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-pink outline-none transition-all" />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <label className="text-[9px] font-bold tracking-widest text-white/40 uppercase">Grade / GPA</label>
+                                    <input type="text" value={edu.grade || ''} onChange={(e) => handleEducationChange(idx, 'grade', e.target.value)} placeholder="e.g. 8.5 CGPA / First Class" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-pink outline-none transition-all" />
+                                  </div>
+                                </div>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                        <div className="flex justify-end mt-6">
+                          <button type="button" onClick={() => handleSaveSection('education')} disabled={sectionSaving === 'education'} className="px-5 py-3 bg-brand-pink text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2">
+                            {sectionSaving === 'education' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                            Save
+                          </button>
+                        </div>
+                      </section>
+
+                      {/* Certifications Section */}
+                      <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl">
+                        <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8 justify-between">
+                          <div className="flex items-center gap-3">
+                            <Award className="text-brand-pink" size={28} />
+                            <h2 className="text-2xl font-black tracking-tight uppercase">Certifications</h2>
+                          </div>
+                          <button type="button" onClick={handleAddCertification} className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2">
+                            <Plus size={14} /> Add Certification
+                          </button>
+                        </div>
+                        <div className="space-y-6">
+                          {(!editingMember.certifications || editingMember.certifications.length === 0) ? (
+                            <p className="text-xs text-white/30 italic text-center py-6">No certifications added yet. Click "+ Add Certification" to begin.</p>
+                          ) : (
+                            editingMember.certifications.map((cert, idx) => (
+                              <div key={idx} className="relative bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
+                                <button type="button" onClick={() => removeCertification(idx)} className="absolute top-4 right-4 p-1 hover:bg-red-500/20 rounded-lg transition-colors text-white/40 hover:text-red-400">
+                                  <X size={14} />
+                                </button>
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div className="space-y-1">
+                                    <label className="text-[9px] font-bold tracking-widest text-white/40 uppercase">Certification Name</label>
+                                    <input type="text" value={cert.name || ''} onChange={(e) => handleCertificationChange(idx, 'name', e.target.value)} placeholder="e.g. AWS Solutions Architect" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-pink outline-none transition-all" />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <label className="text-[9px] font-bold tracking-widest text-white/40 uppercase">Issued By</label>
+                                    <input type="text" value={cert.issuedBy || ''} onChange={(e) => handleCertificationChange(idx, 'issuedBy', e.target.value)} placeholder="e.g. Amazon Web Services" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-pink outline-none transition-all" />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <label className="text-[9px] font-bold tracking-widest text-white/40 uppercase">Year Issued</label>
+                                    <input type="text" value={cert.year || ''} onChange={(e) => handleCertificationChange(idx, 'year', e.target.value)} placeholder="e.g. 2023" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-pink outline-none transition-all" />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <label className="text-[9px] font-bold tracking-widest text-white/40 uppercase">Credential URL</label>
+                                    <input type="text" value={cert.credentialUrl || ''} onChange={(e) => handleCertificationChange(idx, 'credentialUrl', e.target.value)} placeholder="https://credential.link..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-pink outline-none transition-all" />
+                                  </div>
+                                </div>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                        <div className="flex justify-end mt-6">
+                          <button type="button" onClick={() => handleSaveSection('certifications')} disabled={sectionSaving === 'certifications'} className="px-5 py-3 bg-brand-pink text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2">
+                            {sectionSaving === 'certifications' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                            Save
+                          </button>
+                        </div>
+                      </section>
+
+                      {/* Career Timeline Section */}
+                      <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+                        <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8 justify-between">
+                          <div className="flex items-center gap-3">
+                            <Award className="text-brand-pink" size={28} />
+                            <h2 className="text-2xl font-black tracking-tight uppercase">
+                              Career Timeline (Achievements)
+                            </h2>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={handleEditAchievementFieldAdd}
+                            className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2 animate-pulse hover:animate-none"
+                          >
+                            + Add Milestone
+                          </button>
+                        </div>
+
+                        <div className="space-y-6">
+                          {(!editingMember.achievements || editingMember.achievements.length === 0) ? (
+                            <p className="text-sm text-white/30 text-center py-6 font-medium italic">
+                              No milestones added yet. Click "+ Add Milestone" to construct the career timeline.
+                            </p>
+                          ) : (
+                            <div className="grid grid-cols-1 gap-6">
+                              {(editingMember.achievements || []).map((ach, idx) => (
+                                <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative group/item">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleEditAchievementFieldRemove(idx)}
+                                    className="absolute top-4 right-4 text-white/30 hover:text-[#ff3358] transition-colors p-1"
+                                  >
+                                    <X size={16} />
+                                  </button>
+
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Milestone Title *
+                                      </label>
+                                      <input
+                                        type="text"
+                                        required
+                                        value={ach.title}
+                                        onChange={(e) => handleEditAchievementFieldChange(idx, "title", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                        placeholder="e.g. Lead Developer, Raised Seed Round"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Milestone Date/Year (Custom)
+                                      </label>
+                                      <input
+                                        type="text"
+                                        value={ach.date || ""}
+                                        onChange={(e) => handleEditAchievementFieldChange(idx, "date", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
+                                        placeholder="e.g. JAN 2019, 2024"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Badge Category
+                                      </label>
+                                      <select
+                                        value={ach.image || "MILESTONE"}
+                                        onChange={(e) => handleEditAchievementFieldChange(idx, "image", e.target.value)}
+                                        className="w-full bg-[#16161a] border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold appearance-none"
+                                      >
+                                        <option value="MILESTONE">Milestone</option>
+                                        <option value="INNOVATION">Innovation</option>
+                                        <option value="CLIENT WIN">Client Win</option>
+                                        <option value="PARTNERSHIP">Partnership</option>
+                                        <option value="ACHIEVEMENT">Achievement</option>
+                                        <option value="LAUNCH">Launch</option>
+                                      </select>
+                                    </div>
+
+                                    <div className="space-y-2 md:col-span-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Description
+                                      </label>
+                                      <textarea
+                                        value={ach.description || ""}
+                                        onChange={(e) => handleEditAchievementFieldChange(idx, "description", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white h-20 resize-none"
+                                        placeholder="Provide short details about this milestone..."
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex justify-end mt-6">
+                          <button
+                            type="button"
+                            onClick={() => handleSaveSection('timeline')}
+                            disabled={sectionSaving === 'timeline'}
+                            className="px-5 py-3 bg-brand-pink text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2"
+                          >
+                            {sectionSaving === 'timeline' ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Save className="w-4 h-4" />
+                            )}
+                            Save
+                          </button>
+                        </div>
+                      </section>
+
+                      {/* Voices Podcasts Section */}
+                      <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+                        <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8 justify-between">
+                          <div className="flex items-center gap-3">
+                            <Mic className="text-brand-pink" size={28} />
+                            <h2 className="text-2xl font-black tracking-tight uppercase">
+                              Bureau - Voices Podcasts
+                            </h2>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={handleEditPodcastFieldAdd}
+                            className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2 animate-pulse hover:animate-none"
+                          >
+                            + Add Episode
+                          </button>
+                        </div>
+
+                        <div className="space-y-6">
+                          {(!editingMember.podcasts || editingMember.podcasts.length === 0) ? (
+                            <p className="text-sm text-white/30 text-center py-6 font-medium italic">
+                              No episodes added yet. Click "+ Add Episode" to add podcasts.
+                            </p>
+                          ) : (
+                            <div className="grid grid-cols-1 gap-6">
+                              {(editingMember.podcasts || []).map((podcast, idx) => (
+                                <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative group/item">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleEditPodcastFieldRemove(idx)}
+                                    className="absolute top-4 right-4 text-white/30 hover:text-[#ff3358] transition-colors p-1"
+                                  >
+                                    <X size={16} />
+                                  </button>
+
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Episode No
+                                      </label>
+                                      <input
+                                        type="number"
+                                        required
+                                        value={podcast.episodeNo || (idx + 1)}
+                                        onChange={(e) => handleEditPodcastFieldChange(idx, "episodeNo", parseInt(e.target.value) || (idx + 1))}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                        placeholder="e.g. 1"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Episode Title *
+                                      </label>
+                                      <input
+                                        type="text"
+                                        required
+                                        value={podcast.title}
+                                        onChange={(e) => handleEditPodcastFieldChange(idx, "title", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                        placeholder="e.g. Building Social Bureau V2"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Duration
+                                      </label>
+                                      <input
+                                        type="text"
+                                        value={podcast.duration || ""}
+                                        onChange={(e) => handleEditPodcastFieldChange(idx, "duration", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
+                                        placeholder="e.g. 45:20"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Host Name
+                                      </label>
+                                      <input
+                                        type="text"
+                                        value={podcast.host || ""}
+                                        onChange={(e) => handleEditPodcastFieldChange(idx, "host", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
+                                        placeholder="e.g. Sham SK"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2 md:col-span-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Audio/Video URL
+                                      </label>
+                                      <input
+                                        type="text"
+                                        value={podcast.url || ""}
+                                        onChange={(e) => handleEditPodcastFieldChange(idx, "url", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
+                                        placeholder="e.g. https://youtube.com/... or soundcloud.com/..."
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex justify-end mt-6">
+                          <button
+                            type="button"
+                            onClick={() => handleSaveSection('podcasts')}
+                            disabled={sectionSaving === 'podcasts'}
+                            className="px-5 py-3 bg-brand-pink text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2"
+                          >
+                            {sectionSaving === 'podcasts' ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Save className="w-4 h-4" />
+                            )}
+                            Save
+                          </button>
+                        </div>
+                      </section>
+
+
+                      {/* Core Expertise (Tools & Sliders) */}
+                      <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+                        <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8 justify-between">
+                          <div className="flex items-center gap-3">
+                            <Cpu className="text-brand-pink" size={28} />
+                            <h2 className="text-2xl font-black tracking-tight uppercase">
+                              Core Expertise
+                            </h2>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={handleEditToolFieldAdd}
+                            className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2 animate-pulse hover:animate-none"
+                          >
+                            + Add Tool
+                          </button>
+                        </div>
+
+                        <div className="space-y-6">
+                          {(!editingMember.tools || editingMember.tools.length === 0) ? (
+                            <p className="text-sm text-white/30 text-center py-6 font-medium italic">
+                              No tools added yet. Click "+ Add Tool" to define professional expertise.
+                            </p>
+                          ) : (
+                            <div className="grid grid-cols-1 gap-6">
+                              {(editingMember.tools || []).map((tool, idx) => (
+                                <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative group/item">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleEditToolFieldRemove(idx)}
+                                    className="absolute top-4 right-4 text-white/30 hover:text-[#ff3358] transition-colors p-1"
+                                  >
+                                    <X size={16} />
+                                  </button>
+
+                                  <div className="grid grid-cols-1 gap-6">
+                                    <div className="space-y-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Tool Name *
+                                      </label>
+                                      <input
+                                        type="text"
+                                        required
+                                        value={tool.toolName}
+                                        onChange={(e) => handleEditToolFieldChange(idx, "toolName", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                        placeholder="e.g. Photoshop, VS Code, Figma"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Proficiency Level ({tool.level !== undefined ? tool.level : 85}%)
+                                      </label>
+                                      <input
+                                        type="range"
+                                        min="0"
+                                        max="100"
+                                        value={tool.level !== undefined ? tool.level : 85}
+                                        onChange={(e) => handleEditToolFieldChange(idx, "level", parseInt(e.target.value))}
+                                        className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-brand-pink animate-pulse hover:animate-none"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex justify-end mt-6">
+                          <button
+                            type="button"
+                            onClick={() => handleSaveSection('tools')}
+                            disabled={sectionSaving === 'tools'}
+                            className="px-5 py-3 bg-brand-pink text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2"
+                          >
+                            {sectionSaving === 'tools' ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Save className="w-4 h-4" />
+                            )}
+                            Save
+                          </button>
+                        </div>
+                      </section>
+
                     </div>
 
                     {/* Right Column */}
-                    <div className="space-y-8">
+                    <div className="lg:col-span-3 space-y-6 md:space-y-8">
                       <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl">
                         <div className="flex items-center justify-between mb-8">
                           <div>
@@ -2815,6 +4118,72 @@ const AdminTeamDashboard = () => {
                         </div>
                       </section>
 
+                      {/* Hobbies & Interests Section */}
+                      <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+                        <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8">
+                          <Heart className="text-brand-pink" size={28} />
+                          <h2 className="text-2xl font-black tracking-tight uppercase">
+                            Hobbies & Interests
+                          </h2>
+                        </div>
+
+                        <div className="space-y-6">
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                              Add Hobby (Press Enter)
+                            </label>
+                            <input
+                              type="text"
+                              value={hobbyInput}
+                              onChange={(e) => setHobbyInput(e.target.value)}
+                              onKeyDown={handleHobbyAdd}
+                              placeholder="e.g. GAMING, HIKING, TRAVELING"
+                              className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:border-brand-pink outline-none transition-all font-medium"
+                            />
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {(!editingMember.hobbies || editingMember.hobbies.length === 0) ? (
+                              <p className="text-xs text-white/30 italic">No hobbies added yet.</p>
+                            ) : (
+                              editingMember.hobbies.map((hobby) => (
+                                <motion.span
+                                  layout
+                                  key={hobby}
+                                  className="flex items-center gap-2 px-4 py-2 bg-brand-pink/10 border border-brand-pink/20 rounded-xl text-[10px] font-black text-brand-pink uppercase tracking-widest"
+                                >
+                                  {hobby}
+                                  <button
+                                    type="button"
+                                    onClick={() => removeHobby(hobby)}
+                                    className="hover:text-white transition-colors opacity-60 hover:opacity-100"
+                                  >
+                                    <X size={12} />
+                                  </button>
+                                </motion.span>
+                              ))
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex justify-end mt-6">
+                          <button
+                            type="button"
+                            onClick={() => handleSaveSection('hobbies')}
+                            disabled={sectionSaving === 'hobbies'}
+                            className="px-5 py-3 bg-brand-pink text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2"
+                          >
+                            {sectionSaving === 'hobbies' ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Save className="w-4 h-4" />
+                            )}
+                            Save
+                          </button>
+                        </div>
+                      </section>
+
+
+
                       <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl">
                         <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8">
                           <Tag className="text-brand-pink" size={28} />
@@ -2879,34 +4248,509 @@ const AdminTeamDashboard = () => {
                         </div>
                       </section>
 
-                      <div className="flex gap-4 pt-4 w-full">
+                      {/* Clients Handled Section */}
+                      <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+                        <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8 justify-between">
+                          <div className="flex items-center gap-3">
+                            <Briefcase className="text-brand-pink" size={28} />
+                            <h2 className="text-2xl font-black tracking-tight uppercase">
+                              Clients Handled
+                            </h2>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={handleEditClientFieldAdd}
+                            className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2 animate-pulse hover:animate-none"
+                          >
+                            <Plus size={14} /> + Add Client
+                          </button>
+                        </div>
+
+                        <div className="space-y-6">
+                          {(!editingMember.clients || editingMember.clients.length === 0) ? (
+                            <p className="text-sm text-white/30 text-center py-6 font-medium italic">
+                              No clients added yet. Click "+ Add Client" to link client portfolios.
+                            </p>
+                          ) : (
+                            <div className="grid grid-cols-1 gap-4">
+                              {(editingMember.clients || []).map((client, idx) => (
+                                <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-4 relative group/item">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleEditClientFieldRemove(idx)}
+                                    className="absolute top-4 right-4 text-white/30 hover:text-[#ff3358] transition-colors p-1"
+                                  >
+                                    <X size={16} />
+                                  </button>
+
+                                  <div className="space-y-2">
+                                    <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                      Client Name *
+                                    </label>
+                                    <input
+                                      type="text"
+                                      required
+                                      value={client.name}
+                                      onChange={(e) => handleEditClientFieldChange(idx, "name", e.target.value)}
+                                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                      placeholder="e.g. Nike, Google, Ajnora"
+                                    />
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex justify-end mt-6">
+                          <button
+                            type="button"
+                            onClick={() => handleSaveSection('clients')}
+                            disabled={sectionSaving === 'clients'}
+                            className="px-5 py-3 bg-brand-pink text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2"
+                          >
+                            {sectionSaving === 'clients' ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Save className="w-4 h-4" />
+                            )}
+                            Save
+                          </button>
+                        </div>
+                      </section>
+
+                      {/* Event Portal Section */}
+                      <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+                        <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8 justify-between">
+                          <div className="flex items-center gap-3">
+                            <Calendar className="text-brand-pink" size={28} />
+                            <h2 className="text-2xl font-black tracking-tight uppercase">
+                              Event Portal
+                            </h2>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={handleEditEventFieldAdd}
+                            className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2 animate-pulse hover:animate-none"
+                          >
+                            + Add Event
+                          </button>
+                        </div>
+
+                        <div className="space-y-6">
+                          {(!editingMember.events || editingMember.events.length === 0) ? (
+                            <p className="text-sm text-white/30 text-center py-6 font-medium italic">
+                              No events added yet. Click "+ Add Event" to publish schedule.
+                            </p>
+                          ) : (
+                            <div className="grid grid-cols-1 gap-6">
+                              {(editingMember.events || []).map((evt, idx) => (
+                                <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative group/item">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleEditEventFieldRemove(idx)}
+                                    className="absolute top-4 right-4 text-white/30 hover:text-[#ff3358] transition-colors p-1"
+                                  >
+                                    <X size={16} />
+                                  </button>
+
+                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div className="space-y-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Day/Date *
+                                      </label>
+                                      <input
+                                        type="text"
+                                        required
+                                        value={evt.date}
+                                        onChange={(e) => handleEditEventFieldChange(idx, "date", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                        placeholder="e.g. 24"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Month Abbreviation *
+                                      </label>
+                                      <input
+                                        type="text"
+                                        required
+                                        value={evt.month}
+                                        onChange={(e) => handleEditEventFieldChange(idx, "month", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                        placeholder="e.g. OCT"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Color Category
+                                      </label>
+                                      <select
+                                        value={evt.category || "purple"}
+                                        onChange={(e) => handleEditEventFieldChange(idx, "category", e.target.value)}
+                                        className="w-full bg-[#16161a] border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold appearance-none"
+                                      >
+                                        <option value="purple">Purple</option>
+                                        <option value="yellow">Yellow</option>
+                                        <option value="red">Red</option>
+                                        <option value="green">Green</option>
+                                      </select>
+                                    </div>
+
+                                    <div className="space-y-2 md:col-span-3">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Event Title *
+                                      </label>
+                                      <input
+                                        type="text"
+                                        required
+                                        value={evt.title}
+                                        onChange={(e) => handleEditEventFieldChange(idx, "title", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                        placeholder="e.g. Hackathon Kickoff"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2 md:col-span-3">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Details
+                                      </label>
+                                      <textarea
+                                        value={evt.details || ""}
+                                        onChange={(e) => handleEditEventFieldChange(idx, "details", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white h-20 resize-none"
+                                        placeholder="Provide short details about this event..."
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex justify-end mt-6">
+                          <button
+                            type="button"
+                            onClick={() => handleSaveSection('events')}
+                            disabled={sectionSaving === 'events'}
+                            className="px-5 py-3 bg-brand-pink text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2"
+                          >
+                            {sectionSaving === 'events' ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Save className="w-4 h-4" />
+                            )}
+                            Save
+                          </button>
+                        </div>
+                      </section>
+
+                      {/* Innovation Feed Section */}
+                      <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+                        <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8 justify-between">
+                          <div className="flex items-center gap-3">
+                            <Sparkles className="text-brand-pink" size={28} />
+                            <h2 className="text-2xl font-black tracking-tight uppercase">
+                              Innovation Feed
+                            </h2>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={handleEditInnovationFieldAdd}
+                            className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2 animate-pulse hover:animate-none"
+                          >
+                            + Add Entry
+                          </button>
+                        </div>
+
+                        <div className="space-y-6">
+                          {(!editingMember.innovations || editingMember.innovations.length === 0) ? (
+                            <p className="text-sm text-white/30 text-center py-6 font-medium italic">
+                              No innovation feed entries added yet. Click "+ Add Entry" to add innovations.
+                            </p>
+                          ) : (
+                            <div className="grid grid-cols-1 gap-6">
+                              {(editingMember.innovations || []).map((inn, idx) => (
+                                <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative group/item">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleEditInnovationFieldRemove(idx)}
+                                    className="absolute top-4 right-4 text-white/30 hover:text-[#ff3358] transition-colors p-1"
+                                  >
+                                    <X size={16} />
+                                  </button>
+
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Type
+                                      </label>
+                                      <select
+                                        value={inn.type || "INNOVATION"}
+                                        onChange={(e) => handleEditInnovationFieldChange(idx, "type", e.target.value)}
+                                        className="w-full bg-[#16161a] border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold appearance-none"
+                                      >
+                                        <option value="INNOVATION">Innovation</option>
+                                        <option value="CASE STUDY">Case Study</option>
+                                        <option value="INSIGHT">Insight</option>
+                                      </select>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Date
+                                      </label>
+                                      <input
+                                        type="text"
+                                        value={inn.date || ""}
+                                        onChange={(e) => handleEditInnovationFieldChange(idx, "date", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                        placeholder="e.g. May 2026"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2 md:col-span-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Title *
+                                      </label>
+                                      <input
+                                        type="text"
+                                        required
+                                        value={inn.title || ""}
+                                        onChange={(e) => handleEditInnovationFieldChange(idx, "title", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                        placeholder="e.g. Next-Gen AI Agent Framework"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2 md:col-span-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Content / Description *
+                                      </label>
+                                      <textarea
+                                        required
+                                        value={inn.content || ""}
+                                        onChange={(e) => handleEditInnovationFieldChange(idx, "content", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white h-24 resize-none"
+                                        placeholder="Provide description of this innovation entry..."
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2 md:col-span-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Attachment Link / URL
+                                      </label>
+                                      <input
+                                        type="text"
+                                        value={inn.url || ""}
+                                        onChange={(e) => handleEditInnovationFieldChange(idx, "url", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
+                                        placeholder="e.g. https://github.com/... or https://medium.com/..."
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex justify-end mt-6">
+                          <button
+                            type="button"
+                            onClick={() => handleSaveSection('innovations')}
+                            disabled={sectionSaving === 'innovations'}
+                            className="px-5 py-3 bg-brand-pink text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2"
+                          >
+                            {sectionSaving === 'innovations' ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Save className="w-4 h-4" />
+                            )}
+                            Save
+                          </button>
+                        </div>
+                      </section>
+
+                      {/* Work Showcase Section */}
+                      <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl mt-8">
+                        <div className="flex items-center justify-between mb-8 border-b border-white/10 pb-6">
+                          <div className="flex items-center gap-3">
+                            <Layout className="text-[#ff3358] w-6 h-6" />
+                            <h3 className="text-lg font-black tracking-tight uppercase">WORK SHOWCASE</h3>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={handleEditWorkShowcaseFieldAdd}
+                            className="px-4 py-2 bg-brand-pink/10 hover:bg-brand-pink/20 border border-brand-pink/20 rounded-xl text-xs font-bold text-brand-pink transition-all flex items-center gap-2 animate-pulse hover:animate-none"
+                          >
+                            + Add Showcase
+                          </button>
+                        </div>
+
+                        <div className="space-y-6">
+                          {(!editingMember.workShowcase || editingMember.workShowcase.length === 0) ? (
+                            <p className="text-sm text-white/30 text-center py-6 font-medium italic">
+                              No work showcase entries added yet. Click "+ Add Showcase" to add items.
+                            </p>
+                          ) : (
+                            <div className="grid grid-cols-1 gap-6">
+                              {(editingMember.workShowcase || []).map((work, idx) => (
+                                <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative group/item">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleEditWorkShowcaseFieldRemove(idx)}
+                                    className="absolute top-4 right-4 text-white/30 hover:text-[#ff3358] transition-colors p-1"
+                                  >
+                                    <X size={16} />
+                                  </button>
+
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Category (e.g. CONTENT CAMPAIGN)
+                                      </label>
+                                      <input
+                                        type="text"
+                                        required
+                                        value={work.category || ""}
+                                        onChange={(e) => handleEditWorkShowcaseFieldChange(idx, "category", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                        placeholder="e.g. CONTENT CAMPAIGN"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Title *
+                                      </label>
+                                      <input
+                                        type="text"
+                                        required
+                                        value={work.title || ""}
+                                        onChange={(e) => handleEditWorkShowcaseFieldChange(idx, "title", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                        placeholder="e.g. E-Commerce Brand Growth"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2 md:col-span-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Website Link (Optional - for Developers)
+                                      </label>
+                                      <input
+                                        type="text"
+                                        value={work.link || ""}
+                                        onChange={(e) => handleEditWorkShowcaseFieldChange(idx, "link", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
+                                        placeholder="e.g. https://myproject.com"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2 md:col-span-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">
+                                        Content / Description *
+                                      </label>
+                                      <textarea
+                                        required
+                                        value={work.description || ""}
+                                        onChange={(e) => handleEditWorkShowcaseFieldChange(idx, "description", e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white h-24 resize-none"
+                                        placeholder="Provide description of this showcase entry..."
+                                      />
+                                    </div>
+
+                                    {/* Upload Showcase Images */}
+                                    <div className="space-y-2 md:col-span-2">
+                                      <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1 block">
+                                        Showcase Images (Max 3, Square placeholders)
+                                      </label>
+                                      <div className="grid grid-cols-3 gap-4">
+                                        {(work.images || []).map((imgUrl, imgIdx) => (
+                                          <div key={imgIdx} className="relative aspect-square bg-white/5 border border-white/10 rounded-2xl overflow-hidden group">
+                                            <img src={imgUrl} className="w-full h-full object-cover" alt="" />
+                                            <button
+                                              type="button"
+                                              onClick={() => {
+                                                const newImages = work.images.filter((_, i) => i !== imgIdx);
+                                                handleEditWorkShowcaseFieldChange(idx, "images", newImages);
+                                              }}
+                                              className="absolute top-2 right-2 p-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                                            >
+                                              <X size={12} />
+                                            </button>
+                                          </div>
+                                        ))}
+                                        {(!work.images || work.images.length < 3) && (
+                                          <div className="aspect-square bg-white/5 border border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center relative hover:bg-white/[0.08] transition-all">
+                                            <label className="flex flex-col items-center gap-2 text-white/30 hover:text-white/60 transition-colors cursor-pointer w-full h-full justify-center">
+                                              <Upload size={20} />
+                                              <span className="text-[8px] font-black tracking-widest uppercase text-center">Upload Square</span>
+                                              <input
+                                                type="file"
+                                                accept="image/*"
+                                                className="hidden"
+                                                onChange={(e) => handleWorkShowcaseImageUpload(e, idx, true)}
+                                              />
+                                            </label>
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex justify-end mt-6">
+                          <button
+                            type="button"
+                            onClick={() => handleSaveSection('workShowcase')}
+                            disabled={sectionSaving === 'workShowcase'}
+                            className="px-5 py-3 bg-brand-pink text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2"
+                          >
+                            {sectionSaving === 'workShowcase' ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Save className="w-4 h-4" />
+                            )}
+                            Save
+                          </button>
+                        </div>
+                      </section>
+
+                      {/* Action Buttons */}
+                      <div className="flex flex-col gap-2.5 lg:col-span-3">
                         <button
                           type="button"
                           onClick={() => {
                             handleDeleteMember(editingMember._id, editingMember.name);
                             setEditingMember(null);
                           }}
-                          className="flex-1 bg-red-500/10 hover:bg-red-500 border border-red-500/20 hover:border-red-500 text-red-500 hover:text-white py-6 rounded-[2rem] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+                          className="w-full bg-red-500/10 hover:bg-red-500 border border-red-500/20 hover:border-red-500 text-red-500 hover:text-white py-2.5 md:py-3 rounded-lg font-bold text-xs md:text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-2"
                         >
-                          <Trash2 className="w-5 h-5" />
+                          <Trash2 className="w-4 h-4" />
                           Delete
                         </button>
                         <button
                           type="submit"
                           disabled={saving}
-                          className="flex-[2] bg-brand-pink text-white py-6 rounded-[2rem] font-black uppercase tracking-widest hover:bg-white hover:text-brand-pink shadow-[0_20px_40px_rgba(255,51,88,0.3)] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                          className="w-full bg-brand-pink text-white py-2.5 md:py-3 rounded-lg font-bold text-xs md:text-sm uppercase tracking-widest hover:bg-white hover:text-brand-pink shadow-[0_10px_30px_rgba(255,51,88,0.2)] transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                         >
                           {saving ? (
-                            <Loader2 className="w-5 h-5 animate-spin" />
+                            <Loader2 className="w-4 h-4 animate-spin" />
                           ) : (
-                            <Save className="w-5 h-5" />
+                            <Save className="w-4 h-4" />
                           )}
-                          Save Changes
+                          Save
                         </button>
                         <button
                           type="button"
                           onClick={() => setEditingMember(null)}
-                          className="flex-1 bg-white/5 hover:bg-white/10 text-white py-6 rounded-[2rem] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+                          className="w-full bg-white/5 hover:bg-white/10 text-white py-2.5 md:py-3 rounded-lg font-bold text-xs md:text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-2"
                         >
                           Cancel
                         </button>

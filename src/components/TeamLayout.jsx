@@ -146,7 +146,7 @@ export default function TeamLayout() {
                 <div className="absolute inset-0 bg-white/95 backdrop-blur-md opacity-0 translate-y-10 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 rounded-2xl flex flex-col">
                   <div
                     className="h-30 w-full bg-cover bg-center rounded-t-2xl"
-                    style={{ backgroundImage: `url(${profile.coverImage})` }}
+                    style={{ backgroundImage: `url(${(profile.coverImage && !profile.coverImage.includes('dtwcgfmar')) ? profile.coverImage : 'https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/TeamPage/syudjvadmoda2nj1albg.png'})` }}
                   ></div>
                   <div className="flex flex-col items-center text-center p-4 flex-grow">
                     <div className="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center -mt-10 mb-3 border-4 border-white shadow-md">

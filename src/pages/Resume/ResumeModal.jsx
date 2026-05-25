@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
     X, Download, Mail, Phone, Linkedin, Globe,
     Briefcase, GraduationCap, Star, FolderOpen,
-    Award, Languages, User, Sparkles, Github, MapPin
+    Award, Languages, User, Sparkles, Github, MapPin,
+    Loader2
 } from 'lucide-react';
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -10,10 +11,93 @@ import {
    ──────────────────────────────────────────────────────────────────────────── */
 const ResumeModal = ({ data, onClose }) => {
     const resumeRef = useRef(null);
+    const [isGenerating, setIsGenerating] = useState(false);
 
-    const handleDownloadPDF = () => {
-        // We use native print. The browser's "Save as PDF" will preserve clickable links and selectable text perfectly.
-        window.print();
+    useEffect(() => {
+        // Prevent background page from scrolling
+        const originalStyle = window.getComputedStyle(document.body).overflow;
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = originalStyle;
+        };
+    }, []);
+
+    const handleDownloadPDF = async () => {
+        if (!resumeRef.current) return;
+        setIsGenerating(true);
+        const fileName = data?.personalInfo?.name || 'Portfolio';
+        try {
+            // Lazy load libraries for premium loading speed and bulletproof compatibility
+            const domtoimage = (await import('dom-to-image')).default;
+            const { jsPDF } = await import('jspdf');
+
+            const node = resumeRef.current;
+            
+            // Temporarily force desktop print dimensions to keep exact scaling on mobile downloads
+            const originalStyleWidth = node.style.width;
+            const originalStyleMinHeight = node.style.minHeight;
+            node.style.width = '820px';
+            node.style.minHeight = '1160px';
+
+            const scale = 2; // For ultra-sharp, professional text rendering in the PDF
+            const originalWidth = 820;
+            const originalHeight = node.offsetHeight;
+
+            // Render high-fidelity PNG with exact dimensions, clearing margins to prevent shifting/cropping in PDF
+            const dataUrl = await domtoimage.toPng(node, {
+                bgcolor: '#ffffff',
+                width: originalWidth * scale,
+                height: originalHeight * scale,
+                style: {
+                    margin: '0',
+                    transform: `scale(${scale})`,
+                    transformOrigin: 'top left',
+                    width: '820px',
+                    height: `${originalHeight}px`,
+                }
+            });
+
+            // Restore style changes immediately
+            node.style.width = originalStyleWidth;
+            node.style.minHeight = originalStyleMinHeight;
+
+            // Create standard A4 document (210mm x 297mm)
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4',
+                compress: true
+            });
+
+            const imgProps = pdf.getImageProperties(dataUrl);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+
+            // Calculate dimensions to fit the entire portfolio perfectly on a single, high-fidelity A4 page
+            const ratio = imgProps.width / imgProps.height;
+            let finalWidth = pdfWidth;
+            let finalHeight = pdfWidth / ratio;
+
+            // If the content height exceeds A4 height, scale it down to fit perfectly
+            if (finalHeight > pdfHeight) {
+                finalHeight = pdfHeight;
+                finalWidth = pdfHeight * ratio;
+            }
+
+            // Center the portfolio horizontally and vertically on the A4 page
+            const xOffset = (pdfWidth - finalWidth) / 2;
+            const yOffset = (pdfHeight - finalHeight) / 2;
+
+            pdf.addImage(dataUrl, 'PNG', xOffset, yOffset, finalWidth, finalHeight, undefined, 'FAST');
+
+            const formattedName = `${fileName.replace(/\s+/g, '_')}_Portfolio.pdf`;
+            pdf.save(formattedName);
+        } catch (error) {
+            console.error('Failed to generate direct PDF, falling back to browser print:', error);
+            window.print();
+        } finally {
+            setIsGenerating(false);
+        }
     };
 
 
@@ -45,8 +129,17 @@ const ResumeModal = ({ data, onClose }) => {
                 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
                 
                 @media print {
-                    body > *:not(#resume-print-root) { display: none !important; }
-                    #resume-print-root { display: block !important; position: static !important; padding: 0 !important; margin: 0 !important; background: white !important; }
+                    body * { visibility: hidden !important; }
+                    #resume-print-root, #resume-print-root * { visibility: visible !important; }
+                    #resume-print-root {
+                        position: absolute !important;
+                        left: 0 !important;
+                        top: 0 !important;
+                        width: 100% !important;
+                        background: white !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
+                    }
                     .no-print { display: none !important; }
                     .resume-page {
                         box-shadow: none !important;
@@ -64,24 +157,35 @@ const ResumeModal = ({ data, onClose }) => {
 
             <div
                 id="resume-print-root"
-                className="fixed inset-0 z-50 bg-slate-900/90 backdrop-blur-md flex items-start justify-center overflow-y-auto py-10 px-4 font-inter"
+                data-lenis-prevent
+                className="fixed inset-0 z-[9999] bg-slate-900/90 backdrop-blur-md flex items-start justify-center overflow-y-auto py-4 md:py-10 px-2 md:px-4 font-inter"
                 onClick={(e) => e.target === e.currentTarget && onClose()}
             >
                 {/* Action Buttons */}
-                <div className="no-print fixed top-6 right-8 flex gap-3 z-[60]">
+                <div className="no-print fixed top-4 right-4 md:top-6 md:right-8 flex gap-2 md:gap-3 z-[10000]">
                     <button
                         onClick={handleDownloadPDF}
-                        className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-medium px-6 py-2.5 rounded-full shadow-lg shadow-blue-500/25 transition-all outline-none"
-                        title="Click to print or save as PDF (preserves links!)"
+                        disabled={isGenerating}
+                        className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-medium px-4 md:px-6 py-2 md:py-2.5 rounded-full shadow-lg shadow-blue-500/25 transition-all outline-none disabled:opacity-75 disabled:cursor-not-allowed text-xs md:text-sm"
+                        title="Direct PDF download with original layouts"
                     >
-                        <Download className="w-5 h-5" />
-                        Save as PDF
+                        {isGenerating ? (
+                            <>
+                                <Loader2 className="w-4 h-4 md:w-5 md:h-5 animate-spin" />
+                                Downloading...
+                            </>
+                        ) : (
+                            <>
+                                <Download className="w-4 h-4 md:w-5 md:h-5" />
+                                <span className="hidden sm:inline">Save as </span>PDF
+                            </>
+                        )}
                     </button>
                     <button
                         onClick={onClose}
-                        className="p-2.5 bg-white/10 hover:bg-white/20 rounded-full text-white transition-all backdrop-blur-md"
+                        className="p-2 md:p-2.5 bg-white/10 hover:bg-white/20 rounded-full text-white transition-all backdrop-blur-md"
                     >
-                        <X className="w-6 h-6" />
+                        <X className="w-5 h-5 md:w-6 md:h-6" />
                     </button>
                 </div>
 
@@ -91,18 +195,18 @@ const ResumeModal = ({ data, onClose }) => {
                     className="resume-page bg-white text-slate-800 w-full max-w-[820px] shadow-2xl overflow-hidden print:w-[210mm] print:min-h-[297mm] mx-auto"
                 >
                     {/* ── Premium Header ───────────────────────────────────── */}
-                    <header className="px-12 pt-14 pb-8 border-b-[6px] border-slate-900">
+                    <header className="px-6 md:px-12 pt-8 md:pt-14 pb-6 md:pb-8 border-b-[6px] border-slate-900">
                         <div className="flex flex-col items-center text-center">
-                            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-2 uppercase">
+                            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-slate-900 mb-2 uppercase">
                                 {name || 'Your Name'}
                             </h1>
                             {(title || jdRole) && (
-                                <p className="text-lg text-indigo-700 font-semibold tracking-widest uppercase mb-5">
+                                <p className="text-sm md:text-lg text-indigo-700 font-semibold tracking-widest uppercase mb-4 md:mb-5">
                                     {title || jdRole}
                                 </p>
                             )}
 
-                            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-slate-600 font-medium w-full max-w-2xl">
+                            <div className="flex flex-wrap justify-center gap-x-4 md:gap-x-6 gap-y-2 text-xs md:text-sm text-slate-600 font-medium w-full max-w-2xl">
                                 {email && (
                                     <a href={`mailto:${email}`} className="flex items-center gap-1.5 shrink-0 text-indigo-600 hover:underline">
                                         <Mail className="w-4 h-4 text-indigo-500" />
@@ -138,7 +242,7 @@ const ResumeModal = ({ data, onClose }) => {
                     </header>
 
                     {/* ── Body ─────────────────────────────────────────────── */}
-                    <div className="px-12 py-10 space-y-8">
+                    <div className="px-6 md:px-12 py-6 md:py-10 space-y-6 md:space-y-8">
 
                         {/* ── JD Suggested Skills Banner ───────────────── */}
                         {suggestedSkills.length > 0 && (
@@ -278,7 +382,7 @@ const ResumeModal = ({ data, onClose }) => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 {allSkills.length > 0 && (
                                     <Section title="Technical Skills">
-                                        <div className="grid grid-cols-2 gap-y-3 gap-x-4">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 md:gap-y-3 gap-x-4">
                                             {allSkills.map((skill, i) => {
                                                 const isSuggested = suggestedSkills.includes(skill) && !skills.includes(skill);
                                                 return (
@@ -297,7 +401,7 @@ const ResumeModal = ({ data, onClose }) => {
 
                                 {softSkills.length > 0 && (
                                     <Section title="Soft Skills">
-                                        <div className="grid grid-cols-2 gap-y-3 gap-x-4">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 md:gap-y-3 gap-x-4">
                                             {softSkills.map((skill, i) => (
                                                 <span key={i} className="text-[13.5px] font-semibold text-slate-700 flex items-center gap-2">
                                                     <div className="w-1.5 h-1.5 bg-slate-400 rounded-full" />
@@ -327,7 +431,7 @@ const ResumeModal = ({ data, onClose }) => {
                     </div>
 
                     {/* ── Footer ───────────────────────────────────────────── */}
-                    <footer className="px-12 pb-8 pt-4">
+                    <footer className="px-6 md:px-12 pb-6 md:pb-8 pt-2 md:pt-4">
                         <div className="border-t-[3px] border-slate-100 pt-4 flex justify-between items-center text-slate-400">
                             <p className="text-[10px] font-bold uppercase tracking-widest shrink-0">
                                 ATS-Optimized Format
