@@ -206,7 +206,6 @@ const Partnership = () => {
     "Media",
   ];
   const activeHeroItem = heroItems[activeHeroIndex] || portfolioData[0];
-  // Filter logic
   const filteredData = useMemo(() => {
     return portfolioData.filter((item) => {
       const matchesCategory =
