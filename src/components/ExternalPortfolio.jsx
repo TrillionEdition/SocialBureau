@@ -480,6 +480,20 @@ const blogs = [
     image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT_Image_Apr_17_2026_04_27_00_PM_1_rkmruq.png",
     link: "https://looplogik.wordpress.com/2026/03/14/beyond-eco-living-an-excerpt",
   },
+  {
+    id: 15,
+    title: "The Old Harbour Hotel / Better Interiors",
+    category: "communication design",
+    image: "https://looplogik.wordpress.com/wp-content/uploads/2026/05/mg_1363.jpg",
+    link: "https://looplogik.wordpress.com/2026/05/23/the-old-harbour-hotel-better-interiors/",
+  },
+  {
+    id: 14,
+    title: "BKayaloram Lake Resort -The Mir Group",
+    category: "Travel marketing collateral",
+    image: "https://looplogik.wordpress.com/wp-content/uploads/2026/05/mg_4564-edit-x.jpg?w=1024",
+    link: "https://looplogik.wordpress.com/2026/05/23/kayaloram-lake-resort-the-mir-group/",
+  },
 ];
 
 function LatestBlogs() {
@@ -1143,7 +1157,7 @@ const videosData = [
   },
   {
     id: 2,
-    title: "Breathe from Ranjit Chettur",
+    title: "Breathe from  Chettur",
     youtubeId: "https://vimeo.com/1095219209?fl=pl&fe=vl",
     category: "Documentary",
     duration: "12:15",

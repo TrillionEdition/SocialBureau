@@ -93,7 +93,7 @@ export default function BookSessionModal({ onClose, partnerName, partnerEmail })
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
         {/* Backdrop Blur Overlay */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -109,7 +109,7 @@ export default function BookSessionModal({ onClose, partnerName, partnerEmail })
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
           transition={{ type: "spring", damping: 25, stiffness: 350 }}
-          className="relative w-full max-w-xl bg-gradient-to-b from-[#1c0f2e] to-[#0c0415] border border-white/10 rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden z-10"
+          className="relative w-full max-w-xl max-h-[100dvh] sm:max-h-[90dvh] bg-gradient-to-b from-[#1c0f2e] to-[#0c0415] border border-white/10 rounded-t-[24px] sm:rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-y-auto overflow-x-hidden z-10"
         >
           {/* Subtle Accent Glows */}
           <div className="absolute top-0 left-1/4 w-1/2 h-[2px] bg-gradient-to-r from-transparent via-[#ff3358] to-transparent opacity-60" />
@@ -119,22 +119,22 @@ export default function BookSessionModal({ onClose, partnerName, partnerEmail })
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 p-2 rounded-full border border-white/5 bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-all z-20"
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 rounded-full border border-white/5 bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-all z-20"
           >
             <X className="w-4 h-4" />
           </button>
 
           {!successData ? (
             /* Booking Form */
-            <form onSubmit={handleSubmit} className="p-8 md:p-10 select-none">
-              <div className="mb-6 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-[#ff3358] animate-pulse" />
-                <h3 className="text-xl font-bold uppercase tracking-wider text-white font-display">
+            <form onSubmit={handleSubmit} className="p-5 sm:p-8 md:p-10 select-none">
+              <div className="mb-4 sm:mb-6 flex items-center gap-2 pr-8">
+                <Sparkles className="w-5 h-5 text-[#ff3358] animate-pulse shrink-0" />
+                <h3 className="text-lg sm:text-xl font-bold uppercase tracking-wider text-white font-display">
                   Book a Session
                 </h3>
               </div>
 
-              <p className="text-xs text-gray-400 font-medium mb-8 uppercase tracking-widest leading-relaxed">
+              <p className="text-[10px] sm:text-xs text-gray-400 font-medium mb-5 sm:mb-8 uppercase tracking-widest leading-relaxed">
                 Schedule a 1-on-1 strategic session with <span className="text-white font-bold">{partnerName}</span> to discuss your projects, API architectures, or marketing strategy.
               </p>
 
@@ -151,9 +151,9 @@ export default function BookSessionModal({ onClose, partnerName, partnerEmail })
                 </motion.div>
               )}
 
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Inputs Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
                   {/* Visitor Name */}
                   <div className="flex flex-col gap-2">
                     <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-1.5">
@@ -165,7 +165,7 @@ export default function BookSessionModal({ onClose, partnerName, partnerEmail })
                       placeholder="e.g. John Doe"
                       value={userName}
                       onChange={(e) => setUserName(e.target.value)}
-                      className="bg-black/40 border border-white/10 hover:border-white/20 focus:border-[#ff3358]/50 text-white rounded-xl px-4 py-3 text-sm font-semibold outline-none transition-all placeholder:text-gray-600 focus:shadow-[0_0_15px_rgba(255,51,88,0.1)]"
+                      className="bg-black/40 border border-white/10 hover:border-white/20 focus:border-[#ff3358]/50 text-white rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm font-semibold outline-none transition-all placeholder:text-gray-600 focus:shadow-[0_0_15px_rgba(255,51,88,0.1)]"
                     />
                   </div>
 
@@ -180,7 +180,7 @@ export default function BookSessionModal({ onClose, partnerName, partnerEmail })
                       placeholder="e.g. john@example.com"
                       value={userEmail}
                       onChange={(e) => setUserEmail(e.target.value)}
-                      className="bg-black/40 border border-white/10 hover:border-white/20 focus:border-purple-500/50 text-white rounded-xl px-4 py-3 text-sm font-semibold outline-none transition-all placeholder:text-gray-600 focus:shadow-[0_0_15px_rgba(168,85,247,0.1)]"
+                      className="bg-black/40 border border-white/10 hover:border-white/20 focus:border-purple-500/50 text-white rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm font-semibold outline-none transition-all placeholder:text-gray-600 focus:shadow-[0_0_15px_rgba(168,85,247,0.1)]"
                     />
                   </div>
                 </div>
@@ -190,14 +190,14 @@ export default function BookSessionModal({ onClose, partnerName, partnerEmail })
                   <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
                     Select Strategic Service
                   </label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                     {services.map((service) => {
                       const isSelected = selectedService === service.name;
                       return (
                         <div
                           key={service.id}
                           onClick={() => setSelectedService(service.name)}
-                          className={`p-4 rounded-2xl border transition-all cursor-pointer select-none flex flex-col gap-1 ${
+                          className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all cursor-pointer select-none flex flex-col gap-1 ${
                             isSelected
                               ? "bg-[#ff3358]/5 border-[#ff3358] shadow-[0_0_15px_rgba(255,51,88,0.15)]"
                               : "bg-black/30 border-white/5 hover:border-white/10 hover:bg-white/2"
@@ -232,24 +232,24 @@ export default function BookSessionModal({ onClose, partnerName, partnerEmail })
                     required
                     value={userDate}
                     onChange={(e) => setUserDate(e.target.value)}
-                    className="bg-black/40 border border-white/10 hover:border-white/20 focus:border-blue-500/50 text-white rounded-xl px-4 py-3 text-sm font-semibold outline-none transition-all focus:shadow-[0_0_15px_rgba(59,130,246,0.1)] scheme-dark"
+                    className="bg-black/40 border border-white/10 hover:border-white/20 focus:border-blue-500/50 text-white rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm font-semibold outline-none transition-all focus:shadow-[0_0_15px_rgba(59,130,246,0.1)] scheme-dark"
                   />
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="mt-8 flex justify-end gap-3 border-t border-white/5 pt-6">
+              <div className="mt-5 sm:mt-8 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 border-t border-white/5 pt-4 sm:pt-6">
                 <button
                   type="button"
                   onClick={onClose}
-                  className="bg-white/5 hover:bg-white/10 text-gray-400 border border-white/5 px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all"
+                  className="bg-white/5 hover:bg-white/10 text-gray-400 border border-white/5 px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all w-full sm:w-auto"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-[#ff3358] hover:bg-[#e02447] disabled:opacity-50 text-white px-8 py-3 rounded-xl text-xs font-bold uppercase tracking-[0.15em] transition-all flex items-center gap-2 shadow-lg shadow-red-500/20 active:scale-95"
+                  className="bg-[#ff3358] hover:bg-[#e02447] disabled:opacity-50 text-white px-8 py-3 rounded-xl text-xs font-bold uppercase tracking-[0.15em] transition-all flex items-center justify-center gap-2 shadow-lg shadow-red-500/20 active:scale-95 w-full sm:w-auto"
                 >
                   {loading ? (
                     <>
@@ -269,7 +269,7 @@ export default function BookSessionModal({ onClose, partnerName, partnerEmail })
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="p-8 md:p-10 text-center select-none"
+              className="p-5 sm:p-8 md:p-10 text-center select-none"
             >
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-500/20 to-emerald-500/5 border border-green-500/30 flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(34,197,94,0.15)] animate-bounce">
                 <Calendar className="w-8 h-8 text-green-400" />
