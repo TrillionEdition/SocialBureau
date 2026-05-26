@@ -94,6 +94,11 @@ const AdminTeamDashboard = () => {
       instagram: "",
       twitter: "",
     },
+    consultations: {
+      price30Min: "",
+      price60Min: "",
+      priceFullDay: "",
+    },
     isPublic: false,
     clickupId: "",
     rate: "",
@@ -737,6 +742,11 @@ const AdminTeamDashboard = () => {
             instagram: "",
             twitter: "",
           },
+          consultations: member.consultations || {
+            price30Min: "",
+            price60Min: "",
+            priceFullDay: "",
+          },
         });
       }
     } catch (err) {
@@ -756,6 +766,14 @@ const AdminTeamDashboard = () => {
     setEditingMember((prev) => ({
       ...prev,
       socials: { ...prev.socials, [name]: value },
+    }));
+  };
+
+  const handleConsultationChange = (e) => {
+    const { name, value } = e.target;
+    setEditingMember((prev) => ({
+      ...prev,
+      consultations: { ...prev.consultations, [name]: value },
     }));
   };
 
@@ -800,6 +818,14 @@ const AdminTeamDashboard = () => {
     setNewMember((prev) => ({
       ...prev,
       socials: { ...prev.socials, [name]: value },
+    }));
+  };
+
+  const handleNewMemberConsultationChange = (e) => {
+    const { name, value } = e.target;
+    setNewMember((prev) => ({
+      ...prev,
+      consultations: { ...prev.consultations, [name]: value },
     }));
   };
 
@@ -1589,6 +1615,11 @@ const AdminTeamDashboard = () => {
                               instagram: "",
                               twitter: "",
                             },
+                            consultations: member.consultations || {
+                              price30Min: "",
+                              price60Min: "",
+                              priceFullDay: "",
+                            },
                           })
                         }
                         className="p-3 bg-white/5 rounded-xl hover:bg-[#ff3358] hover:text-white transition-all text-white/40"
@@ -2130,6 +2161,60 @@ const AdminTeamDashboard = () => {
                         onChange={handleNewMemberSocialChange}
                         className="flex-1 bg-white/5 border border-white/10 rounded-xl px-6 py-4 focus:border-brand-pink outline-none transition-all text-sm font-medium"
                         placeholder="Twitter Profile URL"
+                      />
+                    </div>
+                  </div>
+                </section>
+
+                {/* Book Consultation Cost for Add New Employee */}
+                <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl">
+                  <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8">
+                    <Calendar className="text-brand-pink" size={28} />
+                    <h2 className="text-2xl font-black tracking-tight uppercase">
+                      BOOK CONSULTATION COST (₹)
+                    </h2>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-4">
+                      <div className="w-48 text-[11px] font-black text-white/40 uppercase tracking-wider">
+                        30 Min Session Cost
+                      </div>
+                      <input
+                        type="text"
+                        name="price30Min"
+                        value={newMember.consultations?.price30Min || ""}
+                        onChange={handleNewMemberConsultationChange}
+                        className="flex-1 bg-white/5 border border-white/10 rounded-xl px-6 py-4 focus:border-brand-pink outline-none transition-all text-sm font-medium"
+                        placeholder="e.g., ₹500"
+                      />
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                      <div className="w-48 text-[11px] font-black text-white/40 uppercase tracking-wider">
+                        60 Min Session Cost
+                      </div>
+                      <input
+                        type="text"
+                        name="price60Min"
+                        value={newMember.consultations?.price60Min || ""}
+                        onChange={handleNewMemberConsultationChange}
+                        className="flex-1 bg-white/5 border border-white/10 rounded-xl px-6 py-4 focus:border-brand-pink outline-none transition-all text-sm font-medium"
+                        placeholder="e.g., ₹1000"
+                      />
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                      <div className="w-48 text-[11px] font-black text-white/40 uppercase tracking-wider">
+                        Full Day Session Cost
+                      </div>
+                      <input
+                        type="text"
+                        name="priceFullDay"
+                        value={newMember.consultations?.priceFullDay || ""}
+                        onChange={handleNewMemberConsultationChange}
+                        className="flex-1 bg-white/5 border border-white/10 rounded-xl px-6 py-4 focus:border-brand-pink outline-none transition-all text-sm font-medium"
+                        placeholder="e.g., ₹5000"
                       />
                     </div>
                   </div>
@@ -4113,6 +4198,58 @@ const AdminTeamDashboard = () => {
                               onChange={handleSocialChange}
                               className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:border-brand-pink outline-none transition-all font-medium text-sm"
                               placeholder="@handle"
+                            />
+                          </div>
+                        </div>
+                      </section>
+
+                      {/* EDIT FORM Booking Consultation Cost */}
+                      <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl">
+                        <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8">
+                          <Calendar className="text-brand-pink" size={28} />
+                          <h2 className="text-2xl font-black tracking-tight uppercase">
+                            BOOK CONSULTATION COST (₹)
+                          </h2>
+                        </div>
+
+                        <div className="space-y-6">
+                          <div className="space-y-2">
+                            <label className="flex items-center gap-2 text-[10px] font-bold tracking-widest text-white/40 uppercase">
+                              30 Min Strategy Session Cost
+                            </label>
+                            <input
+                              type="text"
+                              name="price30Min"
+                              value={editingMember.consultations?.price30Min || ""}
+                              onChange={handleConsultationChange}
+                              className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:border-brand-pink outline-none transition-all font-medium text-sm"
+                              placeholder="e.g., ₹500"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="flex items-center gap-2 text-[10px] font-bold tracking-widest text-white/40 uppercase">
+                              60 Min Strategy Session Cost
+                            </label>
+                            <input
+                              type="text"
+                              name="price60Min"
+                              value={editingMember.consultations?.price60Min || ""}
+                              onChange={handleConsultationChange}
+                              className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:border-[#ff3358] outline-none transition-all font-medium text-sm"
+                              placeholder="e.g., ₹1000"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="flex items-center gap-2 text-[10px] font-bold tracking-widest text-white/40 uppercase">
+                              Full Day Strategy Session Cost
+                            </label>
+                            <input
+                              type="text"
+                              name="priceFullDay"
+                              value={editingMember.consultations?.priceFullDay || ""}
+                              onChange={handleConsultationChange}
+                              className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:border-brand-pink outline-none transition-all font-medium text-sm"
+                              placeholder="e.g., ₹5000"
                             />
                           </div>
                         </div>

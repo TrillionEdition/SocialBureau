@@ -142,7 +142,6 @@ const Partnership = () => {
   //state
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
   const [activeHeroIndex, setActiveHeroIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
 
@@ -197,7 +196,7 @@ const Partnership = () => {
     fetchDynamicPartners();
   }, []);
 
-  const itemsPerPage = 8;
+  // No pagination: show all filtered items
 
   const categories = [
     "All",
@@ -207,7 +206,6 @@ const Partnership = () => {
     "Media",
   ];
   const activeHeroItem = heroItems[activeHeroIndex] || portfolioData[0];
-  // Filter logic
   const filteredData = useMemo(() => {
     return portfolioData.filter((item) => {
       const matchesCategory =
@@ -219,16 +217,8 @@ const Partnership = () => {
     });
   }, [selectedCategory, searchTerm]);
 
-  // Pagination
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  const startIdx = (currentPage - 1) * itemsPerPage;
-  const paginatedData = filteredData.slice(startIdx, startIdx + itemsPerPage);
-
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage);
-    }
-  };
+  // Render all filtered data (no pagination)
+  const paginatedData = filteredData;
 
   const handleCardClick = (item) => {
     // Navigate immediately without animation
@@ -238,7 +228,6 @@ const Partnership = () => {
   const resetFilters = () => {
     setSelectedCategory("All");
     setSearchTerm("");
-    setCurrentPage(1);
   };
 
   const getStatusColor = (status) => {
@@ -446,7 +435,7 @@ const Partnership = () => {
                 </p>
               </div>
               <div className="text-xs sm:text-sm text-gray-500 whitespace-nowrap">
-                Showing {paginatedData.length} of {filteredData.length}
+                Showing {filteredData.length} partners
               </div>
             </div>
 
@@ -458,10 +447,7 @@ const Partnership = () => {
                   type="text"
                   placeholder="Search projects..."
                   value={searchTerm}
-                  onChange={(e) => {
-                    setSearchTerm(e.target.value);
-                    setCurrentPage(1);
-                  }}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full bg-gray-800 border border-gray-700 rounded-lg pl-10 sm:pl-12 pr-4 py-2 sm:py-3 text-sm sm:text-base text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-lime-300 focus:border-transparent transition-all shadow-sm"
                 />
               </div>
@@ -469,13 +455,10 @@ const Partnership = () => {
 
             {/* Category Filter */}
             <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto pb-2 scrollbar-hide">
-              {categories.map((cat) => (
+                {categories.map((cat) => (
                 <button
                   key={cat}
-                  onClick={() => {
-                    setSelectedCategory(cat);
-                    setCurrentPage(1);
-                  }}
+                  onClick={() => setSelectedCategory(cat)}
                   className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all whitespace-nowrap flex-shrink-0 ${selectedCategory === cat
                     ? "bg-gradient-to-r from-lime-300 to-emerald-400 text-gray-900"
                     : "bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700"
@@ -561,48 +544,7 @@ const Partnership = () => {
             </div>
           )}
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0 border-t border-gray-700 pt-6 sm:pt-8 mb-12">
-              <div className="text-gray-500 text-xs sm:text-sm">
-                Showing page {currentPage} of {totalPages}
-              </div>
-              <div className="flex items-center justify-center sm:justify-end gap-2">
-                <button
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
-                  className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed text-gray-300 transition-all border border-gray-700 hover:border-gray-600"
-                >
-                  <ChevronLeft className="w-4 sm:w-5 h-4 sm:h-5" />
-                </button>
-
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                    (page) => (
-                      <button
-                        key={page}
-                        onClick={() => handlePageChange(page)}
-                        className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg text-xs sm:text-sm font-medium transition-all ${currentPage === page
-                          ? "bg-gradient-to-r from-lime-300 to-emerald-400 text-gray-900"
-                          : "bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700"
-                          }`}
-                      >
-                        {page}
-                      </button>
-                    ),
-                  )}
-                </div>
-
-                <button
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                  className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed text-gray-300 transition-all border border-gray-700 hover:border-gray-600"
-                >
-                  <ChevronRight className="w-4 sm:w-5 h-4 sm:h-5" />
-                </button>
-              </div>
-            </div>
-          )}
+          {/* No pagination controls */}
         </div>
 
         {/* COMMUNITY PORTFOLIOS SECTION (FREE) */}

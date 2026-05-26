@@ -148,7 +148,6 @@ function ConditionalFooter() {
     "/candidate-profile",
     "/team/admin",
     "/team/dashboard",
-    "/team/",
     "/client-portal",
     "/client-login",
     "/client-dashboard",

@@ -37,6 +37,7 @@ const TeamDashboard = () => {
         cardImage: '',
         image1: '',
         tags: [],
+        hobbies: [],
         category: [],
         bgColor: '#ff3358',
         hasBakedText: true,
@@ -44,6 +45,11 @@ const TeamDashboard = () => {
             linkedin: '',
             instagram: '',
             twitter: ''
+        },
+        consultations: {
+            price30Min: '',
+            price60Min: '',
+            priceFullDay: ''
         },
         isPublic: false,
         
@@ -66,9 +72,10 @@ const TeamDashboard = () => {
     });
 
     const [tagInput, setTagInput] = useState('');
+    const [hobbyInput, setHobbyInput] = useState('');
 
     // Inline form states for relational arrays
-    const [toolForm, setToolForm] = useState({ toolName: '', url: '', icon: '', description: '' });
+    const [toolForm, setToolForm] = useState({ toolName: '', level: 85 });
     const [editingToolIndex, setEditingToolIndex] = useState(null);
     const [isAddingTool, setIsAddingTool] = useState(false);
 
@@ -146,8 +153,14 @@ const TeamDashboard = () => {
                         podcasts: userObj.podcasts || [],
                         education: userObj.education || [],
                         certifications: userObj.certifications || [],
+                        hobbies: userObj.hobbies || [],
                         innovations: userObj.innovations || [],
-                        workShowcase: userObj.workShowcase || []
+                        workShowcase: userObj.workShowcase || [],
+                        consultations: {
+                            price30Min: '',
+                            price60Min: '',
+                            priceFullDay: ''
+                        }
                     }));
                 } else {
                     setFormData(prev => ({
@@ -158,6 +171,10 @@ const TeamDashboard = () => {
                         socials: {
                             ...prev.socials,
                             ...(data.socials || {})
+                        },
+                        consultations: {
+                            ...prev.consultations,
+                            ...(data.consultations || {})
                         },
                         department: data.department || userObj.department || '',
                         coverImage: userObj.coverImage || '',
@@ -174,7 +191,7 @@ const TeamDashboard = () => {
                         podcasts: userObj.podcasts || [],
                         education: userObj.education || [],
                         certifications: userObj.certifications || [],
-                        hobbies: userObj.hobbies || [],
+                        hobbies: data.hobbies || userObj.hobbies || [],
                         innovations: userObj.innovations || [],
                         workShowcase: userObj.workShowcase || []
                     }));
@@ -207,6 +224,17 @@ const TeamDashboard = () => {
         }));
     };
 
+    const handleConsultationChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            consultations: {
+                ...prev.consultations,
+                [name]: value
+            }
+        }));
+    };
+
     const handleTagAdd = (e) => {
         if (e.key === 'Enter' && tagInput.trim()) {
             e.preventDefault();
@@ -224,6 +252,26 @@ const TeamDashboard = () => {
         setFormData(prev => ({
             ...prev,
             tags: prev.tags.filter(t => t !== tagToRemove)
+        }));
+    };
+
+    const handleHobbyAdd = (e) => {
+        if (e.key === 'Enter' && hobbyInput.trim()) {
+            e.preventDefault();
+            if (!(formData.hobbies || []).includes(hobbyInput.trim().toUpperCase())) {
+                setFormData(prev => ({
+                    ...prev,
+                    hobbies: [...(prev.hobbies || []), hobbyInput.trim().toUpperCase()]
+                }));
+            }
+            setHobbyInput('');
+        }
+    };
+
+    const removeHobby = (hobbyToRemove) => {
+        setFormData(prev => ({
+            ...prev,
+            hobbies: (prev.hobbies || []).filter(h => h !== hobbyToRemove)
         }));
     };
 
@@ -389,7 +437,7 @@ const TeamDashboard = () => {
                 
                 setIsAddingTool(false);
                 setEditingToolIndex(null);
-                setToolForm({ toolName: '', url: '', icon: '', description: '' });
+                setToolForm({ toolName: '', level: 85 });
                 
                 setIsAddingClient(false);
                 setEditingClientIndex(null);
@@ -433,9 +481,9 @@ const TeamDashboard = () => {
         }
         setFormData(prev => ({
             ...prev,
-            tools: [...prev.tools, toolForm]
+            tools: [...prev.tools, { ...toolForm, level: toolForm.level !== undefined ? toolForm.level : 85 }]
         }));
-        setToolForm({ toolName: '', url: '', icon: '', description: '' });
+        setToolForm({ toolName: '', level: 85 });
         setIsAddingTool(false);
     };
 
@@ -446,10 +494,10 @@ const TeamDashboard = () => {
         }
         setFormData(prev => {
             const updated = [...prev.tools];
-            updated[editingToolIndex] = toolForm;
+            updated[editingToolIndex] = { ...toolForm, level: toolForm.level !== undefined ? toolForm.level : 85 };
             return { ...prev, tools: updated };
         });
-        setToolForm({ toolName: '', url: '', icon: '', description: '' });
+        setToolForm({ toolName: '', level: 85 });
         setEditingToolIndex(null);
     };
 
@@ -749,18 +797,24 @@ const TeamDashboard = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#05010B] flex items-center justify-center">
+            <div 
+                className="min-h-screen flex items-center justify-center relative overflow-hidden"
+                style={{ background: 'linear-gradient(180deg, #441649 0%, #160F2C 45%, #2A1440 75%, #20133C 100%)' }}
+            >
+                <div className="absolute inset-0 opacity-[0.03] z-0" 
+                     style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '100px 100px' }} 
+                />
                 <motion.div 
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    className="w-12 h-12 border-4 border-brand-pink border-t-transparent rounded-full shadow-[0_0_20px_rgba(255,51,88,0.3)]"
+                    className="w-12 h-12 border-4 border-brand-pink border-t-transparent rounded-full shadow-[0_0_20px_rgba(255,51,88,0.3)] relative z-10"
                 />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#05010B] text-white pt-24 pb-16 px-6 font-roboto relative overflow-hidden">
+        <div className="min-h-screen text-white pt-24 pb-16 px-6 font-roboto relative overflow-hidden bg-transparent">
             {/* Hidden File Input */}
             <input 
                 type="file" 
@@ -770,16 +824,20 @@ const TeamDashboard = () => {
                 accept="image/png, image/jpeg, image/webp"
             />
 
-            {/* Background Decor */}
-            <div className="fixed inset-0 pointer-events-none z-0">
-                <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-brand-purple/10 blur-[150px] rounded-full" />
-                <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-brand-pink/5 blur-[150px] rounded-full" />
-                <div className="absolute inset-0 opacity-[0.02]" 
+            {/* Background Decor Layer - Perfectly matches the linear gradient and grid colors */}
+            <div 
+                className="fixed inset-0 pointer-events-none z-0 overflow-hidden"
+                style={{
+                    background: 'linear-gradient(180deg, #441649 0%, #160F2C 45%, #2A1440 75%, #20133C 100%)'
+                }}
+            >
+                {/* Subtle grid line effect */}
+                <div className="absolute inset-0 opacity-[0.03]" 
                      style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '100px 100px' }} 
                 />
             </div>
 
-            <div className="max-w-6xl mx-auto relative z-10">
+            <div className="max-w-full px-4 md:px-12 mx-auto relative z-10">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
                     <div>
@@ -825,10 +883,10 @@ const TeamDashboard = () => {
                 </div>
 
                 {/* Main Workspace Layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div data-lenis-prevent className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
                     
                     {/* Desktop/Mobile Sidebar Navigation */}
-                    <div className="lg:col-span-1 space-y-4">
+                    <div className="lg:col-span-1 lg:sticky lg:top-24 max-h-[80vh] overflow-y-auto scrollbar-none space-y-4 z-20">
                         {/* Mobile Swipeable Header (scrollable flex on mobile, vertical stack on desktop) */}
                         <div className="flex lg:flex-col gap-2 overflow-x-auto pb-4 lg:pb-0 scrollbar-none bg-white/5 border border-white/10 p-3 rounded-3xl backdrop-blur-3xl">
                             {menuItems.map((item) => {
@@ -1144,6 +1202,32 @@ const TeamDashboard = () => {
                                                 </div>
                                             </div>
 
+                                            <div className="border-t border-white/10 my-8 pt-8">
+                                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1 block mb-4">Hobbies & Specialties</label>
+                                                <input 
+                                                    type="text" 
+                                                    value={hobbyInput}
+                                                    onChange={(e) => setHobbyInput(e.target.value)}
+                                                    onKeyDown={handleHobbyAdd}
+                                                    placeholder="Add Hobby (Enter)..."
+                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:border-brand-pink outline-none transition-all font-medium mb-4"
+                                                />
+                                                <div className="flex flex-wrap gap-2">
+                                                    {(formData.hobbies || []).map(hobby => (
+                                                        <motion.span 
+                                                            layout
+                                                            key={hobby} 
+                                                            className="flex items-center gap-2 px-4 py-2 bg-brand-pink/10 border border-brand-pink/20 rounded-xl text-[10px] font-black text-brand-pink uppercase tracking-widest animate-fade-in"
+                                                        >
+                                                            {hobby}
+                                                            <button type="button" onClick={() => removeHobby(hobby)} className="hover:text-white transition-colors opacity-60 hover:opacity-100">
+                                                                <X size={12} />
+                                                            </button>
+                                                        </motion.span>
+                                                    ))}
+                                                </div>
+                                            </div>
+
                                             <div className="border-t border-white/10 pt-8 mt-8">
                                                 <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1 block mb-4">Department Categories</label>
                                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -1164,6 +1248,54 @@ const TeamDashboard = () => {
                                                 </div>
                                             </div>
                                         </section>
+
+                                        <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl mt-8">
+                                            <div className="flex items-center gap-3 mb-10 border-b border-white/10 pb-8">
+                                                <Calendar className="text-brand-pink" size={28} />
+                                                <h2 className="text-2xl font-black tracking-tight uppercase">BOOK CONSULTATION COST (₹)</h2>
+                                            </div>
+                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                                <div className="space-y-2">
+                                                    <label className="flex items-center gap-2 text-[10px] font-bold tracking-widest text-white/40 uppercase">
+                                                        30 Min Strategy Session Cost (INR)
+                                                    </label>
+                                                    <input 
+                                                        type="text" 
+                                                        name="price30Min"
+                                                        value={formData.consultations?.price30Min || ''}
+                                                        onChange={handleConsultationChange}
+                                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:border-brand-pink outline-none transition-all font-medium text-sm"
+                                                        placeholder="e.g., ₹500"
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="flex items-center gap-2 text-[10px] font-bold tracking-widest text-white/40 uppercase">
+                                                        60 Min Strategy Session Cost (INR)
+                                                    </label>
+                                                    <input 
+                                                        type="text" 
+                                                        name="price60Min"
+                                                        value={formData.consultations?.price60Min || ''}
+                                                        onChange={handleConsultationChange}
+                                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:border-brand-pink outline-none transition-all font-medium text-sm"
+                                                        placeholder="e.g., ₹1000"
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="flex items-center gap-2 text-[10px] font-bold tracking-widest text-white/40 uppercase">
+                                                        Full Day Strategy Session Cost (INR)
+                                                    </label>
+                                                    <input 
+                                                        type="text" 
+                                                        name="priceFullDay"
+                                                        value={formData.consultations?.priceFullDay || ''}
+                                                        onChange={handleConsultationChange}
+                                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:border-brand-pink outline-none transition-all font-medium text-sm"
+                                                        placeholder="e.g., ₹5000"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </section>
                                     </div>
                                 )}
 
@@ -1175,34 +1307,6 @@ const TeamDashboard = () => {
                                             <h2 className="text-2xl font-black tracking-tight uppercase">CREDENTIALS & IDENTIFICATION</h2>
                                         </div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                            <div className="space-y-3">
-                                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">Department</label>
-                                                <div className="relative">
-                                                    <Briefcase className="absolute left-5 top-5 text-white/20" size={18} />
-                                                    <input 
-                                                        type="text" 
-                                                        name="department"
-                                                        value={formData.department || ''}
-                                                        onChange={handleInputChange}
-                                                        className="w-full bg-white/5 border border-white/10 rounded-2xl pl-14 pr-6 py-5 focus:border-brand-pink focus:bg-white/10 outline-none transition-all font-medium text-white"
-                                                        placeholder="e.g. Leadership & Strategy"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="space-y-3">
-                                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">Office Location</label>
-                                                <div className="relative">
-                                                    <MapPin className="absolute left-5 top-5 text-white/20" size={18} />
-                                                    <input 
-                                                        type="text" 
-                                                        name="location"
-                                                        value={formData.location}
-                                                        onChange={handleInputChange}
-                                                        className="w-full bg-white/5 border border-white/10 rounded-2xl pl-14 pr-6 py-5 focus:border-brand-pink focus:bg-white/10 outline-none transition-all font-medium"
-                                                        placeholder="e.g. Kochi, Kerala"
-                                                    />
-                                                </div>
-                                            </div>
                                             <div className="space-y-3">
                                                 <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">Phone Number</label>
                                                 <div className="relative">
@@ -1243,9 +1347,9 @@ const TeamDashboard = () => {
                                                 </div>
                                             </div>
                                             <div className="space-y-3">
-                                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">Hourly Billing Rate ($)</label>
+                                                <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">Hourly Billing Rate (₹)</label>
                                                 <div className="relative">
-                                                    <DollarSign className="absolute left-5 top-5 text-white/20" size={18} />
+                                                    <span className="absolute left-5 top-[18px] text-white/25 text-xl font-bold">₹</span>
                                                     <input 
                                                         type="number" 
                                                         name="rate"
@@ -1265,7 +1369,7 @@ const TeamDashboard = () => {
                                                         <Loader2 className="animate-spin text-brand-pink" size={24} />
                                                     ) : formData.coverImage ? (
                                                         <>
-                                                            <img src={formData.coverImage} className="w-full h-full object-cover rounded-2xl" alt="Cover" />
+                                                            <img src={formData.coverImage} className="w-full h-full object-contain rounded-2xl" alt="Cover" />
                                                             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center gap-4">
                                                                 <button type="button" onClick={() => triggerUpload('coverImage')} className="p-2 bg-brand-pink rounded-full hover:scale-110 transition-transform">
                                                                     <Camera size={14} />
@@ -1292,7 +1396,7 @@ const TeamDashboard = () => {
                                                         <Loader2 className="animate-spin text-brand-pink" size={24} />
                                                     ) : formData.idCard ? (
                                                         <>
-                                                            <img src={formData.idCard} className="w-full h-full object-cover rounded-2xl" alt="ID Card" />
+                                                            <img src={formData.idCard} className="w-full h-full object-contain rounded-2xl" alt="ID Card" />
                                                             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center gap-4">
                                                                 <button type="button" onClick={() => triggerUpload('idCard')} className="p-2 bg-brand-pink rounded-full hover:scale-110 transition-transform">
                                                                     <Camera size={14} />
@@ -1611,7 +1715,7 @@ const TeamDashboard = () => {
                                                     type="button"
                                                     onClick={() => {
                                                         setIsAddingTool(true);
-                                                        setToolForm({ toolName: '', url: '', icon: '', description: '' });
+                                                        setToolForm({ toolName: '', level: 85 });
                                                     }}
                                                     className="px-6 py-3 bg-brand-pink/10 border border-brand-pink/20 hover:bg-brand-pink hover:text-white rounded-xl text-[10px] font-black tracking-widest uppercase transition-all"
                                                 >
@@ -1626,45 +1730,27 @@ const TeamDashboard = () => {
                                                 <h3 className="text-lg font-bold tracking-tight text-brand-pink uppercase">
                                                     {editingToolIndex !== null ? 'Edit Tool Details' : 'Add New Technical Tool'}
                                                 </h3>
-                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                <div className="grid grid-cols-1 gap-6">
                                                     <div className="space-y-2">
-                                                        <label className="text-[9px] font-bold tracking-[0.2em] text-white/40 uppercase">Tool Name</label>
+                                                        <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1 block mb-2">Tool Name *</label>
                                                         <input
                                                             type="text"
-                                                            value={toolForm.toolName}
+                                                            required
+                                                            value={toolForm.toolName || ''}
                                                             onChange={(e) => setToolForm({ ...toolForm, toolName: e.target.value })}
-                                                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:border-brand-pink outline-none text-sm transition-all"
+                                                            className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-5 focus:border-[#ff3358] focus:bg-white/[0.07] outline-none text-sm transition-all text-white font-medium placeholder-white/20"
                                                             placeholder="e.g. Photoshop / React / ClickUp"
                                                         />
                                                     </div>
                                                     <div className="space-y-2">
-                                                        <label className="text-[9px] font-bold tracking-[0.2em] text-white/40 uppercase">Tool Logo/Icon URL</label>
+                                                        <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1 block mb-2">Proficiency Level ({toolForm.level !== undefined ? toolForm.level : 85}%)</label>
                                                         <input
-                                                            type="text"
-                                                            value={toolForm.icon}
-                                                            onChange={(e) => setToolForm({ ...toolForm, icon: e.target.value })}
-                                                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:border-brand-pink outline-none text-sm transition-all"
-                                                            placeholder="https://..."
-                                                        />
-                                                    </div>
-                                                    <div className="space-y-2">
-                                                        <label className="text-[9px] font-bold tracking-[0.2em] text-white/40 uppercase">Documentation/Website URL</label>
-                                                        <input
-                                                            type="text"
-                                                            value={toolForm.url}
-                                                            onChange={(e) => setToolForm({ ...toolForm, url: e.target.value })}
-                                                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:border-brand-pink outline-none text-sm transition-all"
-                                                            placeholder="https://..."
-                                                        />
-                                                    </div>
-                                                    <div className="space-y-2 md:col-span-2">
-                                                        <label className="text-[9px] font-bold tracking-[0.2em] text-white/40 uppercase">Description/Level/Details</label>
-                                                        <textarea
-                                                            value={toolForm.description}
-                                                            onChange={(e) => setToolForm({ ...toolForm, description: e.target.value })}
-                                                            rows={2}
-                                                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:border-brand-pink outline-none text-sm transition-all resize-none"
-                                                            placeholder="Brief description of your expertise with this tool..."
+                                                            type="range"
+                                                            min="0"
+                                                            max="100"
+                                                            value={toolForm.level !== undefined ? toolForm.level : 85}
+                                                            onChange={(e) => setToolForm({ ...toolForm, level: parseInt(e.target.value) })}
+                                                            className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-brand-pink"
                                                         />
                                                     </div>
                                                 </div>
@@ -1699,28 +1785,29 @@ const TeamDashboard = () => {
                                             ) : (
                                                 formData.tools.map((tool, index) => (
                                                     <div key={index} className="flex items-center justify-between p-6 bg-white/2 border border-white/5 rounded-3xl hover:bg-white/5 transition-all">
-                                                        <div className="flex items-center gap-5">
-                                                            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden p-2 shrink-0">
-                                                                {tool.icon ? (
-                                                                    <img src={tool.icon} className="w-full h-full object-contain" alt={tool.toolName} />
-                                                                ) : (
-                                                                    <Wrench className="text-brand-pink/50" size={20} />
-                                                                )}
+                                                        <div className="flex items-center gap-5 flex-1 mr-4">
+                                                            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden shrink-0">
+                                                                <Wrench className="text-brand-pink/50" size={20} />
                                                             </div>
-                                                            <div>
-                                                                <h4 className="text-base font-bold tracking-tight text-white mb-0.5">{tool.toolName}</h4>
-                                                                <p className="text-xs text-white/40 font-medium leading-relaxed max-w-md">{tool.description || 'No description provided'}</p>
-                                                                {tool.url && (
-                                                                    <a href={tool.url} target="_blank" rel="noreferrer" className="text-[10px] text-brand-pink font-semibold hover:underline tracking-wide mt-1 block uppercase">Visit Website</a>
-                                                                )}
+                                                            <div className="flex-1 min-w-0">
+                                                                <h4 className="text-base font-bold tracking-tight text-white mb-1 truncate">{tool.toolName}</h4>
+                                                                <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden max-w-md mt-2">
+                                                                    <div className="bg-brand-pink h-full" style={{ width: `${tool.level !== undefined ? tool.level : 85}%` }} />
+                                                                </div>
+                                                                <span className="text-[10px] text-brand-pink/70 font-bold tracking-widest uppercase block mt-1">
+                                                                    Proficiency: {tool.level !== undefined ? tool.level : 85}%
+                                                                </span>
                                                             </div>
                                                         </div>
-                                                        <div className="flex gap-2">
+                                                        <div className="flex gap-2 shrink-0">
                                                             <button
                                                                 type="button"
                                                                 onClick={() => {
                                                                     setEditingToolIndex(index);
-                                                                    setToolForm(tool);
+                                                                    setToolForm({
+                                                                        toolName: tool.toolName || '',
+                                                                        level: tool.level !== undefined ? tool.level : 85
+                                                                    });
                                                                     setIsAddingTool(false);
                                                                 }}
                                                                 className="p-3 bg-white/5 hover:bg-brand-pink/20 hover:text-brand-pink rounded-xl transition-all"
