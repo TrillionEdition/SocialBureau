@@ -17,7 +17,6 @@ import {
   TrendingUp,
 } from "lucide-react";
 import Seo from "./Seo";
-import { getOptimizedCloudinaryUrl } from "@/utils/cloudinary";
 
 const ContentMarketing = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -306,10 +305,8 @@ const ContentMarketing = () => {
           </div>
           <div className="relative h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
             <img
-              src={getOptimizedCloudinaryUrl(
-                "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/service%20page/content%20marketing.jpg",
-                1200,
-              )}
+              src=
+                "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/service%20page/content%20marketing.jpg"
               alt="Content Marketing Hero"
               className="w-full h-full object-cover"
               loading="lazy"
@@ -367,10 +364,8 @@ const ContentMarketing = () => {
             </div>
             <div className="h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
               <img
-                src={getOptimizedCloudinaryUrl(
-                  "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/service%20page/Content%20marketing%202.jpg",
-                  1000,
-                )}
+                src=
+                  "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/service%20page/Content%20marketing%202.jpg" 
                 alt="Strategic Content Creation and Planning"
                 className="w-full h-full object-cover"
                 loading="lazy"
@@ -409,10 +404,7 @@ const ContentMarketing = () => {
             {/* Image on left - spans 2 columns */}
             <div className="lg:col-span-2 h-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src={getOptimizedCloudinaryUrl(
-                  "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/service%20page/Content%20marketing%203.png",
-                  1200,
-                )}
+                src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/service%20page/Content%20marketing%203.png"
                 alt="Content Creation Services and productivity"
                 className="w-full h-full object-cover"
                 loading="lazy"
@@ -564,10 +556,7 @@ const ContentMarketing = () => {
             {/* Center image (Floating PNG) */}
             <div className="order-1 lg:order-2 relative group flex justify-center items-center lg:col-span-6">
               <img
-                src={getOptimizedCloudinaryUrl(
-                  "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/service%20page/content%20marketing%204.png",
-                  1000,
-                )}
+                src= "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/service%20page/content%20marketing%204.png"            
                 alt="Content professional working at SocialBureau"
                 className="w-full max-w-[700px] h-auto transition-transform duration-700 group-hover:scale-105"
                 loading="lazy"

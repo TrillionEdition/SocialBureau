@@ -6,7 +6,6 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Seo from './Seo';
-import { getOptimizedCloudinaryUrl } from '@/utils/cloudinary';
 
 const PerformanceMarketing = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -315,7 +314,7 @@ const PerformanceMarketing = () => {
                             className="rounded-3xl overflow-hidden shadow-xl"
                         >
                             <img
-                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/SMM_PHOTOSHOOT_xdkcl5.webp", 1000)}
+                                src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/SMM_PHOTOSHOOT_xdkcl5.webp"
                                 alt="performance-marketing-agency-in-kochi"
                                 title='performance-marketing-agency-in-kochi'
                                 className="w-full h-full object-cover"
@@ -382,39 +381,58 @@ const PerformanceMarketing = () => {
 
             {/* Why Choose Us */}
             <section id="why-choose" className="py-24 bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid lg:grid-cols-2 gap-16 items-center">
-                        <motion.div
-                            initial={{ opacity: 0, x: -30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                        >
-                            <span className="text-[#7E0A11] text-sm font-bold uppercase tracking-widest mb-4 block">Why Choose Us</span>
-                            <h2 className="text-3xl md:text-5xl font-bold text-[#1d1d1f] mb-10">Data-Led Growth Partners</h2>
-                            <div className="space-y-8">
-                                {whyChooseUs.map((feature, index) => (
-                                    <div key={index} className="flex gap-6 group">
-                                        <div className="flex-shrink-0 w-12 h-12 bg-[#7E0A11]/5 rounded-xl flex items-center justify-center group-hover:bg-[#7E0A11] transition-all">
-                                            <feature.icon className="w-6 h-6 text-[#7E0A11] group-hover:text-white transition-all" />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-xl font-bold text-[#1d1d1f] mb-2">{feature.title}</h3>
-                                            <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </motion.div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                        <img
-                            src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772022966/PMO_converted_yhchbh.webp", 1000)}
-                            alt="performance-marketing-agency-in-kochi"
-                            title='performance-marketing-agency-in-kochi'
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
+        <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+        >
+            <span className="text-[#7E0A11] text-sm font-bold uppercase tracking-widest mb-4 block">
+                Why Choose Us
+            </span>
+
+            <h2 className="text-3xl md:text-5xl font-bold text-[#1d1d1f] mb-12">
+                Data-Led Growth Partners
+            </h2>
+
+            {/* 2 items per row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+    {whyChooseUs.map((feature, index) => {
+        const isLastOdd =
+            whyChooseUs.length % 2 !== 0 &&
+            index === whyChooseUs.length - 1;
+
+        return (
+            <div
+                key={index}
+                className={`
+                    flex gap-6 group
+                    ${isLastOdd ? "md:col-span-2 md:max-w-[600px] md:mx-auto" : ""}
+                `}
+            >
+                <div className="flex-shrink-0 w-12 h-12 bg-[#7E0A11]/5 rounded-xl flex items-center justify-center group-hover:bg-[#7E0A11] transition-all">
+                    <feature.icon className="w-6 h-6 text-[#7E0A11] group-hover:text-white transition-all" />
                 </div>
-            </section>
+
+                <div>
+                    <h3 className="text-xl font-bold text-[#1d1d1f] mb-2">
+                        {feature.title}
+                    </h3>
+
+                    <p className="text-gray-600 leading-relaxed">
+                        {feature.description}
+                    </p>
+                </div>
+            </div>
+        );
+    })}
+</div>
+
+        </motion.div>
+
+    </div>
+</section>
 
             {/* Case Studies */}
             <section id="case-studies" className="py-24 bg-gray-50">

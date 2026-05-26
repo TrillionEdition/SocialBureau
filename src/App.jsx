@@ -36,9 +36,6 @@ const Home = lazy(() =>
 const About = lazy(() =>
   import("./pages/About").then((module) => ({ default: module.About })),
 );
-const Services = lazy(() =>
-  import("./pages/Services").then((module) => ({ default: module.Services })),
-);
 
 const JohnSamuelPage = lazy(() => import("./pages/Partnerships/johnsamuel"));
 const ShaileshSivan = lazy(() => import("./pages/Partnerships/shaileshsivan"));
@@ -55,7 +52,6 @@ const NotFound = lazy(() =>
 );
 
 const Careers = lazy(() => import("./pages/Careers").then(module => ({ default: module.Careers })));
-const OurTeam = lazy(() => import("./pages/OurTeam").then(module => ({ default: module.OurTeam })));
 const OurWork = lazy(() => import("./pages/OurWork").then(module => ({ default: module.OurWork })));
 const Team = lazy(() => import("./pages/Team").then(module => ({ default: module.Team })));
 const EmployeePage = lazy(() => import("./pages/Team/EmployeePage"));
@@ -116,21 +112,13 @@ const Leaderboard = lazy(() => import("./components/Leaderboard"));
 const Logout = lazy(() => import("./components/Logout"));
 const Niche = lazy(() => import("./components/Niche"));
 const Partnership = lazy(() => import("./components/Partnership"));
-const PerformanceMarketing = lazy(
-  () => import("./components/PerformanceMarketing"),
-);
+const PerformanceMarketing = lazy(  () => import("./components/PerformanceMarketing"),);
 const PrivacyPolicy = lazy(() => import("./components/PrivacyPolicy"));
 const ProfilePage = lazy(() => import("./components/Profile"));
-const QASection = lazy(() => import("./components/QASection"));
 const Sivaprasad = lazy(() => import("./components/Sivaprasad"));
-const StaffDashboard = lazy(() =>
-  import("./components/StaffDashboard").then((module) => ({
-    default: module.StaffDashboard,
-  })),
-);
 const SubmitBlog = lazy(() => import("./components/SubmitBlog"));
 const ViewEvents = lazy(() => import("./components/ViewEvents"));
-const WebDevelopment = lazy(() => import("./components/Home/WebDevelopment"));
+const WebDevelopment = lazy(() => import("./components/WebDevelopment"));
 const PartnershipTemplateSelector = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnershipTemplateSelector"));
 const PartnershipDataForm = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnershipDataForm"));
 const InfluencerDataForm = lazy(() => import("./pages/Partnerships/PartnershipTemplate/InfluencerDataForm"));
@@ -313,7 +301,6 @@ function App() {
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/disclaimer" element={<Disclaimer />} />
             <Route path="/careers" element={<Careers />} />
-            <Route path="/our-team" element={<OurTeam />} />
             <Route path="/our-works" element={<OurWork />} />
             <Route path="/achievements" element={<CompanyAchievements />} />
             <Route path="/ats-checker" element={<ATSChecker />} />
@@ -321,7 +308,6 @@ function App() {
 
             <Route path="/blogs/:slug" element={<BlogDetail />} />
             <Route path="/careers/:slug" element={<CareerDetail />} />
-            <Route path="/qa-section" element={<QASection />} />
             <Route path="/hr-forum" element={<HRForum />} />
             <Route path="/apply-job" element={<JobPosting />} />
             <Route path="/job-details/:id" element={<JobDetails />} />
@@ -329,9 +315,6 @@ function App() {
             <Route path="/job-applicants/:jobId" element={<JobApplicants />} />
             <Route path="/candidate-profile/:applicationId" element={<CandidateProfile />} />
             <Route path="/hr-messages" element={<HrMessages />} />
-
-            <Route path="/employee/:name" element={<StaffDashboard />} />
-
             <Route path="/proof" element={<Verification />} />
 
             <Route path="/profile" element={<ProfilePage />} />
@@ -371,16 +354,14 @@ function App() {
             <Route path="/team" element={<Team />} />
             <Route path="/team/:slug" element={<EmployeePage />} />
 
-            <Route
-              path="/team/dashboard"
+            <Route path="/team/dashboard"
               element={
                 <ProtectedRoute>
                   <TeamDashboard />
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/team/admin"
+            <Route path="/team/admin"
               element={
                 <AdminRoute>
                   <AdminTeamDashboard />
@@ -388,8 +369,7 @@ function App() {
               }
             />
 
-            <Route
-              path="/admin"
+            <Route path="/admin"
               element={
                 <AdminRoute>
                   <AdminPanel />
@@ -397,23 +377,20 @@ function App() {
               }
             />
             <Route
-              path="/jobs/create"
-              element={
+              path="/jobs/create" element={
                 <AdminRoute>
                   <AdminCreateJob />
                 </AdminRoute>
               }
             />
-            <Route
-              path="/edit-user/:id"
+            <Route path="/edit-user/:id"
               element={
                 <AdminRoute>
                   <EditUser />
                 </AdminRoute>
               }
             />
-            <Route
-              path="/add-user"
+            <Route path="/add-user"
               element={
                 <AdminRoute>
                   <EditUser />
@@ -452,8 +429,7 @@ function App() {
 
             <Route path="/analytics" element={<AnalyticsWidget />} />
             <Route
-              path="/achievements-form"
-              element={
+              path="/achievements-form" element={
                 <AdminRoute>
                   <AddAchievementForm />
                 </AdminRoute>
@@ -464,19 +440,12 @@ function App() {
             <Route path="/partnership/Ranjit" element={<Landing />} />
             <Route path="/partnership/Sivaprasad" element={<Sivaprasad />} />
             <Route path="/partnership/Partner1" element={<Partner1 />} />
-            <Route
-              path="/partnership/JohnSamuel"
-              element={<JohnSamuelPage />}
-            />
-            <Route
-              path="/partnership/shailesh-sivan"
-              element={<ShaileshSivan />}
-            />
+            <Route path="/partnership/JohnSamuel" element={<JohnSamuelPage />} />
+            <Route path="/partnership/shailesh-sivan" element={<ShaileshSivan />} />
             <Route path="/partnership/alen-jacob" element={<AlenJacob />} />
             <Route path="/partnership/cheriyan" element={<CheriyanPage />} />
             <Route path="/partnership/sakilan" element={<Sakilan />} />
             <Route path="/partnership/:slug" element={<DynamicPartnershipPage />} />
-
             <Route path="/partners/select-template" element={<PartnershipTemplateSelector />} />
             <Route path="/partners/create-portfolio" element={<PartnershipDataForm />} />
             <Route path="/partners/create-influencer" element={<InfluencerDataForm />} />
@@ -485,11 +454,7 @@ function App() {
             <Route path="/partners/dashboard" element={<PartnerDashboardHub />} />
             <Route path="/partners/manage" element={<PartnerDashboard />} />
             <Route path="/partners/students" element={<StudentShowcase />} />
-
             <Route path="/partnership/Partner2" element={<Partner2 />} />
-            {/* <Route path="/partnership/Partner3" element={<Partner3 />} />
-            <Route path="/partnership/Partner4" element={<Partner4 />} /> */}
-
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </Suspense>

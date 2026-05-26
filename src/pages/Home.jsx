@@ -7,7 +7,7 @@ import { generateHomepageSchemas } from "@/utils/schema";
 import Testimonials from '@/components/Testimonials';
 import mediaWaitlistService from "@/services/mediaWaitlistService";
 import Toast from "../components/Toast";
-import PortfolioPopup from '../components/Home/PortfolioPopup';
+import PortfolioPopup from '../components/PortfolioPopup';
 
 const handleJoinWaitingList = async ({ onResult } = {}) => {
   let email = null;

@@ -7,7 +7,6 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Seo from './Seo';
-import { getOptimizedCloudinaryUrl } from '@/utils/cloudinary';
 
 const Niche = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -271,7 +270,7 @@ const Niche = () => {
                             className="rounded-3xl overflow-hidden shadow-2xl relative group"
                         >
                             <img
-                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772086613/SMM_PHOTOSHOOT_xdkcl5.webp", 1000)}
+                                src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/SMM_PHOTOSHOOT_xdkcl5.webp"
                                 alt="niche marketing-agency-in-kochi"
                                 title='niche marketing-agency-in-kochi'
                                 className="w-full h-full object-cover"
@@ -393,7 +392,7 @@ const Niche = () => {
                         >
                             <div className="absolute -inset-20 bg-[#920F17]/20 blur-[120px] rounded-full"></div>
                             <img
-                                src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dtwcgfmar/image/upload/v1772183939/Red_stock_martket_chart_p4hejw.webp", 1000)}
+                                src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Red_stock_martket_chart_p4hejw.webp"
                                 alt="niche marketing-agency-in-kochi"
                                 title='niche marketing-agency-in-kochi'
                                 className="relative rounded-[3rem] shadow-2xl border border-white/10"
