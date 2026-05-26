@@ -80,7 +80,7 @@ export default function CareersPost() {
 
   const filteredJobs = useMemo(() => {
     return jobs.filter((job) =>
-      job.title.toLowerCase().includes(search.toLowerCase())
+      job && job.title && job.title.toLowerCase().includes(search.toLowerCase())
     );
   }, [search, jobs]);
 
