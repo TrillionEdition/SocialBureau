@@ -71,6 +71,7 @@ const UserManagement = lazy(() => import("./pages/UserManagement"));
 const TeamDashboard = lazy(() => import("./pages/TeamDashboard"));
 const AdminTeamDashboard = lazy(() => import("./pages/AdminTeamDashboard"));
 const AllApplications = lazy(() => import("./pages/AllApplications"));
+const AdminPostersDashboard = lazy(() => import("./pages/AdminPostersDashboard"));
 const ResetPassword = lazy(() =>
 
   import("./pages/ForgetPassword").then((module) => ({
@@ -165,7 +166,8 @@ function ConditionalFooter() {
     "/client-dashboard",
     "/admin",
     "/ajnoradashboard",
-    "/lottery"
+    "/lottery",
+    "/admin/posters"
   ];
 
 
@@ -200,7 +202,8 @@ function ConditionalNavbar() {
     "/client-dashboard",
     "/admin",
     "/ajnoradashboard",
-    "/lottery"
+    "/lottery",
+    "/admin/posters"
   ];
 
 
@@ -392,6 +395,14 @@ function App() {
               element={
                 <AdminRoute>
                   <AdminPanel />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/posters"
+              element={
+                <AdminRoute>
+                  <AdminPostersDashboard />
                 </AdminRoute>
               }
             />

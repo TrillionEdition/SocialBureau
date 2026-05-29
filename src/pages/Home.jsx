@@ -411,6 +411,7 @@ const BottomStatsSection = () => (
 
 export const Home = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activePoster, setActivePoster] = useState(null);
   const homepageSchemas = generateHomepageSchemas();
 
 
@@ -418,6 +419,21 @@ export const Home = () => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const fetchActivePoster = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/posters?active=true`);
+        const result = await response.json();
+        if (result.success && result.data && result.data.length > 0) {
+          setActivePoster(result.data[0]);
+        }
+      } catch (err) {
+        console.error("Error fetching active poster:", err);
+      }
+    };
+    fetchActivePoster();
   }, []);
 
   /*
@@ -466,6 +482,27 @@ export const Home = () => {
       />
       <SchemaMarkup data={homepageSchemas} />
       <StudentTicker />
+
+      {activePoster && (
+        <section className="w-full px-0 border-b border-[#D2D2D7] bg-white">
+          <div className="w-full flex justify-center items-center">
+            {/* Desktop Image */}
+            <img
+              src={activePoster.image}
+              alt={activePoster.title}
+              className={`${activePoster.mobileImage ? 'hidden sm:block' : 'block'} w-full h-auto`}
+            />
+            {/* Mobile Image */}
+            {activePoster.mobileImage && (
+              <img
+                src={activePoster.mobileImage}
+                alt={activePoster.title}
+                className="block sm:hidden w-full h-auto"
+              />
+            )}
+          </div>
+        </section>
+      )}
 
       {/* 
       <section className="w-full px-0">
