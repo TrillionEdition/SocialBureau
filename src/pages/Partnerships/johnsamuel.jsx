@@ -121,7 +121,7 @@ const Partner1 = () => {
       content:
         "Between 2003 and 2013, John played a pivotal role in initiatives focused on women’s empowerment and HIV-affected communities across Rajasthan. Collaborating with UN Women (UNIFEM), UNICEF, and WHO, he addressed social stigma and policy gaps, establishing district-level networks that provided clinical access and dignity to hundreds of families.",
       icon: <Shield className="w-5 h-5 text-blue-500" />,
-      image: "/assets/Partnerships/John Samuel/1.jpg",
+      image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/1.jpg",
       stats: [
         { label: "Years in Rajasthan", value: "10" },
         { label: "Community Networks", value: "Statewide" },
@@ -142,7 +142,7 @@ const Partner1 = () => {
       content:
         "Returning to Kerala in 2014, John applied his strategic networking to the tourism sector. He led business development for premium Ayurvedic resorts and eco-tourism destinations, focusing on international client engagement and digital distribution platforms to expand global market visibility.",
       icon: <Globe className="w-5 h-5 text-blue-500" />,
-      image: "/assets/Partnerships/John Samuel/2.jpg",
+      image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/2.jpg",
       events: [
         { name: "Eco-Resort Branding", year: "2015", role: "Business Lead" },
         { name: "Digital Distribution", year: "2018", role: "Strategy" },
@@ -158,7 +158,7 @@ const Partner1 = () => {
       content:
         "Inspired by personal family experiences, John helped establish the Pink Foundation Trust. The trust bridges the gap in women's healthcare by organizing screening camps and awareness programs for breast cancer, leveraging his corporate relations to fund high-impact medical consultations.",
       icon: <Heart className="w-5 h-5 text-blue-500" />,
-      image: "/assets/Partnerships/John Samuel/3.JPG",
+      image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/3.JPG",
       focus: [
         "Early Detection Camps",
         "Community Health Advocacy",
@@ -174,7 +174,7 @@ const Partner1 = () => {
       content:
         "John’s leadership in the hospitality sector is defined by his work with Renai Hotels & Resorts. He specialized in business goal setting using SMART indicators, driving revenue growth, and establishing integrated marketing strategies that positioned the brand as a leader in premium service delivery.",
       icon: <Award className="w-5 h-5 text-blue-500" />,
-      image: "/assets/Partnerships/John Samuel/4.jpg",
+      image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/4.jpg",
       milestones: [
         "Brand positioning for Renai Group",
         "Revenue optimization strategies",
@@ -190,7 +190,7 @@ const Partner1 = () => {
       content:
         "In the healthcare sector, John focused on institutional branding and market expansion. He developed critical liaison networks between government bodies and private corporate entities, ensuring that healthcare services reached wider audiences through strategic alliances.",
       icon: <Shield className="w-5 h-5 text-blue-500" />,
-      image: "/assets/Partnerships/John Samuel/5.jpg",
+      image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/5.jpg",
       milestones: [
         "Institutional partnership development",
         "Government and corporate liaison",
@@ -240,7 +240,7 @@ const Partner1 = () => {
       {/* 1. THE HERO BACKGROUND (MORPHING) */}
       <div style={morphStyle} className="shadow-2xl">
         <img
-          src="/assets/Partnerships/John Samuel/hero-image.png"
+          src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/hero-image.png"
           alt="John Samuel"
           className="w-full h-full object-cover object-[85%_20%] md:object-[center_20%] brightness-[0.8]"
         />

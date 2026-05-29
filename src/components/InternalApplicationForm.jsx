@@ -66,10 +66,10 @@ const InternalApplicationForm = ({ jobId, jobTitle }) => {
         </div>
         <h3 className="text-2xl font-black text-gray-900">Application Received</h3>
         <p className="text-gray-500 leading-relaxed">
-          Thank you for applying for the <span className="text-red-600 font-bold">{jobTitle}</span> role. 
+          Thank you for applying for the <span className="text-red-600 font-bold">{jobTitle}</span> role.
           Our talent acquisition team will review your profile and get back to you shortly.
         </p>
-        <button 
+        <button
           onClick={() => setSubmitted(false)}
           className="text-sm font-bold text-red-600 hover:underline uppercase tracking-widest"
         >
@@ -100,7 +100,7 @@ const InternalApplicationForm = ({ jobId, jobTitle }) => {
               value={formData.candidateName}
               onChange={handleChange}
               placeholder="John Doe"
-              className="w-full bg-gray-50 border border-gray-100 rounded-xl px-5 py-3 text-sm outline-none focus:border-red-500/50 transition-colors"
+              className="w-full text-black bg-gray-50 border border-gray-100 rounded-xl px-5 py-3 text-sm outline-none focus:border-red-500/50 transition-colors"
             />
           </div>
 
@@ -114,7 +114,7 @@ const InternalApplicationForm = ({ jobId, jobTitle }) => {
                 value={formData.candidateEmail}
                 onChange={handleChange}
                 placeholder="john@example.com"
-                className="w-full bg-gray-50 border border-gray-100 rounded-xl px-5 py-3 text-sm outline-none focus:border-red-500/50 transition-colors"
+                className="w-full bg-gray-50 text-black border border-gray-100 rounded-xl px-5 py-3 text-sm outline-none focus:border-red-500/50 transition-colors"
               />
             </div>
             <div className="space-y-1.5">
@@ -126,7 +126,7 @@ const InternalApplicationForm = ({ jobId, jobTitle }) => {
                 value={formData.candidatePhone}
                 onChange={handleChange}
                 placeholder="+91 ..."
-                className="w-full bg-gray-50 border border-gray-100 rounded-xl px-5 py-3 text-sm outline-none focus:border-red-500/50 transition-colors"
+                className="w-full bg-gray-50 text-black border border-gray-100 rounded-xl px-5 py-3 text-sm outline-none focus:border-red-500/50 transition-colors"
               />
             </div>
           </div>
@@ -138,7 +138,7 @@ const InternalApplicationForm = ({ jobId, jobTitle }) => {
               value={formData.coverLetter}
               onChange={handleChange}
               placeholder="Tell us why you are a great fit..."
-              className="w-full bg-gray-50 border border-gray-100 rounded-xl px-5 py-3 text-sm outline-none focus:border-red-500/50 transition-colors h-28 resize-none"
+              className="w-full bg-gray-50 text-black border border-gray-100 rounded-xl px-5 py-3 text-sm outline-none focus:border-red-500/50 transition-colors h-28 resize-none"
             />
           </div>
 
@@ -151,9 +151,8 @@ const InternalApplicationForm = ({ jobId, jobTitle }) => {
                 onChange={handleFileChange}
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
               />
-              <div className={`border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center transition-all ${
-                resume ? "border-green-500/30 bg-green-50/50" : "border-gray-100 group-hover:border-red-500/30 group-hover:bg-red-50/30"
-              }`}>
+              <div className={`border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center transition-all ${resume ? "border-green-500/30 bg-green-50/50" : "border-gray-100 group-hover:border-red-500/30 group-hover:bg-red-50/30"
+                }`}>
                 {resume ? (
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">

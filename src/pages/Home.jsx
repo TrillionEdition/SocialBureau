@@ -7,7 +7,7 @@ import { generateHomepageSchemas } from "@/utils/schema";
 import Testimonials from '@/components/Testimonials';
 import mediaWaitlistService from "@/services/mediaWaitlistService";
 import Toast from "../components/Toast";
-import PortfolioPopup from '../components/Home/PortfolioPopup';
+import PortfolioPopup from '../components/PortfolioPopup';
 
 const handleJoinWaitingList = async ({ onResult } = {}) => {
   let email = null;
@@ -466,8 +466,8 @@ export const Home = () => {
 
   // Static Hero for Social Bureau
   const currentHero = {
-    desktop: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT_Image_May_4_2026_01_32_02_PM_lavtlu.png",
-    mobile: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT_Image_May_4_2026_01_31_52_PM_d3gsbh.png",
+    desktop: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Desktop%20-%203.png",
+    mobile: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/image%20(13).png",
     alt: "Social Bureau"
   };
 
@@ -518,8 +518,8 @@ export const Home = () => {
             className={`block sm:hidden w-full object-contain ${currentHero.mobile ? 'h-full' : 'h-auto'}`}
           />
         </a>
-      </section>
-      */}
+      </section> */}
+      
       {/* <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
   <video
   className="block w-full h-auto object-cover"

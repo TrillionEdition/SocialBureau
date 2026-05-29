@@ -350,7 +350,7 @@ const InfluencerDataForm = () => {
         currency: data.order.currency,
         name: "SocialBureau",
         description: "Influencer Portfolio Activation",
-        image: "https://res.cloudinary.com/dtwcgfmar/image/upload/v1715012345/logo_social_bureau.png", // Use a public HTTPS URL
+        image: "/assets/logo.webp", // Use a public HTTPS URL
         order_id: data.order.id,
         handler: async (response) => {
           // 3. Verify payment on backend
