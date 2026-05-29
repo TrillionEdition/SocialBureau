@@ -13,8 +13,16 @@ export default function LotteryClaims() {
   // Image viewer modal state
   const [viewingImage, setViewingImage] = useState(null);
 
+  // Settings States
+  const [isActive, setIsActive] = useState(false);
+  const [showLotteryOnHomeStart, setShowLotteryOnHomeStart] = useState("");
+  const [showLotteryOnHomeEnd, setShowLotteryOnHomeEnd] = useState("");
+  const [settingsLoading, setSettingsLoading] = useState(true);
+  const [settingsSaving, setSettingsSaving] = useState(false);
+
   useEffect(() => {
     fetchClaims();
+    fetchSettings();
     const interval = setInterval(fetchClaims, 30000); // 30s auto-refresh
     return () => clearInterval(interval);
   }, []);
@@ -44,6 +52,61 @@ export default function LotteryClaims() {
       console.error("Failed to fetch claims:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchSettings = async () => {
+    try {
+      setSettingsLoading(true);
+      const res = await axios.get(`${BASE_URL}/lottery/settings`);
+      if (res.data) {
+        setIsActive(res.data.isActive || false);
+        
+        // Convert dates from UTC to local datetime-local format YYYY-MM-DDThh:mm
+        if (res.data.showLotteryOnHomeStart) {
+          const start = new Date(res.data.showLotteryOnHomeStart);
+          const offsetStart = new Date(start.getTime() - start.getTimezoneOffset() * 60000);
+          setShowLotteryOnHomeStart(offsetStart.toISOString().slice(0, 16));
+        }
+        if (res.data.showLotteryOnHomeEnd) {
+          const end = new Date(res.data.showLotteryOnHomeEnd);
+          const offsetEnd = new Date(end.getTime() - end.getTimezoneOffset() * 60000);
+          setShowLotteryOnHomeEnd(offsetEnd.toISOString().slice(0, 16));
+        }
+      }
+    } catch (err) {
+      console.error("Failed to load lottery settings:", err);
+    } finally {
+      setSettingsLoading(false);
+    }
+  };
+
+  const handleSaveSettings = async (e) => {
+    e.preventDefault();
+    if (isActive) {
+      if (!showLotteryOnHomeStart || !showLotteryOnHomeEnd) {
+        alert("Please set both Start and End times when active.");
+        return;
+      }
+      if (new Date(showLotteryOnHomeStart) >= new Date(showLotteryOnHomeEnd)) {
+        alert("Start time must be strictly before End time.");
+        return;
+      }
+    }
+
+    try {
+      setSettingsSaving(true);
+      await axios.post(`${BASE_URL}/lottery/settings`, {
+        isActive,
+        showLotteryOnHomeStart: showLotteryOnHomeStart || null,
+        showLotteryOnHomeEnd: showLotteryOnHomeEnd || null,
+      });
+      alert("Lottery schedule settings saved successfully!");
+    } catch (err) {
+      console.error("Failed to save settings:", err);
+      alert("Failed to save settings: " + (err.response?.data?.message || err.message));
+    } finally {
+      setSettingsSaving(false);
     }
   };
 
@@ -123,6 +186,74 @@ export default function LotteryClaims() {
           <StatCard title="Total Claims" value={stats.total} />
           <StatCard title="Pending Payments" value={stats.pending} alert />
           <StatCard title="Total Paid Out" value={`₹${stats.totalPaid}`} />
+        </div>
+
+        {/* OVERRIDE SETTINGS CARD */}
+        <div className="bg-slate-800/80 border border-slate-700/50 rounded-3xl p-6 sm:p-8 mb-10 shadow-2xl backdrop-blur-sm relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-500/5 blur-[40px] rounded-full pointer-events-none" />
+          
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div>
+              <h2 className="text-xl font-black uppercase tracking-wider text-yellow-500 italic flex items-center gap-2">
+                <span className="w-2.5 h-2.5 bg-yellow-500 rounded-full animate-ping" />
+                Homepage Campaign Override Scheduler
+              </h2>
+              <p className="text-slate-400 text-xs font-semibold mt-1 max-w-xl">
+                Configure a scheduled time period during which visiting the root URL <code className="bg-slate-900 px-1 py-0.5 rounded text-yellow-400">http://localhost:5173/</code> displays the Lottery SpinWheel component directly, instead of the standard homepage.
+              </p>
+            </div>
+            
+            <form onSubmit={handleSaveSettings} className="flex flex-wrap lg:flex-nowrap items-end gap-4 bg-slate-900/60 p-4 sm:p-6 rounded-2xl border border-slate-700/40 w-full lg:w-auto">
+              {/* Active Toggle Switch */}
+              <div className="flex flex-col gap-2 min-w-[120px]">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Override Status</label>
+                <button
+                  type="button"
+                  onClick={() => setIsActive(!isActive)}
+                  className={`px-4 py-2 text-xs font-black rounded-lg border transition ${
+                    isActive
+                      ? "bg-green-500/10 text-green-400 border-green-500/20"
+                      : "bg-slate-800 text-slate-500 border-slate-700"
+                  }`}
+                >
+                  {isActive ? "ACTIVE" : "DISABLED"}
+                </button>
+              </div>
+
+              {/* Start Date & Time */}
+              <div className="flex flex-col gap-2 flex-grow sm:flex-grow-0">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Start Date & Time</label>
+                <input
+                  type="datetime-local"
+                  value={showLotteryOnHomeStart}
+                  onChange={(e) => setShowLotteryOnHomeStart(e.target.value)}
+                  disabled={!isActive}
+                  className="bg-slate-800 border border-slate-700/60 focus:border-yellow-500 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                />
+              </div>
+
+              {/* End Date & Time */}
+              <div className="flex flex-col gap-2 flex-grow sm:flex-grow-0">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">End Date & Time</label>
+                <input
+                  type="datetime-local"
+                  value={showLotteryOnHomeEnd}
+                  onChange={(e) => setShowLotteryOnHomeEnd(e.target.value)}
+                  disabled={!isActive}
+                  className="bg-slate-800 border border-slate-700/60 focus:border-yellow-500 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                />
+              </div>
+
+              {/* Save Button */}
+              <button
+                type="submit"
+                disabled={settingsSaving}
+                className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-yellow-950 font-black rounded-lg text-xs uppercase tracking-widest transition shadow-lg disabled:opacity-50"
+              >
+                {settingsSaving ? "Saving..." : "Save Config"}
+              </button>
+            </form>
+          </div>
         </div>
 
         {/* CONTROLS */}

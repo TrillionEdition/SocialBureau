@@ -407,6 +407,289 @@ const BottomStatsSection = () => (
   </section>
 );
 
+// --- Instagram Reels Section ---
+const getReelShortcode = (url) => {
+  if (!url) return null;
+  try {
+    const cleanUrl = url.split('?')[0];
+    const match = cleanUrl.match(/\/(?:reel|p|tv)\/([A-Za-z0-9_-]+)/);
+    if (match && match[1]) {
+      return match[1];
+    }
+    const parts = cleanUrl.replace(/\/$/, "").split("/");
+    return parts[parts.length - 1];
+  } catch (err) {
+    console.error("Error parsing shortcode:", err);
+    return null;
+  }
+};
+
+const InstagramReelsSection = () => {
+  const [reels, setReels] = useState([]);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const scrollRef = React.useRef(null);
+
+  useEffect(() => {
+    const fetchReels = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/reels?active=true`);
+        const data = await res.json();
+        if (data.success && data.data.length > 0) {
+          setReels(data.data);
+        }
+      } catch (err) {
+        console.error("Failed to load reels:", err);
+      }
+    };
+    fetchReels();
+  }, []);
+
+  const scrollTo = (idx) => {
+    if (!scrollRef.current) return;
+    const card = scrollRef.current.children[idx];
+    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    setActiveIdx(idx);
+  };
+
+  // Auto-scroll loop
+  useEffect(() => {
+    if (reels.length <= 1 || isHovered) return;
+
+    const interval = setInterval(() => {
+      setActiveIdx((prevIdx) => {
+        const nextIdx = (prevIdx + 1) % reels.length;
+        scrollTo(nextIdx);
+        return nextIdx;
+      });
+    }, 4500); // Cycle every 4.5 seconds
+
+    return () => clearInterval(interval);
+  }, [reels, isHovered]);
+
+  // Track active dot on scroll
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+    const maxScroll = scrollWidth - clientWidth;
+    if (maxScroll <= 0) return;
+    const idx = Math.round((scrollLeft / maxScroll) * (reels.length - 1));
+    setActiveIdx(Math.max(0, Math.min(idx, reels.length - 1)));
+  };
+
+  if (reels.length === 0) return null;
+
+  return (
+    <section className="relative bg-[#060606] py-8 sm:py-20 lg:py-32 overflow-hidden">
+      {/* Animated gradient mesh background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <motion.div
+          animate={{ x: [0, 60, 0], y: [0, -40, 0], opacity: [0.25, 0.45, 0.25] }}
+          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-[-10%] left-[15%] w-[500px] h-[500px] rounded-full blur-[120px]"
+          style={{ background: 'radial-gradient(circle, #f9ce3440, transparent)' }}
+        />
+        <motion.div
+          animate={{ x: [0, -50, 0], y: [0, 60, 0], opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+          className="absolute top-[20%] right-[5%] w-[400px] h-[400px] rounded-full blur-[100px]"
+          style={{ background: 'radial-gradient(circle, #ee2a7b35, transparent)' }}
+        />
+        <motion.div
+          animate={{ x: [0, 40, 0], y: [0, -30, 0], opacity: [0.15, 0.3, 0.15] }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut', delay: 6 }}
+          className="absolute bottom-0 left-[5%] w-[350px] h-[350px] rounded-full blur-[90px]"
+          style={{ background: 'radial-gradient(circle, #6228d730, transparent)' }}
+        />
+        {/* Subtle grid overlay */}
+        <div className="absolute inset-0 opacity-[0.04]"
+          style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 lg:px-14">
+
+        {/* ── Editorial Header ── */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-6 sm:mb-12 lg:mb-20">
+          {/* Left: big number + label */}
+          <FadeUp>
+            <div className="flex items-end gap-5">
+              <div
+                className="text-[60px] sm:text-[120px] font-black leading-none tracking-tighter"
+                style={{ background: 'linear-gradient(135deg, #f9ce34, #ee2a7b, #6228d7)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+              >
+                {String(reels.length).padStart(2, '0')}
+              </div>
+              <div className="pb-2 sm:pb-4">
+                <div className="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.4em] text-white/30 mb-1">Latest</div>
+                <div className="text-lg sm:text-2xl font-black text-white/80 tracking-tighter leading-none">Reels</div>
+              </div>
+            </div>
+          </FadeUp>
+
+          {/* Right: headline + sub */}
+          <FadeUp delay={0.15} className="lg:text-right max-w-xl">
+            <div
+              className="text-[11px] font-black uppercase tracking-[0.35em] mb-2 sm:mb-3"
+              style={{ background: 'linear-gradient(to right, #f9ce34, #ee2a7b, #6228d7)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+            >
+              @socialbureau.in
+            </div>
+            <h2 className="text-2xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-white leading-[0.9] mb-3 sm:mb-4">
+              From the <span className="italic">Studio.</span>
+            </h2>
+            <p className="text-xs sm:text-base text-white/35 font-light max-w-sm lg:ml-auto">
+              Behind-the-scenes moments, campaigns & ideas — straight from our world.
+            </p>
+          </FadeUp>
+        </div>
+
+        {/* ── Reels horizontal scroll ── */}
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          className="flex gap-5 sm:gap-7 overflow-x-auto pb-6 snap-x snap-mandatory"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
+        >
+          {reels.map((reel, i) => {
+            const shortcode = getReelShortcode(reel.url);
+            return (
+              <div
+                key={reel._id}
+                className="flex-shrink-0 snap-center w-[230px] sm:w-[320px] lg:w-[calc((100%-3*1.75rem)/4)]"
+              >
+                {/* Gradient border frame */}
+                <div
+                  className="relative rounded-[24px] p-[1.5px] transition-transform duration-500 hover:-translate-y-2 group/card"
+                  style={{ background: 'linear-gradient(135deg, #f9ce34, #ee2a7b, #6228d7)' }}
+                >
+                  {/* Glow behind card */}
+                  <div
+                    className="absolute inset-0 rounded-[24px] blur-xl opacity-30 -z-10 group-hover/card:opacity-50 transition-opacity duration-500"
+                    style={{ background: 'linear-gradient(135deg, #f9ce34, #ee2a7b, #6228d7)' }}
+                  />
+
+                  {/* The embed container */}
+                  <div className="relative bg-[#0b0b0b] rounded-[22.5px] overflow-hidden flex flex-col h-full shadow-2xl">
+                    {/* Floating account badge */}
+                    <div className="flex items-center justify-between px-4 py-3 bg-black/40 border-b border-white/5 backdrop-blur-md">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-full p-[1.5px]" style={{ background: 'linear-gradient(135deg, #f9ce34, #ee2a7b, #6228d7)' }}>
+                          <div className="w-full h-full bg-[#0d0d0d] rounded-full flex items-center justify-center overflow-hidden">
+                            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                          </div>
+                        </div>
+                        <div>
+                          <span className="text-[11px] font-black text-white tracking-wide block leading-none">socialbureau.in</span>
+                          <span className="text-[8px] font-bold text-white/30 uppercase tracking-widest mt-0.5 block leading-none">Official Reel</span>
+                        </div>
+                      </div>
+                      <a href={reel.url} target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-full hover:bg-white/10 transition-colors text-white/50 hover:text-white">
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                          <path d="M7 17L17 7M17 7H7M17 7v10" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </a>
+                    </div>
+
+                    {/* Instagram embed iframe */}
+                    <div className="relative aspect-[9/16] bg-black overflow-hidden flex items-center justify-center">
+                      {shortcode ? (
+                        <iframe
+                          src={`https://www.instagram.com/reel/${shortcode}/embed`}
+                          className="absolute inset-0 w-full h-full border-0 rounded-none"
+                          scrolling="no"
+                          allowFullScreen
+                          allowtransparency="true"
+                          allow="encrypted-media"
+                          title={reel.caption || "Instagram Reel"}
+                        />
+                      ) : (
+                        <div className="text-white/40 text-xs py-10">Invalid Reel URL</div>
+                      )}
+                    </div>
+
+                    {/* Custom glass caption footer if available */}
+                    {reel.caption && (
+                      <div className="p-4 bg-gradient-to-t from-black/80 to-[#121212]/95 border-t border-white/5 flex flex-col gap-2">
+                        <p className="text-[12px] text-white/80 font-medium leading-relaxed italic line-clamp-2">
+                          {reel.caption}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* ── Scroll dots indicator ── */}
+        {reels.length > 1 && (
+          <div className="flex justify-center gap-2 mt-6">
+            {reels.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => scrollTo(i)}
+                className="transition-all duration-300 rounded-full"
+                style={{
+                  width: activeIdx === i ? '28px' : '8px',
+                  height: '8px',
+                  background: activeIdx === i
+                    ? 'linear-gradient(to right, #f9ce34, #ee2a7b, #6228d7)'
+                    : 'rgba(255,255,255,0.2)',
+                }}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* ── Full-width CTA bar ── */}
+        <FadeUp className="mt-16 sm:mt-20">
+          <a
+            href="https://www.instagram.com/socialbureau.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative flex items-center justify-between w-full rounded-[24px] px-8 sm:px-12 py-6 sm:py-8 overflow-hidden transition-transform duration-500 hover:scale-[1.01]"
+            style={{ background: 'linear-gradient(135deg, #1a0a00, #1a001a)' }}
+          >
+            {/* Gradient border */}
+            <div className="absolute inset-0 rounded-[24px] p-[1.5px]"
+              style={{ background: 'linear-gradient(135deg, #f9ce34, #ee2a7b, #6228d7)', WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude' }} />
+
+            {/* Animated glow on hover */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-[24px] blur-3xl -z-10"
+              style={{ background: 'linear-gradient(135deg, #f9ce3420, #ee2a7b20, #6228d720)' }} />
+
+            <div className="flex items-center gap-4 sm:gap-6">
+              {/* Instagram icon ring */}
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
+                style={{ background: 'linear-gradient(135deg, #f9ce34, #ee2a7b, #6228d7)' }}>
+                <svg viewBox="0 0 24 24" className="w-6 h-6 sm:w-7 sm:h-7 fill-white">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </div>
+              <div>
+                <div className="text-xs sm:text-sm font-black uppercase tracking-[0.3em] text-white/40 mb-0.5">Follow Us</div>
+                <div className="text-xl sm:text-2xl font-black text-white tracking-tight">@socialbureau.in</div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 sm:gap-4">
+              <span className="hidden sm:block text-sm font-bold text-white/50">Open Instagram</span>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center border border-white/10 group-hover:border-white/30 transition-all group-hover:translate-x-1 duration-300">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path d="M7 17L17 7M17 7H7M17 7v10" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </div>
+          </a>
+        </FadeUp>
+      </div>
+    </section>
+  );
+};
+
 // --- Main Home Component ---
 
 export const Home = () => {
@@ -1101,6 +1384,9 @@ export const Home = () => {
 
       {/* --- FOUNDER SECTION --- */}
       <FounderSection />
+
+      {/* --- INSTAGRAM REELS SECTION --- */}
+      <InstagramReelsSection />
 
       {/* --- SOFTWARE SECTION --- */}
       <SoftwareSection />

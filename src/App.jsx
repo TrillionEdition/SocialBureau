@@ -6,6 +6,7 @@ import "lenis/dist/lenis.css";
 import CheriyanPage from "./pages/Partnerships/cheriyan";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "react-toastify/dist/ReactToastify.css";
+import { BASE_URL } from "./utils/urls";
 
 // Components
 import Navbar from "./components/Navbar";
@@ -68,6 +69,7 @@ const TeamDashboard = lazy(() => import("./pages/TeamDashboard"));
 const AdminTeamDashboard = lazy(() => import("./pages/AdminTeamDashboard"));
 const AllApplications = lazy(() => import("./pages/AllApplications"));
 const AdminPostersDashboard = lazy(() => import("./pages/AdminPostersDashboard"));
+const AdminReelsDashboard = lazy(() => import("./pages/AdminReelsDashboard"));
 const ResetPassword = lazy(() =>
 
   import("./pages/ForgetPassword").then((module) => ({
@@ -238,6 +240,39 @@ const lenisOptions = {
   infinite: false,
 };
 
+const HomeWrapper = () => {
+  const [showLottery, setShowLottery] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkLotteryRedirect = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/lottery/settings`);
+        const data = await response.json();
+        if (data && data.isActive && data.showLotteryOnHomeStart && data.showLotteryOnHomeEnd) {
+          const now = new Date();
+          const start = new Date(data.showLotteryOnHomeStart);
+          const end = new Date(data.showLotteryOnHomeEnd);
+          if (now >= start && now <= end) {
+            setShowLottery(true);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to check lottery redirect:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkLotteryRedirect();
+  }, []);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  return showLottery ? <SpinWheel /> : <Home />;
+};
+
 function App() {
   return (
     <ReactLenis root options={lenisOptions}>
@@ -259,7 +294,7 @@ function App() {
         <ScrollTop />
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<HomeWrapper />} />
             <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/clickup" element={<Clickup />} />
@@ -383,6 +418,14 @@ function App() {
               element={
                 <AdminRoute>
                   <AdminPostersDashboard />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/reels"
+              element={
+                <AdminRoute>
+                  <AdminReelsDashboard />
                 </AdminRoute>
               }
             />
