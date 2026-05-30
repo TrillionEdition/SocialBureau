@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useLenis } from "lenis/react";
 
 // Helper function to calculate time left
 const TARGET_DATE = "2027-05-29T00:00:00";
@@ -625,6 +626,27 @@ function RevenueCard({ type }) {
 // ==========================================
 export default function AnniversaryCountdown() {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [isLocked, setIsLocked] = useState(false);
+  const lenis = useLenis();
+
+  // Control Lenis scrolling based on lock state
+  useEffect(() => {
+    if (!lenis) return;
+    if (isLocked) {
+      lenis.stop();
+    } else {
+      lenis.start();
+    }
+  }, [isLocked, lenis]);
+
+  // Clean up scroll lock on unmount
+  useEffect(() => {
+    return () => {
+      if (lenis) {
+        lenis.start();
+      }
+    };
+  }, [lenis]);
 
   // Update timer every second
   useEffect(() => {
@@ -635,7 +657,52 @@ export default function AnniversaryCountdown() {
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-black text-stone-100 font-sans grain selection:bg-gold-500/30 selection:text-gold-200 flex flex-col border-b border-gold-950/50">
+    <div className={`relative w-full h-screen overflow-hidden bg-black text-stone-100 font-sans grain selection:bg-gold-500/30 selection:text-gold-200 flex flex-col border-b border-gold-950/50 ${isLocked ? "touch-none" : ""}`}>
+      
+      {/* Scroll Lock Button for Mobile Touch Interaction */}
+      <button
+        onClick={() => setIsLocked(!isLocked)}
+        className="block md:hidden absolute top-4 left-4 z-30 p-2 rounded-lg border transition-all duration-300 backdrop-blur-md cursor-pointer flex items-center gap-1.5 shadow-lg select-none"
+        style={{
+          backgroundColor: isLocked ? "rgba(212, 154, 55, 0.25)" : "rgba(7, 9, 14, 0.55)",
+          borderColor: isLocked ? "rgba(255, 215, 0, 0.6)" : "rgba(212, 154, 55, 0.2)",
+          boxShadow: isLocked 
+            ? "0 4px 15px rgba(212, 154, 55, 0.25), 0 0 10px rgba(255, 215, 0, 0.15)"
+            : "0 4px 10px rgba(0, 0, 0, 0.4)",
+        }}
+      >
+        {isLocked ? (
+          <>
+            <svg
+              className="w-3.5 h-3.5 text-gold-300 animate-pulse"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path fillRule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm-3.75 8.25v-3a3.75 3.75 0 117.5 0v3h-7.5z" clipRule="evenodd" />
+            </svg>
+            {/* <span className="text-[8.5px] font-mono tracking-wider text-gold-300 font-bold uppercase">
+              Scroll Locked
+            </span> */}
+          </>
+        ) : (
+          <>
+            <svg
+              className="w-3.5 h-3.5 text-gold-400/70"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h16.5a1.5 1.5 0 001.5-1.5v-6.75a1.5 1.5 0 00-1.5-1.5H3.75a1.5 1.5 0 00-1.5 1.5v6.75a1.5 1.5 0 001.5 1.5z" />
+            </svg>
+            {/* <span className="text-[8.5px] font-mono tracking-wider text-gold-400/70 font-bold uppercase">
+              Lock Scroll
+            </span> */}
+          </>
+        )}
+      </button>
       
       {/* A. RESPONSIVE BACKGROUND ANNIVERSARY BILLBOARD */}
       {/* Desktop Anniversary Banner */}
