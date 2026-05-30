@@ -502,6 +502,9 @@ export default function Revanth() {
   const formRef = useRef(null);
   const filesRef = useRef([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [fileErrors, setFileErrors] = useState([]);
+  // Max file size per file (10 MB)
+  const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
   const recalc = () => {
   if (!formRef.current) return;
@@ -530,9 +533,38 @@ export default function Revanth() {
 };
 
   const handleFilesChange = (e) => {
-    const files = Array.from(e.target.files || []);
-    filesRef.current = files;
-    setSelectedFiles(files.map(f => f.name));
+    const incoming = Array.from(e.target.files || []);
+    const accepted = [];
+    const errors = [];
+
+    // Append to any existing files
+    const existing = Array.from(filesRef.current || []);
+
+    incoming.forEach(f => {
+      if (f.size > MAX_FILE_SIZE) {
+        errors.push(`${f.name} is too large (${Math.round(f.size / 1024)} KB)`);
+      } else {
+        accepted.push(f);
+      }
+    });
+
+    const combined = existing.concat(accepted);
+    filesRef.current = combined;
+    setSelectedFiles(combined.map(f => `${f.name} (${Math.round(f.size / 1024)} KB)`));
+    setFileErrors(errors);
+    if (errors.length > 0) {
+      // Brief alert; UI also shows messages
+      alert('Some files were skipped because they exceed the 10 MB limit.');
+    }
+    recalc();
+  };
+
+  const removeSelectedFile = (idx) => {
+    const list = Array.from(filesRef.current || []);
+    if (idx < 0 || idx >= list.length) return;
+    list.splice(idx, 1);
+    filesRef.current = list;
+    setSelectedFiles(list.map(f => `${f.name} (${Math.round(f.size / 1024)} KB)`));
     recalc();
   };
 
@@ -781,7 +813,18 @@ export default function Revanth() {
               {selectedFiles.length > 0 && (
                 <div style={{ fontSize: 12, color: T.ink3 }}>
                   <strong>Selected files:</strong>
-                  <div style={{ marginTop: 6 }}>{selectedFiles.map((n, i) => <div key={i}>{n}</div>)}</div>
+                  <div style={{ marginTop: 6 }}>{selectedFiles.map((n, i) => (
+                    <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                      <div>{n}</div>
+                      <button type="button" onClick={() => removeSelectedFile(i)} style={{ background: "transparent", border: "none", color: T.red, cursor: "pointer", fontSize: 12 }}>Delete</button>
+                    </div>
+                  ))}</div>
+                </div>
+              )}
+              {fileErrors && fileErrors.length > 0 && (
+                <div style={{ marginTop: 6, color: "#B00020", fontSize: 12 }}>
+                  <strong>File errors:</strong>
+                  <div style={{ marginTop: 4 }}>{fileErrors.map((m, i) => <div key={i}>{m}</div>)}</div>
                 </div>
               )}
             </div>
