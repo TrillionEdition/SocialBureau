@@ -146,43 +146,138 @@ const inputStyle = {
 
 function TInput({ placeholder, style = {}, onChange }) {
   const [focus, setFocus] = useState(false);
+
   return (
-    <input
-      type="text" placeholder={placeholder}
-      onChange={onChange}
-      onFocus={() => setFocus(true)}
-      onBlur={() => setFocus(false)}
-      style={{ ...inputStyle, ...(focus ? { borderColor: T.red, boxShadow: `0 0 0 3px ${T.redSoft}`, background: "#fff" } : {}), ...style }}
-    />
+    <>
+      <style>
+  {`
+    .t-input::placeholder {
+      color: #4b4b4b !important;
+      opacity: 1;
+    }
+  `}
+</style>
+
+      <input
+        type="text"
+        className="t-input"
+        placeholder={placeholder}
+        onChange={onChange}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        style={{
+          ...inputStyle,
+          color: "#000", // text color always black
+          ...(focus
+            ? {
+                borderColor: T.red,
+                boxShadow: `0 0 0 3px ${T.redSoft}`,
+                background: "#fff",
+              }
+            : {}),
+          ...style,
+        }}
+      />
+    </>
   );
 }
+
 function EInput({ placeholder, onChange }) {
   const [focus, setFocus] = useState(false);
+
   return (
-    <input type="email" placeholder={placeholder} onChange={onChange}
-      onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}
-      style={{ ...inputStyle, ...(focus ? { borderColor: T.red, boxShadow: `0 0 0 3px ${T.redSoft}`, background: "#fff" } : {}) }}
-    />
+    <>
+      <style>
+        {`
+          .e-input::placeholder {
+            color: #4b4b4b !important;
+            opacity: 1;
+          }
+        `}
+      </style>
+
+      <input
+        type="email"
+        className="e-input"
+        placeholder={placeholder}
+        onChange={onChange}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        style={{
+          ...inputStyle,
+          color: "#000",
+          ...(focus
+            ? {
+                borderColor: T.red,
+                boxShadow: `0 0 0 3px ${T.redSoft}`,
+                background: "#fff",
+              }
+            : {}),
+        }}
+      />
+    </>
   );
 }
 function PhoneInput({ placeholder, onChange }) {
   const [focus, setFocus] = useState(false);
+
   return (
-    <input type="tel" placeholder={placeholder} onChange={onChange}
-      onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}
-      style={{ ...inputStyle, ...(focus ? { borderColor: T.red, boxShadow: `0 0 0 3px ${T.redSoft}`, background: "#fff" } : {}) }}
-    />
+    <>
+      <style>
+        {`
+          .custom-input::placeholder {
+            color: #4b4b4b !important;
+            opacity: 1;
+          }
+        `}
+      </style>
+
+      <input
+        type="tel"
+        className="custom-input"
+        placeholder={placeholder}
+        onChange={onChange}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        style={{
+          ...inputStyle,
+          color: "#000",
+          ...(focus
+            ? {
+                borderColor: T.red,
+                boxShadow: `0 0 0 3px ${T.redSoft}`,
+                background: "#fff",
+              }
+            : {}),
+        }}
+      />
+    </>
   );
 }
 function TArea({ placeholder, minHeight = 80, style = {}, onChange }) {
   const [focus, setFocus] = useState(false);
+
   return (
-    <textarea placeholder={placeholder} onChange={onChange}
-      onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}
+    <textarea
+      className="custom-input"
+      placeholder={placeholder}
+      onChange={onChange}
+      onFocus={() => setFocus(true)}
+      onBlur={() => setFocus(false)}
       style={{
-        ...inputStyle, resize: "vertical", minHeight, lineHeight: 1.6,
-        ...(focus ? { borderColor: T.red, boxShadow: `0 0 0 3px ${T.redSoft}`, background: "#fff" } : {}),
-        ...style
+        ...inputStyle,
+        color: "#000",
+        resize: "vertical",
+        minHeight,
+        lineHeight: 1.6,
+        ...(focus
+          ? {
+              borderColor: T.red,
+              boxShadow: `0 0 0 3px ${T.redSoft}`,
+              background: "#fff",
+            }
+          : {}),
+        ...style,
       }}
     />
   );
@@ -600,7 +695,7 @@ export default function Revanth() {
   }}
 >
   <TInput
-    placeholder="Full name & official designation"
+    placeholder="Full name & official designation" 
     onChange={recalc}
   />
   <PhoneInput

@@ -31,6 +31,7 @@ import AdminClickupClients from "./components/ClickupDash/AdminClickupClients";
 import SpinWheel from "./components/Lottery/LotterySpinner";
 import LotteryClaims from "./pages/LotteryClaims";
 import Revanth from "./pages/Revanth";
+import IntakeDashboard from "./pages/IntakeDashboard";
 
 const Home = lazy(() =>
   import("./pages/Home").then((module) => ({ default: module.Home })),
@@ -482,7 +483,7 @@ function App() {
             <Route path="/ajnoradashboard" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
             <Route path="/ajnoradashboard/:id" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
             <Route path="/data-intake" element={<Revanth />} />
-
+            <Route path="/cm-dashboard" element={<IntakeDashboard />} />
             <Route path="/analytics" element={<AnalyticsWidget />} />
             <Route
               path="/achievements-form" element={
