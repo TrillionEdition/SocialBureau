@@ -18,6 +18,7 @@ import { toast } from 'react-toastify';
 import Footer from '../../components/Footer';
 import ResumeModal from '../Resume/ResumeModal';
 import BookSessionModal from './BookSessionModal';
+import { TEAM_MEMBERS } from './constants';
 
 function cn(...inputs) {
   return clsx(inputs);
@@ -559,7 +560,54 @@ const EmployeePage = () => {
     }
   };
 
-  const fallbackData = {
+  const matchedMember = TEAM_MEMBERS.find(m => 
+    m.id?.toLowerCase() === slug?.toLowerCase() || 
+    (slug?.toLowerCase() === 'shamsk' && m.id === 'sham-sk') ||
+    (slug?.toLowerCase() === 'alen-jacob' && m.id === 'alen')
+  );
+
+  const fallbackData = matchedMember ? {
+    member: {
+      name: matchedMember.name || "Team Member",
+      role: matchedMember.role || "Consultant",
+      bgText: matchedMember.bgText || matchedMember.name || "TEAM",
+      image: matchedMember.image || "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/Team/bulcmcbtguawhkw9f7oo.webp",
+      cardImage: matchedMember.cardImage || "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/Team/dgox61jo9mebikejqe2i.webp",
+      image1: matchedMember.image1 || matchedMember.image || "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/TeamPage/Rectangle%2098.png",
+      description: matchedMember.description || `Specializing in ${matchedMember.role || 'consulting'} — through data, systems, and relentless execution.`,
+      tagline: matchedMember.tagline || `${matchedMember.role || 'Consultant'} · Team Member`,
+      bgColor: matchedMember.bgColor || "#ff3358",
+      socials: matchedMember.socials || {
+        linkedin: "https://linkedin.com",
+        instagram: "https://instagram.com",
+        twitter: "https://twitter.com"
+      }
+    },
+    clickup: {
+      totalHours: 160,
+      worksDone: 40,
+      efficiency: 95,
+      onTime: 40,
+      csat: 95
+    },
+    user: {
+      doj: "2022-01-15",
+      emp_id: `SB-EMP-${matchedMember.id?.toUpperCase() || '000'}`,
+      location: "Kochi, Kerala",
+      department: matchedMember.category?.[0] || "Operations",
+      followers: "150+",
+      efficiency: "95%",
+      onTime: "95%",
+      csat: "95%",
+      tasksPerMonth: "40",
+      hoursPerMonth: "160 HRS",
+      tenure: "4YR",
+      clientsCount: "10+",
+      rating: "4.8",
+      projectsCount: "5+",
+      hobbies: matchedMember.tags || ["Innovation", "Collaboration", "Execution"]
+    }
+  } : {
     member: {
       name: "SHAM SK",
       role: "Founder & CEO",

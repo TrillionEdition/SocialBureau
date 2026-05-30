@@ -447,8 +447,21 @@ const InstagramReelsSection = () => {
 
   const scrollTo = (idx) => {
     if (!scrollRef.current) return;
-    const card = scrollRef.current.children[idx];
-    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    const container = scrollRef.current;
+    const card = container.children[idx];
+    if (card) {
+      const cardOffsetLeft = card.offsetLeft;
+      const cardWidth = card.clientWidth;
+      const containerWidth = container.clientWidth;
+      
+      // Calculate target scrollLeft to center the card horizontally
+      const targetScrollLeft = cardOffsetLeft - (containerWidth / 2) + (cardWidth / 2);
+      
+      container.scrollTo({
+        left: targetScrollLeft,
+        behavior: "smooth"
+      });
+    }
     setActiveIdx(idx);
   };
 

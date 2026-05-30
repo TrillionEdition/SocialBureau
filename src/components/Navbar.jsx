@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, ChevronRight, Trophy, User, FileText, BarChart3 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Logout from "./Logout";
+import { BASE_URL } from "@/utils/urls";
 
 const useAuth = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -60,8 +61,33 @@ export default function Navbar() {
   
   const isTeamPage = location.pathname.startsWith('/team');
 
+  const [homeLink, setHomeLink] = useState("/");
+  const [isLotteryActive, setIsLotteryActive] = useState(false);
+
+  useEffect(() => {
+    const checkLotteryRedirect = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/lottery/settings`);
+        const data = await response.json();
+        if (data && data.isActive && data.showLotteryOnHomeStart && data.showLotteryOnHomeEnd) {
+          const now = new Date();
+          const start = new Date(data.showLotteryOnHomeStart);
+          const end = new Date(data.showLotteryOnHomeEnd);
+          if (now >= start && now <= end) {
+            setHomeLink("/home");
+            setIsLotteryActive(true);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch lottery settings for Navbar:", err);
+      }
+    };
+    checkLotteryRedirect();
+  }, []);
+
   const navItems = [
-    { label: "Home", href: "/" },
+    { label: "Home", href: homeLink },
+    ...(isLotteryActive ? [{ label: "🎁 Spin & Win", href: "/" }] : []),
     {
       label: "Services",
       href: "#",
@@ -297,12 +323,12 @@ export default function Navbar() {
           <div className="hidden md:flex items-center justify-center flex-1 min-w-0">
             <a
               style={{ fontFamily: "MyFont, sans-serif" }}
-              href="https://socialbureau.in"
+              href={homeLink}
               className="text-white text-[17px] font-bold tracking-tight shrink-0 mr-10"
             >
               <img src="/assets/logo.webp" className="h-7 w-40" />
             </a>
-            {navItems.map((item) => (
+            {navItems.filter(item => item.label !== "🎁 Spin & Win").map((item) => (
               <div
                 key={item.label}
                 className="relative shrink-0"
@@ -317,8 +343,8 @@ export default function Navbar() {
                   initial="rest"
                 >
                   {/* Original Text - slides up on hover */}
-                   <motion.span
-                    className={`block ${isTeamPage && item.label === 'Team' ? 'text-brand-pink font-bold' : 'text-white/90'}`}
+                  <motion.span
+                    className={`block ${item.label === '🎁 Spin & Win' ? 'text-yellow-400 font-bold tracking-wide animate-pulse' : isTeamPage && item.label === 'Team' ? 'text-brand-pink font-bold' : 'text-white/90'}`}
                     variants={{
                       rest: { y: 0 },
                       hover: { y: -24 },
@@ -330,7 +356,7 @@ export default function Navbar() {
 
                   {/* Hover Text - appears from bottom */}
                   <motion.span
-                    className="block text-white absolute top-6"
+                    className={`block absolute top-6 ${item.label === '🎁 Spin & Win' ? 'text-yellow-300 font-bold tracking-wide' : 'text-white'}`}
                     variants={{
                       rest: { y: 0 },
                       hover: { y: -24 },
@@ -346,6 +372,14 @@ export default function Navbar() {
 
           {/* Far-right desktop actions - dropdown menu or simple login */}
            <div className="hidden md:flex items-center shrink-0 pl-3 relative">
+            {isLotteryActive && (
+              <button
+                onClick={() => handleNavClick("/")}
+                className="flex items-center gap-1.5 bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-yellow-950 px-4 py-1.5 rounded-full text-[11px] font-black tracking-wider shadow-[0_0_20px_rgba(234,179,8,0.35)] animate-pulse hover:scale-105 active:scale-95 transition-all mr-4 cursor-pointer"
+              >
+                <span>🎰 SPIN & WIN</span>
+              </button>
+            )}
             {isTeamPage ? (
               <button
                 onClick={() => handleNavClick("/contact")}
@@ -469,7 +503,7 @@ export default function Navbar() {
           {/* Mobile Logo */}
           <a
             style={{ fontFamily: "MyFont, sans-serif" }}
-            href="https://socialbureau.in"
+            href={homeLink}
             className="md:hidden text-white text-[17px] font-bold tracking-tight shrink-0"
           >
             <img src="/assets/logo.webp" className="h-7 w-40" />
