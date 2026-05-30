@@ -500,6 +500,8 @@ export default function Revanth() {
   const [progress, setProgress] = useState(0);
   const [sectionsOpen, setSectionsOpen] = useState(1); // S1 open by default
   const formRef = useRef(null);
+  const filesRef = useRef([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
   const recalc = () => {
   if (!formRef.current) return;
@@ -527,6 +529,13 @@ export default function Revanth() {
   setProgress(p);
 };
 
+  const handleFilesChange = (e) => {
+    const files = Array.from(e.target.files || []);
+    filesRef.current = files;
+    setSelectedFiles(files.map(f => f.name));
+    recalc();
+  };
+
   const handleSubmit = async () => {
   
   // Collect all form values
@@ -545,18 +554,38 @@ export default function Revanth() {
   });
 
   try {
-    const res = await fetch("/api/submit-intake", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ project: "PRR-2026", submittedAt: new Date(), ...formData }),
+    // Build multipart/form-data so files are sent to the backend
+    const fd = new FormData();
+    fd.append('project', 'PRR-2026');
+    fd.append('submittedAt', new Date().toISOString());
+    Object.keys(formData).forEach(k => {
+      const v = formData[k];
+      // Convert booleans/objects to strings
+      fd.append(k, typeof v === 'object' ? JSON.stringify(v) : String(v));
     });
+
+    // Append selected files from filesRef
+    if (filesRef.current && filesRef.current.length > 0) {
+      filesRef.current.forEach(file => fd.append('files', file));
+    }
+
+    const res = await fetch('/api/submit-intake', {
+      method: 'POST',
+      body: fd,
+    });
+
     if (res.ok) {
-      alert("Thank you — intake received by SocialBureau.\n\nWe will respond within 72 hours.");
+      alert('Thank you — intake received by SocialBureau.\n\nWe will respond within 72 hours.');
+      // Clear file inputs and selectedFiles UI
+      filesRef.current = [];
+      setSelectedFiles([]);
+      formRef.current.reset && formRef.current.reset();
     } else {
-      alert("Submission failed. Please try again or email sham@socialbureau.in");
+      alert('Submission failed. Please try again or email sham@socialbureau.in');
     }
   } catch (err) {
-    alert("Network error. Please email sham@socialbureau.in directly.");
+    console.error('Submit error:', err);
+    alert('Network error. Please email sham@socialbureau.in directly.');
   }
 };
 
@@ -747,6 +776,15 @@ export default function Revanth() {
             <QLabel>Any extra links, documents, websites, or social media profiles we should review?</QLabel>
             <QHint>Paste Google Drive links, Dropbox, website URLs, PDFs, or social profile URLs (Instagram, Facebook, X, YouTube, LinkedIn). Separate multiple entries with commas or new lines.</QHint>
             <TArea placeholder="Extra links / docs / websites / social handles — e.g. Google Drive link, website URL, Instagram handle..." minHeight={80} onChange={recalc} />
+            <div style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 8 }}>
+              <input type="file" multiple onChange={handleFilesChange} style={{ ...inputStyle, padding: "8px 10px" }} />
+              {selectedFiles.length > 0 && (
+                <div style={{ fontSize: 12, color: T.ink3 }}>
+                  <strong>Selected files:</strong>
+                  <div style={{ marginTop: 6 }}>{selectedFiles.map((n, i) => <div key={i}>{n}</div>)}</div>
+                </div>
+              )}
+            </div>
           </QBlock>
         </FormSection>
 
