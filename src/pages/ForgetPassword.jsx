@@ -17,7 +17,6 @@ export const ResetPassword = () => {
     setError("");
     setSuccess("");
 
-    // Validation
     if (!password || !confirmPassword) {
       setError("Both password fields are required");
       return;
