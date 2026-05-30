@@ -503,8 +503,8 @@ export default function Revanth() {
   const filesRef = useRef([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileErrors, setFileErrors] = useState([]);
-  // Max file size per file (10 MB)
-  const MAX_FILE_SIZE = 10 * 1024 * 1024;
+  // Max file size per file (20 KB)
+  const MAX_FILE_SIZE = 20 * 1024; // 20 KB
 
   const recalc = () => {
   if (!formRef.current) return;
@@ -550,10 +550,10 @@ export default function Revanth() {
     const allowedExt = ['pdf', 'doc', 'docx', 'png'];
 
     incoming.forEach(f => {
-      if (f.size > MAX_FILE_SIZE) {
-        errors.push(`${f.name} is too large (${Math.round(f.size / 1024)} KB)`);
-        return;
-      }
+        if (f.size > MAX_FILE_SIZE) {
+          errors.push(`${f.name} is too large (${Math.round(f.size / 1024)} KB). Max 20 KB allowed.`);
+          return;
+        }
 
       const ext = (f.name.split('.').pop() || '').toLowerCase();
       const typeOk = allowedMime.includes(f.type) || allowedExt.includes(ext);
@@ -572,7 +572,7 @@ export default function Revanth() {
     setFileErrors(errors);
     if (errors.length > 0) {
       // Brief alert; UI also shows messages
-      alert('Some files were skipped because they exceed the 10 MB limit.');
+      alert('Some files were skipped because they exceed the 20 KB limit.');
     }
     recalc();
   };
