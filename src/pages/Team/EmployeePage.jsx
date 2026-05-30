@@ -296,6 +296,7 @@ const InnovationCard = ({ type, date, title, content, url, likes, comments }) =>
 
 const getStaticEnrichedData = (slug, originalData) => {
   const normSlug = (slug || '').toLowerCase();
+  console.log('Normalized Slug:', normSlug);
   const isSham = normSlug === 'shamsk' || normSlug === 'sham-sk';
   
   // Custom mock attendance generator where everyone is present on all weekdays (ideal executive)
@@ -676,7 +677,7 @@ const EmployeePage = () => {
         }
         const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
         const isAlenOrSham = ['alen-jacob', 'alen', 'shamsk', 'sham-sk'].includes((slug || '').toLowerCase());
-
+console.log(isAlenOrSham,slug);
             // 1) Try the authenticated endpoint first (include credentials so cookies are sent).
             // If the user is logged in and cookies are present, backend will return ClickUp metrics.
             try {
