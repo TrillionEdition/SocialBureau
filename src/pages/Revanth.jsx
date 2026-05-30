@@ -540,12 +540,30 @@ export default function Revanth() {
     // Append to any existing files
     const existing = Array.from(filesRef.current || []);
 
+    // Only allow PDF, DOC, DOCX, PNG (client-side check)
+    const allowedMime = [
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'image/png',
+    ];
+    const allowedExt = ['pdf', 'doc', 'docx', 'png'];
+
     incoming.forEach(f => {
       if (f.size > MAX_FILE_SIZE) {
         errors.push(`${f.name} is too large (${Math.round(f.size / 1024)} KB)`);
-      } else {
-        accepted.push(f);
+        return;
       }
+
+      const ext = (f.name.split('.').pop() || '').toLowerCase();
+      const typeOk = allowedMime.includes(f.type) || allowedExt.includes(ext);
+
+      if (!typeOk) {
+        errors.push(`${f.name} — invalid file type. Only PDF, DOC or PNG allowed.`);
+        return;
+      }
+
+      accepted.push(f);
     });
 
     const combined = existing.concat(accepted);
@@ -809,7 +827,7 @@ export default function Revanth() {
             <QHint>Paste Google Drive links, Dropbox, website URLs, PDFs, or social profile URLs (Instagram, Facebook, X, YouTube, LinkedIn). Separate multiple entries with commas or new lines.</QHint>
             <TArea placeholder="Extra links / docs / websites / social handles — e.g. Google Drive link, website URL, Instagram handle..." minHeight={80} onChange={recalc} />
             <div style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 8 }}>
-              <input type="file" multiple onChange={handleFilesChange} style={{ ...inputStyle, padding: "8px 10px" }} />
+              <input type="file" multiple accept=".pdf,.doc,.docx,image/png" onChange={handleFilesChange} style={{ ...inputStyle, padding: "8px 10px" }} />
               {selectedFiles.length > 0 && (
                 <div style={{ fontSize: 12, color: T.ink3 }}>
                   <strong>Selected files:</strong>
