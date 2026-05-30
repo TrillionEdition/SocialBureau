@@ -14,7 +14,20 @@ const PortfolioPopup = () => {
   const [stats, setStats] = useState({ totalCount: 0, recentStudents: [] });
   const [mobileExpanded, setMobileExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
+  const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
+
+  // Scroll listener to hide the floating student portfolio badge inside the Anniversary/Hero top section
+  useEffect(() => {
+    const handleScroll = () => {
+      const heroThreshold = window.innerWidth < 768 ? 320 : 540;
+      setIsVisible(window.scrollY > heroThreshold);
+    };
+
+    handleScroll(); // Initial check
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -114,10 +127,11 @@ const PortfolioPopup = () => {
     <>
       {/* Main Trigger Card */}
       <AnimatePresence>
-        {!isOpen && (
+        {!isOpen && isVisible && (
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 50 }}
             className="fixed bottom-6 right-6 z-[10001] flex flex-col items-end gap-3"
           >
             {/* Small Mobile Trigger (Icon only) */}

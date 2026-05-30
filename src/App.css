@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
 
 @import "tailwindcss";
 
@@ -13,6 +13,22 @@
   --color-accent-green: #4ADE80;
   --color-accent-red: #F43F5E;
   --color-accent-blue: #06B6D4;
+
+  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Cinzel", serif;
+  --font-mono: "Space Mono", "JetBrains Mono", monospace;
+  
+  --color-gold-50: #fdfbf7;
+  --color-gold-100: #fbf6e7;
+  --color-gold-200: #f5e8c1;
+  --color-gold-300: #ecd292;
+  --color-gold-400: #e1b761;
+  --color-gold-500: #d49a37;
+  --color-gold-600: #b77b27;
+  --color-gold-700: #935d1f;
+  --color-gold-800: #73451b;
+  --color-gold-900: #553216;
+  --color-gold-950: #381e0d;
 }
 
 
@@ -71,6 +87,64 @@ body {
   .font-roboto {
     font-family: 'Roboto', sans-serif;
   }
+
+  /* Premium gold shimmer text */
+  .text-gold-gradient {
+    background: linear-gradient(
+      to right,
+      #ecd292 0%,
+      #e1b761 25%,
+      #ffd700 50%,
+      #d49a37 75%,
+      #ecd292 100%
+    );
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: goldShimmer 6s linear infinite;
+  }
+
+  .bg-gold-gradient {
+    background: linear-gradient(
+      135deg,
+      #73451b 0%,
+      #b77b27 30%,
+      #ecd292 50%,
+      #b77b27 70%,
+      #381e0d 100%
+    );
+  }
+
+  .border-gold-gradient {
+    border-image: linear-gradient(
+      to right,
+      #73451b,
+      #ecd292,
+      #b77b27,
+      #ecd292,
+      #73451b
+    ) 1;
+  }
+}
+
+@keyframes goldShimmer {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Custom interactive grain overlay */
+.grain::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  opacity: 0.04;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
 /* Custom scrollbar for a cleaner look */

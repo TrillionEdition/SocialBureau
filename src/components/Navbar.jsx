@@ -52,6 +52,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isGoldTheme, setIsGoldTheme] = useState(false);
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [expandedMobileCategory, setExpandedMobileCategory] = useState(null);
@@ -264,6 +265,11 @@ export default function Navbar() {
       // Determine if scrolled enough to change state
       setIsScrolled(currentScrollY > 10);
       
+      // Check if gold theme should be active (scrolled less than viewport height on Homepage)
+      const isHome = location.pathname === "/" || location.pathname === "/home";
+      const threshold = window.innerHeight - 80;
+      setIsGoldTheme(isHome && currentScrollY < threshold);
+      
       // Show/Hide logic
       if (currentScrollY <= 10) {
         setVisible(true);
@@ -280,9 +286,14 @@ export default function Navbar() {
       setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    // Initialize state on mount/location change
+    const isHome = location.pathname === "/" || location.pathname === "/home";
+    const threshold = window.innerHeight - 80;
+    setIsGoldTheme(isHome && window.scrollY < threshold);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY, activeDropdown, mobileMenuOpen]);
+  }, [lastScrollY, activeDropdown, mobileMenuOpen, location.pathname]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -315,8 +326,38 @@ export default function Navbar() {
         initial={{ y: 0 }}
         animate={{ y: visible ? 0 : -60 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="fixed top-0 left-0 right-0 z-[1000] bg-[#161617]/80 backdrop-blur-xl transition-colors duration-500"
+        className={`fixed top-0 left-0 right-0 z-[1000] backdrop-blur-xl transition-all duration-500 ${
+          isGoldTheme 
+            ? "bg-[#050608]/55 shadow-[0_4px_30px_rgba(0,0,0,0.75)]" 
+            : "bg-[#161617]/80 border-b border-white/5"
+        }`}
       >
+        {/* Moving golden border at the bottom (thin) */}
+        <AnimatePresence>
+          {isGoldTheme && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ 
+                opacity: 1,
+                backgroundPosition: ["0% 50%", "200% 50%"]
+              }}
+              exit={{ opacity: 0 }}
+              transition={{
+                opacity: { duration: 0.35 },
+                backgroundPosition: {
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "linear"
+                }
+              }}
+              className="absolute bottom-0 left-0 right-0 h-[1.2px] z-20 pointer-events-none"
+              style={{
+                backgroundImage: "linear-gradient(90deg, #b77b27, #f5e8c1, #ffd700, #b77b27)",
+                backgroundSize: "200% auto"
+              }}
+            />
+          )}
+        </AnimatePresence>
         {/* Top Bar */}
         <div className="w-full px-4 flex items-center h-12">
           {/* Desktop Nav - centered with logo */}
@@ -344,7 +385,15 @@ export default function Navbar() {
                 >
                   {/* Original Text - slides up on hover */}
                   <motion.span
-                    className={`block ${item.label === '🎁 Spin & Win' ? 'text-yellow-400 font-bold tracking-wide animate-pulse' : isTeamPage && item.label === 'Team' ? 'text-brand-pink font-bold' : 'text-white/90'}`}
+                    className={`block ${
+                      item.label === '🎁 Spin & Win' 
+                        ? 'text-yellow-400 font-bold tracking-wide animate-pulse' 
+                        : isTeamPage && item.label === 'Team' 
+                        ? 'text-brand-pink font-bold' 
+                        : isGoldTheme 
+                        ? 'text-[#ecd292]/90 font-medium tracking-wide' 
+                        : 'text-white/90'
+                    }`}
                     variants={{
                       rest: { y: 0 },
                       hover: { y: -24 },
@@ -356,7 +405,13 @@ export default function Navbar() {
 
                   {/* Hover Text - appears from bottom */}
                   <motion.span
-                    className={`block absolute top-6 ${item.label === '🎁 Spin & Win' ? 'text-yellow-300 font-bold tracking-wide' : 'text-white'}`}
+                    className={`block absolute top-6 ${
+                      item.label === '🎁 Spin & Win' 
+                        ? 'text-yellow-300 font-bold tracking-wide' 
+                        : isGoldTheme 
+                        ? 'text-[#ffd700] drop-shadow-[0_0_6px_rgba(255,215,0,0.65)] font-bold tracking-wide' 
+                        : 'text-white'
+                    }`}
                     variants={{
                       rest: { y: 0 },
                       hover: { y: -24 },
@@ -391,7 +446,11 @@ export default function Navbar() {
               <div className="relative">
                 <button
                   onMouseEnter={() => setActiveDropdown("userMenu")}
-                  className="flex items-center gap-1.5 text-[11px] font-semibold transition-all px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 cursor-pointer text-white hover:bg-white/10"
+                  className={`flex items-center gap-1.5 text-[11px] font-semibold transition-all px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 cursor-pointer ${
+                    isGoldTheme 
+                      ? 'text-[#ecd292] hover:text-[#ffd700] hover:bg-white/5' 
+                      : 'text-white hover:bg-white/10'
+                  }`}
                 >
                   <User size={13} />
                   <span>Profile</span>
@@ -492,7 +551,11 @@ export default function Navbar() {
             ) : (
               <button
                 onClick={() => handleNavClick("/login")}
-                className="flex items-center gap-1.5 text-[11px] font-semibold transition-all px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 cursor-pointer text-white hover:bg-white/10"
+                className={`flex items-center gap-1.5 text-[11px] font-semibold transition-all px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 cursor-pointer ${
+                  isGoldTheme 
+                    ? 'text-[#ecd292] hover:text-[#ffd700] hover:bg-white/5' 
+                    : 'text-white hover:bg-white/10'
+                }`}
               >
                 <User size={13} />
                 <span>Login</span>
@@ -511,7 +574,9 @@ export default function Navbar() {
 
           {/* Mobile Toggle */}
           <button
-            className="md:hidden text-white p-2 ml-auto"
+            className={`md:hidden p-2 ml-auto transition-colors duration-300 ${
+              isGoldTheme ? 'text-[#ffd700]' : 'text-white'
+            }`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
