@@ -15,6 +15,7 @@ import ScrollTop from "./components/ScrollTop";
 import LoadingSpinner from "./components/LoadingSpinner";
 import AdminRoute from "./components/AdminRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
+import CodeProtectedRoute from "./components/CodeProtectedRoute";
 import CookieConsent from "./components/CookieConsent";
 import { ToastContainer } from "react-toastify";
 import Partner1 from "./pages/Partnerships/johnsamuel";
@@ -482,7 +483,14 @@ function App() {
             <Route path="/admin/lottery-claims" element={<AdminRoute><LotteryClaims /></AdminRoute>} />
             <Route path="/ajnoradashboard" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
             <Route path="/ajnoradashboard/:id" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
-            <Route path="/data-intake" element={<Revanth />} />
+            <Route
+              path="/data-intake"
+              element={
+                <CodeProtectedRoute>
+                  <Revanth />
+                </CodeProtectedRoute>
+              }
+            />
             <Route path="/cm-dashboard" element={<IntakeDashboard />} />
             <Route path="/analytics" element={<AnalyticsWidget />} />
             <Route
