@@ -742,6 +742,12 @@ export default function Revanth() {
             <QLabel>Are there any other agencies or consultants currently working on Telangana CM Revanth Reddy's digital presence?</QLabel>
             <TArea placeholder="Names, roles, and what they currently manage — SocialBureau needs to understand the existing ecosystem to avoid duplication..." onChange={recalc} />
           </QBlock>
+          <QBlock last>
+            <QNum>Q 1.6</QNum>
+            <QLabel>Any extra links, documents, websites, or social media profiles we should review?</QLabel>
+            <QHint>Paste Google Drive links, Dropbox, website URLs, PDFs, or social profile URLs (Instagram, Facebook, X, YouTube, LinkedIn). Separate multiple entries with commas or new lines.</QHint>
+            <TArea placeholder="Extra links / docs / websites / social handles — e.g. Google Drive link, website URL, Instagram handle..." minHeight={80} onChange={recalc} />
+          </QBlock>
         </FormSection>
 
         {/* S2 */}
