@@ -7,6 +7,14 @@ export default function ScrollTop() {
   const { pathname } = useLocation();
   const lenis = useLenis();
 
+  // Disable browser's default scroll restoration to prevent conflicts
+  // with lazy loaded components and Lenis smooth scroll
+  useEffect(() => {
+    if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+  }, []);
+
   useEffect(() => {
     if (lenis) {
       lenis.scrollTo(0, { immediate: true });

@@ -648,13 +648,13 @@ export default function AnniversaryCountdown() {
       <img 
         src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/archive%20(8)/qw8gno2bo4vlo0cfxewq.jpg" 
         alt="1st Anniversary Mobile" 
-        className="block md:hidden absolute inset-0 w-full h-full object-cover object-[center_20%] z-0 opacity-90 select-none pointer-events-none"
+        className="block md:hidden absolute inset-0 w-full h-full object-cover object-[center_20%] z-0 opacity-95 select-none pointer-events-none"
       />
 
       {/* Luxury Cinematic Shadow Gradient Masking to maximize text visibility */}
-      <div className="absolute inset-0 bg-black/55 z-0 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60 z-0 pointer-events-none" />
-      <div className="absolute inset-0 bg-radial-gradient from-transparent via-black/15 to-black/52 z-0 pointer-events-none" />
+      <div className="absolute inset-0 bg-black/25 md:bg-black/55 z-0 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/40 md:from-black/90 md:via-black/40 md:to-black/60 z-0 pointer-events-none" />
+      <div className="absolute inset-0 bg-radial-gradient from-transparent via-black/5 to-black/30 md:via-black/15 md:to-black/52 z-0 pointer-events-none" />
 
       {/* B. LIQUID GOLD GLITTER FLUID CANVAS BACKGROUND */}
       <ParticleCanvas />
