@@ -34,6 +34,39 @@ function fmtDate(val) {
   return isNaN(d) ? val : d.toLocaleString("en-IN", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
 }
 
+function normalizeText(s) {
+  if (typeof s !== "string") return s;
+  // try decoding URL-encoded sequences first (e.g. %22 -> ")
+  let out = s;
+  try {
+    // Only attempt if it contains percent-encoding
+    if (/%[0-9A-Fa-f]{2}/.test(out)) out = decodeURIComponent(out);
+  } catch (e) {
+    // ignore malformed sequences
+  }
+  return out
+    .replace(/%22/g, '"')
+    .replace(/â/g, "—")
+    .replace(/â€“/g, "–")
+    .replace(/â€™/g, "’")
+    .replace(/â€œ/g, "“")
+    .replace(/â€�/g, "”")
+    .replace(/Ã©/g, "é")
+    .replace(/Ã±/g, "ñ");
+}
+
+function ShowText({ text, max = 200 }) {
+  const [open, setOpen] = useState(false);
+  if (!text) return null;
+  if (text.length <= max) return <span style={{ whiteSpace: "pre-wrap" }}>{text}</span>;
+  return (
+    <span style={{ whiteSpace: "pre-wrap" }}>
+      {open ? text : text.slice(0, max) + "… "}
+      <button onClick={(e) => { e.stopPropagation(); setOpen(!open); }} style={{ marginLeft: 8, border: "none", background: "none", color: "#1a73e8", cursor: "pointer", padding: 0, fontSize: 12 }}>{open ? "Show less" : "Show more"}</button>
+    </span>
+  );
+}
+
 function StatCard({ label, value, sub }) {
   return (
     <div style={{ background: "#f8f7f4", borderRadius: 10, padding: "14px 18px", minWidth: 120 }}>
@@ -59,8 +92,30 @@ function CellValue({ col, val }) {
   if (col === "status") return <Badge value={val} />;
   if (col === "createdAt" || col === "updatedAt")
     return <span style={{ color: "#888", fontSize: 12 }}>{fmtDate(val)}</span>;
-  const s = String(val);
-  return <span title={s.length > 36 ? s : undefined}>{s.length > 36 ? s.slice(0, 34) + "…" : s}</span>;
+  if (typeof val === "object") {
+    try {
+      if (Array.isArray(val)) {
+        const preview = val.length > 0 ? val.slice(0, 3).map((it) => (typeof it === "object" ? (it && (it.name || it.title) ? (it.name || it.title) : JSON.stringify(it)) : normalizeText(String(it)))).join(", ") : "";
+        const full = JSON.stringify(val, null, 2);
+        return <span title={full} style={{ display: "inline-block", maxWidth: 640, whiteSpace: "pre-wrap" }}>{`[${val.length}] ${preview}${val.length > 3 ? "…" : ""}`}</span>;
+      }
+      // plain object
+      if (val && (val.name || val.title || val.email)) {
+        const display = val.name || val.title || val.email;
+        return <span title={JSON.stringify(val, null, 2)}>{normalizeText(String(display))}</span>;
+      }
+      const entries = Object.entries(val || {});
+      if (entries.length === 0) return <span style={{ color: "#bbb" }}>—</span>;
+      const preview = entries.slice(0, 3).map(([k, v]) => `${k}: ${typeof v === "object" ? (v && (v.name || v.title) ? (v.name || v.title) : JSON.stringify(v)) : normalizeText(String(v))}`).join("; ");
+      const full = JSON.stringify(val, null, 2);
+      return <span title={full} style={{ display: "inline-block", maxWidth: 640, whiteSpace: "pre-wrap" }}>{preview}{entries.length > 3 ? "…" : ""}</span>;
+    } catch (e) {
+      const s = String(val);
+      return <span title={s}>{normalizeText(s)}</span>;
+    }
+  }
+  const s = normalizeText(String(val));
+  return <ShowText text={s} max={300} />;
 }
 
 export default function IntakeDashboard() {
@@ -113,8 +168,6 @@ export default function IntakeDashboard() {
 
   const pages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
   const slice = sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-  const visibleCols = cols.slice(0, 6);
-  const extraCols = cols.slice(6);
 
   const today = data.filter((r) => new Date(r.createdAt).toDateString() === new Date().toDateString()).length;
   const last7 = data.filter((r) => Date.now() - new Date(r.createdAt).getTime() < 7 * 86400000).length;
@@ -127,7 +180,7 @@ export default function IntakeDashboard() {
   };
 
   return (
-    <div style={{ fontFamily: "'Sora', 'DM Mono', sans-serif", color: "#1a1a1a", padding: "2rem 0", maxWidth: 900, margin: "0 auto" }}>
+    <div style={{ fontFamily: "'Sora', 'DM Mono', sans-serif", color: "#1a1a1a", padding: "2rem 0", maxWidth: 1200, margin: "0 auto" }}>
       <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
       {/* Header */}
@@ -161,7 +214,7 @@ export default function IntakeDashboard() {
           style={{ ...selStyle, flex: 1, minWidth: 180 }}
         />
         <select value={sortField} onChange={(e) => setSortField(e.target.value)} style={selStyle}>
-          {cols.map((c) => <option key={c} value={c}>{fmtKey(c)}</option>)}
+          {cols.map((c) => <option key={c} value={c}>{normalizeText(fmtKey(c))}</option>)}
         </select>
         <select value={sortDir} onChange={(e) => setSortDir(e.target.value)} style={selStyle}>
           <option value="desc">Newest first</option>
@@ -169,63 +222,91 @@ export default function IntakeDashboard() {
         </select>
       </div>
 
-      {/* Table */}
+      {/* Key-Value Table */}
       <div style={{ border: "1px solid #ebebeb", borderRadius: 12, overflow: "hidden" }}>
-        <div style={{ overflowX: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-            <thead>
-              <tr style={{ background: "#f8f7f4" }}>
-                {visibleCols.map((c) => (
-                  <th key={c} onClick={() => { setSortField(c); setSortDir(sortField === c && sortDir === "asc" ? "desc" : "asc"); }}
-                    style={{ padding: "10px 14px", textAlign: "left", fontWeight: 500, fontSize: 11, color: "#888", cursor: "pointer", whiteSpace: "nowrap", fontFamily: "'DM Mono', monospace", letterSpacing: "0.04em", textTransform: "uppercase", borderBottom: "1px solid #ebebeb", userSelect: "none" }}>
-                    {fmtKey(c)} {sortField === c ? (sortDir === "asc" ? "↑" : "↓") : ""}
-                  </th>
-                ))}
-                {extraCols.length > 0 && <th style={{ width: 32, borderBottom: "1px solid #ebebeb" }} />}
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr><td colSpan={visibleCols.length + 1} style={{ textAlign: "center", padding: "2.5rem", color: "#aaa", fontSize: 13 }}>Loading…</td></tr>
-              ) : slice.length === 0 ? (
-                <tr><td colSpan={visibleCols.length + 1} style={{ textAlign: "center", padding: "2.5rem", color: "#aaa", fontSize: 13 }}>No results found</td></tr>
-              ) : (
-                slice.map((row, i) => (
-                  <>
-                    <tr key={row._id || i}
-                      onClick={() => setExpanded(expanded === i ? null : i)}
-                      style={{ cursor: extraCols.length ? "pointer" : "default", borderBottom: "1px solid #f0f0f0", transition: "background 0.1s" }}
-                      onMouseEnter={(e) => (e.currentTarget.style.background = "#fafafa")}
-                      onMouseLeave={(e) => (e.currentTarget.style.background = "")}>
-                      {visibleCols.map((c) => (
-                        <td key={c} style={{ padding: "10px 14px", maxWidth: 180, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
-                          <CellValue col={c} val={row[c]} />
-                        </td>
-                      ))}
-                      {extraCols.length > 0 && (
-                        <td style={{ padding: "10px 8px", textAlign: "center", color: "#bbb", fontSize: 14 }}>
-                          {expanded === i ? "▴" : "▾"}
-                        </td>
-                      )}
-                    </tr>
-                    {expanded === i && extraCols.length > 0 && (
-                      <tr key={`exp-${i}`} style={{ background: "#fafafa" }}>
-                        <td colSpan={visibleCols.length + 1} style={{ padding: "10px 14px 12px", fontSize: 12, color: "#666" }}>
-                          {extraCols.map((c) => (
-                            <span key={c} style={{ marginRight: 20 }}>
-                              <span style={{ fontFamily: "'DM Mono', monospace", color: "#aaa", marginRight: 4 }}>{fmtKey(c)}:</span>
-                              {String(row[c] ?? "—")}
-                            </span>
-                          ))}
-                        </td>
-                      </tr>
-                    )}
-                  </>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        {loading ? (
+          <div style={{ textAlign: "center", padding: "2.5rem", color: "#aaa", fontSize: 13 }}>Loading…</div>
+        ) : slice.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "2.5rem", color: "#aaa", fontSize: 13 }}>No results found</div>
+        ) : (
+          <div>
+            {slice.map((row, rowIdx) => (
+              <div key={row._id || rowIdx} style={{ borderBottom: rowIdx < slice.length - 1 ? "1px solid #ebebeb" : "none" }}>
+                {/* Record Header */}
+                <div
+                  onClick={() => setExpanded(expanded === rowIdx ? null : rowIdx)}
+                  style={{
+                    background: "#f8f7f4",
+                    padding: "12px 14px",
+                    cursor: "pointer",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    userSelect: "none",
+                    borderBottom: "1px solid #ebebeb",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "#f0ede8")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "#f8f7f4")}
+                >
+                  <span style={{ fontSize: 12, fontWeight: 500, color: "#666", fontFamily: "'DM Mono', monospace" }}>
+                    Record {(page - 1) * PAGE_SIZE + rowIdx + 1} {row.name && `· ${normalizeText(row.name)}`}
+                  </span>
+                  <span style={{ fontSize: 14, color: "#aaa" }}>
+                    {expanded === rowIdx ? "▴" : "▾"}
+                  </span>
+                </div>
+
+                {/* Expanded Key-Value Rows */}
+                {expanded === rowIdx && (
+                  <div>
+                    {cols.map((col, colIdx) => (
+                      <div
+                        key={col}
+                        style={{
+                          display: "flex",
+                          borderBottom: colIdx < cols.length - 1 ? "1px solid #f0f0f0" : "none",
+                          background: colIdx % 2 === 0 ? "#fff" : "#fafafa",
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.background = colIdx % 2 === 0 ? "#f5f5f5" : "#f0f0f0")}
+                        onMouseLeave={(e) => (e.currentTarget.style.background = colIdx % 2 === 0 ? "#fff" : "#fafafa")}
+                      >
+                        <div
+                          style={{
+                            flex: "0 0 220px",
+                            padding: "10px 14px",
+                            background: colIdx % 2 === 0 ? "#fafafa" : "#f5f5f5",
+                            fontFamily: "'DM Mono', monospace",
+                            fontSize: 11,
+                            fontWeight: 500,
+                            color: "#666",
+                            textTransform: "uppercase",
+                            letterSpacing: "0.04em",
+                            borderRight: "1px solid #ebebeb",
+                            wordBreak: "break-word",
+                          }}
+                        >
+                          {normalizeText(fmtKey(col))}
+                        </div>
+                        <div
+                          style={{
+                            flex: 1,
+                            padding: "10px 14px",
+                            color: "#1a1a1a",
+                            fontSize: 13,
+                            overflow: "hidden",
+                            wordBreak: "break-word",
+                          }}
+                        >
+                          <CellValue col={col} val={row[col]} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Pagination */}
