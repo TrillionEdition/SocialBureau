@@ -460,7 +460,6 @@ export function FormView({ slug, navigate }) {
       <div className="max-w-xl mx-auto">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <Btn onClick={() => navigate("admin")} color="gray" small>← Back</Btn>
           </div>
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-800">{form.title}</h1>
@@ -557,9 +556,30 @@ function QuestionInput({ q, value, onChange }) {
 // ═══════════════════════════════════════════════════════════════════════════════
 function Dashboard({ navigate }) {
   const [responses, setResponses] = useState([]);
+  const [forms, setForms] = useState({});        // ← add this
   const [filterSlug, setFilterSlug] = useState("all");
   const [expanded, setExpanded] = useState(null);
 
+  useEffect(() => {
+    // Fetch both responses and forms together
+    Promise.all([
+      fetch("/api/forms/responses/all").then(r => r.json()),
+      fetch("/api/forms").then(r => r.json()),
+    ])
+      .then(([responsesData, formsData]) => {
+        setResponses(responsesData);
+        // Build a map of formId → form
+        const map = {};
+        formsData.forEach(f => {
+          map[f.id] = f;
+        });
+        setForms(map);
+      })
+      .catch(() => {
+        setResponses([...store.getResponses()]);
+        setForms(store.getForms());
+      });
+  }, []);
   const fetchResponses = () => {
     fetch("/api/forms/responses/all")
       .then(r => r.json())
@@ -568,8 +588,6 @@ function Dashboard({ navigate }) {
   };
 
   const refresh = () => fetchResponses();
-
-  useEffect(() => { fetchResponses(); }, []);
 
   const slugs = [...new Set(responses.map(r => r.slug))];
 
@@ -613,18 +631,19 @@ function Dashboard({ navigate }) {
 
               {expanded === r.id && (
                 <div className="border-t border-gray-100 px-4 py-3 space-y-2">
-                  {Object.entries(r.data).map(([qid, val]) => {
-                    const form = Object.values(store.getForms()).find(f => f.id === r.formId);
-                    const q = form?.questions.find(q => q.id === qid);
+                    {Object.entries(r.data).map(([qid, val]) => {
+                    const form = forms[r.formId];
+                    const question = form?.questions?.find(q => q.id === qid);
+                    const label = question?.label || qid; // fallback to id if not found
                     return (
-                      <div key={qid} className="text-sm">
-                        <span className="font-medium text-gray-600">{q?.label || qid}: </span>
+                        <div key={qid} className="text-sm">
+                        <span className="font-medium text-gray-600">{label}: </span>
                         <span className="text-gray-800">
-                          {Array.isArray(val) ? val.join(", ") : String(val)}
+                            {Array.isArray(val) ? val.join(", ") : String(val)}
                         </span>
-                      </div>
+                        </div>
                     );
-                  })}
+                    })}
                 </div>
               )}
             </div>
