@@ -480,8 +480,6 @@ const InstagramReelsSection = () => {
 
     return () => clearInterval(interval);
   }, [reels, isHovered]);
-
-  // Track active dot on scroll
   const handleScroll = () => {
     if (!scrollRef.current) return;
     const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
