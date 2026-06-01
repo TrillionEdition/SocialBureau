@@ -33,6 +33,8 @@ import SpinWheel from "./components/Lottery/LotterySpinner";
 import LotteryClaims from "./pages/LotteryClaims";
 import Revanth from "./pages/Revanth";
 import IntakeDashboard from "./pages/IntakeDashboard";
+import ClientEnquiry from "./pages/ClientEnquiry";
+import PublicFormView from "./components/PublicFormViewer";
 
 const Home = lazy(() =>
   import("./pages/Home").then((module) => ({ default: module.Home })),
@@ -483,6 +485,8 @@ function App() {
             <Route path="/admin/lottery-claims" element={<AdminRoute><LotteryClaims /></AdminRoute>} />
             <Route path="/ajnoradashboard" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
             <Route path="/ajnoradashboard/:id" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
+            <Route path="/client-enquiry" element={<AdminRoute><ClientEnquiry /></AdminRoute>} />            
+            <Route path="/form/:slug" element={<PublicFormView />} />  {/* ← add this */}
             <Route
               path="/data-intake"
               element={
