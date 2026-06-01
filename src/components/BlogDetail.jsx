@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, lazy, Suspense } from "react";
-import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation, Navigate } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { blogAPI } from "@/services/blogServices";
 import { FaHeart, FaCalendarAlt, FaUser, FaTag, FaTrashAlt, FaEdit } from "react-icons/fa";
@@ -501,17 +501,7 @@ export default function BlogDetail() {
   if (isLoading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-sans"><div className="text-gray-600 text-xl">Loading...</div></div>;
 
   if (error || !post) {
-    return (
-      <div className="min-h-screen bg-gray-50 text-center text-gray-700 py-20 font-sans">
-        <h2 className="text-2xl mb-4 text-gray-900">Blog not found</h2>
-        <Link
-          to="/blog"
-          state={{
-            page: location.state?.fromPage,
-            category: location.state?.fromCategory
-          }} className="text-red-600 hover:text-red-500 underline">Back to Blogs</Link>
-      </div>
-    );
+    return <Navigate to="/404" replace />;
   }
 
   return (
