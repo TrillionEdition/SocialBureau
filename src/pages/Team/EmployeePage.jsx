@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
-  BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid
+  BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, ReferenceLine
 } from 'recharts';
 import { motion } from 'framer-motion';
 import { 
@@ -798,6 +798,49 @@ console.log(isAlenOrSham,slug);
   };
 
   const dbDepartment = getDeduplicatedDepartment(member?.category);
+
+  // Animated dot for timeline chart
+  const CustomTimelineDot = ({ cx, cy, stroke }) => {
+    if (cx == null || cy == null) return null;
+    return (
+      <g>
+        <motion.circle
+          cx={cx}
+          cy={cy}
+          r={8}
+          fill="#fff"
+          style={{ transformOrigin: `${cx}px ${cy}px` }}
+          animate={{ scale: [1, 1.25, 1] }}
+          transition={{ repeat: Infinity, duration: 2 }}
+        />
+        <circle cx={cx} cy={cy} r={14} fill="none" stroke={stroke || 'rgba(255,255,255,0.08)'} strokeWidth={2} />
+      </g>
+    );
+  };
+
+  // Career timeline data (graphical) for Sham SK and Alen Jacob only
+  const careerTimelineData = (() => {
+    const name = (member?.name || '').toLowerCase();
+    if (name.includes('sham') || name.includes('shamsk')) {
+      return [
+        { year: '2016', value: 1, label: 'Joined Marketing' },
+        { year: '2018', value: 2, label: 'Launched API Framework' },
+        { year: '2020', value: 3, label: 'Global Brand Growth' },
+        { year: '2022', value: 4, label: 'Productized Services' },
+        { year: '2024', value: 5, label: 'Scale & Expansion' }
+      ];
+    }
+    if (name.includes('alen') || name.includes('alen jacob')) {
+      return [
+        { year: '2015', value: 1, label: 'Real Estate Ops' },
+        { year: '2018', value: 2, label: 'Corporate Growth' },
+        { year: '2020', value: 3, label: 'Strategic Partnerships' },
+        { year: '2022', value: 4, label: 'Regional Expansion' },
+        { year: '2025', value: 5, label: 'Managing Director' }
+      ];
+    }
+    return [];
+  })();
   const user = {
     ...rawUser,
     department: dbDepartment || rawUser?.department || 'Leadership & Strategy'
@@ -1275,6 +1318,69 @@ console.log(isAlenOrSham,slug);
 
         </div>
       </section>
+
+      {/* Career Timeline - enhanced, only for Sham SK and Alen Jacob */}
+      {isAlenOrSham && careerTimelineData && careerTimelineData.length > 0 && (
+        <section className="max-w-[1440px] mx-auto px-4 md:px-8 mt-6 md:mt-10 relative z-20">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div className="md:col-span-7">
+              <GlassCard className="p-4 md:p-6 h-full">
+                <SectionTitle title="Career Timeline" subtitle="Key milestones" barColor="bg-pink-500" />
+                <div className="relative h-48 md:h-64">
+                  <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(90deg, ${member.bgColor || '#A855F7'}22, transparent 40%)` }} />
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={careerTimelineData} margin={{ left: -20, right: 10 }}>
+                      <CartesianGrid horizontal={true} vertical={true} stroke="rgba(255,255,255,0.03)" strokeDasharray="4 6" />
+                      <XAxis dataKey="year" axisLine={false} tick={{ fontSize: 12, fill: '#D1D5DB', fontWeight: 700 }} />
+                      <YAxis axisLine={false} tickLine={false} ticks={[0,1,2,3,4,5]} tick={{ fontSize: 11, fill: '#9CA3AF' }} />
+                      <Tooltip content={<CustomTooltip color={member.bgColor || '#A855F7'} />} />
+                      {careerTimelineData.map(d => (
+                        <ReferenceLine key={d.year} x={d.year} stroke="rgba(255,255,255,0.04)" strokeDasharray="1 6" />
+                      ))}
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke={member.bgColor || '#A855F7'}
+                        strokeWidth={4}
+                        dot={<CustomTimelineDot stroke={member.bgColor || '#A855F7'} />}
+                        activeDot={{ r: 10 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="mt-4 flex items-center gap-4 flex-wrap">
+                  <span className="text-xs text-gray-400">Hover points for details — milestone cards to the right.</span>
+                  <div className="ml-auto flex items-center gap-2">
+                    <span className="text-[10px] uppercase tracking-widest text-gray-400">Legend</span>
+                    <div className="w-3 h-3 rounded-full" style={{ background: member.bgColor || '#A855F7' }} />
+                  </div>
+                </div>
+              </GlassCard>
+            </div>
+
+            <div className="md:col-span-5 flex flex-col gap-4">
+              {careerTimelineData.map((item, idx) => (
+                <GlassCard key={item.year} className="p-3 flex items-start gap-3">
+                  <div className="shrink-0 w-12 h-12 rounded-lg flex items-center justify-center" style={{ background: `${member.bgColor || '#A855F7'}22`, border: '1px solid rgba(255,255,255,0.04)' }}>
+                    {idx === 0 && <GraduationCap className="w-5 h-5 text-white/90" />}
+                    {idx === 1 && <Sparkles className="w-5 h-5 text-white/90" />}
+                    {idx === 2 && <Award className="w-5 h-5 text-white/90" />}
+                    {idx === 3 && <Star className="w-5 h-5 text-white/90" />}
+                    {idx >= 4 && <Play className="w-5 h-5 text-white/90" />}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <div className="text-sm font-black">{item.label}</div>
+                      <div className="text-xs text-gray-400 font-bold">{item.year}</div>
+                    </div>
+                    <div className="text-xs text-gray-400 mt-1">A concise description of the milestone highlighting impact and scope.</div>
+                  </div>
+                </GlassCard>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* --- DASHBOARD CONTENT WITH STAGGERED REVEALS --- */}
       <motion.main 
