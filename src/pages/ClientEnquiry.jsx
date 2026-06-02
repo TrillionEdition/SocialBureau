@@ -520,13 +520,17 @@ function QuestionInput({ q, value, onChange }) {
         {q.options.map((o, i) => {
           const checked = Array.isArray(value) && value.includes(o);
           return (
-            <label key={i} className="flex items-center gap-2 text-sm cursor-pointer">
-              <input type="checkbox" checked={checked} onChange={() => {
-                const arr = Array.isArray(value) ? [...value] : [];
-                onChange(checked ? arr.filter(x => x !== o) : [...arr, o]);
-              }} />
-              {o}
-            </label>
+            <label className="text-black flex items-center gap-2">
+  <input
+    type="checkbox"
+    checked={checked}
+    onChange={() => {
+      const arr = Array.isArray(value) ? [...value] : [];
+      onChange(checked ? arr.filter(x => x !== o) : [...arr, o]);
+    }}
+  />
+  {o}
+</label>
           );
         })}
       </div>
