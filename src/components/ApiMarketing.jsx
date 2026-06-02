@@ -314,10 +314,10 @@ const ApiMarketing = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 mb-20 justify-center lg:justify-start px-4">
             <button
-              onClick={() => scrollTo('what')}
+              onClick={() => scrollTo('contact')}
               className="bg-[#C8102E] text-white px-8 md:px-10 py-4 text-[0.7rem] md:text-[0.75rem] tracking-[2px] uppercase transition-all hover:bg-[#FF2244] hover:-translate-y-0.5"
             >
-              Understand the System
+              Free Strategy Call
             </button>
             <button
               onClick={() => scrollTo('contact')}
