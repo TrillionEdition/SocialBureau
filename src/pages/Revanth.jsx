@@ -146,43 +146,138 @@ const inputStyle = {
 
 function TInput({ placeholder, style = {}, onChange }) {
   const [focus, setFocus] = useState(false);
+
   return (
-    <input
-      type="text" placeholder={placeholder}
-      onChange={onChange}
-      onFocus={() => setFocus(true)}
-      onBlur={() => setFocus(false)}
-      style={{ ...inputStyle, ...(focus ? { borderColor: T.red, boxShadow: `0 0 0 3px ${T.redSoft}`, background: "#fff" } : {}), ...style }}
-    />
+    <>
+      <style>
+  {`
+    .t-input::placeholder {
+      color: #4b4b4b !important;
+      opacity: 1;
+    }
+  `}
+</style>
+
+      <input
+        type="text"
+        className="t-input"
+        placeholder={placeholder}
+        onChange={onChange}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        style={{
+          ...inputStyle,
+          color: "#000", // text color always black
+          ...(focus
+            ? {
+                borderColor: T.red,
+                boxShadow: `0 0 0 3px ${T.redSoft}`,
+                background: "#fff",
+              }
+            : {}),
+          ...style,
+        }}
+      />
+    </>
   );
 }
+
 function EInput({ placeholder, onChange }) {
   const [focus, setFocus] = useState(false);
+
   return (
-    <input type="email" placeholder={placeholder} onChange={onChange}
-      onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}
-      style={{ ...inputStyle, ...(focus ? { borderColor: T.red, boxShadow: `0 0 0 3px ${T.redSoft}`, background: "#fff" } : {}) }}
-    />
+    <>
+      <style>
+        {`
+          .e-input::placeholder {
+            color: #4b4b4b !important;
+            opacity: 1;
+          }
+        `}
+      </style>
+
+      <input
+        type="email"
+        className="e-input"
+        placeholder={placeholder}
+        onChange={onChange}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        style={{
+          ...inputStyle,
+          color: "#000",
+          ...(focus
+            ? {
+                borderColor: T.red,
+                boxShadow: `0 0 0 3px ${T.redSoft}`,
+                background: "#fff",
+              }
+            : {}),
+        }}
+      />
+    </>
   );
 }
 function PhoneInput({ placeholder, onChange }) {
   const [focus, setFocus] = useState(false);
+
   return (
-    <input type="tel" placeholder={placeholder} onChange={onChange}
-      onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}
-      style={{ ...inputStyle, ...(focus ? { borderColor: T.red, boxShadow: `0 0 0 3px ${T.redSoft}`, background: "#fff" } : {}) }}
-    />
+    <>
+      <style>
+        {`
+          .custom-input::placeholder {
+            color: #4b4b4b !important;
+            opacity: 1;
+          }
+        `}
+      </style>
+
+      <input
+        type="tel"
+        className="custom-input"
+        placeholder={placeholder}
+        onChange={onChange}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        style={{
+          ...inputStyle,
+          color: "#000",
+          ...(focus
+            ? {
+                borderColor: T.red,
+                boxShadow: `0 0 0 3px ${T.redSoft}`,
+                background: "#fff",
+              }
+            : {}),
+        }}
+      />
+    </>
   );
 }
 function TArea({ placeholder, minHeight = 80, style = {}, onChange }) {
   const [focus, setFocus] = useState(false);
+
   return (
-    <textarea placeholder={placeholder} onChange={onChange}
-      onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}
+    <textarea
+      className="custom-input"
+      placeholder={placeholder}
+      onChange={onChange}
+      onFocus={() => setFocus(true)}
+      onBlur={() => setFocus(false)}
       style={{
-        ...inputStyle, resize: "vertical", minHeight, lineHeight: 1.6,
-        ...(focus ? { borderColor: T.red, boxShadow: `0 0 0 3px ${T.redSoft}`, background: "#fff" } : {}),
-        ...style
+        ...inputStyle,
+        color: "#000",
+        resize: "vertical",
+        minHeight,
+        lineHeight: 1.6,
+        ...(focus
+          ? {
+              borderColor: T.red,
+              boxShadow: `0 0 0 3px ${T.redSoft}`,
+              background: "#fff",
+            }
+          : {}),
+        ...style,
       }}
     />
   );
@@ -405,6 +500,11 @@ export default function Revanth() {
   const [progress, setProgress] = useState(0);
   const [sectionsOpen, setSectionsOpen] = useState(1); // S1 open by default
   const formRef = useRef(null);
+  const filesRef = useRef([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [fileErrors, setFileErrors] = useState([]);
+  // Max file size per file (20 KB)
+  const MAX_FILE_SIZE = 20 * 1024; // 20 KB
 
   const recalc = () => {
   if (!formRef.current) return;
@@ -432,6 +532,60 @@ export default function Revanth() {
   setProgress(p);
 };
 
+  const handleFilesChange = (e) => {
+    const incoming = Array.from(e.target.files || []);
+    const accepted = [];
+    const errors = [];
+
+    // Append to any existing files
+    const existing = Array.from(filesRef.current || []);
+
+    // Only allow PDF, DOC, DOCX, PNG (client-side check)
+    const allowedMime = [
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'image/png',
+    ];
+    const allowedExt = ['pdf', 'doc', 'docx', 'png'];
+
+    incoming.forEach(f => {
+        if (f.size > MAX_FILE_SIZE) {
+          errors.push(`${f.name} is too large (${Math.round(f.size / 1024)} KB). Max 20 KB allowed.`);
+          return;
+        }
+
+      const ext = (f.name.split('.').pop() || '').toLowerCase();
+      const typeOk = allowedMime.includes(f.type) || allowedExt.includes(ext);
+
+      if (!typeOk) {
+        errors.push(`${f.name} — invalid file type. Only PDF, DOC or PNG allowed.`);
+        return;
+      }
+
+      accepted.push(f);
+    });
+
+    const combined = existing.concat(accepted);
+    filesRef.current = combined;
+    setSelectedFiles(combined.map(f => `${f.name} (${Math.round(f.size / 1024)} KB)`));
+    setFileErrors(errors);
+    if (errors.length > 0) {
+      // Brief alert; UI also shows messages
+      alert('Some files were skipped because they exceed the 20 KB limit.');
+    }
+    recalc();
+  };
+
+  const removeSelectedFile = (idx) => {
+    const list = Array.from(filesRef.current || []);
+    if (idx < 0 || idx >= list.length) return;
+    list.splice(idx, 1);
+    filesRef.current = list;
+    setSelectedFiles(list.map(f => `${f.name} (${Math.round(f.size / 1024)} KB)`));
+    recalc();
+  };
+
   const handleSubmit = async () => {
   
   // Collect all form values
@@ -450,18 +604,38 @@ export default function Revanth() {
   });
 
   try {
-    const res = await fetch("/api/submit-intake", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ project: "PRR-2026", submittedAt: new Date(), ...formData }),
+    // Build multipart/form-data so files are sent to the backend
+    const fd = new FormData();
+    fd.append('project', 'PRR-2026');
+    fd.append('submittedAt', new Date().toISOString());
+    Object.keys(formData).forEach(k => {
+      const v = formData[k];
+      // Convert booleans/objects to strings
+      fd.append(k, typeof v === 'object' ? JSON.stringify(v) : String(v));
     });
+
+    // Append selected files from filesRef
+    if (filesRef.current && filesRef.current.length > 0) {
+      filesRef.current.forEach(file => fd.append('files', file));
+    }
+
+    const res = await fetch('/api/submit-intake', {
+      method: 'POST',
+      body: fd,
+    });
+
     if (res.ok) {
-      alert("Thank you — intake received by SocialBureau.\n\nWe will respond within 72 hours.");
+      alert('Thank you — intake received by SocialBureau.\n\nWe will respond within 72 hours.');
+      // Clear file inputs and selectedFiles UI
+      filesRef.current = [];
+      setSelectedFiles([]);
+      formRef.current.reset && formRef.current.reset();
     } else {
-      alert("Submission failed. Please try again or email sham@socialbureau.in");
+      alert('Submission failed. Please try again or email sham@socialbureau.in');
     }
   } catch (err) {
-    alert("Network error. Please email sham@socialbureau.in directly.");
+    console.error('Submit error:', err);
+    alert('Network error. Please email sham@socialbureau.in directly.');
   }
 };
 
@@ -600,7 +774,7 @@ export default function Revanth() {
   }}
 >
   <TInput
-    placeholder="Full name & official designation"
+    placeholder="Full name & official designation" 
     onChange={recalc}
   />
   <PhoneInput
@@ -646,6 +820,32 @@ export default function Revanth() {
             <QNum>Q 1.5</QNum>
             <QLabel>Are there any other agencies or consultants currently working on Telangana CM Revanth Reddy's digital presence?</QLabel>
             <TArea placeholder="Names, roles, and what they currently manage — SocialBureau needs to understand the existing ecosystem to avoid duplication..." onChange={recalc} />
+          </QBlock>
+          <QBlock last>
+            <QNum>Q 1.6</QNum>
+            <QLabel>Any extra links, documents, websites, or social media profiles we should review?</QLabel>
+            <QHint>Paste Google Drive links, Dropbox, website URLs, PDFs, or social profile URLs (Instagram, Facebook, X, YouTube, LinkedIn). Separate multiple entries with commas or new lines.</QHint>
+            <TArea placeholder="Extra links / docs / websites / social handles — e.g. Google Drive link, website URL, Instagram handle..." minHeight={80} onChange={recalc} />
+            <div style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 8 }}>
+              <input type="file" multiple accept=".pdf,.doc,.docx,image/png" onChange={handleFilesChange} style={{ ...inputStyle, padding: "8px 10px" }} />
+              {selectedFiles.length > 0 && (
+                <div style={{ fontSize: 12, color: T.ink3 }}>
+                  <strong>Selected files:</strong>
+                  <div style={{ marginTop: 6 }}>{selectedFiles.map((n, i) => (
+                    <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                      <div>{n}</div>
+                      <button type="button" onClick={() => removeSelectedFile(i)} style={{ background: "transparent", border: "none", color: T.red, cursor: "pointer", fontSize: 12 }}>Delete</button>
+                    </div>
+                  ))}</div>
+                </div>
+              )}
+              {fileErrors && fileErrors.length > 0 && (
+                <div style={{ marginTop: 6, color: "#B00020", fontSize: 12 }}>
+                  <strong>File errors:</strong>
+                  <div style={{ marginTop: 4 }}>{fileErrors.map((m, i) => <div key={i}>{m}</div>)}</div>
+                </div>
+              )}
+            </div>
           </QBlock>
         </FormSection>
 

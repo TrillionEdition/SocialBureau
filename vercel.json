@@ -2,6 +2,10 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "https://13.207.200.198.nip.io/socialbureau/api/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
@@ -9,4 +13,4 @@
   "env": {
     "VITE_API_URL": "https://socialbureau-backend.onrender.com"
   }
-}
+}

@@ -15,6 +15,7 @@ import ScrollTop from "./components/ScrollTop";
 import LoadingSpinner from "./components/LoadingSpinner";
 import AdminRoute from "./components/AdminRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
+import CodeProtectedRoute from "./components/CodeProtectedRoute";
 import CookieConsent from "./components/CookieConsent";
 import { ToastContainer } from "react-toastify";
 import Partner1 from "./pages/Partnerships/johnsamuel";
@@ -31,6 +32,9 @@ import AdminClickupClients from "./components/ClickupDash/AdminClickupClients";
 import SpinWheel from "./components/Lottery/LotterySpinner";
 import LotteryClaims from "./pages/LotteryClaims";
 import Revanth from "./pages/Revanth";
+import IntakeDashboard from "./pages/IntakeDashboard";
+import ClientEnquiry from "./pages/ClientEnquiry";
+import PublicFormView from "./components/PublicFormViewer";
 
 const Home = lazy(() =>
   import("./pages/Home").then((module) => ({ default: module.Home })),
@@ -481,8 +485,17 @@ function App() {
             <Route path="/admin/lottery-claims" element={<AdminRoute><LotteryClaims /></AdminRoute>} />
             <Route path="/ajnoradashboard" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
             <Route path="/ajnoradashboard/:id" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
-            <Route path="/data-intake" element={<Revanth />} />
-
+            <Route path="/client-enquiry" element={<AdminRoute><ClientEnquiry /></AdminRoute>} />            
+            <Route path="/form/:slug" element={<PublicFormView />} />  {/* ← add this */}
+            <Route
+              path="/data-intake"
+              element={
+                <CodeProtectedRoute>
+                  <Revanth />
+                </CodeProtectedRoute>
+              }
+            />
+            <Route path="/cm-dashboard" element={<IntakeDashboard />} />
             <Route path="/analytics" element={<AnalyticsWidget />} />
             <Route
               path="/achievements-form" element={
