@@ -164,9 +164,9 @@ function ConditionalFooter() {
     "/lottery",
     "/admin/posters"
   ];
+  const isIndividualTeamPage = location.pathname.toLowerCase().startsWith("/team/") && location.pathname.toLowerCase() !== "/team/";
 
-
-  const shouldHide = hideFooterRoutes.some((route) => {
+  const shouldHide = isIndividualTeamPage || hideFooterRoutes.some((route) => {
     const normalizedPath = location.pathname.toLowerCase().replace(/\/$/, "");
     const normalizedRoute = route.toLowerCase().replace(/\/$/, "");
     return normalizedPath === normalizedRoute || normalizedPath.startsWith(normalizedRoute + "/");

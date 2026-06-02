@@ -148,6 +148,22 @@ const AdminTeamDashboard = () => {
     }
   }, [selectedEmployeePage]);
 
+  const handleToggleHideLink = async (memberId, currentValue) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await teamService.updateMemberById(memberId, { hideProfileLink: !currentValue }, token);
+      if (response.success) {
+        setMembers((prev) => prev.map(m => (m._id === memberId ? response.data : m)));
+        toast.success(`Profile link ${!currentValue ? 'disabled' : 'enabled'} for member`);
+      } else {
+        toast.error('Failed to update member');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to update member');
+    }
+  };
+
   const renderEmployeePagesView = () => {
     const filtered = members.filter(member => 
       member.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1604,6 +1620,8 @@ const AdminTeamDashboard = () => {
                             clients: member.user?.clients || [],
                             achievements: member.user?.achievements || [],
                             hobbies: member.user?.hobbies || [],
+                            education: member.user?.education || [],
+                            certifications: member.user?.certifications || [],
                             podcasts: member.user?.podcasts || [],
                             events: member.user?.events || [],
                             innovations: member.user?.innovations || [],
@@ -1738,6 +1756,22 @@ const AdminTeamDashboard = () => {
                         >
                           {showAddPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
+                      </div>
+
+                      <div className="flex flex-col gap-2">
+                        <label className="text-[10px] text-white/40 uppercase font-black tracking-wider">Disable Profile Link</label>
+                        <div className="flex items-center gap-4">
+                          <button
+                            type="button"
+                            onClick={() => setNewMember(prev => ({ ...prev, hideProfileLink: !prev.hideProfileLink }))}
+                            className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors outline-none ${newMember.hideProfileLink ? 'bg-amber-500' : 'bg-white/10 border border-white/5'}`}
+                          >
+                            <span className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${newMember.hideProfileLink ? 'translate-x-8' : 'translate-x-1'}`} />
+                          </button>
+                          <span className="text-xs uppercase tracking-widest font-black text-white">
+                            {newMember.hideProfileLink ? "Hidden (no profile route)" : "Linked (clickable from roster)"}
+                          </span>
+                        </div>
                       </div>
                     </div>
 
@@ -4357,6 +4391,21 @@ const AdminTeamDashboard = () => {
                             ))}
                           </div>
                         </div>
+                        <div className="flex justify-end mt-6">
+                          <button
+                            type="button"
+                            onClick={() => handleSaveSection('expertise')}
+                            disabled={sectionSaving === 'expertise'}
+                            className="px-5 py-3 bg-brand-pink text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2"
+                          >
+                            {sectionSaving === 'expertise' ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Save className="w-4 h-4" />
+                            )}
+                            Save
+                          </button>
+                        </div>
                       </section>
 
                       <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl">
@@ -4382,6 +4431,21 @@ const AdminTeamDashboard = () => {
                               {cat}
                             </button>
                           ))}
+                        </div>
+                        <div className="flex justify-end mt-6">
+                          <button
+                            type="button"
+                            onClick={() => handleSaveSection('department')}
+                            disabled={sectionSaving === 'department'}
+                            className="px-5 py-3 bg-brand-pink text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2"
+                          >
+                            {sectionSaving === 'department' ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Save className="w-4 h-4" />
+                            )}
+                            Save
+                          </button>
                         </div>
                       </section>
 

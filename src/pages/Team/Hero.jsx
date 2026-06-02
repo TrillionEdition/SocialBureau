@@ -146,7 +146,7 @@ export const Hero = () => {
                   </span>
                   <span className="text-white/60">Match</span>
                 </div>
-                <span className="text-[12px] font-medium text-white/20 uppercase tracking-wider">Since 2019</span>
+                {/* <span className="text-[12px] font-medium text-white/20 uppercase tracking-wider">Since 2019</span> */}
                 {current.tags && current.tags[0] && (
                   <span className="px-3 py-0.5 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold uppercase tracking-widest text-white/40">
                     {current.tags[0]}
@@ -180,10 +180,17 @@ export const Hero = () => {
             </motion.p>
 
             <motion.div variants={textVariants} transition={{ delay: 0.4 }} className="flex flex-wrap gap-3">
-              <Link to={`/team/${(current.id === 'sham-sk' || current.slug === 'sham-sk' || current.email === 'ceo@socialbureau.in') ? 'shamsk' : (current.slug || current.id)}`} className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full text-[11px] font-black tracking-widest hover:scale-105 active:scale-95 transition-all">
-                <Play className="w-3 h-3 fill-current" />
-                VIEW FULL PROFILE
-              </Link>
+              {current.hideProfileLink ? (
+                <button className="flex items-center gap-2 bg-white/10 text-white px-6 py-3 rounded-full text-[11px] font-black tracking-widest transition-all" disabled>
+                  <Play className="w-3 h-3" />
+                  PROFILE HIDDEN
+                </button>
+              ) : (
+                <Link to={`/team/${(current.id === 'sham-sk' || current.slug === 'sham-sk' || current.email === 'ceo@socialbureau.in') ? 'shamsk' : (current.slug || current.id)}`} className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full text-[11px] font-black tracking-widest hover:scale-105 active:scale-95 transition-all">
+                  <Play className="w-3 h-3 fill-current" />
+                  VIEW FULL PROFILE
+                </Link>
+              )}
               <button className="bg-white/10 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full text-[11px] font-black tracking-widest hover:bg-white/20 transition-all">
                 MORE INFO
               </button>

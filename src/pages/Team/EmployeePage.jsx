@@ -561,11 +561,20 @@ const EmployeePage = () => {
     }
   };
 
-  const matchedMember = TEAM_MEMBERS.find(m => 
-    m.id?.toLowerCase() === slug?.toLowerCase() || 
-    (slug?.toLowerCase() === 'shamsk' && m.id === 'sham-sk') ||
-    (slug?.toLowerCase() === 'alen-jacob' && m.id === 'alen')
-  );
+  const matchedMember = TEAM_MEMBERS.find(m => {
+    const normSlug = (slug || '').toLowerCase();
+    const normId = (m.id || '').toLowerCase();
+    const normName = (m.name || '').toLowerCase().replace(/\s+/g, '-');
+    const normEmailUser = (m.email || '').split('@')[0].toLowerCase();
+    
+    return normId === normSlug ||
+           normName === normSlug ||
+           normEmailUser === normSlug ||
+           normSlug.includes(normId) ||
+           normId.includes(normSlug) ||
+           (normSlug === 'shamsk' && normId === 'sham-sk') ||
+           (normSlug === 'alen-jacob' && normId === 'alen');
+  });
 
   const fallbackData = matchedMember ? {
     member: {
@@ -687,13 +696,8 @@ console.log(isAlenOrSham,slug);
               });
               const authJson = await authResp.json().catch(() => ({}));
               if (authResp.ok && authJson.member) {
-                if (isAlenOrSham) {
-                  setData(getStaticEnrichedData(slug, authJson));
-                  setIsDemoMode(false);
-                } else {
-                  setData(authJson);
-                  setIsDemoMode(false);
-                }
+                setData(authJson);
+                setIsDemoMode(false);
                 return;
               }
               // If 401 or other failure, we'll fall back to public endpoint below
@@ -706,13 +710,8 @@ console.log(isAlenOrSham,slug);
               const publicResp = await fetch(`${API_URL}/clickup/public-member-details?slug=${slug}&month=${selectedMonth}&year=${selectedYear}`);
               const publicJson = await publicResp.json().catch(() => ({}));
               if (publicResp.ok && publicJson.member) {
-                if (isAlenOrSham) {
-                  setData(getStaticEnrichedData(slug, publicJson));
-                  setIsDemoMode(false);
-                } else {
-                  setData(publicJson);
-                  setIsDemoMode(false);
-                }
+                setData(publicJson);
+                setIsDemoMode(false);
                 return;
               }
             } catch (e) {
@@ -720,23 +719,12 @@ console.log(isAlenOrSham,slug);
             }
 
             // 3) Final fallback to visual mock
-            if (isAlenOrSham) {
-              setData(getStaticEnrichedData(slug, fallbackData));
-              setIsDemoMode(false);
-            } else {
-              setData(fallbackData);
-              setIsDemoMode(true);
-            }
+            setData(fallbackData);
+            setIsDemoMode(true);
       } catch (err) {
         console.error("Error fetching employee details. Loading visual mock mode.", err);
-        const isAlenOrSham = ['alen-jacob', 'alen', 'shamsk', 'sham-sk'].includes((slug || '').toLowerCase());
-        if (isAlenOrSham) {
-          setData(getStaticEnrichedData(slug, fallbackData));
-          setIsDemoMode(false);
-        } else {
-          setData(fallbackData);
-          setIsDemoMode(true);
-        }
+        setData(fallbackData);
+        setIsDemoMode(true);
       } finally {
         setLoading(false);
         setAttendanceLoading(false);
@@ -768,10 +756,55 @@ console.log(isAlenOrSham,slug);
 
   const member = data?.member || fallbackData.member;
   const clickup = data?.clickup || fallbackData.clickup;
-  const user = data?.user || data?.member?.user || fallbackData.user;
+  const rawUser = data?.user || data?.member?.user || fallbackData.user;
+
+  // Format category array to a displayable department string
+  const formatDepartment = (categories) => {
+    if (!categories || !Array.isArray(categories) || categories.length === 0) return [];
+    return categories.map(c => {
+      const upper = c.toUpperCase();
+      if (upper === 'LEADERSHIP') return 'Leadership & Strategy';
+      if (upper === 'TECHNOLOGY') return 'Technology';
+      if (upper === 'OPERATIONS') return 'Operations';
+      if (upper === 'STRATEGY') return 'Strategy';
+      if (upper === 'CREATIVE') return 'Creative';
+      if (upper === 'PERFORMANCE') return 'Performance';
+      if (upper === 'FINANCE') return 'Finance';
+      if (upper === 'CONTENT') return 'Content';
+      return c.charAt(0).toUpperCase() + c.slice(1).toLowerCase();
+    });
+  };
+
+  const getDeduplicatedDepartment = (categories) => {
+    const formatted = formatDepartment(categories);
+    if (!formatted || formatted.length === 0) return "";
+    
+    const uniqueWords = [];
+    const result = [];
+    formatted.forEach(item => {
+      if (item === 'Leadership & Strategy') {
+        if (!uniqueWords.includes('Leadership') && !uniqueWords.includes('Strategy')) {
+          uniqueWords.push('Leadership', 'Strategy');
+          result.push('Leadership & Strategy');
+        }
+      } else {
+        if (!uniqueWords.includes(item)) {
+          uniqueWords.push(item);
+          result.push(item);
+        }
+      }
+    });
+    return result.join(' & ');
+  };
+
+  const dbDepartment = getDeduplicatedDepartment(member?.category);
+  const user = {
+    ...rawUser,
+    department: dbDepartment || rawUser?.department || 'Leadership & Strategy'
+  };
 
   const isAlenOrSham = ['alen-jacob', 'alen', 'shamsk', 'sham-sk'].includes((slug || '').toLowerCase());
-  const showStaticFallback = isDemoMode || isAlenOrSham;
+  const showStaticFallback = isDemoMode;
 
   const hasInnovations = (user && Array.isArray(user.innovations) && user.innovations.length > 0) || showStaticFallback;
   const hasPodcasts = (user && Array.isArray(user.podcasts) && user.podcasts.length > 0) || showStaticFallback;
@@ -1022,6 +1055,32 @@ console.log(isAlenOrSham,slug);
     return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase();
   };
 
+  const ensureAbsoluteUrl = (url) => {
+    if (!url) return "";
+    const trimmed = url.trim();
+    if (trimmed === "") return "";
+    if (/^(f|ht)tps?:\/\//i.test(trimmed)) {
+      return trimmed;
+    }
+    return `https://${trimmed}`;
+  };
+
+  const fallbackSocials = matchedMember?.socials || {
+    linkedin: "https://linkedin.com",
+    instagram: "https://instagram.com",
+    twitter: "https://twitter.com"
+  };
+
+  const socials = {
+    linkedin: member?.socials?.linkedin || fallbackSocials.linkedin || "",
+    instagram: member?.socials?.instagram || fallbackSocials.instagram || "",
+    twitter: member?.socials?.twitter || fallbackSocials.twitter || ""
+  };
+
+  const linkedinUrl = ensureAbsoluteUrl(socials.linkedin);
+  const instagramUrl = ensureAbsoluteUrl(socials.instagram);
+  const twitterUrl = ensureAbsoluteUrl(socials.twitter);
+
   return (
     <div className="min-h-screen selection:bg-brand-purple/30 text-white relative overflow-hidden font-sans">
       
@@ -1129,9 +1188,47 @@ console.log(isAlenOrSham,slug);
               <p className="text-gray-400 font-bold mb-2 md:mb-4 text-lg md:text-2xl uppercase tracking-[0.1em]">
                 {member.tagline || `${member.role} · API Marketing Consultant`}
               </p>
-              <p className="text-gray-500 text-sm md:text-base italic max-w-xl leading-relaxed mb-5 md:mb-8 opacity-70">
+              <p className="text-gray-500 text-sm md:text-base italic max-w-xl leading-relaxed mb-5 md:mb-6 opacity-70">
                 "{member.description}"
               </p>
+              
+              {(linkedinUrl || instagramUrl || twitterUrl) && (
+                <div className="flex justify-center md:justify-start gap-4 mb-8 mt-2">
+                  {linkedinUrl && (
+                    <a
+                      href={linkedinUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/5 hover:bg-[#0077b5]/20 hover:border-[#0077b5]/50 text-gray-400 hover:text-[#0077b5] transition-all"
+                      title="LinkedIn"
+                    >
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                  )}
+                  {instagramUrl && (
+                    <a
+                      href={instagramUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/5 hover:bg-[#e1306c]/20 hover:border-[#e1306c]/50 text-gray-400 hover:text-[#e1306c] transition-all"
+                      title="Instagram"
+                    >
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </a>
+                  )}
+                  {twitterUrl && (
+                    <a
+                      href={twitterUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/5 hover:bg-[#1da1f2]/20 hover:border-[#1da1f2]/50 text-gray-400 hover:text-[#1da1f2] transition-all"
+                      title="Twitter / X"
+                    >
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                    </a>
+                  )}
+                </div>
+              )}
               
               <div className="flex flex-wrap justify-center md:justify-start gap-x-3 gap-y-4 md:gap-3">
                 <a 
@@ -1146,31 +1243,35 @@ console.log(isAlenOrSham,slug);
                 >
                   <Calendar className="w-4 h-4" /> BOOK SESSION
                 </button>
-                <button 
-                  onClick={() => setShowResumeModal(true)}
-                  className="bg-white/5 hover:bg-white/10 text-gray-400 border border-white/10 px-8 py-3.5 rounded-[12px] text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-2"
-                >
-                  PDF <FileText className="w-4 h-4" />
-                </button>
+                {!isAlenOrSham && (
+                  <button 
+                    onClick={() => setShowResumeModal(true)}
+                    className="bg-white/5 hover:bg-white/10 text-gray-400 border border-white/10 px-8 py-3.5 rounded-[12px] text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-2"
+                  >
+                    PDF <FileText className="w-4 h-4" />
+                  </button>
+                )}
               </div>
             </div>
           </div>
 
           {/* Stats Ribbon - Anchored dynamically with mt-auto and extra bottom margin */}
-          <motion.div 
-            initial={{ y: 40, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="mt-auto mb-4 md:mb-8 bg-[#1A0B2E]/60 backdrop-blur-xl border border-white/10 rounded-[32px] grid grid-cols-2 gap-y-2 py-2 md:py-0 sm:grid-cols-3 lg:flex lg:flex-wrap overflow-hidden relative z-10 w-full"
-          >
-            <StatItem label="Projects" value={user.projectsCount || "12+"} color="text-red-500" />
-            <StatItem label="Tasks/Mo" value={typeof tasksCompleted === 'number' ? tasksCompleted : (fallbackData.clickup.worksDone || "0")} color="text-purple-500" />
-            <StatItem label="Hours/Mo" value={hoursLogged ? `${hoursLogged}H` : "0.0H"} color="text-blue-500" />
-            <StatItem label="Efficiency" value={clickup && typeof clickup.efficiency === 'number' ? `${clickup.efficiency}%` : (user.efficiency || "94%")} color="text-green-500" />
-            <StatItem label="Tenure" value={user.doj ? `${Math.max(1, new Date().getFullYear() - new Date(user.doj).getFullYear())}YR` : (user.tenure || "1YR")} color="text-yellow-500" />
-            <StatItem label="Clients" value={user.clients?.length ? `${user.clients.length}+` : (user.clientsCount || "0+")} color="text-pink-500" />
-            <StatItem label="Rating" value={user.rating ? `${user.rating}★` : "5.0★"} color="text-orange-500" />
-          </motion.div>
+          {!isAlenOrSham && (
+            <motion.div 
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="mt-auto mb-4 md:mb-8 bg-[#1A0B2E]/60 backdrop-blur-xl border border-white/10 rounded-[32px] grid grid-cols-2 gap-y-2 py-2 md:py-0 sm:grid-cols-3 lg:flex lg:flex-wrap overflow-hidden relative z-10 w-full"
+            >
+              <StatItem label="Projects" value={user.projectsCount || "12+"} color="text-red-500" />
+              <StatItem label="Tasks/Mo" value={typeof tasksCompleted === 'number' ? tasksCompleted : (fallbackData.clickup.worksDone || "0")} color="text-purple-500" />
+              <StatItem label="Hours/Mo" value={hoursLogged ? `${hoursLogged}H` : "0.0H"} color="text-blue-500" />
+              <StatItem label="Efficiency" value={clickup && typeof clickup.efficiency === 'number' ? `${clickup.efficiency}%` : (user.efficiency || "94%")} color="text-green-500" />
+              <StatItem label="Tenure" value={user.doj ? `${Math.max(1, new Date().getFullYear() - new Date(user.doj).getFullYear())}YR` : (user.tenure || "1YR")} color="text-yellow-500" />
+              <StatItem label="Clients" value={user.clients?.length ? `${user.clients.length}+` : (user.clientsCount || "0+")} color="text-pink-500" />
+              <StatItem label="Rating" value={user.rating ? `${user.rating}★` : "5.0★"} color="text-orange-500" />
+            </motion.div>
+          )}
 
         </div>
       </section>
@@ -1204,8 +1305,9 @@ console.log(isAlenOrSham,slug);
           }}
           className="lg:col-span-9 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8"
         >
-          
-          <div className="md:col-span-7">
+          {!isAlenOrSham && (
+            <>
+              <div className="md:col-span-12">
             <GlassCard variant="purple" className="p-4 md:p-8 h-full">
               <SectionTitle title="Performance Overview" barColor="bg-yellow-500" />
               <div className="grid grid-cols-2 gap-4 mb-6 md:mb-10">
@@ -1246,31 +1348,6 @@ console.log(isAlenOrSham,slug);
                 </ResponsiveContainer>
               </div>
             </GlassCard>
-          </div>
-
-          {/* 3D Illustration Column */}
-          <div className="md:col-span-5">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="h-full rounded-[48px] overflow-hidden border border-[#0088ff] bg-[#0a0316] flex items-center justify-center p-8 min-h-[400px] relative group shadow-[0_0_20px_rgba(0,136,255,0.15)]"
-            >
-              <motion.img 
-                animate={{ 
-                  y: [0, -20, 0],
-                  rotate: [0, 1, 0, -1, 0]
-                }}
-                transition={{ 
-                  duration: 6, 
-                  repeat: Infinity, 
-                  ease: "easeInOut" 
-                }}
-                src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/TeamPage/Rectangle%2098.png" 
-                alt="3D Analytics" 
-                className="w-full h-full object-contain rounded-[1.5rem] drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)] relative z-10 scale-105 transition-transform duration-700 ease-out"
-              />
-            </motion.div>
           </div>
 
           <div className="md:col-span-6">
@@ -1605,6 +1682,8 @@ console.log(isAlenOrSham,slug);
                </div>
             </div>
           </div>
+            </>
+          )}
 
           {((user && Array.isArray(user.tools) && user.tools.length > 0) || showStaticFallback) && (
             <div className="md:col-span-12">
@@ -1802,54 +1881,58 @@ console.log(isAlenOrSham,slug);
           className="lg:col-span-3 space-y-6 md:space-y-8"
         >
           
-          <GlassCard variant="purple" className="space-y-4 !p-4">
-            {[
-              { icon: <Users className="w-4 h-4 text-accent-red" />, label: 'Department', value: user.department || 'Leadership & Strategy' },
-              { icon: <Clock className="w-4 h-4 text-accent-red" />, label: 'Joined', value: user.doj ? new Date(user.doj).toLocaleDateString('en-US', { year: 'numeric', month: 'long' }) : 'January 2019' },
-              { icon: <MapPin className="w-4 h-4 text-accent-red" />, label: 'Location', value: user.location || 'Kochi, Kerala' },
-              { icon: <GraduationCap className="w-4 h-4 text-accent-red" />, label: 'Education', value: (user.education && user.education.length > 0) ? user.education[0].degree : 'Not specified' }
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-4 group border-b border-white/5 last:border-0 pb-4 last:pb-0">
-                <div className="w-10 h-10 flex items-center justify-center bg-white/2 rounded-xl group-hover:bg-accent-red/10 transition-all border border-white/5">
-                  {item.icon}
+          {!isAlenOrSham && (
+            <GlassCard variant="purple" className="space-y-4 !p-4">
+              {[
+                { icon: <Users className="w-4 h-4 text-accent-red" />, label: 'Department', value: user.department || 'Leadership & Strategy' },
+                { icon: <Clock className="w-4 h-4 text-accent-red" />, label: 'Joined', value: user.doj ? new Date(user.doj).toLocaleDateString('en-US', { year: 'numeric', month: 'long' }) : 'January 2019' },
+                { icon: <MapPin className="w-4 h-4 text-accent-red" />, label: 'Location', value: user.location || 'Kochi, Kerala' },
+                { icon: <GraduationCap className="w-4 h-4 text-accent-red" />, label: 'Education', value: (user.education && user.education.length > 0) ? user.education[0].degree : 'Not specified' }
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-4 group border-b border-white/5 last:border-0 pb-4 last:pb-0">
+                  <div className="w-10 h-10 flex items-center justify-center bg-white/2 rounded-xl group-hover:bg-accent-red/10 transition-all border border-white/5">
+                    {item.icon}
+                  </div>
+                  <div>
+                    <div className="text-[9px] text-gray-500 font-semibold uppercase tracking-[0.2em] mb-0.5 opacity-60">{item.label}</div>
+                    <div className="text-[11px] font-semibold text-white tracking-wide">{item.value}</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-[9px] text-gray-500 font-semibold uppercase tracking-[0.2em] mb-0.5 opacity-60">{item.label}</div>
-                  <div className="text-[11px] font-semibold text-white tracking-wide">{item.value}</div>
-                </div>
-              </div>
-            ))}
-          </GlassCard>
+              ))}
+            </GlassCard>
+          )}
 
-          <GlassCard variant="purple" className="!p-4">
-            <SectionTitle title="Live Projects" />
-            <div className="space-y-4">
-               {liveProjects.map((p, i) => (
-                 <div key={i} className="p-4 rounded-2xl border border-white/5 bg-white/2 hover:bg-white/5 transition-all group relative">
-                    <div className="flex justify-between items-start mb-2">
-                       <span className="text-[8px] text-orange-600 font-bold tracking-widest uppercase">{p.label}</span>
-                       <div className="bg-green-500/10 text-green-500 px-2 py-0.5 rounded-full border border-green-500/20 text-[7px] font-bold uppercase tracking-widest flex items-center gap-1">
-                          <div className="w-1.5 h-1.5 rounded-full bg-green-500" /> ACTIVE
-                       </div>
-                    </div>
-                    <h4 className="text-[11px] font-bold text-white mb-3">{p.title}</h4>
-                    
-                    <div className="w-full h-[2px] bg-white/10 rounded-full overflow-hidden mb-2">
-                       <motion.div 
-                         initial={{ width: 0 }} 
-                         whileInView={{ width: `${p.progress}%` }} 
-                         transition={{ duration: 1, ease: "easeOut" }}
-                         className={cn("h-full", p.color)} 
-                       />
-                    </div>
-                    <div className="flex justify-between text-[8px] font-medium uppercase tracking-widest text-gray-500">
-                       <span>Progress</span>
-                       <span className="text-white">{p.progress}%</span>
-                    </div>
-                 </div>
-               ))}
-            </div>
-          </GlassCard>
+          {!isAlenOrSham && (
+            <GlassCard variant="purple" className="!p-4">
+              <SectionTitle title="Live Projects" />
+              <div className="space-y-4">
+                 {liveProjects.map((p, i) => (
+                   <div key={i} className="p-4 rounded-2xl border border-white/5 bg-white/2 hover:bg-white/5 transition-all group relative">
+                      <div className="flex justify-between items-start mb-2">
+                         <span className="text-[8px] text-orange-600 font-bold tracking-widest uppercase">{p.label}</span>
+                         <div className="bg-green-500/10 text-green-500 px-2 py-0.5 rounded-full border border-green-500/20 text-[7px] font-bold uppercase tracking-widest flex items-center gap-1">
+                            <div className="w-1.5 h-1.5 rounded-full bg-green-500" /> ACTIVE
+                         </div>
+                      </div>
+                      <h4 className="text-[11px] font-bold text-white mb-3">{p.title}</h4>
+                      
+                      <div className="w-full h-[2px] bg-white/10 rounded-full overflow-hidden mb-2">
+                         <motion.div 
+                           initial={{ width: 0 }} 
+                           whileInView={{ width: `${p.progress}%` }} 
+                           transition={{ duration: 1, ease: "easeOut" }}
+                           className={cn("h-full", p.color)} 
+                         />
+                      </div>
+                      <div className="flex justify-between text-[8px] font-medium uppercase tracking-widest text-gray-500">
+                         <span>Progress</span>
+                         <span className="text-white">{p.progress}%</span>
+                      </div>
+                   </div>
+                 ))}
+              </div>
+            </GlassCard>
+          )}
 
           <GlassCard variant="purple" className="text-center p-4 md:!p-6 border-white/10 rounded-[28px] shadow-xl" style={{ background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
             <div className="text-[10px] text-gray-500 font-bold tracking-[0.25em] uppercase mb-1 opacity-50">PROFILE FOLLOWERS</div>
@@ -1930,48 +2013,54 @@ console.log(isAlenOrSham,slug);
             </div>
           </GlassCard>
 
-          <GlassCard variant="purple">
-             <SectionTitle title="Hobbies & Interests" />
-             <div className="flex flex-wrap gap-2.5">
-                {((user && Array.isArray(user.hobbies) && user.hobbies.length > 0)
-                  ? user.hobbies
-                  : ['Innovation', 'Automation', 'Fitness', 'Coffee', 'Strategy', 'Tech', 'Music', 'Travel']
-                ).map((h, idx) => (
-                   <span key={idx} className="btn-typo text-gray-400 px-5 py-2 rounded-full border border-white/10 hover:border-brand-purple/60 hover:text-white transition-all cursor-default uppercase bg-white/5">
-                     {h}
-                   </span>
-                ))}
-             </div>
-          </GlassCard>
+          {!isAlenOrSham && (
+            <GlassCard variant="purple">
+               <SectionTitle title="Hobbies & Interests" />
+               <div className="flex flex-wrap gap-2.5">
+                  {((user && Array.isArray(user.hobbies) && user.hobbies.length > 0)
+                    ? user.hobbies
+                    : ['Innovation', 'Automation', 'Fitness', 'Coffee', 'Strategy', 'Tech', 'Music', 'Travel']
+                  ).map((h, idx) => (
+                     <span key={idx} className="btn-typo text-gray-400 px-5 py-2 rounded-full border border-white/10 hover:border-brand-purple/60 hover:text-white transition-all cursor-default uppercase bg-white/5">
+                       {h}
+                     </span>
+                  ))}
+               </div>
+            </GlassCard>
+          )}
 
-          <GlassCard variant="purple">
-             <div className="flex items-center gap-2 mb-6">
-                <div className="w-1 h-6 rounded-full bg-yellow-500" />
-                <h2 className="text-[11px] font-semibold tracking-[0.2em] uppercase text-gray-400">RECENT ACTIVITY</h2>
-             </div>
-             <div className="space-y-6">
-                {recentActivities.map((act, i) => (
-                  <div key={i} className="flex flex-col border-b border-white/5 pb-4 last:border-0 last:pb-0">
-                     <div className="flex items-center gap-2 mb-1">
-                        <div className={cn("w-1.5 h-1.5 rounded-full", act.color)} />
-                        <div className="text-[13px] leading-tight">
-                           <span className="text-gray-500 mr-1">{act.label}</span> 
-                           <span className="text-white">{act.project}</span>
-                        </div>
-                     </div>
-                     <div className="text-[11px] text-gray-500 ml-3.5">{act.time}</div>
-                  </div>
-                ))}
-             </div>
-          </GlassCard>
+          {!isAlenOrSham && (
+            <GlassCard variant="purple">
+               <div className="flex items-center gap-2 mb-6">
+                  <div className="w-1 h-6 rounded-full bg-yellow-500" />
+                  <h2 className="text-[11px] font-semibold tracking-[0.2em] uppercase text-gray-400">RECENT ACTIVITY</h2>
+               </div>
+               <div className="space-y-6">
+                  {recentActivities.map((act, i) => (
+                    <div key={i} className="flex flex-col border-b border-white/5 pb-4 last:border-0 last:pb-0">
+                       <div className="flex items-center gap-2 mb-1">
+                          <div className={cn("w-1.5 h-1.5 rounded-full", act.color)} />
+                          <div className="text-[13px] leading-tight">
+                             <span className="text-gray-500 mr-1">{act.label}</span> 
+                             <span className="text-white">{act.project}</span>
+                          </div>
+                       </div>
+                       <div className="text-[11px] text-gray-500 ml-3.5">{act.time}</div>
+                    </div>
+                  ))}
+               </div>
+            </GlassCard>
+          )}
 
-          <button 
-            onClick={() => setShowResumeModal(true)}
-            className="w-full h-16 md:h-24 rounded-[32px] bg-linear-to-r from-[#441649] to-[#112240] hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-3 border border-white/10 shadow-2xl"
-          >
-             <FileText className="w-5 h-5 text-gray-400" />
-             <span className="text-xs md:text-sm font-medium text-white tracking-wide uppercase">DOWNLOAD PORTFOLIO PDF</span>
-          </button>
+          {!isAlenOrSham && (
+            <button 
+              onClick={() => setShowResumeModal(true)}
+              className="w-full h-16 md:h-24 rounded-[32px] bg-linear-to-r from-[#441649] to-[#112240] hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-3 border border-white/10 shadow-2xl"
+            >
+               <FileText className="w-5 h-5 text-gray-400" />
+               <span className="text-xs md:text-sm font-medium text-white tracking-wide uppercase">DOWNLOAD PORTFOLIO PDF</span>
+            </button>
+          )}
 
         </motion.div>
       </motion.main>
@@ -2313,7 +2402,7 @@ console.log(isAlenOrSham,slug);
           )}
         </motion.section>
       )}
-      
+
       <div className="relative z-10 bg-[#f5f5f7]">
         <Footer />
       </div>

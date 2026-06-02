@@ -145,41 +145,79 @@ export const FullRoster = () => {
                   />
                 </div>
 
-                <Link to={`/team/${(member.id === 'sham-sk' || member.slug === 'sham-sk' || member.email === 'ceo@socialbureau.in') ? 'shamsk' : (member.slug || member.id)}`} className="flex flex-col flex-1 h-full">
-                  {/* Image Section */}
-                  <div className="relative aspect-square overflow-hidden bg-gray-900">
-                    {/* Person Image */}
-                    <img
-                      src={member.image1 || member.image}
-                      alt={member.name}
-                      className="relative z-10 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                  </div>
+                {member.hideProfileLink ? (
+                  <div className="flex flex-col flex-1 h-full">
+                    {/* Image Section */}
+                    <div className="relative aspect-square overflow-hidden bg-gray-900">
+                      {/* Person Image */}
+                      <img
+                        src={member.image1 || member.image}
+                        alt={member.name}
+                        className="relative z-10 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    </div>
 
-                  {/* Info Section */}
-                  <div className="p-8 pb-0 flex flex-col flex-1">
-                    <h3 className="text-2xl font-black text-white mb-1 tracking-tight font-roboto">
-                      {member.name}
-                    </h3>
-                    <p className="text-[11px] font-bold text-white/40 tracking-[0.2em] uppercase mb-6">
-                      {member.role}
-                    </p>
+                    {/* Info Section */}
+                    <div className="p-8 pb-0 flex flex-col flex-1">
+                      <h3 className="text-2xl font-black text-white mb-1 tracking-tight font-roboto">
+                        {member.name}
+                      </h3>
+                      <p className="text-[11px] font-bold text-white/40 tracking-[0.2em] uppercase mb-6">
+                        {member.role}
+                      </p>
 
-                    <div className="flex flex-wrap gap-2 mb-8 mt-auto relative z-20">
-                      {(member.tags || []).slice(0, 3).map((tag, tIdx) => (
-                        <motion.span
-                          key={tag}
-                          initial={{ opacity: 0, x: -10 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.4 + (tIdx * 0.1) }}
-                          className="px-3 py-1 bg-white/5 rounded-full text-[9px] font-bold text-white/30 tracking-widest group-hover:text-white/60 group-hover:bg-white/10 transition-colors"
-                        >
-                          {tag}
-                        </motion.span>
-                      ))}
+                      <div className="flex flex-wrap gap-2 mb-8 mt-auto relative z-20">
+                        {(member.tags || []).slice(0, 3).map((tag, tIdx) => (
+                          <motion.span
+                            key={tag}
+                            initial={{ opacity: 0, x: -10 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.4 + (tIdx * 0.1) }}
+                            className="px-3 py-1 bg-white/5 rounded-full text-[9px] font-bold text-white/30 tracking-widest group-hover:text-white/60 group-hover:bg-white/10 transition-colors"
+                          >
+                            {tag}
+                          </motion.span>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </Link>
+                ) : (
+                  <Link to={`/team/${(member.id === 'sham-sk' || member.slug === 'sham-sk' || member.email === 'ceo@socialbureau.in') ? 'shamsk' : (member.slug || member.id)}`} className="flex flex-col flex-1 h-full">
+                    {/* Image Section */}
+                    <div className="relative aspect-square overflow-hidden bg-gray-900">
+                      {/* Person Image */}
+                      <img
+                        src={member.image1 || member.image}
+                        alt={member.name}
+                        className="relative z-10 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    </div>
+
+                    {/* Info Section */}
+                    <div className="p-8 pb-0 flex flex-col flex-1">
+                      <h3 className="text-2xl font-black text-white mb-1 tracking-tight font-roboto">
+                        {member.name}
+                      </h3>
+                      <p className="text-[11px] font-bold text-white/40 tracking-[0.2em] uppercase mb-6">
+                        {member.role}
+                      </p>
+
+                      <div className="flex flex-wrap gap-2 mb-8 mt-auto relative z-20">
+                        {(member.tags || []).slice(0, 3).map((tag, tIdx) => (
+                          <motion.span
+                            key={tag}
+                            initial={{ opacity: 0, x: -10 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.4 + (tIdx * 0.1) }}
+                            className="px-3 py-1 bg-white/5 rounded-full text-[9px] font-bold text-white/30 tracking-widest group-hover:text-white/60 group-hover:bg-white/10 transition-colors"
+                          >
+                            {tag}
+                          </motion.span>
+                        ))}
+                      </div>
+                    </div>
+                  </Link>
+                )}
 
                 {/* Social Links (outside the main link to be independently clickable) */}
                 <div className="p-8 pt-6 border-t border-white/5 flex gap-4 relative z-30">
