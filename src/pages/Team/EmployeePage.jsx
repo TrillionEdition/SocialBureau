@@ -2,17 +2,41 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
+import { motion, AnimatePresence } from "framer-motion";
 
+import {
+  Mail,
+  Calendar,
+  MousePointer2,
+  FileText,
+  ChevronRight,
+  ChevronLeft,
+  CheckCircle2,
+  Users,
+  MapPin,
+  Clock,
+  Star,
+  Play,
+  MessageCircle,
+  Plus,
+  ArrowLeft,
+  Share2,
+  Download,
+  Loader2,
+  Sparkles,
+  GraduationCap,
+  Award,
+  Rocket,
+  Globe,
+  Trophy,
+  TrendingUp,
+  Briefcase
+} from "lucide-react";
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, ReferenceLine
 } from 'recharts';
-import { motion } from 'framer-motion';
-import { 
-  Mail, Calendar, MousePointer2, FileText, ChevronRight, ChevronLeft, CheckCircle2, 
-  Users, MapPin, Clock, Star, Play, MessageCircle, Plus, ArrowLeft, Share2, Download, Loader2, Sparkles, GraduationCap, Award
-} from 'lucide-react';
 import { clsx } from 'clsx';
 import { toast } from 'react-toastify';
 import Footer from '../../components/Footer';
@@ -24,6 +48,44 @@ function cn(...inputs) {
   return clsx(inputs);
 }
 
+
+const milestones = [
+  {
+    year: "2016",
+    title: "Joined Marketing",
+    description:
+      "Started the journey in digital marketing, building foundational expertise in branding, content, and campaign execution.",
+    icon: GraduationCap,
+  },
+  {
+    year: "2018",
+    title: "Led Growth Campaigns",
+    description:
+      "Managed multi-channel campaigns delivering measurable business growth and audience expansion.",
+    icon: Rocket,
+  },
+  {
+    year: "2020",
+    title: "Built Scalable Systems",
+    description:
+      "Introduced automation frameworks and performance reporting systems to improve efficiency.",
+    icon: Sparkles,
+  },
+  {
+    year: "2022",
+    title: "Expanded Globally",
+    description:
+      "Collaborated with international brands and launched campaigns across multiple regions.",
+    icon: Globe,
+  },
+  {
+    year: "2024",
+    title: "Industry Leadership",
+    description:
+      "Recognized for driving strategic growth, innovation, and impactful business transformation.",
+    icon: Trophy,
+  },
+];
 const CustomTooltip = ({ active, payload, label, color }) => {
   if (active && payload && payload.length) {
     return (
@@ -528,6 +590,7 @@ const getStaticEnrichedData = (slug, originalData) => {
 // --- Main Employee Page Component ---
 
 const EmployeePage = () => {
+  const [activeMilestone, setActiveMilestone] = useState(0);
   const { slug } = useParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -1324,39 +1387,223 @@ console.log(isAlenOrSham,slug);
         <section className="max-w-[1440px] mx-auto px-4 md:px-8 mt-6 md:mt-10 relative z-20">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             <div className="md:col-span-7">
-              <GlassCard className="p-4 md:p-6 h-full">
-                <SectionTitle title="Career Timeline" subtitle="Key milestones" barColor="bg-pink-500" />
-                <div className="relative h-48 md:h-64">
-                  <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(90deg, ${member.bgColor || '#A855F7'}22, transparent 40%)` }} />
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={careerTimelineData} margin={{ left: -20, right: 10 }}>
-                      <CartesianGrid horizontal={true} vertical={true} stroke="rgba(255,255,255,0.03)" strokeDasharray="4 6" />
-                      <XAxis dataKey="year" axisLine={false} tick={{ fontSize: 12, fill: '#D1D5DB', fontWeight: 700 }} />
-                      <YAxis axisLine={false} tickLine={false} ticks={[0,1,2,3,4,5]} tick={{ fontSize: 11, fill: '#9CA3AF' }} />
-                      <Tooltip content={<CustomTooltip color={member.bgColor || '#A855F7'} />} />
-                      {careerTimelineData.map(d => (
-                        <ReferenceLine key={d.year} x={d.year} stroke="rgba(255,255,255,0.04)" strokeDasharray="1 6" />
-                      ))}
-                      <Line
-                        type="monotone"
-                        dataKey="value"
-                        stroke={member.bgColor || '#A855F7'}
-                        strokeWidth={4}
-                        dot={<CustomTimelineDot stroke={member.bgColor || '#A855F7'} />}
-                        activeDot={{ r: 10 }}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
+  <GlassCard className="p-6 md:p-8 h-full overflow-hidden">
+
+    <SectionTitle
+      title="Career Timeline"
+      subtitle="Professional Journey"
+      barColor="bg-pink-500"
+    />
+
+    {/* Timeline */}
+
+    <div className="relative mt-12">
+
+      {/* Background Line */}
+
+      <div className="absolute top-5 left-0 right-0 h-[3px] bg-white/10 rounded-full" />
+
+      {/* Animated Progress */}
+
+      <motion.div
+        className="absolute top-5 left-0 h-[3px] rounded-full"
+        style={{
+          background: member.bgColor || "#ec4899"
+        }}
+        animate={{
+          width: `${(activeMilestone / (milestones.length - 1)) * 100}%`
+        }}
+        transition={{
+          duration: 0.4
+        }}
+      />
+
+      <div className="relative flex justify-between">
+
+        {milestones.map((item, index) => {
+          const Icon = item.icon;
+          const active = activeMilestone === index;
+
+          return (
+            <button
+              key={item.year}
+              onMouseEnter={() => setActiveMilestone(index)}
+              onClick={() => setActiveMilestone(index)}
+              className="flex flex-col items-center group"
+            >
+
+              <motion.div
+                animate={{
+                  scale: active ? 1.2 : 1
+                }}
+                transition={{
+                  duration: 0.3
+                }}
+                className="relative z-10"
+              >
+                <div
+                  className="w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-300"
+                  style={{
+                    borderColor: member.bgColor,
+                    background: active
+                      ? member.bgColor
+                      : "rgba(255,255,255,0.06)",
+
+                    boxShadow: active
+                      ? `0 0 20px ${member.bgColor}`
+                      : "none"
+                  }}
+                >
+                  <Icon
+                    size={18}
+                    className={
+                      active
+                        ? "text-white"
+                        : "text-gray-300"
+                    }
+                  />
                 </div>
-                <div className="mt-4 flex items-center gap-4 flex-wrap">
-                  <span className="text-xs text-gray-400">Hover points for details — milestone cards to the right.</span>
-                  <div className="ml-auto flex items-center gap-2">
-                    <span className="text-[10px] uppercase tracking-widest text-gray-400">Legend</span>
-                    <div className="w-3 h-3 rounded-full" style={{ background: member.bgColor || '#A855F7' }} />
-                  </div>
-                </div>
-              </GlassCard>
+              </motion.div>
+
+              <span
+                className={`mt-4 text-sm font-semibold transition-all ${
+                  active
+                    ? "text-white"
+                    : "text-gray-400"
+                }`}
+              >
+                {item.year}
+              </span>
+
+            </button>
+          );
+        })}
+      </div>
+    </div>
+
+    {/* Detail Card */}
+
+    <div className="mt-12">
+
+      <AnimatePresence mode="wait">
+
+        <motion.div
+          key={activeMilestone}
+          initial={{
+            opacity: 0,
+            y: 20
+          }}
+          animate={{
+            opacity: 1,
+            y: 0
+          }}
+          exit={{
+            opacity: 0,
+            y: -20
+          }}
+          transition={{
+            duration: 0.3
+          }}
+          className="rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+        >
+          <div className="flex items-start gap-4">
+
+            <div
+              className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0"
+              style={{
+                background: `${member.bgColor}20`
+              }}
+            >
+              {React.createElement(
+                milestones[activeMilestone].icon,
+                {
+                  size: 26,
+                  style: {
+                    color: member.bgColor
+                  }
+                }
+              )}
             </div>
+
+            <div>
+              <div className="flex items-center gap-3 flex-wrap">
+
+                <span
+                  className="text-xs uppercase tracking-widest px-3 py-1 rounded-full"
+                  style={{
+                    background: `${member.bgColor}20`,
+                    color: member.bgColor
+                  }}
+                >
+                  {milestones[activeMilestone].year}
+                </span>
+
+                <h3 className="text-xl font-bold text-white">
+                  {milestones[activeMilestone].title}
+                </h3>
+
+              </div>
+
+              <p className="text-gray-400 mt-3 leading-relaxed">
+                {milestones[activeMilestone].description}
+              </p>
+
+            </div>
+
+          </div>
+        </motion.div>
+
+      </AnimatePresence>
+
+    </div>
+
+    {/* Stats */}
+
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+
+      <div className="rounded-xl border border-white/10 bg-white/[0.03] p-5">
+        <TrendingUp
+          size={22}
+          style={{ color: member.bgColor }}
+        />
+        <h4 className="text-2xl font-bold mt-3 text-white">
+          300%
+        </h4>
+        <p className="text-gray-400 text-sm">
+          Growth Delivered
+        </p>
+      </div>
+
+      <div className="rounded-xl border border-white/10 bg-white/[0.03] p-5">
+        <Users
+          size={22}
+          style={{ color: member.bgColor }}
+        />
+        <h4 className="text-2xl font-bold mt-3 text-white">
+          120+
+        </h4>
+        <p className="text-gray-400 text-sm">
+          Brands Managed
+        </p>
+      </div>
+
+      <div className="rounded-xl border border-white/10 bg-white/[0.03] p-5">
+        <Briefcase
+          size={22}
+          style={{ color: member.bgColor }}
+        />
+        <h4 className="text-2xl font-bold mt-3 text-white">
+          500+
+        </h4>
+        <p className="text-gray-400 text-sm">
+          Campaigns Delivered
+        </p>
+      </div>
+
+    </div>
+
+  </GlassCard>
+</div>
 
             <div className="md:col-span-5 flex flex-col gap-4">
               {careerTimelineData.map((item, idx) => (
