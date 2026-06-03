@@ -1964,87 +1964,113 @@ console.log(isAlenOrSham,slug);
 
     {/* Timeline */}
 
-    <div className="relative mt-12">
-
-      {/* Background Line */}
-
-      <div className="absolute top-5 left-0 right-0 h-[3px] bg-white/10 rounded-full" />
-
-      {/* Animated Progress */}
-
-      <motion.div
-        className="absolute top-5 left-0 h-[3px] rounded-full"
+    <div className="relative mt-12 overflow-x-auto pb-4 timeline-scrollbar select-none">
+      <style>{`
+        .timeline-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: ${member.bgColor || '#ec4899'} rgba(255, 255, 255, 0.05);
+        }
+        .timeline-scrollbar::-webkit-scrollbar {
+          height: 6px !important;
+          display: block !important;
+        }
+        .timeline-scrollbar::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05) !important;
+          border-radius: 6px !important;
+        }
+        .timeline-scrollbar::-webkit-scrollbar-thumb {
+          background: ${member.bgColor || '#ec4899'} !important;
+          border-radius: 6px !important;
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        .timeline-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: ${member.bgColor || '#ec4899'}d8 !important;
+        }
+      `}</style>
+      <div 
+        className="relative min-w-[var(--slider-min-w)] md:min-w-0 min-h-[90px]"
         style={{
-          background: member.bgColor || "#ec4899"
+          '--slider-min-w': `${milestones.length * 80}px`
         }}
-        animate={{
-          width: `${(activeMilestone / (milestones.length - 1)) * 100}%`
-        }}
-        transition={{
-          duration: 0.4
-        }}
-      />
+      >
+        {/* Background Line */}
+        <div className="absolute top-5 left-0 right-0 h-[3px] bg-white/10 rounded-full" />
 
-      <div className="relative flex justify-between">
+        {/* Animated Progress */}
+        <motion.div
+          className="absolute top-5 left-0 h-[3px] rounded-full"
+          style={{
+            background: member.bgColor || "#ec4899"
+          }}
+          animate={{
+            width: `${(activeMilestone / (milestones.length - 1)) * 100}%`
+          }}
+          transition={{
+            duration: 0.4
+          }}
+        />
 
-        {milestones.map((item, index) => {
-          const Icon = item.icon;
-          const active = activeMilestone === index;
+        <div className="relative flex justify-between">
 
-          return (
-            <button
-              key={index}
-              onMouseEnter={() => setActiveMilestone(index)}
-              onClick={() => setActiveMilestone(index)}
-              className="flex flex-col items-center group"
-            >
+          {milestones.map((item, index) => {
+            const Icon = item.icon;
+            const active = activeMilestone === index;
 
-              <motion.div
-                animate={{
-                  scale: active ? 1.2 : 1
-                }}
-                transition={{
-                  duration: 0.3
-                }}
-                className="relative z-10"
+            return (
+              <button
+                key={index}
+                onMouseEnter={() => setActiveMilestone(index)}
+                onClick={() => setActiveMilestone(index)}
+                className="flex flex-col items-center group"
               >
-                <div
-                  className="w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-300"
-                  style={{
-                    borderColor: member.bgColor,
-                    background: active
-                      ? member.bgColor
-                      : "rgba(255,255,255,0.06)",
 
-                    boxShadow: active
-                      ? `0 0 20px ${member.bgColor}`
-                      : "none"
+                <motion.div
+                  animate={{
+                    scale: active ? 1.2 : 1
                   }}
+                  transition={{
+                    duration: 0.3
+                  }}
+                  className="relative z-10"
                 >
-                  <Icon
-                    size={18}
-                    className={
-                      active
-                        ? "text-white"
-                        : "text-gray-300"
-                    }
-                  />
-                </div>
-              </motion.div>
+                  <div
+                    className="w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-300"
+                    style={{
+                      borderColor: member.bgColor,
+                      background: active
+                        ? member.bgColor
+                        : "rgba(255,255,255,0.06)",
 
-              <span
-                className={`mt-4 text-sm font-semibold transition-all ${
-                  active
-                    ? "text-white"
-                    : "text-gray-400"
-                }`}
-              >
-                {item.year}
-              </span>
+                      boxShadow: active
+                        ? `0 0 20px ${member.bgColor}`
+                        : "none"
+                    }}
+                  >
+                    <Icon
+                      size={18}
+                      className={
+                        active
+                          ? "text-white"
+                          : "text-gray-300"
+                      }
+                    />
+                  </div>
+                </motion.div>
 
-            </button>
-          );
-        })}
+                <span
+                  className={`mt-4 text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
+                    active
+                      ? "text-white"
+                      : "text-gray-400"
+                  }`}
+                >
+                  {item.year}
+                </span>
+
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
 
