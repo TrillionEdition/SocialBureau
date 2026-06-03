@@ -57,38 +57,39 @@ export const getMilestones = (name = "") => {
   if (lowerName.includes("sham") || lowerName.includes("shamsk")) {
     return [
       {
-        year: "2016",
-        title: "Joined Marketing",
-        description:
-          "Started career in marketing and gained foundational experience in branding, content strategy, and digital campaigns.",
-        icon: GraduationCap,
+        year: "Sep 2023",
+        title: "Reporter Broadcasting Company Private Limited",
+        description: "API Marketing Algorithm Consulting Partner",
+        icon: Briefcase,
       },
       {
-        year: "2018",
-        title: "Launched API Framework",
-        description:
-          "Developed and launched an API-driven framework that streamlined workflows and improved operational efficiency.",
+        year: "Oct 2023",
+        title: "Dilse FM",
+        description: "Social media algorithm consulting Graphic support Videography Market analysts Business consulting Marketing",
+        icon: Briefcase,
+      },
+      {
+        year: "Apr 2024",
+        title: "Yellow Cloud",
+        description: "Social Media Algorithm Consultant | Yellow Cloud Company",
+        icon: Handshake,
+      },
+      {
+        year: "Feb 2025",
+        title: "Trillion Edition",
+        description: "Managing Director & Co-Founder",
         icon: Rocket,
       },
       {
-        year: "2020",
-        title: "Global Brand Growth",
-        description:
-          "Led growth initiatives that expanded brand visibility and audience engagement across international markets.",
-        icon: Globe,
+        year: "Feb 2025",
+        title: "Social Bureau",
+        description: "CEO & Co-Founder of Social Bureau, I lead the world’s first API Marketing company — a revolutionary platform built to redefine how brands connect, communicate, and convert in the digital world.",
+        icon: Trophy,
       },
       {
-        year: "2022",
-        title: "Productized Services",
-        description:
-          "Transformed service offerings into scalable products, creating sustainable revenue opportunities.",
-        icon: Sparkles,
-      },
-      {
-        year: "2024",
-        title: "Scale & Expansion",
-        description:
-          "Focused on scaling operations, strengthening teams, and expanding into new business verticals.",
+        year: "Jan 2026",
+        title: "Click Up",
+        description: "ClickUp Verified Consultant",
         icon: Trophy,
       },
     ];
@@ -97,45 +98,119 @@ export const getMilestones = (name = "") => {
   if (lowerName.includes("alen") || lowerName.includes("alen jacob")) {
     return [
       {
-        year: "2015",
-        title: "Real Estate Operations",
-        description:
-          "Started career in real estate operations, building expertise in business management and client relations.",
-        icon: Building2,
+        year: "Nov 2021",
+        title: "Business Bureau",
+        description: "Founder : Business Bureau | Coworking",
+        icon: Rocket,
       },
       {
-        year: "2018",
-        title: "Corporate Growth",
-        description:
-          "Contributed to strategic growth initiatives that improved organizational performance and market positioning.",
-        icon: Briefcase,
+        year: "Jun 2022",
+        title: "Tommy Hilfiger",
+        description: "Entrepreneur",
+        icon: Trophy,
       },
       {
-        year: "2020",
-        title: "Strategic Partnerships",
-        description:
-          "Developed key partnerships and collaborations that unlocked new business opportunities and revenue streams.",
-        icon: Handshake,
+        year: "May 2025",
+        title: "SocialBureau",
+        description: "Co-Founder",
+        icon: Rocket,
       },
       {
-        year: "2022",
-        title: "Regional Expansion",
-        description:
-          "Led expansion efforts across new regions, strengthening market presence and accelerating growth.",
-        icon: TrendingUp,
+        year: "Aug 2025",
+        title: "TrillionEdition",
+        description: "MD",
+        icon: Rocket,
       },
       {
-        year: "2025",
-        title: "Managing Director",
-        description:
-          "Assumed leadership as Managing Director, overseeing strategy, operations, and long-term business development.",
-        icon: Crown,
+        year: "Nov 2025",
+        title: "RealtyBureau",
+        description: "Founder",
+        icon: Rocket,
       },
     ];
   }
 
   return [];
 };
+
+export const getDynamicMilestones = (achievements) => {
+  if (!achievements || !Array.isArray(achievements) || achievements.length === 0) {
+    return [];
+  }
+
+  // Parse date string to relative month integer for sorting
+  const parseDateStr = (dateStr) => {
+    if (!dateStr) return 0;
+    const parts = dateStr.trim().toUpperCase().split(/\s+/);
+    let month = 0;
+    let year = 2026;
+    
+    const months = {
+      JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5,
+      JUL: 6, AUG: 7, SEP: 8, OCT: 9, NOV: 10, DEC: 11
+    };
+
+    if (parts.length === 1) {
+      const y = parseInt(parts[0], 10);
+      if (!isNaN(y)) year = y;
+    } else if (parts.length >= 2) {
+      const m = months[parts[0]];
+      if (m !== undefined) month = m;
+      const y = parseInt(parts[1], 10);
+      if (!isNaN(y)) year = y;
+    }
+    
+    return year * 12 + month;
+  };
+
+  // Sort achievements chronologically (ascending)
+  const sorted = [...achievements].sort((a, b) => {
+    return parseDateStr(a.date) - parseDateStr(b.date);
+  });
+
+  const getIconForBadge = (badgeType) => {
+    const type = (badgeType || '').toUpperCase().trim();
+    switch (type) {
+      case 'MILESTONE':
+        return Briefcase;
+      case 'INNOVATION':
+        return Sparkles;
+      case 'CLIENT WIN':
+      case 'CLIENT_WIN':
+        return Handshake;
+      case 'PARTNERSHIP':
+        return Users;
+      case 'ACHIEVEMENT':
+        return Trophy;
+      case 'LAUNCH':
+        return Rocket;
+      default:
+        return Star;
+    }
+  };
+
+  const formatUIYear = (dateStr) => {
+    if (!dateStr) return '2026';
+    const parts = dateStr.trim().split(/\s+/);
+    if (parts.length >= 2) {
+      const mStr = parts[0].substring(0, 3);
+      const month = mStr.charAt(0).toUpperCase() + mStr.slice(1).toLowerCase();
+      const year = parts[1];
+      return `${month} ${year}`;
+    }
+    return dateStr.trim();
+  };
+
+  return sorted.map((ach) => {
+    return {
+      year: formatUIYear(ach.date || ''),
+      title: ach.title || 'Milestone',
+      description: ach.description || '',
+      icon: getIconForBadge(ach.image)
+    };
+  });
+};
+
 const CustomTooltip = ({ active, payload, label, color }) => {
   if (active && payload && payload.length) {
     return (
@@ -637,6 +712,444 @@ const getStaticEnrichedData = (slug, originalData) => {
   }
 };
 
+// --- Sub components for Sham & Alen profiles ---
+
+const QuoteBanner = ({ slug }) => {
+  const isSham = ['shamsk', 'sham-sk'].includes((slug || '').toLowerCase());
+  
+  const shamLines = [
+    '"Leadership is the',
+    'orchestration of data',
+    'into destiny. We don\'t',
+    'just follow trends,we',
+    'engineer the',
+    'infrastructures that',
+    'create them."'
+  ];
+
+  const alenLines = [
+    '"Operational excellence',
+    'is the bridge between',
+    'ambitious vision and',
+    'absolute execution."'
+  ];
+
+  const lines = isSham ? shamLines : alenLines;
+  const author = isSham ? 'SHAM, FOUNDER & CEO' : 'ALEN, MANAGING DIRECTOR';
+
+  // Framer Motion variants
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.2,
+      }
+    }
+  };
+
+  const lineVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 20,
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.7, 
+        ease: [0.215, 0.61, 0.355, 1.0]
+      }
+    }
+  };
+
+  return (
+    <section className="relative py-16 md:py-24 flex flex-col items-center justify-center text-center px-4 md:px-8 overflow-hidden bg-transparent select-none">
+      {/* Giant quote icon */}
+      <div className="text-[80px] md:text-[120px] font-serif leading-none text-purple-500/10 h-10 md:h-14 flex items-center justify-center pointer-events-none mb-4 font-black select-none">
+        ”
+      </div>
+      
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, margin: "-100px" }}
+        className="max-w-4xl mx-auto flex flex-col gap-1 md:gap-2 items-center"
+      >
+        {lines.map((line, idx) => (
+          <div key={idx} className="overflow-hidden py-0.5 w-full">
+            <motion.h2
+              variants={lineVariants}
+              className="text-[4.5vw] sm:text-2xl md:text-4xl lg:text-[2.8rem] font-black tracking-tight text-white leading-tight italic uppercase font-display"
+            >
+              {line}
+            </motion.h2>
+          </div>
+        ))}
+        
+        <motion.div
+          variants={lineVariants}
+          className="mt-6 md:mt-8 text-[9px] md:text-[11px] font-black tracking-[0.25em] text-[#C084FC] uppercase flex items-center gap-3"
+        >
+          <span className="w-4 h-[1px] bg-white/20" />
+          {author}
+          <span className="w-4 h-[1px] bg-white/20" />
+        </motion.div>
+      </motion.div>
+    </section>
+  );
+};
+
+const BorderlessInfluenceNetwork = () => {
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.12
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" }
+    }
+  };
+
+  const lineVariants = {
+    hidden: { scaleX: 0, opacity: 0 },
+    visible: {
+      scaleX: 1,
+      opacity: 1,
+      transition: { duration: 0.8, ease: "easeInOut" }
+    }
+  };
+
+  const circleVariants = {
+    hidden: { scale: 0.8, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: { duration: 0.6, ease: "easeOut" }
+    }
+  };
+
+  return (
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: false, margin: "-20px" }}
+      variants={containerVariants}
+      className="relative py-20 md:py-28 overflow-hidden flex flex-col items-center justify-center text-center px-4 md:px-8 border-y border-white/5 bg-transparent"
+    >
+      {/* Coordinates/Radar Background */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden flex items-center justify-center">
+        {/* Diagonal crossing lines */}
+        <motion.div
+          variants={lineVariants}
+          className="absolute w-[150%] h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent rotate-12 origin-center"
+        />
+        <motion.div
+          variants={lineVariants}
+          className="absolute w-[150%] h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent -rotate-12 origin-center"
+        />
+        
+        {/* Radar Circles */}
+        <motion.div variants={circleVariants} className="absolute w-[200px] h-[200px] rounded-full border border-white/5" />
+        <motion.div variants={circleVariants} className="absolute w-[400px] h-[400px] rounded-full border border-white/5" />
+        <motion.div variants={circleVariants} className="absolute w-[600px] h-[600px] rounded-full border border-white/5" />
+        <motion.div variants={circleVariants} className="absolute w-[800px] h-[800px] rounded-full border border-white/[0.02]" />
+      </div>
+
+      <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
+        {/* Top tag */}
+        <motion.span
+          variants={itemVariants}
+          className="text-[10px] md:text-xs font-bold tracking-[0.4em] text-cyan-400 uppercase mb-4 md:mb-6 block"
+        >
+          GLOBAL DOMINION
+        </motion.span>
+        
+        {/* Main Heading */}
+        <motion.h2
+          variants={itemVariants}
+          className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-tight max-w-3xl mb-6"
+        >
+          Architecting a <span className="text-[#C084FC] italic">Borderless</span> Influence Network
+        </motion.h2>
+        
+        {/* Description */}
+        <motion.p
+          variants={itemVariants}
+          className="text-xs sm:text-sm md:text-base text-gray-400 max-w-2xl leading-relaxed mb-10 md:mb-14"
+        >
+          SocialBureau operates beyond traditional borders, leveraging a hybrid mesh of digital influence and physical infrastructure.
+        </motion.p>
+
+        {/* Stats Ribbon */}
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-12 w-full max-w-3xl"
+        >
+          {[
+            { value: "12", label: "TIMEZONES" },
+            { value: "180+", label: "NODES" },
+            { value: "100%", label: "REDUNDANCY" }
+          ].map((stat, idx) => (
+            <React.Fragment key={stat.label}>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="flex flex-col items-center justify-center cursor-default"
+              >
+                <span className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-2 tracking-tight">
+                  {stat.value}
+                </span>
+                <span className="text-[8px] md:text-[9px] text-gray-500 font-bold tracking-[0.2em] uppercase">
+                  {stat.label}
+                </span>
+              </motion.div>
+              {idx < 2 && (
+                <div className="hidden sm:block w-[1px] h-12 bg-white/10" />
+              )}
+            </React.Fragment>
+          ))}
+        </motion.div>
+      </div>
+    </motion.section>
+  );
+};
+
+const AlenExecutiveFocus = () => {
+  return (
+    <section className="relative py-16 md:py-24 max-w-[1440px] mx-auto px-4 md:px-8 overflow-hidden z-10">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        {/* Left Side: Operations Cards List */}
+        <div className="lg:col-span-6 order-2 lg:order-1">
+          <div className="glass-card p-5 md:p-6 flex flex-col gap-5 md:gap-6 rounded-[28px] border border-white/10 shadow-2xl relative" style={{ backgroundColor: 'rgba(15, 6, 25, 0.45)' }}>
+            
+            {/* Item 1 */}
+            <div className="flex gap-4 md:gap-5 items-start">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border border-[#A855F7]/30 bg-[#A855F7]/10 text-[#A855F7]">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="7" height="7" rx="1" />
+                  <rect x="14" y="3" width="7" height="7" rx="1" />
+                  <rect x="14" y="14" width="7" height="7" rx="1" />
+                  <rect x="3" y="14" width="7" height="7" rx="1" />
+                  <path d="M10 6.5h4" />
+                  <path d="M10 17.5h4" />
+                  <path d="M6.5 10v4" />
+                  <path d="M17.5 10v4" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xs font-bold text-white tracking-wide mb-1 uppercase">Architectural Governance</h3>
+                <p className="text-[11px] text-gray-400 leading-relaxed">
+                  Implementing multi-layered communication frameworks that bridge central policy with regional execution.
+                </p>
+              </div>
+            </div>
+
+            <div className="h-[1px] bg-white/5" />
+
+            {/* Item 2 */}
+            <div className="flex gap-4 md:gap-5 items-start">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border border-[#06B6D4]/30 bg-[#06B6D4]/10 text-[#06B6D4]">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                  <polyline points="16 7 22 7 22 13" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xs font-bold text-white tracking-wide mb-1 uppercase">Predictive Strategy</h3>
+                <p className="text-[11px] text-gray-400 leading-relaxed">
+                  Utilizing socio-political data modeling to anticipate narrative shifts and maintain platform stability.
+                </p>
+              </div>
+            </div>
+
+            <div className="h-[1px] bg-white/5" />
+
+            {/* Item 3 */}
+            <div className="flex gap-4 md:gap-5 items-start">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border border-[#EC4899]/30 bg-[#EC4899]/10 text-[#EC4899]">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v1" />
+                  <path d="M18 8h4a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-4" />
+                  <circle cx="8" cy="12" r="2" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xs font-bold text-white tracking-wide mb-1 uppercase">Resilient Networking</h3>
+                <p className="text-[11px] text-gray-400 leading-relaxed">
+                  Ensuring 24/7 operational continuity across sovereign infrastructure with zero-latency protocols.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Right Side: Copy block & Quote box */}
+        <div className="lg:col-span-6 flex flex-col gap-5 md:gap-6 order-1 lg:order-2">
+          <div>
+            <span className="text-[9px] md:text-[10px] font-bold tracking-[0.3em] text-[#EC4899] uppercase mb-2.5 block">
+              EXECUTIVE FOCUS
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight uppercase leading-[1.1] mb-5">
+              Strategic <span className="text-[#C084FC] italic">Operations</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
+              Alen Jacob’s operational philosophy is rooted in technical precision and strategic foresight. As Managing Director, he oversees the intricate web of digital assets and human intelligence that defines SocialBureau's competitive edge in the global arena.
+            </p>
+          </div>
+
+          {/* Bottom Right Quote Box */}
+          <div className="glass-card-purple p-4 rounded-[16px] border-l-4 border-l-[#A855F7] border-white/5 shadow-xl" style={{ backgroundColor: 'rgba(15, 6, 25, 0.45)' }}>
+            <p className="text-xs sm:text-sm font-bold italic text-white/90 leading-relaxed">
+              "Efficiency is not just about speed; it's about the integrity of the architecture under pressure."
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ShamFoundersFramework = () => {
+  return (
+    <section className="relative py-16 md:py-24 max-w-[1440px] mx-auto px-4 md:px-8 overflow-hidden z-10">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        
+        {/* Left Column: Attract-Pull-Influence framework */}
+        <div className="lg:col-span-7 flex flex-col gap-6 md:gap-8">
+          <div>
+            <span className="text-[9px] md:text-[10px] font-bold tracking-[0.3em] text-[#06B6D4] uppercase mb-2.5 block">
+              FOUNDER'S FRAMEWORK
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight uppercase leading-[1.1] mb-5">
+              Attract–Pull–<span className="text-[#C084FC] italic">Influence</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-400 leading-relaxed max-w-3xl">
+              Sham's proprietary framework is the backbone of SocialBureau's success. It orchestrates digital ecosystems by merging human psychology with technical API automation.
+            </p>
+          </div>
+
+          {/* Stacked Cards */}
+          <div className="flex flex-col gap-3">
+            
+            {/* Card 1: Attract */}
+            <div className="glass-card p-4 md:p-5 rounded-[16px] border-l-4 border-l-[#EC4899] border-white/5 flex gap-4 items-center shadow-xl transition-all hover:scale-[1.005]" style={{ backgroundColor: 'rgba(15, 6, 25, 0.45)' }}>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 border border-[#EC4899]/30 bg-[#EC4899]/10 text-[#EC4899] shadow-[0_0_10px_rgba(236,72,153,0.1)]">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xs font-bold text-white tracking-wide mb-0.5 uppercase">Attract</h3>
+                <p className="text-[11px] text-gray-400">
+                  Capturing high-intent data through strategic API touchpoints.
+                </p>
+              </div>
+            </div>
+
+            {/* Card 2: Pull */}
+            <div className="glass-card p-4 md:p-5 rounded-[16px] border-l-4 border-l-[#A855F7] border-white/5 flex gap-4 items-center shadow-xl transition-all hover:scale-[1.005]" style={{ backgroundColor: 'rgba(15, 6, 25, 0.45)' }}>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 border border-[#A855F7]/30 bg-[#A855F7]/10 text-[#A855F7] shadow-[0_0_10px_rgba(168,85,247,0.1)]">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xs font-bold text-white tracking-wide mb-0.5 uppercase">Pull</h3>
+                <p className="text-[11px] text-gray-400">
+                  Engaging audiences through automated value loops.
+                </p>
+              </div>
+            </div>
+
+            {/* Card 3: Influence */}
+            <div className="glass-card p-4 md:p-5 rounded-[16px] border-l-4 border-l-[#06B6D4] border-white/5 flex gap-4 items-center shadow-xl transition-all hover:scale-[1.005]" style={{ backgroundColor: 'rgba(15, 6, 25, 0.45)' }}>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 border border-[#06B6D4]/30 bg-[#06B6D4]/10 text-[#06B6D4] shadow-[0_0_10px_rgba(6,182,212,0.1)]">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                  <path d="M12 6v12" />
+                  <path d="M6 12h12" />
+                  <path d="M7.75 7.75l8.5 8.5" />
+                  <path d="M7.75 16.25l8.5-8.5" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xs font-bold text-white tracking-wide mb-0.5 uppercase">Influence</h3>
+                <p className="text-[11px] text-gray-400">
+                  Nurturing long-term brand advocates with personalized automation.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Right Column: Automation Dashboard Integration */}
+        <div className="lg:col-span-5 flex flex-col gap-4 md:gap-5">
+          <div className="glass-card p-5 md:p-6 rounded-[28px] border border-white/10 shadow-2xl relative flex flex-col gap-5 overflow-hidden" style={{ backgroundColor: 'rgba(15, 6, 25, 0.45)' }}>
+            
+            {/* Header with MAC window controls */}
+            <div className="flex items-center justify-between pb-2 border-b border-white/5">
+              <div className="flex gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+                <span className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+              </div>
+              <span className="font-mono text-[9px] text-gray-500 tracking-wider">api-marketing-engine.js</span>
+              <div className="w-10" />
+            </div>
+
+            {/* Syntax Highlighted Code / Terminal */}
+            <div className="bg-black/50 border border-white/5 rounded-2xl p-4 font-mono text-[10px] leading-relaxed text-[#06B6D4] space-y-1 shadow-inner select-none relative overflow-hidden text-left">
+              <div><span className="text-purple-400">const</span> <span className="text-blue-400">framework</span> = <span className="text-purple-400">new</span> <span className="text-yellow-400">APIMarketing</span>();</div>
+              <div><span className="text-blue-400">framework</span>.<span className="text-green-400">initialize</span>({'{'}</div>
+              <div className="pl-4"><span className="text-gray-400">attract:</span> <span className="text-green-300">"API_TOUCHPOINTS"</span>,</div>
+              <div className="pl-4"><span className="text-gray-400">pull:</span> <span className="text-green-300">"AUTOMATED_VALUE_LOOPS"</span>,</div>
+              <div className="pl-4"><span className="text-gray-400">influence:</span> <span className="text-green-300">"PERSONALIZED_CONVERSIONS"</span></div>
+              <div>{'}'});</div>
+              <div className="pt-2 text-green-400/80 animate-pulse">// status: RUNNING (99.9% uptime)</div>
+            </div>
+
+            {/* Stats row with divider lines */}
+            <div className="flex justify-between items-center py-2 px-2 border-y border-white/5">
+              {[
+                { val: "99.9%", label: "API UPTIME", col: "text-green-400" },
+                { val: "24/7", label: "MONITORING", col: "text-purple-400" },
+                { val: "15M+", label: "MONTHLY LOOPS", col: "text-cyan-400" }
+              ].map((stat, idx) => (
+                <React.Fragment key={stat.label}>
+                  <div className="flex flex-col items-center">
+                    <span className={cn("text-xs font-black leading-none", stat.col)}>{stat.val}</span>
+                    <span className="text-[7px] text-gray-500 font-bold tracking-wider uppercase mt-1">{stat.label}</span>
+                  </div>
+                  {idx < 2 && <div className="w-[1px] h-6 bg-white/10" />}
+                </React.Fragment>
+              ))}
+            </div>
+
+            {/* Bottom Quote / Sign-off */}
+            <div className="text-center pt-1">
+              <p className="text-xs text-gray-400 italic leading-relaxed">
+                "Systems run the business, and automation scales the vision."
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
 // --- Main Employee Page Component ---
 
 const EmployeePage = () => {
@@ -868,7 +1381,6 @@ console.log(isAlenOrSham,slug);
   }
 
   const member = data?.member || fallbackData.member;
-const milestones = getMilestones(member?.name || "");
   const clickup = data?.clickup || fallbackData.clickup;
   const rawUser = data?.user || data?.member?.user || fallbackData.user;
 
@@ -932,35 +1444,26 @@ const milestones = getMilestones(member?.name || "");
     );
   };
 
-  // Career timeline data (graphical) for Sham SK and Alen Jacob only
-  const careerTimelineData = (() => {
-    const name = (member?.name || '').toLowerCase();
-    if (name.includes('sham') || name.includes('shamsk')) {
-      return [
-        { year: '2016', value: 1, label: 'Joined Marketing', description: 'Started career in marketing and gained foundational experience.' },
-        { year: '2018', value: 2, label: 'Launched API Framework', description: 'Developed and launched a new API framework to streamline operations.' },
-        { year: '2020', value: 3, label: 'Global Brand Growth', description: 'Led initiatives that significantly expanded the global brand presence.' },
-        { year: '2022', value: 4, label: 'Productized Services', description: 'Transformed services into scalable products, enhancing revenue streams.' },
-        { year: '2024', value: 5, label: 'Scale & Expansion', description: 'Focused on scaling operations and expanding into new markets.' }
-      ];
-    }
-    if (name.includes('alen') || name.includes('alen jacob')) {
-      return [
-        { year: '2015', value: 1, label: 'Real Estate Ops', description: 'Started career in real estate operations, gaining foundational experience.' },
-        { year: '2018', value: 2, label: 'Corporate Growth', description: 'Contributed to corporate growth initiatives, driving strategic projects.' },
-        { year: '2020', value: 3, label: 'Strategic Partnerships', description: 'Developed and managed strategic partnerships to enhance business opportunities.' },
-        { year: '2022', value: 4, label: 'Regional Expansion', description: 'Led regional expansion efforts, increasing market presence and revenue.' },
-        { year: '2025', value: 5, label: 'Managing Director', description: 'Assumed the role of Managing Director, overseeing company operations and strategy.' }
-      ];
-    }
-    return [];
-  })();
   const user = {
     ...rawUser,
     department: dbDepartment || rawUser?.department || 'Leadership & Strategy'
   };
 
+  const milestones = (user && Array.isArray(user.achievements) && user.achievements.length > 0)
+    ? getDynamicMilestones(user.achievements)
+    : getMilestones(member?.name || "");
+
+  // Career timeline data (graphical) for Sham SK and Alen Jacob only
+  const careerTimelineData = milestones.map((m, idx) => ({
+    year: m.year,
+    value: idx + 1,
+    label: m.title,
+    description: m.description,
+    icon: m.icon
+  }));
+
   const isAlenOrSham = ['alen-jacob', 'alen', 'shamsk', 'sham-sk'].includes((slug || '').toLowerCase());
+  const isSham = ['shamsk', 'sham-sk'].includes((slug || '').toLowerCase());
   const showStaticFallback = isDemoMode;
 
   const hasInnovations = (user && Array.isArray(user.innovations) && user.innovations.length > 0) || showStaticFallback;
@@ -1433,12 +1936,25 @@ const milestones = getMilestones(member?.name || "");
         </div>
       </section>
 
+      {/* New sections for Sham SK & Alen Jacob */}
+      {isAlenOrSham && (
+        <>
+          <QuoteBanner slug={slug} />
+          {['shamsk', 'sham-sk'].includes((slug || '').toLowerCase()) ? (
+            <ShamFoundersFramework />
+          ) : (
+            <AlenExecutiveFocus />
+          )}
+          <BorderlessInfluenceNetwork />
+        </>
+      )}
+
       {/* Career Timeline - enhanced, only for Sham SK and Alen Jacob */}
       {isAlenOrSham && careerTimelineData && careerTimelineData.length > 0 && (
         <section className="max-w-[1440px] mx-auto px-4 md:px-8 mt-6 md:mt-10 relative z-20">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-            <div className="md:col-span-7">
-  <GlassCard className="p-6 md:p-8 h-full overflow-hidden">
+            <div className={isSham ? "md:col-span-6" : "md:col-span-7"}>
+  <GlassCard className={cn("p-6 md:p-8 overflow-hidden", !isSham && "h-full")}>
 
     <SectionTitle
       title="Career Timeline"
@@ -1477,7 +1993,7 @@ const milestones = getMilestones(member?.name || "");
 
           return (
             <button
-              key={item.year}
+              key={index}
               onMouseEnter={() => setActiveMilestone(index)}
               onClick={() => setActiveMilestone(index)}
               className="flex flex-col items-center group"
@@ -1656,15 +2172,13 @@ const milestones = getMilestones(member?.name || "");
   </GlassCard>
 </div>
 
-            <div className="md:col-span-5 flex flex-col gap-4">
+            <div className={cn(
+              isSham ? "md:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4 content-start" : "md:col-span-5 flex flex-col gap-4"
+            )}>
               {careerTimelineData.map((item, idx) => (
-                <GlassCard key={item.year} className="p-3 flex items-start gap-3">
+                <GlassCard key={idx} className="p-3 flex items-start gap-3">
                   <div className="shrink-0 w-12 h-12 rounded-lg flex items-center justify-center" style={{ background: `${member.bgColor || '#A855F7'}22`, border: '1px solid rgba(255,255,255,0.04)' }}>
-                    {idx === 0 && <GraduationCap className="w-5 h-5 text-white/90" />}
-                    {idx === 1 && <Sparkles className="w-5 h-5 text-white/90" />}
-                    {idx === 2 && <Award className="w-5 h-5 text-white/90" />}
-                    {idx === 3 && <Star className="w-5 h-5 text-white/90" />}
-                    {idx >= 4 && <Play className="w-5 h-5 text-white/90" />}
+                    {item.icon ? React.createElement(item.icon, { className: "w-5 h-5 text-white/90" }) : <Star className="w-5 h-5 text-white/90" />}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
@@ -2207,7 +2721,7 @@ const milestones = getMilestones(member?.name || "");
             </div>
           )}
 
-          {((user && Array.isArray(user.achievements) && user.achievements.length > 0) || showStaticFallback) && (
+          {((user && Array.isArray(user.achievements) && user.achievements.length > 0) || (showStaticFallback && !isAlenOrSham)) && (
             <div className="md:col-span-12">
                <GlassCard variant="purple" className="!p-0 bg-[#0B0118] border-white/5">
                   <div className="p-8 border-b border-white/5">
