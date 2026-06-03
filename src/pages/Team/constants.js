@@ -23,7 +23,7 @@ export const TEAM_MEMBERS = [
     email: "director@socialbureau.in",
     name: "Alen Jacob",
     role: "Managing Director",
-    bgText: "MD",
+    bgText: "MANAGING DIRECTOR",
     image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/Team/553ba2d1-f4d4-4333-b90b-b8f1a0f8639c.webp",
     cardImage: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/Team/d397c533-9dea-4cf2-913b-f54a453102a3.webp",
     image1: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/images/Team/c5983092-1827-4fdb-a9a9-ec643d616919.webp",
