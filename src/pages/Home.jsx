@@ -776,7 +776,7 @@ export const Home = () => {
         canonicalUrl="https://www.socialbureau.in"
       />
       <SchemaMarkup data={homepageSchemas} />
-      <AnniversaryCountdown />
+      {/* <AnniversaryCountdown /> */}
       <StudentTicker />
 
       {activePoster && (

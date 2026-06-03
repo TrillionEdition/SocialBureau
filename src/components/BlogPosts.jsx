@@ -37,7 +37,6 @@ export default function BlogPosts() {
   });
 
   const backendPosts = data?.data || [];
-
   const { paginatedPosts, totalPages } = useMemo(() => {
     const filtered = selectedCategory === "All Posts"
       ? backendPosts
