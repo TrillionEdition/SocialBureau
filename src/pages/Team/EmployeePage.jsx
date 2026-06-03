@@ -30,7 +30,10 @@ import {
   Globe,
   Trophy,
   TrendingUp,
-  Briefcase
+  Briefcase,
+  Building2,
+  Handshake,
+  Crown
 } from "lucide-react";
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
@@ -48,44 +51,91 @@ function cn(...inputs) {
   return clsx(inputs);
 }
 
+export const getMilestones = (name = "") => {
+  const lowerName = name.toLowerCase();
 
-const milestones = [
-  {
-    year: "2016",
-    title: "Joined Marketing",
-    description:
-      "Started the journey in digital marketing, building foundational expertise in branding, content, and campaign execution.",
-    icon: GraduationCap,
-  },
-  {
-    year: "2018",
-    title: "Led Growth Campaigns",
-    description:
-      "Managed multi-channel campaigns delivering measurable business growth and audience expansion.",
-    icon: Rocket,
-  },
-  {
-    year: "2020",
-    title: "Built Scalable Systems",
-    description:
-      "Introduced automation frameworks and performance reporting systems to improve efficiency.",
-    icon: Sparkles,
-  },
-  {
-    year: "2022",
-    title: "Expanded Globally",
-    description:
-      "Collaborated with international brands and launched campaigns across multiple regions.",
-    icon: Globe,
-  },
-  {
-    year: "2024",
-    title: "Industry Leadership",
-    description:
-      "Recognized for driving strategic growth, innovation, and impactful business transformation.",
-    icon: Trophy,
-  },
-];
+  if (lowerName.includes("sham") || lowerName.includes("shamsk")) {
+    return [
+      {
+        year: "2016",
+        title: "Joined Marketing",
+        description:
+          "Started career in marketing and gained foundational experience in branding, content strategy, and digital campaigns.",
+        icon: GraduationCap,
+      },
+      {
+        year: "2018",
+        title: "Launched API Framework",
+        description:
+          "Developed and launched an API-driven framework that streamlined workflows and improved operational efficiency.",
+        icon: Rocket,
+      },
+      {
+        year: "2020",
+        title: "Global Brand Growth",
+        description:
+          "Led growth initiatives that expanded brand visibility and audience engagement across international markets.",
+        icon: Globe,
+      },
+      {
+        year: "2022",
+        title: "Productized Services",
+        description:
+          "Transformed service offerings into scalable products, creating sustainable revenue opportunities.",
+        icon: Sparkles,
+      },
+      {
+        year: "2024",
+        title: "Scale & Expansion",
+        description:
+          "Focused on scaling operations, strengthening teams, and expanding into new business verticals.",
+        icon: Trophy,
+      },
+    ];
+  }
+
+  if (lowerName.includes("alen") || lowerName.includes("alen jacob")) {
+    return [
+      {
+        year: "2015",
+        title: "Real Estate Operations",
+        description:
+          "Started career in real estate operations, building expertise in business management and client relations.",
+        icon: Building2,
+      },
+      {
+        year: "2018",
+        title: "Corporate Growth",
+        description:
+          "Contributed to strategic growth initiatives that improved organizational performance and market positioning.",
+        icon: Briefcase,
+      },
+      {
+        year: "2020",
+        title: "Strategic Partnerships",
+        description:
+          "Developed key partnerships and collaborations that unlocked new business opportunities and revenue streams.",
+        icon: Handshake,
+      },
+      {
+        year: "2022",
+        title: "Regional Expansion",
+        description:
+          "Led expansion efforts across new regions, strengthening market presence and accelerating growth.",
+        icon: TrendingUp,
+      },
+      {
+        year: "2025",
+        title: "Managing Director",
+        description:
+          "Assumed leadership as Managing Director, overseeing strategy, operations, and long-term business development.",
+        icon: Crown,
+      },
+    ];
+  }
+
+  return [];
+};
 const CustomTooltip = ({ active, payload, label, color }) => {
   if (active && payload && payload.length) {
     return (
@@ -818,6 +868,7 @@ console.log(isAlenOrSham,slug);
   }
 
   const member = data?.member || fallbackData.member;
+const milestones = getMilestones(member?.name || "");
   const clickup = data?.clickup || fallbackData.clickup;
   const rawUser = data?.user || data?.member?.user || fallbackData.user;
 
@@ -886,20 +937,20 @@ console.log(isAlenOrSham,slug);
     const name = (member?.name || '').toLowerCase();
     if (name.includes('sham') || name.includes('shamsk')) {
       return [
-        { year: '2016', value: 1, label: 'Joined Marketing' },
-        { year: '2018', value: 2, label: 'Launched API Framework' },
-        { year: '2020', value: 3, label: 'Global Brand Growth' },
-        { year: '2022', value: 4, label: 'Productized Services' },
-        { year: '2024', value: 5, label: 'Scale & Expansion' }
+        { year: '2016', value: 1, label: 'Joined Marketing', description: 'Started career in marketing and gained foundational experience.' },
+        { year: '2018', value: 2, label: 'Launched API Framework', description: 'Developed and launched a new API framework to streamline operations.' },
+        { year: '2020', value: 3, label: 'Global Brand Growth', description: 'Led initiatives that significantly expanded the global brand presence.' },
+        { year: '2022', value: 4, label: 'Productized Services', description: 'Transformed services into scalable products, enhancing revenue streams.' },
+        { year: '2024', value: 5, label: 'Scale & Expansion', description: 'Focused on scaling operations and expanding into new markets.' }
       ];
     }
     if (name.includes('alen') || name.includes('alen jacob')) {
       return [
-        { year: '2015', value: 1, label: 'Real Estate Ops' },
-        { year: '2018', value: 2, label: 'Corporate Growth' },
-        { year: '2020', value: 3, label: 'Strategic Partnerships' },
-        { year: '2022', value: 4, label: 'Regional Expansion' },
-        { year: '2025', value: 5, label: 'Managing Director' }
+        { year: '2015', value: 1, label: 'Real Estate Ops', description: 'Started career in real estate operations, gaining foundational experience.' },
+        { year: '2018', value: 2, label: 'Corporate Growth', description: 'Contributed to corporate growth initiatives, driving strategic projects.' },
+        { year: '2020', value: 3, label: 'Strategic Partnerships', description: 'Developed and managed strategic partnerships to enhance business opportunities.' },
+        { year: '2022', value: 4, label: 'Regional Expansion', description: 'Led regional expansion efforts, increasing market presence and revenue.' },
+        { year: '2025', value: 5, label: 'Managing Director', description: 'Assumed the role of Managing Director, overseeing company operations and strategy.' }
       ];
     }
     return [];
@@ -1620,7 +1671,7 @@ console.log(isAlenOrSham,slug);
                       <div className="text-sm font-black">{item.label}</div>
                       <div className="text-xs text-gray-400 font-bold">{item.year}</div>
                     </div>
-                    <div className="text-xs text-gray-400 mt-1">A concise description of the milestone highlighting impact and scope.</div>
+                    <div className="text-xs text-gray-400 mt-1">{item.description}</div>
                   </div>
                 </GlassCard>
               ))}
