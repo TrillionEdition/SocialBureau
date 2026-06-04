@@ -9,6 +9,7 @@ import Testimonials from '@/components/Testimonials';
 import mediaWaitlistService from "@/services/mediaWaitlistService";
 import Toast from "../components/Toast";
 import PortfolioPopup from '../components/PortfolioPopup';
+import Popup from '@/components/Popup';
 
 const handleJoinWaitingList = async ({ onResult } = {}) => {
   let email = null;
@@ -775,6 +776,7 @@ export const Home = () => {
         image="/assets/socialbureau.png"
         canonicalUrl="https://www.socialbureau.in"
       />
+      <Popup/>
       <SchemaMarkup data={homepageSchemas} />
       {/* <AnniversaryCountdown /> */}
       <StudentTicker />
