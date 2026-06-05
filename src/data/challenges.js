@@ -1,130 +1,120 @@
 export const challengeCategories = [
   {
-    title: "Marketing Challenges",
+    title: "Growth & Visibility",
     items: [
       {
-        value: "low_brand_awareness",
-        label: "Low Brand Awareness",
+        value: "followers_not_growing",
+        label: "Followers/Subscribers Not Growing",
       },
       {
-        value: "poor_reach",
-        label: "Poor Social Reach",
+        value: "low_organic_reach",
+        label: "Posts Getting Very Low Organic Reach",
       },
       {
-        value: "low_engagement",
-        label: "Low Engagement",
+        value: "nothing_going_viral",
+        label: "Nothing Goes Viral — Stuck in a Bubble",
       },
       {
-        value: "inconsistent_posting",
-        label: "Inconsistent Posting",
+        value: "wrong_audience",
+        label: "Attracting the Wrong Audience",
+      },
+      {
+        value: "not_on_google",
+        label: "Not Appearing on Google Search",
+      },
+      {
+        value: "algorithm_changes",
+        label: "Algorithm Changes Keep Hurting Us",
+      },
+    ],
+  },
+
+  {
+    title: "Content & Strategy",
+    items: [
+      {
+        value: "no_content_calendar",
+        label: "No Consistent Content Calendar",
       },
       {
         value: "poor_content_quality",
-        label: "Poor Content Quality",
+        label: "Content Quality is Poor / Inconsistent",
       },
       {
-        value: "weak_personal_branding",
-        label: "Weak Personal Branding",
+        value: "content_ideas_shortage",
+        label: "Running Out of Content Ideas Constantly",
+      },
+      {
+        value: "no_seo",
+        label: "No SEO — Not Ranking Anywhere",
+      },
+      {
+        value: "not_using_video",
+        label: "Not Using Video Content",
+      },
+      {
+        value: "inconsistent_brand_voice",
+        label: "Inconsistent Brand Voice Across Platforms",
       },
     ],
   },
 
   {
-    title: "Lead Generation",
+    title: "Lead Generation & Sales",
     items: [
       {
-        value: "not_enough_leads",
-        label: "Not Enough Leads",
+        value: "no_leads",
+        label: "Digital Not Generating Leads",
       },
       {
-        value: "poor_conversion",
-        label: "Poor Conversion Rate",
+        value: "low_quality_leads",
+        label: "Getting Leads but They're Low Quality",
       },
       {
         value: "high_cpl",
-        label: "High Cost Per Lead",
+        label: "High Cost Per Lead from Paid Ads",
       },
       {
-        value: "unqualified_leads",
-        label: "Poor Lead Quality",
+        value: "no_sales_funnel",
+        label: "No Proper Digital Sales Funnel",
       },
       {
-        value: "weak_followup",
-        label: "Weak Follow-up Process",
-      },
-    ],
-  },
-
-  {
-    title: "Sales Challenges",
-    items: [
-      {
-        value: "low_sales",
-        label: "Low Sales Volume",
+        value: "website_not_converting",
+        label: "Website is Outdated or Doesn't Convert",
       },
       {
-        value: "low_retention",
-        label: "Low Customer Retention",
-      },
-      {
-        value: "weak_funnel",
-        label: "Weak Sales Funnel",
-      },
-      {
-        value: "pricing_issue",
-        label: "Pricing Challenges",
-      },
-      {
-        value: "long_sales_cycle",
-        label: "Long Sales Cycle",
+        value: "no_retargeting",
+        label: "Not Doing Any Retargeting",
       },
     ],
   },
 
   {
-    title: "Operations",
+    title: "Team & Operations",
     items: [
       {
-        value: "team_management",
-        label: "Team Management",
+        value: "no_digital_team",
+        label: "No Dedicated Digital Team",
       },
       {
-        value: "workflow_issue",
-        label: "Workflow Problems",
+        value: "not_tracking_kpis",
+        label: "Not Tracking Analytics or KPIs",
       },
       {
-        value: "lack_automation",
-        label: "Lack of Automation",
+        value: "too_many_vendors",
+        label: "Too Many Vendors, No Coordination",
       },
       {
-        value: "poor_reporting",
-        label: "Poor Reporting",
+        value: "no_strategy",
+        label: "No Clear Strategy — Doing Random Things",
       },
       {
-        value: "communication_gap",
-        label: "Communication Gaps",
-      },
-    ],
-  },
-
-  {
-    title: "Hiring & Resources",
-    items: [
-      {
-        value: "hiring_difficulties",
-        label: "Hiring Difficulties",
+        value: "no_ad_roi",
+        label: "Spending on Ads with No Clear ROI",
       },
       {
-        value: "skill_gap",
-        label: "Skill Gaps",
-      },
-      {
-        value: "budget_constraints",
-        label: "Budget Constraints",
-      },
-      {
-        value: "agency_dependency",
-        label: "Agency Dependency",
+        value: "no_reporting",
+        label: "No Reporting or Accountability System",
       },
     ],
   },

@@ -2,7 +2,34 @@ import {
   businessGoals,
   growthTimeframes,
 } from "../../data/goals";
+const InputField = ({
+  label,
+  value,
+  onChange,
+  placeholder,
+}) => (
+  <div>
+    <label className="block uppercase text-[11px] tracking-[0.08em] font-bold text-[#A8A49C] mb-3">
+      {label}
+    </label>
 
+    <input
+      value={value || ""}
+      onChange={onChange}
+      placeholder={placeholder}
+      className="
+        w-full
+        bg-[#111110]
+        border
+        border-[rgba(255,255,255,.08)]
+        rounded-[12px]
+        p-4
+        text-white
+        placeholder:text-[#5C5852]
+      "
+    />
+  </div>
+);
 export default function Step5Goals({
   formData,
   updateField,
@@ -42,225 +69,200 @@ export default function Step5Goals({
         </div>
 
         <h2 className="text-[30px] font-extrabold text-white mb-[10px]">
-          Define success
+          Where do you want to go?
         </h2>
 
         <p className="text-[14px] text-[#A8A49C] max-w-[560px] leading-[1.75]">
-          Tell us what growth looks like for
-          your business so the workflow can be
-          designed backwards from those outcomes.
+          Define your 3, 6, and 12-month targets. These drive your workflow priorities, team size recommendations, and platform strategy.
         </p>
 
       </div>
 
       {/* GOALS */}
 
-      <div className="mb-10">
+{/* 3 MONTH TARGETS */}
 
-        <div className="uppercase text-[11px] tracking-[0.1em] font-bold text-[#A8A49C] mb-4">
-          Business Goals
-        </div>
+<div className="bg-[#0F0F0F] border border-[rgba(255,255,255,.08)] rounded-[24px] p-7 mb-6">
+  <div className="flex items-center gap-3 mb-6">
+    <h3 className="text-white font-semibold text-lg">
+      3-Month Targets
+    </h3>
+  </div>
 
-        <div className="grid md:grid-cols-2 gap-4">
+  <div className="grid md:grid-cols-3 gap-4">
+    <InputField
+      label="Total Followers Target"
+      value={formData.target_3m_followers}
+      onChange={(e) =>
+        updateField("target_3m_followers", e.target.value)
+      }
+      placeholder="e.g. 50,000 across platforms"
+    />
 
-          {businessGoals.map((goal) => {
-            const active =
-              selectedGoals.includes(
-                goal.value
-              );
+    <InputField
+      label="Monthly Leads Target"
+      value={formData.target_3m_leads}
+      onChange={(e) =>
+        updateField("target_3m_leads", e.target.value)
+      }
+      placeholder="e.g. 200 leads/month"
+    />
 
-            return (
-              <button
-                key={goal.value}
-                type="button"
-                onClick={() =>
-                  toggleGoal(goal.value)
-                }
-                className={`
-                  p-5
-                  rounded-[12px]
-                  border
-                  text-left
-                  transition-all
+    <InputField
+      label="Revenue From Digital (₹/Month)"
+      value={formData.target_3m_revenue}
+      onChange={(e) =>
+        updateField("target_3m_revenue", e.target.value)
+      }
+      placeholder="e.g. 2,00,000"
+    />
+  </div>
+</div>
 
-                  ${
-                    active
-                      ? "border-[#E8192C] bg-[rgba(232,25,44,.12)]"
-                      : "border-[rgba(255,255,255,.07)] bg-[#111110]"
-                  }
-                `}
-              >
-                <h4 className="font-bold text-white mb-2">
-                  {goal.title}
-                </h4>
+{/* 6 MONTH TARGETS */}
 
-                <p className="text-sm text-[#A8A49C]">
-                  {goal.description}
-                </p>
-              </button>
-            );
-          })}
+<div className="bg-[#0F0F0F] border border-[rgba(255,255,255,.08)] rounded-[24px] p-7 mb-6">
+  <div className="flex items-center gap-3 mb-6">
+    <h3 className="text-white font-semibold text-lg">
+      6-Month Targets
+    </h3>
+  </div>
 
-        </div>
-      </div>
+  <div className="grid md:grid-cols-3 gap-4">
+    <InputField
+      label="Total Followers Target"
+      value={formData.target_6m_followers}
+      onChange={(e) =>
+        updateField("target_6m_followers", e.target.value)
+      }
+      placeholder="e.g. 1,50,000 total"
+    />
 
-      {/* REVENUE TARGETS */}
+    <InputField
+      label="Monthly Leads Target"
+      value={formData.target_6m_leads}
+      onChange={(e) =>
+        updateField("target_6m_leads", e.target.value)
+      }
+      placeholder="e.g. 500 leads/month"
+    />
 
-      <div className="bg-[#111110] border border-[rgba(255,255,255,.07)] rounded-[18px] p-7 mb-6">
+    <InputField
+      label="Revenue From Digital (₹/Month)"
+      value={formData.target_6m_revenue}
+      onChange={(e) =>
+        updateField("target_6m_revenue", e.target.value)
+      }
+      placeholder="e.g. 5,00,000"
+    />
+  </div>
+</div>
 
-        <h3 className="font-bold text-white mb-5">
-          Revenue Targets
-        </h3>
+{/* 12 MONTH VISION */}
 
-        <div className="grid md:grid-cols-2 gap-4">
+<div className="bg-[#0F0F0F] border border-[rgba(255,255,255,.08)] rounded-[24px] p-7 mb-6">
+  <div className="flex items-center gap-3 mb-6">
+    <h3 className="text-white font-semibold text-lg">
+      12-Month Vision
+    </h3>
+  </div>
 
-          <div>
-            <label className="block text-sm text-[#A8A49C] mb-2">
-              Current Monthly Revenue
-            </label>
+  <div className="grid md:grid-cols-3 gap-4">
+    <InputField
+      label="Total Followers Target"
+      value={formData.target_12m_followers}
+      onChange={(e) =>
+        updateField("target_12m_followers", e.target.value)
+      }
+      placeholder="e.g. 5,00,000 total"
+    />
 
-            <input
-              type="number"
-              value={
-                formData.current_revenue ||
-                ""
-              }
-              onChange={(e) =>
-                updateField(
-                  "current_revenue",
-                  e.target.value
-                )
-              }
-              className="w-full bg-[#181614] border border-[rgba(255,255,255,.07)] rounded-[10px] p-3"
-            />
-          </div>
+    <InputField
+      label="Monthly Revenue Target (₹)"
+      value={formData.target_12m_revenue}
+      onChange={(e) =>
+        updateField("target_12m_revenue", e.target.value)
+      }
+      placeholder="e.g. 20,00,000"
+    />
 
-          <div>
-            <label className="block text-sm text-[#A8A49C] mb-2">
-              Target Monthly Revenue
-            </label>
+    <select
+      value={formData.market_position || ""}
+      onChange={(e) =>
+        updateField("market_position", e.target.value)
+      }
+      className="w-full bg-[#111110] border border-[rgba(255,255,255,.08)] rounded-[12px] p-4 text-white"
+    >
+      <option value="">Select ambition</option>
+      <option value="local_leader">
+        Become Local Market Leader
+      </option>
+      <option value="state_leader">
+        Become State Leader
+      </option>
+      <option value="national_brand">
+        Become National Brand
+      </option>
+      <option value="industry_authority">
+        Industry Authority
+      </option>
+    </select>
+  </div>
+</div>
 
-            <input
-              type="number"
-              value={
-                formData.target_revenue ||
-                ""
-              }
-              onChange={(e) =>
-                updateField(
-                  "target_revenue",
-                  e.target.value
-                )
-              }
-              className="w-full bg-[#181614] border border-[rgba(255,255,255,.07)] rounded-[10px] p-3"
-            />
-          </div>
+{/* BOTTOM SECTION */}
 
-        </div>
+<div className="grid md:grid-cols-2 gap-6">
+  <div>
+    <label className="block uppercase text-[11px] tracking-[0.1em] font-bold text-[#A8A49C] mb-3">
+      Priority Platform Focus *
+    </label>
 
-      </div>
+    <select
+      value={formData.priority_platform || ""}
+      onChange={(e) =>
+        updateField("priority_platform", e.target.value)
+      }
+      className="w-full bg-[#111110] border border-[rgba(255,255,255,.08)] rounded-[12px] p-4 text-white"
+    >
+      <option value="">
+        Where should we focus most?
+      </option>
+      <option>Instagram</option>
+      <option>Facebook</option>
+      <option>YouTube</option>
+      <option>LinkedIn</option>
+      <option>Google Search</option>
+      <option>Website</option>
+      <option>Multi-Platform</option>
+    </select>
+  </div>
 
-      {/* LEAD TARGETS */}
+  <div>
+    <label className="block uppercase text-[11px] tracking-[0.1em] font-bold text-[#A8A49C] mb-3">
+      Urgency Level
+    </label>
 
-      <div className="bg-[#111110] border border-[rgba(255,255,255,.07)] rounded-[18px] p-7 mb-6">
-
-        <h3 className="font-bold text-white mb-5">
-          Lead Targets
-        </h3>
-
-        <div className="grid md:grid-cols-2 gap-4">
-
-          <div>
-            <label className="block text-sm text-[#A8A49C] mb-2">
-              Current Leads / Month
-            </label>
-
-            <input
-              type="number"
-              value={
-                formData.current_leads ||
-                ""
-              }
-              onChange={(e) =>
-                updateField(
-                  "current_leads",
-                  e.target.value
-                )
-              }
-              className="w-full bg-[#181614] border border-[rgba(255,255,255,.07)] rounded-[10px] p-3"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm text-[#A8A49C] mb-2">
-              Target Leads / Month
-            </label>
-
-            <input
-              type="number"
-              value={
-                formData.target_leads ||
-                ""
-              }
-              onChange={(e) =>
-                updateField(
-                  "target_leads",
-                  e.target.value
-                )
-              }
-              className="w-full bg-[#181614] border border-[rgba(255,255,255,.07)] rounded-[10px] p-3"
-            />
-          </div>
-
-        </div>
-
-      </div>
-
-      {/* TIMEFRAME */}
-
-      <div className="mb-8">
-
-        <div className="uppercase text-[11px] tracking-[0.1em] font-bold text-[#A8A49C] mb-4">
-          Expected Growth Timeframe
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-4">
-
-          {growthTimeframes.map(
-            (timeframe) => (
-              <button
-                key={timeframe.value}
-                type="button"
-                onClick={() =>
-                  updateField(
-                    "growth_timeframe",
-                    timeframe.value
-                  )
-                }
-                className={`
-                  p-5
-                  rounded-[12px]
-                  border
-                  text-left
-
-                  ${
-                    formData.growth_timeframe ===
-                    timeframe.value
-                      ? "border-[#E8192C] bg-[rgba(232,25,44,.12)]"
-                      : "border-[rgba(255,255,255,.07)] bg-[#111110]"
-                  }
-                `}
-              >
-                <span className="font-semibold text-white">
-                  {timeframe.label}
-                </span>
-              </button>
-            )
-          )}
-
-        </div>
-
-      </div>
+    <select
+      value={formData.urgency_level || ""}
+      onChange={(e) =>
+        updateField("urgency_level", e.target.value)
+      }
+      className="w-full bg-[#111110] border border-[rgba(255,255,255,.08)] rounded-[12px] p-4 text-white"
+    >
+      <option value="">Select</option>
+      <option value="immediate">
+        Immediate (0-30 days)
+      </option>
+      <option value="soon">
+        Soon (1-3 months)
+      </option>
+      <option value="planned">
+        Planned (3-6 months)
+      </option>
+    </select>
+  </div>
+</div>
 
       {/* SUCCESS DEFINITION */}
 

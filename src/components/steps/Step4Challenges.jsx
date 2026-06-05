@@ -148,55 +148,35 @@ export default function Step4Challenges({
           "
         />
       </div>
+<div className="mt-10">
+  <label className="block uppercase text-[11px] tracking-[0.1em] font-bold text-[#A8A49C] mb-3">
+    What Have You Tried Before?
+  </label>
 
-      {/* URGENCY */}
+  <p className="text-[13px] text-[#8B877F] mb-4 leading-relaxed">
+    Agencies, tools, campaigns, or strategies you've already tried.
+    What worked? What didn't? This helps us avoid repeating mistakes.
+  </p>
 
-      <div className="mt-10">
-
-        <label className="block uppercase text-[11px] tracking-[0.1em] font-bold text-[#A8A49C] mb-4">
-          Growth Urgency
-        </label>
-
-        <div className="grid grid-cols-5 gap-3">
-
-          {[1, 2, 3, 4, 5].map(
-            (score) => (
-              <button
-                key={score}
-                type="button"
-                onClick={() =>
-                  updateField(
-                    "urgency_score",
-                    score
-                  )
-                }
-                className={`
-                  py-4
-                  rounded-[10px]
-                  border
-                  font-bold
-
-                  ${
-                    formData.urgency_score ===
-                    score
-                      ? "bg-[#E8192C] border-[#E8192C]"
-                      : "bg-[#111110] border-[rgba(255,255,255,.07)]"
-                  }
-                `}
-              >
-                {score}
-              </button>
-            )
-          )}
-
-        </div>
-
-        <p className="text-[#5C5850] text-sm mt-3">
-          1 = No urgency • 5 = Need
-          immediate results
-        </p>
-
-      </div>
+  <textarea
+    rows={5}
+    value={formData.previous_attempts || ""}
+    onChange={(e) =>
+      updateField("previous_attempts", e.target.value)
+    }
+    placeholder="Tell us about agencies, marketing campaigns, tools, SEO efforts, ad campaigns, content strategies, or anything you've tried before..."
+    className="
+      w-full
+      bg-[#111110]
+      border
+      border-[rgba(255,255,255,.07)]
+      rounded-[10px]
+      p-4
+      text-white
+      placeholder:text-[#5E5A54]
+    "
+  />
+</div>
 
       {/* FOOTER */}
 

@@ -1,19 +1,7 @@
 export const teamRoles = [
   {
-    value: "founder",
-    label: "Founder / CEO",
-  },
-  {
-    value: "marketing_manager",
-    label: "Marketing Manager",
-  },
-  {
-    value: "social_media_manager",
-    label: "Social Media Manager",
-  },
-  {
-    value: "content_writer",
-    label: "Content Writer",
+    value: "social_media_executive",
+    label: "Social Media Executive",
   },
   {
     value: "graphic_designer",
@@ -24,28 +12,32 @@ export const teamRoles = [
     label: "Video Editor",
   },
   {
-    value: "photographer",
+    value: "content_writer",
+    label: "Content Writer / Copywriter",
+  },
+  {
+    value: "seo_executive",
+    label: "SEO Executive",
+  },
+  {
+    value: "performance_manager",
+    label: "Ads / Performance Manager",
+  },
+  {
+    value: "marketing_manager",
+    label: "Marketing Manager",
+  },
+  {
+    value: "web_developer",
+    label: "Web Developer",
+  },
+  {
+    value: "photographer_videographer",
     label: "Photographer / Videographer",
   },
   {
-    value: "performance_marketer",
-    label: "Performance Marketer",
-  },
-  {
-    value: "seo_specialist",
-    label: "SEO Specialist",
-  },
-  {
-    value: "sales_team",
-    label: "Sales Team",
-  },
-  {
-    value: "customer_support",
-    label: "Customer Support",
-  },
-  {
-    value: "developer",
-    label: "Web Developer",
+    value: "no_team",
+    label: "No Team at All",
   },
 ];
 
