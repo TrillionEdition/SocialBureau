@@ -126,13 +126,40 @@ export const Hero = () => {
               </span>
             </motion.div>
 
-            <motion.h1
-              variants={textVariants}
-              transition={{ delay: 0.2 }}
-              className="text-4xl md:text-5xl lg:text-7xl font-black mb-2 tracking-tighter uppercase leading-none text-white font-roboto scale-y-[1.4] origin-bottom"
-            >
-              {current.name.split(' ')[0]}
-            </motion.h1>
+            <div className="flex items-end gap-3 mb-2">
+              <motion.h1
+                variants={textVariants}
+                transition={{ delay: 0.2 }}
+                className="text-4xl md:text-5xl lg:text-7xl font-black tracking-tighter uppercase leading-none text-white font-roboto scale-y-[1.4] origin-bottom"
+              >
+                {current.name.split(' ')[0]}
+              </motion.h1>
+              {((current.user?.isClickUpVerified ||
+                current.email === "ceo@socialbureau.in" ||
+                current.user?.email === "ceo@socialbureau.in" ||
+                current.email === "web@socialbureau.in" ||
+                current.user?.email === "web@socialbureau.in" ||
+                current.email === "admin@socialbureau.in" ||
+                current.user?.email === "admin@socialbureau.in" ||
+                current.slug === "shamsk" ||
+                current.slug === "elizebath" ||
+                current.slug === "hajira") &&
+                current.email !== "webjr.socialbureau@gmail.com" &&
+                current.user?.email !== "webjr.socialbureau@gmail.com" &&
+                current.email !== "pmo.socialbureau@gmail.com" &&
+                current.user?.email !== "pmo.socialbureau@gmail.com" &&
+                current.slug !== "reshma-vijayan" &&
+                current.slug !== "athira-rajesh"
+              ) && (
+                <motion.div
+                  variants={textVariants}
+                  transition={{ delay: 0.2 }}
+                  className="mb-1.5 md:mb-3"
+                >
+                  <ClickUpVerifiedBadge />
+                </motion.div>
+              )}
+            </div>
 
             <motion.div variants={textVariants} transition={{ delay: 0.25 }} className="mb-6">
               <span className="text-sm lg:text-base font-medium text-white/40 block mb-2">{current.role}</span>
@@ -181,19 +208,30 @@ export const Hero = () => {
 
             <motion.div variants={textVariants} transition={{ delay: 0.4 }} className="flex flex-wrap gap-3">
               {current.hideProfileLink ? (
-                <button className="flex items-center gap-2 bg-white/10 text-white px-6 py-3 rounded-full text-[11px] font-black tracking-widest transition-all" disabled>
-                  <Play className="w-3 h-3" />
-                  PROFILE HIDDEN
-                </button>
+                <>
+                  <button className="flex items-center gap-2 bg-white/10 text-white px-6 py-3 rounded-full text-[11px] font-black tracking-widest transition-all" disabled>
+                    <Play className="w-3 h-3" />
+                    PROFILE HIDDEN
+                  </button>
+                  <button className="bg-white/10 backdrop-blur-md border border-white/10 text-white/40 px-6 py-3 rounded-full text-[11px] font-black tracking-widest cursor-not-allowed" disabled>
+                    MORE INFO
+                  </button>
+                </>
               ) : (
-                <Link to={`/team/${(current.id === 'sham-sk' || current.slug === 'sham-sk' || current.email === 'ceo@socialbureau.in') ? 'shamsk' : (current.slug || current.id)}`} className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full text-[11px] font-black tracking-widest hover:scale-105 active:scale-95 transition-all">
-                  <Play className="w-3 h-3 fill-current" />
-                  VIEW FULL PROFILE
-                </Link>
+                <>
+                  <Link to={`/team/${(current.id === 'sham-sk' || current.slug === 'sham-sk' || current.email === 'ceo@socialbureau.in') ? 'shamsk' : (current.slug || current.id)}`} className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full text-[11px] font-black tracking-widest hover:scale-105 active:scale-95 transition-all">
+                    <Play className="w-3 h-3 fill-current" />
+                    VIEW FULL PROFILE
+                  </Link>
+                  <Link
+                    to={`/team/${(current.id === 'sham-sk' || current.slug === 'sham-sk' || current.email === 'ceo@socialbureau.in') ? 'shamsk' : (current.slug || current.id)}`}
+                    state={{ openChat: true }}
+                    className="bg-white/10 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full text-[11px] font-black tracking-widest hover:bg-white/20 transition-all no-underline flex items-center justify-center"
+                  >
+                    MORE INFO
+                  </Link>
+                </>
               )}
-              <button className="bg-white/10 backdrop-blur-md border border-white/10 text-white px-6 py-3 rounded-full text-[11px] font-black tracking-widest hover:bg-white/20 transition-all">
-                MORE INFO
-              </button>
             </motion.div>
 
             <div className="flex flex-wrap gap-2 mt-10">
@@ -206,6 +244,29 @@ export const Hero = () => {
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {/* ClickUp Verified Power User Rosette Badge - Bottom Right */}
+      {((current.user?.isClickUpVerified ||
+        current.email === "ceo@socialbureau.in" ||
+        current.user?.email === "ceo@socialbureau.in" ||
+        current.email === "web@socialbureau.in" ||
+        current.user?.email === "web@socialbureau.in" ||
+        current.email === "admin@socialbureau.in" ||
+        current.user?.email === "admin@socialbureau.in" ||
+        current.slug === "shamsk" ||
+        current.slug === "elizebath" ||
+        current.slug === "hajira") &&
+        current.email !== "webjr.socialbureau@gmail.com" &&
+        current.user?.email !== "webjr.socialbureau@gmail.com" &&
+        current.email !== "pmo.socialbureau@gmail.com" &&
+        current.user?.email !== "pmo.socialbureau@gmail.com" &&
+        current.slug !== "reshma-vijayan" &&
+        current.slug !== "athira-rajesh"
+      ) && (
+        <div className="absolute top-28 bottom-auto right-4 md:top-auto md:bottom-32 md:right-12 z-20">
+          <ClickUpPowerUserRosette />
+        </div>
+      )}
 
       {/* Navigation Controls */}
       <div className="absolute bottom-12 right-12 flex items-center gap-4 z-20">
@@ -235,3 +296,41 @@ export const Hero = () => {
     </section>
   );
 };
+
+function ClickUpVerifiedBadge({ className = "" }) {
+  return (
+    <div className={`inline-block relative ${className}`} style={{ zIndex: 50 }}>
+      {/* Verified Badge Icon (ClickUp Blue Scalloped Verified Badge) */}
+      <div className="cursor-pointer hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center">
+        <svg viewBox="0 0 24 24" className="w-7 h-7 text-[#3b82f6] fill-current filter drop-shadow-[0_0_12px_rgba(59,130,246,0.4)]">
+          <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.99-3.818-3.99-.485 0-.946.1-1.362.277C14.773 2.52 13.46 1.7 12 1.7s-2.773.82-3.41 2.087C8.174 3.61 7.713 3.51 7.228 3.51 5.12 3.51 3.41 5.29 3.41 7.5c0 .495.084.965.238 1.4-1.273.65-2.148 2.02-2.148 3.6 0 1.58.875 2.95 2.148 3.6-.154.435-.238.905-.238 1.4 0 2.21 1.71 3.99 3.818 3.99.485 0 .946-.1 1.362-.277.637 1.267 1.95 2.087 3.39 2.087s2.773-.82 3.41-2.087c.416.177.877.277 1.362.277 2.108 0 3.818-1.78 3.818-3.99 0-.495-.084-.965-.238-1.4 1.273-.65 2.148-2.02 2.148-3.6z" />
+          <path d="M9.7 16.22l-4.55-4.55 1.42-1.41 3.13 3.12 7.6-7.59 1.42 1.42-9.02 9.01z" fill="white" />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+function ClickUpPowerUserRosette() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ scale: 1.08, rotate: 5 }}
+      transition={{ type: "spring", stiffness: 300, damping: 15 }}
+      className="flex flex-col items-center select-none cursor-pointer group"
+    >
+      <div className="relative w-18 h-18 md:w-28 md:h-28 flex items-center justify-center mb-1 md:mb-2">
+        {/* Ambient Purple Glow */}
+        <div className="absolute inset-2 bg-purple-500/20 blur-xl rounded-full group-hover:bg-purple-500/40 transition-colors duration-500" />
+        
+        <img 
+          src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/TeamPage/clickup_verified.png" 
+          alt="Verified ClickUp Power User"
+          className="w-full h-full object-contain filter drop-shadow-[0_0_12px_rgba(168,85,247,0.4)] relative z-10"
+        />
+      </div>
+
+    </motion.div>
+  );
+}

@@ -14,8 +14,14 @@ const PARTNER_DATA = {
   "default": { name: "Partnership Team", email: "partnerships@socialbureau.com" }
 };
 
-export default function PartnershipChatbot() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function PartnershipChatbot({ partnerName, partnerEmail, isOpen: controlledIsOpen, setIsOpen: controlledSetIsOpen, isTeamTheme }) {
+  const [localIsOpen, setLocalIsOpen] = useState(false);
+  
+  const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : localIsOpen;
+  const setIsOpen = controlledSetIsOpen !== undefined ? controlledSetIsOpen : setLocalIsOpen;
+
+  const styles = getStyles(isTeamTheme);
+
   const [messages, setMessages] = useState([]);
   const [step, setStep] = useState(1);
   const [inputValue, setInputValue] = useState("");
@@ -26,7 +32,11 @@ export default function PartnershipChatbot() {
 
   const location = useLocation();
   const pathPart = location.pathname.split("/").pop().toLowerCase();
-  const currentPartner = PARTNER_DATA[pathPart] || PARTNER_DATA["default"];
+  
+  const currentPartner = {
+    name: partnerName || PARTNER_DATA[pathPart]?.name || PARTNER_DATA["default"].name,
+    email: partnerEmail || PARTNER_DATA[pathPart]?.email || PARTNER_DATA["default"].email
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -39,8 +49,10 @@ export default function PartnershipChatbot() {
   }, [messages, isOpen]);
 
   useEffect(() => {
-    const savedName = localStorage.getItem("sb_chatbot_name");
-    const savedEmail = localStorage.getItem("sb_chatbot_email");
+    let active = true;
+    const currentPartnerEmail = currentPartner.email || "";
+    const savedName = localStorage.getItem(`sb_chatbot_name_${currentPartnerEmail}`);
+    const savedEmail = localStorage.getItem(`sb_chatbot_email_${currentPartnerEmail}`);
 
     if (savedName && savedEmail) {
       setUserName(savedName);
@@ -56,9 +68,10 @@ export default function PartnershipChatbot() {
       ]);
 
       // Check status automatically
-      fetch(`${import.meta.env.VITE_API_URL}/partners/check-meeting?email=${savedEmail}`)
+      fetch(`${import.meta.env.VITE_API_URL}/partners/check-meeting?email=${savedEmail}&partnerEmail=${currentPartnerEmail}`)
         .then(res => res.json())
         .then(data => {
+          if (!active) return;
           if (data.exists) {
             if (data.status === "scheduled") {
               setStep(1.7);
@@ -109,6 +122,7 @@ export default function PartnershipChatbot() {
           }
         })
         .catch(() => {
+          if (!active) return;
           setStep(2);
           setMessages((prev) => [...prev, { id: Date.now(), sender: "bot", text: "What service are you looking for?", options: ["Social Media Marketing", "Web Development", "SEO & Paid Ads", "Other"] }]);
         });
@@ -122,6 +136,10 @@ export default function PartnershipChatbot() {
         },
       ]);
     }
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   const handleSend = (e) => {
@@ -232,7 +250,7 @@ export default function PartnershipChatbot() {
     setTimeout(() => {
       if (step === 1.1) {
         if (option === "Yes, that's correct") {
-          localStorage.setItem("sb_chatbot_name", userName);
+          localStorage.setItem(`sb_chatbot_name_${currentPartner.email}`, userName);
           setStep(1.5);
           setMessages((prev) => [
             ...prev,
@@ -257,9 +275,9 @@ export default function PartnershipChatbot() {
         }
       } else if (step === 1.6) {
         if (option === "Yes, that's correct") {
-          localStorage.setItem("sb_chatbot_email", userEmail);
+          localStorage.setItem(`sb_chatbot_email_${currentPartner.email}`, userEmail);
           // Check if the user already has a meeting scheduled
-          fetch(`${import.meta.env.VITE_API_URL}/partners/check-meeting?email=${userEmail}`)
+          fetch(`${import.meta.env.VITE_API_URL}/partners/check-meeting?email=${userEmail}&partnerEmail=${currentPartner.email}`)
             .then(res => res.json())
             .then(data => {
               if (data.exists) {
@@ -428,7 +446,7 @@ export default function PartnershipChatbot() {
   return (
     <div style={styles.container}>
       {isOpen && (
-        <div style={styles.chatWindow}>
+        <div style={styles.chatWindow} data-lenis-prevent>
           <div style={styles.header}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <div style={styles.avatar}>SB</div>
@@ -439,7 +457,7 @@ export default function PartnershipChatbot() {
             </button>
           </div>
           
-          <div style={styles.messagesContainer}>
+          <div style={styles.messagesContainer} data-lenis-prevent>
             {messages.map((msg, idx) => (
               <div key={msg.id || idx} style={msg.sender === "bot" ? styles.botRow : styles.userRow}>
                 {msg.sender === "bot" && <div style={{...styles.avatarSmall, marginRight: '8px'}}>SB</div>}
@@ -503,159 +521,338 @@ export default function PartnershipChatbot() {
   );
 }
 
-const styles = {
-  container: {
-    position: "fixed",
-    bottom: "30px",
-    right: "30px",
-    zIndex: 9999,
-    fontFamily: "'Inter', sans-serif",
-  },
-  fab: {
-    width: "60px",
-    height: "60px",
-    borderRadius: "50%",
-    backgroundColor: "#161616",
-    color: "#fff",
-    border: "2px solid #555",
-    boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
-    cursor: "pointer",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "28px",
-    transition: "transform 0.2s ease",
-  },
-  chatWindow: {
-    width: "min(350px, calc(100vw - 60px))",
-    height: "min(500px, calc(100vh - 100px))",
-    backgroundColor: "#fff",
-    borderRadius: "16px",
-    boxShadow: "0 10px 40px rgba(0,0,0,0.15)",
+function getStyles(isTeamTheme) {
+  const defaultStyles = {
+    container: {
+      position: "fixed",
+      bottom: "30px",
+      right: "30px",
+      zIndex: 9999,
+      fontFamily: "'Inter', sans-serif",
+    },
+    fab: {
+      width: "60px",
+      height: "60px",
+      borderRadius: "50%",
+      backgroundColor: "#161616",
+      color: "#fff",
+      border: "2px solid #555",
+      boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
+      cursor: "pointer",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: "28px",
+      transition: "transform 0.2s ease",
+    },
+    chatWindow: {
+      width: "min(350px, calc(100vw - 60px))",
+      height: "min(500px, calc(100vh - 100px))",
+      backgroundColor: "#fff",
+      borderRadius: "16px",
+      boxShadow: "0 10px 40px rgba(0,0,0,0.15)",
+      display: "flex",
+      flexDirection: "column",
+      overflow: "hidden",
+      border: "1px solid #eaeaea",
+    },
+    header: {
+      backgroundColor: "#111",
+      color: "#fff",
+      padding: "16px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    avatar: {
+      width: "36px",
+      height: "36px",
+      borderRadius: "50%",
+      backgroundColor: "#fff",
+      color: "#111",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontWeight: "bold",
+      fontSize: "14px",
+    },
+    avatarSmall: {
+      width: "28px",
+      height: "28px",
+      borderRadius: "50%",
+      backgroundColor: "#111",
+      color: "#fff",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontWeight: "bold",
+      fontSize: "10px",
+      marginTop: 'auto',
+      marginBottom: 'auto'
+    },
+    closeBtn: {
+      background: "none",
+      border: "none",
+      color: "#fff",
+      fontSize: "24px",
+      cursor: "pointer",
+    },
+    messagesContainer: {
+      flex: 1,
+      padding: "16px",
+      overflowY: "auto",
+      backgroundColor: "#f9f9f9",
+      display: "flex",
+      flexDirection: "column",
+      gap: "12px",
+    },
+    botRow: {
+      display: "flex",
+      justifyContent: "flex-start",
+    },
+    userRow: {
+      display: "flex",
+      justifyContent: "flex-end",
+    },
+    botMsg: {
+      backgroundColor: "#e8e8e8",
+      color: "#111",
+      padding: "10px 14px",
+      borderRadius: "14px 14px 14px 4px",
+      fontSize: "14px",
+      lineHeight: "1.4",
+    },
+    userMsg: {
+      backgroundColor: "#111",
+      color: "#fff",
+      padding: "10px 14px",
+      borderRadius: "14px 14px 4px 14px",
+      fontSize: "14px",
+      lineHeight: "1.4",
+    },
+    optionsContainer: {
+      display: "flex",
+      flexDirection: "column",
+      gap: "8px",
+      marginTop: "8px",
+    },
+    optionBtn: {
+      backgroundColor: "#fff",
+      border: "1px solid #111",
+      color: "#111",
+      padding: "8px 12px",
+      borderRadius: "8px",
+      fontSize: "13px",
+      cursor: "pointer",
+      transition: "all 0.2s ease",
+      textAlign: "left",
+    },
+    inputArea: {
+      display: "flex",
+      padding: "14px",
+      borderTop: "1px solid #eaeaea",
+      backgroundColor: "#fff",
+      gap: "10px",
+    },
+    input: {
+      flex: 1,
+      padding: "10px 14px",
+      color: "#111",
+      borderRadius: "20px",
+      border: "1px solid #ddd",
+      outline: "none",
+      fontSize: "14px",
+    },
+    sendBtn: {
+      width: "40px",
+      height: "40px",
+      borderRadius: "50%",
+      backgroundColor: "#111",
+      color: "#fff",
+      border: "none",
+      cursor: "pointer",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  };
 
-    display: "flex",
-    flexDirection: "column",
-    overflow: "hidden",
-    border: "1px solid #eaeaea",
-  },
-  header: {
-    backgroundColor: "#111",
-    color: "#fff",
-    padding: "16px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  avatar: {
-    width: "36px",
-    height: "36px",
-    borderRadius: "50%",
-    backgroundColor: "#fff",
-    color: "#111",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontWeight: "bold",
-    fontSize: "14px",
-  },
-  avatarSmall: {
-    width: "28px",
-    height: "28px",
-    borderRadius: "50%",
-    backgroundColor: "#111",
-    color: "#fff",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontWeight: "bold",
-    fontSize: "10px",
-    marginTop: 'auto',
-    marginBottom: 'auto'
-  },
-  closeBtn: {
-    background: "none",
-    border: "none",
-    color: "#fff",
-    fontSize: "24px",
-    cursor: "pointer",
-  },
-  messagesContainer: {
-    flex: 1,
-    padding: "16px",
-    overflowY: "auto",
-    backgroundColor: "#f9f9f9",
-    display: "flex",
-    flexDirection: "column",
-    gap: "12px",
-  },
-  botRow: {
-    display: "flex",
-    justifyContent: "flex-start",
-  },
-  userRow: {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
-  botMsg: {
-    backgroundColor: "#e8e8e8",
-    color: "#111",
-    padding: "10px 14px",
-    borderRadius: "14px 14px 14px 4px",
-    fontSize: "14px",
-    lineHeight: "1.4",
-  },
-  userMsg: {
-    backgroundColor: "#111",
-    color: "#fff",
-    padding: "10px 14px",
-    borderRadius: "14px 14px 4px 14px",
-    fontSize: "14px",
-    lineHeight: "1.4",
-  },
-  optionsContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "8px",
-    marginTop: "8px",
-  },
-  optionBtn: {
-    backgroundColor: "#fff",
-    border: "1px solid #111",
-    color: "#111",
-    padding: "8px 12px",
-    borderRadius: "8px",
-    fontSize: "13px",
-    cursor: "pointer",
-    transition: "all 0.2s ease",
-    textAlign: "left",
-  },
-  inputArea: {
-    display: "flex",
-    padding: "14px",
-    borderTop: "1px solid #eaeaea",
-    backgroundColor: "#fff",
-    gap: "10px",
-  },
-  input: {
-    flex: 1,
-    padding: "10px 14px",
-    color: "#111",
-    borderRadius: "20px",
-    border: "1px solid #ddd",
-    outline: "none",
-    fontSize: "14px",
-  },
-  sendBtn: {
-    width: "40px",
-    height: "40px",
-    borderRadius: "50%",
-    backgroundColor: "#111",
-    color: "#fff",
-    border: "none",
-    cursor: "pointer",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-};
+  if (isTeamTheme) {
+    return {
+      container: {
+        position: "fixed",
+        bottom: "30px",
+        right: "30px",
+        zIndex: 9999,
+        fontFamily: "'Inter', sans-serif",
+      },
+      fab: {
+        width: "60px",
+        height: "60px",
+        borderRadius: "50%",
+        background: "linear-gradient(135deg, #8A0699 0%, #2380DC 100%)",
+        color: "#fff",
+        border: "1px solid rgba(255, 255, 255, 0.2)",
+        boxShadow: "0 8px 30px rgba(138, 6, 153, 0.3)",
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "28px",
+        transition: "all 0.3s ease",
+      },
+      chatWindow: {
+        width: "min(380px, calc(100vw - 40px))",
+        height: "min(550px, calc(100vh - 100px))",
+        backgroundColor: "rgba(15, 6, 25, 0.95)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        borderRadius: "24px",
+        boxShadow: "0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(138, 6, 153, 0.15)",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+        border: "1px solid rgba(255, 255, 255, 0.08)",
+      },
+      header: {
+        background: "linear-gradient(135deg, #441649 0%, #112240 100%)",
+        color: "#fff",
+        padding: "18px 20px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
+      },
+      avatar: {
+        width: "36px",
+        height: "36px",
+        borderRadius: "50%",
+        background: "linear-gradient(135deg, #8A0699 0%, #2380DC 100%)",
+        color: "#fff",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontWeight: "bold",
+        fontSize: "13px",
+        border: "1px solid rgba(255, 255, 255, 0.2)",
+      },
+      avatarSmall: {
+        width: "28px",
+        height: "28px",
+        borderRadius: "50%",
+        background: "linear-gradient(135deg, #8A0699 0%, #2380DC 100%)",
+        color: "#fff",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontWeight: "bold",
+        fontSize: "10px",
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        border: "1px solid rgba(255, 255, 255, 0.1)",
+      },
+      closeBtn: {
+        background: "rgba(255, 255, 255, 0.08)",
+        border: "none",
+        color: "#fff",
+        fontSize: "20px",
+        cursor: "pointer",
+        width: "30px",
+        height: "30px",
+        borderRadius: "50%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        transition: "background 0.2s",
+      },
+      messagesContainer: {
+        flex: 1,
+        padding: "20px",
+        overflowY: "auto",
+        backgroundColor: "rgba(10, 2, 18, 0.3)",
+        display: "flex",
+        flexDirection: "column",
+        gap: "14px",
+      },
+      botRow: {
+        display: "flex",
+        justifyContent: "flex-start",
+      },
+      userRow: {
+        display: "flex",
+        justifyContent: "flex-end",
+      },
+      botMsg: {
+        backgroundColor: "rgba(255, 255, 255, 0.06)",
+        color: "#e2e8f0",
+        padding: "12px 16px",
+        borderRadius: "18px 18px 18px 4px",
+        fontSize: "14px",
+        lineHeight: "1.5",
+        border: "1px solid rgba(255, 255, 255, 0.05)",
+      },
+      userMsg: {
+        background: "linear-gradient(135deg, #8A0699 0%, #2380DC 100%)",
+        color: "#fff",
+        padding: "12px 16px",
+        borderRadius: "18px 18px 4px 18px",
+        fontSize: "14px",
+        lineHeight: "1.5",
+        boxShadow: "0 4px 15px rgba(138, 6, 153, 0.2)",
+      },
+      optionsContainer: {
+        display: "flex",
+        flexDirection: "column",
+        gap: "8px",
+        marginTop: "10px",
+      },
+      optionBtn: {
+        backgroundColor: "rgba(255, 255, 255, 0.03)",
+        border: "1px solid rgba(138, 6, 153, 0.4)",
+        color: "#c084fc",
+        padding: "10px 14px",
+        borderRadius: "12px",
+        fontSize: "13px",
+        cursor: "pointer",
+        transition: "all 0.2s ease",
+        textAlign: "left",
+        fontWeight: "500",
+      },
+      inputArea: {
+        display: "flex",
+        padding: "16px",
+        borderTop: "1px solid rgba(255, 255, 255, 0.06)",
+        backgroundColor: "rgba(15, 6, 25, 0.98)",
+        gap: "10px",
+        alignItems: "center",
+      },
+      input: {
+        flex: 1,
+        padding: "12px 16px",
+        color: "#fff",
+        backgroundColor: "rgba(255, 255, 255, 0.05)",
+        borderRadius: "24px",
+        border: "1px solid rgba(255, 255, 255, 0.1)",
+        outline: "none",
+        fontSize: "14px",
+        transition: "border-color 0.2s",
+      },
+      sendBtn: {
+        width: "44px",
+        height: "44px",
+        borderRadius: "50%",
+        background: "linear-gradient(135deg, #8A0699 0%, #2380DC 100%)",
+        color: "#fff",
+        border: "none",
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        boxShadow: "0 4px 12px rgba(138, 6, 153, 0.2)",
+      },
+    };
+  }
+
+  return defaultStyles;
+}
 
