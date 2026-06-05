@@ -17,6 +17,19 @@ export async function exportBlueprintPDF(
 
   let y = 20;
 
+  // Defensive defaults in case blueprint is missing fields
+  const bp = blueprint || {};
+  const summaryText = String(bp.summary || "");
+  const priorities = bp.priorities || [];
+  const team = bp.team || [];
+  const kpis = bp.kpis || [];
+  const platforms = bp.platforms || [];
+  const tools = bp.tools || [];
+  const roadmap = bp.roadmap || [];
+  const risks = bp.risks || [];
+  const recommendationText = String(bp.recommendation || "");
+  companyName = companyName || "Company";
+
   /* COVER PAGE */
 
   pdf.setFontSize(28);
@@ -83,11 +96,7 @@ export async function exportBlueprintPDF(
 
   pdf.setFontSize(11);
 
-  const summaryLines =
-    pdf.splitTextToSize(
-      blueprint.summary,
-      170
-    );
+  const summaryLines = pdf.splitTextToSize(summaryText, 170);
 
   pdf.text(
     summaryLines,
@@ -107,15 +116,9 @@ export async function exportBlueprintPDF(
     20
   );
 
-  blueprint.priorities.forEach(
-    (priority, index) => {
-      pdf.text(
-        `${index + 1}. ${priority}`,
-        20,
-        40 + index * 12
-      );
-    }
-  );
+  priorities.forEach((priority, index) => {
+    pdf.text(`${index + 1}. ${priority}`, 20, 40 + index * 12);
+  });
 
   /* TEAM */
 
@@ -140,13 +143,7 @@ export async function exportBlueprintPDF(
       ],
     ],
 
-    body: blueprint.team.map(
-      (role) => [
-        role.title,
-        role.type,
-        role.model,
-      ]
-    ),
+    body: team.map((role) => [role.title, role.type, role.model]),
   });
 
   /* KPI */
@@ -173,14 +170,7 @@ export async function exportBlueprintPDF(
       ],
     ],
 
-    body: blueprint.kpis.map(
-      (kpi) => [
-        kpi.name,
-        kpi.current,
-        kpi.target,
-        kpi.owner,
-      ]
-    ),
+    body: kpis.map((kpi) => [kpi.name, kpi.current, kpi.target, kpi.owner]),
   });
 
   /* PLATFORMS */
@@ -206,14 +196,7 @@ export async function exportBlueprintPDF(
       ],
     ],
 
-    body:
-      blueprint.platforms.map(
-        (platform) => [
-          platform.name,
-          platform.priority,
-          platform.frequency,
-        ]
-      ),
+    body: platforms.map((platform) => [platform.name, platform.priority, platform.frequency]),
   });
 
   /* TOOLS */
@@ -239,13 +222,7 @@ export async function exportBlueprintPDF(
       ],
     ],
 
-    body: blueprint.tools.map(
-      (tool) => [
-        tool.name,
-        tool.category,
-        tool.purpose,
-      ]
-    ),
+    body: tools.map((tool) => [tool.name, tool.category, tool.purpose]),
   });
 
   /* ROADMAP */
@@ -271,13 +248,7 @@ export async function exportBlueprintPDF(
       ],
     ],
 
-    body: blueprint.roadmap.map(
-      (phase) => [
-        phase.phase,
-        phase.duration,
-        phase.focus,
-      ]
-    ),
+    body: roadmap.map((phase) => [phase.phase, phase.duration, phase.focus]),
   });
 
   /* RISKS */
@@ -294,17 +265,10 @@ export async function exportBlueprintPDF(
 
   let riskY = 40;
 
-  blueprint.risks.forEach(
-    (risk) => {
-      pdf.text(
-        `• ${risk}`,
-        20,
-        riskY
-      );
-
-      riskY += 12;
-    }
-  );
+  risks.forEach((risk) => {
+    pdf.text(`• ${risk}`, 20, riskY);
+    riskY += 12;
+  });
 
   /* FINAL */
 
@@ -318,17 +282,8 @@ export async function exportBlueprintPDF(
     20
   );
 
-  const recommendationLines =
-    pdf.splitTextToSize(
-      blueprint.recommendation,
-      170
-    );
-
-  pdf.text(
-    recommendationLines,
-    15,
-    40
-  );
+  const recommendationLines = pdf.splitTextToSize(recommendationText, 170);
+  pdf.text(recommendationLines, 15, 40);
 
   pdf.save(
     `${companyName

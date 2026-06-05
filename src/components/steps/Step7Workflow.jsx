@@ -1,4 +1,4 @@
-import { generateBlueprint } from "@/utils/blueprintGenerator";
+// generateBlueprint removed; use parent onSubmit to trigger generation/paywall
 import {
   reportingFrequencies,
   approvalFlows,
@@ -388,10 +388,12 @@ const toggleAccess = (value) => {
       </div>
 
       <button
-  onClick={generateBlueprint}
->
-  ⚡ Generate My Workflow Plan
-</button>
+        type="button"
+        onClick={() => onSubmit && onSubmit()}
+        className="px-6 py-3 bg-[#E8192C] rounded-[10px]"
+      >
+        ⚡ Generate My Workflow Plan
+      </button>
     </div>
   </div>
 );

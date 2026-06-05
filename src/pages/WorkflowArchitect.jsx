@@ -132,15 +132,46 @@ export default function WorkflowArchitect() {
     setShowPaywall(false);
     setShowGenerating(true);
 
-    setTimeout(() => {
-      setShowGenerating(false);
+    // Send form data to backend to persist
+    (async () => {
+      try {
+        const base = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+        const resp = await fetch(`${base}/workflow`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
 
-      setBlueprintData({
-        company: formData.company_name,
-      });
+        if (!resp.ok) {
+          console.error('Failed to save workflow submission', resp.statusText);
+        }
 
-      setShowBlueprint(true);
-    }, 14000);
+        const json = await resp.json().catch(() => ({}));
+
+        setTimeout(() => {
+          setShowGenerating(false);
+
+          setBlueprintData({
+            company: formData.company_name,
+            submissionId: json.id || null,
+          });
+
+          setShowBlueprint(true);
+        }, 14000);
+      } catch (err) {
+        console.error('Error saving workflow submission', err);
+        setTimeout(() => {
+          setShowGenerating(false);
+          setBlueprintData({
+            company: formData.company_name,
+            submissionId: null,
+          });
+          setShowBlueprint(true);
+        }, 14000);
+      }
+    })();
   };
 
   const renderStep = () => {
