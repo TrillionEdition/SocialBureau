@@ -762,8 +762,8 @@ export const Home = () => {
 
   // Static Hero for Social Bureau
   const currentHero = {
-    desktop: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT%20Image%20Jun%204%2C%202026%2C%2006_36_03%20PM.png",
-    mobile: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT%20Image%20Jun%204%2C%202026%2C%2006_36_03%20PM.png",
+    desktop: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/84641024-376f-47ff-a753-e2f9511b8e2b_large.png",
+    mobile: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/bb280ccc-6e3b-4ca8-8d9d-4541889c2902_large.png",
     alt: "Social Bureau"
   };
 
