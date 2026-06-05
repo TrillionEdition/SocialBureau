@@ -40,6 +40,7 @@ import {
   Mic,
   Calendar,
   Sparkles,
+  BookOpen,
 } from "lucide-react";
 import teamService from "../TeamDashboard/teamService";
 import clientService from "../../services/clientService";
@@ -100,6 +101,7 @@ const AdminTeamDashboard = () => {
       priceFullDay: "",
     },
     isPublic: false,
+    isInternship: false,
     clickupId: "",
     rate: "",
     isEmployee: true,
@@ -115,6 +117,7 @@ const AdminTeamDashboard = () => {
     events: [],
     innovations: [],
     workShowcase: [],
+    blogs: [],
     slug: "",
   });
 
@@ -125,6 +128,7 @@ const AdminTeamDashboard = () => {
     bgText: "",
     description: "",
     isPublic: false,
+    isInternship: false,
     clickupId: "",
     tools: [],
     clients: [],
@@ -139,6 +143,7 @@ const AdminTeamDashboard = () => {
         bgText: selectedEmployeePage.bgText || "",
         description: selectedEmployeePage.description || "",
         isPublic: selectedEmployeePage.isPublic || false,
+        isInternship: selectedEmployeePage.isInternship || selectedEmployeePage.user?.isInternship || false,
         clickupId: selectedEmployeePage.user?.clickupId || "",
         tools: selectedEmployeePage.user?.tools || [],
         clients: selectedEmployeePage.user?.clients || [],
@@ -236,6 +241,9 @@ const AdminTeamDashboard = () => {
                         <div>
                           <h3 className="font-black text-lg tracking-tight uppercase group-hover/card:text-[#ff3358] transition-colors line-clamp-1">{member.name}</h3>
                           <p className="text-[10px] text-white/40 uppercase tracking-widest font-black line-clamp-1">{member.role}</p>
+                          { (member.isInternship || member.user?.isInternship) && (
+                            <span className="inline-block mt-2 text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-full bg-purple-600/10 text-purple-300 border border-purple-600/20">Intern</span>
+                          ) }
                         </div>
                       </div>
                     </div>
@@ -358,17 +366,23 @@ const AdminTeamDashboard = () => {
             bgText: pageConfigForm.bgText,
             description: pageConfigForm.description,
             isPublic: pageConfigForm.isPublic,
+            isInternship: pageConfigForm.isInternship,
             clickupId: pageConfigForm.clickupId ? Number(pageConfigForm.clickupId) : null
           })
         });
 
         const data = await response.json();
+        console.log('[Admin] handleSavePageConfig response:', data);
         if (!response.ok) {
           throw new Error(data.message || "Failed to save page configuration");
         }
 
         toast.success("Employee portfolio page saved successfully!");
-        fetchMembers();
+        if (data && data.data) {
+          toast.info(`Saved isInternship=${data.data.isInternship} user.isInternship=${data.data.user?.isInternship}`);
+        }
+        // Refresh members from server to ensure frontend state matches backend
+        await fetchMembers();
         setActiveView("employee-pages");
         setSelectedEmployeePage(null);
       } catch (err) {
@@ -516,6 +530,22 @@ const AdminTeamDashboard = () => {
                     </button>
                     <span className="text-xs uppercase tracking-widest font-black text-white">
                       {pageConfigForm.isPublic ? "Live (Publicly visible)" : "Draft (Hidden)"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-3 justify-center">
+                  <label className="text-[10px] text-white/40 uppercase font-black tracking-wider block">Internship Status</label>
+                  <div className="flex items-center gap-4">
+                    <button
+                      type="button"
+                      onClick={() => setPageConfigForm({ ...pageConfigForm, isInternship: !pageConfigForm.isInternship })}
+                      className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors outline-none ${pageConfigForm.isInternship ? 'bg-purple-500' : 'bg-white/10 border border-white/5'}`}
+                    >
+                      <span className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${pageConfigForm.isInternship ? 'translate-x-8' : 'translate-x-1'}`} />
+                    </button>
+                    <span className="text-xs uppercase tracking-widest font-black text-white">
+                      {pageConfigForm.isInternship ? "Intern (Shown in Internship section)" : "Not Intern"}
                     </span>
                   </div>
                 </div>
@@ -680,6 +710,8 @@ const AdminTeamDashboard = () => {
       const token = localStorage.getItem("token");
       const response = await teamService.getAllMembers(token);
       if (response.success) {
+        console.log('[Admin] fetched members count:', response.data.length);
+        console.log('[Admin] sample member isInternship flags:', response.data.slice(0,5).map(m => ({ id: m._id, isInternship: m.isInternship, userIsIntern: m.user?.isInternship })));
         setMembers(response.data);
       }
     } catch (error) {
@@ -751,6 +783,7 @@ const AdminTeamDashboard = () => {
           events: member.user?.events || [],
           innovations: member.user?.innovations || [],
           workShowcase: member.user?.workShowcase || [],
+          blogs: member.user?.blogs || [],
           tags: member.tags || [],
           category: member.category || [],
           socials: member.socials || {
@@ -915,6 +948,7 @@ const AdminTeamDashboard = () => {
             twitter: "",
           },
           isPublic: false,
+          isInternship: false,
           clickupId: "",
           rate: "",
           isEmployee: true,
@@ -1353,6 +1387,51 @@ const AdminTeamDashboard = () => {
     }));
   };
 
+  // --- NEW FIELD HELPERS (Blog Posts) ---
+  const handleAddBlogField = () => {
+    setNewMember((prev) => ({
+      ...prev,
+      blogs: [...(prev.blogs || []), { heading: '', link: '', image: '' }]
+    }));
+  };
+
+  const handleBlogFieldChange = (index, field, value) => {
+    setNewMember((prev) => {
+      const blogs = [...(prev.blogs || [])];
+      blogs[index] = { ...blogs[index], [field]: value };
+      return { ...prev, blogs };
+    });
+  };
+
+  const handleRemoveBlogField = (index) => {
+    setNewMember((prev) => ({
+      ...prev,
+      blogs: (prev.blogs || []).filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleEditBlogFieldAdd = () => {
+    setEditingMember((prev) => ({
+      ...prev,
+      blogs: [...(prev.blogs || []), { heading: '', link: '', image: '' }]
+    }));
+  };
+
+  const handleEditBlogFieldChange = (index, field, value) => {
+    setEditingMember((prev) => {
+      const blogs = [...(prev.blogs || [])];
+      blogs[index] = { ...blogs[index], [field]: value };
+      return { ...prev, blogs };
+    });
+  };
+
+  const handleEditBlogFieldRemove = (index) => {
+    setEditingMember((prev) => ({
+      ...prev,
+      blogs: (prev.blogs || []).filter((_, i) => i !== index)
+    }));
+  };
+
   const handleWorkShowcaseImageUpload = async (e, index, isEdit = false) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -1577,6 +1656,8 @@ const AdminTeamDashboard = () => {
                       />
                       {member.isPublic ? (
                         <div className="absolute top-1 right-1 w-2 h-2 bg-green-500 rounded-full shadow-[0_0_10px_rgba(34,197,94,0.8)]" />
+                      ) : member.isInternship || member.user?.isInternship ? (
+                        <div className="absolute top-1 right-1 w-2 h-2 bg-purple-500 rounded-full shadow-[0_0_10px_rgba(168,85,247,0.7)]" />
                       ) : (
                         <div className="absolute top-1 right-1 w-2 h-2 bg-white/20 rounded-full" />
                       )}
@@ -1626,6 +1707,7 @@ const AdminTeamDashboard = () => {
                             events: member.user?.events || [],
                             innovations: member.user?.innovations || [],
                             workShowcase: member.user?.workShowcase || [],
+                            blogs: member.user?.blogs || [],
                             tags: member.tags || [],
                             category: member.category || [],
                             socials: member.socials || {
@@ -1828,6 +1910,19 @@ const AdminTeamDashboard = () => {
                       <label htmlFor="isEmployee" className="text-sm font-bold text-white cursor-pointer select-none">
                         Is Employee?
                       </label>
+                      <div className="flex items-center space-x-3">
+                        <input
+                          type="checkbox"
+                          name="isInternship"
+                          id="isInternship"
+                          checked={newMember.isInternship}
+                          onChange={(e) => setNewMember(prev => ({ ...prev, isInternship: e.target.checked }))}
+                          className="w-5 h-5 rounded border-white/10 bg-white/5 text-purple-500 focus:ring-0 focus:ring-offset-0 transition-all cursor-pointer"
+                        />
+                        <label htmlFor="isInternship" className="text-sm font-bold text-white cursor-pointer select-none">
+                          Is Internship?
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </section>
@@ -3326,6 +3421,19 @@ const AdminTeamDashboard = () => {
                       <label htmlFor="isEmployee" className="text-xs md:text-sm font-bold text-white cursor-pointer select-none">
                         Is Employee?
                       </label>
+                      <div className="flex items-center space-x-2 md:space-x-3">
+                        <input
+                          type="checkbox"
+                          name="isInternship"
+                          id="isInternshipCheckbox"
+                          checked={editingMember.isInternship}
+                          onChange={(e) => setEditingMember(prev => ({ ...prev, isInternship: e.target.checked }))}
+                          className="w-4 h-4 rounded border-white/10 bg-white/5 text-purple-500 focus:ring-0 focus:ring-offset-0 transition-all cursor-pointer"
+                        />
+                        <label htmlFor="isInternshipCheckbox" className="text-xs md:text-sm font-bold text-white cursor-pointer select-none">
+                          Is Internship?
+                        </label>
+                      </div>
                     </div>
                     <div className="flex justify-end mt-3 md:mt-4 col-span-full">
                       <button
@@ -4914,6 +5022,97 @@ const AdminTeamDashboard = () => {
                             className="px-5 py-3 bg-brand-pink text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2"
                           >
                             {sectionSaving === 'workShowcase' ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Save className="w-4 h-4" />
+                            )}
+                            Save
+                          </button>
+                        </div>
+                      </section>
+
+                      {/* === BLOG POSTS SECTION === */}
+                      <section className="bg-white/5 border border-white/10 rounded-[2rem] p-6 backdrop-blur-3xl shadow-xl">
+                        <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
+                          <div className="flex items-center gap-3">
+                            <BookOpen className="text-brand-pink" size={22} />
+                            <div>
+                              <h3 className="text-base font-black tracking-tight uppercase">BLOG POSTS</h3>
+                              <p className="text-[10px] text-white/30 mt-0.5">Link to articles written on the Social Bureau blog</p>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={handleEditBlogFieldAdd}
+                            className="px-3 py-2 bg-brand-pink/10 hover:bg-brand-pink border border-brand-pink/20 hover:text-white rounded-xl text-[10px] font-bold text-brand-pink tracking-wide uppercase transition-all"
+                          >
+                            + Add Blog
+                          </button>
+                        </div>
+                        {(editingMember.blogs || []).length === 0 ? (
+                          <div className="text-center py-8 text-white/20 font-bold tracking-wider text-xs uppercase italic">
+                            No blog posts linked yet.
+                          </div>
+                        ) : (
+                          <div className="space-y-4">
+                            {(editingMember.blogs || []).map((blog, idx) => (
+                              <div key={idx} className="relative p-5 bg-white/3 border border-white/10 rounded-2xl">
+                                <button
+                                  type="button"
+                                  onClick={() => handleEditBlogFieldRemove(idx)}
+                                  className="absolute top-4 right-4 text-white/30 hover:text-red-400 transition-colors p-1"
+                                >
+                                  <X size={16} />
+                                </button>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                  <div className="space-y-2 md:col-span-2">
+                                    <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">Blog Heading *</label>
+                                    <input
+                                      type="text"
+                                      required
+                                      value={blog.heading || ""}
+                                      onChange={(e) => handleEditBlogFieldChange(idx, "heading", e.target.value)}
+                                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white font-bold"
+                                      placeholder="e.g. 10 Social Media Trends to Watch in 2025"
+                                    />
+                                  </div>
+                                  <div className="space-y-2 md:col-span-2">
+                                    <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">Blog Link *</label>
+                                    <input
+                                      type="url"
+                                      required
+                                      value={blog.link || ""}
+                                      onChange={(e) => handleEditBlogFieldChange(idx, "link", e.target.value)}
+                                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
+                                      placeholder="https://socialbureau.in/blogs/your-article"
+                                    />
+                                  </div>
+                                  <div className="space-y-2 md:col-span-2">
+                                    <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1">Cover Image URL (Optional)</label>
+                                    <input
+                                      type="url"
+                                      value={blog.image || ""}
+                                      onChange={(e) => handleEditBlogFieldChange(idx, "image", e.target.value)}
+                                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-pink transition-all text-white"
+                                      placeholder="https://... (direct image URL)"
+                                    />
+                                    {blog.image && (
+                                      <img src={blog.image} alt="Blog cover" className="mt-2 h-20 w-auto rounded-xl border border-white/10 object-cover" />
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        <div className="flex justify-end mt-6">
+                          <button
+                            type="button"
+                            onClick={() => handleSaveSection('blogs')}
+                            disabled={sectionSaving === 'blogs'}
+                            className="px-5 py-3 bg-brand-pink text-white rounded-xl font-bold disabled:opacity-50 flex items-center gap-2"
+                          >
+                            {sectionSaving === 'blogs' ? (
                               <Loader2 className="w-4 h-4 animate-spin" />
                             ) : (
                               <Save className="w-4 h-4" />

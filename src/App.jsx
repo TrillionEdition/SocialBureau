@@ -234,7 +234,7 @@ function ConditionalChatbot() {
     path === `/partnership/${slug.toLowerCase()}`
   );
 
-  return isActualPartnerPage ? <PartnershipChatbot /> : null;
+  return isActualPartnerPage ? <PartnershipChatbot key={path} /> : null;
 }
 
 const lenisOptions = {

@@ -34,9 +34,11 @@ import {
   Building2,
   Handshake,
   Crown,
+  BookOpen,
+  ExternalLink,
 } from "lucide-react";
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import {
   BarChart,
   Bar,
@@ -54,6 +56,8 @@ import { toast } from "react-toastify";
 import Footer from "../../components/Footer";
 import ResumeModal from "../Resume/ResumeModal";
 import BookSessionModal from "./BookSessionModal";
+import ReviewModal from "./ReviewModal";
+import PartnershipChatbot from "../../components/PartnershipChatbot";
 import { TEAM_MEMBERS } from "./constants";
 
 function cn(...inputs) {
@@ -364,6 +368,17 @@ const generateFallbackAttendance = (year, month) => {
       status = "half";
     }
 
+    let dailyHours = 0;
+    if (status === "present") {
+      if (dayNum === 15) {
+        dailyHours = 2.0; // Short shift!
+      } else {
+        dailyHours = 8.5;
+      }
+    } else if (status === "half") {
+      dailyHours = 3.0;
+    }
+
     const daysOfWeekFull = [
       "Sunday",
       "Monday",
@@ -386,6 +401,7 @@ const generateFallbackAttendance = (year, month) => {
       date: formattedDate,
       day: dayName,
       holidayName: holidayName || undefined,
+      dailyHours: dailyHours,
     };
   });
 };
@@ -655,6 +671,15 @@ const getStaticEnrichedData = (slug, originalData) => {
         status = "weekend";
       }
 
+      let dailyHours = 0;
+      if (status === "present") {
+        if (dayNum === 12) {
+          dailyHours = 2.5; // Short shift!
+        } else {
+          dailyHours = 8.5;
+        }
+      }
+
       const daysOfWeekFull = [
         "Sunday",
         "Monday",
@@ -677,6 +702,7 @@ const getStaticEnrichedData = (slug, originalData) => {
         date: formattedDate,
         day: dayName,
         holidayName: holidayName || undefined,
+        dailyHours: dailyHours,
       };
     });
   };
@@ -807,7 +833,11 @@ const getStaticEnrichedData = (slug, originalData) => {
         followers:
           originalData?.user?.followers ||
           originalData?.member?.user?.followers ||
-          "2,671",
+          "0",
+        followersThisWeek:
+          originalData?.user?.followersThisWeek ||
+          originalData?.member?.user?.followersThisWeek ||
+          "0",
         efficiency: "96%",
         onTime: "98%",
         csat: "97%",
@@ -815,8 +845,8 @@ const getStaticEnrichedData = (slug, originalData) => {
         hoursPerMonth: "194.5 HRS",
         tenure: "7YR",
         clientsCount: originalData?.user?.clients?.length
-          ? `${originalData.user.clients.length}+`
-          : "18+",
+          ? `${originalData.user.clients.length}`
+          : "0",
         rating: "4.9",
         projectsCount: "12+",
         clients: originalData?.user?.clients?.length
@@ -961,7 +991,11 @@ const getStaticEnrichedData = (slug, originalData) => {
         followers:
           originalData?.user?.followers ||
           originalData?.member?.user?.followers ||
-          "1,850",
+          "0",
+        followersThisWeek:
+          originalData?.user?.followersThisWeek ||
+          originalData?.member?.user?.followersThisWeek ||
+          "0",
         efficiency: "95%",
         onTime: "97%",
         csat: "96%",
@@ -969,8 +1003,8 @@ const getStaticEnrichedData = (slug, originalData) => {
         hoursPerMonth: "180.2 HRS",
         tenure: "7YR",
         clientsCount: originalData?.user?.clients?.length
-          ? `${originalData.user.clients.length}+`
-          : "15+",
+          ? `${originalData.user.clients.length}`
+          : "0",
         rating: "4.8",
         projectsCount: "10+",
         clients: originalData?.user?.clients?.length
@@ -1650,6 +1684,7 @@ const SHAM_LOGOS = [
 const EmployeePage = () => {
   const [activeMilestone, setActiveMilestone] = useState(0);
   const { slug } = useParams();
+  const location = useLocation();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDemoMode, setIsDemoMode] = useState(false);
@@ -1661,6 +1696,27 @@ const EmployeePage = () => {
   );
   const [showResumeModal, setShowResumeModal] = useState(false);
   const [showBookSessionModal, setShowBookSessionModal] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewsList, setReviewsList] = useState([]);
+  const [reviewModalMode, setReviewModalMode] = useState("read");
+
+  useEffect(() => {
+    if (location.state?.openChat) {
+      setIsChatOpen(true);
+      // Optional: Clear the state so refreshing doesn't keep opening it
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    const userObj = data?.user || data?.member?.user || fallbackData?.user;
+    if (userObj && userObj.reviews) {
+      setReviewsList(userObj.reviews);
+    } else {
+      setReviewsList([]);
+    }
+  }, [data]);
 
   const handlePrevMonth = () => {
     if (selectedMonth === 0) {
@@ -1745,14 +1801,15 @@ const EmployeePage = () => {
           emp_id: `SB-EMP-${matchedMember.id?.toUpperCase() || "000"}`,
           location: "Kochi, Kerala",
           department: matchedMember.category?.[0] || "Operations",
-          followers: "150+",
+          followers: "0",
+          followersThisWeek: "0",
           efficiency: "95%",
           onTime: "95%",
           csat: "95%",
           tasksPerMonth: "40",
           hoursPerMonth: "160 HRS",
           tenure: "4YR",
-          clientsCount: "10+",
+          clientsCount: "0",
           rating: "4.8",
           projectsCount: "5+",
           hobbies: matchedMember.tags || [
@@ -1760,6 +1817,7 @@ const EmployeePage = () => {
             "Collaboration",
             "Execution",
           ],
+          reviews: []
         },
       }
     : {
@@ -1795,16 +1853,18 @@ const EmployeePage = () => {
           emp_id: "000000000",
           location: "Kochi, Kerala",
           department: "Leadership & Strategy",
-          followers: "2,671",
+          followers: "0",
+          followersThisWeek: "0",
           efficiency: "94%",
           onTime: "47%",
           csat: "66%",
           tasksPerMonth: "47",
           hoursPerMonth: "186 HRS",
           tenure: "6YR",
-          clientsCount: "18+",
+          clientsCount: "0",
           rating: "4.9",
           projectsCount: "12+",
+          reviews: []
         },
       };
 
@@ -1926,6 +1986,10 @@ const EmployeePage = () => {
   const member = data?.member || fallbackData.member;
   const clickup = data?.clickup || fallbackData.clickup;
   const rawUser = data?.user || data?.member?.user || fallbackData.user;
+
+  const averageRating = reviewsList.length > 0
+    ? (reviewsList.reduce((acc, curr) => acc + (curr.rating || 0), 0) / reviewsList.length).toFixed(1)
+    : (rawUser.rating || "4.8");
 
   // Format category array to a displayable department string
   const formatDepartment = (categories) => {
@@ -2554,9 +2618,28 @@ const EmployeePage = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="text-4xl xs:text-5xl md:text-7xl lg:text-[5.5rem] font-black mb-2 md:mb-4 tracking-tighter text-white font-display uppercase leading-[0.9]"
+                className="text-4xl xs:text-5xl md:text-7xl lg:text-[5.5rem] font-black mb-2 md:mb-4 tracking-tighter text-white font-display uppercase leading-[0.9] flex items-center flex-wrap gap-3"
               >
-                {member.name}
+                <span>{member.name}</span>
+                {((member.user?.isClickUpVerified ||
+                  member.email === "ceo@socialbureau.in" ||
+                  member.user?.email === "ceo@socialbureau.in" ||
+                  member.email === "web@socialbureau.in" ||
+                  member.user?.email === "web@socialbureau.in" ||
+                  member.email === "admin@socialbureau.in" ||
+                  member.user?.email === "admin@socialbureau.in" ||
+                  member.slug === "shamsk" ||
+                  member.slug === "elizebath" ||
+                  member.slug === "hajira") &&
+                  member.email !== "webjr.socialbureau@gmail.com" &&
+                  member.user?.email !== "webjr.socialbureau@gmail.com" &&
+                  member.email !== "pmo.socialbureau@gmail.com" &&
+                  member.user?.email !== "pmo.socialbureau@gmail.com" &&
+                  member.slug !== "reshma-vijayan" &&
+                  member.slug !== "athira-rajesh"
+                ) && (
+                  <ClickUpVerifiedBadge className="scale-[0.85] xs:scale-[0.95] md:scale-110 lg:scale-125 origin-left" />
+                )}
               </motion.h1>
               <p className="text-gray-400 font-bold mb-2 md:mb-4 text-lg md:text-2xl uppercase tracking-[0.1em]">
                 {member.tagline || `${member.role} `}
@@ -2625,12 +2708,12 @@ const EmployeePage = () => {
               )}
 
               <div className="flex flex-wrap justify-center md:justify-start gap-x-3 gap-y-4 md:gap-3">
-                <a
-                  href={`mailto:${user.email || member.email || member.user?.email || "team@socialbureau.in"}`}
-                  className="bg-[#E11D48] hover:bg-[#BE123C] text-white px-8 py-3.5 rounded-[12px] text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-2 shadow-lg shadow-red-500/25 no-underline"
+                <button
+                  onClick={() => setIsChatOpen(true)}
+                  className="bg-[#E11D48] hover:bg-[#BE123C] text-white px-8 py-3.5 rounded-[12px] text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-2 shadow-lg shadow-red-500/25 border-0 cursor-pointer"
                 >
-                  <Mail className="w-4 h-4" /> MESSAGE
-                </a>
+                  <MessageCircle className="w-4 h-4" /> MESSAGE
+                </button>
                 {!isAlenOrSham && (
                   <button
                     onClick={() => setShowBookSessionModal(true)}
@@ -2711,6 +2794,28 @@ const EmployeePage = () => {
                 color="text-orange-500"
               />
             </motion.div>
+          )}
+          {/* ClickUp Verified Power User Rosette Badge - Bottom Right */}
+          {((member.user?.isClickUpVerified ||
+            member.email === "ceo@socialbureau.in" ||
+            member.user?.email === "ceo@socialbureau.in" ||
+            member.email === "web@socialbureau.in" ||
+            member.user?.email === "web@socialbureau.in" ||
+            member.email === "admin@socialbureau.in" ||
+            member.user?.email === "admin@socialbureau.in" ||
+            member.slug === "shamsk" ||
+            member.slug === "elizebath" ||
+            member.slug === "hajira") &&
+            member.email !== "webjr.socialbureau@gmail.com" &&
+            member.user?.email !== "webjr.socialbureau@gmail.com" &&
+            member.email !== "pmo.socialbureau@gmail.com" &&
+            member.user?.email !== "pmo.socialbureau@gmail.com" &&
+            member.slug !== "reshma-vijayan" &&
+            member.slug !== "athira-rajesh"
+          ) && (
+            <div className={`absolute top-28 bottom-auto right-4 md:top-auto md:right-12 z-30 ${!isAlenOrSham ? 'md:bottom-[160px]' : 'md:bottom-12'}`}>
+              <ClickUpPowerUserRosette />
+            </div>
           )}
         </div>
       </section>
@@ -3491,9 +3596,13 @@ const EmployeePage = () => {
                         const label = d.date
                           ? `${d.date} (${d.day})`
                           : `Day ${d.id + 1}`;
-                        const statusText = d.status
-                          .replace("-", " ")
-                          .toUpperCase();
+                        
+                        // Check if time is between 15 minutes and 4 hours
+                        const isGradientTime = d.dailyHours && d.dailyHours >= 0.25 && d.dailyHours <= 4.0;
+                        
+                        const statusText = isGradientTime
+                          ? "SHORT HOURS"
+                          : d.status.replace("-", " ").toUpperCase();
 
                         return (
                           <div
@@ -3502,28 +3611,62 @@ const EmployeePage = () => {
                           >
                             <div
                               className={cn(
-                                "w-full h-full rounded-xl shadow-xl transition-all duration-300 hover:scale-110 cursor-help",
-                                d.status === "present"
-                                  ? "bg-gradient-to-br from-green-600 to-green-800 border border-green-400/20"
-                                  : d.status === "leave"
-                                    ? "bg-gradient-to-br from-red-500 to-red-700 border border-red-400/20"
-                                    : d.status === "half"
-                                      ? "bg-gradient-to-br from-orange-600 to-orange-800 border border-orange-400/20"
-                                      : d.status === "holiday"
-                                        ? "bg-gradient-to-br from-purple-600 to-purple-800 border border-purple-400/20 shadow-[0_0_10px_rgba(168,85,247,0.45)]"
-                                        : d.status === "upcoming"
-                                          ? "bg-gradient-to-br from-[#0099c2]/20 to-[#0099c2]/5 border border-[#0099c2] shadow-[0_0_10px_rgba(0,153,194,0.3)]"
-                                          : "bg-[#112240] border border-white/5 opacity-70",
+                                "w-full h-full rounded-xl shadow-xl transition-all duration-300 hover:scale-110 cursor-help flex flex-col items-center justify-center select-none border p-1",
+                                isGradientTime
+                                  ? "bg-gradient-to-br from-red-600 to-green-600 border-red-400/20 hover:border-red-400/60 hover:shadow-[0_0_15px_rgba(220,38,38,0.7)]"
+                                  : d.status === "present"
+                                    ? "bg-gradient-to-br from-green-600 to-green-800 border-green-400/20 hover:border-green-400/60 hover:shadow-[0_0_15px_rgba(34,197,94,0.7)]"
+                                    : d.status === "leave"
+                                      ? "bg-gradient-to-br from-red-500 to-red-700 border-red-400/20 hover:border-red-400/60 hover:shadow-[0_0_15px_rgba(239,68,68,0.7)]"
+                                      : d.status === "half"
+                                        ? "bg-gradient-to-br from-orange-600 to-orange-800 border-orange-400/20 hover:border-orange-400/60 hover:shadow-[0_0_15px_rgba(249,115,22,0.7)]"
+                                        : d.status === "holiday"
+                                          ? "bg-gradient-to-br from-purple-600 to-purple-800 border-purple-400/20 shadow-[0_0_10px_rgba(168,85,247,0.45)] hover:border-purple-400/60 hover:shadow-[0_0_15px_rgba(168,85,247,0.7)]"
+                                          : d.status === "upcoming"
+                                            ? "bg-gradient-to-br from-[#0099c2]/20 to-[#0099c2]/5 border-cyan-400/20 shadow-[0_0_10px_rgba(0,153,194,0.3)] hover:border-cyan-400/60 hover:shadow-[0_0_15px_rgba(6,182,212,0.7)]"
+                                            : "bg-[#112240] border-white/5 opacity-70 hover:border-white/20 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]",
                               )}
-                            />
+                              style={isGradientTime ? { background: "linear-gradient(135deg, #dc2626 0%, #16a34a 100%)" } : undefined}
+                            >
+                              <span className="text-[11px] md:text-[13px] leading-none font-black text-white">{d.id + 1}</span>
+                              <span className="text-[7px] md:text-[8px] leading-none font-extrabold uppercase text-white/50 tracking-wider mt-1">{d.day ? d.day.substring(0, 3) : ""}</span>
+                            </div>
                             {/* Custom Premium Glassmorphic Tooltip */}
                             <div
-                              className="absolute bottom-[125%] left-1/2 -translate-x-1/2 w-48 p-3 rounded-2xl border border-white/10 shadow-2xl backdrop-blur-xl opacity-0 scale-95 pointer-events-none transition-all duration-300 group-hover:opacity-100 group-hover:scale-100 z-30 flex flex-col gap-1 items-center text-center"
+                              className={cn(
+                                "absolute bottom-[125%] left-1/2 -translate-x-1/2 w-48 p-3 rounded-2xl border shadow-2xl backdrop-blur-xl opacity-0 scale-95 pointer-events-none transition-all duration-300 group-hover:opacity-100 group-hover:scale-100 group-hover:-translate-y-2 z-30 flex flex-col gap-1 items-center text-center",
+                                isGradientTime
+                                  ? "border-red-500/30"
+                                  : d.status === "present"
+                                    ? "border-green-500/30"
+                                    : d.status === "leave"
+                                      ? "border-red-500/30"
+                                      : d.status === "half"
+                                        ? "border-orange-500/30"
+                                        : d.status === "holiday"
+                                          ? "border-purple-500/30"
+                                          : d.status === "upcoming"
+                                            ? "border-cyan-500/30"
+                                            : "border-white/10",
+                              )}
                               style={{
                                 background:
                                   "linear-gradient(135deg, rgba(20, 10, 35, 0.95) 0%, rgba(10, 5, 20, 0.98) 100%)",
-                                boxShadow:
-                                  "0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1)",
+                                boxShadow: `0 10px 30px ${
+                                  isGradientTime
+                                    ? "rgba(220,38,38,0.3)"
+                                    : d.status === "present"
+                                      ? "rgba(34,197,94,0.3)"
+                                      : d.status === "leave"
+                                        ? "rgba(239,68,68,0.3)"
+                                        : d.status === "half"
+                                          ? "rgba(249,115,22,0.3)"
+                                          : d.status === "holiday"
+                                            ? "rgba(168,85,247,0.3)"
+                                            : d.status === "upcoming"
+                                              ? "rgba(6,182,212,0.3)"
+                                              : "rgba(0,0,0,0.5)"
+                                }, inset 0 1px 1px rgba(255,255,255,0.1)`,
                               }}
                             >
                               <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
@@ -3534,20 +3677,27 @@ const EmployeePage = () => {
                                   {d.holidayName}
                                 </span>
                               )}
+                              {d.dailyHours > 0 && (
+                                <span className="text-[10px] text-cyan-400 font-extrabold uppercase tracking-wide my-0.5">
+                                  {d.dailyHours.toFixed(1)} Hours Logged
+                                </span>
+                              )}
                               <span
                                 className={cn(
-                                  "text-[10px] font-black tracking-[0.1em] px-2 py-0.5 rounded-full uppercase border",
-                                  d.status === "present"
-                                    ? "bg-green-500/10 text-green-400 border-green-500/20"
-                                    : d.status === "leave"
-                                      ? "bg-red-500/10 text-red-400 border-red-500/20"
-                                      : d.status === "half"
-                                        ? "bg-orange-500/10 text-orange-400 border-orange-500/20"
-                                        : d.status === "holiday"
-                                          ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
-                                          : d.status === "upcoming"
-                                            ? "bg-gray-500/10 text-gray-400 border-gray-500/20"
-                                            : "bg-cyan-500/10 text-cyan-400 border-cyan-500/20",
+                                  "text-[10px] font-black tracking-[0.1em] px-2 py-0.5 rounded-full uppercase border mt-1",
+                                  isGradientTime
+                                    ? "bg-red-500/10 text-red-400 border-red-500/20"
+                                    : d.status === "present"
+                                      ? "bg-green-500/10 text-green-400 border-green-500/20"
+                                      : d.status === "leave"
+                                        ? "bg-red-500/10 text-red-400 border-red-500/20"
+                                        : d.status === "half"
+                                          ? "bg-orange-500/10 text-orange-400 border-orange-500/20"
+                                          : d.status === "holiday"
+                                            ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
+                                            : d.status === "upcoming"
+                                              ? "bg-gray-500/10 text-gray-400 border-gray-500/20"
+                                              : "bg-cyan-500/10 text-cyan-400 border-cyan-500/20",
                                 )}
                               >
                                 {statusText}
@@ -3575,6 +3725,10 @@ const EmployeePage = () => {
                       {
                         l: "Half Day",
                         c: "bg-gradient-to-br from-orange-600 to-orange-800",
+                      },
+                      {
+                        l: "Short Hours (15m - 4h)",
+                        c: "bg-gradient-to-br from-red-600 to-green-600 border border-red-400/20 shadow-[0_0_10px_rgba(220,38,38,0.3)]",
                       },
                       {
                         l: "Public Holiday",
@@ -4213,50 +4367,76 @@ const EmployeePage = () => {
             </GlassCard>
           )}
 
-          <GlassCard
-            variant="purple"
-            className="text-center p-4 md:!p-6 border-white/10 rounded-[28px] shadow-xl"
-            style={{
-              background:
-                "linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%)",
-              backdropFilter: "blur(20px)",
-              WebkitBackdropFilter: "blur(20px)",
-            }}
-          >
-            <div className="text-[10px] text-gray-500 font-bold tracking-[0.25em] uppercase mb-1 opacity-50">
-              PROFILE FOLLOWERS
-            </div>
-            <div className="text-3xl md:text-5xl font-black text-[#CB1387] tracking-tight mb-4 md:mb-6 mt-2">
-              {user.followers || "2,671"}
-            </div>
-            <div className="grid grid-cols-3 gap-2">
-              {[
-                { val: "+142", label: "THIS WEEK", color: "text-green-500" },
-                {
-                  val: user.rating ? `${user.rating}★` : "4.9★",
-                  label: "RATING",
-                  color: "text-white",
-                },
-                {
-                  val: user.clientsCount || "18+",
-                  label: "CLIENTS",
-                  color: "text-blue-400",
-                },
-              ].map((i) => (
-                <div
-                  key={i.label}
-                  className="bg-[#0E0616]/80 p-2 md:p-3 rounded-2xl border border-white/10 group hover:bg-white/[0.08] transition-all"
-                >
-                  <div className={cn("text-xs font-black", i.color)}>
-                    {i.val}
-                  </div>
-                  <div className="text-[8px] text-gray-500 font-bold tracking-widest uppercase opacity-60 mt-1">
-                    {i.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </GlassCard>
+          {!isAlenOrSham && (
+            <GlassCard
+              variant="purple"
+              className="text-center p-4 md:!p-6 border-white/10 rounded-[28px] shadow-xl"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%)",
+                backdropFilter: "blur(20px)",
+                WebkitBackdropFilter: "blur(20px)",
+              }}
+            >
+              <div className="text-[10px] text-gray-500 font-bold tracking-[0.25em] uppercase mb-1 opacity-50">
+                PROFILE FOLLOWERS
+              </div>
+              <div className="text-3xl md:text-5xl font-black text-[#CB1387] tracking-tight mb-4 md:mb-6 mt-2">
+                {user.followers !== undefined && user.followers !== null ? user.followers : "0"}
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  {
+                    val: user.followersThisWeek !== undefined && user.followersThisWeek !== null
+                      ? (Number(user.followersThisWeek) > 0 ? `+${user.followersThisWeek}` : `${user.followersThisWeek}`)
+                      : "0",
+                    label: "THIS WEEK",
+                    color: "text-green-500",
+                  },
+                  {
+                    val: `${averageRating}★`,
+                    label: "RATING",
+                    color: "text-white",
+                  },
+                  {
+                    val: user.clients ? user.clients.length : 0,
+                    label: "CLIENTS",
+                    color: "text-blue-400",
+                  },
+                ].map((i) => {
+                  const isRating = i.label === "RATING";
+                  return (
+                    <div
+                      key={i.label}
+                      onClick={isRating ? () => { setReviewModalMode("read"); setShowReviewModal(true); } : undefined}
+                      className={cn(
+                        "bg-[#0E0616]/80 p-2 md:p-3 rounded-2xl border transition-all select-none",
+                        isRating
+                          ? "border-white/10 hover:border-[#ff3358]/50 hover:shadow-[0_0_15px_rgba(255,51,88,0.25)] cursor-pointer hover:bg-white/[0.04] active:scale-95 duration-300 relative overflow-hidden group/rating"
+                          : "border-white/10 hover:bg-white/[0.08]"
+                      )}
+                    >
+                      <div className={cn("text-xs font-black relative h-4 overflow-hidden", i.color)}>
+                        {isRating ? (
+                          <div className="absolute inset-0 transition-transform duration-300 flex flex-col items-center justify-start group-hover/rating:-translate-y-4">
+                            <span className="h-4 flex items-center justify-center">{i.val}</span>
+                            <span className="h-4 flex items-center justify-center text-[#ff3358] text-[9px] font-black uppercase tracking-wider gap-0.5">
+                              Rate Me <Star className="w-2.5 h-2.5 fill-current" />
+                            </span>
+                          </div>
+                        ) : (
+                          i.val
+                        )}
+                      </div>
+                      <div className="text-[8px] text-gray-500 font-bold tracking-widest uppercase opacity-60 mt-1">
+                        {i.label}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </GlassCard>
+          )}
 
           {!isAlenOrSham && (
             <div className="space-y-4">
@@ -4334,14 +4514,11 @@ const EmployeePage = () => {
                       />
                     </a>
                   ))
-                : ["Company A", "Company B", "Company C"].map((c, i) => (
-                    <span
-                      key={i}
-                      className="btn-typo text-gray-400/30 px-5 py-2 rounded-full border border-white/5 uppercase bg-white/2 cursor-default"
-                    >
-                      {c}
+                : (
+                    <span className="text-xs text-gray-500 uppercase tracking-widest py-2 font-medium">
+                      No clients managed yet
                     </span>
-                  ))}
+                  )}
             </div>
           </GlassCard>
 
@@ -4885,6 +5062,157 @@ const EmployeePage = () => {
         </motion.section>
       )}
 
+      {/* --- BLOG POSTS SECTION --- */}
+      {rawUser?.blogs && rawUser.blogs.length > 0 && (
+        <section className="max-w-[1440px] mx-auto px-4 md:px-8 mt-12 pb-4 relative z-10">
+          <div className="flex items-center gap-2 mb-8">
+            <div className="w-1 h-6 rounded-full bg-[#ff3358]" />
+            <h2 className="text-[11px] font-semibold tracking-[0.2em] uppercase text-gray-400">
+              Blog Posts
+            </h2>
+            <span className="text-[10px] text-gray-600 font-semibold uppercase tracking-widest ml-2 opacity-50">
+              Published Articles
+            </span>
+            <div className="flex-1 h-[1px] bg-white/5 ml-4" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {rawUser.blogs.map((blog, idx) => (
+              <a
+                key={idx}
+                href={blog.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group glass-card flex flex-col overflow-hidden rounded-3xl border border-white/5 hover:border-[#ff3358]/30 hover:shadow-[0_8px_30px_rgba(255,51,88,0.12)] transition-all duration-300 active:scale-[0.98]"
+              >
+                {/* Cover Image */}
+                <div className="relative w-full h-44 bg-white/5 overflow-hidden flex-shrink-0">
+                  {blog.image ? (
+                    <img
+                      src={blog.image}
+                      alt={blog.heading}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#ff3358]/10 to-transparent">
+                      <BookOpen className="w-10 h-10 text-[#ff3358]/40" />
+                    </div>
+                  )}
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  {/* Blog badge */}
+                  <span className="absolute top-3 left-3 px-2.5 py-1 bg-[#ff3358]/80 text-white text-[8px] font-black uppercase tracking-widest rounded-full">
+                    Blog
+                  </span>
+                </div>
+                {/* Content */}
+                <div className="flex flex-col flex-1 p-5 gap-3">
+                  <h3 className="text-sm font-bold text-white leading-snug tracking-tight group-hover:text-[#ff3358] transition-colors line-clamp-3">
+                    {blog.heading}
+                  </h3>
+                  <div className="mt-auto flex items-center gap-1.5 text-[10px] text-[#ff3358] font-semibold uppercase tracking-wide">
+                    <ExternalLink size={11} />
+                    Read Article
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* --- CLIENT REVIEWS SECTION --- */}
+      {!isAlenOrSham && (
+        <section className="max-w-[1440px] mx-auto px-4 md:px-8 mt-12 pb-16 md:pb-24 relative z-10 select-none">
+          <div className="flex justify-between items-center mb-8">
+            <SectionTitle 
+              title="Client Reviews & Testimonials" 
+              subtitle="Feedback from Partners"
+              barColor="bg-[#ff3358]" 
+            />
+            <button 
+              onClick={() => { setReviewModalMode("write"); setShowReviewModal(true); }}
+              className="flex items-center gap-2 btn-typo text-gray-400 hover:text-white hover:border-[#ff3358]/50 hover:shadow-[0_0_12px_rgba(255,51,88,0.25)] transition-all uppercase bg-white/5 px-4 py-2 rounded-full border border-white/10 active:scale-95 text-[9px] font-black tracking-widest shrink-0"
+            >
+              <Plus className="w-3.5 h-3.5" /> Write Review
+            </button>
+          </div>
+
+          {reviewsList && reviewsList.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {reviewsList.map((r, idx) => (
+                <div
+                  key={idx}
+                  className="glass-card p-6 flex flex-col justify-between hover:bg-white/[0.04] hover:border-white/10 hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] transition-all duration-300 relative group overflow-hidden border-white/5 rounded-3xl"
+                >
+                  {/* Accent glow on hover */}
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-yellow-500/5 to-transparent rounded-bl-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  <div>
+                    {/* Star Rating Row */}
+                    <div className="flex items-center gap-1 mb-4">
+                      {Array.from({ length: 5 }).map((_, sIdx) => (
+                        <Star
+                          key={sIdx}
+                          className={cn(
+                            "w-4 h-4",
+                            sIdx < r.rating
+                              ? "text-yellow-400 fill-yellow-400 filter drop-shadow-[0_0_4px_rgba(250,204,21,0.4)]"
+                              : "text-white/10"
+                          )}
+                        />
+                      ))}
+                    </div>
+                    
+                    {/* Review Text */}
+                    <p className="text-gray-300 text-xs italic leading-relaxed mb-6 font-medium">
+                      "{r.review}"
+                    </p>
+                  </div>
+
+                  {/* Reviewer Meta Details */}
+                  <div className="flex items-center justify-between border-t border-white/5 pt-4 mt-auto">
+                    <div>
+                      <h4 className="text-xs font-black text-white">{r.name}</h4>
+                      {r.company && (
+                        <p className="text-[9px] text-gray-500 font-bold uppercase tracking-wider mt-0.5">
+                          {r.company}
+                        </p>
+                      )}
+                    </div>
+                    <span className="text-[9px] text-gray-600 font-bold uppercase tracking-wider shrink-0">
+                      {r.createdAt
+                        ? new Date(r.createdAt).toLocaleDateString("en-US", {
+                            month: "short",
+                            year: "numeric",
+                          })
+                        : "Recently"}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="glass-card text-center p-8 md:p-12 border-white/5 rounded-3xl relative overflow-hidden flex flex-col items-center border-white/10 bg-gradient-to-br from-white/[0.02] to-transparent">
+              <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-4">
+                <Star className="w-6 h-6 text-gray-500" />
+              </div>
+              <h4 className="text-sm font-semibold text-white mb-2 uppercase tracking-wider">
+                No reviews submitted yet
+              </h4>
+              <p className="text-xs text-gray-500 max-w-sm mx-auto mb-6 leading-relaxed">
+                Be the first to share your experience working with {member.name}! Rate their execution and strategy.
+              </p>
+              <button
+                onClick={() => { setReviewModalMode("write"); setShowReviewModal(true); }}
+                className="bg-white/5 hover:bg-white/10 text-white border border-white/10 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all active:scale-95 hover:border-[#ff3358]/50 hover:shadow-[0_0_12px_rgba(255,51,88,0.2)]"
+              >
+                Write First Review
+              </button>
+            </div>
+          )}
+        </section>
+      )}
+
       <div className="relative z-10 bg-[#f5f5f7]">
         <Footer />
       </div>
@@ -4908,8 +5236,74 @@ const EmployeePage = () => {
           onClose={() => setShowBookSessionModal(false)}
         />
       )}
+
+      {showReviewModal && (
+        <ReviewModal
+          partnerName={member.name}
+          employeeId={rawUser?._id}
+          reviewsList={reviewsList}
+          initialMode={reviewModalMode}
+          onClose={() => setShowReviewModal(false)}
+          onReviewSubmit={(newReview) => {
+            setReviewsList((prev) => [newReview, ...prev]);
+          }}
+        />
+      )}
+
+      <PartnershipChatbot
+        key={member.name}
+        partnerName={member.name}
+        partnerEmail={
+          user.email ||
+          member.email ||
+          member.user?.email ||
+          "team@socialbureau.in"
+        }
+        isOpen={isChatOpen}
+        setIsOpen={setIsChatOpen}
+        isTeamTheme={true}
+      />
     </div>
   );
 };
 
 export default EmployeePage;
+
+function ClickUpVerifiedBadge({ className = "" }) {
+  return (
+    <div className={`inline-block relative ${className}`} style={{ zIndex: 50 }}>
+      {/* Verified Badge Icon (ClickUp Blue Scalloped Verified Badge) */}
+      <div className="cursor-pointer hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center">
+        <svg viewBox="0 0 24 24" className="w-7 h-7 text-[#3b82f6] fill-current filter drop-shadow-[0_0_12px_rgba(59,130,246,0.4)]">
+          <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.99-3.818-3.99-.485 0-.946.1-1.362.277C14.773 2.52 13.46 1.7 12 1.7s-2.773.82-3.41 2.087C8.174 3.61 7.713 3.51 7.228 3.51 5.12 3.51 3.41 5.29 3.41 7.5c0 .495.084.965.238 1.4-1.273.65-2.148 2.02-2.148 3.6 0 1.58.875 2.95 2.148 3.6-.154.435-.238.905-.238 1.4 0 2.21 1.71 3.99 3.818 3.99.485 0 .946-.1 1.362-.277.637 1.267 1.95 2.087 3.39 2.087s2.773-.82 3.41-2.087c.416.177.877.277 1.362.277 2.108 0 3.818-1.78 3.818-3.99 0-.495-.084-.965-.238-1.4 1.273-.65 2.148-2.02 2.148-3.6z" />
+          <path d="M9.7 16.22l-4.55-4.55 1.42-1.41 3.13 3.12 7.6-7.59 1.42 1.42-9.02 9.01z" fill="white" />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+function ClickUpPowerUserRosette() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ scale: 1.08, rotate: 5 }}
+      transition={{ type: "spring", stiffness: 300, damping: 15 }}
+      className="flex flex-col items-center select-none cursor-pointer group"
+    >
+      <div className="relative w-18 h-18 md:w-28 md:h-28 flex items-center justify-center mb-1 md:mb-2">
+        {/* Ambient Purple Glow */}
+        <div className="absolute inset-2 bg-purple-500/20 blur-xl rounded-full group-hover:bg-purple-500/40 transition-colors duration-500" />
+        
+        <img 
+          src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/TeamPage/clickup_verified.png" 
+          alt="Verified ClickUp Power User"
+          className="w-full h-full object-contain filter drop-shadow-[0_0_12px_rgba(168,85,247,0.4)] relative z-10"
+        />
+      </div>
+
+     
+    </motion.div>
+  );
+}

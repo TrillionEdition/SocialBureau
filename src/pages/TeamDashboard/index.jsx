@@ -6,7 +6,7 @@ import {
   Linkedin, Instagram, Twitter, CheckCircle2, AlertCircle,
   Layout, Sparkles, UserCircle, Upload, X, Camera, Loader2,
   Wrench, Briefcase, Award, Shield, MapPin, Phone, Calendar, DollarSign, Trash2, Edit3, Check,
-  GraduationCap, Mic, Play
+  GraduationCap, Mic, Play, BookOpen, ExternalLink
 } from 'lucide-react';
 import teamService from './teamService';
 import { toast } from 'react-toastify';
@@ -22,7 +22,8 @@ const TeamDashboard = () => {
         coverImage: false,
         idCard: false,
         clientLogo: false,
-        showcaseImage: false
+        showcaseImage: false,
+        blogImage: false
     });
     
     const fileInputRef = useRef(null);
@@ -68,7 +69,8 @@ const TeamDashboard = () => {
         achievements: [],
         podcasts: [],
         innovations: [],
-        workShowcase: []
+        workShowcase: [],
+        blogs: []
     });
 
     const [tagInput, setTagInput] = useState('');
@@ -106,6 +108,10 @@ const TeamDashboard = () => {
     const [certificationForm, setCertificationForm] = useState({ name: '', issuedBy: '', year: '', credentialUrl: '' });
     const [editingCertificationIndex, setEditingCertificationIndex] = useState(null);
     const [isAddingCertification, setIsAddingCertification] = useState(false);
+
+    const [blogForm, setBlogForm] = useState({ heading: '', link: '', image: '' });
+    const [editingBlogIndex, setEditingBlogIndex] = useState(null);
+    const [isAddingBlog, setIsAddingBlog] = useState(false);
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -156,6 +162,7 @@ const TeamDashboard = () => {
                         hobbies: userObj.hobbies || [],
                         innovations: userObj.innovations || [],
                         workShowcase: userObj.workShowcase || [],
+                        blogs: userObj.blogs || [],
                         consultations: {
                             price30Min: '',
                             price60Min: '',
@@ -193,7 +200,8 @@ const TeamDashboard = () => {
                         certifications: userObj.certifications || [],
                         hobbies: data.hobbies || userObj.hobbies || [],
                         innovations: userObj.innovations || [],
-                        workShowcase: userObj.workShowcase || []
+                        workShowcase: userObj.workShowcase || [],
+                        blogs: data.blogs || userObj.blogs || []
                     }));
                 }
             }
@@ -300,6 +308,8 @@ const TeamDashboard = () => {
                         ...prev,
                         images: [...(prev.images || []), response.url]
                     }));
+                } else if (activeUploadField === 'blogImage') {
+                    setBlogForm(prev => ({ ...prev, image: response.url }));
                 } else {
                     setFormData(prev => ({ ...prev, [activeUploadField]: response.url }));
                 }
@@ -423,6 +433,18 @@ const TeamDashboard = () => {
             }
         }
 
+        if (isAddingBlog || editingBlogIndex !== null) {
+            if (blogForm.heading.trim()) {
+                if (editingBlogIndex !== null) {
+                    const updated = [...(currentFormData.blogs || [])];
+                    updated[editingBlogIndex] = blogForm;
+                    currentFormData.blogs = updated;
+                } else {
+                    currentFormData.blogs = [...(currentFormData.blogs || []), blogForm];
+                }
+            }
+        }
+
         setSaving(true);
         try {
             const token = localStorage.getItem('token');
@@ -462,6 +484,10 @@ const TeamDashboard = () => {
                 setIsAddingCertification(false);
                 setEditingCertificationIndex(null);
                 setCertificationForm({ name: '', issuedBy: '', year: '', credentialUrl: '' });
+
+                setIsAddingBlog(false);
+                setEditingBlogIndex(null);
+                setBlogForm({ heading: '', link: '', image: '' });
 
                 // Reload from DB so the form stays in sync with persisted data
                 await fetchProfile();
@@ -648,6 +674,49 @@ const TeamDashboard = () => {
         }));
     };
 
+    // --- Blog Actions ---
+    const handleAddBlog = () => {
+        if (!blogForm.heading.trim()) {
+            toast.error('Blog Heading is required');
+            return;
+        }
+        if (!blogForm.link.trim()) {
+            toast.error('Blog Link is required');
+            return;
+        }
+        setFormData(prev => ({
+            ...prev,
+            blogs: [...(prev.blogs || []), blogForm]
+        }));
+        setBlogForm({ heading: '', link: '', image: '' });
+        setIsAddingBlog(false);
+    };
+
+    const handleUpdateBlog = () => {
+        if (!blogForm.heading.trim()) {
+            toast.error('Blog Heading is required');
+            return;
+        }
+        if (!blogForm.link.trim()) {
+            toast.error('Blog Link is required');
+            return;
+        }
+        setFormData(prev => {
+            const updated = [...(prev.blogs || [])];
+            updated[editingBlogIndex] = blogForm;
+            return { ...prev, blogs: updated };
+        });
+        setBlogForm({ heading: '', link: '', image: '' });
+        setEditingBlogIndex(null);
+    };
+
+    const handleDeleteBlog = (index) => {
+        setFormData(prev => ({
+            ...prev,
+            blogs: (prev.blogs || []).filter((_, i) => i !== index)
+        }));
+    };
+
     // --- Voices Podcasts Actions ---
     const handleAddPodcast = () => {
         if (!podcastForm.title.trim()) {
@@ -792,7 +861,8 @@ const TeamDashboard = () => {
         { id: 'workShowcase', label: 'Work Showcase', icon: <Layout size={18} /> },
         { id: 'timeline', label: 'Career Timeline', icon: <Award size={18} /> },
         { id: 'podcasts', label: 'Voices Podcasts', icon: <Mic size={18} /> },
-        { id: 'innovations', label: 'Innovation Feed', icon: <Sparkles size={18} /> }
+        { id: 'innovations', label: 'Innovation Feed', icon: <Sparkles size={18} /> },
+        { id: 'blogs', label: 'Blog Posts', icon: <BookOpen size={18} /> }
     ];
 
     if (loading) {
@@ -2700,6 +2770,167 @@ const TeamDashboard = () => {
                                                             <button
                                                                 type="button"
                                                                 onClick={() => handleDeleteInnovation(index)}
+                                                                className="p-3 bg-white/5 hover:bg-red-500/20 hover:text-red-500 rounded-xl transition-all"
+                                                            >
+                                                                <Trash2 size={14} />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            )}
+                                        </div>
+                                    </section>
+                                )}
+
+                                {activeTab === 'blogs' && (
+                                    <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+                                        <div className="flex items-center justify-between mb-10 border-b border-white/10 pb-8">
+                                            <div className="flex items-center gap-3">
+                                                <BookOpen className="text-brand-pink" size={28} />
+                                                <div>
+                                                    <h2 className="text-2xl font-black tracking-tight uppercase">BLOG POSTS</h2>
+                                                    <p className="text-xs text-white/40 font-medium mt-0.5">Link to articles you've written on the Social Bureau blog</p>
+                                                </div>
+                                            </div>
+                                            {!isAddingBlog && editingBlogIndex === null && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setIsAddingBlog(true);
+                                                        setBlogForm({ heading: '', link: '', image: '' });
+                                                    }}
+                                                    className="px-4 py-2.5 bg-[#ff3358]/10 hover:bg-[#ff3358] border border-[#ff3358]/20 hover:text-white rounded-xl text-[11px] font-bold text-[#ff3358] tracking-wide uppercase transition-all"
+                                                >
+                                                    + Add Blog
+                                                </button>
+                                            )}
+                                        </div>
+
+                                        {/* Inline Add/Edit Blog Form */}
+                                        {(isAddingBlog || editingBlogIndex !== null) && (
+                                            <div className="mb-8 p-6 bg-white/5 border border-[#ff3358]/20 rounded-3xl space-y-5">
+                                                <h3 className="text-xs font-black tracking-widest uppercase text-brand-pink mb-4">
+                                                    {editingBlogIndex !== null ? 'Edit Blog Post' : 'New Blog Post'}
+                                                </h3>
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                                    <div className="space-y-2 md:col-span-2">
+                                                        <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1 mb-2 block">Blog Heading *</label>
+                                                        <input
+                                                            type="text"
+                                                            required
+                                                            value={blogForm.heading}
+                                                            onChange={(e) => setBlogForm({ ...blogForm, heading: e.target.value })}
+                                                            className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-5 focus:border-[#ff3358] focus:bg-white/[0.07] outline-none text-sm transition-all text-white font-medium placeholder-white/20"
+                                                            placeholder="e.g. 10 Social Media Trends to Watch in 2025"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2 md:col-span-2">
+                                                        <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1 mb-2 block">Blog Link *</label>
+                                                        <input
+                                                            type="url"
+                                                            required
+                                                            value={blogForm.link}
+                                                            onChange={(e) => setBlogForm({ ...blogForm, link: e.target.value })}
+                                                            className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-5 focus:border-[#ff3358] focus:bg-white/[0.07] outline-none text-sm transition-all text-white font-medium placeholder-white/20"
+                                                            placeholder="https://socialbureau.in/blogs/your-article"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2 md:col-span-2">
+                                                        <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1 mb-2 block">Cover Image URL (Optional)</label>
+                                                        <div className="flex gap-3">
+                                                            <input
+                                                                type="url"
+                                                                value={blogForm.image}
+                                                                onChange={(e) => setBlogForm({ ...blogForm, image: e.target.value })}
+                                                                className="flex-1 bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-5 focus:border-[#ff3358] focus:bg-white/[0.07] outline-none text-sm transition-all text-white font-medium placeholder-white/20"
+                                                                placeholder="https://... (direct image URL)"
+                                                            />
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => { setActiveUploadField('blogImage'); fileInputRef.current?.click(); }}
+                                                                className="px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl text-xs font-bold text-white/60 tracking-wide uppercase transition-all whitespace-nowrap flex items-center gap-2"
+                                                            >
+                                                                {uploading.blogImage ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+                                                                Upload
+                                                            </button>
+                                                        </div>
+                                                        {blogForm.image && (
+                                                            <img src={blogForm.image} alt="Blog preview" className="mt-3 w-full max-w-xs h-28 object-cover rounded-2xl border border-white/10" />
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <div className="flex gap-4 justify-end">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setIsAddingBlog(false);
+                                                            setEditingBlogIndex(null);
+                                                            setBlogForm({ heading: '', link: '', image: '' });
+                                                        }}
+                                                        className="px-5 py-3 bg-white/5 hover:bg-white/10 rounded-xl text-[9px] font-black tracking-widest uppercase transition-all"
+                                                    >
+                                                        Cancel
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={editingBlogIndex !== null ? handleUpdateBlog : handleAddBlog}
+                                                        className="px-5 py-3 bg-[#ff3358] hover:brightness-110 rounded-xl text-[9px] font-black tracking-widest uppercase transition-all text-white"
+                                                    >
+                                                        Confirm
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Blog List */}
+                                        <div className="space-y-4">
+                                            {!formData.blogs || formData.blogs.length === 0 ? (
+                                                <div className="text-center py-12 text-white/20 font-black tracking-wider text-xs uppercase italic">
+                                                    No blog posts linked yet. Click "+ Add Blog" to add your articles.
+                                                </div>
+                                            ) : (
+                                                formData.blogs.map((blog, index) => (
+                                                    <div key={index} className="flex items-center justify-between p-5 bg-white/2 border border-white/5 rounded-3xl hover:bg-white/5 transition-all animate-fade-in gap-4">
+                                                        <div className="flex items-center gap-4 min-w-0">
+                                                            {blog.image ? (
+                                                                <img
+                                                                    src={blog.image}
+                                                                    alt={blog.heading}
+                                                                    className="w-16 h-16 object-cover rounded-2xl border border-white/10 shrink-0"
+                                                                />
+                                                            ) : (
+                                                                <div className="w-16 h-16 rounded-2xl bg-[#ff3358]/10 border border-[#ff3358]/20 flex items-center justify-center shrink-0">
+                                                                    <BookOpen className="text-brand-pink" size={22} />
+                                                                </div>
+                                                            )}
+                                                            <div className="min-w-0">
+                                                                <h4 className="text-sm font-bold tracking-tight text-white truncate">{blog.heading}</h4>
+                                                                <a
+                                                                    href={blog.link}
+                                                                    target="_blank"
+                                                                    rel="noreferrer"
+                                                                    className="text-[10px] text-brand-pink font-semibold hover:underline tracking-wide flex items-center gap-1 mt-1"
+                                                                >
+                                                                    <ExternalLink size={10} />
+                                                                    {blog.link}
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex gap-2 shrink-0">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setEditingBlogIndex(index);
+                                                                    setBlogForm(blog);
+                                                                    setIsAddingBlog(false);
+                                                                }}
+                                                                className="p-3 bg-white/5 hover:bg-brand-pink/20 hover:text-brand-pink rounded-xl transition-all"
+                                                            >
+                                                                <Edit3 size={14} />
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleDeleteBlog(index)}
                                                                 className="p-3 bg-white/5 hover:bg-red-500/20 hover:text-red-500 rounded-xl transition-all"
                                                             >
                                                                 <Trash2 size={14} />
