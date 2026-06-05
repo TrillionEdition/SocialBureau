@@ -498,11 +498,17 @@ export default function BlogDetail() {
     });
   }, [post?.content]);
 
-  if (isLoading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-sans"><div className="text-gray-600 text-xl">Loading...</div></div>;
+  if (isLoading || (!post && !error)) {
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center font-sans">
+      <div className="text-gray-600 text-xl">Loading...</div>
+    </div>
+  );
+}
 
-  if (error || !post) {
-    return <Navigate to="/404" replace />;
-  }
+if (error || !post) {
+  return <Navigate to="/404" replace />;
+}
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
@@ -564,8 +570,8 @@ export default function BlogDetail() {
         </div>
 
         <div className="mb-10 rounded-2xl overflow-hidden shadow-xl shadow-gray-200/50">
-          <img src={post.image} alt={post.title} fetchpriority="high" decoding="async" className="w-full h-auto aspect-video object-cover" />
-        </div>
+          <img src={post.image} alt={post.title} fetchPriority="high" decoding="async" className="w-full h-auto aspect-video object-cover" />
+          </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8">

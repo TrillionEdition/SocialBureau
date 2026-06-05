@@ -9,6 +9,7 @@ import Testimonials from '@/components/Testimonials';
 import mediaWaitlistService from "@/services/mediaWaitlistService";
 import Toast from "../components/Toast";
 import PortfolioPopup from '../components/PortfolioPopup';
+import Popup from '@/components/Popup';
 
 const handleJoinWaitingList = async ({ onResult } = {}) => {
   let email = null;
@@ -761,8 +762,8 @@ export const Home = () => {
 
   // Static Hero for Social Bureau
   const currentHero = {
-    desktop: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Desktop%20-%203.png",
-    mobile: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/image%20(13).png",
+    desktop: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/84641024-376f-47ff-a753-e2f9511b8e2b_large.png",
+    mobile: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/bb280ccc-6e3b-4ca8-8d9d-4541889c2902_large.png",
     alt: "Social Bureau"
   };
 
@@ -775,8 +776,9 @@ export const Home = () => {
         image="/assets/socialbureau.png"
         canonicalUrl="https://www.socialbureau.in"
       />
+      {/* <Popup/> */}
       <SchemaMarkup data={homepageSchemas} />
-      <AnniversaryCountdown />
+      {/* <AnniversaryCountdown /> */}
       <StudentTicker />
 
       {activePoster && (
@@ -800,7 +802,7 @@ export const Home = () => {
         </section>
       )}
 
-      {/* 
+      
       <section className="w-full px-0">
         <a href='/' target="_blank" rel="noopener noreferrer">
           <img
@@ -814,7 +816,7 @@ export const Home = () => {
             className={`block sm:hidden w-full object-contain ${currentHero.mobile ? 'h-full' : 'h-auto'}`}
           />
         </a>
-      </section> */}
+      </section>
       
       {/* <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
   <video

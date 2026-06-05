@@ -1,39 +1,39 @@
 import React, { useEffect, useState } from "react";
 
 const works = [
-  {
-    type: "carousel",
-    media: [
-      { type: "image", src: "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg" },
-      { type: "image", src: "https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg" },
-    ],
-  },
-  {
-    type: "image",
-    media: [
-      { type: "image", src: "https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg" },
-    ],
-  },
-  {
-    type: "video",
-    media: [
-      { type: "video", src: "https://www.w3schools.com/html/mov_bbb.mp4" },
-    ],
-  },
-  {
-    type: "image",
-    media: [
-      { type: "image", src: "/assets/service1.webp" },
-    ],
-  },
-  {
-    type: "carousel",
-    media: [
-      { type: "image", src: "https://images.pexels.com/photos/2246476/pexels-photo-2246476.jpeg" },
-      { type: "image", src: "https://images.pexels.com/photos/207247/pexels-photo-207247.jpeg" },
-      { type: "image", src: "https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg" },
-    ],
-  },
+  // {
+  //   type: "carousel",
+  //   media: [
+  //     { type: "image", src: "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg" },
+  //     { type: "image", src: "https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg" },
+  //   ],
+  // },
+  // {
+  //   type: "image",
+  //   media: [
+  //     { type: "image", src: "https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg" },
+  //   ],
+  // },
+  // {
+  //   type: "video",
+  //   media: [
+  //     { type: "video", src: "https://www.w3schools.com/html/mov_bbb.mp4" },
+  //   ],
+  // },
+  // {
+  //   type: "image",
+  //   media: [
+  //     { type: "image", src: "/assets/service1.webp" },
+  //   ],
+  // },
+  // {
+  //   type: "carousel",
+  //   media: [
+  //     { type: "image", src: "https://images.pexels.com/photos/2246476/pexels-photo-2246476.jpeg" },
+  //     { type: "image", src: "https://images.pexels.com/photos/207247/pexels-photo-207247.jpeg" },
+  //     { type: "image", src: "https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg" },
+  //   ],
+  // },
 ];
 
 const ScrollingGallery = () => {
