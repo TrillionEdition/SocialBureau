@@ -185,6 +185,14 @@ export default function Footer() {
                 >
                   Facebook
                 </a>
+                <a
+                  href="https://www.youtube.com/@SocialBureau"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[12px] text-blue-600 hover:text-blue-700 transition-colors"
+                >
+                  Youtube
+                </a>
               </div>
             </div>
           </div>

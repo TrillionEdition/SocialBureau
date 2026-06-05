@@ -1,6 +1,4 @@
 import { useState } from "react";
-
-import Topbar from "../components/Topbar";
 import Hero from "../components/Hero";
 import ProgressBar from "../components/ProgressBar";
 import StepNavigation from "../components/StepNavigation";
@@ -275,7 +273,6 @@ export default function WorkflowArchitect() {
 
   return (
     <div className="bg-[#0A0A0A] text-white min-h-screen">
-      <Topbar />
 
       <Hero />
 

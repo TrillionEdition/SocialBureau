@@ -143,18 +143,13 @@ ${(formData.goals || [])
   .join(", ")
   .replaceAll("_", " ")}.
 
-Based on the current business stage,
-team size, marketing maturity and
-identified challenges, the primary
-focus should be improving workflow
-efficiency, content consistency,
-lead generation and measurable KPI
+Based on the current business stage, team size, marketing maturity and
+identified challenges, the primary focus should be improving workflow
+efficiency, content consistency, lead generation and measurable KPI
 tracking.
 
-A structured digital team supported
-by documented processes and
-automation will significantly improve
-execution speed and growth outcomes.
+A structured digital team supported by documented processes and
+automation will significantly improve execution speed and growth outcomes.
 `;
 }
 
@@ -445,20 +440,15 @@ function generateRecommendation(
   formData
 ) {
   return `
-For ${formData.company_name},
-the recommended model is a
-hybrid execution structure
-combining internal ownership,
+For ${formData.company_name}, the recommended model is a
+hybrid execution structure combining internal ownership,
 specialist support and automation.
 
-Focus should be placed on
-consistent content production,
-performance tracking,
-lead generation systems
+Focus should be placed on consistent content production,
+performance tracking, lead generation systems
 and KPI accountability.
 
-The first 90 days should prioritize
-implementation discipline over
+The first 90 days should prioritize implementation discipline over
 rapid scaling.
 `;
 }

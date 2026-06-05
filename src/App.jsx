@@ -36,6 +36,7 @@ import IntakeDashboard from "./pages/IntakeDashboard";
 import ClientEnquiry from "./pages/ClientEnquiry";
 import PublicFormView from "./components/PublicFormViewer";
 import WorkflowArchitect from "./pages/WorkflowArchitect";
+import WorkflowDashboard from "./pages/Workflowdashboard";
 
 const Home = lazy(() =>
   import("./pages/Home").then((module) => ({ default: module.Home })),
@@ -489,6 +490,7 @@ function App() {
             <Route path="/client-enquiry" element={<AdminRoute><ClientEnquiry /></AdminRoute>} />            
             <Route path="/form/:slug" element={<PublicFormView />} />  {/* ← add this */}
             <Route path="/work-architect" element={<WorkflowArchitect />} />  {/* ← add this */}
+            <Route path="/workflow-dashboard" element={<WorkflowDashboard />} />
             <Route
               path="/data-intake"
               element={

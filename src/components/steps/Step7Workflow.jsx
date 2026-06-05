@@ -293,6 +293,9 @@ const toggleAccess = (value) => {
           <option value="google_meet">
             Google Meet
           </option>
+          <option value="google_meet">
+            Clickup
+          </option>
         </select>
       </div>
     </div>
