@@ -168,10 +168,6 @@ const toggleAccess = (value) => {
         <h3 className="uppercase tracking-[0.1em] text-[11px] font-bold text-[#A8A49C]">
           SocialBureau Services You Need
         </h3>
-
-        <span className="px-3 py-1 text-[10px] rounded-full bg-[rgba(232,25,44,.12)] border border-[rgba(232,25,44,.2)] text-[#F6C15A] uppercase tracking-[0.1em]">
-          Multi-Select
-        </span>
       </div>
 
       <div className="grid md:grid-cols-3 gap-4">
@@ -307,10 +303,6 @@ const toggleAccess = (value) => {
         <h3 className="uppercase tracking-[0.1em] text-[11px] font-bold text-[#A8A49C]">
           Access You Can Provide To SocialBureau
         </h3>
-
-        <span className="px-3 py-1 text-[10px] rounded-full bg-[rgba(232,25,44,.12)] border border-[rgba(232,25,44,.2)] text-[#F6C15A] uppercase tracking-[0.1em]">
-          Multi-Select
-        </span>
       </div>
 
       <div className="grid md:grid-cols-3 gap-4">
@@ -378,26 +370,28 @@ const toggleAccess = (value) => {
 
     {/* FOOTER */}
 
-    <div className="flex justify-between items-center mt-12 pt-8 border-t border-[rgba(255,255,255,.07)]">
-      <button
-        onClick={previousStep}
-        className="border border-[rgba(255,255,255,.07)] px-6 py-3 rounded-[10px]"
-      >
-        ← Back
-      </button>
+    <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-[rgba(255,255,255,.07)]">
 
-      <div className="uppercase text-[11px] tracking-[0.1em] text-[#5C5850]">
-        Step 7 of 7
-      </div>
+  <button
+    onClick={previousStep}
+    className="w-full sm:w-auto border border-[rgba(255,255,255,.07)] px-6 py-3 rounded-[10px]"
+  >
+    ← Back
+  </button>
 
-      <button
-        type="button"
-        onClick={() => onSubmit && onSubmit()}
-        className="px-6 py-3 bg-[#E8192C] rounded-[10px]"
-      >
-        ⚡ Generate My Workflow Plan
-      </button>
-    </div>
+  <div className="uppercase text-[11px] tracking-[0.1em] text-[#5C5850]">
+    Step 7 of 7
+  </div>
+
+  <button
+    type="button"
+    onClick={() => onSubmit && onSubmit()}
+    className="w-full sm:w-auto px-6 py-3 bg-[#E8192C] rounded-[10px] font-bold uppercase"
+  >
+    Generate My Workflow Plan
+  </button>
+
+</div>
   </div>
 );
 }

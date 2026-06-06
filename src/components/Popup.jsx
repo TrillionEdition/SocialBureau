@@ -36,7 +36,7 @@ export default function Popup() {
 
           {/* Story Image */}
           <img
-            src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Untitled%20design%20(67).png"
+            src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT%20Image%20Jun%206%2C%202026%2C%2010_13_14%20AM.png"
             alt="Spin & Win"
             className="w-full h-auto object-cover"
           />

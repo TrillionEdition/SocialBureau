@@ -43,17 +43,17 @@ export default function BlueprintCover({
         </div>
 
         <h1 className="
-          mt-6
-          text-[clamp(60px,8vw,110px)]
-          leading-[0.9]
-          font-black
-        ">
-          DIGITAL
-          <br />
-          <span className="text-[#E8192C]">
-            WORKFLOW
-          </span>
-        </h1>
+  mt-6
+  text-[clamp(40px,10vw,110px)]
+  leading-[0.9]
+  font-black
+">
+  DIGITAL
+  <br />
+  <span className="text-[#E8192C]">
+    WORKFLOW
+  </span>
+</h1>
 
         <h2 className="
           mt-4

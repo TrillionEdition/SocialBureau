@@ -776,7 +776,7 @@ export const Home = () => {
         image="/assets/socialbureau.png"
         canonicalUrl="https://www.socialbureau.in"
       />
-      {/* <Popup/> */}
+      <Popup/>
       <SchemaMarkup data={homepageSchemas} />
       {/* <AnniversaryCountdown /> */}
       <StudentTicker />
@@ -803,7 +803,7 @@ export const Home = () => {
       )}
 
       
-      <section className="w-full px-0">
+      {/* <section className="w-full px-0">
         <a href='/' target="_blank" rel="noopener noreferrer">
           <img
             src={currentHero.desktop}
@@ -816,7 +816,7 @@ export const Home = () => {
             className={`block sm:hidden w-full object-contain ${currentHero.mobile ? 'h-full' : 'h-auto'}`}
           />
         </a>
-      </section>
+      </section> */}
       
       {/* <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
   <video

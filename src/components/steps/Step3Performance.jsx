@@ -234,42 +234,42 @@ export default function Step3Performance({
   </div>
 
 </div>
-      {/* FOOTER */}
+      <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-[rgba(255,255,255,.07)]">
 
-      <div className="flex justify-between items-center mt-12 pt-8 border-t border-[rgba(255,255,255,.07)]">
+  <button
+    onClick={previousStep}
+    className="
+      w-full sm:w-auto
+      border
+      border-[rgba(255,255,255,.07)]
+      px-6
+      py-3
+      rounded-[10px]
+    "
+  >
+    ← Back
+  </button>
 
-        <button
-          onClick={previousStep}
-          className="
-            border
-            border-[rgba(255,255,255,.07)]
-            px-6
-            py-3
-            rounded-[10px]
-          "
-        >
-          ← Back
-        </button>
+  <div className="uppercase text-[11px] tracking-[0.1em] text-[#5C5850]">
+    Step 3 of 7
+  </div>
 
-        <div className="uppercase text-[11px] tracking-[0.1em] text-[#5C5850]">
-          Step 3 of 7
-        </div>
+  <button
+    onClick={nextStep}
+    className="
+      w-full sm:w-auto
+      bg-[#E8192C]
+      px-8
+      py-4
+      rounded-[10px]
+      font-bold
+      uppercase
+    "
+  >
+    Next: Challenges →
+  </button>
 
-        <button
-          onClick={nextStep}
-          className="
-            bg-[#E8192C]
-            px-8
-            py-4
-            rounded-[10px]
-            font-bold
-            uppercase
-          "
-        >
-          Next: Challenges →
-        </button>
-
-      </div>
+</div>
     </div>
   );
 }

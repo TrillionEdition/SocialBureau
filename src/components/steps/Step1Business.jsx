@@ -413,30 +413,31 @@ export default function Step1Business({
 
       {/* FOOTER */}
 
-      <div className="flex justify-between items-center mt-12 pt-8 border-t border-[rgba(255,255,255,.07)]">
+    <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-[rgba(255,255,255,.07)]">
 
-        <div className="uppercase text-[11px] tracking-[0.1em] text-[#5C5850]">
-          Step 1 of 7
-        </div>
+  <div className="uppercase text-[11px] tracking-[0.1em] text-[#5C5850] self-start sm:self-auto">
+    Step 1 of 7
+  </div>
 
-        <button
-          onClick={nextStep}
-          className="
-            bg-[#E8192C]
-            px-8
-            py-4
-            rounded-[10px]
-            font-bold
-            uppercase
-            tracking-[0.08em]
-            hover:bg-red-700
-            transition-all
-          "
-        >
-          Next: Digital Presence →
-        </button>
+  <button
+    onClick={nextStep}
+    className="
+      w-full sm:w-auto
+      bg-[#E8192C]
+      px-5
+      py-4
+      rounded-[10px]
+      font-bold
+      uppercase
+      tracking-[0.08em]
+      hover:bg-red-700
+      transition-all
+    "
+  >
+    Next: Digital Presence →
+  </button>
 
-      </div>
+</div>
 
     </div>
   );
