@@ -107,38 +107,7 @@ export default function SpinWheel() {
             }
         }
     }, []);
-    useEffect(() => {
-  const checkVersion = async () => {
-    try {
-      const response = await fetch("/version.json?t=" + Date.now());
-      const data = await response.json();
 
-      const currentVersion = localStorage.getItem("app_version");
-
-      if (!currentVersion) {
-        localStorage.setItem("app_version", data.version);
-        return;
-      }
-
-      if (currentVersion !== data.version) {
-        localStorage.setItem("app_version", data.version);
-
-        // Clear cache
-        if ("caches" in window) {
-          caches.keys().then(names => {
-            names.forEach(name => caches.delete(name));
-          });
-        }
-
-        window.location.reload(true);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  checkVersion();
-}, []);
     useEffect(() => {
         if (cooldown > 0) {
             const timer = setInterval(() => {

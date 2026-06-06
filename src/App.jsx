@@ -281,16 +281,6 @@ const HomeWrapper = () => {
 };
 
 function App() {
-  useEffect(() => {
-  const buildVersion = "20260605";
-
-  const storedVersion = localStorage.getItem("buildVersion");
-
-  if (storedVersion !== buildVersion) {
-    localStorage.setItem("buildVersion", buildVersion);
-    window.location.reload();
-  }
-}, []);
   return (
     <ReactLenis root options={lenisOptions}>
       <BrowserRouter>
