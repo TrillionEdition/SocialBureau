@@ -131,7 +131,7 @@ const AboutVision = () => {
                 viewport={{ once: true }}
                 className="pb-20 pt-4 px-6 text-center"
             >
-                <Link href='/our-team'>
+                <Link href='/team'>
                     <button className="bg-white text-[#8D0F16] px-14 py-5 rounded-full text-[14px] sm:text-[16px] md:text-[18px] font-bold hover:bg-black hover:text-white transition-all transform hover:scale-110 shadow-2xl uppercase tracking-widest">
                         Our Team
                     </button>

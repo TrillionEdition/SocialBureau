@@ -191,7 +191,7 @@ export default function Navbar() {
           title: "About",
           items: [
             { label: "About Us", href: "/about" },
-            { label: "Our Team", href: "/our-team" },
+            { label: "Our Team", href: "/team" },
           ],
         },
         {
@@ -255,6 +255,7 @@ export default function Navbar() {
 
     { label: "Team", href: "/team" },
     { label: "Enquiry", href: "/enquiry-form" },
+    { label: "Work Architect", href: "/work-architect", live: true },
     { label: "Support", href: "/contact" },
   ];
 
@@ -383,25 +384,27 @@ export default function Navbar() {
                   whileHover="hover"
                   initial="rest"
                 >
-                  {/* Original Text - slides up on hover */}
                   <motion.span
-                    className={`block ${
-                      item.label === '🎁 Spin & Win' 
-                        ? 'text-yellow-400 font-bold tracking-wide animate-pulse' 
-                        : isTeamPage && item.label === 'Team' 
-                        ? 'text-brand-pink font-bold' 
-                        : isGoldTheme 
-                        ? 'text-[#ecd292]/90 font-medium tracking-wide' 
-                        : 'text-white/90'
-                    }`}
-                    variants={{
-                      rest: { y: 0 },
-                      hover: { y: -24 },
-                    }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                  >
-                    {item.label}
-                  </motion.span>
+  className={`block flex items-center gap-1.5 ${
+    item.label === '🎁 Spin & Win' 
+      ? 'text-yellow-400 font-bold tracking-wide animate-pulse' 
+      : isTeamPage && item.label === 'Team' 
+      ? 'text-brand-pink font-bold' 
+      : isGoldTheme 
+      ? 'text-[#ecd292]/90 font-medium tracking-wide' 
+      : 'text-white/90'
+  }`}
+  variants={{ rest: { y: 0 }, hover: { y: -24 } }}
+  transition={{ duration: 0.3, ease: "easeInOut" }}
+>
+  {item.label}
+  {item.live && (
+  <span className="relative flex h-1.5 w-1.5 -mt-1.5">
+    <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" style={{ animation: "ping 1s cubic-bezier(0,0,0.2,1) infinite" }} />
+    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500" />
+  </span>
+)}
+</motion.span>
 
                   {/* Hover Text - appears from bottom */}
                   <motion.span
