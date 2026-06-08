@@ -226,34 +226,31 @@ export default function Paywall({
           </button>
 
         </div> */}
-<div style="max-width: 420px; margin: 0 auto; padding: 1.5rem 0;">
-  <div style="background: var(--color-background-secondary); border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); padding: 2rem; text-align: center; position: relative; overflow: hidden;">
+<div style={{ maxWidth: "420px", margin: "0 auto", padding: "1.5rem 0" }}>
+  <div style={{ background: "var(--color-background-secondary)", borderRadius: "var(--border-radius-lg)", border: "0.5px solid var(--color-border-tertiary)", padding: "2rem", textAlign: "center", position: "relative", overflow: "hidden" }}>
 
-    <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #E8192C; border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;"></div>
+    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: "#E8192C", borderRadius: "var(--border-radius-lg) var(--border-radius-lg) 0 0" }} />
 
-    <span style="display: inline-block; background: #E8192C; color: #fff; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 14px; border-radius: 999px; margin-bottom: 1.25rem;">Limited time offer</span>
+    <span style={{ display: "inline-block", background: "#E8192C", color: "#fff", fontSize: "11px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", padding: "4px 14px", borderRadius: "999px", marginBottom: "1.25rem" }}>Limited time offer</span>
 
-    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 4px;">
-      <span style="font-size: 14px; color: var(--color-text-secondary); text-decoration: line-through;">₹9,999</span>
-      <span style="background: var(--color-background-danger); color: var(--color-text-danger); font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: var(--border-radius-md);">100% off</span>
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "4px" }}>
+      <span style={{ fontSize: "14px", color: "var(--color-text-secondary)", textDecoration: "line-through" }}>₹9,999</span>
+      <span style={{ background: "var(--color-background-danger)", color: "var(--color-text-danger)", fontSize: "12px", fontWeight: 500, padding: "2px 8px", borderRadius: "var(--border-radius-md)" }}>100% off</span>
     </div>
 
-    <div style="font-size: 72px; font-weight: 500; line-height: 1; color: var(--color-text-primary); margin-bottom: 6px;">FREE</div>
+    <div style={{ fontSize: "72px", fontWeight: 500, lineHeight: 1, color: "var(--color-text-primary)", marginBottom: "6px" }}>FREE</div>
 
-    <div style="font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-secondary); margin-bottom: 1.75rem;">One-time · completely free</div>
+    <div style={{ fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--color-text-secondary)", marginBottom: "1.75rem" }}>One-time · completely free</div>
 
-    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.75rem; text-align: left;">
-      <div style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--color-text-secondary);">
-        <i class="ti ti-check" style="font-size: 16px; color: #E8192C;" aria-hidden="true"></i>
-        Full blueprint access
+    <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "1.75rem", textAlign: "left" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "var(--color-text-secondary)" }}>
+        ✓ Full blueprint access
       </div>
-      <div style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--color-text-secondary);">
-        <i class="ti ti-check" style="font-size: 16px; color: #E8192C;" aria-hidden="true"></i>
-        Lifetime updates included
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "var(--color-text-secondary)" }}>
+        ✓ Lifetime updates included
       </div>
-      <div style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--color-text-secondary);">
-        <i class="ti ti-check" style="font-size: 16px; color: #E8192C;" aria-hidden="true"></i>
-        Instant download
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "var(--color-text-secondary)" }}>
+        ✓ Instant download
       </div>
     </div>
 
@@ -265,15 +262,13 @@ export default function Paywall({
       {loading ? "Processing..." : "Get it free"}
     </button>
 
-    <p style="font-size: 12px; color: var(--color-text-tertiary); margin-top: 14px; margin-bottom: 0;">
-      <i class="ti ti-lock" style="font-size: 13px; vertical-align: -1px; margin-right: 4px;" aria-hidden="true"></i>
-      Secure checkout · 7-day refund guarantee
+    <p style={{ fontSize: "12px", color: "var(--color-text-tertiary)", marginTop: "14px", marginBottom: 0 }}>
+      🔒 Secure checkout · 7-day refund guarantee
     </p>
   </div>
 
-  <p style="text-align: center; font-size: 12px; color: var(--color-text-tertiary); margin-top: 12px;">
-    <i class="ti ti-clock" style="font-size: 13px; vertical-align: -1px; margin-right: 4px;" aria-hidden="true"></i>
-    Offer expires soon
+  <p style={{ textAlign: "center", fontSize: "12px", color: "var(--color-text-tertiary)", marginTop: "12px" }}>
+    ⏳ Offer expires soon
   </p>
 </div>
       </div>
