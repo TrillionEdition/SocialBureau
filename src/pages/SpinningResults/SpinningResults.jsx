@@ -1135,24 +1135,6 @@ const SpinningResults = () => {
                 logs. Your participation is protected by high-standard platform
                 security.
               </p>
-
-              <div className="glass-panel p-4 rounded-xl border border-red-500/10">
-                <p className="text-[9px] text-red-500 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />{" "}
-                  Real-time Audit
-                </p>
-                <div className="flex justify-between items-end mt-2">
-                  <div>
-                    <p className="text-xs font-bold text-white">
-                      Anil T. (Jaipur)
-                    </p>
-                    <p className="text-[9px] text-zinc-400">
-                      Transaction code verified
-                    </p>
-                  </div>
-                  <div className="text-sm font-black text-red-500">₹2,000</div>
-                </div>
-              </div>
             </div>
 
             <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
