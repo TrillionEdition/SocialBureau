@@ -893,11 +893,11 @@ const SpinningResults = () => {
       `}</style>
 
       {/* Main Container */}
-      <main className="pt-20 relative z-10 max-w-7xl mx-auto px-0">
+      <main className="pt-16 md:pt-20 relative z-10 max-w-7xl mx-auto px-0">
         {/* Hero Section */}
         <section
           id="wheel"
-          className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center py-16 md:py-24 px-4 sm:px-6 lg:px-0"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pt-2 pb-16 md:pt-4 md:pb-24 px-4 sm:px-6 lg:px-0"
         >
           <motion.div
             initial={{ opacity: 0, x: -30 }}
