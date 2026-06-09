@@ -24,6 +24,7 @@ import {
   CheckCircle2,
   Star,
 } from "lucide-react";
+import Popup from "@/components/Popup";
 
 // WebGL shaders for the flowing red background
 const vertexShaderSource = `
@@ -834,26 +835,68 @@ const SpinningResults = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
   );
+  const [timeLeft, setTimeLeft] = useState({
+  days: 0,
+  hours: 0,
+  minutes: 0,
+  seconds: 0,
+});
 
+useEffect(() => {
+  const targetDate = new Date("2026-07-15T00:00:00");
+
+  const timer = setInterval(() => {
+    const now = new Date();
+    const difference = targetDate - now;
+
+    if (difference <= 0) {
+      clearInterval(timer);
+      return;
+    }
+
+    setTimeLeft({
+      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+      hours: Math.floor(
+        (difference % (1000 * 60 * 60 * 24)) /
+          (1000 * 60 * 60)
+      ),
+      minutes: Math.floor(
+        (difference % (1000 * 60 * 60)) /
+          (1000 * 60)
+      ),
+      seconds: Math.floor(
+        (difference % (1000 * 60)) /
+          1000
+      ),
+    });
+  }, 1000);
+
+  return () => clearInterval(timer);
+}, []);
+  
+const [rotation, setRotation] = useState(0);
   return (
     <div
       className="min-h-screen bg-[#060101] text-zinc-100 relative overflow-x-hidden selection:bg-red-500 selection:text-white"
       onMouseMove={handleMouseMove}
     >
+      <Popup/>
       {/* Interactive webgl backdrop */}
       <canvas
         ref={canvasRef}
-        className="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-45"
+        className="fixed inset-0 w-full h-full pointer-events-none opacity-45"
+        style={{ zIndex: -10 }}
       />
 
       {/* Grid masking overlay */}
       <div
-        id="interactive-grid-overlay"
-        className="fixed inset-0 pointer-events-none z-0 opacity-20"
+  id="interactive-grid-overlay"
+  className="absolute inset-0 pointer-events-none opacity-20"
         style={{
           backgroundImage:
             "linear-gradient(to right, #dc2626 1px, transparent 1px), linear-gradient(to bottom, #dc2626 1px, transparent 1px)",
           backgroundSize: "45px 45px",
+          zIndex: -10,
         }}
       />
       <style>{`
@@ -920,7 +963,47 @@ const SpinningResults = () => {
               Experience our high-stakes luxury Spin & Win portal. Every payout
               is fully transparent and bank-secured.
             </p>
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+  className="mb-8 glass-panel p-5 rounded-3xl border border-red-500/20 red-glow-primary"
+>
+  <div className="text-center">
+    <div className="text-red-400 text-xs uppercase tracking-[0.3em] font-bold mb-2">
+      Next Mega Spin
+    </div>
 
+    <h3 className="text-2xl md:text-3xl font-black text-white mb-4">
+      July 15, 2027
+    </h3>
+
+    <div className="grid grid-cols-4 gap-3">
+      {[
+        { label: "Days", value: timeLeft.days },
+        { label: "Hours", value: timeLeft.hours },
+        { label: "Minutes", value: timeLeft.minutes },
+        { label: "Seconds", value: timeLeft.seconds },
+      ].map((item) => (
+        <div
+          key={item.label}
+          className="bg-black/40 rounded-2xl py-4 border border-white/10"
+        >
+          <div className="text-2xl md:text-4xl font-black text-yellow-400">
+            {String(item.value).padStart(2, "0")}
+          </div>
+          <div className="text-[10px] uppercase tracking-wider text-zinc-400 mt-1">
+            {item.label}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <p className="text-zinc-400 text-xs mt-4">
+      Countdown to the next Spin & Win event
+    </p>
+  </div>
+</motion.div>
             {/* Quick Stats Grid */}
             <div className="grid grid-cols-2 gap-4 pt-4">
               <div className="glass-panel p-5 rounded-2xl red-glow-primary hover:border-red-500/20 transition-all duration-300">
@@ -1009,22 +1092,22 @@ const SpinningResults = () => {
                   <div className="absolute -inset-4 bg-gradient-to-tr from-red-600/30 to-yellow-500/30 rounded-full blur-2xl opacity-50 animate-pulse" />
 
                   
-                  {/* Spinning Wheel */}
                   <div
-                    className="w-full h-full rounded-full relative z-10 select-none shadow-[0_0_50px_rgba(220,38,38,0.25)] border-[6px] border-red-950/60 overflow-hidden"
-                  >
-                    <img
-                      alt="Luxury Spin Wheel"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM0UYg--rRGzCVuI-ApeeY3SboHH-vl7APct0YYIVZCLnzvE4JxIhvEjCZEVoQoGKzErd5wXxdgUfKN-ENbeGoPrLal43N1j8yEIoXQZQ6ak0FX6upHVs9fZV52Dey2HFGir5u4CISvns4ZLfkJt7udmTQPtflHUw4h-zR0Ez1IbgR6cDf-Qw5uiVFgGalC4sBn-bzRE4NifR2q0a5m3o9nklUfrBvo8F8vHMrLnGusN4WIa8LfkACknlmk_L85cEqqCHJ13mn7q7A"
-                      className="w-full h-full object-cover filter brightness-95 contrast-105"
-                    />
-
-                    {/* Glowing center cap */}
-                    <div className="absolute inset-0 m-auto w-12 h-12 rounded-full bg-gradient-to-tr from-yellow-500 to-red-600 z-20 shadow-[0_0_20px_rgba(220,38,38,0.6)] border-2 border-white/20 flex items-center justify-center">
-                      <div className="w-4 h-4 rounded-full bg-black/40 animate-ping" />
-                    </div>
-                  </div>
-
+  onClick={handleSpinWheel}
+  className="w-full h-full rounded-full relative z-10 select-none cursor-pointer shadow-[0_0_50px_rgba(220,38,38,0.25)] border-[6px] border-red-950/60 overflow-hidden"
+  style={{
+    transform: `rotate(${wheelRotation}deg)`,
+    transition: isSpinning
+      ? "transform 6s cubic-bezier(0.17, 0.67, 0.12, 0.99)"
+      : "none",
+  }}
+>
+  <img
+    alt="Luxury Spin Wheel"
+    src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT%20Image%20Jun%209%2C%202026%2C%2006_04_47%20PM.png"
+    className="w-full h-full object-cover"
+  />
+</div>
                   {/* Spark ping sparks */}
                   <div className="absolute inset-0 pointer-events-none z-20">
                     <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-yellow-500 rounded-full animate-ping opacity-40"></div>
@@ -1037,7 +1120,6 @@ const SpinningResults = () => {
             </div>
           </motion.div>
         </section>
-
         {/* Recent Big Winners section */}
         <motion.section
           initial={{ opacity: 0, y: 40 }}
@@ -1086,9 +1168,9 @@ const SpinningResults = () => {
                       <h4 className="font-bold text-white text-sm">
                         {winner.name}
                       </h4>
-                      <p className="text-[10px] text-zinc-400">
+                      {/* <p className="text-[10px] text-zinc-400">
                         Phone ID: {winner.id}
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                   <div className="bg-emerald-500/10 text-emerald-400 text-[9px] px-2.5 py-1 rounded-full font-bold flex items-center gap-1 border border-emerald-500/20">
@@ -1283,9 +1365,6 @@ const SpinningResults = () => {
             <table className="w-full text-left border-collapse min-w-[700px] text-xs">
               <thead>
                 <tr className="border-b border-red-950/50 bg-[#0e0303]/60 text-zinc-400 uppercase tracking-wider font-bold">
-                  <th className="px-6 py-4 font-mono text-[10px]">
-                    User ID / Phone
-                  </th>
                   <th className="px-6 py-4 font-mono text-[10px]">Recipient</th>
                   <th className="px-6 py-4 font-mono text-[10px]">Prize</th>
                   <th className="px-6 py-4 font-mono text-[10px]">
@@ -1477,55 +1556,6 @@ const SpinningResults = () => {
         </motion.section>
       </main>
 
-      {/* Winning Reward Ceremony Dialog Modal */}
-      <AnimatePresence>
-        {showPrizeModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="w-full max-w-md p-8 rounded-3xl glass-panel text-center relative overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.4)] border border-red-500/30"
-            >
-              {/* Confetti element placement */}
-              <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-red-600/10 to-transparent rounded-full blur-3xl -mr-24 -mt-24" />
-
-              <button
-                onClick={() => setShowPrizeModal(false)}
-                className="absolute right-4 top-4 text-zinc-400 hover:text-white p-1 rounded-full bg-white/5 border border-white/5 transition-all"
-              >
-                <X size={16} />
-              </button>
-
-              <div className="w-20 h-20 bg-yellow-500/10 border border-yellow-500/25 rounded-full flex items-center justify-center mx-auto mb-6 text-yellow-500 drop-shadow-[0_0_15px_rgba(234,179,8,0.3)]">
-                <Trophy size={42} className="animate-pulse" />
-              </div>
-
-              <h3 className="text-2xl font-black text-white tracking-tight leading-none uppercase">
-                Mock Reward Released!
-              </h3>
-
-              <div className="text-4xl font-mono font-black text-yellow-400 my-6 drop-shadow-[0_0_10px_rgba(234,179,8,0.5)]">
-                {wonPrize}
-              </div>
-
-              <p className="text-zinc-400 text-xs leading-relaxed mb-6">
-                Verification checks succeeded. A mock payout transfer for{" "}
-                <span className="text-white font-bold">{wonPrize}</span> has
-                been processed automatically.
-              </p>
-
-              <button
-                onClick={() => setShowPrizeModal(false)}
-                className="w-full bg-white hover:bg-zinc-200 text-black font-black uppercase text-xs tracking-wider py-3.5 rounded-xl transition-all"
-              >
-                Claim Payout
-              </button>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
       {/* GPay Receipt Pop-up Modal */}
       <AnimatePresence>
         {selectedReceiptWinner && (
@@ -1556,9 +1586,9 @@ const SpinningResults = () => {
                   <h4 className="font-bold text-white text-sm">
                     {selectedReceiptWinner.name}
                   </h4>
-                  <p className="text-[10px] text-zinc-400">
+                  {/* <p className="text-[10px] text-zinc-400">
                     Phone ID: {selectedReceiptWinner.id}
-                  </p>
+                  </p> */}
                 </div>
               </div>
 
