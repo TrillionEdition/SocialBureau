@@ -1308,9 +1308,6 @@ const SpinningResults = () => {
                       onClick={() => setSelectedReceiptWinner(winner)}
                       className="hover:bg-red-950/15 border-b border-red-950/10 transition-colors cursor-pointer group"
                     >
-                      <td className="px-6 py-4 font-mono text-red-400 font-bold">
-                        {winner.id}
-                      </td>
                       <td className="px-6 py-4 font-bold text-white">
                         {winner.name}
                       </td>
