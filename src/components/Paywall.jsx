@@ -171,7 +171,7 @@ export default function Paywall({
 
         {/* PAYMENT */}
 
-        <div className="
+        {/* <div className="
           mt-10
           rounded-[18px]
           border
@@ -225,8 +225,52 @@ export default function Paywall({
               : "Unlock Blueprint"}
           </button>
 
-        </div>
+        </div> */}
+<div style={{ maxWidth: "420px", margin: "0 auto", padding: "1.5rem 0" }}>
+  <div style={{ background: "var(--color-background-secondary)", borderRadius: "var(--border-radius-lg)", border: "0.5px solid var(--color-border-tertiary)", padding: "2rem", textAlign: "center", position: "relative", overflow: "hidden" }}>
 
+    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: "#E8192C", borderRadius: "var(--border-radius-lg) var(--border-radius-lg) 0 0" }} />
+
+    <span style={{ display: "inline-block", background: "#E8192C", color: "#fff", fontSize: "11px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", padding: "4px 14px", borderRadius: "999px", marginBottom: "1.25rem" }}>Limited time offer</span>
+
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "4px" }}>
+      <span style={{ fontSize: "14px", color: "var(--color-text-secondary)", textDecoration: "line-through" }}>₹9,999</span>
+      <span style={{ background: "var(--color-background-danger)", color: "var(--color-text-danger)", fontSize: "12px", fontWeight: 500, padding: "2px 8px", borderRadius: "var(--border-radius-md)" }}>100% off</span>
+    </div>
+
+    <div style={{ fontSize: "72px", fontWeight: 500, lineHeight: 1, color: "var(--color-text-primary)", marginBottom: "6px" }}>FREE</div>
+
+    <div style={{ fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--color-text-secondary)", marginBottom: "1.75rem" }}>One-time · completely free</div>
+
+    <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "1.75rem", textAlign: "left" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "var(--color-text-secondary)" }}>
+        ✓ Full blueprint access
+      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "var(--color-text-secondary)" }}>
+        ✓ Lifetime updates included
+      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "var(--color-text-secondary)" }}>
+        ✓ Instant download
+      </div>
+    </div>
+
+    <button
+      onClick={handlePayment}
+      disabled={loading}
+      className="w-full py-5 rounded-[10px] bg-[#E8192C] font-bold uppercase tracking-[0.08em] hover:bg-red-700 transition-all mt-8"
+    >
+      {loading ? "Processing..." : "Get it free"}
+    </button>
+
+    <p style={{ fontSize: "12px", color: "var(--color-text-tertiary)", marginTop: "14px", marginBottom: 0 }}>
+      🔒 Secure checkout · 7-day refund guarantee
+    </p>
+  </div>
+
+  <p style={{ textAlign: "center", fontSize: "12px", color: "var(--color-text-tertiary)", marginTop: "12px" }}>
+    ⏳ Offer expires soon
+  </p>
+</div>
       </div>
     </div>
   );

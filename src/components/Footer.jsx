@@ -20,7 +20,7 @@ export default function Footer() {
     items: [
       { label: "Home", href: "/" },
       { label: "About Us", href: "/about" },
-      { label: "Our Team", href: "/our-team" },
+      { label: "Our Team", href: "/team" },
       { label: "Contact", href: "/contact" },
     ],
   },

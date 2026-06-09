@@ -580,7 +580,6 @@ const WebDevelopment = () => {
             >
                 ↑
             </button>
-            <Footer />
         </div>
     );
 };

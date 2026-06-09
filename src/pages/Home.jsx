@@ -776,7 +776,7 @@ export const Home = () => {
         image="/assets/socialbureau.png"
         canonicalUrl="https://www.socialbureau.in"
       />
-      <Popup/>
+      {/* <Popup/> */}
       <SchemaMarkup data={homepageSchemas} />
       {/* <AnniversaryCountdown /> */}
       <StudentTicker />
