@@ -16,6 +16,10 @@ export const AuthPage = () => {
   const [step, setStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const [direction, setDirection] = useState(0);
+  const isTransitioning = useRef(false);
+
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const turnstileWidgetId = useRef(null);
 
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [signupForm, setSignupForm] = useState({
@@ -24,6 +28,7 @@ export const AuthPage = () => {
     phone: "",
     password: "",
     confirmPassword: "",
+    emailOtp: "",
   });
 
   const signupFields = [
@@ -32,6 +37,9 @@ export const AuthPage = () => {
     { name: "phone", label: "Phone Number", placeholder: "+1 (555) 123-4567", icon: Phone, type: "tel" },
     { name: "password", label: "Password", placeholder: "••••••••", icon: Lock, type: "password" },
     { name: "confirmPassword", label: "Confirm Password", placeholder: "••••••••", icon: Lock, type: "password" },
+    ...(signupForm.email.toLowerCase().includes("gmail.com") ? [
+      { name: "emailOtp", label: "Email Verification Code", placeholder: "Enter 6-digit OTP", icon: Mail, type: "text" }
+    ] : [])
   ];
 
   const loginFields = [
@@ -70,17 +78,86 @@ export const AuthPage = () => {
       setError("Passwords do not match");
       return false;
     }
+    if (currentField.name === "emailOtp" && !/^\d{6}$/.test(value)) {
+      setError("Code must be a 6-digit number");
+      return false;
+    }
     return true;
   };
 
-  const nextStep = () => {
+  const nextStep = async () => {
+    if (isTransitioning.current) return;
     if (!validateCurrentField()) return;
-    if (step < currentFields.length - 1) {
-      setDirection(1);
-      setStep(s => s + 1);
-      setError("");
-    } else {
-      isLogin ? handleLogin() : handleSignup();
+
+    if (step === 0 && !captchaToken) {
+      setError("Please complete the captcha verification");
+      return;
+    }
+
+    isTransitioning.current = true;
+    try {
+      // If we are on step 4 (Confirm Password), send Email OTP first (only for Gmail)
+      if (!isLogin && step === 4 && signupForm.email.toLowerCase().includes("gmail.com")) {
+        setLoading(true);
+        setError("");
+        try {
+          const response = await fetch(`${BASE_URL}/user/send-signup-email-otp`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: signupForm.email }),
+          });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.message || "Failed to send Email OTP");
+
+          setSuccess("Verification OTP sent to " + signupForm.email);
+          setTimeout(() => setSuccess(""), 3000);
+
+          setDirection(1);
+          setStep(5);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+        return;
+      }
+
+      // If we are on step 5 (Email OTP), verify it first, then proceed to register (for Gmail)
+      if (!isLogin && step === 5) {
+        setLoading(true);
+        setError("");
+        try {
+          const emailOtp = signupForm.emailOtp;
+          const response = await fetch(`${BASE_URL}/user/verify-signup-email-otp`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: signupForm.email, otp: emailOtp }),
+          });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.message || "Invalid Email OTP");
+
+          // Verify successful, proceed directly to register
+          await handleSignup();
+        } catch (err) {
+          setError(err.message);
+          setLoading(false);
+        }
+        return;
+      }
+
+      if (step < currentFields.length - 1) {
+        setDirection(1);
+        setStep(s => s + 1);
+        setError("");
+      } else {
+        if (isLogin) {
+          await handleLogin();
+        } else {
+          await handleSignup();
+        }
+      }
+    } finally {
+      isTransitioning.current = false;
     }
   };
 
@@ -106,7 +183,7 @@ export const AuthPage = () => {
       const response = await fetch(`${BASE_URL}/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loginForm),
+        body: JSON.stringify({ ...loginForm, captchaToken }),
         credentials: "include",
       });
       const data = await response.json();
@@ -137,6 +214,7 @@ export const AuthPage = () => {
       setError(err.message);
       setDirection(-1);
       setStep(0);
+      setCaptchaToken(null);
     } finally {
       setLoading(false);
     }
@@ -147,26 +225,50 @@ export const AuthPage = () => {
     setError("");
     try {
       // Register user
-      const registerRes = await registerUserAPI({ ...signupForm, role: "user" });
-      setSuccess("Account created");
+      await registerUserAPI({ ...signupForm, role: "user", captchaToken });
+      setSuccess("Account created successfully! Redirecting to login...");
 
-      // Automatically login after registration
-      const loginRes = await fetch(`${BASE_URL}/user/login`, {
+      // Redirect to login page internally after 2 seconds
+      setTimeout(() => {
+        setIsLogin(true);
+        setStep(0);
+        setLoginForm({ email: signupForm.email, password: "" });
+        setSuccess("");
+        setError("");
+        setCaptchaToken(null);
+        setLoading(false);
+      }, 2000);
+    } catch (err) {
+      setError(err.response?.data?.message || err.message || "Registration failed");
+      setStep(0);
+      setCaptchaToken(null);
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async (idToken) => {
+    setLoading(true);
+    setError("");
+    setSuccess("");
+    try {
+      const response = await fetch(`${BASE_URL}/user/google-login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: signupForm.email, password: signupForm.password }),
+        body: JSON.stringify({ idToken }),
         credentials: "include",
       });
-      const data = await loginRes.json();
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Google Login failed");
       
-      if (loginRes.ok && data.user) {
+      if (data.user) {
         setUserData(data.user);
         localStorage.setItem('user', JSON.stringify(data.user));
         if (data.token) localStorage.setItem('token', data.token);
-        window.dispatchEvent(new Event("authChange"));
-        
-        // Handle redirection
-      // Handle redirection
+      }
+      
+      setSuccess(data.message || "Welcome back");
+      window.dispatchEvent(new Event("authChange"));
+      
       const queryParams = new URLSearchParams(location.search);
       const redirectParam = queryParams.get("redirect");
       let from = location.state?.from?.pathname || redirectParam;
@@ -182,27 +284,157 @@ export const AuthPage = () => {
       }
 
       setTimeout(() => navigate(from, { replace: true }), 1500);
-      } else {
-        // If auto-login fails for some reason, just go to login page
-        setTimeout(() => {
-          setIsLogin(true);
-          setStep(0);
-          setLoginForm({ email: signupForm.email, password: "" });
-          setSuccess("");
-        }, 2000);
-      }
     } catch (err) {
-      setError(err.response?.data?.message || err.message || "Registration failed");
+      setError(err.message);
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (step !== 0) {
+      return;
+    }
+
+    let isMounted = true;
+
+    const renderTurnstile = () => {
+      if (!isMounted) return;
+      const container = document.getElementById("cf-turnstile-container");
+      const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+      
+      if (!window.turnstile) {
+        setTimeout(renderTurnstile, 100);
+        return;
+      }
+
+      if (container && siteKey) {
+        container.innerHTML = "";
+        try {
+          turnstileWidgetId.current = window.turnstile.render("#cf-turnstile-container", {
+            sitekey: siteKey,
+            theme: "dark",
+            callback: (token) => {
+              if (isMounted) {
+                setCaptchaToken(token);
+                setError("");
+              }
+            },
+            "expired-callback": () => {
+              if (isMounted) setCaptchaToken(null);
+            },
+            "error-callback": () => {
+              if (isMounted) setCaptchaToken(null);
+            },
+          });
+        } catch (e) {
+          console.error("Turnstile render error:", e);
+        }
+      }
+    };
+
+    const existingScript = document.getElementById("cf-turnstile-script");
+    if (!existingScript) {
+      const script = document.createElement("script");
+      script.id = "cf-turnstile-script";
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        setTimeout(renderTurnstile, 100);
+      };
+      document.body.appendChild(script);
+    } else {
+      if (window.turnstile) {
+        setTimeout(renderTurnstile, 50);
+      } else {
+        existingScript.addEventListener("load", renderTurnstile);
+      }
+    }
+
+    return () => {
+      isMounted = false;
+      const scriptEl = document.getElementById("cf-turnstile-script");
+      if (scriptEl) {
+        scriptEl.removeEventListener("load", renderTurnstile);
+      }
+      if (window.turnstile && turnstileWidgetId.current !== null) {
+        try {
+          window.turnstile.remove(turnstileWidgetId.current);
+        } catch (e) {
+          // ignore
+        }
+        turnstileWidgetId.current = null;
+      }
+    };
+  }, [step, isLogin]);
+
+  useEffect(() => {
+    let script;
+    const initGoogleSignIn = () => {
+      if (window.google && step === 0) {
+        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+        if (!clientId) {
+          console.warn("⚠️ VITE_GOOGLE_CLIENT_ID is not configured in frontend environment variables.");
+        }
+        
+        window.google.accounts.id.initialize({
+          client_id: clientId || "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+          callback: (response) => {
+            if (response.credential) {
+              handleGoogleLogin(response.credential);
+            }
+          },
+        });
+        
+        const container = document.getElementById("google-signin-button");
+        if (container) {
+          window.google.accounts.id.renderButton(container, {
+            theme: "outline",
+            size: "large",
+            text: isLogin ? "signin_with" : "signup_with",
+            shape: "pill",
+            width: "320",
+          });
+        }
+      }
+    };
+
+    // Check if script already exists
+    const existingScript = document.getElementById("google-gsi-script");
+    if (!existingScript) {
+      script = document.createElement("script");
+      script.id = "google-gsi-script";
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      script.onload = initGoogleSignIn;
+      document.body.appendChild(script);
+    } else {
+      if (window.google) {
+        initGoogleSignIn();
+      } else {
+        existingScript.addEventListener("load", initGoogleSignIn);
+      }
+    }
+
+    const timer = setTimeout(initGoogleSignIn, 50);
+
+    return () => {
+      clearTimeout(timer);
+      const scriptEl = document.getElementById("google-gsi-script");
+      if (scriptEl) {
+        scriptEl.removeEventListener("load", initGoogleSignIn);
+      }
+    };
+  }, [step, isLogin]);
 
   const toggleAuth = () => {
     setIsLogin(!isLogin);
     setStep(0);
     setError("");
     setSuccess("");
+    setCaptchaToken(null);
   };
 
   return (
@@ -332,7 +564,24 @@ export const AuthPage = () => {
                       </motion.div>
                     )}
                   </div>
+
+                  {step === 0 && (
+                    <div id="cf-turnstile-container" className="w-full flex justify-center mt-6 min-h-[70px]" />
+                  )}
                 </div>
+
+                {step === 0 && (
+                  <div className="mt-8 flex flex-col items-center gap-6">
+                    <div className="flex items-center gap-4 w-full">
+                      <div className="h-[1px] bg-white/10 flex-1" />
+                      <span className="text-gray-500 text-xs font-light tracking-widest uppercase">Or</span>
+                      <div className="h-[1px] bg-white/10 flex-1" />
+                    </div>
+                    <div className="w-full flex justify-center">
+                      <div id="google-signin-button" className="w-full flex justify-center" />
+                    </div>
+                  </div>
+                )}
 
                 {/* Error State */}
                 <AnimatePresence>

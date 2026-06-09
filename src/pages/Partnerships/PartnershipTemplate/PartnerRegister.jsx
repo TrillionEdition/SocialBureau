@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Lock, User, Briefcase, Eye, EyeOff, CheckCircle2, AlertCircle, ArrowRight, Loader2 } from "lucide-react";
@@ -22,9 +22,263 @@ const PartnerRegister = () => {
     role: "partner"
   });
 
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const turnstileWidgetId = useRef(null);
+
+  // OTP Verification States
+  const [emailOtp, setEmailOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [otpLoading, setOtpLoading] = useState(false);
+
+  const handleGoogleLogin = async (idToken) => {
+    setLoading(true);
+    setError("");
+    setSuccess("");
+    try {
+      const response = await fetch(`${BASE_URL}/user/google-login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken, role: "partner" }),
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Google Login failed");
+      
+      if (data.user) {
+        setUserData(data.user);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        if (data.token) localStorage.setItem('token', data.token);
+      }
+      
+      setSuccess("Welcome!");
+      window.dispatchEvent(new Event("authChange"));
+      
+      // Check if user has an existing portfolio to decide redirection
+      let hasPortfolio = false;
+      try {
+        const portResponse = await fetch(`${BASE_URL}/partners/my-partnership`, {
+          headers: { "Authorization": `Bearer ${data.token}` }
+        });
+        const portData = await portResponse.json();
+        if (portData.success && portData.data) {
+          hasPortfolio = true;
+        }
+      } catch (err) {
+        console.error("Portfolio check failed", err);
+      }
+      
+      const queryParams = new URLSearchParams(location.search);
+      const redirectParam = queryParams.get("redirect");
+      const isAdmin = data.user?.role?.toLowerCase() === "admin";
+      
+      let destination = "/partners/select-template";
+      if (hasPortfolio || isAdmin) {
+        destination = "/partners/dashboard";
+      } else if (redirectParam) {
+        destination = redirectParam;
+      }
+      
+      setTimeout(() => {
+        navigate(destination, { replace: true });
+      }, 1000);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    let isMounted = true;
+    const renderTurnstile = () => {
+      if (!isMounted) return;
+      const container = document.getElementById("cf-turnstile-container");
+      const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+      
+      if (!window.turnstile) {
+        setTimeout(renderTurnstile, 100);
+        return;
+      }
+
+      if (container && siteKey) {
+        container.innerHTML = "";
+        try {
+          turnstileWidgetId.current = window.turnstile.render("#cf-turnstile-container", {
+            sitekey: siteKey,
+            theme: "dark",
+            callback: (token) => {
+              if (isMounted) {
+                setCaptchaToken(token);
+                setError("");
+              }
+            },
+            "expired-callback": () => {
+              if (isMounted) setCaptchaToken(null);
+            },
+            "error-callback": () => {
+              if (isMounted) setCaptchaToken(null);
+            },
+          });
+        } catch (e) {
+          console.error("Turnstile render error:", e);
+        }
+      }
+    };
+
+    const existingScript = document.getElementById("cf-turnstile-script");
+    if (!existingScript) {
+      const script = document.createElement("script");
+      script.id = "cf-turnstile-script";
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        setTimeout(renderTurnstile, 100);
+      };
+      document.body.appendChild(script);
+    } else {
+      if (window.turnstile) {
+        setTimeout(renderTurnstile, 50);
+      } else {
+        existingScript.addEventListener("load", renderTurnstile);
+      }
+    }
+
+    return () => {
+      isMounted = false;
+      const scriptEl = document.getElementById("cf-turnstile-script");
+      if (scriptEl) {
+        scriptEl.removeEventListener("load", renderTurnstile);
+      }
+      if (window.turnstile && turnstileWidgetId.current !== null) {
+        try {
+          window.turnstile.remove(turnstileWidgetId.current);
+        } catch (e) {
+          // ignore
+        }
+        turnstileWidgetId.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    let script;
+    const initGoogleSignIn = () => {
+      if (window.google) {
+        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+        window.google.accounts.id.initialize({
+          client_id: clientId || "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+          callback: (response) => {
+            if (response.credential) {
+              handleGoogleLogin(response.credential);
+            }
+          },
+        });
+        
+        const container = document.getElementById("google-signin-button");
+        if (container) {
+          window.google.accounts.id.renderButton(container, {
+            theme: "outline",
+            size: "large",
+            text: "signup_with",
+            shape: "pill",
+            width: "320",
+          });
+        }
+      }
+    };
+
+    const existingScript = document.getElementById("google-gsi-script");
+    if (!existingScript) {
+      script = document.createElement("script");
+      script.id = "google-gsi-script";
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      script.onload = initGoogleSignIn;
+      document.body.appendChild(script);
+    } else {
+      if (window.google) {
+        initGoogleSignIn();
+      } else {
+        existingScript.addEventListener("load", initGoogleSignIn);
+      }
+    }
+
+    const timer = setTimeout(initGoogleSignIn, 50);
+
+    return () => {
+      clearTimeout(timer);
+      const scriptEl = document.getElementById("google-gsi-script");
+      if (scriptEl) {
+        scriptEl.removeEventListener("load", initGoogleSignIn);
+      }
+    };
+  }, []);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setError("");
+    if (e.target.name === "email") {
+      setOtpSent(false);
+      setOtpVerified(false);
+      setEmailOtp("");
+    }
+  };
+
+  const handleSendOtp = async () => {
+    if (!form.email || !/\S+@\S+\.\S+/.test(form.email)) {
+      setError("Please enter a valid email address first");
+      return;
+    }
+    setOtpLoading(true);
+    setError("");
+    setSuccess("");
+    try {
+      const response = await fetch(`${BASE_URL}/user/send-signup-email-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: form.email }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Failed to send verification OTP");
+
+      setOtpSent(true);
+      setSuccess("Verification code sent to " + form.email);
+      setTimeout(() => setSuccess(""), 4000);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setOtpLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    if (!emailOtp || emailOtp.length !== 6) {
+      setError("Please enter a 6-digit code");
+      return;
+    }
+    setOtpLoading(true);
+    setError("");
+    setSuccess("");
+    try {
+      const response = await fetch(`${BASE_URL}/user/verify-signup-email-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: form.email, otp: emailOtp }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Invalid verification code");
+
+      setOtpVerified(true);
+      setSuccess("Email verification successful!");
+      setTimeout(() => setSuccess(""), 4000);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setOtpLoading(false);
+    }
   };
 
   const validate = () => {
@@ -34,6 +288,14 @@ const PartnerRegister = () => {
     }
     if (form.password.length < 6) {
       setError("Password must be at least 6 characters");
+      return false;
+    }
+    if (!otpVerified) {
+      setError("Please verify your email address with the OTP code first");
+      return false;
+    }
+    if (!captchaToken) {
+      setError("Please complete the captcha verification");
       return false;
     }
     return true;
@@ -48,7 +310,7 @@ const PartnerRegister = () => {
 
     try {
       // Register the user
-      const data = await registerUserAPI(form);
+      await registerUserAPI({ ...form, captchaToken });
       
       setSuccess("Account created successfully! Redirecting to login...");
       
@@ -57,6 +319,14 @@ const PartnerRegister = () => {
       }, 1500);
     } catch (err) {
       setError(err.response?.data?.message || err.message || "Registration failed");
+      setCaptchaToken(null);
+      if (window.turnstile && turnstileWidgetId.current !== null) {
+        try {
+          window.turnstile.reset(turnstileWidgetId.current);
+        } catch (e) {
+          // ignore
+        }
+      }
     } finally {
       setLoading(false);
     }
@@ -130,6 +400,63 @@ const PartnerRegister = () => {
                   required
                 />
               </div>
+
+              {/* Email OTP Verification */}
+              {form.email && /\S+@\S+\.\S+/.test(form.email) && (
+                <div className="mt-2 p-3 bg-zinc-900 border border-zinc-800 rounded-xl space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Email Verification</span>
+                    {otpVerified ? (
+                      <span className="text-[10px] font-black text-lime-400 uppercase tracking-widest flex items-center gap-1">
+                        <CheckCircle2 size={12} /> Verified
+                      </span>
+                    ) : (
+                      <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest">
+                        Required
+                      </span>
+                    )}
+                  </div>
+                  
+                  {!otpVerified && (
+                    <div className="space-y-2">
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          disabled={otpLoading || loading}
+                          onClick={handleSendOtp}
+                          className="px-4 py-2 bg-lime-400/10 hover:bg-lime-400/20 text-lime-400 font-bold text-xs rounded-lg transition-all border border-lime-400/20 active:scale-95 disabled:opacity-50 disabled:scale-100"
+                        >
+                          {otpLoading ? "Sending..." : otpSent ? "Resend Verification Code" : "Send Verification Code"}
+                        </button>
+                      </div>
+                      
+                      {otpSent && (
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            placeholder="6-digit OTP code"
+                            maxLength={6}
+                            value={emailOtp}
+                            onChange={(e) => {
+                              setEmailOtp(e.target.value);
+                              setError("");
+                            }}
+                            className="bg-black border border-zinc-800 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-lime-400/50 w-32 tracking-widest text-center font-bold"
+                          />
+                          <button
+                            type="button"
+                            disabled={otpLoading || emailOtp.length !== 6}
+                            onClick={handleVerifyOtp}
+                            className="flex-grow bg-lime-400 hover:bg-white text-black font-black text-xs rounded-lg transition-all active:scale-95 disabled:opacity-50 disabled:scale-100 uppercase tracking-wider"
+                          >
+                            Verify Code
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             <div>
@@ -169,6 +496,9 @@ const PartnerRegister = () => {
             </div>
           </div>
 
+          {/* Cloudflare Turnstile Container */}
+          <div id="cf-turnstile-container" className="w-full flex justify-center mt-3 min-h-[70px]" />
+
           <button 
             type="submit" 
             disabled={loading}
@@ -183,6 +513,15 @@ const PartnerRegister = () => {
               </>
             )}
           </button>
+
+          <div className="relative flex py-4 items-center">
+            <div className="flex-grow border-t border-zinc-800"></div>
+            <span className="flex-shrink mx-4 text-zinc-500 text-xs font-bold uppercase tracking-widest">or</span>
+            <div className="flex-grow border-t border-zinc-800"></div>
+          </div>
+
+          {/* Google Sign-in Button Container */}
+          <div id="google-signin-button" className="w-full flex justify-center min-h-[44px]" />
 
           <p className="text-center text-zinc-500 text-[12px] mt-4">
             Already have an account?{" "}

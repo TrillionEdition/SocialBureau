@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, ExternalLink, Copy, Layout, User, Plus, CheckCircle, Globe, Briefcase, LogOut, Edit3 } from "lucide-react";
+import { Search, ExternalLink, Copy, Layout, User, Plus, CheckCircle, Globe, Briefcase, LogOut, Edit3, Eye, EyeOff } from "lucide-react";
 import { BASE_URL } from "@/utils/urls";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import Logout from "../../../components/Logout";
@@ -17,6 +17,9 @@ const PartnerDashboard = () => {
   const [notificationSound] = useState(new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"));
   const navigate = useNavigate();
 
+  const userData = JSON.parse(localStorage.getItem("user") || "{}");
+  const isAdmin = userData.role === "admin";
+
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (!user) {
@@ -27,11 +30,9 @@ const PartnerDashboard = () => {
     const fetchPartners = async (isInitial = true) => {
       try {
         const token = localStorage.getItem("token");
-        const userData = JSON.parse(localStorage.getItem("user") || "{}");
-        const isAdmin = userData.role === "admin";
         
         // Admins see everything, students see only their own
-        const endpoint = isAdmin ? `${BASE_URL}/partners` : `${BASE_URL}/partners/my-partnership`;
+        const endpoint = isAdmin ? `${BASE_URL}/partners?adminView=true` : `${BASE_URL}/partners/my-partnership`;
         
         const response = await fetch(endpoint, {
           headers: { "Authorization": `Bearer ${token}` }
@@ -92,6 +93,33 @@ const PartnerDashboard = () => {
     navigator.clipboard.writeText(url);
     setCopiedId(slug);
     setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const handleToggleVisibility = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${BASE_URL}/partners/${id}/toggle-visibility`, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+      const data = await response.json();
+      if (data.success) {
+        setPartners(prev => prev.map(p => {
+          if (p._id === id) {
+            return { ...p, isVisible: data.data.isVisible };
+          }
+          return p;
+        }));
+      } else {
+        alert(data.message || "Failed to update visibility");
+      }
+    } catch (err) {
+      console.error("Failed to toggle visibility:", err);
+      alert("Error toggling visibility");
+    }
   };
 
   const filteredPartners = partners.filter(p => 
@@ -206,14 +234,41 @@ const PartnerDashboard = () => {
                         <Edit3 size={14} /> Edit Portfolio
                       </button>
                   </div>
-                  <a 
-                    href={`/partnership/${item.param}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 py-4 bg-[#E8001A] text-white rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all shadow-xl shadow-[#E8001A]/20 italic"
-                  >
-                    <ExternalLink size={14} /> View Live
-                  </a>
+                  <div className="grid grid-cols-2 gap-3">
+                      <a 
+                        href={`/partnership/${item.param}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 py-4 bg-[#E8001A] text-white rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all shadow-xl shadow-[#E8001A]/20 italic"
+                      >
+                        <ExternalLink size={14} /> View Live
+                      </a>
+                      {isAdmin ? (
+                        <button 
+                          onClick={() => handleToggleVisibility(item._id)}
+                          className={`flex items-center justify-center gap-2 py-4 rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] transition-all border border-white/5 ${
+                            item.isVisible === true 
+                              ? "bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20" 
+                              : "bg-red-500/10 text-red-400 hover:bg-red-500/20"
+                          }`}
+                        >
+                          {item.isVisible === true ? <Eye size={14} /> : <EyeOff size={14} />}
+                          {item.isVisible === true ? "Public" : "Private"}
+                        </button>
+                      ) : (
+                        <div 
+                          className={`flex items-center justify-center gap-2 py-4 rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] border border-white/5 text-center ${
+                            item.isVisible === true 
+                              ? "bg-emerald-500/5 text-emerald-400/70" 
+                              : "bg-red-500/5 text-red-400/70"
+                          }`}
+                          title={item.isVisible === true ? "Publicly Visible" : "Verification Pending"}
+                        >
+                          {item.isVisible === true ? <Eye size={14} /> : <EyeOff size={14} />}
+                          {item.isVisible === true ? "Public" : "Pending"}
+                        </div>
+                      )}
+                  </div>
                 </div>
               </motion.div>
             ))}

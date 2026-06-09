@@ -1,6 +1,6 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import "./App.css";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, Link } from "react-router-dom";
 import { ReactLenis } from "lenis/react";
 import "lenis/dist/lenis.css";
 import CheriyanPage from "./pages/Partnerships/cheriyan";
@@ -138,6 +138,7 @@ const PartnerLogin = lazy(() => import("./pages/Partnerships/PartnershipTemplate
 const PartnerDashboard = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboard"));
 const PartnerDashboardHub = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboardHub"));
 const StudentShowcase = lazy(() => import("./pages/Partnerships/StudentShowcase"));
+const SpinningResults = lazy(() => import("./pages/SpinningResults/SpinningResults"));
 
 function ConditionalFooter() {
   const location = useLocation();
@@ -280,6 +281,51 @@ const HomeWrapper = () => {
   return showLottery ? <SpinWheel /> : <Home />;
 };
 
+const FloatingSpinCard = () => {
+  const location = useLocation();
+
+  const hideRoutes = [
+    "/spinning-results",
+    "/admin",
+    "/team/dashboard",
+    "/team/admin",
+    "/user-management",
+    "/hr-messages",
+    "/blog/dashboard",
+    "/partners/dashboard"
+  ];
+
+  if (hideRoutes.some((route) => location.pathname.startsWith(route))) {
+    return null;
+  }
+
+  return (
+    <Link
+      to="/spinning-results"
+      className="fixed left-6 bottom-24 z-50 flex items-center gap-3 p-3 rounded-2xl bg-black/60 border border-red-500/30 text-white shadow-[0_0_20px_rgba(220,38,38,0.25)] hover:shadow-[0_0_30px_rgba(220,38,38,0.45)] hover:border-red-500/60 transition-all duration-300 group max-w-[200px] md:max-w-xs backdrop-blur-md"
+    >
+      <div className="relative w-12 h-12 flex-shrink-0 rounded-full overflow-hidden border border-red-500/20 bg-red-950/20">
+        <img
+          alt="Spin Wheel icon"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM0UYg--rRGzCVuI-ApeeY3SboHH-vl7APct0YYIVZCLnzvE4JxIhvEjCZEVoQoGKzErd5wXxdgUfKN-ENbeGoPrLal43N1j8yEIoXQZQ6ak0FX6upHVs9fZV52Dey2HFGir5u4CISvns4ZLfkJt7udmTQPtflHUw4h-zR0Ez1IbgR6cDf-Qw5uiVFgGalC4sBn-bzRE4NifR2q0a5m3o9nklUfrBvo8F8vHMrLnGusN4WIa8LfkACknlmk_L85cEqqCHJ13mn7q7A"
+          className="w-full h-full object-cover group-hover:rotate-[360deg] transition-transform duration-1000 ease-out"
+        />
+        <div className="absolute inset-0 bg-red-600/10 rounded-full mix-blend-screen pointer-events-none" />
+      </div>
+
+      <div className="flex flex-col text-left">
+        
+        <span className="text-[11px] font-extrabold text-zinc-100 group-hover:text-white transition-colors leading-tight">
+          Spin Wheel Results
+        </span>
+        <span className="text-[9px] text-zinc-400 font-medium leading-none mt-0.5">
+          See verified payouts
+        </span>
+      </div>
+    </Link>
+  );
+};
+
 function App() {
   return (
     <ReactLenis root options={lenisOptions}>
@@ -299,6 +345,7 @@ function App() {
         <ConditionalNavbar />
         <ConditionalChatbot />
         <ScrollTop />
+        <FloatingSpinCard />
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<HomeWrapper />} />
@@ -528,6 +575,7 @@ function App() {
             <Route path="/partners/manage" element={<PartnerDashboard />} />
             <Route path="/partners/students" element={<StudentShowcase />} />
             <Route path="/partnership/Partner2" element={<Partner2 />} />
+            <Route path="/spinning-results" element={<SpinningResults />} />
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </Suspense>

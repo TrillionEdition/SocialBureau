@@ -191,7 +191,7 @@ const PortfolioPopup = () => {
                         }}
                         className="absolute -bottom-2 -right-2 w-14 h-14 md:w-16 md:h-16 bg-[#E8001A] rounded-full flex flex-col items-center justify-center text-white shadow-[0_0_20px_rgba(232,0,26,0.4)] border-2 border-white/20 z-40 cursor-pointer pointer-events-auto"
                       >
-                        <span className="text-lg md:text-xl font-black leading-none">{stats.totalCount || 7}</span>
+                        <span className="text-lg md:text-xl font-black leading-none">{stats.totalCount ?? 0}</span>
                         <span className="text-[7px] md:text-[8px] font-black uppercase tracking-tighter">Students</span>
                       </motion.div>
 

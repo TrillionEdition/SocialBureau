@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, Lock, LogIn, Eye, EyeOff, CheckCircle2, AlertCircle, ArrowRight, Loader2 } from "lucide-react";
@@ -17,6 +17,9 @@ const PartnerLogin = () => {
     email: "",
     password: "",
   });
+
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const turnstileWidgetId = useRef(null);
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -41,6 +44,192 @@ const PartnerLogin = () => {
     }
   }, [navigate]);
 
+  const handleGoogleLogin = async (idToken) => {
+    setLoading(true);
+    setError("");
+    setSuccess("");
+    try {
+      const response = await fetch(`${BASE_URL}/user/google-login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken, role: "partner" }),
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Google Login failed");
+      
+      if (data.user) {
+        setUserData(data.user);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        if (data.token) localStorage.setItem('token', data.token);
+      }
+      
+      setSuccess("Welcome back!");
+      window.dispatchEvent(new Event("authChange"));
+      
+      // Check if user has an existing portfolio to decide redirection
+      let hasPortfolio = false;
+      try {
+        const portResponse = await fetch(`${BASE_URL}/partners/my-partnership`, {
+          headers: { "Authorization": `Bearer ${data.token}` }
+        });
+        const portData = await portResponse.json();
+        if (portData.success && portData.data) {
+          hasPortfolio = true;
+        }
+      } catch (err) {
+        console.error("Portfolio check failed", err);
+      }
+      
+      const queryParams = new URLSearchParams(location.search);
+      const redirectParam = queryParams.get("redirect");
+      const isAdmin = data.user?.role?.toLowerCase() === "admin";
+      
+      let destination = "/partners/select-template";
+      if (hasPortfolio || isAdmin) {
+        destination = "/partners/dashboard";
+      } else if (redirectParam) {
+        destination = redirectParam;
+      }
+      
+      setTimeout(() => {
+        navigate(destination, { replace: true });
+      }, 1000);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    let isMounted = true;
+    const renderTurnstile = () => {
+      if (!isMounted) return;
+      const container = document.getElementById("cf-turnstile-container");
+      const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+      
+      if (!window.turnstile) {
+        setTimeout(renderTurnstile, 100);
+        return;
+      }
+
+      if (container && siteKey) {
+        container.innerHTML = "";
+        try {
+          turnstileWidgetId.current = window.turnstile.render("#cf-turnstile-container", {
+            sitekey: siteKey,
+            theme: "dark",
+            callback: (token) => {
+              if (isMounted) {
+                setCaptchaToken(token);
+                setError("");
+              }
+            },
+            "expired-callback": () => {
+              if (isMounted) setCaptchaToken(null);
+            },
+            "error-callback": () => {
+              if (isMounted) setCaptchaToken(null);
+            },
+          });
+        } catch (e) {
+          console.error("Turnstile render error:", e);
+        }
+      }
+    };
+
+    const existingScript = document.getElementById("cf-turnstile-script");
+    if (!existingScript) {
+      const script = document.createElement("script");
+      script.id = "cf-turnstile-script";
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        setTimeout(renderTurnstile, 100);
+      };
+      document.body.appendChild(script);
+    } else {
+      if (window.turnstile) {
+        setTimeout(renderTurnstile, 50);
+      } else {
+        existingScript.addEventListener("load", renderTurnstile);
+      }
+    }
+
+    return () => {
+      isMounted = false;
+      const scriptEl = document.getElementById("cf-turnstile-script");
+      if (scriptEl) {
+        scriptEl.removeEventListener("load", renderTurnstile);
+      }
+      if (window.turnstile && turnstileWidgetId.current !== null) {
+        try {
+          window.turnstile.remove(turnstileWidgetId.current);
+        } catch (e) {
+          // ignore
+        }
+        turnstileWidgetId.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    let script;
+    const initGoogleSignIn = () => {
+      if (window.google) {
+        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+        window.google.accounts.id.initialize({
+          client_id: clientId || "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+          callback: (response) => {
+            if (response.credential) {
+              handleGoogleLogin(response.credential);
+            }
+          },
+        });
+        
+        const container = document.getElementById("google-signin-button");
+        if (container) {
+          window.google.accounts.id.renderButton(container, {
+            theme: "outline",
+            size: "large",
+            text: "signin_with",
+            shape: "pill",
+            width: "320",
+          });
+        }
+      }
+    };
+
+    const existingScript = document.getElementById("google-gsi-script");
+    if (!existingScript) {
+      script = document.createElement("script");
+      script.id = "google-gsi-script";
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      script.onload = initGoogleSignIn;
+      document.body.appendChild(script);
+    } else {
+      if (window.google) {
+        initGoogleSignIn();
+      } else {
+        existingScript.addEventListener("load", initGoogleSignIn);
+      }
+    }
+
+    const timer = setTimeout(initGoogleSignIn, 50);
+
+    return () => {
+      clearTimeout(timer);
+      const scriptEl = document.getElementById("google-gsi-script");
+      if (scriptEl) {
+        scriptEl.removeEventListener("load", initGoogleSignIn);
+      }
+    };
+  }, []);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setError("");
@@ -48,6 +237,10 @@ const PartnerLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!captchaToken) {
+      setError("Please complete the captcha verification");
+      return;
+    }
     setLoading(true);
     setError("");
 
@@ -55,7 +248,7 @@ const PartnerLogin = () => {
       const response = await fetch(`${BASE_URL}/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, captchaToken }),
         credentials: "include",
       });
 
@@ -106,6 +299,14 @@ const PartnerLogin = () => {
       }, 1000);
     } catch (err) {
       setError(err.message || "Invalid credentials");
+      setCaptchaToken(null);
+      if (window.turnstile && turnstileWidgetId.current !== null) {
+        try {
+          window.turnstile.reset(turnstileWidgetId.current);
+        } catch (e) {
+          // ignore
+        }
+      }
     } finally {
       setLoading(false);
     }
@@ -195,6 +396,9 @@ const PartnerLogin = () => {
             </Link>
           </div>
 
+          {/* Cloudflare Turnstile Container */}
+          <div id="cf-turnstile-container" className="w-full flex justify-center mt-3 min-h-[70px]" />
+
           <button 
             type="submit" 
             disabled={loading}
@@ -209,6 +413,15 @@ const PartnerLogin = () => {
               </>
             )}
           </button>
+
+          <div className="relative flex py-4 items-center">
+            <div className="flex-grow border-t border-zinc-800"></div>
+            <span className="flex-shrink mx-4 text-zinc-500 text-xs font-bold uppercase tracking-widest">or</span>
+            <div className="flex-grow border-t border-zinc-800"></div>
+          </div>
+
+          {/* Google Sign-in Button Container */}
+          <div id="google-signin-button" className="w-full flex justify-center min-h-[44px]" />
 
           <p className="text-center text-zinc-500 text-[12px] mt-4">
             New partner?{" "}
