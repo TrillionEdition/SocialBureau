@@ -1,0 +1,768 @@
+/* TreasureHunt.css - Cinematic Scroll-Driven Experience Styling */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Outfit:wght@200;300;400;500;600&display=swap');
+
+:root {
+  --gold-primary: #d4af37;
+  --gold-glow: rgba(212, 175, 55, 0.4);
+  --dark-bg: #030712;
+  --glass-bg: rgba(7, 7, 9, 0.88);
+  --glass-border: rgba(212, 175, 55, 0.15);
+  --font-serif: 'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
+}
+
+/* Base Styles & Container */
+.treasure-hunt-container {
+  background-color: var(--dark-bg);
+  color: #f3f4f6;
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Hide default scrollbar for cinematic feel, or style it */
+.treasure-hunt-container::-webkit-scrollbar {
+  width: 6px;
+}
+.treasure-hunt-container::-webkit-scrollbar-track {
+  background: #030712;
+}
+.treasure-hunt-container::-webkit-scrollbar-thumb {
+  background: var(--gold-primary);
+  border-radius: 3px;
+}
+
+/* Cinematic Loader Screen */
+.cinematic-loader {
+  position: fixed;
+  inset: 0;
+  background-color: #020617;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1s ease-in-out, visibility 1s;
+}
+
+.cinematic-loader.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-logo {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  letter-spacing: 0.3em;
+  color: var(--gold-primary);
+  text-shadow: 0 0 20px var(--gold-glow);
+  margin-bottom: 2rem;
+  animation: logo-glow 3s infinite alternate;
+  text-align: center;
+  font-weight: 700;
+}
+
+.loader-ring-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-circle {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(212, 175, 55, 0.1);
+  border-top: 2px solid var(--gold-primary);
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+}
+
+.loader-percentage {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #f3f4f6;
+  font-family: var(--font-sans);
+}
+
+.loader-status {
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  color: #9ca3af;
+  text-transform: uppercase;
+  animation: pulse-text 2s infinite;
+}
+
+/* Fixed Canvas Container */
+.canvas-wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+  background-color: #030712;
+}
+
+.canvas-wrapper canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Vignette & Ambient Overlays */
+.cinematic-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: 
+    linear-gradient(to bottom, rgba(2, 6, 23, 0.45), rgba(2, 6, 23, 0.25) 50%, rgba(2, 6, 23, 0.55)),
+    radial-gradient(
+      circle,
+      rgba(2, 6, 23, 0.2) 20%,
+      rgba(2, 6, 23, 0.6) 70%,
+      rgba(2, 6, 23, 0.95) 100%
+    );
+}
+
+/* UI Overlays (Header, Sidebar, Controls) */
+.hud-layer {
+  position: fixed;
+  z-index: 10;
+  pointer-events: none;
+  width: 100%;
+}
+
+.top-hud {
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.5rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to bottom, rgba(2, 6, 23, 0.8), transparent);
+}
+
+.logo-hud {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: var(--gold-primary);
+  text-shadow: 0 0 10px var(--gold-glow);
+  pointer-events: auto;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.controls-hud {
+  display: flex;
+  gap: 1rem;
+  pointer-events: auto;
+}
+
+.hud-btn {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 9999px;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+
+.hud-btn:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: var(--gold-primary);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+  transform: translateY(-1px);
+}
+
+.hud-btn.active {
+  background: var(--gold-primary);
+  color: #030712;
+  border-color: var(--gold-primary);
+  box-shadow: 0 0 15px var(--gold-glow);
+}
+
+/* Top Progress Bar */
+.scroll-progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: rgba(255, 255, 255, 0.05);
+  z-index: 20;
+}
+
+.scroll-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #d4af37, #f59e0b);
+  box-shadow: 0 0 8px #f59e0b;
+  width: 0%;
+  transition: width 0.1s ease-out;
+}
+
+/* Right Side Story Navigation Dots */
+.story-nav {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  pointer-events: auto;
+}
+
+.story-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  cursor: pointer;
+  group: true;
+}
+
+.story-nav-label {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #9ca3af;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.story-nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.story-nav-item:hover .story-nav-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.story-nav-item:hover .story-nav-dot {
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+.story-nav-item.active .story-nav-dot {
+  background-color: var(--gold-primary);
+  border-color: var(--gold-primary);
+  box-shadow: 0 0 10px var(--gold-glow);
+  transform: scale(1.4);
+}
+
+.story-nav-item.active .story-nav-label {
+  opacity: 1;
+  color: var(--gold-primary);
+  transform: translateX(0);
+}
+
+/* Cache Progress HUD (Bottom Left) */
+.cache-hud {
+  position: fixed;
+  bottom: 2rem;
+  left: 2.5rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: #9ca3af;
+  backdrop-filter: blur(8px);
+}
+
+.cache-pulse {
+  width: 6px;
+  height: 6px;
+  background-color: #10b981;
+  border-radius: 50%;
+  animation: pulse-green 1.5s infinite;
+}
+
+.cache-pulse.loading {
+  background-color: #f59e0b;
+  animation: pulse-amber 1.5s infinite;
+}
+
+/* Scroll Container & Section Layouts */
+.scroll-container {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+}
+
+.scroll-section {
+  min-height: 100vh;
+  display: flex;
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+}
+
+/* Alternating Corner Alignments */
+.scroll-section.pos-top-left {
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 16vh 8vw 4rem 8vw;
+}
+
+.scroll-section.pos-bottom-right {
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 4rem 8vw 16vh 8vw;
+}
+
+.scroll-section.pos-center {
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 8vw;
+}
+
+/* Narrative Card (Updated: transparent borderless floating typography) */
+.narrative-card {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  max-width: 480px;
+  width: 100%;
+  backdrop-filter: none;
+  box-shadow: none;
+  transition: none;
+}
+
+.narrative-card.wide {
+  max-width: 700px;
+  text-align: center;
+}
+
+.chapter-number {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gold-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.chapter-title {
+  font-family: var(--font-serif);
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  
+  /* Gilded Gold Metallic 3D Chiseled Texture */
+  background: linear-gradient(
+    to bottom, 
+    #fffde8 0%, 
+    #f7d054 20%, 
+    #dca622 45%, 
+    #a57613 70%, 
+    #ffe378 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1px rgba(10, 8, 4, 0.7);
+  
+  filter: 
+    drop-shadow(0px 3px 2px rgba(0, 0, 0, 0.95))
+    drop-shadow(0px 0px 12px rgba(212, 175, 55, 0.5));
+}
+
+.chapter-text {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: #d1d5db;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  max-width: 440px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Mouse Scroll Indicator (For Hero page) */
+.hero-scroll-indicator {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mouse-icon {
+  width: 24px;
+  height: 38px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+  position: relative;
+}
+
+.mouse-wheel {
+  width: 4px;
+  height: 8px;
+  background-color: var(--gold-primary);
+  border-radius: 2px;
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scroll-wheel 1.5s infinite;
+}
+
+.scroll-arrow {
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid rgba(255, 255, 255, 0.4);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+  transform: rotate(45deg);
+  animation: arrow-pulse 1.5s infinite;
+}
+
+.scroll-text {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #9ca3af;
+}
+
+/* Animations */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes logo-glow {
+  0% {
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+  }
+  100% {
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+  }
+}
+
+@keyframes pulse-text {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-green {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+@keyframes pulse-amber {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(245, 158, 11, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+  }
+}
+
+@keyframes scroll-wheel {
+  0% {
+    top: 6px;
+    opacity: 1;
+  }
+  100% {
+    top: 22px;
+    opacity: 0;
+  }
+}
+
+@keyframes arrow-pulse {
+  0% {
+    opacity: 0.2;
+    transform: rotate(45deg) translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(45deg) translateY(4px);
+  }
+  100% {
+    opacity: 0.2;
+    transform: rotate(45deg) translateY(0);
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .top-hud {
+    padding: 1rem 1.5rem;
+  }
+  
+  .scroll-section {
+    padding: 4rem 8% 4rem 8% !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  
+  .narrative-card {
+    padding: 0;
+    text-align: center !important;
+    max-width: 100%;
+  }
+  
+  .story-nav {
+    display: none; /* Hide dots on mobile */
+  }
+  
+  .cache-hud {
+    left: 1.5rem;
+    bottom: 1.5rem;
+  }
+
+  .chapter-title {
+    font-size: 1.8rem;
+  }
+
+  .chapter-text {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+
+/* Ancient Traditional Button Styling */
+.narrative-card.ancient-btn-card {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  padding: 0;
+}
+
+.ancient-btn-link {
+  text-decoration: none;
+  display: inline-block;
+}
+
+.ancient-button {
+  position: relative;
+  padding: 1.6rem 3.8rem;
+  background: linear-gradient(135deg, #2a2016 0%, #110d0a 100%);
+  border: 4px double var(--gold-primary);
+  cursor: pointer;
+  box-shadow: 
+    0 12px 35px rgba(0, 0, 0, 0.9),
+    inset 0 0 25px rgba(0, 0, 0, 0.95),
+    0 0 20px rgba(212, 175, 55, 0.25);
+  clip-path: polygon(8% 0%, 92% 0%, 100% 25%, 100% 75%, 92% 100%, 8% 100%, 0% 75%, 0% 25%);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  animation: ancient-pulse 3s infinite ease-in-out;
+}
+
+/* Gilded 3D Rivets/Studs on the sides to add a heavy historical build */
+.ancient-button::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #d4af37 40%, #523b08 100%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.ancient-button::after {
+  content: '';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #d4af37 40%, #523b08 100%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.ancient-button-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.35rem;
+}
+
+.ancient-text {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  background: linear-gradient(
+    to bottom, 
+    #fffde8 0%, 
+    #f7d054 30%, 
+    #c99214 65%, 
+    #ffe378 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1px rgba(10, 8, 4, 0.85);
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.95));
+  transition: all 0.4s ease;
+}
+
+.ancient-runes-left, 
+.ancient-runes-right {
+  font-size: 1.25rem;
+  color: #d4af37;
+  text-shadow: 0 0 6px rgba(212, 175, 55, 0.5);
+  transition: all 0.4s ease;
+}
+
+/* Hover States */
+.ancient-button:hover {
+  transform: scale(1.04) translateY(-1px);
+  background: linear-gradient(135deg, #372b1d 0%, #17110c 100%);
+  border-color: #f59e0b;
+  box-shadow: 
+    0 15px 40px rgba(245, 158, 11, 0.4),
+    inset 0 0 20px rgba(0, 0, 0, 0.8),
+    0 0 25px rgba(212, 175, 55, 0.45);
+}
+
+.ancient-button:hover .ancient-text {
+  background: linear-gradient(to bottom, #ffffff, #ffe07a 40%, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 15px rgba(245, 158, 11, 0.55);
+  letter-spacing: 0.21em;
+}
+
+.ancient-button:hover .ancient-runes-left {
+  color: #ffffff;
+  text-shadow: 0 0 10px #f59e0b;
+  transform: translateX(-5px) scale(1.15);
+}
+
+.ancient-button:hover .ancient-runes-right {
+  color: #ffffff;
+  text-shadow: 0 0 10px #f59e0b;
+  transform: translateX(5px) scale(1.15);
+}
+
+/* Ancient Pulse Animation */
+@keyframes ancient-pulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 25px rgba(212, 175, 55, 0.25),
+      inset 0 0 15px rgba(0, 0, 0, 0.9);
+    border-color: var(--gold-primary);
+  }
+  50% {
+    box-shadow: 
+      0 0 35px rgba(212, 175, 55, 0.4),
+      inset 0 0 15px rgba(0, 0, 0, 0.9);
+    border-color: #f59e0b;
+  }
+}
+
+/* Fixed Overlay Navigation Layouts */
+.fixed-narrative-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  width: 100vw;
+  height: 100vh;
+}
+
+.fixed-narrative-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+.fixed-narrative-container.pos-top-left {
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 10vh 5vw 4rem 5vw;
+}
+
+.fixed-narrative-container.pos-bottom-right {
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 4rem 5vw 10vh 5vw;
+}
+
+.fixed-narrative-container.pos-center {
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 8vw;
+}
+
+/* Make sure interactive overlays inside narrative card accept clicks */
+.fixed-narrative-container .narrative-card {
+  pointer-events: auto;
+}

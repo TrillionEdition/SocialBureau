@@ -139,6 +139,7 @@ const PartnerDashboard = lazy(() => import("./pages/Partnerships/PartnershipTemp
 const PartnerDashboardHub = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboardHub"));
 const StudentShowcase = lazy(() => import("./pages/Partnerships/StudentShowcase"));
 const SpinningResults = lazy(() => import("./pages/SpinningResults/SpinningResults"));
+const TreasureHunt = lazy(() => import("./pages/TreasureHunt/TreasureHunt"));
 
 function ConditionalFooter() {
   const location = useLocation();
@@ -165,7 +166,8 @@ function ConditionalFooter() {
     "/admin",
     "/ajnoradashboard",
     "/lottery",
-    "/admin/posters"
+    "/admin/posters",
+    "/treasure-hunt"
   ];
   const isIndividualTeamPage = location.pathname.toLowerCase().startsWith("/team/") && location.pathname.toLowerCase() !== "/team/";
 
@@ -201,7 +203,8 @@ function ConditionalNavbar() {
     "/admin",
     "/ajnoradashboard",
     "/lottery",
-    "/admin/posters"
+    "/admin/posters",
+    "/treasure-hunt"
   ];
 
 
@@ -292,7 +295,8 @@ const FloatingSpinCard = () => {
     "/user-management",
     "/hr-messages",
     "/blog/dashboard",
-    "/partners/dashboard"
+    "/partners/dashboard",
+    "/treasure-hunt"
   ];
 
   if (hideRoutes.some((route) => location.pathname.startsWith(route))) {
@@ -576,6 +580,7 @@ function App() {
             <Route path="/partners/students" element={<StudentShowcase />} />
             <Route path="/partnership/Partner2" element={<Partner2 />} />
             <Route path="/spinning-results" element={<SpinningResults />} />
+            <Route path="/treasure-hunt" element={<TreasureHunt />} />
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </Suspense>
