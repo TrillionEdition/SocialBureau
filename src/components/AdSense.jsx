@@ -5,11 +5,12 @@ export default function AdSense({
   adSlot,
   adFormat = "auto",
   fullWidthResponsive = true,
+  adLayoutKey,
   style = { display: "block" },
   className = "",
 }) {
   const adRef = useRef(null);
-  const [enabled, setEnabled] = useState(false);
+  const [enabled, setEnabled] = useState(true);
 
   useEffect(() => {
     const checkConsent = () => {
@@ -22,8 +23,11 @@ export default function AdSense({
         }
 
         const consent = JSON.parse(stored);
-        setEnabled(!!consent?.marketing);
+        const marketing = !!consent?.marketing;
+        console.debug('AdSense: marketing consent', marketing);
+        setEnabled(marketing);
       } catch (err) {
+        console.debug('AdSense: error reading consent', err);
         setEnabled(false);
       }
     };
@@ -41,17 +45,33 @@ export default function AdSense({
 
   useEffect(() => {
     if (!enabled) return;
+    if (typeof window === 'undefined') return;
+
+    const el = adRef.current;
+    if (!el) return;
 
     try {
-      if (window.adsbygoogle && adRef.current) {
+      // Track initialized slots globally to avoid double-init (React Strict Mode)
+      if (!window.__adsInitializedSlots) window.__adsInitializedSlots = new Set();
+      const slotKey = `${adClient}:${adSlot}`;
+
+      if (window.__adsInitializedSlots.has(slotKey)) {
+        console.debug(`AdSense: slot ${adSlot} already initialized`);
+        return;
+      }
+
+      if (window.adsbygoogle) {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
+        window.__adsInitializedSlots.add(slotKey);
+        console.debug(`AdSense: initialized slot ${adSlot}`);
+      } else {
+        console.debug('AdSense: window.adsbygoogle not found');
       }
     } catch (err) {
       console.error("AdSense Error:", err);
     }
   }, [enabled]);
 
-  if (!enabled) return null;
 
   return (
     <ins
@@ -61,9 +81,9 @@ export default function AdSense({
       data-ad-client={adClient}
       data-ad-slot={adSlot}
       data-ad-format={adFormat}
-      data-full-width-responsive={
-        fullWidthResponsive ? "true" : "false"
-      }
-    />
+      data-full-width-responsive={fullWidthResponsive ? "true" : "false"}
+      {...(adLayoutKey ? { 'data-ad-layout-key': adLayoutKey } : {})}
+      aria-hidden="true"
+    ></ins>
   );
 }

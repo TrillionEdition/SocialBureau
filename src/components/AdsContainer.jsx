@@ -1,7 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AdSense from './AdSense';
 
+function readMarketingConsent() {
+  try {
+    const stored = localStorage.getItem('cookieConsent');
+    if (!stored) return false;
+    const consent = JSON.parse(stored);
+    return !!consent?.marketing;
+  } catch (e) {
+    console.debug('AdsContainer: error reading consent', e);
+    return false;
+  }
+}
+
 export default function AdsContainer() {
+  const [marketing, setMarketing] = useState(false);
+
+  useEffect(() => {
+    const update = () => {
+      const m = readMarketingConsent();
+      console.debug('AdsContainer: marketing consent', m);
+      setMarketing(m);
+    };
+
+    update();
+
+    window.addEventListener('cookieConsentChanged', update);
+    window.addEventListener('storage', update);
+
+    return () => {
+      window.removeEventListener('cookieConsentChanged', update);
+      window.removeEventListener('storage', update);
+    };
+  }, []);
+
+  if (!marketing) {
+    console.debug('AdsContainer: ads disabled due to consent');
+    return null;
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 flex flex-col gap-6 items-center">
       {/* Reserve reasonable heights to reduce CLS */}
