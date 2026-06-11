@@ -16,6 +16,7 @@ export default function Paywall({
       // 1. Create order on backend (amount in rupees)
       const resp = await fetch(`${BASE_URL}/payment/create-order`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -40,6 +41,7 @@ export default function Paywall({
           try {
             const verifyRes = await fetch(`${BASE_URL}/payment/verify`, {
               method: "POST",
+              credentials: "include",
               headers: {
                 "Content-Type": "application/json",
               },
