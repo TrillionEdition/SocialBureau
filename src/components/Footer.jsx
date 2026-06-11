@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import AdSense from './AdSense';
 
 export default function Footer() {
  const footerSections = [
@@ -208,6 +209,13 @@ export default function Footer() {
               src="https://pub-7b4bafb3da7d4c758183e371fbae58c2.r2.dev/fa6dbee8-2117-40a6-a15b-c1bec5d21fad%20(1).png"
               alt="meta-logo"
             />
+            {/* Ads (consent-aware) */}
+            <div className="w-full max-w-xs">
+              <React.Suspense fallback={null}>
+                {/* Socialbureau display (auto, full-width responsive) */}
+                <AdSense adSlot="2952293515" adFormat="auto" fullWidthResponsive />
+              </React.Suspense>
+            </div>
             <div className="flex gap-4 flex-wrap justify-center md:justify-end">
               <Link
                 to="/privacy-policy"

@@ -17,6 +17,7 @@ import AdminRoute from "./components/AdminRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CodeProtectedRoute from "./components/CodeProtectedRoute";
 import CookieConsent from "./components/CookieConsent";
+import AdsContainer from './components/AdsContainer';
 import { ToastContainer } from "react-toastify";
 import Partner1 from "./pages/Partnerships/johnsamuel";
 import { Clickup } from "./pages/Clickup";
@@ -354,6 +355,7 @@ function App() {
         <FloatingSpinCard />
         <FloatingTreasureHuntClue />
         <TreasureHuntTimer />
+        <AdsContainer />
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<HomeWrapper />} />
