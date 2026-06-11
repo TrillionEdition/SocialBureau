@@ -3,6 +3,7 @@ import Footer from '../components/Footer'
 import BlogHeader from '../components/BlogHeader'
 import BlogPosts from '../components/BlogPosts'
 import Seo from '../components/Seo'
+import TreasureHuntDiamond from '../components/TreasureHuntDiamond'
 // import { BlogFooter } from '../components/BlogFooter'
 
 export const Blog = () => {
@@ -18,6 +19,10 @@ export const Blog = () => {
       />
       <BlogHeader />
       <BlogPosts />
+      <TreasureHuntDiamond 
+        stepRequired={4} 
+        clueText="Apps talk to each other using APIs—Application Programming Interfaces. Follow the trail to the service that markets these powerful connections." 
+      />
       {/* <BlogFooter/> */}
     </div>
   )

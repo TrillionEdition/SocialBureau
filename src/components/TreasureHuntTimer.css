@@ -1,0 +1,123 @@
+/* src/components/TreasureHuntTimer.css */
+
+.treasure-hunt-timer {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9998; /* Just below the hint overlay but above everything else */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #1e150f 0%, #0d0907 100%);
+  border: 1.5px solid #d4af37;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.55),
+    0 0 12px rgba(212, 175, 55, 0.2),
+    inset 0 0 8px rgba(255, 255, 255, 0.04);
+  border-radius: 50px;
+  padding: 8px 16px 8px 12px;
+  pointer-events: none; /* Non-intrusive — does not block clicks */
+  user-select: none;
+  animation: timer-appear 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.treasure-hunt-timer.timer-complete {
+  border-color: #10b981;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.55),
+    0 0 14px rgba(16, 185, 129, 0.3);
+  animation: none;
+}
+
+.timer-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: #d4af37;
+  flex-shrink: 0;
+}
+
+.timer-complete .timer-icon {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.timer-content {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  gap: 2px;
+}
+
+.timer-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 8px;
+  font-weight: 800;
+  color: #d4af37;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.timer-complete .timer-label {
+  color: #10b981;
+}
+
+.timer-value {
+  font-family: 'Outfit', monospace, sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.timer-complete .timer-value {
+  background: linear-gradient(90deg, #d4af37, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Subtle pulsing dot to indicate live */
+.timer-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d4af37;
+  margin-left: 2px;
+  flex-shrink: 0;
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+@keyframes timer-appear {
+  from { opacity: 0; transform: translateY(-12px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+  .treasure-hunt-timer {
+    top: 14px;
+    right: 14px;
+    padding: 6px 12px 6px 8px;
+    gap: 8px;
+  }
+  .timer-value {
+    font-size: 15px;
+  }
+  .timer-icon {
+    width: 24px;
+    height: 24px;
+  }
+}

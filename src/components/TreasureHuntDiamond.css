@@ -1,0 +1,123 @@
+/* src/components/TreasureHuntDiamond.css */
+
+.treasure-diamond-wrapper {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  margin: 30px auto;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  z-index: 999; /* Higher z-index to stay on top of all page sections */
+  pointer-events: auto;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.treasure-diamond-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.treasure-diamond-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+/* Center text overlay directly in the middle of the chest asset */
+.treasure-diamond-text-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+}
+
+.treasure-diamond-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.95);
+  text-transform: uppercase;
+  text-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.6);
+  line-height: 1;
+}
+
+.treasure-diamond-number {
+  font-family: 'Outfit', 'Cinzel', Georgia, serif;
+  font-size: 13px;
+  font-weight: 950;
+  color: #d4af37; /* Gold */
+  margin-top: 1.5px;
+  text-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.9), 0 0 5px rgba(212, 175, 55, 0.5);
+  line-height: 1;
+}
+
+/* Hover effects */
+.treasure-diamond-wrapper:hover {
+  transform: scale(1.15);
+}
+
+.treasure-diamond-wrapper:hover .treasure-diamond-number {
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.75);
+}
+
+.treasure-diamond-wrapper:hover .treasure-diamond-label {
+  color: #fff;
+}
+
+/* Outer glowing aura matching the rotation of the card */
+.treasure-diamond-aura {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border: 1.5px dashed rgba(212, 175, 55, 0.6);
+  transform: rotate(45deg);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  border-radius: 4px;
+  animation: aura-expand 3s infinite linear;
+}
+
+/* Keyframes */
+@keyframes aura-expand {
+  0% { transform: rotate(45deg) scale(0.95); opacity: 0.7; }
+  50% { transform: rotate(45deg) scale(1.2); opacity: 0; }
+  100% { transform: rotate(45deg) scale(0.95); opacity: 0; }
+}
+
+/* Mobile responsive scaling */
+@media (max-width: 768px) {
+  .treasure-diamond-wrapper {
+    width: 70px;
+    height: 70px;
+    margin: 20px auto;
+  }
+  .treasure-diamond-label {
+    font-size: 7px;
+    letter-spacing: 0.1em;
+  }
+  .treasure-diamond-number {
+    font-size: 11px;
+    margin-top: 1px;
+  }
+  .treasure-diamond-aura {
+    width: 54px;
+    height: 54px;
+  }
+}

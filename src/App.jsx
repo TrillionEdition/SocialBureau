@@ -141,6 +141,8 @@ const PartnerDashboardHub = lazy(() => import("./pages/Partnerships/PartnershipT
 const StudentShowcase = lazy(() => import("./pages/Partnerships/StudentShowcase"));
 const SpinningResults = lazy(() => import("./pages/SpinningResults/SpinningResults"));
 const TreasureHunt = lazy(() => import("./pages/TreasureHunt/TreasureHunt"));
+import FloatingTreasureHuntClue from "./components/FloatingTreasureHuntClue";
+import TreasureHuntTimer from "./components/TreasureHuntTimer";
 
 function ConditionalFooter() {
   const location = useLocation();
@@ -351,6 +353,8 @@ function App() {
         <ConditionalChatbot />
         <ScrollTop />
         <FloatingSpinCard />
+        <FloatingTreasureHuntClue />
+        <TreasureHuntTimer />
         <AdsContainer />
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>

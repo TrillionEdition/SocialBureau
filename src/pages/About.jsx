@@ -7,6 +7,7 @@ import AboutMission from '../components/About/AboutTagline'
 import AboutVision from '../components/About/AboutVision'
 import AboutFooter from '../components/About/AboutFooter'
 import Seo from '../components/Seo'
+import TreasureHuntDiamond from '../components/TreasureHuntDiamond'
 
 const sections = [
   { id: "who-we-are", component: WhoWeAre, direction: "up" },
@@ -189,6 +190,10 @@ export const About = () => {
           </motion.div>
         );
       })}
+      <TreasureHuntDiamond 
+        stepRequired={1} 
+        clueText="Heroes rarely work alone. Find the minds that make the magic happen." 
+      />
     </div>
   );
 };

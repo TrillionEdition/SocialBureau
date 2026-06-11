@@ -35,7 +35,7 @@ const Niche = () => {
             answer: "Niche marketing focuses on serving a clearly defined group of customers with specific needs. Instead of appealing to everyone, businesses tailor their messaging, offers, and channels to a smaller audience where relevance and engagement are higher."
         },
         {
-            question: "What is the different from broad marketing approaches?",
+            question: "How does it differ from broad marketing approaches?",
             answer: "Broad marketing aims for reach, while niche marketing prioritizes precision. By narrowing the audience, businesses reduce competition, improve message clarity, and connect more effectively with people who are actively searching for specific solutions."
         },
         {
@@ -45,22 +45,6 @@ const Niche = () => {
         {
             question: "How do you identify the right niche for a business?",
             answer: "The process involves understanding customer needs, analyzing demand patterns, studying competitors, and evaluating long-term growth potential. The right niche balances market opportunity with a brand's strengths."
-        },
-        {
-            question: "How long does it take to see results from a niche-focused strategy?",
-            answer: "Results depend on the market and execution. Early improvements in engagement may appear within weeks, while stronger outcomes like consistent leads and brand authority develop over several months."
-        },
-        {
-            question: "Can niche marketing help improve lead quality?",
-            answer: "Yes. By focusing on relevance and intent, niche marketing attracts users who are more likely to enquire, convert, and stay engaged, leading to better-quality leads rather than higher volume."
-        },
-        {
-            question: "Does niche marketing limit business growth?",
-            answer: "No. Starting with a focused audience often makes growth more sustainable. Once authority is established in one segment, businesses can expand into related areas without losing clarity."
-        },
-        {
-            question: "How does niche marketing support long-term brand value?",
-            answer: "By consistently addressing specific customer needs, brands build trust, recognition, and loyalty. Over time, this strengthens positioning and creates a competitive advantage that is difficult to replicate."
         }
     ];
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Volume2, VolumeX, ArrowDown, ShieldAlert, Sparkles, Navigation } from "lucide-react";
+import { resetTreasureHunt } from "../../utils/treasureHunt";
 import "./TreasureHunt.css";
 
 const TOTAL_FRAMES = 120;
@@ -73,6 +74,10 @@ export const TreasureHunt = () => {
   const [activeChapter, setActiveChapter] = useState(0);
   const [activeDot, setActiveDot] = useState(0);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+
+  useEffect(() => {
+    resetTreasureHunt();
+  }, []);
 
   // Progressive Preloading
   useEffect(() => {
@@ -429,7 +434,7 @@ export const TreasureHunt = () => {
             >
               <div className={`narrative-card ${activeChapter === 5 ? "ancient-btn-card" : ""}`}>
                 {activeChapter === 5 ? (
-                  <Link to="/home" className="ancient-btn-link">
+                  <Link to="/home?startHunt=true" className="ancient-btn-link">
                     <div className="ancient-button">
                       <div className="ancient-button-inner">
                        

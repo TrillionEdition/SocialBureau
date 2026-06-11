@@ -6,11 +6,105 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Seo from './Seo';
+import TreasureHuntDiamond from './TreasureHuntDiamond';
 
 const PerformanceMarketing = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [activeFaq, setActiveFaq] = useState(null);
     const [activeCaseStudy, setActiveCaseStudy] = useState(0);
+    const testimonialContainerRef = useRef(null);
+    const [isHovered, setIsHovered] = useState(false);
+
+    // Mouse drag-to-scroll implementation
+    useEffect(() => {
+        const container = testimonialContainerRef.current;
+        if (!container) return;
+
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        const handleMouseDown = (e) => {
+            isDown = true;
+            setIsHovered(true);
+            startX = e.pageX - container.offsetLeft;
+            scrollLeft = container.scrollLeft;
+            container.style.cursor = 'grabbing';
+        };
+
+        const handleMouseLeave = () => {
+            if (isDown) {
+                isDown = false;
+                setIsHovered(false);
+            }
+            container.style.cursor = 'grab';
+        };
+
+        const handleMouseUp = () => {
+            if (isDown) {
+                isDown = false;
+                setIsHovered(false);
+            }
+            container.style.cursor = 'grab';
+        };
+
+        const handleMouseMove = (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - container.offsetLeft;
+            const walk = (x - startX) * 1.5;
+            container.scrollLeft = scrollLeft - walk;
+        };
+
+        container.addEventListener('mousedown', handleMouseDown);
+        container.addEventListener('mouseleave', handleMouseLeave);
+        container.addEventListener('mouseup', handleMouseUp);
+        container.addEventListener('mousemove', handleMouseMove);
+
+        return () => {
+            container.removeEventListener('mousedown', handleMouseDown);
+            container.removeEventListener('mouseleave', handleMouseLeave);
+            container.removeEventListener('mouseup', handleMouseUp);
+            container.removeEventListener('mousemove', handleMouseMove);
+        };
+    }, []);
+
+    // Auto-scroll loop
+    useEffect(() => {
+        const container = testimonialContainerRef.current;
+        if (!container) return;
+
+        let animationFrameId;
+        let lastTime = performance.now();
+        const scrollSpeed = 30; // pixels per second
+
+        const step = (time) => {
+            const delta = (time - lastTime) / 1000;
+
+            if (!isHovered) {
+                container.scrollLeft += scrollSpeed * delta;
+            }
+
+            // Always run the seamless wrapping logic so manual scroll also wraps!
+            const halfScrollWidth = container.scrollWidth / 2;
+            if (halfScrollWidth > 0) {
+                if (container.scrollLeft >= halfScrollWidth) {
+                    container.scrollLeft -= halfScrollWidth;
+                } else if (container.scrollLeft <= 0) {
+                    container.scrollLeft += halfScrollWidth;
+                }
+            }
+
+            lastTime = time;
+            animationFrameId = requestAnimationFrame(step);
+        };
+
+        animationFrameId = requestAnimationFrame(step);
+
+        return () => {
+            cancelAnimationFrame(animationFrameId);
+        };
+    }, [isHovered]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -75,37 +169,37 @@ const PerformanceMarketing = () => {
         {
             icon: Target,
             title: "PPC Management",
-            description: "We plan and execute paid search programs built around relevance, budget efficiency, and measurable outcomes. As a performance marketing agency in Kochi, Kerala, campaigns are continuously refined to improve efficiency without increasing risk. This approach helps maintain consistency even as competition and costs fluctuate",
+            description: "Relevance-driven search campaigns optimized continuously for maximum budget efficiency and consistent lead flow.",
             features: ["Structured keyword mapping", "Budget control benchmarks", "Ongoing optimization"]
         },
         {
             icon: Megaphone,
             title: "Paid Advertising",
-            description: "We develop structured advertising programs across digital platforms to support visibility and acquisition goals while maintaining cost discipline. Each campaign is aligned with a clear objective to avoid wasted spend",
+            description: "Structured multi-platform campaigns focused on visibility and acquisition while minimizing cost leaks.",
             features: ["Platform-aligned structure", "Clear intent-based messaging", "Continuous monitoring"]
         },
         {
             icon: Users,
             title: "Meta Ads",
-            description: "Audience-focused social campaigns designed to support awareness, consideration, and action across different stages of the buying journey. Creative and targeting decisions are guided by performance signals rather than assumptions",
+            description: "Behavior-aligned paid social campaigns built to guide users through the conversion funnel with zero assumptions.",
             features: ["Creative aligned to behavior", "Funnel-based planning", "Performance-driven iteration"]
         },
         {
             icon: Search,
             title: "Google Ads",
-            description: "Search-led programs designed to capture demand at the right moment while maintaining efficiency and relevance. Campaigns are reviewed regularly to adapt to changes in user behavior",
+            description: "High-intent search campaigns mapped to capture demand when it matters most, keeping CPC under control.",
             features: ["Intent-based architecture", "Cost control bidding", "Refinement for quality traffic"]
         },
         {
             icon: ShoppingCart,
             title: "E-Commerce Marketing",
-            description: "Product-focused performance systems designed to support discovery, trust, and transaction readiness across paid channels. This helps brands scale sales while maintaining predictable acquisition costs",
+            description: "Catalog-driven advertising structures designed to increase product discovery, trust, and repeat purchases.",
             features: ["Catalog-driven planning", "Behavioral audience refinement", "Conversion-focused messaging"]
         },
         {
             icon: BarChart3,
             title: "Marketing Analytics",
-            description: "Measurement frameworks built to provide clarity into what works, why it works, and how results can be scaled responsibly. Insights are used to guide both short-term adjustments and long-term planning",
+            description: "Clear measurement frameworks providing actionable insights to scale campaign returns responsibly.",
             features: ["Clear reporting structures", "Insight-driven decisions", "Continuous evaluation"]
         }
     ];
@@ -253,23 +347,7 @@ const PerformanceMarketing = () => {
                             </a>
                         </div>
                     </motion.div>
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1 }}
-                        className="relative"
-                    >
-                        <div className="absolute -inset-4 bg-[#7E0A11]/10 blur-3xl rounded-full"></div>
-                        <div className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-gray-50">
-                            <img
-                                src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/service%20page/data%20led%20growth%20image.png"
-                                alt="performance-marketing-agency-in-kochi"
-                                title='performance-marketing-agency-in-kochi'
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-                    </motion.div>
+                   
                 </div>
             </section>
 
@@ -526,15 +604,31 @@ const PerformanceMarketing = () => {
                         <span className="text-white/50 text-sm font-bold uppercase tracking-widest mb-4 block">Testimonials</span>
                         <h2 className="text-3xl md:text-5xl font-bold text-white">Client Success Stories</h2>
                     </div>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {testimonials.map((testimonial, index) => (
-                            <motion.div
+                    <style>{`
+                        .hide-scrollbar::-webkit-scrollbar {
+                            display: none;
+                        }
+                        .hide-scrollbar {
+                            -ms-overflow-style: none;
+                            scrollbar-width: none;
+                        }
+                    `}</style>
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                        ref={testimonialContainerRef}
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                        onTouchStart={() => setIsHovered(true)}
+                        onTouchEnd={() => setIsHovered(false)}
+                        className="flex gap-8 overflow-x-auto hide-scrollbar py-4 cursor-grab active:cursor-grabbing select-none"
+                    >
+                        {[...testimonials, ...testimonials].map((testimonial, index) => (
+                            <div
                                 key={index}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.1 }}
-                                className="bg-white/5 border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-all"
+                                className="w-[300px] sm:w-[350px] md:w-[400px] flex-shrink-0 bg-white/5 border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-all"
                             >
                                 <div className="text-4xl text-[#7E0A11] mb-6 font-serif">“</div>
                                 <p className="text-white/80 italic text-lg leading-relaxed mb-8">
@@ -544,9 +638,9 @@ const PerformanceMarketing = () => {
                                     <div className="w-10 h-1 bg-[#7E0A11]"></div>
                                     <span className="text-white font-bold">{testimonial.author}</span>
                                 </div>
-                            </motion.div>
+                            </div>
                         ))}
-                    </div>
+                    </motion.div>
                 </div>
             </section>
 
@@ -639,6 +733,10 @@ const PerformanceMarketing = () => {
                     </motion.button>
                 )}
             </AnimatePresence>
+            <TreasureHuntDiamond 
+                stepRequired={6} 
+                clueText="People remember great stories. Find the place where content takes the spotlight." 
+            />
         </div>
     );
 };
