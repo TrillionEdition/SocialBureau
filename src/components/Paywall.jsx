@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { BASE_URL } from "@/utils/urls";
+import { toast } from "react-toastify";
 
 export default function Paywall({
   companyName,
@@ -11,17 +13,62 @@ export default function Paywall({
     setLoading(true);
 
     try {
-      /**
-       * Replace with Razorpay
-       * Stripe
-       * PhonePe
-       * Cashfree
-       * API call
-       */
+      // 1. Create order on backend (amount in rupees)
+      const resp = await fetch(`${BASE_URL}/payment/create-order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ amount: 2, currency: "INR" }),
+      });
 
-      setTimeout(() => {
-        onPaymentSuccess();
-      }, 1500);
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok || !data.success || !data.order) {
+        throw new Error(data.message || "Failed to create payment order");
+      }
+
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: data.order.amount,
+        currency: data.order.currency,
+        name: "SocialBureau",
+        description: "Workflow Architect Blueprint",
+        image: "/assets/logo.webp",
+        order_id: data.order.id,
+        handler: async (response) => {
+          setLoading(true);
+          try {
+            const verifyRes = await fetch(`${BASE_URL}/payment/verify`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(response),
+            });
+
+            const verifyData = await verifyRes.json().catch(() => ({}));
+            if (verifyRes.ok && verifyData.success) {
+              onPaymentSuccess();
+            } else {
+              console.error("Payment verification failed", verifyData);
+              toast.error(verifyData.message || "Payment verification failed");
+            }
+          } catch (err) {
+            console.error("Verification error:", err);
+            toast.error("Payment verification error");
+          } finally {
+            setLoading(false);
+          }
+        },
+        prefill: {
+          name: companyName || "",
+        },
+        theme: { color: "#E8192C" },
+        modal: { ondismiss: () => setLoading(false) },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
     } catch (error) {
       console.error(error);
       setLoading(false);
@@ -171,7 +218,7 @@ export default function Paywall({
 
         {/* PAYMENT */}
 
-        {/* <div className="
+        <div className="
           mt-10
           rounded-[18px]
           border
@@ -192,7 +239,7 @@ export default function Paywall({
             font-black
             leading-none
           ">
-            ₹999
+            ₹2
           </div>
 
           <div className="
@@ -225,8 +272,8 @@ export default function Paywall({
               : "Unlock Blueprint"}
           </button>
 
-        </div> */}
-<div style={{ maxWidth: "420px", margin: "0 auto", padding: "1.5rem 0" }}>
+        </div>
+{/* <div style={{ maxWidth: "420px", margin: "0 auto", padding: "1.5rem 0" }}>
   <div style={{ background: "var(--color-background-secondary)", borderRadius: "var(--border-radius-lg)", border: "0.5px solid var(--color-border-tertiary)", padding: "2rem", textAlign: "center", position: "relative", overflow: "hidden" }}>
 
     <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: "#E8192C", borderRadius: "var(--border-radius-lg) var(--border-radius-lg) 0 0" }} />
@@ -270,7 +317,7 @@ export default function Paywall({
   <p style={{ textAlign: "center", fontSize: "12px", color: "var(--color-text-tertiary)", marginTop: "12px" }}>
     ⏳ Offer expires soon
   </p>
-</div>
+</div> */}
       </div>
     </div>
   );
