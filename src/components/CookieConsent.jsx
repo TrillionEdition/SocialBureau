@@ -124,6 +124,9 @@ export default function CookieConsent({ forceShow = false }) {
     enableScripts(prefs);
     setShowBanner(false);
     setShowSettings(false);
+    try {
+      window.dispatchEvent(new Event('cookieConsentChanged'));
+    } catch (e) {}
   };
 
   const handlePreferenceChange = (category) => {
