@@ -775,8 +775,8 @@ export const Home = () => {
 
   // Static Hero for Social Bureau
   const currentHero = {
-    desktop: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/84641024-376f-47ff-a753-e2f9511b8e2b_large.png",
-    mobile: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/bb280ccc-6e3b-4ca8-8d9d-4541889c2902_large.png",
+    desktop: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT%20Image%20Jun%2011%2C%202026%2C%2003_40_29%20PM.png",
+    mobile: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT%20Image%20Jun%2011%2C%202026%2C%2003_40_29%20PM.png",
     alt: "Social Bureau"
   };
 
@@ -816,7 +816,7 @@ export const Home = () => {
       )}
 
       
-      {/* <section className="w-full px-0">
+      <section className="w-full px-0">
         <a href='/' target="_blank" rel="noopener noreferrer">
           <img
             src={currentHero.desktop}
@@ -829,7 +829,7 @@ export const Home = () => {
             className={`block sm:hidden w-full object-contain ${currentHero.mobile ? 'h-full' : 'h-auto'}`}
           />
         </a>
-      </section> */}
+      </section>
       
       {/* <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
   <video
