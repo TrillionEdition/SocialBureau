@@ -58,8 +58,9 @@ export const FloatingTreasureHuntClue = () => {
     };
   }, []);
 
-  // Don't show if the hunt hasn't started
-  if (currentStep === 0) {
+  // Don't show if the hunt hasn't started or they already claimed the reward
+  const isClaimed = localStorage.getItem('treasure_hunt_claimed') === 'true';
+  if (currentStep === 0 || isClaimed) {
     return null;
   }
 

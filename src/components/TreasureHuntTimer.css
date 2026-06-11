@@ -2,7 +2,7 @@
 
 .treasure-hunt-timer {
   position: fixed;
-  top: 20px;
+  top: 68px;
   right: 20px;
   z-index: 9998; /* Just below the hint overlay but above everything else */
   display: flex;
@@ -108,7 +108,7 @@
 /* Mobile adjustments */
 @media (max-width: 600px) {
   .treasure-hunt-timer {
-    top: 14px;
+    top: 60px;
     right: 14px;
     padding: 6px 12px 6px 8px;
     gap: 8px;

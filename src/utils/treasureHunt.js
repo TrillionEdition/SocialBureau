@@ -57,6 +57,19 @@ export const getTreasureHuntStep = () => {
 
 export const setTreasureHuntStep = (step) => {
   localStorage.setItem('treasure_hunt_step', step.toString());
+  if (step > CLUES.length) {
+    // Lock in the final completion time!
+    const startTime = getTreasureHuntStartTime();
+    if (startTime) {
+      const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+      const h = Math.floor(elapsedSeconds / 3600);
+      const m = Math.floor((elapsedSeconds % 3600) / 60);
+      const s = elapsedSeconds % 60;
+      const pad = (n) => String(n).padStart(2, "0");
+      const formatted = h > 0 ? `${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
+      localStorage.setItem('treasure_hunt_final_time', formatted);
+    }
+  }
   window.dispatchEvent(new Event('treasure_hunt_update'));
 };
 
@@ -83,6 +96,9 @@ export const getTreasureHuntStartTime = () => {
 export const resetTreasureHunt = () => {
   localStorage.removeItem('treasure_hunt_step');
   localStorage.removeItem('treasure_hunt_start_time');
+  localStorage.removeItem('treasure_hunt_final_time');
+  localStorage.removeItem('treasure_hunt_claimed');
   window.dispatchEvent(new Event('treasure_hunt_update'));
 };
+
 

@@ -7,7 +7,7 @@ export default function LotteryClaims() {
   const [filteredClaims, setFilteredClaims] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
-  const [stats, setStats] = useState({ total: 0, pending: 0, totalPaid: 0 });
+  const [stats, setStats] = useState({ total: 0, pending: 0, verified: 0 });
   const [updatingId, setUpdatingId] = useState(null);
   
   // Image viewer modal state
@@ -39,14 +39,12 @@ export default function LotteryClaims() {
       setClaims(data);
 
       const pendingCount = data.filter((c) => c.status === "Pending").length;
-      const paidSum = data
-        .filter((c) => c.status === "Paid")
-        .reduce((sum, c) => sum + parseInt(c.amount.replace("₹", ""), 10), 0);
+      const verifiedCount = data.filter((c) => c.status === "Paid").length;
 
       setStats({
         total: data.length,
         pending: pendingCount,
-        totalPaid: paidSum,
+        verified: verifiedCount,
       });
     } catch (error) {
       console.error("Failed to fetch claims:", error);
@@ -151,7 +149,7 @@ export default function LotteryClaims() {
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-yellow-500 font-medium">Scanning Database for Lottery Winnings...</p>
+          <p className="text-yellow-500 font-medium">Scanning Database for Treasure Hunt Completions...</p>
         </div>
       </div>
     );
@@ -167,10 +165,10 @@ export default function LotteryClaims() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10 border-b border-slate-800 pb-8">
           <div>
             <h1 className="text-4xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-500 to-yellow-600 uppercase italic">
-              Lottery Claims Center
+              Treasure Hunt Leaderboard
             </h1>
             <p className="text-sm text-slate-400 font-medium mt-1">
-              Verify winners, check payment methods, and send rewards.
+              Verify winners, track completion times, and review submission details.
             </p>
           </div>
           <button
@@ -183,9 +181,9 @@ export default function LotteryClaims() {
 
         {/* STATS */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-          <StatCard title="Total Claims" value={stats.total} />
-          <StatCard title="Pending Payments" value={stats.pending} alert />
-          <StatCard title="Total Paid Out" value={`₹${stats.totalPaid}`} />
+          <StatCard title="Total Completions" value={stats.total} />
+          <StatCard title="Pending Verifications" value={stats.pending} alert />
+          <StatCard title="Verified Completions" value={stats.verified} />
         </div>
 
         {/* OVERRIDE SETTINGS CARD */}
@@ -258,9 +256,9 @@ export default function LotteryClaims() {
 
         {/* CONTROLS */}
         <div className="flex gap-2 mb-8 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
-          <FilterButton label={`All Claims (${claims.length})`} active={filter === "all"} onClick={() => setFilter("all")} />
+          <FilterButton label={`All Submissions (${claims.length})`} active={filter === "all"} onClick={() => setFilter("all")} />
           <FilterButton label="Pending" active={filter === "Pending"} onClick={() => setFilter("Pending")} />
-          <FilterButton label="Paid" active={filter === "Paid"} onClick={() => setFilter("Paid")} />
+          <FilterButton label="Verified" active={filter === "Paid"} onClick={() => setFilter("Paid")} />
         </div>
 
         {/* DATA LIST */}
@@ -269,9 +267,9 @@ export default function LotteryClaims() {
             <table className="w-full text-left">
               <thead className="bg-slate-950 text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] border-b border-slate-800">
                 <tr>
-                  <th className="p-6">Winner Details</th>
-                  <th className="p-6">Prize</th>
-                  <th className="p-6">GPay Details</th>
+                  <th className="p-6">Hunter Details</th>
+                  <th className="p-6">Total Time Taken</th>
+                  <th className="p-6">Contact & QR Details</th>
                   <th className="p-6">Status</th>
                   <th className="p-6">Claim Date</th>
                   <th className="p-6 text-right">Actions</th>
@@ -281,29 +279,33 @@ export default function LotteryClaims() {
                 {filteredClaims.map((c) => (
                   <tr key={c._id} className="hover:bg-slate-700/20 transition">
                     <td className="p-6">
-                      <div className="font-extrabold text-white text-base">{c.name || "Anonymous Winner"}</div>
+                      <div className="font-extrabold text-white text-base">{c.name || "Anonymous Hunter"}</div>
                     </td>
                     <td className="p-6">
                       <span className="px-3 py-1 bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 font-black rounded-lg text-sm">
-                        {c.amount}
+                        {c.totalTime}
                       </span>
                     </td>
                     <td className="p-6">
-                      {c.gpayNumber ? (
-                        <div className="flex flex-col">
-                          <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">Number</span>
-                          <span className="text-sm font-semibold text-white mt-0.5">{c.gpayNumber}</span>
-                        </div>
-                      ) : c.qrCode ? (
-                        <button
-                          onClick={() => setViewingImage(c.qrCode)}
-                          className="px-4 py-1.5 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 hover:from-blue-500/30 hover:to-cyan-500/30 text-cyan-400 border border-cyan-500/30 rounded-lg text-xs font-bold uppercase tracking-wider transition"
-                        >
-                          View QR Code
-                        </button>
-                      ) : (
-                        <span className="text-xs text-slate-500 italic">No details provided</span>
-                      )}
+                      <div className="flex flex-col gap-2">
+                        {c.mobileNumber && (
+                          <div className="flex flex-col">
+                            <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider">Mobile Number</span>
+                            <span className="text-sm font-semibold text-white mt-0.5">{c.mobileNumber}</span>
+                          </div>
+                        )}
+                        {c.qrCode && (
+                          <button
+                            onClick={() => setViewingImage(c.qrCode)}
+                            className="w-fit px-4 py-1.5 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 hover:from-blue-500/30 hover:to-cyan-500/30 text-cyan-400 border border-cyan-500/30 rounded-lg text-xs font-bold uppercase tracking-wider transition"
+                          >
+                            View QR Code
+                          </button>
+                        )}
+                        {!c.mobileNumber && !c.qrCode && (
+                          <span className="text-xs text-slate-500 italic">No details provided</span>
+                        )}
+                      </div>
                     </td>
                     <td className="p-6">
                       <span className={`px-3 py-1 rounded-full text-[10px] uppercase tracking-wider ${getStatusColor(c.status)}`}>
@@ -324,7 +326,7 @@ export default function LotteryClaims() {
                               : "bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-400 border-yellow-500/20"
                           }`}
                         >
-                          {updatingId === c._id ? "Processing..." : c.status === "Pending" ? "Mark Paid" : "Mark Pending"}
+                          {updatingId === c._id ? "Processing..." : c.status === "Pending" ? "Verify Claim" : "Mark Pending"}
                         </button>
                         <button
                           onClick={() => handleErase(c._id)}
@@ -339,7 +341,7 @@ export default function LotteryClaims() {
                 {filteredClaims.length === 0 && (
                   <tr>
                     <td colSpan="6" className="p-20 text-center text-slate-500 italic font-medium">
-                      No lottery claim records found matching this filter.
+                      No treasure hunt submission records found matching this filter.
                     </td>
                   </tr>
                 )}

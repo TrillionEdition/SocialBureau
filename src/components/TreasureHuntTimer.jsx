@@ -38,9 +38,25 @@ export const TreasureHuntTimer = () => {
     if (step > CLUES.length) {
       setIsComplete(true);
       setIsActive(false);
-      // Freeze timer at completion time
-      const secondsElapsed = Math.floor((Date.now() - startTime) / 1000);
-      setElapsed(secondsElapsed);
+      
+      // Try to read locked final time
+      const lockedTime = localStorage.getItem('treasure_hunt_final_time');
+      if (lockedTime) {
+        // Since elapsed state is displayed as formatted time, we can parse it or store raw seconds.
+        // But since we want it as seconds for formatTime, let's convert the MM:SS or HH:MM:SS back to seconds!
+        const parts = lockedTime.split(":").map(Number);
+        let seconds = 0;
+        if (parts.length === 3) {
+          seconds = parts[0] * 3600 + parts[1] * 60 + parts[2];
+        } else if (parts.length === 2) {
+          seconds = parts[0] * 60 + parts[1];
+        }
+        setElapsed(seconds);
+      } else {
+        const secondsElapsed = Math.floor((Date.now() - startTime) / 1000);
+        setElapsed(secondsElapsed);
+      }
+
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
@@ -74,8 +90,10 @@ export const TreasureHuntTimer = () => {
     };
   }, []);
 
-  // Don't render if hunt hasn't started
-  if (!isActive && !isComplete) return null;
+  const isClaimed = localStorage.getItem('treasure_hunt_claimed') === 'true';
+
+  // Don't render if hunt hasn't started or claimed
+  if (isClaimed || (!isActive && !isComplete)) return null;
   if (elapsed === null) return null;
 
   return (

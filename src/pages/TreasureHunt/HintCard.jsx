@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Sparkles } from "lucide-react";
+import { X, Sparkles, Hourglass } from "lucide-react";
+import axios from "axios";
+import { BASE_URL } from "@/utils/urls";
+import { getTreasureHuntStartTime } from "../../utils/treasureHunt";
 import "./HintCard.css";
 
 const TOTAL_FRAMES = 158;
@@ -11,6 +14,75 @@ export const HintCard = ({ onClose, clueText = "Explore the uncharted waters and
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showClue, setShowClue] = useState(false);
+
+  // Claim Form States
+  const [showClaimForm, setShowClaimForm] = useState(false);
+  const [name, setName] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [qrFile, setQrFile] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [totalTimeStr, setTotalTimeStr] = useState("");
+
+  useEffect(() => {
+    if (hintTitle === "Success!" || hintNumber === 9) {
+      // Prioritize the locked final time
+      const lockedTime = localStorage.getItem('treasure_hunt_final_time');
+      if (lockedTime) {
+        setTotalTimeStr(lockedTime);
+        return;
+      }
+
+      // Fallback: calculate live elapsed time
+      const startTime = getTreasureHuntStartTime();
+      if (startTime) {
+        const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+        const h = Math.floor(elapsedSeconds / 3600);
+        const m = Math.floor((elapsedSeconds % 3600) / 60);
+        const s = elapsedSeconds % 60;
+        const pad = (n) => String(n).padStart(2, "0");
+        const formatted = h > 0 ? `${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
+        setTotalTimeStr(formatted);
+      } else {
+        setTotalTimeStr("00:00");
+      }
+    }
+  }, [hintTitle, hintNumber]);
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    if (!name || !mobileNumber) return;
+    setSubmitting(true);
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("mobileNumber", mobileNumber);
+    formData.append("totalTime", totalTimeStr);
+    if (qrFile) {
+      formData.append("qrCode", qrFile);
+    }
+
+    try {
+      const resp = await axios.post(`${BASE_URL}/lottery/claim`, formData);
+      if (resp && resp.status === 201) {
+        setSubmitted(true);
+        localStorage.setItem('treasure_hunt_claimed', 'true');
+        window.dispatchEvent(new Event('treasure_hunt_update')); // notify other listeners to hide icons/timer
+        setTimeout(() => {
+          setShowClaimForm(false);
+          onClose();
+          window.location.href = "/leaderboard";
+        }, 2500);
+      } else {
+        alert("Failed to submit details.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert(error.response?.data?.message || "Failed to submit details.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   // 1. Preload WebP frame sequence (optimized by skipping frames to reduce requests/memory)
   useEffect(() => {
@@ -190,7 +262,7 @@ export const HintCard = ({ onClose, clueText = "Explore the uncharted waters and
 
   return (
     <div className="hint-modal-overlay">
-      {hintTitle === "Success!" && showClue && <GoldCoinsCanvas />}
+      {(hintTitle === "Success!" || hintNumber === 9) && showClue && <GoldCoinsCanvas />}
       <div className="hint-modal-container">
         {/* Close Button */}
         <button className="hint-modal-close" onClick={onClose} aria-label="Close Hint">
@@ -200,9 +272,7 @@ export const HintCard = ({ onClose, clueText = "Explore the uncharted waters and
         {/* Loader Screen while loading WebP frames */}
         {!isLoaded && (
           <div className="hint-card-loader-container">
-            <div className="hint-loader-ring" />
-            <div className="hint-loader-percentage">{loadingProgress}%</div>
-            <div className="hint-loader-text">Decrypting clue card...</div>
+            <Hourglass className="hint-loader-hourglass" size={48} />
           </div>
         )}
 
@@ -223,14 +293,136 @@ export const HintCard = ({ onClose, clueText = "Explore the uncharted waters and
                 transition={{ duration: 0.8, ease: "easeOut" }}
               >
                 <div className="hint-content">
-                  <h3 className="hint-clue-heading">{hintTitle || `Hint ${hintNumber}`}</h3>
+                  <h3 className="hint-clue-heading">
+                    {hintTitle || (hintNumber === 9 ? "Success!" : `Hint ${hintNumber}`)}
+                  </h3>
                   <p className="hint-clue-description">{clueText}</p>
+                  {(hintTitle === "Success!" || hintNumber === 9) && (
+                    <button 
+                      className="ancient-claim-btn"
+                      onClick={() => setShowClaimForm(true)}
+                    >
+                      Claim Reward
+                    </button>
+                  )}
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
       </div>
+
+      {showClaimForm && (
+        <div className="claim-form-overlay" onClick={() => setShowClaimForm(false)}>
+          <div 
+            className="claim-form-container" 
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Top decorative gold ribbon */}
+            <div className="claim-gold-ribbon" />
+            
+            <button className="claim-close-btn" onClick={() => setShowClaimForm(false)}>
+              <X size={20} />
+            </button>
+
+            {submitted ? (
+              <div className="claim-success-view">
+                <div className="claim-success-icon-wrapper">
+                  <svg className="claim-success-svg" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h2 className="claim-success-title">Details Submitted!</h2>
+                <p className="claim-success-desc">
+                  Your Treasure Hunt completion details have been securely recorded. Our admin team will verify your time of <strong>{totalTimeStr}</strong> and process the reward!
+                </p>
+                <button 
+                  onClick={() => {
+                    setShowClaimForm(false);
+                    onClose();
+                  }}
+                  className="claim-btn-primary"
+                >
+                  Close
+                </button>
+              </div>
+            ) : (
+              <div className="claim-inputs-view">
+                <div className="claim-badge-container">
+                  <span className="claim-badge-text">
+                    🏆 Hunt Completed! 🏆
+                  </span>
+                </div>
+                
+                <h2 className="claim-form-title">
+                  Claim Your Reward
+                </h2>
+                <p className="claim-form-subtitle">
+                  Enter your details below to record your achievement in our leaderboard.
+                </p>
+                
+                <form onSubmit={handleFormSubmit} className="claim-form-fields">
+                  <div className="claim-field">
+                    <label className="claim-label">Full Name</label>
+                    <input 
+                      type="text"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Enter your name"
+                      className="claim-input"
+                    />
+                  </div>
+
+                  <div className="claim-field">
+                    <label className="claim-label">Mobile Number</label>
+                    <input 
+                      type="tel"
+                      required
+                      value={mobileNumber}
+                      onChange={(e) => setMobileNumber(e.target.value)}
+                      placeholder="Enter your mobile number"
+                      className="claim-input"
+                    />
+                  </div>
+
+                  <div className="claim-field">
+                    <label className="claim-label">Total Time Taken</label>
+                    <input 
+                      type="text"
+                      readOnly
+                      value={totalTimeStr}
+                      className="claim-input claim-input-readonly"
+                    />
+                  </div>
+                  
+                  <div className="claim-divider">
+                    <span className="claim-divider-text">OR UPLOAD QR</span>
+                  </div>
+                  
+                  <div className="claim-field">
+                    <label className="claim-label">Upload UPI QR Code (Optional)</label>
+                    <input 
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setQrFile(e.target.files[0])}
+                      className="claim-file-input"
+                    />
+                  </div>
+
+                  <button 
+                    type="submit"
+                    disabled={submitting || !name || !mobileNumber}
+                    className="claim-submit-btn"
+                  >
+                    {submitting ? "Submitting..." : "Submit Claims"}
+                  </button>
+                </form>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
