@@ -16,6 +16,7 @@ import {
 import { Bar, Line, Doughnut } from 'react-chartjs-2';
 import AdChart from './AdChart';
 import apiLeadService from '@/services/apiLeadService';
+import TreasureHuntDiamond from './TreasureHuntDiamond';
 
 // Register ChartJS components
 ChartJS.register(
@@ -319,12 +320,7 @@ const ApiMarketing = () => {
             >
               Free Strategy Call
             </button>
-            <button
-              onClick={() => scrollTo('contact')}
-              className="border border-white/20 text-white px-8 md:px-10 py-4 text-[0.7rem] md:text-[0.75rem] tracking-[2px] uppercase hover:border-[#C8102E] hover:text-[#C8102E] transition-all"
-            >
-              Talk to Our Team
-            </button>
+         
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-0 border-t border-white/10 pt-6 sm:pt-10">
@@ -1377,6 +1373,10 @@ const ApiMarketing = () => {
           </div>
         </div>
       </section>
+      <TreasureHuntDiamond 
+        stepRequired={5} 
+        clueText="Clicks are exciting, but results matter more. Explore where campaigns focus on performance." 
+      />
     </div>
   );
 };

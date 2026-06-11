@@ -1,0 +1,178 @@
+/* src/components/FloatingTreasureHuntClue.css */
+
+.floating-clue-bubble {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #1e150f 0%, #0d0907 100%);
+  border: 2px solid #d4af37; /* Gold borders */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 
+              0 0 15px rgba(212, 175, 55, 0.25),
+              inset 0 0 10px rgba(255, 255, 255, 0.05);
+  border-radius: 50px;
+  padding: 8px 18px 8px 10px;
+  cursor: pointer;
+  pointer-events: auto;
+  user-select: none;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: float-pulse 3s infinite ease-in-out;
+}
+
+.floating-clue-bubble:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 
+              0 0 25px rgba(212, 175, 55, 0.45),
+              inset 0 0 10px rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, #261b13 0%, #120d0a 100%);
+}
+
+.floating-clue-bubble.completed {
+  background: linear-gradient(135deg, #0f1e16 0%, #070d09 100%);
+  border-color: #10b981;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 
+              0 0 15px rgba(16, 185, 129, 0.25);
+  padding: 10px 20px;
+}
+
+.floating-clue-icon-wrapper {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #d4af37;
+  transition: all 0.3s ease;
+}
+
+.floating-clue-bubble:hover .floating-clue-icon-wrapper {
+  color: #fff;
+  border-color: #fff;
+  background: rgba(212, 175, 55, 0.15);
+}
+
+.floating-scroll-icon-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 5px rgba(212, 175, 55, 0.3));
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.floating-clue-bubble:hover .floating-scroll-icon-img {
+  transform: scale(1.15) rotate(-5deg);
+}
+
+.floating-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #E8001A;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1.5px solid #1e150f;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.floating-clue-info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.floating-clue-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  color: #d4af37;
+  letter-spacing: 0.15em;
+  line-height: 1.2;
+}
+
+.floating-clue-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 2px;
+  transition: color 0.3s ease;
+}
+
+.floating-clue-bubble:hover .floating-clue-subtitle {
+  color: #fff;
+}
+
+.floating-clue-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  color: #10b981;
+  letter-spacing: 0.1em;
+}
+
+/* Pulsing background effect */
+.floating-pulse-glow {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50px;
+  border: 2px solid #d4af37;
+  opacity: 0;
+  z-index: -1;
+  pointer-events: none;
+  animation: ring-pulse 3s infinite linear;
+}
+
+/* Keyframes */
+@keyframes float-pulse {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes ring-pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.08); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+.animate-bounce-slow {
+  animation: float-pulse 4s infinite ease-in-out;
+}
+
+/* Responsive adjustment for Mobile screens */
+@media (max-width: 768px) {
+  .floating-clue-bubble {
+    bottom: 20px;
+    right: 20px;
+    padding: 6px 12px 6px 6px;
+    gap: 8px;
+  }
+  .floating-clue-icon-wrapper {
+    width: 36px;
+    height: 36px;
+  }
+  .floating-clue-title {
+    font-size: 9px;
+  }
+  .floating-clue-subtitle {
+    font-size: 9px;
+  }
+}

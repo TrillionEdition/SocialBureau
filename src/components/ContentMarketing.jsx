@@ -17,6 +17,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import Seo from "./Seo";
+import TreasureHuntDiamond from "./TreasureHuntDiamond";
 
 const ContentMarketing = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -847,6 +848,10 @@ const ContentMarketing = () => {
       >
         <ArrowUp className="w-6 h-6" />
       </button>
+      <TreasureHuntDiamond 
+        stepRequired={7} 
+        clueText="Need a place where code meets creativity? Search the page where creativity are developed." 
+      />
     </div>
   );
 };

@@ -15,6 +15,7 @@ import {
     Monitor
 } from 'lucide-react';
 import Footer from './Footer';
+import TreasureHuntDiamond from './TreasureHuntDiamond';
 
 const WebDevelopment = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -580,6 +581,10 @@ const WebDevelopment = () => {
             >
                 ↑
             </button>
+            <TreasureHuntDiamond 
+                stepRequired={8} 
+                clueText="Congratulations! You have completed the grand Treasure Hunt! The real treasure is the knowledge and connections you have made today." 
+            />
         </div>
     );
 };

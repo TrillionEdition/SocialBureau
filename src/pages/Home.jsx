@@ -10,6 +10,8 @@ import mediaWaitlistService from "@/services/mediaWaitlistService";
 import Toast from "../components/Toast";
 import PortfolioPopup from '../components/PortfolioPopup';
 import Popup from '@/components/Popup';
+import HintCard from './TreasureHunt/HintCard';
+import { startTreasureHunt, startTreasureHuntTimer } from "../utils/treasureHunt";
 
 const handleJoinWaitingList = async ({ onResult } = {}) => {
   let email = null;
@@ -709,7 +711,18 @@ export const Home = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activePoster, setActivePoster] = useState(null);
   const homepageSchemas = generateHomepageSchemas();
+  const [showHintPopup, setShowHintPopup] = useState(false);
 
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    if (queryParams.get("startHunt") === "true") {
+      setShowHintPopup(true);
+      startTreasureHunt();
+      startTreasureHuntTimer();
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, document.title, newUrl);
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
@@ -1437,6 +1450,14 @@ export const Home = () => {
 
       <Testimonials className="w-full" />
       <PortfolioPopup />
+
+      {showHintPopup && (
+        <HintCard 
+          clueText="Behind every strategy stands a story. Meet the people behind the bureau." 
+          hintNumber={1}
+          onClose={() => setShowHintPopup(false)} 
+        />
+      )}
     </div>
   );
 };

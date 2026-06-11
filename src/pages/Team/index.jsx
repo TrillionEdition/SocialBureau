@@ -3,6 +3,7 @@ import { TeamSelector } from "./TeamSelector";
 import { FullRoster } from "./FullRoster";
 import { Podcast } from "./Podcast";
 import { CTA } from "./CTA";
+import TreasureHuntDiamond from "../../components/TreasureHuntDiamond";
 
 export const Team = () => {
   return (
@@ -13,6 +14,10 @@ export const Team = () => {
         <FullRoster />
         <Podcast />
         <CTA />
+        <TreasureHuntDiamond 
+          stepRequired={2} 
+          clueText="Today's explorers may become tomorrow's crew." 
+        />
       </main>
       
       {/* Background Decor */}

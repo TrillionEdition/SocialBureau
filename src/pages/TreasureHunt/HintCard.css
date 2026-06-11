@@ -1,0 +1,177 @@
+/* src/pages/TreasureHunt/HintCard.css */
+
+.hint-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(12px);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.hint-modal-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.hint-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 10;
+  backdrop-filter: blur(4px);
+}
+
+.hint-modal-close:hover {
+  background: rgba(232, 0, 26, 0.2);
+  border-color: rgba(232, 0, 26, 0.4);
+  color: #fff;
+  transform: rotate(90deg);
+}
+
+.hint-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hint-canvas-wrapper canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Clue Text Overlay - positioned precisely over the card background */
+.hint-text-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 19% 8% 8% 8%; /* Push text block down slightly to sit nicely below the top logo */
+  pointer-events: none;
+}
+
+.hint-content {
+  width: 85%;
+  max-width: 340px; /* Constrained to fit exactly within the scroll body */
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  text-align: center;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hint-clue-heading {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: clamp(16px, 4.2vw, 24px); /* Increased size for hint numbers */
+  font-weight: 900;
+  color: #000000;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  text-shadow: 0.5px 0.5px 0.5px rgba(255, 255, 255, 0.4);
+}
+
+.hint-clue-description {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: clamp(13px, 3.4vw, 18px); /* Increased size for hint descriptions */
+  font-weight: 700;
+  line-height: 1.4;
+  color: #000000;
+  letter-spacing: 0.01em;
+  text-shadow: 0.5px 0.5px 0.5px rgba(255, 255, 255, 0.4);
+  margin: 0;
+}
+
+/* Loader Screen Styles */
+.hint-card-loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.hint-loader-ring {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(255, 255, 255, 0.03);
+  border-top-color: #E8001A;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  box-shadow: 0 0 15px rgba(232, 0, 26, 0.2);
+}
+
+.hint-loader-percentage {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+
+.hint-loader-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+@media (max-width: 600px) {
+  .hint-modal-container {
+    max-width: 95vw;
+    border-radius: 0;
+  }
+  .hint-content {
+    width: 92%;
+    padding: 0;
+  }
+  .hint-text-overlay {
+    padding-top: 21%; /* Push down slightly for better centering under compressed logo on mobile */
+  }
+}

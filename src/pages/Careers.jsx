@@ -5,6 +5,7 @@ import CareersPost from '../components/CareersList'
 import CareersContent from '../components/CareersContent'
 import { CareerCTA } from '../components/CareerCTA'
 import Seo from '../components/Seo'
+import TreasureHuntDiamond from '../components/TreasureHuntDiamond'
 
 export const Careers = () => {
   return (
@@ -21,6 +22,10 @@ export const Careers = () => {
         <CareersContent/>
         <CareersPost/>
         <CareerCTA/>
+        <TreasureHuntDiamond 
+          stepRequired={3} 
+          clueText="Wisdom leaves footprints. Explore where ideas are shared with the world." 
+        />
     </div>
   )
 }

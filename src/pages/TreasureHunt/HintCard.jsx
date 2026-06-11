@@ -1,0 +1,354 @@
+import React, { useEffect, useState, useRef } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { X, Sparkles } from "lucide-react";
+import "./HintCard.css";
+
+const TOTAL_FRAMES = 158;
+
+export const HintCard = ({ onClose, clueText = "Explore the uncharted waters and search where partnerships are formed. Perhaps Ranjit's territory holds the key.", hintNumber, hintTitle }) => {
+  const canvasRef = useRef(null);
+  const imagesRef = useRef([]);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [showClue, setShowClue] = useState(false);
+
+  // 1. Preload WebP frame sequence (optimized by skipping frames to reduce requests/memory)
+  useEffect(() => {
+    let active = true;
+    const images = [];
+    let loadedCount = 0;
+
+    const SKIP_FACTOR = 3; // Load every 3rd frame (e.g. 1, 4, 7, ... 157, 158)
+    const framesToLoad = [];
+    for (let i = 1; i <= TOTAL_FRAMES; i++) {
+      if (i === 1 || i === TOTAL_FRAMES || (i - 1) % SKIP_FACTOR === 0) {
+        framesToLoad.push(i);
+      }
+    }
+    const totalToLoad = framesToLoad.length;
+
+    const loadImage = (index) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        const paddedIndex = String(index).padStart(3, "0");
+        img.src = `/assets/HintCard/ezgif-frame-${paddedIndex}.webp`;
+        img.onload = () => {
+          if (!active) return resolve(false);
+          images[index - 1] = img;
+          loadedCount++;
+          setLoadingProgress(Math.round((loadedCount / totalToLoad) * 100));
+          resolve(true);
+        };
+        img.onerror = () => {
+          console.warn(`Failed to load frame ${index}`);
+          resolve(false);
+        };
+      });
+    };
+
+    const preloadAll = async () => {
+      const promises = [];
+      for (const frameIndex of framesToLoad) {
+        promises.push(loadImage(frameIndex));
+      }
+      await Promise.all(promises);
+      if (active) {
+        imagesRef.current = images;
+        setIsLoaded(true);
+      }
+    };
+
+    preloadAll();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  // Helper to draw a frame onto the canvas
+  const drawFrame = (index) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Nearest loaded frame fallback search
+    let img = imagesRef.current[index];
+    if (!img) {
+      for (let k = index - 1; k >= 0; k--) {
+        if (imagesRef.current[k]) {
+          img = imagesRef.current[k];
+          break;
+        }
+      }
+    }
+    if (!img) {
+      for (let k = index + 1; k < TOTAL_FRAMES; k++) {
+        if (imagesRef.current[k]) {
+          img = imagesRef.current[k];
+          break;
+        }
+      }
+    }
+
+    if (!img) return;
+
+    // Handle resolution / retina screens
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    if (canvas.width !== rect.width * dpr || canvas.height !== rect.height * dpr) {
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+    }
+
+    const imgWidth = img.width || 600;
+    const imgHeight = img.height || 600;
+
+    // Center and contain the image inside the canvas
+    const ratio = Math.min(rect.width / imgWidth, rect.height / imgHeight);
+    const newWidth = imgWidth * ratio;
+    const newHeight = imgHeight * ratio;
+    const x = (rect.width - newWidth) / 2;
+    const y = (rect.height - newHeight) / 2;
+
+    ctx.clearRect(0, 0, rect.width, rect.height);
+    ctx.drawImage(img, x, y, newWidth, newHeight);
+
+    // Chroma keying filter to remove the grey-and-white checkerboard background
+    try {
+      const sx = Math.round(x * dpr);
+      const sy = Math.round(y * dpr);
+      const sw = Math.round(newWidth * dpr);
+      const sh = Math.round(newHeight * dpr);
+
+      const imgData = ctx.getImageData(sx, sy, sw, sh);
+      const data = imgData.data;
+
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+
+        // Checkerboard is purely white (255), light grey (around 204), and black/dark cells (around 0)
+        // Verify it is grayscale (R, G, and B are very close)
+        const isGrayscale = Math.abs(r - g) < 10 && Math.abs(g - b) < 10;
+        const isWhite = r > 230 && g > 230 && b > 230;
+        const isGray = r >= 160 && r <= 228;
+
+        if (isGrayscale && (isWhite || isGray)) {
+          data[i + 3] = 0; // Make pixel transparent
+        }
+      }
+
+      ctx.putImageData(imgData, sx, sy);
+    } catch (err) {
+      console.warn("Chroma keying failed:", err);
+    }
+  };
+
+  // 2. Playback animation loop
+  useEffect(() => {
+    if (!isLoaded || imagesRef.current.length === 0) return;
+
+    let frame = 0;
+    let animId;
+    let lastTime = performance.now();
+    const fps = 30; // Target 30 frames per second
+    const interval = 1000 / fps;
+
+    const play = (currentTime) => {
+      const delta = currentTime - lastTime;
+
+      if (delta >= interval) {
+        lastTime = currentTime - (delta % interval);
+        drawFrame(frame);
+
+        if (frame < TOTAL_FRAMES - 1) {
+          frame = Math.min(TOTAL_FRAMES - 1, frame + 3);
+        } else {
+          // Animation finished! Keep the final frame drawn and show clue text.
+          setShowClue(true);
+          return;
+        }
+      }
+
+      animId = requestAnimationFrame(play);
+    };
+
+    animId = requestAnimationFrame(play);
+
+    // Redraw on window resize
+    const handleResize = () => drawFrame(frame);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      if (animId) cancelAnimationFrame(animId);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isLoaded]);
+
+  return (
+    <div className="hint-modal-overlay">
+      {hintTitle === "Success!" && showClue && <GoldCoinsCanvas />}
+      <div className="hint-modal-container">
+        {/* Close Button */}
+        <button className="hint-modal-close" onClick={onClose} aria-label="Close Hint">
+          <X size={24} />
+        </button>
+
+        {/* Loader Screen while loading WebP frames */}
+        {!isLoaded && (
+          <div className="hint-card-loader-container">
+            <div className="hint-loader-ring" />
+            <div className="hint-loader-percentage">{loadingProgress}%</div>
+            <div className="hint-loader-text">Decrypting clue card...</div>
+          </div>
+        )}
+
+        {/* Canvas & Text Overlay */}
+        <div 
+          className="hint-canvas-wrapper" 
+          style={{ opacity: isLoaded ? 1 : 0, transition: "opacity 0.5s ease" }}
+        >
+          <canvas ref={canvasRef} />
+
+          {/* Clue text overlays on top of the card at the end of the video */}
+          <AnimatePresence>
+            {showClue && (
+              <motion.div
+                className="hint-text-overlay"
+                initial={{ opacity: 0, y: 15, filter: "blur(4px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+              >
+                <div className="hint-content">
+                  <h3 className="hint-clue-heading">{hintTitle || `Hint ${hintNumber}`}</h3>
+                  <p className="hint-clue-description">{clueText}</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const GoldCoinsCanvas = () => {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animId;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const handleResize = () => {
+      if (canvas) {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+    };
+    window.addEventListener("resize", handleResize);
+
+    const particleCount = 100;
+    const particles = [];
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * -height - 20,
+        vy: Math.random() * 3 + 2,
+        vx: Math.random() * 2 - 1,
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: Math.random() * 0.08 + 0.03,
+        radius: Math.random() * 5 + 6,
+        depth: Math.random() * 0.5 + 0.5,
+      });
+    }
+
+    const drawCoin = (p) => {
+      const scaleX = Math.abs(Math.sin(p.rotation));
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.scale(scaleX, 1);
+      ctx.rotate(p.rotation / 5);
+
+      const grad = ctx.createLinearGradient(-p.radius, -p.radius, p.radius, p.radius);
+      grad.addColorStop(0, "#FFE57F");
+      grad.addColorStop(0.3, "#FFD54F");
+      grad.addColorStop(0.7, "#FFB300");
+      grad.addColorStop(1, "#FF8F00");
+
+      ctx.beginPath();
+      ctx.arc(0, 0, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(0, 0, p.radius * 0.75, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(0, 0, p.radius, 0, Math.PI * 2);
+      ctx.strokeStyle = "#B8860B";
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      ctx.restore();
+    };
+
+    const update = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < particleCount; i++) {
+        const p = particles[i];
+        p.y += p.vy * p.depth;
+        p.x += p.vx * p.depth;
+        p.rotation += p.rotationSpeed;
+
+        if (p.y > height + 20) {
+          p.y = -20;
+          p.x = Math.random() * width;
+          p.vy = Math.random() * 3 + 2;
+          p.vx = Math.random() * 2 - 1;
+        }
+      }
+
+      const sorted = [...particles].sort((a, b) => a.depth - b.depth);
+      sorted.forEach(drawCoin);
+
+      animId = requestAnimationFrame(update);
+    };
+
+    update();
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+        zIndex: 1,
+      }}
+    />
+  );
+};
+
+export default HintCard;
