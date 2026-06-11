@@ -24,14 +24,7 @@
   <!-- Preload Critical Assets -->
   <link rel="preload" href="/assets/logo.otf" as="font" type="font/otf" crossorigin />
 
-
-  <!-- DNS Prefetch for fallback -->
-  <link rel="dns-prefetch" href="https://res.cloudinary.com" />
-  <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
-  <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-  <link rel="dns-prefetch" href="https://www.facebook.com" />
-  <link rel="dns-prefetch" href="https://www.clarity.ms" />
-
+  <!-- Reduced and deduplicated connection hints -->
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="preconnect" href="https://lh3.googleusercontent.com" />
   <link rel="preconnect" href="https://www.googletagmanager.com" />
@@ -62,39 +55,9 @@
 
   <!-- Razorpay Integration -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8793649344824940"
-     crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-format="fluid"
-     data-ad-layout-key="-f9+60+3n-de+ap"
-     data-ad-client="ca-pub-8793649344824940"
-     data-ad-slot="4259346182"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
   <meta name="google-adsense-account" content="ca-pub-8793649344824940">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8793649344824940"
      crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-     style="display:block; text-align:center;"
-     data-ad-layout="in-article"
-     data-ad-format="fluid"
-     data-ad-client="ca-pub-8793649344824940"
-     data-ad-slot="5468486079"></ins>
-     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8793649344824940"
-     crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-format="autorelaxed"
-     data-ad-client="ca-pub-8793649344824940"
-     data-ad-slot="4058030624"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
 </head>
 
 <body style="background-color: black">
@@ -137,12 +100,7 @@
         fbq("init", "808365388791255");
         fbq("track", "PageView");
 
-        // Google Adsense
-        const ads = document.createElement('script');
-        ads.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9049800826065651";
-        ads.async = true;
-        ads.crossOrigin = "anonymous";
-        document.body.appendChild(ads);
+        // Google Adsense: already included in <head>, removed duplicate injection
 
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
@@ -152,22 +110,8 @@
       }, 3000);
     });
   </script>
-  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9113513103470739"
-     crossorigin="anonymous"></script> -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8793649344824940"
-     crossorigin="anonymous"></script>
-     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8793649344824940"
-     crossorigin="anonymous"></script>
-<!-- Socialbureau display -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-8793649344824940"
-     data-ad-slot="2952293515"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+  <!-- removed commented duplicate AdSense script -->
+     
   <noscript><img height="1" width="1" style="display: none"
       src="https://www.facebook.com/tr?id=808365388791255&ev=PageView&noscript=1" /></noscript>
 </body>
