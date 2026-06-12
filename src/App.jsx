@@ -143,11 +143,11 @@ const SpinningResults = lazy(() => import("./pages/SpinningResults/SpinningResul
 const TreasureHunt = lazy(() => import("./pages/TreasureHunt/TreasureHunt"));
 
 // Audit Reports Module
-const AuditRevealPage = lazy(() => import("./Pages/AuditReports/RevealPage"));
-const AuditArchivePage = lazy(() => import("./Pages/AuditReports/ArchivePage"));
-const AuditClientList = lazy(() => import("./Pages/AuditReports/ClientList"));
-const AuditClientProfile = lazy(() => import("./Pages/AuditReports/ClientProfile"));
-const AuditUploadReport = lazy(() => import("./Pages/AuditReports/UploadReport"));
+const AuditRevealPage = lazy(() => import("./pages/AuditReports/RevealPage"));
+const AuditArchivePage = lazy(() => import("./pages/AuditReports/ArchivePage"));
+const AuditClientList = lazy(() => import("./pages/AuditReports/ClientList"));
+const AuditClientProfile = lazy(() => import("./pages/AuditReports/ClientProfile"));
+const AuditUploadReport = lazy(() => import("./pages/AuditReports/UploadReport"));
 
 import FloatingTreasureHuntClue from "./components/FloatingTreasureHuntClue";
 import TreasureHuntTimer from "./components/TreasureHuntTimer";
