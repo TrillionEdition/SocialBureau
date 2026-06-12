@@ -27,7 +27,7 @@ export default function AuditPaywallModal({ isOpen, onClose, report, onPaymentSu
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ amount: 2, currency: "INR" }),
+        body: JSON.stringify({ amount: 1500, currency: "INR" }),
       });
 
       const data = await resp.json().catch(() => ({}));
@@ -160,7 +160,7 @@ export default function AuditPaywallModal({ isOpen, onClose, report, onPaymentSu
           >
             <div className="text-xs uppercase tracking-widest text-zinc-500 mb-1">Total Due</div>
             <div className="text-4xl font-black text-white" style={{ fontFamily: "Inter, sans-serif" }}>
-              ₹2.00
+              ₹1500.00
             </div>
             <div className="text-[10px] text-zinc-500 mt-2">ONE-TIME ACCESS FEE</div>
           </div>
