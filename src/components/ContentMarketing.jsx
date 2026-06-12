@@ -514,6 +514,10 @@ const ContentMarketing = () => {
           </div>
         </div>
       </section>
+       <TreasureHuntDiamond 
+        stepRequired={7} 
+        clueText="Need a place where code meets creativity? Search the page where creativity are developed." 
+      />
 
       {/* Why Choose Us */}
       <section
@@ -848,10 +852,7 @@ const ContentMarketing = () => {
       >
         <ArrowUp className="w-6 h-6" />
       </button>
-      <TreasureHuntDiamond 
-        stepRequired={7} 
-        clueText="Need a place where code meets creativity? Search the page where creativity are developed." 
-      />
+     
     </div>
   );
 };

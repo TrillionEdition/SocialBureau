@@ -141,6 +141,14 @@ const PartnerDashboardHub = lazy(() => import("./pages/Partnerships/PartnershipT
 const StudentShowcase = lazy(() => import("./pages/Partnerships/StudentShowcase"));
 const SpinningResults = lazy(() => import("./pages/SpinningResults/SpinningResults"));
 const TreasureHunt = lazy(() => import("./pages/TreasureHunt/TreasureHunt"));
+
+// Audit Reports Module
+const AuditRevealPage = lazy(() => import("./Pages/AuditReports/RevealPage"));
+const AuditArchivePage = lazy(() => import("./Pages/AuditReports/ArchivePage"));
+const AuditClientList = lazy(() => import("./Pages/AuditReports/ClientList"));
+const AuditClientProfile = lazy(() => import("./Pages/AuditReports/ClientProfile"));
+const AuditUploadReport = lazy(() => import("./Pages/AuditReports/UploadReport"));
+
 import FloatingTreasureHuntClue from "./components/FloatingTreasureHuntClue";
 import TreasureHuntTimer from "./components/TreasureHuntTimer";
 
@@ -170,7 +178,8 @@ function ConditionalFooter() {
     "/ajnoradashboard",
     "/lottery",
     "/admin/posters",
-    "/treasure-hunt"
+    "/treasure-hunt",
+    "/leaderboard",
   ];
   const isIndividualTeamPage = location.pathname.toLowerCase().startsWith("/team/") && location.pathname.toLowerCase() !== "/team/";
 
@@ -252,6 +261,20 @@ const lenisOptions = {
   touchMultiplier: 1.5,
   lerp: 0.1,
   infinite: false,
+  prevent: (node) => {
+    let current = node;
+    while (current && current !== document.body) {
+      if (current.hasAttribute && (
+        current.hasAttribute('data-lenis-prevent') ||
+        current.hasAttribute('data-lenis-prevent-wheel') ||
+        current.hasAttribute('data-lenis-prevent-touch')
+      )) {
+        return true;
+      }
+      current = current.parentNode;
+    }
+    return false;
+  }
 };
 
 const HomeWrapper = () => {
@@ -290,19 +313,7 @@ const HomeWrapper = () => {
 const FloatingSpinCard = () => {
   const location = useLocation();
 
-  const hideRoutes = [
-    "/spinning-results",
-    "/admin",
-    "/team/dashboard",
-    "/team/admin",
-    "/user-management",
-    "/hr-messages",
-    "/blog/dashboard",
-    "/partners/dashboard",
-    "/treasure-hunt"
-  ];
-
-  if (hideRoutes.some((route) => location.pathname.startsWith(route))) {
+  if (location.pathname !== "/") {
     return null;
   }
 
@@ -587,6 +598,51 @@ function App() {
             <Route path="/partnership/Partner2" element={<Partner2 />} />
             <Route path="/spinning-results" element={<SpinningResults />} />
             <Route path="/treasure-hunt" element={<TreasureHunt />} />
+
+            {/* ── Audit Reports – User Portal ─────────────────────── */}
+            <Route
+              path="/audit-reports"
+              element={
+                <ProtectedRoute>
+                  <AuditRevealPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/audit-reports/archive"
+              element={
+                <ProtectedRoute>
+                  <AuditArchivePage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* ── Audit Reports – Admin Portal ─────────────────────── */}
+            <Route
+              path="/admin/audit-reports"
+              element={
+                <AdminRoute>
+                  <AuditClientList />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/audit-reports/client/:clientId"
+              element={
+                <AdminRoute>
+                  <AuditClientProfile />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/audit-reports/upload"
+              element={
+                <AdminRoute>
+                  <AuditUploadReport />
+                </AdminRoute>
+              }
+            />
+
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </Suspense>

@@ -12,12 +12,13 @@ export const Team = () => {
         <Hero />
         <TeamSelector />
         <FullRoster />
-        <Podcast />
-        <CTA />
         <TreasureHuntDiamond 
           stepRequired={2} 
-          clueText="Today's explorers may become tomorrow's crew." 
+          clueText="Ranjith" 
         />
+        <Podcast />
+        <CTA />
+        
       </main>
       
       {/* Background Decor */}

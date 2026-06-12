@@ -21,6 +21,7 @@ const AdminPanel = () => {
         { title: "Lottery Claims", desc: "Process payments and cash wins for lottery spinners", link: "/admin/lottery-claims" },
         { title: "Posters", desc: "Manage Special Days Posters", link: "/admin/posters" },
         { title: "Reels", desc: "Manage Instagram Reels on the homepage", link: "/admin/reels" },
+        { title: "Audit Reports", desc: "Manage client audit reports and releases", link: "/admin/audit-reports" },
     ];
 
     return (

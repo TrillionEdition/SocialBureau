@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Footer from '../components/Footer'
+import TreasureHuntDiamond from '../components/TreasureHuntDiamond'
 import { Mail, User, MessageSquare, Send, Linkedin, Instagram, Play } from "lucide-react";
 export default function Landing() {
   return (
@@ -9,6 +10,10 @@ export default function Landing() {
       {/* <SplitFeature /> */}
       <MobileCard />
       <LatestBlogs />
+      <TreasureHuntDiamond 
+          stepRequired={3} 
+          clueText="Blog" 
+        />
       {/* <GradientFeatures /> */}
       <LatestWebsite />
       <YoutubeVideoSection />

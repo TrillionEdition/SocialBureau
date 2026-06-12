@@ -287,7 +287,7 @@ export const HintCard = ({ onClose, clueText = "Explore the uncharted waters and
           <AnimatePresence>
             {showClue && (
               <motion.div
-                className="hint-text-overlay"
+                className={`hint-text-overlay ${(hintTitle === "Success!" || hintNumber === 9) ? "success-overlay" : ""}`}
                 initial={{ opacity: 0, y: 15, filter: "blur(4px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
@@ -448,6 +448,53 @@ const GoldCoinsCanvas = () => {
     };
     window.addEventListener("resize", handleResize);
 
+    // Mouse tracking state
+    const mouse = {
+      x: -1000,
+      y: -1000,
+      vx: 0,
+      vy: 0,
+      lastX: 0,
+      lastY: 0
+    };
+
+    const handleMouseMove = (e) => {
+      const mx = e.clientX;
+      const my = e.clientY;
+      mouse.vx = mx - mouse.lastX;
+      mouse.vy = my - mouse.lastY;
+      mouse.x = mx;
+      mouse.y = my;
+      mouse.lastX = mx;
+      mouse.lastY = my;
+    };
+
+    const handleMouseDown = (e) => {
+      const mx = e.clientX;
+      const my = e.clientY;
+      // Spawn 15-20 particles bursting in different directions
+      const burstCount = Math.floor(Math.random() * 6) + 15;
+      for (let i = 0; i < burstCount; i++) {
+        particles.push({
+          x: mx,
+          y: my,
+          vx: (Math.random() - 0.5) * 14,
+          vy: (Math.random() - 0.7) * 14 - 3,
+          rotation: Math.random() * Math.PI * 2,
+          rotationSpeed: Math.random() * 0.2 + 0.05,
+          radius: Math.random() * 4 + 5,
+          depth: Math.random() * 0.4 + 0.6,
+          isBurst: true,
+          opacity: 1,
+          decay: 0.97,
+          gravity: 0.25
+        });
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousedown", handleMouseDown);
+
     const particleCount = 100;
     const particles = [];
 
@@ -461,6 +508,8 @@ const GoldCoinsCanvas = () => {
         rotationSpeed: Math.random() * 0.08 + 0.03,
         radius: Math.random() * 5 + 6,
         depth: Math.random() * 0.5 + 0.5,
+        isBurst: false,
+        opacity: 1
       });
     }
 
@@ -470,6 +519,8 @@ const GoldCoinsCanvas = () => {
       ctx.translate(p.x, p.y);
       ctx.scale(scaleX, 1);
       ctx.rotate(p.rotation / 5);
+
+      ctx.globalAlpha = p.opacity || 1;
 
       const grad = ctx.createLinearGradient(-p.radius, -p.radius, p.radius, p.radius);
       grad.addColorStop(0, "#FFE57F");
@@ -500,17 +551,49 @@ const GoldCoinsCanvas = () => {
     const update = () => {
       ctx.clearRect(0, 0, width, height);
 
-      for (let i = 0; i < particleCount; i++) {
-        const p = particles[i];
-        p.y += p.vy * p.depth;
-        p.x += p.vx * p.depth;
-        p.rotation += p.rotationSpeed;
+      // Decelerate mouse velocity
+      mouse.vx *= 0.9;
+      mouse.vy *= 0.9;
 
-        if (p.y > height + 20) {
-          p.y = -20;
-          p.x = Math.random() * width;
-          p.vy = Math.random() * 3 + 2;
-          p.vx = Math.random() * 2 - 1;
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+
+        if (p.isBurst) {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += p.gravity;
+          p.vx *= p.decay;
+          p.vy *= p.decay;
+          p.rotation += p.rotationSpeed;
+          p.opacity -= 0.015; // Fade out slowly
+
+          if (p.opacity <= 0 || p.y > height + 20 || p.x < -20 || p.x > width + 20) {
+            particles.splice(i, 1);
+            continue;
+          }
+        } else {
+          p.y += p.vy * p.depth;
+          p.x += p.vx * p.depth;
+          p.rotation += p.rotationSpeed;
+
+          // Mouse interaction (wind / repulsion force)
+          const dx = p.x - mouse.x;
+          const dy = p.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 180) {
+            const force = (180 - dist) / 180;
+            // Push away + wind velocity vector force
+            p.x += (dx / dist) * force * 7 + mouse.vx * 0.35;
+            p.y += (dy / dist) * force * 7 + mouse.vy * 0.35;
+          }
+
+          if (p.y > height + 20) {
+            p.y = -20;
+            p.x = Math.random() * width;
+            p.vy = Math.random() * 3 + 2;
+            p.vx = Math.random() * 2 - 1;
+          }
         }
       }
 
@@ -525,6 +608,8 @@ const GoldCoinsCanvas = () => {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mousedown", handleMouseDown);
     };
   }, []);
 

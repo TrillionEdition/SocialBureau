@@ -453,6 +453,10 @@ const WebDevelopment = () => {
                     </div>
                 </div>
             </section>
+             <TreasureHuntDiamond 
+                stepRequired={8} 
+                clueText="Congratulations! You have completed the grand Treasure Hunt! The real treasure is the knowledge and connections you have made today." 
+            />
 
             {/* Why Choose Us */}
             <section id="why-choose" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -581,10 +585,7 @@ const WebDevelopment = () => {
             >
                 ↑
             </button>
-            <TreasureHuntDiamond 
-                stepRequired={8} 
-                clueText="Congratulations! You have completed the grand Treasure Hunt! The real treasure is the knowledge and connections you have made today." 
-            />
+           
         </div>
     );
 };

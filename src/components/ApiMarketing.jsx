@@ -536,6 +536,10 @@ const ApiMarketing = () => {
           </div>
         </div>
       </section>
+      <TreasureHuntDiamond 
+        stepRequired={5} 
+        clueText="contact" 
+      />
 
       {/* SUB-SERVICES & DEFINITIONS */}
       <section className="bg-[#080808] py-12 sm:py-16 md:py-20 px-4 sm:px-8 lg:px-14 overflow-hidden">
@@ -1373,10 +1377,7 @@ const ApiMarketing = () => {
           </div>
         </div>
       </section>
-      <TreasureHuntDiamond 
-        stepRequired={5} 
-        clueText="Clicks are exciting, but results matter more. Explore where campaigns focus on performance." 
-      />
+      
     </div>
   );
 };

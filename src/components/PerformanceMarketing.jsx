@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Seo from './Seo';
-import TreasureHuntDiamond from './TreasureHuntDiamond';
+
 
 const PerformanceMarketing = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -733,10 +733,7 @@ const PerformanceMarketing = () => {
                     </motion.button>
                 )}
             </AnimatePresence>
-            <TreasureHuntDiamond 
-                stepRequired={6} 
-                clueText="People remember great stories. Find the place where content takes the spotlight." 
-            />
+           
         </div>
     );
 };
