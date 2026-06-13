@@ -1,14 +1,18 @@
 // src/components/FloatingTreasureHuntClue.jsx
 import React, { useState, useEffect } from "react";
-import { Sparkles, Scroll, HelpCircle } from "lucide-react";
+import { useLocation } from "react-router-dom";
+import { Sparkles, Scroll, HelpCircle, Volume2, VolumeX } from "lucide-react";
 import { CLUES, getTreasureHuntStep } from "../utils/treasureHunt";
 import HintCard from "../pages/TreasureHunt/HintCard";
+import TreasureHuntSound from "@/utils/treasureHuntSound";
 import "./FloatingTreasureHuntClue.css";
 
 export const FloatingTreasureHuntClue = () => {
+  const location = useLocation();
   const [currentStep, setCurrentStep] = useState(0);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [processedSrc, setProcessedSrc] = useState(null);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(TreasureHuntSound.getIsAudioPlaying());
 
   useEffect(() => {
     // Read initial step
@@ -19,8 +23,32 @@ export const FloatingTreasureHuntClue = () => {
       setCurrentStep(getTreasureHuntStep());
     };
     window.addEventListener("treasure_hunt_update", handleUpdate);
-    return () => window.removeEventListener("treasure_hunt_update", handleUpdate);
+
+    // Sync audio state
+    const handleAudioChange = (e) => {
+      setIsAudioPlaying(e.detail);
+    };
+    window.addEventListener("treasure_hunt_audio_change", handleAudioChange);
+
+    return () => {
+      window.removeEventListener("treasure_hunt_update", handleUpdate);
+      window.removeEventListener("treasure_hunt_audio_change", handleAudioChange);
+    };
   }, []);
+
+  // Track route changes globally to control background music state
+  useEffect(() => {
+    const step = getTreasureHuntStep();
+    const isClaimed = localStorage.getItem('treasure_hunt_claimed') === 'true';
+    const isGameActive = step > 0 && !isClaimed;
+    const isTreasureHuntPage = location.pathname === "/treasure-hunt";
+
+    if (isTreasureHuntPage || isGameActive) {
+      TreasureHuntSound.syncBackgroundMusicState();
+    } else {
+      TreasureHuntSound.pauseBackgroundMusic();
+    }
+  }, [location.pathname, currentStep]);
 
   useEffect(() => {
     const img = new Image();
@@ -68,7 +96,17 @@ export const FloatingTreasureHuntClue = () => {
   if (currentStep > CLUES.length) {
     return (
       <>
-        <div className="floating-clue-bubble completed animate-bounce-slow" onClick={() => setIsOverlayOpen(true)}>
+        {/* Floating Audio Toggle Button */}
+        <button 
+          className={`floating-audio-btn ${isAudioPlaying ? "active" : ""}`}
+          onClick={(e) => { e.stopPropagation(); TreasureHuntSound.toggleBackgroundMusic(); }}
+          aria-label={isAudioPlaying ? "Mute Background Music" : "Unmute Background Music"}
+          title={isAudioPlaying ? "Mute Game Music" : "Play Game Music"}
+        >
+          {isAudioPlaying ? <Volume2 size={18} /> : <VolumeX size={18} />}
+        </button>
+
+        <div className="floating-clue-bubble completed animate-bounce-slow" onClick={() => { TreasureHuntSound.playOpenHint(); setIsOverlayOpen(true); }}>
           <Sparkles size={20} className="glow-icon text-gold" />
           <span className="floating-clue-label">HUNT COMPLETED!</span>
         </div>
@@ -77,7 +115,7 @@ export const FloatingTreasureHuntClue = () => {
           <HintCard
             clueText="Congratulations! You have completed the grand Treasure Hunt! The real treasure is the knowledge and connections you have made today."
             hintTitle="Success!"
-            onClose={() => setIsOverlayOpen(false)}
+            onClose={() => { TreasureHuntSound.playClick(); setIsOverlayOpen(false); }}
           />
         )}
       </>
@@ -88,10 +126,20 @@ export const FloatingTreasureHuntClue = () => {
 
   return (
     <>
+      {/* Floating Audio Toggle Button */}
+      <button 
+        className={`floating-audio-btn ${isAudioPlaying ? "active" : ""}`}
+        onClick={(e) => { e.stopPropagation(); TreasureHuntSound.toggleBackgroundMusic(); }}
+        aria-label={isAudioPlaying ? "Mute Background Music" : "Unmute Background Music"}
+        title={isAudioPlaying ? "Mute Game Music" : "Play Game Music"}
+      >
+        {isAudioPlaying ? <Volume2 size={18} /> : <VolumeX size={18} />}
+      </button>
+
       {/* Floating Scroll Icon */}
       <div 
         className="floating-clue-bubble" 
-        onClick={() => setIsOverlayOpen(true)}
+        onClick={() => { TreasureHuntSound.playOpenHint(); setIsOverlayOpen(true); }}
         title="View Active Hint"
       >
         <div className="floating-clue-icon-wrapper">
@@ -114,7 +162,7 @@ export const FloatingTreasureHuntClue = () => {
         <HintCard
           clueText={activeClue.clueText}
           hintNumber={currentStep}
-          onClose={() => setIsOverlayOpen(false)}
+          onClose={() => { TreasureHuntSound.playClick(); setIsOverlayOpen(false); }}
         />
       )}
     </>

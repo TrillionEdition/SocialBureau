@@ -157,6 +157,44 @@
   animation: float-pulse 4s infinite ease-in-out;
 }
 
+/* Floating Audio button styles */
+.floating-audio-btn {
+  position: fixed;
+  bottom: 105px;
+  left: 30px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #1e150f 0%, #0d0907 100%);
+  border: 2px solid #d4af37;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 
+              0 0 10px rgba(212, 175, 55, 0.2);
+  border-radius: 50%;
+  cursor: pointer;
+  color: #d4af37;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  outline: none;
+}
+
+.floating-audio-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 
+              0 0 20px rgba(212, 175, 55, 0.4);
+  color: #fff;
+  background: linear-gradient(135deg, #261b13 0%, #120d0a 100%);
+}
+
+.floating-audio-btn.active {
+  background: #d4af37;
+  color: #0d0907;
+  border-color: #d4af37;
+  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+}
+
 /* Responsive adjustment for Mobile screens */
 @media (max-width: 768px) {
   .floating-clue-bubble {
@@ -174,5 +212,11 @@
   }
   .floating-clue-subtitle {
     font-size: 9px;
+  }
+  .floating-audio-btn {
+    bottom: 85px;
+    left: 20px;
+    width: 36px;
+    height: 36px;
   }
 }

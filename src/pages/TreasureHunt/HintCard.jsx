@@ -1,14 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, Sparkles, Hourglass } from "lucide-react";
 import axios from "axios";
 import { BASE_URL } from "@/utils/urls";
 import { getTreasureHuntStartTime } from "../../utils/treasureHunt";
+import TreasureHuntSound from "@/utils/treasureHuntSound";
 import "./HintCard.css";
 
 const TOTAL_FRAMES = 158;
 
 export const HintCard = ({ onClose, clueText = "Explore the uncharted waters and search where partnerships are formed. Perhaps Ranjit's territory holds the key.", hintNumber, hintTitle }) => {
+  const navigate = useNavigate();
   const canvasRef = useRef(null);
   const imagesRef = useRef([]);
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -49,6 +52,16 @@ export const HintCard = ({ onClose, clueText = "Explore the uncharted waters and
     }
   }, [hintTitle, hintNumber]);
 
+  useEffect(() => {
+    if (showClue) {
+      if (hintTitle === "Success!" || hintNumber === 9) {
+        TreasureHuntSound.playWinningSound(true); // Loop victory music
+      } else {
+        // Placeholder: Add another sound from the sounds folder later
+      }
+    }
+  }, [showClue, hintTitle, hintNumber]);
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!name || !mobileNumber) return;
@@ -67,11 +80,12 @@ export const HintCard = ({ onClose, clueText = "Explore the uncharted waters and
       if (resp && resp.status === 201) {
         setSubmitted(true);
         localStorage.setItem('treasure_hunt_claimed', 'true');
+        localStorage.setItem('treasure_hunt_play_winning_sound', 'true');
         window.dispatchEvent(new Event('treasure_hunt_update')); // notify other listeners to hide icons/timer
         setTimeout(() => {
           setShowClaimForm(false);
           onClose();
-          window.location.href = "/leaderboard";
+          navigate("/leaderboard");
         }, 2500);
       } else {
         alert("Failed to submit details.");
@@ -265,7 +279,7 @@ export const HintCard = ({ onClose, clueText = "Explore the uncharted waters and
       {(hintTitle === "Success!" || hintNumber === 9) && showClue && <GoldCoinsCanvas />}
       <div className="hint-modal-container">
         {/* Close Button */}
-        <button className="hint-modal-close" onClick={onClose} aria-label="Close Hint">
+        <button className="hint-modal-close" onClick={() => { TreasureHuntSound.playClick(); onClose(); }} aria-label="Close Hint">
           <X size={24} />
         </button>
 
@@ -300,7 +314,10 @@ export const HintCard = ({ onClose, clueText = "Explore the uncharted waters and
                   {(hintTitle === "Success!" || hintNumber === 9) && (
                     <button 
                       className="ancient-claim-btn"
-                      onClick={() => setShowClaimForm(true)}
+                      onClick={() => {
+                        TreasureHuntSound.playClick();
+                        setShowClaimForm(true);
+                      }}
                     >
                       Claim Reward
                     </button>
@@ -321,7 +338,7 @@ export const HintCard = ({ onClose, clueText = "Explore the uncharted waters and
             {/* Top decorative gold ribbon */}
             <div className="claim-gold-ribbon" />
             
-            <button className="claim-close-btn" onClick={() => setShowClaimForm(false)}>
+            <button className="claim-close-btn" onClick={() => { TreasureHuntSound.playClick(); setShowClaimForm(false); }}>
               <X size={20} />
             </button>
 
@@ -470,6 +487,7 @@ const GoldCoinsCanvas = () => {
     };
 
     const handleMouseDown = (e) => {
+      TreasureHuntSound.playClick();
       const mx = e.clientX;
       const my = e.clientY;
       // Spawn 15-20 particles bursting in different directions

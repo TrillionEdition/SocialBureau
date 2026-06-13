@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Trophy, Clock, User, Award } from "lucide-react";
 import { BASE_URL } from "@/utils/urls";
 import Footer from "./Footer";
+import TreasureHuntSound from "@/utils/treasureHuntSound";
 
 export default function DynamicLeaderboard() {
   const [activeTab, setActiveTab] = useState(() => {
@@ -141,6 +142,15 @@ export default function DynamicLeaderboard() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // Play winning sound if they just completed and redirected here
+    const playWin = localStorage.getItem("treasure_hunt_play_winning_sound");
+    if (playWin === "true") {
+      TreasureHuntSound.playWinningSound();
+      localStorage.removeItem("treasure_hunt_play_winning_sound");
+    }
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);

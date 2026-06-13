@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Volume2, VolumeX, ArrowDown, ShieldAlert, Sparkles, Navigation } from "lucide-react";
 import { resetTreasureHunt } from "../../utils/treasureHunt";
+import TreasureHuntSound from "@/utils/treasureHuntSound";
 import "./TreasureHunt.css";
 
 const TOTAL_FRAMES = 120;
@@ -65,7 +66,6 @@ export const TreasureHunt = () => {
   const rafIdRef = useRef(null);
   const imagesRef = useRef([]);
   const sectionRefs = useRef([]);
-  const synthRef = useRef(null);
   const scrollProgressBarRef = useRef(null);
 
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -73,11 +73,35 @@ export const TreasureHunt = () => {
   const [isInitialLoaded, setIsInitialLoaded] = useState(false);
   const [activeChapter, setActiveChapter] = useState(0);
   const [activeDot, setActiveDot] = useState(0);
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(TreasureHuntSound.getIsAudioPlaying());
 
   useEffect(() => {
     resetTreasureHunt();
   }, []);
+
+  // Background Music Lifecycle
+  useEffect(() => {
+    TreasureHuntSound.syncBackgroundMusicState();
+  }, []);
+
+  useEffect(() => {
+    const handleAudioChange = (e) => {
+      setIsAudioPlaying(e.detail);
+    };
+    window.addEventListener("treasure_hunt_audio_change", handleAudioChange);
+    return () => {
+      window.removeEventListener("treasure_hunt_audio_change", handleAudioChange);
+    };
+  }, []);
+
+  // Play sound when Chapters activate
+  useEffect(() => {
+    if (activeChapter === 1) {
+      TreasureHuntSound.playHintOpenSequence();
+    } else if (activeChapter === 3) {
+      TreasureHuntSound.playFile("/assets/Sounds/coinDrops.mp3", 0.6);
+    }
+  }, [activeChapter]);
 
   // Progressive Preloading
   useEffect(() => {
@@ -141,13 +165,6 @@ export const TreasureHunt = () => {
 
     return () => {
       active = false;
-      // Close Web Audio API synthesizer context on unmount
-      if (synthRef.current) {
-        try {
-          synthRef.current.oscillator.stop();
-          synthRef.current.audioCtx.close();
-        } catch (err) {}
-      }
     };
   }, []);
 
@@ -297,68 +314,16 @@ export const TreasureHunt = () => {
     };
   }, [isInitialLoaded]);
 
-  // Audio Synthesizer Toggle (creates a low, atmospheric rumble directly via JS Oscillator)
-  const toggleAudio = () => {
-    if (synthRef.current) {
-      try {
-        synthRef.current.gainNode.gain.setValueAtTime(synthRef.current.gainNode.gain.value, synthRef.current.audioCtx.currentTime);
-        synthRef.current.gainNode.gain.linearRampToValueAtTime(0, synthRef.current.audioCtx.currentTime + 0.5);
-        setTimeout(() => {
-          if (synthRef.current) {
-            synthRef.current.oscillator.stop();
-            synthRef.current.lfo.stop();
-            synthRef.current.audioCtx.close();
-            synthRef.current = null;
-          }
-        }, 500);
-      } catch (err) {}
-      setIsAudioPlaying(false);
-    } else {
-      try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
-        // Low frequency oscillator (rumble sound)
-        const oscillator = audioCtx.createOscillator();
-        oscillator.type = "sine";
-        oscillator.frequency.setValueAtTime(55, audioCtx.currentTime); // Low A
-
-        // Modulating LFO (creates a wind/wave atmospheric sway)
-        const lfo = audioCtx.createOscillator();
-        lfo.type = "sine";
-        lfo.frequency.setValueAtTime(0.15, audioCtx.currentTime); // 0.15 Hz
-
-        const lfoGain = audioCtx.createGain();
-        lfoGain.gain.setValueAtTime(25, audioCtx.currentTime); // mod frequency +/- 25Hz
-
-        // Bandpass filter to isolate the resonance
-        const filter = audioCtx.createBiquadFilter();
-        filter.type = "bandpass";
-        filter.frequency.setValueAtTime(110, audioCtx.currentTime);
-        filter.Q.setValueAtTime(1.5, audioCtx.currentTime);
-
-        const gainNode = audioCtx.createGain();
-        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-        gainNode.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 2.0); // Fade-in
-
-        // Connect Nodes
-        lfo.connect(lfoGain);
-        lfoGain.connect(filter.frequency);
-        oscillator.connect(filter);
-        filter.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-
-        oscillator.start();
-        lfo.start();
-
-        synthRef.current = { audioCtx, oscillator, lfo, gainNode };
-        setIsAudioPlaying(true);
-      } catch (err) {
-        console.error("Failed to initialize Web Audio:", err);
-      }
+  // Toggle background audio playback
+  const toggleAudio = (e) => {
+    if (e && e.stopPropagation) {
+      e.stopPropagation();
     }
+    TreasureHuntSound.toggleBackgroundMusic();
   };
 
   const scrollToChapter = (index) => {
+    TreasureHuntSound.playClick();
     const docHeight = document.documentElement.scrollHeight;
     const winHeight = window.innerHeight;
     const maxScroll = docHeight - winHeight;
@@ -397,8 +362,28 @@ export const TreasureHunt = () => {
       </div>
 
       <header className="hud-layer top-hud">
-
-      
+        <Link to="/" className="logo-hud">
+          SOCIAL BUREAU
+        </Link>
+        <div className="controls-hud">
+          <button 
+            className={`hud-btn ${isAudioPlaying ? "active" : ""}`}
+            onClick={toggleAudio}
+            aria-label={isAudioPlaying ? "Mute Background Audio" : "Unmute Background Audio"}
+          >
+            {isAudioPlaying ? (
+              <>
+                <Volume2 size={16} />
+                <span>SOUND ON</span>
+              </>
+            ) : (
+              <>
+                <VolumeX size={16} />
+                <span>SOUND OFF</span>
+              </>
+            )}
+          </button>
+        </div>
       </header>
 
       {/* Chapter Sidebar Dots Navigation */}
@@ -434,7 +419,7 @@ export const TreasureHunt = () => {
             >
               <div className={`narrative-card ${activeChapter === 5 ? "ancient-btn-card" : ""}`}>
                 {activeChapter === 5 ? (
-                  <Link to="/home?startHunt=true" className="ancient-btn-link">
+                  <Link to="/home?startHunt=true" className="ancient-btn-link" onClick={() => TreasureHuntSound.playOpenHint()}>
                     <div className="ancient-button">
                       <div className="ancient-button-inner">
                        

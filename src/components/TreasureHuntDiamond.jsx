@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { getTreasureHuntStep, setTreasureHuntStep } from "../utils/treasureHunt";
 import HintCard from "../pages/TreasureHunt/HintCard";
+import TreasureHuntSound from "@/utils/treasureHuntSound";
 import "./TreasureHuntDiamond.css";
 
 const TOTAL_FRAMES = 120;
@@ -157,6 +158,7 @@ export const TreasureHuntDiamond = ({ stepRequired, clueText }) => {
   }
 
   const handleClick = () => {
+    TreasureHuntSound.playOpenHint();
     setIsPopupOpen(true);
     // Advance the progress step in localStorage
     setTreasureHuntStep(stepRequired + 1);
@@ -181,7 +183,7 @@ export const TreasureHuntDiamond = ({ stepRequired, clueText }) => {
         <HintCard
           clueText={clueText}
           hintNumber={stepRequired + 1}
-          onClose={() => setIsPopupOpen(false)}
+          onClose={() => { TreasureHuntSound.playClick(); setIsPopupOpen(false); }}
         />
       )}
     </>
