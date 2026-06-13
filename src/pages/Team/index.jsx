@@ -14,7 +14,7 @@ export const Team = () => {
         <FullRoster />
         <TreasureHuntDiamond 
           stepRequired={2} 
-          clueText="Ranjith" 
+          clueText="Head to our Partnership page. Seek the partner whose name begins with the letters 'R' and ends with 'T' to uncover the next hint."
         />
         <Podcast />
         <CTA />

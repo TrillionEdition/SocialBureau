@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
+import TreasureHuntDiamond from '../../components/TreasureHuntDiamond'
 const WhoWeAre = () => {
   const [expanded, setExpanded] = useState(false);
 
   return (
     <section className="bg-white py-16 px-4 sm:px-6 md:py-32 lg:py-48 text-[#1d1d1f] relative">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#8D0F16]/5 blur-[150px] -z-10 rounded-full" />
-
+         <TreasureHuntDiamond 
+        stepRequired={1} 
+        clueText="Every success has a team behind it. Meet ours." 
+      />
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-[500px_1fr] gap-10 lg:gap-24">
 
@@ -139,6 +142,7 @@ const WhoWeAre = () => {
           </div>
         </div>
       </div>
+     
     </section>
   );
 };

@@ -21,7 +21,7 @@ export const Blog = () => {
       <BlogPosts />
       <TreasureHuntDiamond 
         stepRequired={4} 
-        clueText="Apps talk to each other using APIs—Application Programming Interfaces. Follow the trail to the service that markets these powerful connections." 
+        clueText="Every digital treasure needs a gateway. Explore our API solutions to continue."
       />
       {/* <BlogFooter/> */}
     </div>

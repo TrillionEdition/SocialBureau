@@ -1,9 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Volume2, VolumeX, ArrowDown, ShieldAlert, Sparkles, Navigation } from "lucide-react";
-import { resetTreasureHunt } from "../../utils/treasureHunt";
+import { Volume2, VolumeX } from "lucide-react";
+import { resetTreasureHunt, startTreasureHunt, startTreasureHuntTimer, CLUES } from "../../utils/treasureHunt";
 import TreasureHuntSound from "@/utils/treasureHuntSound";
+import HintCard from "./HintCard";
 import "./TreasureHunt.css";
 
 const TOTAL_FRAMES = 240;
@@ -60,7 +62,10 @@ const CHAPTERS = [
   }
 ];
 
+const BTN_TOTAL_FRAMES = 120;
+
 export const TreasureHunt = () => {
+  const navigate = useNavigate();
   const canvasRef = useRef(null);
   const scrollRef = useRef({ target: 0, current: 0 });
   const rafIdRef = useRef(null);
@@ -70,19 +75,30 @@ export const TreasureHunt = () => {
   const scrollDirectionRef = useRef("down");
   const lastScrollYRef = useRef(0);
 
+  // Button animation refs
+  const btnCanvasRef = useRef(null);
+  const btnImagesRef = useRef([]);
+  const btnFrameRef = useRef(0);
+  const btnRafRef = useRef(null);
+  const btnAudioRef = useRef(null);
+  const btnAnimDoneRef = useRef(false);
+  const btnLoadedRef = useRef(false);
+
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [cacheProgress, setCacheProgress] = useState(0);
   const [isInitialLoaded, setIsInitialLoaded] = useState(false);
   const [activeChapter, setActiveChapter] = useState(0);
   const [activeDot, setActiveDot] = useState(0);
-  const [isAudioPlaying, setIsAudioPlaying] = useState(TreasureHuntSound.getIsAudioPlaying());
+  const [isAudioPlaying, setIsAudioPlaying] = useState(true);
+  const [showHintCard, setShowHintCard] = useState(false);
+  const [btnAnimPlayed, setBtnAnimPlayed] = useState(false);
+  const [preloaderOpen, setPreloaderOpen] = useState(true);
 
   useEffect(() => {
     resetTreasureHunt();
-  }, []);
-
-  // Background Music Lifecycle
-  useEffect(() => {
+    // Force background music to be unmuted and active on every page mount/visit
+    localStorage.removeItem("treasure_hunt_music_muted");
+    TreasureHuntSound.setIsAudioPlaying(true);
     TreasureHuntSound.syncBackgroundMusicState();
   }, []);
 
@@ -105,8 +121,134 @@ export const TreasureHunt = () => {
       TreasureHuntSound.playHintOpenSequence();
     } else if (activeChapter === 3) {
       TreasureHuntSound.playFile("/assets/Sounds/coinDrops.mp3", 0.6);
+    } else if (activeChapter === 5 && !btnAnimPlayed) {
+      // Trigger the Start Hunt button animation + audio
+      playBtnAnimation();
+      setBtnAnimPlayed(true);
     }
   }, [activeChapter]);
+
+  // Reset button animation state when leaving Chapter 5
+  useEffect(() => {
+    if (activeChapter !== 5) {
+      setBtnAnimPlayed(false);
+      
+      if (btnRafRef.current) {
+        cancelAnimationFrame(btnRafRef.current);
+        btnRafRef.current = null;
+      }
+      if (btnAudioRef.current) {
+        btnAudioRef.current.pause();
+        btnAudioRef.current = null;
+      }
+    }
+
+    return () => {
+      // Clean up on component unmount
+      if (btnRafRef.current) {
+        cancelAnimationFrame(btnRafRef.current);
+      }
+      if (btnAudioRef.current) {
+        btnAudioRef.current.pause();
+      }
+    };
+  }, [activeChapter]);
+
+  // Preload all 120 button frames in background (once)
+  useEffect(() => {
+    if (btnLoadedRef.current) return;
+    btnLoadedRef.current = true;
+    const imgs = [];
+    let loaded = 0;
+    for (let i = 1; i <= BTN_TOTAL_FRAMES; i++) {
+      const img = new Image();
+      const idx = String(i).padStart(3, '0');
+      img.src = `/assets/StartHuntButtonFrames/btn-frame-${idx}.webp`;
+      img.onload = () => {
+        imgs[i - 1] = img;
+        loaded++;
+      };
+      img.onerror = () => { loaded++; };
+      imgs[i - 1] = img; // store reference immediately
+    }
+    btnImagesRef.current = imgs;
+  }, []);
+
+  // Draw a single button frame onto the btn canvas
+  const drawBtnFrame = useCallback((frameIdx) => {
+    const canvas = btnCanvasRef.current;
+    if (!canvas) return;
+    const img = btnImagesRef.current[frameIdx];
+    if (!img || !img.complete || img.naturalWidth === 0) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const w = canvas.width;
+    const h = canvas.height;
+    const ratio = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+    const dw = img.naturalWidth * ratio;
+    const dh = img.naturalHeight * ratio;
+    const dx = (w - dw) / 2;
+    const dy = (h - dh) / 2;
+    ctx.clearRect(0, 0, w, h);
+    ctx.drawImage(img, dx, dy, dw, dh);
+  }, []);
+
+  // Animate button frames at ~24fps
+  const playBtnAnimation = useCallback(() => {
+    if (btnRafRef.current) cancelAnimationFrame(btnRafRef.current);
+    btnFrameRef.current = 0;
+    btnAnimDoneRef.current = false;
+
+    // Play audio
+    try {
+      if (btnAudioRef.current) {
+        btnAudioRef.current.pause();
+        btnAudioRef.current.currentTime = 0;
+      }
+      const audio = new Audio('/assets/Sounds/StartHuntButton_audio.mp3');
+      audio.volume = 0.75;
+      btnAudioRef.current = audio;
+      TreasureHuntSound.duckBackgroundMusic(audio);
+      audio.play().catch(e => console.warn('StartHuntButton audio blocked:', e));
+    } catch (e) {
+      console.warn('Failed to play start hunt audio:', e);
+    }
+
+    const FPS = 24;
+    const frameDuration = 1000 / FPS;
+    let lastTime = null;
+
+    const step = (ts) => {
+      if (!lastTime) lastTime = ts;
+      const elapsed = ts - lastTime;
+      if (elapsed >= frameDuration) {
+        lastTime = ts - (elapsed % frameDuration);
+        drawBtnFrame(btnFrameRef.current);
+        if (btnFrameRef.current < BTN_TOTAL_FRAMES - 1) {
+          btnFrameRef.current++;
+        } else {
+          // Hold last frame, stop animating
+          btnAnimDoneRef.current = true;
+          return;
+        }
+      }
+      btnRafRef.current = requestAnimationFrame(step);
+    };
+    btnRafRef.current = requestAnimationFrame(step);
+  }, [drawBtnFrame]);
+
+  // Handle Start Hunt button click
+  const handleStartHuntClick = useCallback(() => {
+    TreasureHuntSound.playOpenHint();
+    startTreasureHunt();
+    startTreasureHuntTimer();
+    setShowHintCard(true);
+  }, []);
+
+  const handleHintCardClose = useCallback(() => {
+    setShowHintCard(false);
+    navigate('/');
+  }, [navigate]);
 
   // Progressive Preloading
   useEffect(() => {
@@ -354,19 +496,58 @@ export const TreasureHunt = () => {
   return (
     <div className="treasure-hunt-container">
       {/* 1. Cinematic Preloader Screen */}
-      {/* <div className={`cinematic-loader ${isInitialLoaded ? "fade-out" : ""}`}>
-        <div className="loader-logo">THE LOST CHAMBER</div>
-        <div className="loader-ring-container">
-          <div className="loader-circle"></div>
-          <div className="loader-percentage">{loadingProgress}%</div>
-        </div>
-        <div className="loader-status">Preloading cinematic frames</div>
-      </div> */}
+      <div className={`cinematic-loader ${!preloaderOpen ? "fade-out" : ""}`}>
+        <div className="loader-logo">SocialBureau Treasure</div>
+        
+        {!isInitialLoaded ? (
+          <>
+            <div className="loader-ring-container">
+              <div className="loader-circle"></div>
+              <div className="loader-percentage">{loadingProgress}%</div>
+            </div>
+            <div className="loader-status"></div>
+          </>
+        ) : (
+          <div className="ancient-button-container">
+            <button 
+              className="ancient-button"
+              onClick={() => {
+                // Direct user click gesture instantly overrides the browser autoplay block
+                TreasureHuntSound.setMuted(false);
+                const music = TreasureHuntSound.initBackgroundMusic();
+                music.play().catch(e => console.warn("Play on enter gesture failed:", e));
+                TreasureHuntSound.setIsAudioPlaying(true);
+                setPreloaderOpen(false);
+              }}
+            >
+              <div className="ancient-button-inner">
+                <span className="ancient-runes-left">◈</span>
+                <span className="ancient-text">ENTER EXPERIENCE</span>
+                <span className="ancient-runes-right">◈</span>
+              </div>
+              <div className="ancient-shine" />
+            </button>
+          </div>
+        )}
+      </div>
 
       {/* 2. Background Canvas & Vignette */}
       <div className="canvas-wrapper">
         <canvas ref={canvasRef} />
       </div>
+
+      {/* Cinematic Spotlight Overlay for Start Hunt Button */}
+      <AnimatePresence>
+        {activeChapter === 5 && (
+          <motion.div
+            className="btn-anim-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          />
+        )}
+      </AnimatePresence>
 
       {/* 3. Global HUD Elements */}
       <div className="scroll-progress-container">
@@ -430,18 +611,28 @@ export const TreasureHunt = () => {
             >
               <div className={`narrative-card ${activeChapter === 5 ? "ancient-btn-card" : ""}`}>
                 {activeChapter === 5 ? (
-                  <Link to="/home?startHunt=true" className="ancient-btn-link" onClick={() => TreasureHuntSound.playOpenHint()}>
-                    <div className="ancient-button-container">
-                      <div className="ancient-button">
-                        <div className="ancient-button-inner">
-                          <span className="ancient-runes-left">◈</span>
-                          <span className="ancient-text">START HUNT</span>
-                          <span className="ancient-runes-right">◈</span>
-                        </div>
-                        <div className="ancient-shine" />
+                  <div
+                    className="start-hunt-btn-canvas-wrapper"
+                    onClick={handleStartHuntClick}
+                    role="button"
+                    aria-label="Start the Treasure Hunt"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === 'Enter' && handleStartHuntClick()}
+                  >
+                    <canvas
+                      ref={btnCanvasRef}
+                      className="start-hunt-btn-canvas"
+                      width={600}
+                      height={300}
+                    />
+                    {!btnAnimPlayed && (
+                      <div className="start-hunt-btn-placeholder">
+                        <span className="ancient-runes-left">◈</span>
+                        <span className="ancient-text">START HUNT</span>
+                        <span className="ancient-runes-right">◈</span>
                       </div>
-                    </div>
-                  </Link>
+                    )}
+                  </div>
                 ) : (
                   <>
                     <span className="chapter-number">{CHAPTERS[activeChapter].number}</span>
@@ -473,6 +664,16 @@ export const TreasureHunt = () => {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Hint 1 Card Modal - uses the real HintCard (scroll/parchment design) */}
+      {showHintCard && (
+        <HintCard
+          clueText={CLUES[0].clueText}
+          hintNumber={1}
+          hintTitle="Hint 1"
+          onClose={handleHintCardClose}
+        />
+      )}
     </div>
   );
 };

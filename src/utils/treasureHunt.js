@@ -4,49 +4,49 @@ export const CLUES = [
   {
     index: 1,
     title: "Hint 1",
-    clueText: "Behind every strategy stands a story. Meet the people behind the bureau.",
+    clueText: "Before the treasure, understand the treasure hunters, discover where it began.",
     targetPage: "/about"
   },
   {
     index: 2,
     title: "Hint 2",
-    clueText: "Heroes rarely work alone. Find the minds that make the magic happen.",
+    clueText: "Every success has a team behind it. Meet ours.",
     targetPage: "/team"
   },
   {
     index: 3,
     title: "Hint 3",
-    clueText: "Today's explorers may become tomorrow's crew.",
-    targetPage: "/careers"
+    clueText: "Head to our Partnership page. Seek the partner whose name begins with the letters 'R' and ends with 'T' to uncover the next hint." ,
+    targetPage: "/partnership/Ranjit"
   },
   {
     index: 4,
     title: "Hint 4",
-    clueText: "Wisdom leaves footprints. Explore where ideas are shared with the world.",
+    clueText:  "The next piece of the puzzle may be hiding among our latest thoughts.",
     targetPage: "/blog"
   },
   {
     index: 5,
     title: "Hint 5",
-    clueText: "Apps talk to each other using APIs—Application Programming Interfaces. Follow the trail to the service that markets these powerful connections.",
+    clueText: "Every digital treasure needs a gateway. Explore our API solutions to continue.",
     targetPage: "/api-marketing-agency-in-kochi"
   },
   {
     index: 6,
     title: "Hint 6",
-    clueText: "Clicks are exciting, but results matter more. Explore where campaigns focus on performance.",
-    targetPage: "/performance-marketing-agency-in-kochi"
+    clueText: "Need a helping hand? Your next clue is waiting there.",
+    targetPage: "/contact"
   },
   {
     index: 7,
     title: "Hint 7",
-    clueText: "People remember great stories. Find the place where content takes the spotlight.",
+    clueText: "Great content tells great stories. One of them holds your next clue." ,
     targetPage: "/content-marketing-agency-in-kochi"
   },
   {
     index: 8,
     title: "Hint 8",
-    clueText: "Need a place where code meets creativity? Search the page where creativity are developed.",
+    clueText: "Not all treasures are discovered—some are developed.",
     targetPage: "/web-development-agency-in-kochi"
   }
 ];

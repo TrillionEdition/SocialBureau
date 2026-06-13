@@ -516,7 +516,7 @@ const ContentMarketing = () => {
       </section>
        <TreasureHuntDiamond 
         stepRequired={7} 
-        clueText="Need a place where code meets creativity? Search the page where creativity are developed." 
+        clueText="Not all treasures are discovered—some are developed."
       />
 
       {/* Why Choose Us */}

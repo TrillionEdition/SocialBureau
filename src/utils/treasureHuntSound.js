@@ -7,7 +7,7 @@ class TreasureHuntSound {
   static isDucked = false;
   static duckTimeout = null;
   static fadeInterval = null;
-  static _isAudioPlaying = false;
+  static _isAudioPlaying = typeof window !== 'undefined' ? localStorage.getItem("treasure_hunt_music_muted") !== "true" : true;
   static startPlaybackRef = null;
   static winningAudio = null;
 

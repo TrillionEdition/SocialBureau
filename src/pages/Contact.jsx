@@ -8,7 +8,7 @@ export const Contact = () => {
       <ContactSection />
        <TreasureHuntDiamond 
                 stepRequired={6} 
-                clueText="content" 
+                clueText="Great content tells great stories. One of them holds your next clue." 
             />
     </div>
   )

@@ -12,7 +12,7 @@ export default function Landing() {
       <LatestBlogs />
       <TreasureHuntDiamond 
           stepRequired={3} 
-          clueText="Blog" 
+          clueText="The next piece of the puzzle may be hiding among our latest thoughts." 
         />
       {/* <GradientFeatures /> */}
       <LatestWebsite />

@@ -538,7 +538,7 @@ const ApiMarketing = () => {
       </section>
       <TreasureHuntDiamond 
         stepRequired={5} 
-        clueText="contact" 
+        clueText="Need a helping hand? Your next clue is waiting there."
       />
 
       {/* SUB-SERVICES & DEFINITIONS */}
