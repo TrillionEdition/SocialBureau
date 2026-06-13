@@ -6,7 +6,7 @@ import { resetTreasureHunt } from "../../utils/treasureHunt";
 import TreasureHuntSound from "@/utils/treasureHuntSound";
 import "./TreasureHunt.css";
 
-const TOTAL_FRAMES = 120;
+const TOTAL_FRAMES = 240;
 const PRELOAD_COUNT = 15;
 
 const CHAPTERS = [
@@ -67,6 +67,8 @@ export const TreasureHunt = () => {
   const imagesRef = useRef([]);
   const sectionRefs = useRef([]);
   const scrollProgressBarRef = useRef(null);
+  const scrollDirectionRef = useRef("down");
+  const lastScrollYRef = useRef(0);
 
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [cacheProgress, setCacheProgress] = useState(0);
@@ -96,6 +98,9 @@ export const TreasureHunt = () => {
 
   // Play sound when Chapters activate
   useEffect(() => {
+    // Only play transition sounds when scrolling down (forward)
+    if (scrollDirectionRef.current === "up") return;
+
     if (activeChapter === 1) {
       TreasureHuntSound.playHintOpenSequence();
     } else if (activeChapter === 3) {
@@ -226,6 +231,14 @@ export const TreasureHunt = () => {
 
     const handleScroll = () => {
       const scrollTop = window.scrollY;
+      
+      if (scrollTop > lastScrollYRef.current) {
+        scrollDirectionRef.current = "down";
+      } else if (scrollTop < lastScrollYRef.current) {
+        scrollDirectionRef.current = "up";
+      }
+      lastScrollYRef.current = scrollTop;
+
       const docHeight = document.documentElement.scrollHeight;
       const winHeight = window.innerHeight;
       const maxScroll = docHeight - winHeight;
@@ -354,7 +367,6 @@ export const TreasureHunt = () => {
       <div className="canvas-wrapper">
         <canvas ref={canvasRef} />
       </div>
-      <div className="cinematic-vignette" />
 
       {/* 3. Global HUD Elements */}
       <div className="scroll-progress-container">
@@ -394,14 +406,13 @@ export const TreasureHunt = () => {
             className={`story-nav-item ${activeDot === idx ? "active" : ""}`}
             onClick={() => scrollToChapter(idx)}
           >
-            <span className="story-nav-label">{ch.title}</span>
             <div className="story-nav-dot" />
           </div>
         ))}
       </nav>
 
       {/* 4. Story Scroll Track (purely acts as spacing) */}
-      <main className="scroll-container" style={{ height: "650vh" }}>
+      <main className="scroll-container" style={{ height: "1300vh" }}>
         {/* Spacing track to drive the scroll-driven animations */}
       </main>
 
@@ -420,11 +431,14 @@ export const TreasureHunt = () => {
               <div className={`narrative-card ${activeChapter === 5 ? "ancient-btn-card" : ""}`}>
                 {activeChapter === 5 ? (
                   <Link to="/home?startHunt=true" className="ancient-btn-link" onClick={() => TreasureHuntSound.playOpenHint()}>
-                    <div className="ancient-button">
-                      <div className="ancient-button-inner">
-                       
-                        <span className="ancient-text">START HUNT</span>
-                       
+                    <div className="ancient-button-container">
+                      <div className="ancient-button">
+                        <div className="ancient-button-inner">
+                          <span className="ancient-runes-left">◈</span>
+                          <span className="ancient-text">START HUNT</span>
+                          <span className="ancient-runes-right">◈</span>
+                        </div>
+                        <div className="ancient-shine" />
                       </div>
                     </div>
                   </Link>
