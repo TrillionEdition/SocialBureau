@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, Hourglass } from "lucide-react";
 import { resetTreasureHunt, startTreasureHunt, startTreasureHuntTimer, CLUES } from "../../utils/treasureHunt";
 import TreasureHuntSound from "@/utils/treasureHuntSound";
 import HintCard from "./HintCard";
@@ -111,6 +111,23 @@ export const TreasureHunt = () => {
       window.removeEventListener("treasure_hunt_audio_change", handleAudioChange);
     };
   }, []);
+
+  // Lock html and body scroll when the cinematic preloader screen is active, and force reset scroll to top
+  useEffect(() => {
+    if (preloaderOpen) {
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+      window.scrollTo(0, 0);
+    } else {
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+      window.scrollTo(0, 0);
+    }
+    return () => {
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+    };
+  }, [preloaderOpen]);
 
   // Play sound when Chapters activate
   useEffect(() => {
@@ -501,11 +518,10 @@ export const TreasureHunt = () => {
         
         {!isInitialLoaded ? (
           <>
-            <div className="loader-ring-container">
-              <div className="loader-circle"></div>
+            <div className="loader-hourglass-container">
+              <Hourglass className="loader-hourglass" size={54} />
               <div className="loader-percentage">{loadingProgress}%</div>
             </div>
-            <div className="loader-status"></div>
           </>
         ) : (
           <div className="ancient-button-container">
