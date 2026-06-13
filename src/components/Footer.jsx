@@ -198,48 +198,50 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Copyright & Legal */}
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-6 text-[11px] text-gray-500">
-            <div>
-              <p>
-                Copyright © 2025 Social Bureau. All rights reserved.
-              </p>
-            </div>
-            <img className="h-30"
-              src="https://pub-7b4bafb3da7d4c758183e371fbae58c2.r2.dev/fa6dbee8-2117-40a6-a15b-c1bec5d21fad%20(1).png"
-              alt="meta-logo"
-            />
-            {/* Ads (consent-aware) */}
-            <div className="w-full max-w-xs">
-              <React.Suspense fallback={null}>
-                {/* Socialbureau display (auto, full-width responsive) */}
-                <AdSense adSlot="2952293515" adFormat="auto" fullWidthResponsive />
-              </React.Suspense>
-            </div>
-            <div className="flex gap-4 flex-wrap justify-center md:justify-end">
-              <Link
-                to="/privacy-policy"
-                className="hover:text-gray-700 transition-colors"
-              >
-                Privacy Policy
-              </Link>
-              <span className="text-gray-400">|</span>
-              <Link
-                to="/disclaimer"
-                className="hover:text-gray-700 transition-colors"
-              >
-                Disclaimer
-              </Link>
-              <span className="text-gray-400">|</span>
-              <Link
-                to="/cookie-policy"
-                className="hover:text-gray-700 transition-colors"
-              >
-                Cookie Policy
-              </Link>
+          <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-4 pt-6 text-[11px] text-gray-500">
+  
+  {/* Left */}
+  <div className="text-center md:text-left">
+    <p>Copyright © 2025 Social Bureau. All rights reserved.</p>
+  </div>
 
-            </div>
-          </div>
+  {/* Center */}
+  <div className="flex justify-center">
+    <img
+      className="h-20 object-contain"
+      src="https://pub-7b4bafb3da7d4c758183e371fbae58c2.r2.dev/fa6dbee8-2117-40a6-a15b-c1bec5d21fad%20(1).png"
+      alt="meta-logo"
+    />
+  </div>
+
+  {/* Right */}
+  <div className="flex gap-4 flex-wrap justify-center md:justify-end">
+    <Link
+      to="/privacy-policy"
+      className="hover:text-gray-700 transition-colors"
+    >
+      Privacy Policy
+    </Link>
+
+    <span className="text-gray-400">|</span>
+
+    <Link
+      to="/disclaimer"
+      className="hover:text-gray-700 transition-colors"
+    >
+      Disclaimer
+    </Link>
+
+    <span className="text-gray-400">|</span>
+
+    <Link
+      to="/cookie-policy"
+      className="hover:text-gray-700 transition-colors"
+    >
+      Cookie Policy
+    </Link>
+  </div>
+</div>
         </motion.div>
       </motion.div>
     </footer>

@@ -33,7 +33,7 @@ const ProtectedRoute = ({ children }) => {
           </div>
           <h2 className="text-3xl font-bold text-white mb-4">Login Required</h2>
           <p className="text-slate-400 text-lg mb-8 leading-relaxed">
-            Please log in to your account to access the Ajinorah Requirement Form.
+            Please log in to your account.
           </p>
           <Link
             to="/login"

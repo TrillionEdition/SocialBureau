@@ -18,7 +18,6 @@ const AdminPostersDashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPoster, setEditingPoster] = useState(null);
   
-  // Card Previews Switcher State: {[posterId]: "desktop" | "mobile"}
   const [cardPreviews, setCardPreviews] = useState({});
 
   // Form State (Only Title is required as metadata)
