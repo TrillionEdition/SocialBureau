@@ -780,6 +780,35 @@ export const Home = () => {
     alt: "Social Bureau"
   };
 
+  const [desktopIndex, setDesktopIndex] = useState(0);
+  const [mobileIndex, setMobileIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setDesktopIndex((prev) => (prev + 1) % heroImages.desktop.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setMobileIndex((prev) => (prev + 1) % heroImages.mobile.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, []);
+
+  const heroImages = {
+  desktop: [
+    "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT%20Image%20Jun%2011%2C%202026%2C%2006_27_01%20PM.png",
+    "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/2083f53d-bc28-48a0-86fc-bcac92b54984.png",
+  ],
+  mobile: [
+    "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/a3db5f8d-ecaf-4d44-b51b-4239adbccc83.png",
+    "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT%20Image%20Jun%2011%2C%202026%2C%2006_27_01%20PM.png",
+  ],
+  alt: "Social Bureau",
+};
+
   return (
     <div className="bg-white text-[#1D1D1F] selection:bg-[#E8001A] selection:text-white font-sans antialiased">
       <Seo
@@ -789,7 +818,7 @@ export const Home = () => {
         image="/assets/socialbureau.png"
         canonicalUrl="https://www.socialbureau.in"
       />
-      <Popup/>
+      {/* <Popup/> */}
       <SchemaMarkup data={homepageSchemas} />
       <StudentTicker />
 
@@ -815,7 +844,7 @@ export const Home = () => {
       )}
 
       
-      <section className="w-full px-0">
+      {/* <section className="w-full px-0">
         <a href='/' target="_blank" rel="noopener noreferrer">
           <img
             src={currentHero.desktop}
@@ -828,8 +857,23 @@ export const Home = () => {
             className={`block sm:hidden w-full object-contain ${currentHero.mobile ? 'h-full' : 'h-auto'}`}
           />
         </a>
-      </section>
-      
+      </section> */}
+       <section className="w-full px-0">
+      <a href="/" target="_blank" rel="noopener noreferrer">
+        <img
+          src={heroImages.desktop[desktopIndex]}
+          alt={heroImages.alt}
+          className="hidden sm:block w-full h-full object-cover"
+        />
+        <img
+          src={heroImages.mobile[mobileIndex] || heroImages.desktop[desktopIndex]}
+          alt={heroImages.alt}
+          className={`block sm:hidden w-full object-contain ${
+            heroImages.mobile.length ? "h-full" : "h-auto"
+          }`}
+        />
+      </a>
+    </section>
       {/* <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
   <video
   className="block w-full h-auto object-cover"
