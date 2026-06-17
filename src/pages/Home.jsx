@@ -768,7 +768,6 @@ export const Home = () => {
     alt: "Social Bureau"
   };
 
-  // Find the current active hero based on date
   const now = new Date();
   const currentHero = HERO_SCHEDULE.find(h => now >= h.date) || defaultHero;
   */
