@@ -791,7 +791,6 @@ export const Home = () => {
       />
       <Popup/>
       <SchemaMarkup data={homepageSchemas} />
-      {/* <AnniversaryCountdown /> */}
       <StudentTicker />
 
       {activePoster && (
