@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import AdSense from './AdSense';
 
@@ -8,7 +9,7 @@ export default function Footer() {
   {
     title: "Services",
     items: [
-      { label: "Web Development", href: "#" },
+      { label: "Web Development", href: "http://localhost:5173/web-development-agency-in-kochi" },
       { label: "API Marketing", href: "/api-marketing-agency-in-kochi" },
       { label: "Performance Marketing", href: "/performance-marketing-agency-in-kochi" },
       { label: "Niche Marketing", href: "/niche-marketing-agency-in-kochi" },
@@ -81,12 +82,21 @@ export default function Footer() {
               <ul className="flex flex-col gap-2">
                 {section.items.map((item, itemIdx) => (
                   <li key={itemIdx}>
-                    <Link
-                      to={item.href}
-                      className="text-[12px] text-gray-600 hover:text-black transition-colors duration-200 leading-relaxed"
-                    >
-                      {item.label}
-                    </Link>
+                    {item.href.startsWith("http") ? (
+                      <a
+                        href={item.href}
+                        className="text-[12px] text-gray-600 hover:text-black transition-colors duration-200 leading-relaxed"
+                      >
+                        {item.label}
+                      </a>
+                    ) : (
+                      <Link
+                        to={item.href}
+                        className="text-[12px] text-gray-600 hover:text-black transition-colors duration-200 leading-relaxed"
+                      >
+                        {item.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, ChevronRight, Trophy, User, FileText, BarChart3 } from "lucide-react";
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import Logout from "./Logout";
 import { BASE_URL } from "@/utils/urls";
@@ -51,6 +52,7 @@ const categoryColors = {
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [isScrolled, setIsScrolled] = useState(false);
   const [isGoldTheme, setIsGoldTheme] = useState(false);
   const [visible, setVisible] = useState(true);
@@ -63,7 +65,6 @@ export default function Navbar() {
   const isTeamPage = location.pathname.startsWith('/team');
 
   const [homeLink, setHomeLink] = useState("/");
-  const [isLotteryActive, setIsLotteryActive] = useState(false);
 
   useEffect(() => {
     const checkLotteryRedirect = async () => {
@@ -76,7 +77,6 @@ export default function Navbar() {
           const end = new Date(data.showLotteryOnHomeEnd);
           if (now >= start && now <= end) {
             setHomeLink("/home");
-            setIsLotteryActive(true);
           }
         }
       } catch (err) {
@@ -88,7 +88,6 @@ export default function Navbar() {
 
   const navItems = [
     { label: "Home", href: homeLink },
-    ...(isLotteryActive ? [{ label: "🎁 Spin & Win", href: "/" }] : []),
     {
       label: "Services",
       href: "#",
@@ -257,6 +256,7 @@ export default function Navbar() {
     { label: "Enquiry", href: "/enquiry-form" },
     { label: "Work Architect", href: "/work-architect", live: true },
     { label: "Support", href: "/contact" },
+    { label: "FIFA 2026", href: "/fifa-world-cup", live: true },
   ];
 
   useEffect(() => {
@@ -370,7 +370,7 @@ export default function Navbar() {
             >
               <img src="/assets/logo.webp" className="h-7 w-40" />
             </a>
-            {navItems.filter(item => item.label !== "🎁 Spin & Win").map((item) => (
+            {navItems.map((item) => (
               <div
                 key={item.label}
                 className="relative shrink-0"
@@ -385,33 +385,29 @@ export default function Navbar() {
                   initial="rest"
                 >
                   <motion.span
-  className={`block flex items-center gap-1.5 ${
-    item.label === '🎁 Spin & Win' 
-      ? 'text-yellow-400 font-bold tracking-wide animate-pulse' 
-      : isTeamPage && item.label === 'Team' 
-      ? 'text-brand-pink font-bold' 
-      : isGoldTheme 
-      ? 'text-[#ecd292]/90 font-medium tracking-wide' 
-      : 'text-white/90'
-  }`}
-  variants={{ rest: { y: 0 }, hover: { y: -24 } }}
-  transition={{ duration: 0.3, ease: "easeInOut" }}
->
-  {item.label}
-  {item.live && (
-  <span className="relative flex h-1.5 w-1.5 -mt-1.5">
-    <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" style={{ animation: "ping 1s cubic-bezier(0,0,0.2,1) infinite" }} />
-    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500" />
-  </span>
-)}
-</motion.span>
+                    className={`block flex items-center gap-1.5 ${
+                      isTeamPage && item.label === 'Team' 
+                        ? 'text-brand-pink font-bold' 
+                        : isGoldTheme 
+                        ? 'text-[#ecd292]/90 font-medium tracking-wide' 
+                        : 'text-white/90'
+                    }`}
+                    variants={{ rest: { y: 0 }, hover: { y: -24 } }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                  >
+                    {item.label}
+                    {item.live && (
+                      <span className="relative flex h-1.5 w-1.5 -mt-1.5">
+                        <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" style={{ animation: "ping 1s cubic-bezier(0,0,0.2,1) infinite" }} />
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500" />
+                      </span>
+                    )}
+                  </motion.span>
 
                   {/* Hover Text - appears from bottom */}
                   <motion.span
                     className={`block absolute top-6 ${
-                      item.label === '🎁 Spin & Win' 
-                        ? 'text-yellow-300 font-bold tracking-wide' 
-                        : isGoldTheme 
+                      isGoldTheme 
                         ? 'text-[#ffd700] drop-shadow-[0_0_6px_rgba(255,215,0,0.65)] font-bold tracking-wide' 
                         : 'text-white'
                     }`}
@@ -430,14 +426,6 @@ export default function Navbar() {
 
           {/* Far-right desktop actions - dropdown menu or simple login */}
            <div className="hidden md:flex items-center shrink-0 pl-3 relative">
-            {isLotteryActive && (
-              <button
-                onClick={() => handleNavClick("/")}
-                className="flex items-center gap-1.5 bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-yellow-950 px-4 py-1.5 rounded-full text-[11px] font-black tracking-wider shadow-[0_0_20px_rgba(234,179,8,0.35)] animate-pulse hover:scale-105 active:scale-95 transition-all mr-4 cursor-pointer"
-              >
-                <span>🎰 SPIN & WIN</span>
-              </button>
-            )}
             {isTeamPage ? (
               <button
                 onClick={() => handleNavClick("/contact")}

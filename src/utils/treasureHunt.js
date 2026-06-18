@@ -84,6 +84,7 @@ export const startTreasureHuntTimer = () => {
   // Only start a new timer if one isn't already running
   if (!localStorage.getItem('treasure_hunt_start_time')) {
     localStorage.setItem('treasure_hunt_start_time', Date.now().toString());
+    localStorage.setItem('treasure_hunt_last_active_time', Date.now().toString());
     window.dispatchEvent(new Event('treasure_hunt_update'));
   }
 };
@@ -98,7 +99,28 @@ export const resetTreasureHunt = () => {
   localStorage.removeItem('treasure_hunt_start_time');
   localStorage.removeItem('treasure_hunt_final_time');
   localStorage.removeItem('treasure_hunt_claimed');
+  localStorage.removeItem('treasure_hunt_last_active_time');
   window.dispatchEvent(new Event('treasure_hunt_update'));
+};
+
+export const updateTreasureHuntActivity = () => {
+  localStorage.setItem('treasure_hunt_last_active_time', Date.now().toString());
+};
+
+export const checkTreasureHuntInactivity = () => {
+  const startTime = getTreasureHuntStartTime();
+  if (!startTime) return false;
+
+  const lastActiveStr = localStorage.getItem('treasure_hunt_last_active_time');
+  const lastActive = lastActiveStr ? parseInt(lastActiveStr, 10) : startTime;
+
+  // 1 hour = 3600000 ms
+  const INACTIVITY_LIMIT = 3600000;
+  if (Date.now() - lastActive > INACTIVITY_LIMIT) {
+    resetTreasureHunt();
+    return true;
+  }
+  return false;
 };
 
 

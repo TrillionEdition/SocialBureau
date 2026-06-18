@@ -19,9 +19,11 @@ const AdminPanel = () => {
         { title: "Applications", desc: "Review candidate resumes and profiles", link: "/admin/applications" },
         { title: "ClickUp Clients", desc: "Provision and manage client portals", link: "/admin/clickup-clients" },
         { title: "Lottery Claims", desc: "Process payments and cash wins for lottery spinners", link: "/admin/lottery-claims" },
+        { title: "Suntips Claims", desc: "Fulfill premium tea pack prizes and shipping updates", link: "/admin/suntips-claims" },
         { title: "Posters", desc: "Manage Special Days Posters", link: "/admin/posters" },
         { title: "Reels", desc: "Manage Instagram Reels on the homepage", link: "/admin/reels" },
         { title: "Audit Reports", desc: "Manage client audit reports and releases", link: "/admin/audit-reports" },
+        { title: "Predictions", desc: "View tournament prediction forecasts ledger", link: "/fifa-predictions" },
     ];
 
     return (

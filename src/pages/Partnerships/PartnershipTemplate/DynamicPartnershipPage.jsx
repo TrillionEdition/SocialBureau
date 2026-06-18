@@ -122,7 +122,12 @@ const DynamicPartnershipPage = () => {
   useEffect(() => {
     const fetchPartner = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/partners/${slug}`);
+        const token = localStorage.getItem("token");
+        const headers = {};
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+        const response = await fetch(`${BASE_URL}/partners/${slug}`, { headers });
         const data = await response.json();
         if (data.success) {
           setPartner(data.data);
