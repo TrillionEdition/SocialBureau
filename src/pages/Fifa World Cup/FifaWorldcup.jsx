@@ -333,11 +333,11 @@ export default function FifaWorldcup() {
             linear-gradient(90deg, rgba(26,111,255,0.05) 1px, transparent 1px);
           background-size: 55px 55px;
         }
-        .custom-scrollbar::-webkit-scrollbar { width:4px; }
+        .custom-scrollbar::-webkit-scrollbar { width:6px; height:6px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background:rgba(26,111,255,0.3); border-radius:4px; }
-        .custom-scrollbar-h::-webkit-scrollbar { height: 4px; }
-        .custom-scrollbar-h::-webkit-scrollbar-thumb { background: rgba(26,111,255,0.25); border-radius: 4px; }
-        .custom-scrollbar-h::-webkit-scrollbar-track { background: rgba(0,0,0,0.15); }
+        .custom-scrollbar-h::-webkit-scrollbar { height: 6px; }
+        .custom-scrollbar-h::-webkit-scrollbar-thumb { background: linear-gradient(90deg, rgba(26,111,255,0.5) 0%, rgba(77,163,255,0.7) 100%); border-radius: 4px; }
+        .custom-scrollbar-h::-webkit-scrollbar-track { background: rgba(5,15,38,0.5); border-radius: 4px; }
         .fixture-card {
           background: rgba(6,18,42,0.55) !important;
           backdrop-filter: blur(20px) !important;
@@ -591,8 +591,8 @@ export default function FifaWorldcup() {
         {/* ═══════════════════════════
             PREDICTIONS HUB
         ═══════════════════════════ */}
-        <section className="py-24 px-4 md:px-12 relative" id="predict" style={{ background:"linear-gradient(180deg,#040d1a 0%,#060f20 100%)" }}>
-          <div className="max-w-7xl mx-auto space-y-12">
+        <section className="py-12 px-3 sm:px-6 md:px-12 relative" id="predict" style={{ background:"linear-gradient(180deg,#040d1a 0%,#060f20 100%)" }}>
+          <div className="max-w-7xl mx-auto space-y-8 md:space-y-12">
 
             <ScrollReveal>
               <div className="flex flex-col md:flex-row justify-between md:items-end gap-4 pb-8" style={{ borderBottom:"1px solid rgba(26,111,255,0.1)" }}>
@@ -621,12 +621,12 @@ export default function FifaWorldcup() {
 
               {/* Predictor Slip */}
               <ScrollReveal delay={0.05} className="lg:col-span-2">
-                <div className="glass-card rounded-[2rem] p-6 md:p-8 space-y-8 relative overflow-hidden">
+                <div className="glass-card rounded-2xl sm:rounded-[2rem] p-4 sm:p-6 md:p-8 space-y-6 md:space-y-8 relative overflow-hidden">
 
                   <AnimatePresence>
                     {!isAuthenticated && (
                       <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
-                        className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-6 rounded-[2rem]"
+                        className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-6 rounded-2xl sm:rounded-[2rem]"
                         style={{ background:"rgba(4,13,26,0.85)", backdropFilter:"blur(20px)" }}>
                         <motion.div animate={{ y:[0,-6,0] }} transition={{ repeat:Infinity, duration:3 }}
                           className="w-14 h-14 rounded-full flex items-center justify-center mb-5"
@@ -663,20 +663,9 @@ export default function FifaWorldcup() {
                             <span className="font-inter text-[9px] uppercase tracking-widest font-bold" style={{ color: "#4da3ff" }}>
                               Matches for {tomorrowDateStr}
                             </span>
-                            {/* Option for selecting the next game */}
-                            <motion.button
-                              type="button"
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
-                              onClick={() => handleSelectMatch(tomorrowUpcomingMatches[0])}
-                              className="font-inter text-[9px] uppercase tracking-wider font-extrabold cursor-pointer px-2.5 py-1 rounded bg-[#2ae500]/10 border border-[#2ae500]/30 hover:bg-[#2ae500]/20 transition-all flex items-center justify-center gap-1"
-                              style={{ color: "#2ae500" }}
-                            >
-                              <span className="material-symbols-outlined text-[10px]" style={{ fontVariationSettings: '"FILL" 1' }}>fast_forward</span>
-                              Select Next Match
-                            </motion.button>
+        
                           </div>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
                             {tomorrowUpcomingMatches.map(m => {
                               const isSelected = selectedMatch && selectedMatch._id === m._id;
                               const formatted = formatMatchDateTime(m.date);
@@ -685,13 +674,13 @@ export default function FifaWorldcup() {
                                   key={m._id}
                                   type="button"
                                   onClick={() => handleSelectMatch(m)}
-                                  className={`w-full px-4 py-2.5 rounded-xl font-inter text-[10px] font-bold uppercase tracking-wider cursor-pointer border transition-all flex items-center justify-between gap-2.5 ${
+                                  className={`w-full min-w-0 px-4 py-2.5 rounded-xl font-inter text-[10px] font-bold uppercase tracking-wider cursor-pointer border transition-all flex items-center justify-between gap-2.5 ${
                                     isSelected
                                       ? "bg-[rgba(26,111,255,0.18)] border-[rgba(26,111,255,0.45)] text-[#7eb8ff] shadow-[0_0_12px_rgba(26,111,255,0.15)]"
                                       : "bg-[rgba(6,18,42,0.4)] border-[rgba(26,111,255,0.08)] text-[#64748b] hover:bg-[rgba(26,111,255,0.05)] hover:text-[#94a3b8] hover:border-[rgba(26,111,255,0.2)]"
                                   }`}
                                 >
-                                  <span className="truncate">{m.teamA} vs {m.teamB}</span>
+                                  <span className="truncate flex-1 min-w-0 text-left">{m.teamA} vs {m.teamB}</span>
                                   <span style={{ color: isSelected ? "rgba(126,184,255,0.7)" : "rgba(100,116,139,0.5)", fontSize: "9px" }} className="flex-shrink-0">({formatted.time})</span>
                                 </button>
                               );
@@ -701,7 +690,7 @@ export default function FifaWorldcup() {
                       )}
 
                       {/* Team Selectors */}
-                      <div className="flex flex-col md:flex-row items-center gap-4">
+                      <div className="flex flex-col lg:flex-row items-center gap-4">
 
                         {/* Team A Selector */}
                         <div className="w-full flex-1 flex flex-col gap-2">
@@ -709,16 +698,16 @@ export default function FifaWorldcup() {
                           <div className="relative">
                             <motion.button type="button" whileTap={!isMatchLocked(selectedMatch)?{scale:0.98}:{}}
                               onClick={() => { if(!isMatchLocked(selectedMatch)) setPredictionChoice("TeamA"); }}
-                              className="w-full p-5 rounded-2xl text-left flex items-center justify-between cursor-pointer transition-all"
+                              className="w-full p-4 sm:p-5 rounded-2xl text-left flex items-center justify-between cursor-pointer transition-all"
                               style={{ background:predictionChoice==="TeamA"?"rgba(26,111,255,0.12)":"rgba(5,15,38,0.7)", border:`1px solid ${predictionChoice==="TeamA"?"rgba(26,111,255,0.5)":"rgba(26,111,255,0.1)"}`, opacity:isMatchLocked(selectedMatch)?0.5:1, cursor:isMatchLocked(selectedMatch)?"not-allowed":"pointer" }}>
-                              <div className="flex items-center gap-4">
-                                <div style={{ width:"20px", height:"20px", borderRadius:"50%", border:`2px solid ${predictionChoice==="TeamA"?"#4da3ff":"#334155"}`, display:"flex", alignItems:"center", justifyContent:"center", transition:"all 0.2s" }}>
+                              <div className="flex items-center gap-2.5 sm:gap-4 min-w-0">
+                                <div style={{ width:"20px", height:"20px", borderRadius:"50%", border:`2px solid ${predictionChoice==="TeamA"?"#4da3ff":"#334155"}`, display:"flex", alignItems:"center", justifyContent:"center", transition:"all 0.2s", flexShrink:0 }}>
                                   <AnimatePresence>{predictionChoice==="TeamA"&&<motion.div initial={{scale:0}} animate={{scale:1}} exit={{scale:0}} style={{ width:"10px", height:"10px", borderRadius:"50%", backgroundColor:"#4da3ff" }}/>}</AnimatePresence>
                                 </div>
                                 <div style={{ width:"32px", height:"32px", borderRadius:"50%", overflow:"hidden", border:"1px solid rgba(26,111,255,0.2)", background:"rgba(0,0,0,0.3)", display:"flex", alignItems:"center", justifyContent:"center", padding:"2px", flexShrink:0 }}>
                                   {selectedMatch.teamACrest?<img src={selectedMatch.teamACrest} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }}/>:<span className="font-inter" style={{ fontSize:"9px", color:"rgba(255,255,255,0.5)" }}>{selectedMatch.teamA.slice(0,3).toUpperCase()}</span>}
                                 </div>
-                                <span style={{ fontFamily:"'Roboto',sans-serif", fontWeight:700, fontSize:"13px", color:"white", textTransform:"uppercase", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap", maxWidth:"120px" }}>{selectedMatch.teamA}</span>
+                                <span className="truncate max-w-[80px] xs:max-w-[120px] sm:max-w-[160px] lg:max-w-[110px] xl:max-w-[140px]" style={{ fontFamily:"'Roboto',sans-serif", fontWeight:700, fontSize:"13px", color:"white", textTransform:"uppercase" }}>{selectedMatch.teamA}</span>
                               </div>
                               <div onClick={(e)=>{e.stopPropagation();setShowTeamADropdown(!showTeamADropdown);setShowTeamBDropdown(false);}} style={{ padding:"6px", borderRadius:"8px", cursor:"pointer" }} className="hover:bg-white/10 transition-colors">
                                 <motion.span animate={{ rotate:showTeamADropdown?180:0 }} transition={{ duration:0.2 }} className="material-symbols-outlined block" style={{ fontSize:"18px", color:"#4da3ff" }}>expand_more</motion.span>
@@ -759,7 +748,7 @@ export default function FifaWorldcup() {
                         </div>
 
                         {/* Draw */}
-                        <div className="flex items-center justify-center z-10 md:mt-6">
+                        <div className="flex items-center justify-center z-10 py-2 lg:py-0 lg:mt-6">
                           <motion.button type="button" whileHover={!isMatchLocked(selectedMatch)?{scale:1.1}:{}} whileTap={!isMatchLocked(selectedMatch)?{scale:0.9}:{}}
                             onClick={()=>{if(!isMatchLocked(selectedMatch)) setPredictionChoice("Draw");}}
                             className="w-12 h-12 rounded-full flex items-center justify-center transition-all cursor-pointer"
@@ -776,16 +765,16 @@ export default function FifaWorldcup() {
                           <div className="relative">
                             <motion.button type="button" whileTap={!isMatchLocked(selectedMatch)?{scale:0.98}:{}}
                               onClick={() => { if(!isMatchLocked(selectedMatch)) setPredictionChoice("TeamB"); }}
-                              className="w-full p-5 rounded-2xl text-left flex items-center justify-between cursor-pointer transition-all"
+                              className="w-full p-4 sm:p-5 rounded-2xl text-left flex items-center justify-between cursor-pointer transition-all"
                               style={{ background:predictionChoice==="TeamB"?"rgba(26,111,255,0.12)":"rgba(5,15,38,0.7)", border:`1px solid ${predictionChoice==="TeamB"?"rgba(26,111,255,0.5)":"rgba(26,111,255,0.1)"}`, opacity:isMatchLocked(selectedMatch)?0.5:1, cursor:isMatchLocked(selectedMatch)?"not-allowed":"pointer" }}>
-                              <div className="flex items-center gap-4">
-                                <div style={{ width:"20px", height:"20px", borderRadius:"50%", border:`2px solid ${predictionChoice==="TeamB"?"#4da3ff":"#334155"}`, display:"flex", alignItems:"center", justifyContent:"center", transition:"all 0.2s" }}>
+                              <div className="flex items-center gap-2.5 sm:gap-4 min-w-0">
+                                <div style={{ width:"20px", height:"20px", borderRadius:"50%", border:`2px solid ${predictionChoice==="TeamB"?"#4da3ff":"#334155"}`, display:"flex", alignItems:"center", justifyContent:"center", transition:"all 0.2s", flexShrink:0 }}>
                                   <AnimatePresence>{predictionChoice==="TeamB"&&<motion.div initial={{scale:0}} animate={{scale:1}} exit={{scale:0}} style={{ width:"10px", height:"10px", borderRadius:"50%", backgroundColor:"#4da3ff" }}/>}</AnimatePresence>
                                 </div>
                                 <div style={{ width:"32px", height:"32px", borderRadius:"50%", overflow:"hidden", border:"1px solid rgba(26,111,255,0.2)", background:"rgba(0,0,0,0.3)", display:"flex", alignItems:"center", justifyContent:"center", padding:"2px", flexShrink:0 }}>
                                   {selectedMatch.teamBCrest?<img src={selectedMatch.teamBCrest} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }}/>:<span className="font-inter" style={{ fontSize:"9px", color:"rgba(255,255,255,0.5)" }}>{selectedMatch.teamB.slice(0,3).toUpperCase()}</span>}
                                 </div>
-                                <span style={{ fontFamily:"'Roboto',sans-serif", fontWeight:700, fontSize:"13px", color:"white", textTransform:"uppercase", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap", maxWidth:"120px" }}>{selectedMatch.teamB}</span>
+                                <span className="truncate max-w-[80px] xs:max-w-[120px] sm:max-w-[160px] lg:max-w-[110px] xl:max-w-[140px]" style={{ fontFamily:"'Roboto',sans-serif", fontWeight:700, fontSize:"13px", color:"white", textTransform:"uppercase" }}>{selectedMatch.teamB}</span>
                               </div>
                               <div onClick={(e)=>{e.stopPropagation();setShowTeamBDropdown(!showTeamBDropdown);setShowTeamADropdown(false);}} style={{ padding:"6px", borderRadius:"8px", cursor:"pointer" }} className="hover:bg-white/10 transition-colors">
                                 <motion.span animate={{ rotate:showTeamBDropdown?180:0 }} transition={{ duration:0.2 }} className="material-symbols-outlined block" style={{ fontSize:"18px", color:"#4da3ff" }}>expand_more</motion.span>
@@ -828,10 +817,10 @@ export default function FifaWorldcup() {
 
                       {/* Momentum */}
                       <div className="space-y-4 pt-2">
-                        <label className="font-inter block" style={{ fontSize:"10px", color:"#4da3ff", textTransform:"uppercase", letterSpacing:"0.18em", fontWeight:600 }}>
+                        <label className="font-inter block leading-normal break-words" style={{ fontSize:"10px", color:"#4da3ff", textTransform:"uppercase", letterSpacing:"0.18em", fontWeight:600 }}>
                           Match Momentum — Expected Time of First Goal
                         </label>
-                        <div className="flex gap-2.5 overflow-x-auto pb-2" style={{ scrollbarWidth:"none" }}>
+                        <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide" style={{ scrollbarWidth:"none", msOverflowStyle:"none" }}>
                           {["0'-15'","16'-30'","31'-45'","46'-60'","61'-75'","76'-90'"].map(slot=>(
                             <motion.button key={slot} type="button" disabled={isMatchLocked(selectedMatch)}
                               whileHover={!isMatchLocked(selectedMatch)?{y:-2}:{}} whileTap={!isMatchLocked(selectedMatch)?{scale:0.94}:{}}
@@ -850,8 +839,8 @@ export default function FifaWorldcup() {
                           whileHover={!isMatchLocked(selectedMatch)&&!submitting?{scale:1.02,y:-1}:{}}
                           whileTap={!isMatchLocked(selectedMatch)&&!submitting?{scale:0.97}:{}}
                           onClick={handleSubmitPrediction}
-                          className="relative w-full flex items-center justify-center gap-2.5 overflow-hidden cursor-pointer rounded-2xl font-display-xl transition-all duration-300"
-                          style={{ padding:"16px", fontSize:"12px", fontWeight:900, textTransform:"uppercase", letterSpacing:"0.2em", background:isMatchLocked(selectedMatch)?"rgba(5,15,38,0.6)":"rgba(3,20,8,0.85)", border:`1px solid ${isMatchLocked(selectedMatch)?"rgba(255,255,255,0.05)":"rgba(42,229,0,0.28)"}`, color:isMatchLocked(selectedMatch)?"#334155":"#2ae500", boxShadow:isMatchLocked(selectedMatch)?"none":"0 0 22px rgba(42,229,0,0.1)", opacity:isMatchLocked(selectedMatch)?0.5:1 }}>
+                          className="relative w-full flex items-center justify-center gap-2 overflow-hidden cursor-pointer rounded-2xl font-display-xl transition-all duration-300 py-3.5 sm:py-4 px-4"
+                          style={{ fontSize:"clamp(10px, 2.5vw, 12px)", fontWeight:900, textTransform:"uppercase", letterSpacing:"0.15em", background:isMatchLocked(selectedMatch)?"rgba(5,15,38,0.6)":"rgba(3,20,8,0.85)", border:`1px solid ${isMatchLocked(selectedMatch)?"rgba(255,255,255,0.05)":"rgba(42,229,0,0.28)"}`, color:isMatchLocked(selectedMatch)?"#334155":"#2ae500", boxShadow:isMatchLocked(selectedMatch)?"none":"0 0 22px rgba(42,229,0,0.1)", opacity:isMatchLocked(selectedMatch)?0.5:1 }}>
                           {submitting ? (
                             <><motion.div animate={{rotate:360}} transition={{repeat:Infinity,duration:0.8,ease:"linear"}} style={{ width:"14px",height:"14px",borderRadius:"50%",borderTop:"2px solid #2ae500",borderRight:"2px solid #2ae500",borderBottom:"2px solid transparent",borderLeft:"2px solid transparent" }}/> PUBLISHING FORECAST...</>
                           ) : justSubmitted ? (
@@ -860,7 +849,7 @@ export default function FifaWorldcup() {
                               PREDICTION RECORDED!
                             </motion.span>
                           ) : (
-                            <><span className="material-symbols-outlined" style={{ fontSize:"14px", fontVariationSettings:'"FILL" 1' }}>bolt</span> PUBLISH PREDICTION &gt;</>
+                            <><span className="material-symbols-outlined" style={{ fontSize:"14px", fontVariationSettings:'"FILL" 1' }}></span> PUBLISH PREDICTION </>
                           )}
                         </motion.button>
                         <AnimatePresence>
@@ -868,7 +857,7 @@ export default function FifaWorldcup() {
                             <motion.div initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} exit={{opacity:0}}
                               className="mt-3 flex items-center justify-center gap-2 font-inter" style={{ fontSize:"10px", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.16em", color:"#2ae500" }}>
                               <span className="material-symbols-outlined" style={{ fontSize:"12px", fontVariationSettings:'"FILL" 1' }}>check_circle</span>
-                              Prediction Locked · Click to Update
+                              Prediction Locked 
                             </motion.div>
                           )}
                         </AnimatePresence>
@@ -954,7 +943,7 @@ export default function FifaWorldcup() {
                       {activeTab===tab&&<motion.div layoutId="tab-pill" className="absolute inset-0 rounded-xl" transition={{type:"spring",stiffness:400,damping:30}} style={{ background:"rgba(26,111,255,0.18)",border:"1px solid rgba(26,111,255,0.25)" }}/>}
                       <span className="relative z-10 flex items-center gap-2">
                         <span className="material-symbols-outlined" style={{ fontSize:"14px" }}>{tab==="leaderboard"?"leaderboard":"calendar_month"}</span>
-                        {tab==="leaderboard"?"Rankings":"Fixtures"}
+                        {tab==="leaderboard"?"Rankings":"Matches"}
                       </span>
                     </motion.button>
                   ))}
@@ -966,30 +955,32 @@ export default function FifaWorldcup() {
               {activeTab==="leaderboard" && (
                 <motion.div key="lb" initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-20}} transition={{duration:0.35}}
                   className="glass-card rounded-[2rem] overflow-hidden">
-                  <table className="w-full text-left">
-                    <thead className="font-inter" style={{ background:"rgba(4,13,26,0.85)",borderBottom:"1px solid rgba(26,111,255,0.1)" }}>
-                      <tr style={{ fontSize:"9px",color:"#475569",textTransform:"uppercase",letterSpacing:"0.18em" }}>
-                        <th className="p-5">Position</th><th className="p-5">Forecaster</th><th className="p-5">Tier</th>
-                        <th className="p-5 text-right">{isAccuracy?"Correct Predictions":"Total Votes Cast"}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {currentLeaderboard.map((user,idx)=>(
-                        <motion.tr key={user._id||idx} initial={{opacity:0,x:-12}} animate={{opacity:1,x:0}} transition={{delay:idx*0.04}}
-                          className="transition" style={{ borderBottom:"1px solid rgba(26,111,255,0.04)" }}>
-                          <td className="p-5 font-inter font-bold" style={{ color:"#334155" }}>#{idx+1}</td>
-                          <td className="p-5">
-                            <div className="flex items-center gap-2" style={{ fontFamily:"'Roboto',sans-serif",fontWeight:700,fontSize:"12px",color:"white" }}>
-                              {user.name}
-                              {idx===0&&<span className="font-inter" style={{ padding:"2px 6px",borderRadius:"4px",background:"rgba(251,191,36,0.12)",color:"#fbbf24",fontSize:"7px",textTransform:"uppercase",letterSpacing:"0.12em",fontWeight:700 }}>Leader</span>}
-                            </div>
-                          </td>
-                          <td className="p-5 font-inter" style={{ color:"#475569",textTransform:"uppercase",letterSpacing:"0.12em",fontSize:"12px" }}>{user.role||"User"}</td>
-                          <td className="p-5 text-right font-inter font-bold" style={{ color:"#4da3ff",fontSize:"12px" }}>{isAccuracy?user.fifaPoints||0:user.votesCount||0}</td>
-                        </motion.tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  <div className="overflow-x-auto custom-scrollbar-h">
+                    <table className="w-full text-left min-w-[600px] md:min-w-0">
+                      <thead className="font-inter" style={{ background:"rgba(4,13,26,0.85)",borderBottom:"1px solid rgba(26,111,255,0.1)" }}>
+                        <tr style={{ fontSize:"9px",color:"#475569",textTransform:"uppercase",letterSpacing:"0.18em" }}>
+                          <th className="p-5">Position</th><th className="p-5">Forecaster</th><th className="p-5">Tier</th>
+                          <th className="p-5 text-right">{isAccuracy?"Correct Predictions":"Total Votes Cast"}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {currentLeaderboard.map((user,idx)=>(
+                          <motion.tr key={user._id||idx} initial={{opacity:0,x:-12}} animate={{opacity:1,x:0}} transition={{delay:idx*0.04}}
+                            className="transition" style={{ borderBottom:"1px solid rgba(26,111,255,0.04)" }}>
+                            <td className="p-5 font-inter font-bold" style={{ color:"#334155" }}>#{idx+1}</td>
+                            <td className="p-5">
+                              <div className="flex items-center gap-2" style={{ fontFamily:"'Roboto',sans-serif",fontWeight:700,fontSize:"12px",color:"white" }}>
+                                {user.name}
+                                {idx===0&&<span className="font-inter" style={{ padding:"2px 6px",borderRadius:"4px",background:"rgba(251,191,36,0.12)",color:"#fbbf24",fontSize:"7px",textTransform:"uppercase",letterSpacing:"0.12em",fontWeight:700 }}>Leader</span>}
+                              </div>
+                            </td>
+                            <td className="p-5 font-inter" style={{ color:"#475569",textTransform:"uppercase",letterSpacing:"0.12em",fontSize:"12px" }}>{user.role||"User"}</td>
+                            <td className="p-5 text-right font-inter font-bold" style={{ color:"#4da3ff",fontSize:"12px" }}>{isAccuracy?user.fifaPoints||0:user.votesCount||0}</td>
+                          </motion.tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </motion.div>
               )}
 
@@ -1130,7 +1121,7 @@ export default function FifaWorldcup() {
                           className={`fixture-card p-4 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4 cursor-pointer ${isHero ? "is-hero" : ""}`}
                         >
                           {/* Time & Date Column */}
-                          <div className="min-w-[130px] text-center md:text-left md:pr-4 flex flex-col items-center md:items-start gap-0.5" style={{ borderRight: "1px solid rgba(26,111,255,0.08)" }}>
+                          <div className="w-full md:w-auto min-w-[130px] text-center md:text-left md:pr-4 flex flex-col items-center md:items-start gap-0.5 border-b md:border-b-0 md:border-r border-[rgba(26,111,255,0.08)] pb-3 md:pb-0">
                             <div className="flex items-center gap-1">
                               <span className="material-symbols-outlined text-[12px]" style={{ color: "rgba(255,255,255,0.4)" }}>schedule</span>
                               <span style={{ fontFamily: "'Roboto',sans-serif", fontWeight: 700, fontSize: "14px", color: "white" }}>
@@ -1145,11 +1136,11 @@ export default function FifaWorldcup() {
                           </div>
 
                           {/* Matchup Teams Row */}
-                          <div className="flex-1 flex items-center justify-center md:justify-start gap-6 w-full">
+                          <div className="flex-1 flex items-center justify-center md:justify-start gap-3 sm:gap-6 w-full">
                             
                             {/* Team A */}
-                            <div className="flex items-center gap-3 justify-end flex-1 md:flex-initial min-w-[120px]">
-                              <span style={{ fontFamily: "'Roboto',sans-serif", fontWeight: 700, fontSize: "12px", color: "white", textTransform: "uppercase", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "95px" }}>
+                            <div className="flex items-center gap-2.5 sm:gap-3 justify-end flex-1 md:flex-initial min-w-[90px] sm:min-w-[120px]">
+                              <span className="truncate max-w-[70px] sm:max-w-[95px]" style={{ fontFamily: "'Roboto',sans-serif", fontWeight: 700, fontSize: "12px", color: "white", textTransform: "uppercase" }}>
                                 {match.teamA}
                               </span>
                               <div style={{ width: "30px", height: "30px", borderRadius: "50%", overflow: "hidden", border: "1.5px solid rgba(26,111,255,0.25)", background: "rgba(0,0,0,0.35)", display: "flex", alignItems: "center", justifyContent: "center", padding: "3px", boxShadow: "0 4px 10px rgba(0,0,0,0.3)" }}>
@@ -1201,7 +1192,7 @@ export default function FifaWorldcup() {
                             </div>
 
                             {/* Team B */}
-                            <div className="flex items-center gap-3 justify-start flex-1 md:flex-initial min-w-[120px]">
+                            <div className="flex items-center gap-2.5 sm:gap-3 justify-start flex-1 md:flex-initial min-w-[90px] sm:min-w-[120px]">
                               <div style={{ width: "30px", height: "30px", borderRadius: "50%", overflow: "hidden", border: "1.5px solid rgba(26,111,255,0.25)", background: "rgba(0,0,0,0.35)", display: "flex", alignItems: "center", justifyContent: "center", padding: "3px", boxShadow: "0 4px 10px rgba(0,0,0,0.3)" }}>
                                 {match.teamBCrest ? (
                                   <img src={match.teamBCrest} alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
@@ -1211,14 +1202,14 @@ export default function FifaWorldcup() {
                                   </span>
                                 )}
                               </div>
-                              <span style={{ fontFamily: "'Roboto',sans-serif", fontWeight: 700, fontSize: "12px", color: "white", textTransform: "uppercase", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "95px" }}>
+                              <span className="truncate max-w-[70px] sm:max-w-[95px]" style={{ fontFamily: "'Roboto',sans-serif", fontWeight: 700, fontSize: "12px", color: "white", textTransform: "uppercase" }}>
                                 {match.teamB}
                               </span>
                             </div>
                           </div>
 
                           {/* Prediction Status & Metadata badges */}
-                          <div className="flex items-center gap-2.5 justify-end min-w-[140px]">
+                          <div className="flex items-center gap-2.5 justify-center md:justify-end w-full md:w-auto min-w-0 md:min-w-[140px]">
                             {hasPred && (
                               <span className="font-inter" style={{ padding: "2px 6px", borderRadius: "5px", background: "rgba(42,229,0,0.08)", border: "1px solid rgba(42,229,0,0.2)", color: "#2ae500", fontSize: "8px", textTransform: "uppercase", letterSpacing: "0.12em", fontWeight: 700 }}>
                                 Voted
@@ -1245,7 +1236,7 @@ export default function FifaWorldcup() {
                               </span>
                             )}
 
-                            <span className="material-symbols-outlined" style={{ fontSize: "14px", color: "rgba(26,111,255,0.35)" }}>chevron_right</span>
+                            <span className="material-symbols-outlined hidden md:block" style={{ fontSize: "14px", color: "rgba(26,111,255,0.35)" }}>chevron_right</span>
                           </div>
                         </motion.div>
                       );
