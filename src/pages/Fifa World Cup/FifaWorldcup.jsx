@@ -73,6 +73,7 @@ export default function FifaWorldcup() {
   const { currentUser, isAuthenticated } = useAuth();
 
   const [heroMatch, setHeroMatch] = useState(null);
+  const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
   const [matches, setMatches] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
   const [votesLeaderboard, setVotesLeaderboard] = useState([]);
@@ -87,6 +88,50 @@ export default function FifaWorldcup() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [justSubmitted, setJustSubmitted] = useState(false);
+
+  const [useLocalTimezone, setUseLocalTimezone] = useState(true);
+  const [statusFilter, setStatusFilter] = useState("upcoming"); // "upcoming" or "completed"
+  const [selectedDateFilter, setSelectedDateFilter] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const formatMatchDateTime = (matchDateStr) => {
+    const dateObj = new Date(matchDateStr);
+    if (isNaN(dateObj.getTime())) {
+      return { date: "Invalid Date", time: "00:00", timezone: "" };
+    }
+    
+    if (useLocalTimezone) {
+      const timeStr = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+      const dateStr = dateObj.toLocaleDateString([], { month: 'short', day: 'numeric' });
+      let tzStr = "";
+      try {
+        const parts = new Intl.DateTimeFormat([], { timeZoneName: 'short' }).formatToParts(dateObj);
+        const tzPart = parts.find(p => p.type === 'timeZoneName');
+        tzStr = tzPart ? tzPart.value : "";
+      } catch (e) {
+        const offsetMinutes = dateObj.getTimezoneOffset();
+        const absOffset = Math.abs(offsetMinutes);
+        const hours = Math.floor(absOffset / 60);
+        const minutes = absOffset % 60;
+        const sign = offsetMinutes <= 0 ? "+" : "-";
+        tzStr = `GMT${sign}${hours}:${String(minutes).padStart(2, '0')}`;
+      }
+      return {
+        date: dateStr,
+        time: timeStr,
+        timezone: tzStr
+      };
+    } else {
+      const hours = String(dateObj.getUTCHours()).padStart(2, '0');
+      const minutes = String(dateObj.getUTCMinutes()).padStart(2, '0');
+      const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+      return {
+        date: dateStr,
+        time: `${hours}:${minutes}`,
+        timezone: "UTC"
+      };
+    }
+  };
 
   const heroRef = useRef(null);
   const { scrollY } = useScroll();
@@ -189,6 +234,32 @@ export default function FifaWorldcup() {
     return match.status !== "Scheduled" || new Date(match.date) <= new Date();
   };
 
+  const getTomorrowDateString = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    if (useLocalTimezone) {
+      return tomorrow.toLocaleDateString([], { month: 'short', day: 'numeric' });
+    } else {
+      return tomorrow.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+    }
+  };
+
+  const tomorrowDateStr = getTomorrowDateString();
+  const tomorrowUpcomingMatches = matches
+    .filter(m => {
+      const isTomorrow = formatMatchDateTime(m.date).date === tomorrowDateStr;
+      return isTomorrow && !isMatchLocked(m);
+    })
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  useEffect(() => {
+    if (tomorrowUpcomingMatches.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentHeroIndex((prev) => (prev + 1) % tomorrowUpcomingMatches.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [tomorrowUpcomingMatches.length]);
+
   /* ── LOADING ── */
   if (loading) {
     return (
@@ -208,9 +279,39 @@ export default function FifaWorldcup() {
     );
   }
 
-  const heroVotes = heroMatch ? getVotePercentages(heroMatch) : { teamA: 33, teamB: 33, draw: 34 };
+  const activeHeroMatch = (tomorrowUpcomingMatches && tomorrowUpcomingMatches.length > 0)
+    ? tomorrowUpcomingMatches[currentHeroIndex % tomorrowUpcomingMatches.length]
+    : heroMatch;
+
+  const heroVotes = activeHeroMatch ? getVotePercentages(activeHeroMatch) : { teamA: 33, teamB: 33, draw: 34 };
   const currentLeaderboard = leaderboardSubTab === "accuracy" ? leaderboard : votesLeaderboard;
   const isAccuracy = leaderboardSubTab === "accuracy";
+
+  // Match filtering & grouping logic
+  const statusFilteredMatches = matches.filter(match => {
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      const teamAContains = match.teamA && match.teamA.toLowerCase().includes(q);
+      const teamBContains = match.teamB && match.teamB.toLowerCase().includes(q);
+      if (!teamAContains && !teamBContains) return false;
+    }
+    if (statusFilter === "upcoming") {
+      return match.status === "Scheduled" || match.status === "Live";
+    } else {
+      return match.status === "Completed";
+    }
+  });
+
+  const dateChips = ["All", ...new Set(statusFilteredMatches.map(match => {
+    return formatMatchDateTime(match.date).date;
+  }))];
+
+  const activeDateFilter = dateChips.includes(selectedDateFilter) ? selectedDateFilter : "All";
+
+  const finalFilteredMatches = statusFilteredMatches.filter(match => {
+    if (activeDateFilter === "All") return true;
+    return formatMatchDateTime(match.date).date === activeDateFilter;
+  });
 
   return (
     <div style={{ fontFamily: "'Roboto',sans-serif", backgroundColor: "#040d1a", color: "#e1e3e4" }} className="overflow-x-hidden relative min-h-screen">
@@ -234,6 +335,48 @@ export default function FifaWorldcup() {
         }
         .custom-scrollbar::-webkit-scrollbar { width:4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background:rgba(26,111,255,0.3); border-radius:4px; }
+        .custom-scrollbar-h::-webkit-scrollbar { height: 4px; }
+        .custom-scrollbar-h::-webkit-scrollbar-thumb { background: rgba(26,111,255,0.25); border-radius: 4px; }
+        .custom-scrollbar-h::-webkit-scrollbar-track { background: rgba(0,0,0,0.15); }
+        .fixture-card {
+          background: rgba(6,18,42,0.55) !important;
+          backdrop-filter: blur(20px) !important;
+          border: 1px solid rgba(26,111,255,0.08) !important;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fixture-card:hover {
+          background: rgba(8,24,56,0.7) !important;
+          border-color: rgba(26,111,255,0.3) !important;
+          box-shadow: 0 12px 30px rgba(0,0,0,0.4), 0 0 15px rgba(26,111,255,0.1) !important;
+          transform: translateY(-2px);
+        }
+        .fixture-card.is-hero {
+          border-color: rgba(26,111,255,0.4) !important;
+          box-shadow: 0 0 25px rgba(26,111,255,0.12) !important;
+          background: rgba(10,25,58,0.6) !important;
+        }
+        .fixture-card.is-hero:hover {
+          border-color: rgba(26,111,255,0.65) !important;
+          box-shadow: 0 0 35px rgba(26,111,255,0.2) !important;
+          background: rgba(12,32,74,0.75) !important;
+        }
+        .date-chip {
+          background: rgba(6,18,42,0.6);
+          border: 1px solid rgba(26,111,255,0.1);
+          color: #64748b;
+          transition: all 0.2s ease;
+        }
+        .date-chip:hover {
+          background: rgba(26,111,255,0.08);
+          border-color: rgba(26,111,255,0.25);
+          color: #94a3b8;
+        }
+        .date-chip.active {
+          background: rgba(26,111,255,0.18);
+          border-color: rgba(26,111,255,0.45);
+          color: #7eb8ff;
+          box-shadow: 0 0 15px rgba(26,111,255,0.15);
+        }
       `}} />
 
       <main>
@@ -260,7 +403,7 @@ export default function FifaWorldcup() {
                 <line x1="0" y1="70%" x2="60%" y2="20%" stroke="#1a6fff" strokeWidth="0.5" strokeOpacity="0.15"/>
                 <line x1="40%" y1="100%" x2="100%" y2="30%" stroke="#1a6fff" strokeWidth="0.5" strokeOpacity="0.15"/>
                 <line x1="15%" y1="0" x2="0" y2="65%" stroke="#1a6fff" strokeWidth="0.6" strokeOpacity="0.2"/>
-                <line x1="85%" y1="0" x2="100%" y2="65%" stroke="#1a6fff" strokeWidth="0.6" strokeOpacity="0.2"/>
+                <line x1="85%" y1="0" x2="100%" y2="65%" stroke="#1a6fff" strokeWidth="0.9" strokeOpacity="0.22"/>
                 <line x1="50%" y1="52%" x2="5%" y2="62%" stroke="#2a7fff" strokeWidth="1.2" strokeOpacity="0.32"/>
                 <line x1="50%" y1="52%" x2="95%" y2="62%" stroke="#2a7fff" strokeWidth="1.2" strokeOpacity="0.32"/>
                 <line x1="50%" y1="52%" x2="22%" y2="18%" stroke="#2a7fff" strokeWidth="0.9" strokeOpacity="0.22"/>
@@ -277,7 +420,7 @@ export default function FifaWorldcup() {
               </svg>
             </div>
             {/* Hero bg image — very subtle */}
-            <motion.div style={{ y: heroParallax }} className="absolute inset-0 z-[3] bg-cover bg-top"
+            <motion.div className="absolute inset-0 z-[3] bg-cover bg-top"
               style={{ backgroundImage:`url('https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/FIFA%20World%20Cup/Please_create_a_hero_image_ple_1.jpg')`, opacity:0.1, y:heroParallax }}/>
             {/* Bottom fade */}
             <div className="absolute inset-0 z-[4]" style={{ background:"linear-gradient(to bottom,rgba(4,13,26,0) 0%,rgba(4,13,26,0.35) 55%,rgba(4,13,26,0.97) 92%,rgba(4,13,26,1) 100%)" }}/>
@@ -294,108 +437,149 @@ export default function FifaWorldcup() {
                 <div className="absolute top-0 left-0 right-0 h-px" style={{ background:"linear-gradient(90deg,transparent,rgba(26,111,255,0.55),rgba(42,229,0,0.25),rgba(26,111,255,0.55),transparent)" }}/>
                 <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{ background:"radial-gradient(ellipse at 50% 0%,rgba(26,111,255,0.1) 0%,transparent 55%)" }}/>
 
-                {/* Teams */}
-                <div className="relative z-10 grid grid-cols-7 items-center gap-4">
+                <AnimatePresence mode="wait">
+                  {activeHeroMatch && (
+                    <motion.div
+                      key={activeHeroMatch._id}
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -50 }}
+                      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {/* Teams */}
+                      <div className="relative z-10 grid grid-cols-7 items-center gap-4">
 
-                  {/* Team A */}
-                  <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0.22} className="col-span-3 flex flex-col items-center gap-4">
-                    <motion.div whileHover={{ scale:1.08 }} transition={{ type:"spring",stiffness:280,damping:16 }} className="relative">
-                      <div className="absolute inset-0 rounded-full" style={{ background:"radial-gradient(circle,rgba(26,111,255,0.35) 0%,transparent 65%)", transform:"scale(1.5)", filter:"blur(16px)" }}/>
-                      <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center"
-                        style={{ background:"linear-gradient(135deg,rgba(18,45,105,0.96),rgba(6,18,52,0.98))", border:"2px solid rgba(26,111,255,0.45)", boxShadow:"0 0 35px rgba(26,111,255,0.28),inset 0 0 25px rgba(26,111,255,0.07)" }}>
-                        {heroMatch.teamACrest
-                          ? <img className="w-16 h-16 md:w-24 md:h-24 object-contain p-2" src={heroMatch.teamACrest} alt={heroMatch.teamA}/>
-                          : <span style={{ fontFamily:"'Montserrat',sans-serif", fontWeight:900, fontSize:"22px", color:"#4da3ff" }}>{heroMatch.teamA.slice(0,3).toUpperCase()}</span>}
+                        {/* Team A */}
+                        <div className="col-span-3 flex flex-col items-center gap-4">
+                          <motion.div whileHover={{ scale:1.08 }} transition={{ type:"spring",stiffness:280,damping:16 }} className="relative">
+                            <div className="absolute inset-0 rounded-full" style={{ background:"radial-gradient(circle,rgba(26,111,255,0.35) 0%,transparent 65%)", transform:"scale(1.5)", filter:"blur(16px)" }}/>
+                            <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center"
+                              style={{ background:"linear-gradient(135deg,rgba(18,45,105,0.96),rgba(6,18,52,0.98))", border:"2px solid rgba(26,111,255,0.45)", boxShadow:"0 0 35px rgba(26,111,255,0.28),inset 0 0 25px rgba(26,111,255,0.07)" }}>
+                              {activeHeroMatch.teamACrest
+                                ? <img className="w-16 h-16 md:w-24 md:h-24 object-contain p-2" src={activeHeroMatch.teamACrest} alt={activeHeroMatch.teamA}/>
+                                : <span style={{ fontFamily:"'Montserrat',sans-serif", fontWeight:900, fontSize:"22px", color:"#4da3ff" }}>{activeHeroMatch.teamA.slice(0,3).toUpperCase()}</span>}
+                            </div>
+                          </motion.div>
+                          <span style={{ fontFamily:"'Montserrat',sans-serif", fontSize:"clamp(18px,3vw,26px)", fontWeight:900, color:"white", textTransform:"uppercase", letterSpacing:"0.08em", textShadow:"0 0 28px rgba(255,255,255,0.18)" }}>
+                            {activeHeroMatch.teamA}
+                          </span>
+                        </div>
+
+                        {/* VS / Score */}
+                        <div className="col-span-1 flex flex-col items-center gap-3">
+                          {activeHeroMatch.status === "Live" || activeHeroMatch.status === "Completed" ? (
+                            <motion.div animate={{ scale:[1,1.05,1] }} transition={{ repeat:Infinity, duration:2.5 }}
+                              style={{ fontFamily:"'Montserrat',sans-serif", fontSize:"clamp(36px,5vw,56px)", fontWeight:900, color:"#2ae500", lineHeight:1, textShadow:"0 0 28px rgba(42,229,0,0.65),0 0 55px rgba(42,229,0,0.28)" }}>
+                              {activeHeroMatch.scores?.home??0}:{activeHeroMatch.scores?.away??0}
+                            </motion.div>
+                          ) : (
+                            <motion.div
+                              animate={{ textShadow:["0 0 22px rgba(42,229,0,0.45)","0 0 55px rgba(42,229,0,0.88)","0 0 22px rgba(42,229,0,0.45)"] }}
+                              transition={{ repeat:Infinity, duration:2.4 }}
+                              style={{ fontFamily:"'Montserrat',sans-serif", fontSize:"clamp(42px,6vw,72px)", fontWeight:900, color:"#2ae500", lineHeight:1 }}>
+                              VS
+                            </motion.div>
+                          )}
+                          {(() => {
+                            const formatted = formatMatchDateTime(activeHeroMatch.date);
+                            return (
+                              <div className="font-inter px-3 py-1.5 rounded-full" style={{ fontSize:"9px", fontWeight:700, color:"#7eb8ff", background:"rgba(26,111,255,0.15)", border:"1px solid rgba(26,111,255,0.35)", textTransform:"uppercase", letterSpacing:"0.15em" }}>
+                                {formatted.time} {formatted.timezone} · {formatted.date}
+                              </div>
+                            );
+                          })()}
+                        </div>
+
+                        {/* Team B */}
+                        <div className="col-span-3 flex flex-col items-center gap-4">
+                          <motion.div whileHover={{ scale:1.08 }} transition={{ type:"spring",stiffness:280,damping:16 }} className="relative">
+                            <div className="absolute inset-0 rounded-full" style={{ background:"radial-gradient(circle,rgba(26,111,255,0.35) 0%,transparent 65%)", transform:"scale(1.5)", filter:"blur(16px)" }}/>
+                            <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center"
+                              style={{ background:"linear-gradient(135deg,rgba(18,45,105,0.96),rgba(6,18,52,0.98))", border:"2px solid rgba(26,111,255,0.45)", boxShadow:"0 0 35px rgba(26,111,255,0.28),inset 0 0 25px rgba(26,111,255,0.07)" }}>
+                              {activeHeroMatch.teamBCrest
+                                ? <img className="w-16 h-16 md:w-24 md:h-24 object-contain p-2" src={activeHeroMatch.teamBCrest} alt={activeHeroMatch.teamB}/>
+                                : <span style={{ fontFamily:"'Montserrat',sans-serif", fontWeight:900, fontSize:"22px", color:"#4da3ff" }}>{activeHeroMatch.teamB.slice(0,3).toUpperCase()}</span>}
+                            </div>
+                          </motion.div>
+                          <span style={{ fontFamily:"'Montserrat',sans-serif", fontSize:"clamp(18px,3vw,26px)", fontWeight:900, color:"white", textTransform:"uppercase", letterSpacing:"0.08em", textShadow:"0 0 28px rgba(255,255,255,0.18)" }}>
+                            {activeHeroMatch.teamB}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Vote Bar */}
+                      <div className="mt-8 space-y-3 max-w-xl mx-auto">
+                        <div className="flex justify-between font-inter" style={{ fontSize:"10px" }}>
+                          <span style={{ color:"#4da3ff", fontWeight:600, display:"flex", alignItems:"center", gap:"6px" }}>
+                            <motion.span animate={{ opacity:[1,0.3,1] }} transition={{ repeat:Infinity, duration:1.5 }}
+                              style={{ width:"6px", height:"6px", borderRadius:"50%", backgroundColor:"#4da3ff", display:"inline-block" }}/>
+                            {activeHeroMatch.teamA} (<AnimatedNumber value={heroVotes.teamA}/>%)
+                          </span>
+                          <span style={{ color:"#475569", fontWeight:500, display:"flex", alignItems:"center", gap:"6px" }}>
+                            <span style={{ width:"6px", height:"6px", borderRadius:"50%", backgroundColor:"#334155", display:"inline-block" }}/>
+                            Draw (<AnimatedNumber value={heroVotes.draw}/>%)
+                          </span>
+                          <span style={{ color:"#2ae500", fontWeight:600, display:"flex", alignItems:"center", gap:"6px" }}>
+                            <motion.span animate={{ opacity:[1,0.3,1] }} transition={{ repeat:Infinity, duration:1.5, delay:0.55 }}
+                              style={{ width:"6px", height:"6px", borderRadius:"50%", backgroundColor:"#2ae500", display:"inline-block" }}/>
+                            {activeHeroMatch.teamB} (<AnimatedNumber value={heroVotes.teamB}/>%)
+                          </span>
+                        </div>
+                        <div className="w-full rounded-full overflow-hidden flex" style={{ height:"10px", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.06)" }}>
+                          <motion.div initial={{ width:0 }} animate={{ width:`${heroVotes.teamA}%` }} transition={{ duration:1.4, ease:[0.22,1,0.36,1], delay:0.6 }}
+                            style={{ height:"100%", background:"linear-gradient(90deg,#003bb5,#4da3ff)", borderRadius:"9999px 0 0 9999px" }}/>
+                          <motion.div initial={{ width:0 }} animate={{ width:`${heroVotes.draw}%` }} transition={{ duration:1.4, ease:[0.22,1,0.36,1], delay:0.85 }}
+                            style={{ height:"100%", background:"linear-gradient(90deg,#1e293b,#334155)" }}/>
+                          <motion.div initial={{ width:0 }} animate={{ width:`${heroVotes.teamB}%` }} transition={{ duration:1.4, ease:[0.22,1,0.36,1], delay:1.1 }}
+                            style={{ height:"100%", background:"linear-gradient(90deg,#14600a,#2ae500)", borderRadius:"0 9999px 9999px 0" }}/>
+                        </div>
+                      </div>
+
+                      {/* CTA */}
+                      <div className="mt-8 flex justify-center">
+                        {isMatchLocked(activeHeroMatch) ? (
+                          <div className="font-inter px-10 py-3.5 rounded-xl" style={{ fontSize:"10px", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.2em", color:"#475569", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.07)" }}>
+                            {activeHeroMatch.status === "Completed" ? "🏆 Match Closed" : "🔒 Forecast Locked"}
+                          </div>
+                        ) : (
+                          <motion.a href="#predict"
+                            whileHover={{ scale:1.06 }} whileTap={{ scale:0.94 }}
+                            transition={{ type:"spring", stiffness:400, damping:20 }}
+                            onClick={(e)=>{
+                              e.preventDefault();
+                              handleSelectMatch(activeHeroMatch);
+                              const el=document.getElementById("predict");
+                              if(el) el.scrollIntoView({behavior:"smooth"});
+                            }}
+                            className="btn-vote inline-flex items-center justify-center gap-3 cursor-pointer rounded-xl"
+                            style={{ fontFamily:"'Montserrat',sans-serif", fontWeight:900, fontSize:"13px", letterSpacing:"0.28em", textTransform:"uppercase", padding:"16px 64px", background:"linear-gradient(135deg,#2ae500 0%,#1db800 100%)", color:"#012806", boxShadow:"0 0 38px rgba(42,229,0,0.55),0 0 75px rgba(42,229,0,0.2),inset 0 1px 0 rgba(255,255,255,0.25)", border:"1px solid rgba(100,255,60,0.32)" }}>
+                            <span className="material-symbols-outlined" style={{ fontSize:"16px", fontVariationSettings:'"FILL" 1' }}>sports_soccer</span>
+                            VOTE NOW
+                          </motion.a>
+                        )}
                       </div>
                     </motion.div>
-                    <span style={{ fontFamily:"'Montserrat',sans-serif", fontSize:"clamp(18px,3vw,26px)", fontWeight:900, color:"white", textTransform:"uppercase", letterSpacing:"0.08em", textShadow:"0 0 28px rgba(255,255,255,0.18)" }}>
-                      {heroMatch.teamA}
-                    </span>
-                  </motion.div>
-
-                  {/* VS / Score */}
-                  <motion.div variants={scaleIn} initial="hidden" animate="show" custom={0.3} className="col-span-1 flex flex-col items-center gap-3">
-                    {heroMatch.status === "Live" || heroMatch.status === "Completed" ? (
-                      <motion.div animate={{ scale:[1,1.05,1] }} transition={{ repeat:Infinity, duration:2.5 }}
-                        style={{ fontFamily:"'Montserrat',sans-serif", fontSize:"clamp(36px,5vw,56px)", fontWeight:900, color:"#2ae500", lineHeight:1, textShadow:"0 0 28px rgba(42,229,0,0.65),0 0 55px rgba(42,229,0,0.28)" }}>
-                        {heroMatch.scores?.home??0}:{heroMatch.scores?.away??0}
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        animate={{ textShadow:["0 0 22px rgba(42,229,0,0.45)","0 0 55px rgba(42,229,0,0.88)","0 0 22px rgba(42,229,0,0.45)"] }}
-                        transition={{ repeat:Infinity, duration:2.4 }}
-                        style={{ fontFamily:"'Montserrat',sans-serif", fontSize:"clamp(42px,6vw,72px)", fontWeight:900, color:"#2ae500", lineHeight:1 }}>
-                        VS
-                      </motion.div>
-                    )}
-                    <div className="font-inter px-3 py-1.5 rounded-full" style={{ fontSize:"9px", fontWeight:700, color:"#7eb8ff", background:"rgba(26,111,255,0.15)", border:"1px solid rgba(26,111,255,0.35)", textTransform:"uppercase", letterSpacing:"0.2em" }}>
-                      {heroMatch.kickoffTime} UTC
-                    </div>
-                  </motion.div>
-
-                  {/* Team B */}
-                  <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0.22} className="col-span-3 flex flex-col items-center gap-4">
-                    <motion.div whileHover={{ scale:1.08 }} transition={{ type:"spring",stiffness:280,damping:16 }} className="relative">
-                      <div className="absolute inset-0 rounded-full" style={{ background:"radial-gradient(circle,rgba(26,111,255,0.35) 0%,transparent 65%)", transform:"scale(1.5)", filter:"blur(16px)" }}/>
-                      <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center"
-                        style={{ background:"linear-gradient(135deg,rgba(18,45,105,0.96),rgba(6,18,52,0.98))", border:"2px solid rgba(26,111,255,0.45)", boxShadow:"0 0 35px rgba(26,111,255,0.28),inset 0 0 25px rgba(26,111,255,0.07)" }}>
-                        {heroMatch.teamBCrest
-                          ? <img className="w-16 h-16 md:w-24 md:h-24 object-contain p-2" src={heroMatch.teamBCrest} alt={heroMatch.teamB}/>
-                          : <span style={{ fontFamily:"'Montserrat',sans-serif", fontWeight:900, fontSize:"22px", color:"#4da3ff" }}>{heroMatch.teamB.slice(0,3).toUpperCase()}</span>}
-                      </div>
-                    </motion.div>
-                    <span style={{ fontFamily:"'Montserrat',sans-serif", fontSize:"clamp(18px,3vw,26px)", fontWeight:900, color:"white", textTransform:"uppercase", letterSpacing:"0.08em", textShadow:"0 0 28px rgba(255,255,255,0.18)" }}>
-                      {heroMatch.teamB}
-                    </span>
-                  </motion.div>
-                </div>
-
-                {/* Vote Bar */}
-                <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0.5} className="mt-8 space-y-3 max-w-xl mx-auto">
-                  <div className="flex justify-between font-inter" style={{ fontSize:"10px" }}>
-                    <span style={{ color:"#4da3ff", fontWeight:600, display:"flex", alignItems:"center", gap:"6px" }}>
-                      <motion.span animate={{ opacity:[1,0.3,1] }} transition={{ repeat:Infinity, duration:1.5 }}
-                        style={{ width:"6px", height:"6px", borderRadius:"50%", backgroundColor:"#4da3ff", display:"inline-block" }}/>
-                      {heroMatch.teamA} (<AnimatedNumber value={heroVotes.teamA}/>%)
-                    </span>
-                    <span style={{ color:"#475569", fontWeight:500, display:"flex", alignItems:"center", gap:"6px" }}>
-                      <span style={{ width:"6px", height:"6px", borderRadius:"50%", backgroundColor:"#334155", display:"inline-block" }}/>
-                      Draw (<AnimatedNumber value={heroVotes.draw}/>%)
-                    </span>
-                    <span style={{ color:"#2ae500", fontWeight:600, display:"flex", alignItems:"center", gap:"6px" }}>
-                      <motion.span animate={{ opacity:[1,0.3,1] }} transition={{ repeat:Infinity, duration:1.5, delay:0.55 }}
-                        style={{ width:"6px", height:"6px", borderRadius:"50%", backgroundColor:"#2ae500", display:"inline-block" }}/>
-                      {heroMatch.teamB} (<AnimatedNumber value={heroVotes.teamB}/>%)
-                    </span>
-                  </div>
-                  <div className="w-full rounded-full overflow-hidden flex" style={{ height:"10px", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.06)" }}>
-                    <motion.div initial={{ width:0 }} animate={{ width:`${heroVotes.teamA}%` }} transition={{ duration:1.4, ease:[0.22,1,0.36,1], delay:0.6 }}
-                      style={{ height:"100%", background:"linear-gradient(90deg,#003bb5,#4da3ff)", borderRadius:"9999px 0 0 9999px" }}/>
-                    <motion.div initial={{ width:0 }} animate={{ width:`${heroVotes.draw}%` }} transition={{ duration:1.4, ease:[0.22,1,0.36,1], delay:0.85 }}
-                      style={{ height:"100%", background:"linear-gradient(90deg,#1e293b,#334155)" }}/>
-                    <motion.div initial={{ width:0 }} animate={{ width:`${heroVotes.teamB}%` }} transition={{ duration:1.4, ease:[0.22,1,0.36,1], delay:1.1 }}
-                      style={{ height:"100%", background:"linear-gradient(90deg,#14600a,#2ae500)", borderRadius:"0 9999px 9999px 0" }}/>
-                  </div>
-                </motion.div>
-
-                {/* CTA */}
-                <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0.65} className="mt-8 flex justify-center">
-                  {isMatchLocked(heroMatch) ? (
-                    <div className="font-inter px-10 py-3.5 rounded-xl" style={{ fontSize:"10px", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.2em", color:"#475569", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.07)" }}>
-                      {heroMatch.status === "Completed" ? "🏆 Match Closed" : "🔒 Forecast Locked"}
-                    </div>
-                  ) : (
-                    <motion.a href="#predict"
-                      whileHover={{ scale:1.06 }} whileTap={{ scale:0.94 }}
-                      transition={{ type:"spring", stiffness:400, damping:20 }}
-                      onClick={(e)=>{ e.preventDefault(); const el=document.getElementById("predict"); if(el) el.scrollIntoView({behavior:"smooth"}); }}
-                      className="btn-vote inline-flex items-center justify-center gap-3 cursor-pointer rounded-xl"
-                      style={{ fontFamily:"'Montserrat',sans-serif", fontWeight:900, fontSize:"13px", letterSpacing:"0.28em", textTransform:"uppercase", padding:"16px 64px", background:"linear-gradient(135deg,#2ae500 0%,#1db800 100%)", color:"#012806", boxShadow:"0 0 38px rgba(42,229,0,0.55),0 0 75px rgba(42,229,0,0.2),inset 0 1px 0 rgba(255,255,255,0.25)", border:"1px solid rgba(100,255,60,0.32)" }}>
-                      <span className="material-symbols-outlined" style={{ fontSize:"16px", fontVariationSettings:'"FILL" 1' }}>sports_soccer</span>
-                      VOTE NOW
-                    </motion.a>
                   )}
-                </motion.div>
+                </AnimatePresence>
+
+                {/* Carousel Indicators */}
+                {tomorrowUpcomingMatches.length > 1 && (
+                  <div className="flex justify-center gap-1.5 mt-6 relative z-10">
+                    {tomorrowUpcomingMatches.map((_, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setCurrentHeroIndex(idx)}
+                        className="w-1.5 h-1.5 rounded-full transition-all"
+                        style={{
+                          background: currentHeroIndex === idx ? "#4da3ff" : "rgba(255,255,255,0.15)",
+                          boxShadow: currentHeroIndex === idx ? "0 0 8px #4da3ff" : "none",
+                          width: currentHeroIndex === idx ? "12px" : "6px"
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
               </motion.div>
             </motion.div>
 
@@ -472,6 +656,50 @@ export default function FifaWorldcup() {
                         )}
                       </AnimatePresence>
 
+                      {/* Upcoming Matches Quick Select / Next Match Option */}
+                      {tomorrowUpcomingMatches.length > 0 && (
+                        <div className="space-y-3 p-4 rounded-2xl" style={{ background: "rgba(26,111,255,0.04)", border: "1px solid rgba(26,111,255,0.1)" }}>
+                          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                            <span className="font-inter text-[9px] uppercase tracking-widest font-bold" style={{ color: "#4da3ff" }}>
+                              Matches for {tomorrowDateStr}
+                            </span>
+                            {/* Option for selecting the next game */}
+                            <motion.button
+                              type="button"
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                              onClick={() => handleSelectMatch(tomorrowUpcomingMatches[0])}
+                              className="font-inter text-[9px] uppercase tracking-wider font-extrabold cursor-pointer px-2.5 py-1 rounded bg-[#2ae500]/10 border border-[#2ae500]/30 hover:bg-[#2ae500]/20 transition-all flex items-center justify-center gap-1"
+                              style={{ color: "#2ae500" }}
+                            >
+                              <span className="material-symbols-outlined text-[10px]" style={{ fontVariationSettings: '"FILL" 1' }}>fast_forward</span>
+                              Select Next Match
+                            </motion.button>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            {tomorrowUpcomingMatches.map(m => {
+                              const isSelected = selectedMatch && selectedMatch._id === m._id;
+                              const formatted = formatMatchDateTime(m.date);
+                              return (
+                                <button
+                                  key={m._id}
+                                  type="button"
+                                  onClick={() => handleSelectMatch(m)}
+                                  className={`w-full px-4 py-2.5 rounded-xl font-inter text-[10px] font-bold uppercase tracking-wider cursor-pointer border transition-all flex items-center justify-between gap-2.5 ${
+                                    isSelected
+                                      ? "bg-[rgba(26,111,255,0.18)] border-[rgba(26,111,255,0.45)] text-[#7eb8ff] shadow-[0_0_12px_rgba(26,111,255,0.15)]"
+                                      : "bg-[rgba(6,18,42,0.4)] border-[rgba(26,111,255,0.08)] text-[#64748b] hover:bg-[rgba(26,111,255,0.05)] hover:text-[#94a3b8] hover:border-[rgba(26,111,255,0.2)]"
+                                  }`}
+                                >
+                                  <span className="truncate">{m.teamA} vs {m.teamB}</span>
+                                  <span style={{ color: isSelected ? "rgba(126,184,255,0.7)" : "rgba(100,116,139,0.5)", fontSize: "9px" }} className="flex-shrink-0">({formatted.time})</span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+
                       {/* Team Selectors */}
                       <div className="flex flex-col md:flex-row items-center gap-4">
 
@@ -502,22 +730,28 @@ export default function FifaWorldcup() {
                                   className="absolute left-0 right-0 mt-2 rounded-2xl shadow-2xl z-30 max-h-64 overflow-y-auto custom-scrollbar"
                                   style={{ background:"#060f20", border:"1px solid rgba(26,111,255,0.2)" }}>
                                   <div className="font-inter px-4 py-2 border-b" style={{ fontSize:"9px", color:"#4da3ff", textTransform:"uppercase", letterSpacing:"0.2em", borderColor:"rgba(26,111,255,0.1)" }}>Switch Match</div>
-                                  {matches.map(m=>(
-                                    <button key={m._id} type="button" onClick={()=>{handleSelectMatch(m);setShowTeamADropdown(false);}}
-                                      className="w-full px-4 py-3 text-left flex items-center gap-3 border-b last:border-b-0 hover:bg-white/5 transition"
-                                      style={{ borderColor:"rgba(255,255,255,0.03)", opacity:isMatchLocked(m)?0.5:1 }}>
-                                      <div style={{ width:"20px", height:"20px", borderRadius:"50%", overflow:"hidden", background:"rgba(0,0,0,0.3)", display:"flex", alignItems:"center", justifyContent:"center", padding:"2px", flexShrink:0 }}>
-                                        {m.teamACrest?<img src={m.teamACrest} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }}/>:<span className="font-inter" style={{ fontSize:"8px", color:"rgba(255,255,255,0.4)" }}>{m.teamA.slice(0,2)}</span>}
-                                      </div>
-                                      <div className="flex-1 min-w-0">
-                                        <div style={{ fontFamily:"'Roboto',sans-serif", fontWeight:700, fontSize:"12px", color:"white", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{m.teamA} vs {m.teamB}</div>
-                                        <div className="font-inter" style={{ fontSize:"8px", color:"#4da3ff" }}>{m.kickoffTime} · {new Date(m.date).toLocaleDateString([],{month:"short",day:"numeric"})}</div>
-                                      </div>
-                                      <span className="font-inter flex-shrink-0" style={{ fontSize:"8px", textTransform:"uppercase", letterSpacing:"0.12em", fontWeight:700, color:isMatchLocked(m)?"#ef4444":"#2ae500" }}>
-                                        {isMatchLocked(m)?(m.status==="Completed"?"Ended":"Locked"):"Open"}
-                                      </span>
-                                    </button>
-                                  ))}
+                                  {tomorrowUpcomingMatches.length === 0 ? (
+                                    <div className="font-inter px-4 py-6 text-center text-xs" style={{ color: "#475569" }}>
+                                      No upcoming matches.
+                                    </div>
+                                  ) : (
+                                    tomorrowUpcomingMatches.map(m=>(
+                                      <button key={m._id} type="button" onClick={()=>{handleSelectMatch(m);setShowTeamADropdown(false);}}
+                                        className="w-full px-4 py-3 text-left flex items-center gap-3 border-b last:border-b-0 hover:bg-white/5 transition"
+                                        style={{ borderColor:"rgba(255,255,255,0.03)", opacity:isMatchLocked(m)?0.5:1 }}>
+                                        <div style={{ width:"20px", height:"20px", borderRadius:"50%", overflow:"hidden", background:"rgba(0,0,0,0.3)", display:"flex", alignItems:"center", justifyContent:"center", padding:"2px", flexShrink:0 }}>
+                                          {m.teamACrest?<img src={m.teamACrest} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }}/>:<span className="font-inter" style={{ fontSize:"8px", color:"rgba(255,255,255,0.4)" }}>{m.teamA.slice(0,2)}</span>}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                          <div style={{ fontFamily:"'Roboto',sans-serif", fontWeight:700, fontSize:"12px", color:"white", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{m.teamA} vs {m.teamB}</div>
+                                          <div className="font-inter" style={{ fontSize:"8px", color:"#4da3ff" }}>{m.kickoffTime} · {new Date(m.date).toLocaleDateString([],{month:"short",day:"numeric"})}</div>
+                                        </div>
+                                        <span className="font-inter flex-shrink-0" style={{ fontSize:"8px", textTransform:"uppercase", letterSpacing:"0.12em", fontWeight:700, color:isMatchLocked(m)?"#ef4444":"#2ae500" }}>
+                                          {isMatchLocked(m)?(m.status==="Completed"?"Ended":"Locked"):"Open"}
+                                        </span>
+                                      </button>
+                                    ))
+                                  )}
                                 </motion.div>
                               )}
                             </AnimatePresence>
@@ -563,22 +797,28 @@ export default function FifaWorldcup() {
                                   className="absolute left-0 right-0 mt-2 rounded-2xl shadow-2xl z-30 max-h-64 overflow-y-auto custom-scrollbar"
                                   style={{ background:"#060f20", border:"1px solid rgba(26,111,255,0.2)" }}>
                                   <div className="font-inter px-4 py-2 border-b" style={{ fontSize:"9px", color:"#4da3ff", textTransform:"uppercase", letterSpacing:"0.2em", borderColor:"rgba(26,111,255,0.1)" }}>Switch Match</div>
-                                  {matches.map(m=>(
-                                    <button key={m._id} type="button" onClick={()=>{handleSelectMatch(m);setShowTeamBDropdown(false);}}
-                                      className="w-full px-4 py-3 text-left flex items-center gap-3 border-b last:border-b-0 hover:bg-white/5 transition"
-                                      style={{ borderColor:"rgba(255,255,255,0.03)", opacity:isMatchLocked(m)?0.5:1 }}>
-                                      <div style={{ width:"20px", height:"20px", borderRadius:"50%", overflow:"hidden", background:"rgba(0,0,0,0.3)", display:"flex", alignItems:"center", justifyContent:"center", padding:"2px", flexShrink:0 }}>
-                                        {m.teamBCrest?<img src={m.teamBCrest} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }}/>:<span className="font-inter" style={{ fontSize:"8px", color:"rgba(255,255,255,0.4)" }}>{m.teamB.slice(0,2)}</span>}
-                                      </div>
-                                      <div className="flex-1 min-w-0">
-                                        <div style={{ fontFamily:"'Roboto',sans-serif", fontWeight:700, fontSize:"12px", color:"white", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{m.teamA} vs {m.teamB}</div>
-                                        <div className="font-inter" style={{ fontSize:"8px", color:"#4da3ff" }}>{m.kickoffTime} · {new Date(m.date).toLocaleDateString([],{month:"short",day:"numeric"})}</div>
-                                      </div>
-                                      <span className="font-inter flex-shrink-0" style={{ fontSize:"8px", textTransform:"uppercase", letterSpacing:"0.12em", fontWeight:700, color:isMatchLocked(m)?"#ef4444":"#2ae500" }}>
-                                        {isMatchLocked(m)?(m.status==="Completed"?"Ended":"Locked"):"Open"}
-                                      </span>
-                                    </button>
-                                  ))}
+                                  {tomorrowUpcomingMatches.length === 0 ? (
+                                    <div className="font-inter px-4 py-6 text-center text-xs" style={{ color: "#475569" }}>
+                                      No upcoming matches.
+                                    </div>
+                                  ) : (
+                                    tomorrowUpcomingMatches.map(m=>(
+                                      <button key={m._id} type="button" onClick={()=>{handleSelectMatch(m);setShowTeamBDropdown(false);}}
+                                        className="w-full px-4 py-3 text-left flex items-center gap-3 border-b last:border-b-0 hover:bg-white/5 transition"
+                                        style={{ borderColor:"rgba(255,255,255,0.03)", opacity:isMatchLocked(m)?0.5:1 }}>
+                                        <div style={{ width:"20px", height:"20px", borderRadius:"50%", overflow:"hidden", background:"rgba(0,0,0,0.3)", display:"flex", alignItems:"center", justifyContent:"center", padding:"2px", flexShrink:0 }}>
+                                          {m.teamBCrest?<img src={m.teamBCrest} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }}/>:<span className="font-inter" style={{ fontSize:"8px", color:"rgba(255,255,255,0.4)" }}>{m.teamB.slice(0,2)}</span>}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                          <div style={{ fontFamily:"'Roboto',sans-serif", fontWeight:700, fontSize:"12px", color:"white", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{m.teamA} vs {m.teamB}</div>
+                                          <div className="font-inter" style={{ fontSize:"8px", color:"#4da3ff" }}>{m.kickoffTime} · {new Date(m.date).toLocaleDateString([],{month:"short",day:"numeric"})}</div>
+                                        </div>
+                                        <span className="font-inter flex-shrink-0" style={{ fontSize:"8px", textTransform:"uppercase", letterSpacing:"0.12em", fontWeight:700, color:isMatchLocked(m)?"#ef4444":"#2ae500" }}>
+                                          {isMatchLocked(m)?(m.status==="Completed"?"Ended":"Locked"):"Open"}
+                                        </span>
+                                      </button>
+                                    ))
+                                  )}
                                 </motion.div>
                               )}
                             </AnimatePresence>
@@ -755,51 +995,277 @@ export default function FifaWorldcup() {
 
               {activeTab==="matches" && (
                 <motion.div key="matches" initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-20}} transition={{duration:0.35}}
-                  className="space-y-4 max-w-4xl mx-auto">
-                  {matches.map((match,i)=>{
-                    const isHero=heroMatch&&heroMatch._id===match._id;
-                    const hasPred=getExistingPrediction(match._id);
-                    return (
-                      <motion.div key={match._id}
-                        initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{delay:i*0.05}}
-                        whileHover={{y:-2}} onClick={()=>handleSelectMatch(match)}
-                        className="p-4 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4 cursor-pointer transition duration-300"
-                        style={{ background:"rgba(5,15,38,0.65)",border:`1px solid ${isHero?"rgba(26,111,255,0.4)":"rgba(26,111,255,0.1)"}`,boxShadow:isHero?"0 0 20px rgba(26,111,255,0.08)":"none" }}>
-                        <div className="min-w-[120px] text-center md:text-left md:pr-4 flex flex-col" style={{ borderRight:"1px solid rgba(26,111,255,0.08)" }}>
-                          <span style={{ fontFamily:"'Roboto',sans-serif",fontWeight:700,fontSize:"14px",color:"white" }}>{match.kickoffTime}</span>
-                          <span className="font-inter mt-0.5" style={{ fontSize:"9px",color:"#4da3ff" }}>{new Date(match.date).toLocaleDateString([],{month:"short",day:"numeric"})}</span>
-                        </div>
-                        <div className="flex-1 flex items-center justify-center md:justify-start gap-6 w-full">
-                          <div className="flex items-center gap-2.5 justify-end flex-1 min-w-[110px]">
-                            <span style={{ fontFamily:"'Roboto',sans-serif",fontWeight:700,fontSize:"12px",color:"white",textTransform:"uppercase",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:"90px" }}>{match.teamA}</span>
-                            <div style={{ width:"28px",height:"28px",borderRadius:"50%",overflow:"hidden",border:"1px solid rgba(26,111,255,0.2)",background:"rgba(0,0,0,0.3)",display:"flex",alignItems:"center",justifyContent:"center",padding:"2px" }}>
-                              {match.teamACrest?<img src={match.teamACrest} alt="" style={{ width:"100%",height:"100%",objectFit:"cover" }}/>:<span className="font-inter" style={{ fontSize:"9px",color:"rgba(255,255,255,0.4)" }}>{match.teamA.slice(0,3).toUpperCase()}</span>}
+                  className="space-y-6 max-w-4xl mx-auto">
+                  
+                  {/* Control Bar: Tabs, Search, and Timezone Toggle */}
+                  <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center p-4 rounded-2xl" style={{ background: "rgba(5,15,38,0.4)", border: "1px solid rgba(26,111,255,0.08)" }}>
+                    
+                    {/* Left: Status Filter Tab Buttons */}
+                    <div className="flex gap-2 p-1 rounded-xl" style={{ background: "rgba(0,0,0,0.3)", border: "1px solid rgba(26,111,255,0.06)", alignSelf: "flex-start" }}>
+                      {[
+                        { id: "upcoming", label: "Upcoming & Live", icon: "sports_soccer" },
+                        { id: "completed", label: "Results / Ended", icon: "emoji_events" }
+                      ].map(tab => (
+                        <button
+                          key={tab.id}
+                          type="button"
+                          onClick={() => { setStatusFilter(tab.id); setSelectedDateFilter("All"); }}
+                          className="flex items-center gap-1.5 px-4 py-2 rounded-lg font-inter text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer font-semibold"
+                          style={{
+                            background: statusFilter === tab.id ? "rgba(26,111,255,0.18)" : "transparent",
+                            border: `1px solid ${statusFilter === tab.id ? "rgba(26,111,255,0.25)" : "transparent"}`,
+                            color: statusFilter === tab.id ? "#7eb8ff" : "#475569"
+                          }}
+                        >
+                          <span className="material-symbols-outlined text-xs" style={{ fontSize: "14px" }}>{tab.icon}</span>
+                          {tab.label}
+                          {tab.id === "upcoming" && matches.some(m => m.status === "Live") && (
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#ef4444] animate-pulse inline-block" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Middle: Search Input */}
+                    <div className="relative flex-1 max-w-sm">
+                      <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-xs" style={{ color: "#475569", fontSize: "16px" }}>search</span>
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search teams..."
+                        className="w-full pl-10 pr-4 py-2 rounded-xl font-inter text-xs text-white placeholder-slate-600 outline-none transition-all"
+                        style={{
+                          background: "rgba(0,0,0,0.2)",
+                          border: "1px solid rgba(26,111,255,0.1)",
+                          boxShadow: "inset 0 1px 2px rgba(0,0,0,0.3)"
+                        }}
+                        onFocus={(e) => e.target.style.borderColor = "rgba(26,111,255,0.35)"}
+                        onBlur={(e) => e.target.style.borderColor = "rgba(26,111,255,0.1)"}
+                      />
+                      {searchQuery && (
+                        <button
+                          type="button"
+                          onClick={() => setSearchQuery("")}
+                          className="absolute right-3.5 top-1/2 -translate-y-1/2 hover:text-white transition-colors"
+                          style={{ color: "#475569", background: "none", border: "none" }}
+                        >
+                          <span className="material-symbols-outlined text-xs" style={{ fontSize: "16px" }}>close</span>
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Right: Timezone Toggle Switch */}
+                    <div className="flex items-center gap-2">
+                      <span className="font-inter text-[9px] uppercase tracking-wider font-semibold" style={{ color: "#475569" }}>Timezone</span>
+                      <div className="flex p-0.5 rounded-lg" style={{ background: "rgba(0,0,0,0.3)", border: "1px solid rgba(26,111,255,0.06)" }}>
+                        {[
+                          { id: true, label: "Local" },
+                          { id: false, label: "UTC" }
+                        ].map(tz => (
+                          <button
+                            key={tz.id.toString()}
+                            type="button"
+                            onClick={() => setUseLocalTimezone(tz.id)}
+                            className="px-2.5 py-1 font-inter text-[9px] font-bold uppercase tracking-wider rounded transition-all cursor-pointer"
+                            style={{
+                              background: useLocalTimezone === tz.id ? "rgba(26,111,255,0.18)" : "transparent",
+                              color: useLocalTimezone === tz.id ? "#7eb8ff" : "#475569"
+                            }}
+                          >
+                            {tz.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Date Filter Carousel */}
+                  {dateChips.length > 1 && (
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center px-1">
+                        <span className="font-inter text-[9px] uppercase tracking-widest font-bold" style={{ color: "#475569" }}>Filter by Date</span>
+                        {activeDateFilter !== "All" && (
+                          <button
+                            type="button"
+                            onClick={() => setSelectedDateFilter("All")}
+                            className="font-inter text-[9px] uppercase tracking-wider font-semibold cursor-pointer text-[#4da3ff] hover:text-[#7eb8ff] transition-colors"
+                          >
+                            Clear Filter
+                          </button>
+                        )}
+                      </div>
+                      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin custom-scrollbar-h" style={{ scrollbarWidth: "thin" }}>
+                        {dateChips.map(date => {
+                          const isActive = activeDateFilter === date;
+                          return (
+                            <button
+                              key={date}
+                              type="button"
+                              onClick={() => setSelectedDateFilter(date)}
+                              className={`flex-none px-4 py-2 rounded-xl font-inter text-[10px] font-bold uppercase tracking-wider cursor-pointer date-chip ${isActive ? "active" : ""}`}
+                            >
+                              {date === "All" ? "All Days" : date}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Matches List */}
+                  <div className="space-y-3">
+                    {finalFilteredMatches.map((match, i) => {
+                      const isHero = heroMatch && heroMatch._id === match._id;
+                      const hasPred = getExistingPrediction(match._id);
+                      const formatted = formatMatchDateTime(match.date);
+                      
+                      return (
+                        <motion.div
+                          key={match._id}
+                          initial={{ opacity: 0, y: 16 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: i * 0.04 }}
+                          onClick={() => handleSelectMatch(match)}
+                          className={`fixture-card p-4 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4 cursor-pointer ${isHero ? "is-hero" : ""}`}
+                        >
+                          {/* Time & Date Column */}
+                          <div className="min-w-[130px] text-center md:text-left md:pr-4 flex flex-col items-center md:items-start gap-0.5" style={{ borderRight: "1px solid rgba(26,111,255,0.08)" }}>
+                            <div className="flex items-center gap-1">
+                              <span className="material-symbols-outlined text-[12px]" style={{ color: "rgba(255,255,255,0.4)" }}>schedule</span>
+                              <span style={{ fontFamily: "'Roboto',sans-serif", fontWeight: 700, fontSize: "14px", color: "white" }}>
+                                {formatted.time}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1 font-inter" style={{ fontSize: "9px", color: "#4da3ff", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                              <span>{formatted.timezone}</span>
+                              <span style={{ color: "rgba(26,111,255,0.3)" }}>•</span>
+                              <span>{formatted.date}</span>
                             </div>
                           </div>
-                          <div className="font-inter text-center" style={{ padding:"6px 10px",borderRadius:"8px",background:"rgba(5,15,38,0.85)",border:"1px solid rgba(26,111,255,0.12)",minWidth:"50px",fontWeight:900,fontStyle:"italic",fontSize:"12px" }}>
-                            {match.status==="Live"||match.status==="Completed"
-                              ? <span style={{ color:"#fbbf24" }}>{match.scores?.home??0} - {match.scores?.away??0}</span>
-                              : <span style={{ color:"rgba(255,255,255,0.12)" }}>VS</span>}
-                          </div>
-                          <div className="flex items-center gap-2.5 justify-start flex-1 min-w-[110px]">
-                            <div style={{ width:"28px",height:"28px",borderRadius:"50%",overflow:"hidden",border:"1px solid rgba(26,111,255,0.2)",background:"rgba(0,0,0,0.3)",display:"flex",alignItems:"center",justifyContent:"center",padding:"2px" }}>
-                              {match.teamBCrest?<img src={match.teamBCrest} alt="" style={{ width:"100%",height:"100%",objectFit:"cover" }}/>:<span className="font-inter" style={{ fontSize:"9px",color:"rgba(255,255,255,0.4)" }}>{match.teamB.slice(0,3).toUpperCase()}</span>}
+
+                          {/* Matchup Teams Row */}
+                          <div className="flex-1 flex items-center justify-center md:justify-start gap-6 w-full">
+                            
+                            {/* Team A */}
+                            <div className="flex items-center gap-3 justify-end flex-1 md:flex-initial min-w-[120px]">
+                              <span style={{ fontFamily: "'Roboto',sans-serif", fontWeight: 700, fontSize: "12px", color: "white", textTransform: "uppercase", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "95px" }}>
+                                {match.teamA}
+                              </span>
+                              <div style={{ width: "30px", height: "30px", borderRadius: "50%", overflow: "hidden", border: "1.5px solid rgba(26,111,255,0.25)", background: "rgba(0,0,0,0.35)", display: "flex", alignItems: "center", justifyContent: "center", padding: "3px", boxShadow: "0 4px 10px rgba(0,0,0,0.3)" }}>
+                                {match.teamACrest ? (
+                                  <img src={match.teamACrest} alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                                ) : (
+                                  <span className="font-inter" style={{ fontSize: "9px", color: "rgba(255,255,255,0.4)", fontWeight: 700 }}>
+                                    {match.teamA.slice(0, 3).toUpperCase()}
+                                  </span>
+                                )}
+                              </div>
                             </div>
-                            <span style={{ fontFamily:"'Roboto',sans-serif",fontWeight:700,fontSize:"12px",color:"white",textTransform:"uppercase",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:"90px" }}>{match.teamB}</span>
+
+                            {/* VS / Score Badge */}
+                            <div
+                              className="font-inter text-center"
+                              style={{
+                                padding: "6px 12px",
+                                borderRadius: "10px",
+                                minWidth: "56px",
+                                fontWeight: 900,
+                                fontStyle: "italic",
+                                fontSize: "12px",
+                                background: match.status === "Live"
+                                  ? "rgba(239,68,68,0.15)"
+                                  : match.status === "Completed"
+                                    ? "rgba(251,191,36,0.12)"
+                                    : "rgba(26,111,255,0.1)",
+                                border: `1.5px solid ${match.status === "Live"
+                                  ? "rgba(239,68,68,0.45)"
+                                  : match.status === "Completed"
+                                    ? "rgba(251,191,36,0.4)"
+                                    : "rgba(26,111,255,0.25)"
+                                }`,
+                                boxShadow: match.status === "Live"
+                                  ? "0 0 15px rgba(239,68,68,0.2)"
+                                  : match.status === "Completed"
+                                    ? "0 0 15px rgba(251,191,36,0.15)"
+                                    : "none"
+                              }}
+                            >
+                              {match.status === "Live" || match.status === "Completed" ? (
+                                <span style={{ color: match.status === "Live" ? "#ef4444" : "#fbbf24", textShadow: "0 0 8px rgba(0,0,0,0.5)" }}>
+                                  {match.scores?.home ?? 0} - {match.scores?.away ?? 0}
+                                </span>
+                              ) : (
+                                <span style={{ color: "rgba(255,255,255,0.2)" }}>VS</span>
+                              )}
+                            </div>
+
+                            {/* Team B */}
+                            <div className="flex items-center gap-3 justify-start flex-1 md:flex-initial min-w-[120px]">
+                              <div style={{ width: "30px", height: "30px", borderRadius: "50%", overflow: "hidden", border: "1.5px solid rgba(26,111,255,0.25)", background: "rgba(0,0,0,0.35)", display: "flex", alignItems: "center", justifyContent: "center", padding: "3px", boxShadow: "0 4px 10px rgba(0,0,0,0.3)" }}>
+                                {match.teamBCrest ? (
+                                  <img src={match.teamBCrest} alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                                ) : (
+                                  <span className="font-inter" style={{ fontSize: "9px", color: "rgba(255,255,255,0.4)", fontWeight: 700 }}>
+                                    {match.teamB.slice(0, 3).toUpperCase()}
+                                  </span>
+                                )}
+                              </div>
+                              <span style={{ fontFamily: "'Roboto',sans-serif", fontWeight: 700, fontSize: "12px", color: "white", textTransform: "uppercase", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "95px" }}>
+                                {match.teamB}
+                              </span>
+                            </div>
                           </div>
+
+                          {/* Prediction Status & Metadata badges */}
+                          <div className="flex items-center gap-2.5 justify-end min-w-[140px]">
+                            {hasPred && (
+                              <span className="font-inter" style={{ padding: "2px 6px", borderRadius: "5px", background: "rgba(42,229,0,0.08)", border: "1px solid rgba(42,229,0,0.2)", color: "#2ae500", fontSize: "8px", textTransform: "uppercase", letterSpacing: "0.12em", fontWeight: 700 }}>
+                                Voted
+                              </span>
+                            )}
+                            
+                            {match.status === "Live" ? (
+                              <motion.span
+                                animate={{ opacity: [1, 0.4, 1] }}
+                                transition={{ repeat: Infinity, duration: 1.5 }}
+                                className="font-inter flex items-center gap-1"
+                                style={{ padding: "2px 6px", borderRadius: "5px", background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", color: "#f87171", fontSize: "8px", textTransform: "uppercase", letterSpacing: "0.12em", fontWeight: 700 }}
+                              >
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#ef4444]" />
+                                Live
+                              </motion.span>
+                            ) : match.status === "Completed" ? (
+                              <span className="font-inter flex items-center gap-1" style={{ padding: "2px 6px", borderRadius: "5px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", color: "#64748b", fontSize: "8px", textTransform: "uppercase", letterSpacing: "0.12em", fontWeight: 700 }}>
+                                Ended
+                              </span>
+                            ) : (
+                              <span className="font-inter flex items-center gap-1" style={{ padding: "2px 6px", borderRadius: "5px", background: "rgba(26,111,255,0.1)", border: "1px solid rgba(26,111,255,0.2)", color: "#4da3ff", fontSize: "8px", textTransform: "uppercase", letterSpacing: "0.12em", fontWeight: 700 }}>
+                                Scheduled
+                              </span>
+                            )}
+
+                            <span className="material-symbols-outlined" style={{ fontSize: "14px", color: "rgba(26,111,255,0.35)" }}>chevron_right</span>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+
+                    {finalFilteredMatches.length === 0 && (
+                      <div
+                        className="text-center py-16 rounded-2xl flex flex-col items-center justify-center gap-2 p-6"
+                        style={{ background: "rgba(5,15,38,0.25)", border: "1px dashed rgba(26,111,255,0.1)" }}
+                      >
+                        <span className="material-symbols-outlined text-[32px]" style={{ color: "#334155" }}>sports_soccer</span>
+                        <div style={{ fontFamily: "'Roboto',sans-serif", fontWeight: 700, fontSize: "14px", color: "#64748b" }}>
+                          No Fixtures Found
                         </div>
-                        <div className="flex items-center gap-3 justify-end min-w-[150px]">
-                          {hasPred&&<span className="font-inter" style={{ padding:"2px 8px",borderRadius:"6px",background:"rgba(42,229,0,0.08)",border:"1px solid rgba(42,229,0,0.2)",color:"#2ae500",fontSize:"8px",textTransform:"uppercase",letterSpacing:"0.12em",fontWeight:700 }}>Voted</span>}
-                          {match.status==="Live"
-                            ? <motion.span animate={{opacity:[1,0.5,1]}} transition={{repeat:Infinity,duration:1.5}} className="font-inter" style={{ padding:"2px 8px",borderRadius:"6px",background:"rgba(42,229,0,0.12)",color:"#2ae500",fontSize:"8px",textTransform:"uppercase",letterSpacing:"0.12em",fontWeight:700 }}>Live</motion.span>
-                            : match.status==="Completed"
-                              ? <span className="font-inter" style={{ padding:"2px 8px",borderRadius:"6px",background:"rgba(255,255,255,0.04)",color:"#475569",fontSize:"8px",textTransform:"uppercase" }}>Ended</span>
-                              : <span className="font-inter" style={{ padding:"2px 8px",borderRadius:"6px",background:"rgba(26,111,255,0.1)",border:"1px solid rgba(26,111,255,0.25)",color:"#4da3ff",fontSize:"8px",textTransform:"uppercase",letterSpacing:"0.12em",fontWeight:700 }}>Timed</span>}
-                          <span className="material-symbols-outlined" style={{ fontSize:"14px",color:"#334155" }}>chevron_right</span>
+                        <div className="font-inter text-[11px]" style={{ color: "#475569" }}>
+                          Try adjusting your date filters or team search query.
                         </div>
-                      </motion.div>
-                    );
-                  })}
+                      </div>
+                    )}
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
