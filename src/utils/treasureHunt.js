@@ -123,4 +123,22 @@ export const checkTreasureHuntInactivity = () => {
   return false;
 };
 
+export const checkTreasureHuntTimeout = () => {
+  const startTime = getTreasureHuntStartTime();
+  if (!startTime) return false;
+
+  const step = getTreasureHuntStep();
+  const isClaimed = localStorage.getItem('treasure_hunt_claimed') === 'true';
+
+  if (step > 0 && step <= CLUES.length && !isClaimed) {
+    // 30 minutes = 1800000 ms
+    const TIMEOUT_LIMIT = 1800000;
+    if (Date.now() - startTime > TIMEOUT_LIMIT) {
+      resetTreasureHunt();
+      return true;
+    }
+  }
+  return false;
+};
+
 

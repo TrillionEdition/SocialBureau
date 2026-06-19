@@ -10,9 +10,12 @@ export default function SuntipsClaims() {
   const [searchQuery, setSearchQuery] = useState("");
   const [stats, setStats] = useState({ total: 0, pending: 0, shipped: 0, delivered: 0 });
   const [updatingId, setUpdatingId] = useState(null);
+  const [outOfStock, setOutOfStock] = useState(false);
+  const [togglingStock, setTogglingStock] = useState(false);
 
   useEffect(() => {
     fetchClaims();
+    fetchStockStatus();
     const interval = setInterval(fetchClaims, 30000); // 30s auto-refresh
     return () => clearInterval(interval);
   }, []);
@@ -48,6 +51,31 @@ export default function SuntipsClaims() {
       console.error("Failed to fetch Suntips claims:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchStockStatus = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/suntips/settings`);
+      setOutOfStock(res.data?.outOfStock ?? false);
+    } catch (err) {
+      console.error("Failed to fetch stock status:", err);
+    }
+  };
+
+  const handleToggleStock = async () => {
+    try {
+      setTogglingStock(true);
+      const token = localStorage.getItem("token");
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+      const newStatus = !outOfStock;
+      await axios.patch(`${BASE_URL}/suntips/settings/stock`, { outOfStock: newStatus }, config);
+      setOutOfStock(newStatus);
+    } catch (err) {
+      console.error("Failed to toggle stock status:", err);
+      alert("Failed to update stock status: " + (err.response?.data?.message || err.message));
+    } finally {
+      setTogglingStock(false);
     }
   };
 
@@ -131,12 +159,37 @@ export default function SuntipsClaims() {
               Fulfill won tea pack prizes, track delivery statuses, and manage shipment logistics.
             </p>
           </div>
-          <button
-            onClick={fetchClaims}
-            className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-black rounded-xl transition duration-200 shadow-lg shadow-emerald-500/20 text-xs uppercase tracking-widest"
-          >
-            Refresh records
-          </button>
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            {/* OUT OF STOCK TOGGLE */}
+            <button
+              onClick={handleToggleStock}
+              disabled={togglingStock}
+              className={`relative flex items-center gap-3 px-5 py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all duration-300 shadow-lg border ${
+                outOfStock
+                  ? "bg-red-500/10 border-red-500/40 text-red-400 hover:bg-red-500/20 shadow-red-500/10"
+                  : "bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white"
+              } disabled:opacity-60 disabled:cursor-not-allowed`}
+              title={outOfStock ? "Click to re-enable the spin page" : "Click to mark products as out of stock"}
+            >
+              {togglingStock ? (
+                <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+              ) : (
+                <span className={`w-3 h-3 rounded-full flex-shrink-0 ${outOfStock ? "bg-red-400 animate-pulse" : "bg-emerald-400"}`} />
+              )}
+              <span>
+                {outOfStock ? "🚫 Products Out of Stock" : "✅ Products Available"}
+              </span>
+            </button>
+            <button
+              onClick={fetchClaims}
+              className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-black rounded-xl transition duration-200 shadow-lg shadow-emerald-500/20 text-xs uppercase tracking-widest"
+            >
+              Refresh records
+            </button>
+          </div>
         </div>
 
         {/* STATS */}

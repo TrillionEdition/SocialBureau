@@ -1,6 +1,7 @@
 // src/components/TreasureHuntTimer.jsx
 import React, { useState, useEffect, useRef } from "react";
-import { getTreasureHuntStep, getTreasureHuntStartTime, CLUES } from "../utils/treasureHunt";
+import { getTreasureHuntStep, getTreasureHuntStartTime, resetTreasureHunt, CLUES } from "../utils/treasureHunt";
+import { toast } from "react-toastify";
 import "./TreasureHuntTimer.css";
 
 const formatTime = (totalSeconds) => {
@@ -65,15 +66,36 @@ export const TreasureHuntTimer = () => {
     }
 
     // Hunt is in progress
+    const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+    if (elapsedSeconds >= 1800) {
+      resetTreasureHunt();
+      toast.warning("Treasure Hunt reset: 30-minute time limit exceeded.", {
+        toastId: "treasure_hunt_timeout_reset"
+      });
+      return;
+    }
+
     setIsActive(true);
     setIsComplete(false);
-    setElapsed(Math.floor((Date.now() - startTime) / 1000));
+    setElapsed(elapsedSeconds);
 
     if (!intervalRef.current) {
       intervalRef.current = setInterval(() => {
         const st = getTreasureHuntStartTime();
         if (st) {
-          setElapsed(Math.floor((Date.now() - st) / 1000));
+          const el = Math.floor((Date.now() - st) / 1000);
+          if (el >= 1800) {
+            resetTreasureHunt();
+            toast.warning("Treasure Hunt reset: 30-minute time limit exceeded.", {
+              toastId: "treasure_hunt_timeout_reset"
+            });
+            if (intervalRef.current) {
+              clearInterval(intervalRef.current);
+              intervalRef.current = null;
+            }
+          } else {
+            setElapsed(el);
+          }
         }
       }, 1000);
     }

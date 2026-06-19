@@ -1,78 +1,80 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { BASE_URL } from "@/utils/urls";
 
 const wheelItems = [
-  { label: "Green Tea", image: "/assets/suntips-spin/suntips_green_tea.png", color: "#1e3f20" },    // Forest Green
-  { label: "Lemon Tea", image: "/assets/suntips-spin/suntips_lemon_tea.png", color: "#a68d15" },    // Warm Gold/Yellow
-  { label: "Next Time", image: null, color: "#2d1a12" },                                            // Dark Warm Brown
-  { label: "Black Tea", image: "/assets/suntips-spin/suntips_black_tea.png", color: "#361b1b" },    // Dark Mahogany
-  { label: "Next Time", image: null, color: "#2d1a12" },                                            // Dark Warm Brown
-  { label: "Ginger Tea", image: "/assets/suntips-spin/suntips_ginger_tea.png", color: "#6b4329" },   // Spicy Ginger
-  { label: "Masala Chai", image: "/assets/suntips-spin/suntips_masala_chai.png", color: "#854521" },  // Warm Terracotta
-  { label: "Next Time", image: null, color: "#2d1a12" },                                            // Dark Warm Brown
+  { label: "Hot Chocolate Lollipop", emoji: null, image: "/assets/suntips-spin/hotchocolatelolipop.png", color: "#2d160f" },
+  { label: "Biscoff Wrap", emoji: null, image: "/assets/suntips-spin/BiscoffWrap.webp", color: "#42251a" },
+  { label: "Try Again", emoji: "✨", image: null, color: "#150a06", isTryAgain: true },
+  { label: "Hazelnut Wrap", emoji: null, image: "/assets/suntips-spin/Hazelnut Wrap.webp", color: "#8a6132" },
+  { label: "Try Again", emoji: "✨", image: null, color: "#150a06", isTryAgain: true },
+  { label: "Coupon", emoji: "🎟️", image: null, color: "#70503f" },
+  { label: "Signature 20g Bars", emoji: null, image: "/assets/suntips-spin/signature 20 g Bars.webp", color: "#6e3f16" },
+  { label: "Try Again", emoji: "✨", image: null, color: "#150a06", isTryAgain: true },
 ];
 
-const LeafConfettiGenerator = () => {
-  const leaves = Array.from({ length: 40 }).map((_, idx) => {
+const GoldFlakeConfettiGenerator = () => {
+  const flakes = Array.from({ length: 40 }).map((_, idx) => {
     const left = (idx * 2.71) % 100;
     const delay = (idx * 0.15) % 8;
-    const duration = 6.0 + (idx * 0.12) % 4.0;
-    const rotationSpeed = 2 + (idx % 3);
-    const size = 12 + (idx % 16); // 12px to 28px
+    const duration = 5.0 + (idx * 0.12) % 4.0;
+    const size = 6 + (idx % 12); // 6px to 18px
     
-    // Different green shades representing tea leaves
-    const greenShades = [
-      "#4ade80", // Light Green
-      "#22c55e", // Green
-      "#15803d", // Dark Green
-      "#166534", // Deep Forest
-      "#86efac", // Pale Green
+    // Luxury gold and chocolate-related shades
+    const goldShades = [
+      "#f3e5ab", // Soft Cream Gold
+      "#f59e0b", // Warm Amber Gold
+      "#c5a059", // Chocochi Brand Gold
+      "#d4af37", // Bright Metallic Gold
+      "#fcd34d", // Glowing Yellow-Gold
     ];
-    const color = greenShades[idx % greenShades.length];
+    const color = goldShades[idx % goldShades.length];
 
     const style = {
       left: `${left}%`,
       animationDelay: `${delay}s`,
       animationDuration: `${duration}s`,
       position: 'absolute',
-      top: '-40px',
+      top: '-20px',
       zIndex: 0,
       width: `${size}px`,
-      height: `${size * 0.6}px`,
+      height: `${size}px`,
       backgroundColor: color,
-      borderRadius: "0 100% 0 100%", // Simple leaf shape
-      transform: `rotate(${idx * 15}deg)`,
-      boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
+      borderRadius: idx % 2 === 0 ? "50%" : "2px", // Circles and diamond sparkles
+      transform: `rotate(${idx * 45}deg)`,
+      boxShadow: `0 0 8px ${color}`,
+      opacity: 0.8,
     };
 
-    return { style, rotationSpeed };
+    return { style };
   });
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      {leaves.map(({ style }, idx) => (
+      {flakes.map(({ style }, idx) => (
         <div
           key={idx}
-          className="animate-[leafFall_infinite_linear]"
+          className="animate-[flakeFall_infinite_linear]"
           style={{
             ...style,
-            animationName: 'leafFall',
+            animationName: 'flakeFall',
           }}
         />
       ))}
       <style>{`
-        @keyframes leafFall {
+        @keyframes flakeFall {
           0% {
-            transform: translateY(-50px) rotate(0deg) translateX(0px);
-            opacity: 1;
+            transform: translateY(-20px) rotate(0deg) translateX(0px);
+            opacity: 0;
           }
-          50% {
-            transform: translateY(50vh) rotate(180deg) translateX(30px);
-            opacity: 0.9;
+          10% {
+            opacity: 0.8;
+          }
+          90% {
+            opacity: 0.8;
           }
           100% {
-            transform: translateY(105vh) rotate(360deg) translateX(-30px);
+            transform: translateY(105vh) rotate(720deg) translateX(40px);
             opacity: 0;
           }
         }
@@ -81,11 +83,93 @@ const LeafConfettiGenerator = () => {
   );
 };
 
+const TransparentImage = ({ src, alt, className }) => {
+  const [dataUrl, setDataUrl] = useState(src);
+
+  useEffect(() => {
+    if (!src) return;
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = src;
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+      try {
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imgData.data;
+        const width = canvas.width;
+        const height = canvas.height;
+        const visited = new Uint8Array(width * height);
+        const queue = [];
+
+        const isBgPixel = (x, y) => {
+          const idx = (y * width + x) * 4;
+          const r = data[idx];
+          const g = data[idx + 1];
+          const b = data[idx + 2];
+          const maxVal = Math.max(r, g, b);
+          const minVal = Math.min(r, g, b);
+          const isGrayscale = (maxVal - minVal) < 25;
+          // Matches white, off-white, and light grey shadows
+          return (r > 185 && g > 185 && b > 185 && isGrayscale) || (r > 240 && g > 240 && b > 240);
+        };
+
+        const pushIfBg = (x, y) => {
+          if (x >= 0 && x < width && y >= 0 && y < height) {
+            const idx = y * width + x;
+            if (!visited[idx] && isBgPixel(x, y)) {
+              visited[idx] = 1;
+              queue.push((y << 16) | x);
+              const dataIdx = idx * 4;
+              data[dataIdx + 3] = 0; // Set alpha to 0 (make transparent)
+            }
+          }
+        };
+
+        // Initialize queue with border pixels
+        for (let x = 0; x < width; x++) {
+          pushIfBg(x, 0);
+          pushIfBg(x, height - 1);
+        }
+        for (let y = 0; y < height; y++) {
+          pushIfBg(0, y);
+          pushIfBg(width - 1, y);
+        }
+
+        let head = 0;
+        while (head < queue.length) {
+          const curr = queue[head++];
+          const cx = curr & 0xffff;
+          const cy = curr >> 16;
+
+          pushIfBg(cx - 1, cy);
+          pushIfBg(cx + 1, cy);
+          pushIfBg(cx, cy - 1);
+          pushIfBg(cx, cy + 1);
+        }
+
+        ctx.putImageData(imgData, 0, 0);
+        setDataUrl(canvas.toDataURL("image/png"));
+      } catch (e) {
+        console.error("Transparent canvas conversion failed:", e);
+        setDataUrl(src);
+      }
+    };
+  }, [src]);
+
+  return <img src={dataUrl} alt={alt} className={className} />;
+};
+
 export default function SuntipsSpinner() {
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [winnerIndex, setWinnerIndex] = useState(-1);
   const [cooldown, setCooldown] = useState(0);
+  const [outOfStock, setOutOfStock] = useState(false);
+  const stockPollRef = useRef(null);
   
   // Modal states
   const [showModal, setShowModal] = useState(false);
@@ -106,6 +190,19 @@ export default function SuntipsSpinner() {
         setCooldown(300 - passed);
       }
     }
+
+    // Poll stock status every 3 seconds for real-time update
+    const pollStock = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/suntips/settings`);
+        setOutOfStock(res.data?.outOfStock ?? false);
+      } catch (e) {
+        // Silently fail — don't block the page on network issues
+      }
+    };
+    pollStock(); // Initial check immediately
+    stockPollRef.current = setInterval(pollStock, 3000);
+    return () => clearInterval(stockPollRef.current);
   }, []);
 
   useEffect(() => {
@@ -162,7 +259,7 @@ export default function SuntipsSpinner() {
     const claimData = {
       name,
       mobileNumber: mobile,
-      prize: `Suntips ${wheelItems[winnerIndex].label}`,
+      prize: `Chocochi ${wheelItems[winnerIndex].label}`,
     };
 
     try {
@@ -191,32 +288,87 @@ export default function SuntipsSpinner() {
 
   const currentWinner = winnerIndex !== -1 ? wheelItems[winnerIndex] : null;
 
+  // ── OUT-OF-STOCK OVERLAY ────────────────────────────────────────────────────
+  if (outOfStock) {
+    return (
+      <div className="h-screen w-full flex flex-col items-center justify-center overflow-hidden relative" style={{ backgroundColor: '#020716' }}>
+        {/* Ambient glows */}
+        <div className="absolute top-1/3 left-1/4 w-[300px] h-[300px] bg-red-900/10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-1/3 right-1/4 w-[350px] h-[350px] bg-[#c5a059]/8 blur-[130px] rounded-full pointer-events-none" />
+        <GoldFlakeConfettiGenerator />
+        <div className="z-10 flex flex-col items-center text-center px-6 max-w-md">
+          {/* Logo */}
+          <div className="mb-6 w-[100px] sm:w-[120px] drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]">
+            <img
+              src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Brand%20Logo%20(1)-1.png"
+              alt="Chocochi Logo"
+              className="w-full h-auto rounded-lg border border-[#c5a059]/20"
+            />
+          </div>
+          {/* Icon */}
+          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-red-500/10 border-2 border-red-500/30 flex items-center justify-center mb-5 shadow-[0_0_30px_rgba(239,68,68,0.15)] animate-pulse">
+            <span className="text-4xl sm:text-5xl select-none">🍫</span>
+          </div>
+          {/* Title */}
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#f3e5ab] via-[#c5a059] to-[#8a6132] mb-3 tracking-wide leading-tight">
+            Products are out of stock
+          </h1>
+          {/* Divider */}
+          <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#c5a059] to-transparent mb-4 rounded-full" />
+          {/* Subtitle */}
+          <p className="text-slate-400 text-sm sm:text-base font-medium leading-relaxed">
+            Our handcrafted Chocochi chocolates are currently unavailable. Please check back soon — we&apos;re restocking with even more delicious surprises! 🎁
+          </p>
+          {/* Badge */}
+          <div className="mt-6 px-4 py-2 rounded-full bg-[#c5a059]/10 border border-[#c5a059]/25 text-[#f3e5ab] text-xs font-bold tracking-widest uppercase">
+            ✨ Coming Back Soon ✨
+          </div>
+        </div>
+        <style>{`
+          @keyframes shimmer {
+            100% { transform: translateX(100%); }
+          }
+        `}</style>
+      </div>
+    );
+  }
+  // ────────────────────────────────────────────────────────────────────────────
+
   return (
-    <div className="h-screen w-full flex flex-col items-center justify-between py-4 px-4 overflow-hidden relative" style={{ backgroundColor: '#03120c' }}>
+    <div className="h-screen w-full flex flex-col items-center justify-between py-4 px-4 overflow-hidden relative" style={{ backgroundColor: '#020716' }}>
 
-      {/* Ambient Tea Glows */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-green-500/10 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[350px] h-[350px] bg-amber-500/10 blur-[130px] rounded-full pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/5 blur-[140px] rounded-full pointer-events-none" />
+      {/* Ambient Chocolate Glows */}
+      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-amber-500/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[350px] h-[350px] bg-[#c5a059]/10 blur-[130px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#0c1f45]/20 blur-[140px] rounded-full pointer-events-none" />
 
-      {/* Falling Tea Leaves Background */}
-      <LeafConfettiGenerator />
+      {/* Falling Gold Flakes Background */}
+      <GoldFlakeConfettiGenerator />
 
       {/* TOP CONTAINER (Header & Title) */}
       <div className="w-full flex flex-col items-center z-10 text-center">
-        {/* Celebration Badge Header */}
-        <div className="mb-1">
-          <span className="px-3 py-1 rounded-full bg-gradient-to-r from-emerald-500/20 to-amber-500/20 border border-emerald-500/30 text-emerald-300 font-extrabold text-[9px] sm:text-[10px] tracking-widest uppercase animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.1)] flex items-center gap-1.5">
-            <span className="inline-block text-amber-400">🌿</span> Suntips Premium Tea Celebration <span className="inline-block text-amber-400">🌿</span>
+        {/* Brand Logo */}
+        <div className="mb-3 max-w-[110px] sm:max-w-[130px] drop-shadow-[0_4px_12px_rgba(0,0,0,0.55)]">
+          <img 
+            src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Brand%20Logo%20(1)-1.png"
+            alt="Chocochi Logo"
+            className="w-full h-auto rounded-lg border border-[#c5a059]/20"
+          />
+        </div>
+
+        {/* Badge Header */}
+        <div className="mb-1.5">
+          <span className="px-3 py-1 rounded-full bg-gradient-to-r from-[#8a6132]/35 to-[#c5a059]/30 border border-[#c5a059]/30 text-[#f3e5ab] font-extrabold text-[9px] sm:text-[10px] tracking-widest uppercase animate-pulse shadow-[0_0_12px_rgba(197,160,89,0.15)] flex items-center gap-1.5">
+            <span className="inline-block text-[#c5a059]">✨</span> Premium Chocolate Spin <span className="inline-block text-[#c5a059]">✨</span>
           </span>
         </div>
 
-        <h1 className="text-xl min-[360px]:text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-amber-300 to-yellow-400 mb-0.5 drop-shadow-[0_2px_8px_rgba(52,211,153,0.25)] tracking-wide font-sans">
-          Suntips Tea Spin Wheel
+        <h1 className="text-xl min-[360px]:text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#f3e5ab] via-[#c5a059] to-[#8a6132] mb-0.5 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)] tracking-wide font-sans">
+          Chocochi Luxury Wheel
         </h1>
 
-        <p className="text-slate-350 text-[9px] min-[360px]:text-[10px] sm:text-xs max-w-sm font-medium leading-normal px-2">
-          Spin the premium wheel to win a full flavor box of Suntips Tea!
+        <p className="text-slate-300 text-[9px] min-[360px]:text-[10px] sm:text-xs max-w-sm font-medium leading-normal px-2">
+          Spin the wheel to win a box of exquisite, handcrafted chocolate truffles!
         </p>
       </div>
 
@@ -229,15 +381,15 @@ export default function SuntipsSpinner() {
             <path d="M25 60 L0 18 Q0 0 18 0 L32 0 Q50 0 50 18 Z" fill="url(#pointerGrad)" />
             <defs>
               <linearGradient id="pointerGrad" x1="0" y1="0" x2="50" y2="60" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#F59E0B" />
-                <stop offset="1" stopColor="#B45309" />
+                <stop stopColor="#c5a059" />
+                <stop offset="1" stopColor="#8a6132" />
               </linearGradient>
             </defs>
           </svg>
         </div>
 
         {/* WHEEL BORDER */}
-        <div className="relative w-[190px] h-[190px] min-[340px]:w-[220px] min-[340px]:h-[220px] min-[400px]:w-[250px] min-[400px]:h-[250px] sm:w-[290px] sm:h-[290px] md:w-[330px] md:h-[330px] rounded-full p-2 bg-gradient-to-br from-yellow-300 via-emerald-600 to-yellow-600 shadow-[0_0_30px_rgba(245,158,11,0.2),_inset_0_1.5px_4px_rgba(255,255,255,0.4)] border-2 border-emerald-300/30 transition-all duration-300">
+        <div className="relative w-[240px] h-[240px] min-[340px]:w-[270px] min-[340px]:h-[270px] min-[400px]:w-[300px] min-[400px]:h-[300px] sm:w-[350px] sm:h-[350px] md:w-[410px] md:h-[410px] lg:w-[460px] lg:h-[460px] rounded-full p-2 bg-gradient-to-br from-[#f3e5ab] via-[#c5a059] to-[#8a6132] shadow-[0_0_40px_rgba(197,160,89,0.35),_inset_0_1.5px_4px_rgba(255,255,255,0.4)] border-2 border-[#c5a059]/30 transition-all duration-300">
 
           {/* SPINNING WHEEL */}
           <div
@@ -255,35 +407,29 @@ export default function SuntipsSpinner() {
               return (
                 <div
                   key={index}
-                  className="absolute inset-0 flex flex-col items-center justify-start pt-2 min-[340px]:pt-3 sm:pt-4 md:pt-5"
+                  className="absolute inset-0 flex flex-col items-center justify-start pt-2.5 min-[340px]:pt-4 sm:pt-5 md:pt-7 lg:pt-8"
                   style={{ transform: `rotate(${angle}deg)` }}
                 >
-                  {item.image ? (
-                    <>
-                      <img
-                        src={item.image}
-                        alt={item.label}
-                        className="w-6 h-6 min-[340px]:w-8 min-[340px]:h-8 sm:w-11 sm:h-11 md:w-14 md:h-14 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)] select-none hover:scale-105 transition-transform"
-                        draggable="false"
-                      />
-                      <span
-                        className="mt-0.5 text-white font-black text-[6px] min-[340px]:text-[7px] sm:text-[9px] md:text-[10px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] select-none max-w-[35px] min-[340px]:max-w-[45px] sm:max-w-[55px] text-center leading-none uppercase tracking-tighter"
-                      >
-                        {item.label}
+                  <div className="flex flex-col items-center justify-center pt-1 min-[340px]:pt-1.5 sm:pt-2">
+                    <span
+                      className="text-white font-black text-[6px] min-[340px]:text-[7.5px] sm:text-[9.5px] md:text-[11.5px] lg:text-[13px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] select-none text-center leading-tight uppercase tracking-tighter max-w-[42px] min-[340px]:max-w-[52px] sm:max-w-[70px] md:max-w-[85px] lg:max-w-[100px] mb-1"
+                    >
+                      {item.label}
+                    </span>
+                    {item.image ? (
+                      <div className="w-8 h-8 min-[340px]:w-10 min-[340px]:h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 flex items-center justify-center p-0.5">
+                        <TransparentImage 
+                          src={item.image}
+                          alt={item.label}
+                          className="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)] select-none hover:scale-105 transition-transform"
+                        />
+                      </div>
+                    ) : (
+                      <span className="text-lg min-[340px]:text-xl sm:text-3xl md:text-4xl lg:text-[2.75rem] select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]">
+                        {item.emoji}
                       </span>
-                    </>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center pt-2 min-[340px]:pt-3 sm:pt-4">
-                      <span className="text-amber-400 font-extrabold text-[8px] min-[340px]:text-[10px] sm:text-[14px] md:text-[16px] mb-0.5 animate-pulse">
-                        🍂
-                      </span>
-                      <span
-                        className="text-white/80 font-black text-[5px] min-[340px]:text-[6px] sm:text-[8px] md:text-[9px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] select-none text-center uppercase tracking-widest max-w-[35px] min-[340px]:max-w-[45px]"
-                      >
-                        {item.label}
-                      </span>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -294,13 +440,12 @@ export default function SuntipsSpinner() {
 
           {/* CENTER EMBLEM */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-            <div className="w-8 h-8 min-[340px]:w-10 min-[340px]:h-10 min-[400px]:w-12 min-[400px]:h-12 md:w-16 md:h-16 rounded-full bg-slate-900 shadow-[0_0_15px_rgba(0,0,0,0.8)] border-2 border-amber-400 flex flex-col items-center justify-center transition-all duration-300">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-amber-400 to-yellow-400 font-extrabold text-[6px] min-[340px]:text-[7px] md:text-[9px] uppercase tracking-widest leading-none">
-                SUNTIPS
-              </span>
-              <span className="text-amber-400 font-black text-[4px] min-[340px]:text-[5px] md:text-[7px] uppercase tracking-wider mt-0.5">
-                TEA
-              </span>
+            <div className="w-11 h-11 min-[340px]:w-13 min-[340px]:h-13 min-[400px]:w-15 min-[400px]:h-15 sm:w-[70px] sm:h-[70px] md:w-[84px] md:h-[84px] lg:w-[96px] lg:h-[96px] rounded-full bg-[#020a1c] shadow-[0_0_15px_rgba(0,0,0,0.8)] border-2 border-[#c5a059] flex items-center justify-center p-0.5 transition-all duration-300 overflow-hidden">
+              <img 
+                src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Brand%20Logo%20(1)-1.png"
+                alt="Chocochi Logo"
+                className="w-full h-full object-cover rounded-full"
+              />
             </div>
           </div>
         </div>
@@ -312,17 +457,17 @@ export default function SuntipsSpinner() {
           onClick={spinWheel}
           disabled={spinning || cooldown > 0 || alreadyClaimed}
           className="
-            relative overflow-hidden group px-8 py-2.5 sm:px-10 sm:py-3.5 rounded-full bg-gradient-to-b from-amber-300 via-yellow-400 to-amber-600 
-            hover:from-amber-200 hover:via-yellow-300 hover:to-amber-500 active:scale-95 transition-all duration-200
-            text-slate-950 font-black text-xs sm:text-sm md:text-base shadow-[0_0_15px_rgba(212,175,55,0.25),_0_4px_8px_rgba(0,0,0,0.3)]
+            relative overflow-hidden group px-8 py-2.5 sm:px-10 sm:py-3.5 rounded-full bg-gradient-to-b from-[#f3e5ab] via-[#c5a059] to-[#8a6132] 
+            hover:from-[#fcf4d9] hover:via-[#d4b574] hover:to-[#9e713d] active:scale-95 transition-all duration-200
+            text-slate-950 font-black text-xs sm:text-sm md:text-base shadow-[0_0_15px_rgba(197,160,89,0.35),_0_4px_8px_rgba(0,0,0,0.4)]
             disabled:from-slate-700 disabled:to-slate-800 disabled:text-slate-500 disabled:opacity-70 disabled:cursor-not-allowed disabled:active:scale-100 disabled:shadow-none
-            border-b-4 border-amber-700 active:border-b-0 active:translate-y-0.5 z-10
+            border-b-4 border-[#6e4b21] active:border-b-0 active:translate-y-0.5 z-10
           "
         >
           <span className="relative z-10 uppercase tracking-widest flex items-center justify-center gap-1.5">
             {alreadyClaimed ? (
               <>
-                🍃 Prize Claimed 🍃
+                🍫 Gift Claimed 🍫
               </>
             ) : spinning ? (
               <>
@@ -330,13 +475,13 @@ export default function SuntipsSpinner() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Steeping...
+                Mixing Chocolates...
               </>
             ) : cooldown > 0 ? (
               `Next Spin: ${Math.floor(cooldown / 60)}:${String(cooldown % 60).padStart(2, '0')}`
             ) : (
               <>
-                🍃 Spin & Win Tea 🍃
+                ✨ Spin & Win Chocolates ✨
               </>
             )}
           </span>
@@ -346,13 +491,13 @@ export default function SuntipsSpinner() {
         </button>
       </div>
 
-      {/* WINNING CLAIM MODAL (TEA CERTIFICATE STYLE) */}
+      {/* WINNING CLAIM MODAL (CHOCOCHI STYLE) */}
       {showModal && currentWinner && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-955/85 backdrop-blur-md p-3 sm:p-4 overflow-y-auto" style={{ backgroundColor: 'rgba(3, 18, 12, 0.85)' }}>
-          <div className="bg-slate-900 rounded-2xl p-5 sm:p-7 md:p-9 max-w-md w-full max-h-[92vh] sm:max-h-[95vh] overflow-y-auto shadow-[0_0_50px_rgba(16,185,129,0.25)] border border-emerald-500/40 text-center relative overflow-x-hidden scrollbar-thin">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-955/85 backdrop-blur-md p-3 sm:p-4 overflow-y-auto" style={{ backgroundColor: 'rgba(2, 7, 22, 0.85)' }}>
+          <div className="bg-[#051129] rounded-2xl p-5 sm:p-7 md:p-9 max-w-md w-full max-h-[92vh] sm:max-h-[95vh] overflow-y-auto shadow-[0_0_50px_rgba(197,160,89,0.2)] border border-[#c5a059]/40 text-center relative overflow-x-hidden scrollbar-thin">
             
             {/* Top decorative gold ribbon */}
-            <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-emerald-400 via-amber-400 to-yellow-500" />
+            <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#8a6132] via-[#d4af37] to-[#f3e5ab]" />
             
             {/* Close Button */}
             <button 
@@ -366,66 +511,72 @@ export default function SuntipsSpinner() {
             </button>
 
             {/* Background glow in modal */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-emerald-500/10 blur-[60px] rounded-full pointer-events-none" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-[#c5a059]/10 blur-[60px] rounded-full pointer-events-none" />
             
             <div className="relative z-10">
-              {!currentWinner.image ? (
+              {currentWinner.isTryAgain ? (
                 <div className="py-4 sm:py-6">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 border-2 border-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.2)] animate-pulse">
-                    <span className="text-amber-400 text-3xl">🍂</span>
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-[#c5a059]/10 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 border-2 border-[#c5a059] shadow-[0_0_15px_rgba(197,160,89,0.2)] animate-pulse">
+                    <span className="text-[#c5a059] text-3xl">✨</span>
                   </div>
                   <h2 className="text-2xl sm:text-3xl font-black text-white mb-2 tracking-tight">Better Luck Next Time!</h2>
-                  <p className="text-slate-300 text-xs sm:text-sm mb-6 sm:mb-8 max-w-xs mx-auto leading-relaxed">
-                    The tea leaves have spoken, but today wasn't your lucky match. Don't worry, you can try again after the cooldown!
+                  <p className="text-slate-300 text-xs sm:text-sm mb-6 sm:mb-8 max-w-xs mx-auto leading-relaxed font-medium">
+                    The chocolate recipe wasn't complete this spin. Don't worry, you can try again after the cooldown!
                   </p>
                   <button 
                     onClick={() => setShowModal(false)}
-                    className="px-6 py-2.5 sm:px-8 sm:py-3.5 bg-gradient-to-br from-amber-400 to-amber-600 hover:from-amber-300 hover:to-amber-500 text-slate-950 font-extrabold rounded-full transition-all duration-200 w-full shadow-[0_4px_15px_rgba(245,158,11,0.3)] text-xs sm:text-sm uppercase tracking-wider cursor-pointer"
+                    className="px-6 py-2.5 sm:px-8 sm:py-3.5 bg-gradient-to-br from-[#c5a059] to-[#8a6132] hover:from-[#d4b574] hover:to-[#9e713d] text-slate-950 font-extrabold rounded-full transition-all duration-200 w-full shadow-[0_4px_15px_rgba(197,160,89,0.3)] text-xs sm:text-sm uppercase tracking-wider cursor-pointer border-none"
                   >
                     Try Again Later
                   </button>
                 </div>
               ) : submitted ? (
                 <div className="py-4 sm:py-6">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-[0_0_25px_rgba(16,185,129,0.5)] border-2 border-emerald-400">
-                    <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-[#c5a059] rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-[0_0_25px_rgba(197,160,89,0.5)] border-2 border-[#f3e5ab]">
+                    <svg className="w-8 h-8 sm:w-10 sm:h-10 text-[#051129]" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
                   <h2 className="text-2xl sm:text-3xl font-black text-white mb-2 tracking-tight">Delivery Claim Submitted!</h2>
-                  <p className="text-slate-300 text-xs sm:text-sm mb-6 sm:mb-8 max-w-xs mx-auto">
-                    Your shipment request for <span className="text-emerald-400 font-extrabold text-base sm:text-lg">Suntips {currentWinner.label}</span> has been securely processed. We will prepare your tea pack for shipping!
+                  <p className="text-slate-300 text-xs sm:text-sm mb-6 sm:mb-8 max-w-xs mx-auto font-medium">
+                    Your shipment request for <span className="text-[#c5a059] font-extrabold text-base sm:text-lg">Chocochi {currentWinner.label}</span> has been securely processed. We will prepare your luxury chocolate pack for shipping!
                   </p>
                   <button 
                     onClick={() => setShowModal(false)}
-                    className="px-6 py-2.5 sm:px-8 sm:py-3.5 bg-gradient-to-r from-emerald-400 to-emerald-600 hover:from-emerald-300 hover:to-emerald-500 text-slate-955 font-extrabold rounded-full transition-all duration-200 w-full shadow-[0_4px_15px_rgba(16,185,129,0.3)] text-xs sm:text-sm uppercase tracking-wider"
+                    className="px-6 py-2.5 sm:px-8 sm:py-3.5 bg-gradient-to-r from-[#c5a059] to-[#8a6132] hover:from-[#d4b574] hover:to-[#9e713d] text-slate-950 font-extrabold rounded-full transition-all duration-200 w-full shadow-[0_4px_15px_rgba(197,160,89,0.3)] text-xs sm:text-sm uppercase tracking-wider border-none"
                   >
-                    Happy Brewing!
+                    Happy Tasting!
                   </button>
                 </div>
               ) : (
                 <>
                   <div className="relative inline-block mb-3">
-                    <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-extrabold text-[10px] sm:text-xs tracking-wider uppercase inline-block animate-pulse">
-                      ✨ Tea Pack Winner ✨
+                    <span className="px-3 py-1 rounded-full bg-[#c5a059]/10 border border-[#c5a059]/30 text-[#c5a059] font-extrabold text-[10px] sm:text-xs tracking-wider uppercase inline-block animate-pulse">
+                      ✨ Chocochi Winner ✨
                     </span>
                     <div className="absolute -top-1 -right-2 text-yellow-400 animate-bounce">★</div>
                   </div>
 
-                  {/* Render the specific tea pack won */}
-                  <div className="w-24 h-24 sm:w-28 sm:h-28 bg-slate-955/40 rounded-xl flex items-center justify-center mx-auto mb-3 border border-emerald-500/20 shadow-inner">
-                    <img 
-                      src={currentWinner.image}
-                      alt={currentWinner.label}
-                      className="w-20 h-20 sm:w-24 sm:h-24 object-contain drop-shadow-[0_4px_6px_rgba(0,0,0,0.5)]"
-                    />
+                  {/* Render the specific chocolate won */}
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 bg-[#020a1c] rounded-xl flex items-center justify-center mx-auto mb-3 border border-[#c5a059]/20 shadow-inner">
+                    {currentWinner.image ? (
+                      <TransparentImage 
+                        src={currentWinner.image}
+                        alt={currentWinner.label}
+                        className="w-20 h-20 sm:w-24 sm:h-24 object-contain drop-shadow-[0_4px_6px_rgba(0,0,0,0.5)]"
+                      />
+                    ) : (
+                      <span className="text-5xl drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] select-none">
+                        {currentWinner.emoji}
+                      </span>
+                    )}
                   </div>
                   
-                  <h2 className="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-amber-300 to-yellow-400 mb-1 drop-shadow-md">
+                  <h2 className="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#f3e5ab] via-[#c5a059] to-[#8a6132] mb-1 drop-shadow-md">
                     Won {currentWinner.label}!
                   </h2>
-                  <p className="text-slate-300 mb-4 sm:mb-6 text-[10px] sm:text-xs max-w-xs mx-auto">
-                    Congratulations! Enter your details below to receive your premium box of Suntips Tea.
+                  <p className="text-slate-350 mb-4 sm:mb-6 text-[10px] sm:text-xs max-w-xs mx-auto leading-relaxed">
+                    Congratulations! Enter your details below to receive your premium box of Chocochi luxury chocolates.
                   </p>
                   
                   <form onSubmit={handleFormSubmit} className="space-y-3 sm:space-y-4 text-left">
@@ -437,7 +588,7 @@ export default function SuntipsSpinner() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Enter your name"
-                        className="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl px-3 py-2 sm:px-4 sm:py-3 placeholder-slate-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-200 text-xs sm:text-sm font-medium"
+                        className="w-full bg-[#020a1c] border border-slate-800 text-slate-100 rounded-xl px-3 py-2 sm:px-4 sm:py-3 placeholder-slate-750 focus:outline-none focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059] transition-all duration-200 text-xs sm:text-sm font-medium"
                       />
                     </div>
 
@@ -449,24 +600,24 @@ export default function SuntipsSpinner() {
                         value={mobile}
                         onChange={(e) => setMobile(e.target.value)}
                         placeholder="Enter 10-digit mobile number"
-                        className="w-full bg-slate-955 border border-slate-800 text-slate-100 rounded-xl px-3 py-2 sm:px-4 sm:py-3 placeholder-slate-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-200 text-xs sm:text-sm font-medium"
+                        className="w-full bg-[#020a1c] border border-slate-800 text-slate-100 rounded-xl px-3 py-2 sm:px-4 sm:py-3 placeholder-slate-750 focus:outline-none focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059] transition-all duration-200 text-xs sm:text-sm font-medium"
                       />
                     </div>
 
                     <button 
                       type="submit"
                       disabled={submitting || !name || !mobile}
-                      className="w-full mt-3 sm:mt-5 px-6 py-2.5 sm:px-8 sm:py-3.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-extrabold rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_15px_rgba(16,185,129,0.3)] text-sm sm:text-base tracking-wide uppercase"
+                      className="w-full mt-3 sm:mt-5 px-6 py-2.5 sm:px-8 sm:py-3.5 bg-gradient-to-r from-[#c5a059] to-[#8a6132] hover:from-[#d4b574] hover:to-[#9e713d] text-slate-950 font-extrabold rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_15px_rgba(197,160,89,0.3)] text-sm sm:text-base tracking-wide uppercase border-none cursor-pointer"
                     >
                       {submitting ? (
                         <span className="flex items-center justify-center gap-2">
-                          <svg className="animate-spin h-4 w-4 sm:h-5 sm:w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <svg className="animate-spin h-4 w-4 sm:h-5 sm:w-5 text-slate-950" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                           </svg>
                           Submitting Claim...
                         </span>
-                      ) : "Claim Premium Tea Pack"}
+                      ) : "Claim Luxury Chocolate Box"}
                     </button>
                   </form>
                 </>
@@ -475,49 +626,6 @@ export default function SuntipsSpinner() {
           </div>
         </div>
       )}
-
-      {/* SPONSORS SECTION */}
-      <div className="relative z-10 w-full max-w-3xl border-t border-emerald-500/10 pt-3 pb-1 text-center px-4 mt-2 mb-1">
-        <h3 className="text-emerald-400/45 uppercase tracking-[0.25em] text-[8px] sm:text-[9px] font-black mb-3">
-          Campaign Partners & Sponsors
-        </h3>
-        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-14 opacity-75">
-          <div className="flex flex-col items-center group">
-            <img 
-              src="https://suntips.in/wp-content/uploads/2023/10/Sun-Tips-Logo.png" 
-              alt="Sun Tips" 
-              className="h-6 sm:h-9 object-contain grayscale opacity-65 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
-            />
-            <span className="text-[7px] sm:text-[8px] text-slate-500 font-bold uppercase tracking-wider mt-1 group-hover:text-slate-350 transition-colors">Title Sponsor</span>
-          </div>
-
-          <div className="flex flex-col items-center group">
-            <img 
-              src="https://newstamil.tv/wp-content/uploads/2022/09/News-Tamil-Logo-01-1.png" 
-              alt="News Tamil 24x7" 
-              className="h-6 sm:h-9 object-contain grayscale opacity-65 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
-            />
-            <span className="text-[7px] sm:text-[8px] text-slate-500 font-bold uppercase tracking-wider mt-1 group-hover:text-slate-350 transition-colors">Media Partner</span>
-          </div>
-
-          <div className="flex flex-col items-center group">
-            <img 
-              src="https://bigtvtelugu.com/wp-content/uploads/2022/06/Big-TV-Logo.png" 
-              alt="Big TV" 
-              className="h-6 sm:h-9 object-contain grayscale opacity-65 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
-            />
-            <span className="text-[7px] sm:text-[8px] text-slate-500 font-bold uppercase tracking-wider mt-1 group-hover:text-slate-350 transition-colors">Broadcasting Partner</span>
-          </div>
-
-          <div className="flex flex-col items-center group">
-            {/* Social Bureau Logo */}
-            <div className="flex items-center gap-2 grayscale opacity-65 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 min-h-[24px] sm:min-h-[36px] items-center justify-center">
-              <span className="text-white font-black text-xs sm:text-sm tracking-tighter uppercase">Social Bureau</span>
-            </div>
-            <span className="text-[7px] sm:text-[8px] text-slate-500 font-bold uppercase tracking-wider mt-0.5 group-hover:text-slate-350 transition-colors">Branding Partner</span>
-          </div>
-        </div>
-      </div>
 
       {/* Shimmer and other utility keyframes */}
       <style>{`

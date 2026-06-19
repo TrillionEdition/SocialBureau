@@ -159,6 +159,7 @@ import { toast } from "react-toastify";
 import { 
   updateTreasureHuntActivity, 
   checkTreasureHuntInactivity, 
+  checkTreasureHuntTimeout,
   getTreasureHuntStep, 
   CLUES 
 } from "./utils/treasureHunt";
@@ -343,6 +344,15 @@ function App() {
     };
 
     const setupInactivityTracking = () => {
+      const timeoutHappened = checkTreasureHuntTimeout();
+      if (timeoutHappened) {
+        toast.warning("Treasure Hunt reset: 30-minute time limit exceeded.", {
+          toastId: "treasure_hunt_timeout_reset"
+        });
+        cleanupTracking();
+        return;
+      }
+
       const step = getTreasureHuntStep();
       const isClaimed = localStorage.getItem('treasure_hunt_claimed') === 'true';
       const isGameActive = step > 0 && step <= CLUES.length && !isClaimed;
@@ -356,8 +366,17 @@ function App() {
         window.addEventListener("scroll", handleUserActivity, { passive: true });
         window.addEventListener("touchstart", handleUserActivity, { passive: true });
 
-        // Periodically check inactivity (every 5 seconds)
+        // Periodically check timeout and inactivity (every 5 seconds)
         activityInterval = setInterval(() => {
+          const timeoutHappenedSec = checkTreasureHuntTimeout();
+          if (timeoutHappenedSec) {
+            toast.warning("Treasure Hunt reset: 30-minute time limit exceeded.", {
+              toastId: "treasure_hunt_timeout_reset"
+            });
+            cleanupTracking();
+            return;
+          }
+
           const resetHappened = checkTreasureHuntInactivity();
           if (resetHappened) {
             toast.warning("Treasure Hunt progress reset due to 1 hour of inactivity.", {
