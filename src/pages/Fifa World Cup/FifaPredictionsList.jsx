@@ -26,7 +26,6 @@ export default function FifaPredictionsList() {
     }
   };
 
-  // Filters
   const filteredPredictions = predictions.filter((pred) => {
     const userName = pred.user?.name || "";
     const matchesSearch = userName.toLowerCase().includes(searchQuery.toLowerCase());
