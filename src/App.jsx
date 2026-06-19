@@ -17,6 +17,7 @@ import AdminRoute from "./components/AdminRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CodeProtectedRoute from "./components/CodeProtectedRoute";
 import CookieConsent from "./components/CookieConsent";
+import RobotsControl from "./components/RobotsControl";
 // import AdsContainer from './components/AdsContainer';
 import { ToastContainer } from "react-toastify";
 import Partner1 from "./pages/Partnerships/johnsamuel";
@@ -413,6 +414,7 @@ function App() {
           theme="dark"
         />
         <ConditionalNavbar />
+        <RobotsControl />
         <ConditionalChatbot />
         <ScrollTop />
         <FloatingTreasureHuntClue />
