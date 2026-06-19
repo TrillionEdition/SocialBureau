@@ -591,11 +591,12 @@ export default function FifaWorldcup() {
         {/* ═══════════════════════════
             PREDICTIONS HUB
         ═══════════════════════════ */}
-        <section className="py-12 px-3 sm:px-6 md:px-12 relative" id="predict" style={{ background:"linear-gradient(180deg,#040d1a 0%,#060f20 100%)" }}>
+        <section className="py-10 px-4 sm:px-6 md:px-10 lg:px-16 relative" id="predict" style={{ background:"linear-gradient(180deg,#040d1a 0%,#060f20 100%)" }}>
           <div className="max-w-7xl mx-auto space-y-8 md:space-y-12">
 
             <ScrollReveal>
-              <div className="flex flex-col md:flex-row justify-between md:items-end gap-4 pb-8" style={{ borderBottom:"1px solid rgba(26,111,255,0.1)" }}>
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-6"
+  style={{ borderBottom:"1px solid rgba(26,111,255,0.1)" }}>
                 <div>
                   <h2 style={{ fontFamily:"'Montserrat',sans-serif", fontSize:"clamp(26px,4vw,38px)", fontWeight:900, color:"white", textTransform:"uppercase", fontStyle:"italic" }}>
                     YOUR <span className="green-gradient-text">PREDICTION</span>
@@ -665,7 +666,7 @@ export default function FifaWorldcup() {
                             </span>
         
                           </div>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {tomorrowUpcomingMatches.map(m => {
                               const isSelected = selectedMatch && selectedMatch._id === m._id;
                               const formatted = formatMatchDateTime(m.date);
@@ -690,10 +691,10 @@ export default function FifaWorldcup() {
                       )}
 
                       {/* Team Selectors */}
-                      <div className="flex flex-col lg:flex-row items-center gap-4">
+                      <div className="flex flex-col lg:flex-row items-stretch lg:items-start gap-4 w-full min-w-0">
 
                         {/* Team A Selector */}
-                        <div className="w-full flex-1 flex flex-col gap-2">
+                        <div className="w-full flex-1 flex flex-col gap-2 min-w-0">
                           <label className="font-inter" style={{ fontSize:"10px", color:"#4da3ff", textTransform:"uppercase", letterSpacing:"0.18em", fontWeight:600 }}>Select Team A</label>
                           <div className="relative">
                             <motion.button type="button" whileTap={!isMatchLocked(selectedMatch)?{scale:0.98}:{}}
@@ -707,7 +708,10 @@ export default function FifaWorldcup() {
                                 <div style={{ width:"32px", height:"32px", borderRadius:"50%", overflow:"hidden", border:"1px solid rgba(26,111,255,0.2)", background:"rgba(0,0,0,0.3)", display:"flex", alignItems:"center", justifyContent:"center", padding:"2px", flexShrink:0 }}>
                                   {selectedMatch.teamACrest?<img src={selectedMatch.teamACrest} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }}/>:<span className="font-inter" style={{ fontSize:"9px", color:"rgba(255,255,255,0.5)" }}>{selectedMatch.teamA.slice(0,3).toUpperCase()}</span>}
                                 </div>
-                                <span className="truncate max-w-[80px] xs:max-w-[120px] sm:max-w-[160px] lg:max-w-[110px] xl:max-w-[140px]" style={{ fontFamily:"'Roboto',sans-serif", fontWeight:700, fontSize:"13px", color:"white", textTransform:"uppercase" }}>{selectedMatch.teamA}</span>
+                                <span className="truncate min-w-0 flex-1"
+                                  style={{ fontFamily:"'Roboto',sans-serif", fontWeight:700, fontSize:"13px", color:"white", textTransform:"uppercase" }}>
+                                  {selectedMatch.teamA}
+                                </span>
                               </div>
                               <div onClick={(e)=>{e.stopPropagation();setShowTeamADropdown(!showTeamADropdown);setShowTeamBDropdown(false);}} style={{ padding:"6px", borderRadius:"8px", cursor:"pointer" }} className="hover:bg-white/10 transition-colors">
                                 <motion.span animate={{ rotate:showTeamADropdown?180:0 }} transition={{ duration:0.2 }} className="material-symbols-outlined block" style={{ fontSize:"18px", color:"#4da3ff" }}>expand_more</motion.span>
@@ -760,7 +764,7 @@ export default function FifaWorldcup() {
                         </div>
 
                         {/* Team B Selector */}
-                        <div className="w-full flex-1 flex flex-col gap-2">
+                        <div className="w-full flex-1 flex flex-col gap-2 min-w-0">
                           <label className="font-inter" style={{ fontSize:"10px", color:"#4da3ff", textTransform:"uppercase", letterSpacing:"0.18em", fontWeight:600 }}>Select Team B</label>
                           <div className="relative">
                             <motion.button type="button" whileTap={!isMatchLocked(selectedMatch)?{scale:0.98}:{}}
@@ -774,7 +778,10 @@ export default function FifaWorldcup() {
                                 <div style={{ width:"32px", height:"32px", borderRadius:"50%", overflow:"hidden", border:"1px solid rgba(26,111,255,0.2)", background:"rgba(0,0,0,0.3)", display:"flex", alignItems:"center", justifyContent:"center", padding:"2px", flexShrink:0 }}>
                                   {selectedMatch.teamBCrest?<img src={selectedMatch.teamBCrest} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }}/>:<span className="font-inter" style={{ fontSize:"9px", color:"rgba(255,255,255,0.5)" }}>{selectedMatch.teamB.slice(0,3).toUpperCase()}</span>}
                                 </div>
-                                <span className="truncate max-w-[80px] xs:max-w-[120px] sm:max-w-[160px] lg:max-w-[110px] xl:max-w-[140px]" style={{ fontFamily:"'Roboto',sans-serif", fontWeight:700, fontSize:"13px", color:"white", textTransform:"uppercase" }}>{selectedMatch.teamB}</span>
+                                <span className="truncate min-w-0 flex-1"
+  style={{ fontFamily:"'Roboto',sans-serif", fontWeight:700, fontSize:"13px", color:"white", textTransform:"uppercase" }}>
+  {selectedMatch.teamB}
+</span>
                               </div>
                               <div onClick={(e)=>{e.stopPropagation();setShowTeamBDropdown(!showTeamBDropdown);setShowTeamADropdown(false);}} style={{ padding:"6px", borderRadius:"8px", cursor:"pointer" }} className="hover:bg-white/10 transition-colors">
                                 <motion.span animate={{ rotate:showTeamBDropdown?180:0 }} transition={{ duration:0.2 }} className="material-symbols-outlined block" style={{ fontSize:"18px", color:"#4da3ff" }}>expand_more</motion.span>
@@ -820,17 +827,20 @@ export default function FifaWorldcup() {
                         <label className="font-inter block leading-normal break-words" style={{ fontSize:"10px", color:"#4da3ff", textTransform:"uppercase", letterSpacing:"0.18em", fontWeight:600 }}>
                           Match Momentum — Expected Time of First Goal
                         </label>
-                        <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide" style={{ scrollbarWidth:"none", msOverflowStyle:"none" }}>
-                          {["0'-15'","16'-30'","31'-45'","46'-60'","61'-75'","76'-90'"].map(slot=>(
-                            <motion.button key={slot} type="button" disabled={isMatchLocked(selectedMatch)}
-                              whileHover={!isMatchLocked(selectedMatch)?{y:-2}:{}} whileTap={!isMatchLocked(selectedMatch)?{scale:0.94}:{}}
-                              onClick={()=>setMomentumChoice(slot)}
-                              className="flex-none font-inter cursor-pointer rounded-xl transition-all"
-                              style={{ padding:"12px 20px", fontSize:"12px", fontWeight:600, background:momentumChoice===slot?"rgba(26,111,255,0.15)":"rgba(5,15,38,0.6)", border:`1px solid ${momentumChoice===slot?"rgba(26,111,255,0.4)":"rgba(26,111,255,0.1)"}`, color:momentumChoice===slot?"#7eb8ff":"#475569" }}>
-                              {slot}
-                            </motion.button>
-                          ))}
-                        </div>
+                        <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                              {["0'-15'","16'-30'","31'-45'","46'-60'","61'-75'","76'-90'"].map(slot=>(
+                                <motion.button key={slot} type="button" disabled={isMatchLocked(selectedMatch)}
+                                  whileHover={!isMatchLocked(selectedMatch)?{y:-2}:{}} whileTap={!isMatchLocked(selectedMatch)?{scale:0.94}:{}}
+                                  onClick={()=>setMomentumChoice(slot)}
+                                  className="font-inter rounded-xl transition-all text-center"
+                                  style={{ padding:"10px 4px", fontSize:"11px", fontWeight:600,
+                                    background:momentumChoice===slot?"rgba(26,111,255,0.15)":"rgba(5,15,38,0.6)",
+                                    border:`1px solid ${momentumChoice===slot?"rgba(26,111,255,0.4)":"rgba(26,111,255,0.1)"}`,
+                                    color:momentumChoice===slot?"#7eb8ff":"#475569" }}>
+                                  {slot}
+                                </motion.button>
+                              ))}
+                            </div>
                       </div>
 
                       {/* Submit */}
