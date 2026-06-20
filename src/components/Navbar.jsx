@@ -256,7 +256,7 @@ export default function Navbar() {
     { label: "Enquiry", href: "/enquiry-form" },
     { label: "Work Architect", href: "/work-architect", live: true },
     { label: "Support", href: "/contact" },
-    // { label: "FIFA 2026", href: "/fifa-world-cup", live: true },
+    { label: "FIFA 2026", href: "/fifa-world-cup", live: true },
   ];
 
   useEffect(() => {
