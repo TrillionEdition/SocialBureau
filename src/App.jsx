@@ -1,6 +1,6 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import "./App.css";
-import { BrowserRouter, Route, Routes, useLocation, Link } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, Link, Navigate } from "react-router-dom";
 import { ReactLenis } from "lenis/react";
 import "lenis/dist/lenis.css";
 import CheriyanPage from "./pages/Partnerships/cheriyan";
@@ -145,6 +145,7 @@ const SpinningResults = lazy(() => import("./pages/SpinningResults/SpinningResul
 const TreasureHunt = lazy(() => import("./pages/TreasureHunt/TreasureHunt"));
 const SuntipsSpinner = lazy(() => import("./components/Lottery/SuntipsSpinner"));
 const SuntipsClaims = lazy(() => import("./pages/SuntipsClaims"));
+const ChocochiForm = lazy(() => import("./pages/ChocochiForm"));
 const FifaWorldcup = lazy(() => import("./pages/Fifa World Cup/FifaWorldcup"));
 const FifaPredictionsList = lazy(() => import("./pages/Fifa World Cup/FifaPredictionsList"));
 
@@ -197,6 +198,7 @@ function ConditionalFooter() {
     "/treasure-hunt",
     "/leaderboard",
     "/chocochi",
+    "/chocochi-form",
   ];
   const isIndividualTeamPage = location.pathname.toLowerCase().startsWith("/team/") && location.pathname.toLowerCase() !== "/team/";
 
@@ -236,7 +238,8 @@ function ConditionalNavbar() {
     "/admin/suntips-claims",
     "/admin/posters",
     "/treasure-hunt",
-    "/chocochi"
+    "/chocochi",
+    "/chocochi-form"
   ];
 
 
@@ -444,8 +447,8 @@ function App() {
         {/* <AdsContainer /> */}
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
-            <Route path="/" element={<HomeWrapper />} />
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Navigate to="/chocochi-form" replace />} />
+            <Route path="/home" element={<Navigate to="/chocochi-form" replace />} />
             <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/clickup" element={<Clickup />} />
@@ -674,6 +677,7 @@ function App() {
             <Route path="/partners/students" element={<StudentShowcase />} />
             <Route path="/partnership/Partner2" element={<Partner2 />} />
             <Route path="/chocochi" element={<Chocochi />} />
+            <Route path="/chocochi-form" element={<ChocochiForm />} />
             <Route path="/spinning-results" element={<SpinningResults />} />
             <Route path="/treasure-hunt" element={<TreasureHunt />} />
             <Route path="/fifa-world-cup" element={<FifaWorldcup />} />
