@@ -291,7 +291,7 @@ export default function SuntipsSpinner() {
   // ── OUT-OF-STOCK OVERLAY ────────────────────────────────────────────────────
   if (outOfStock) {
     return (
-      <div className="h-screen w-full flex flex-col items-center justify-center overflow-hidden relative" style={{ backgroundColor: '#020716' }}>
+      <div className="min-h-screen w-full flex flex-col items-center justify-center overflow-y-auto py-8 relative" style={{ backgroundColor: '#020716' }}>
         {/* Ambient glows */}
         <div className="absolute top-1/3 left-1/4 w-[300px] h-[300px] bg-red-900/10 blur-[120px] rounded-full pointer-events-none" />
         <div className="absolute bottom-1/3 right-1/4 w-[350px] h-[350px] bg-[#c5a059]/8 blur-[130px] rounded-full pointer-events-none" />
@@ -335,7 +335,7 @@ export default function SuntipsSpinner() {
   // ────────────────────────────────────────────────────────────────────────────
 
   return (
-    <div className="h-screen w-full flex flex-col items-center justify-between py-4 px-4 overflow-hidden relative" style={{ backgroundColor: '#020716' }}>
+    <div className="min-h-screen w-full flex flex-col items-center justify-start gap-4 sm:gap-8 py-6 sm:py-10 px-4 overflow-y-auto relative" style={{ backgroundColor: '#020716' }}>
 
       {/* Ambient Chocolate Glows */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-amber-500/5 blur-[120px] rounded-full pointer-events-none" />
@@ -348,7 +348,7 @@ export default function SuntipsSpinner() {
       {/* TOP CONTAINER (Header & Title) */}
       <div className="w-full flex flex-col items-center z-10 text-center">
         {/* Brand Logo */}
-        <div className="mb-3 max-w-[110px] sm:max-w-[130px] drop-shadow-[0_4px_12px_rgba(0,0,0,0.55)]">
+        <div className="mb-2 max-w-[85px] sm:max-w-[110px] md:max-w-[130px] drop-shadow-[0_4px_12px_rgba(0,0,0,0.55)]">
           <img 
             src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Brand%20Logo%20(1)-1.png"
             alt="Chocochi Logo"
@@ -357,7 +357,7 @@ export default function SuntipsSpinner() {
         </div>
 
         {/* Badge Header */}
-        <div className="mb-1.5">
+        <div className="mb-1 sm:mb-1.5">
           <span className="px-3 py-1 rounded-full bg-gradient-to-r from-[#8a6132]/35 to-[#c5a059]/30 border border-[#c5a059]/30 text-[#f3e5ab] font-extrabold text-[9px] sm:text-[10px] tracking-widest uppercase animate-pulse shadow-[0_0_12px_rgba(197,160,89,0.15)] flex items-center gap-1.5">
             <span className="inline-block text-[#c5a059]">✨</span> Premium Chocolate Spin <span className="inline-block text-[#c5a059]">✨</span>
           </span>
@@ -373,7 +373,7 @@ export default function SuntipsSpinner() {
       </div>
 
       {/* WHEEL CONTAINER */}
-      <div className="relative flex items-center justify-center z-10 my-2 max-w-full px-2">
+      <div className="relative flex items-center justify-center z-10 my-2 sm:my-4 max-w-full px-2">
 
         {/* POINTER */}
         <div className="absolute -top-4 sm:-top-5 left-1/2 -translate-x-1/2 z-30 drop-shadow-[0_3px_6px_rgba(0,0,0,0.6)]">
@@ -452,7 +452,7 @@ export default function SuntipsSpinner() {
       </div>
 
       {/* BUTTON & COOLDOWN */}
-      <div className="min-h-[50px] flex flex-col items-center justify-start z-10 w-full text-center my-1">
+      <div className="min-h-[60px] flex flex-col items-center justify-start z-10 w-full text-center my-2 sm:my-4 pb-6">
         <button
           onClick={spinWheel}
           disabled={spinning || cooldown > 0 || alreadyClaimed}
