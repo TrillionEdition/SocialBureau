@@ -521,7 +521,7 @@ export default function SuntipsSpinner() {
           className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
         >
           <span className="opacity-60 text-[11px] sm:text-[12px] tracking-wider uppercase font-bold">Event Partner</span>
-          <img src="/assets/suntips-spin/suntip-logo-.webp" alt="Suntips" className="h-6 sm:h-7 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
+          <img src="/assets/suntips-spin/suntips_logo_white.png" alt="Suntips" className="h-12 sm:h-14 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
         </a>
       </div>
 
