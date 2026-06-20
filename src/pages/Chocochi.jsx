@@ -177,16 +177,39 @@ export default function Chocochi() {
       </div>
 
       {/* Header Bar */}
-      <header className="relative w-full z-30 px-6 py-6 md:px-12 flex items-center justify-between bg-gradient-to-b from-[#0a0503] to-transparent">
+      <header className="relative w-full z-30 px-6 py-6 md:px-12 flex items-center justify-center bg-gradient-to-b from-[#0a0503] to-transparent">
         <Link 
           to="/"
-          className="flex items-center gap-2.5 group text-white/60 hover:text-white transition-all text-sm tracking-widest font-bold uppercase"
+          className="absolute left-6 md:left-12 flex items-center gap-2.5 group text-white/60 hover:text-white transition-all text-sm tracking-widest font-bold uppercase"
         >
           <span className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:border-white transition-all">
             <i className="fa-solid fa-arrow-left text-[11px]" />
           </span>
           BACK
         </Link>
+
+        {/* Branding Logos */}
+        <div className="flex items-center gap-4 sm:gap-6 text-white/65 text-xs font-semibold">
+          <a 
+            href="https://www.socialbureau.in/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex items-center gap-2 hover:opacity-90 transition-opacity"
+          >
+            <span className="opacity-50 text-[9px] sm:text-[10px] tracking-wider uppercase font-bold hidden xs:inline">Powered by</span>
+            <img src="/assets/logo.webp" alt="Social Bureau" className="h-5 sm:h-6 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
+          </a>
+          <div className="w-px h-4 bg-white/10" />
+          <a 
+            href="https://suntipstea.online/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex items-center gap-2 hover:opacity-90 transition-opacity"
+          >
+            <span className="opacity-50 text-[9px] sm:text-[10px] tracking-wider uppercase font-bold hidden xs:inline">Event Partner</span>
+            <img src="/assets/suntips-spin/suntips_logo_white.png" alt="Suntips" className="h-10 sm:h-11 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
+          </a>
+        </div>
       </header>
 
       {/* Main Content Arena */}
