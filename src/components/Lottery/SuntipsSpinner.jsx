@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { BASE_URL } from "@/utils/urls";
+import { Link } from "react-router-dom";
 
 const wheelItems = [
   { label: "Hot Chocolate Lollipop", emoji: null, image: "/assets/suntips-spin/hotchocolate.webp", color: "#2d160f" },
@@ -298,13 +299,18 @@ export default function SuntipsSpinner() {
         <GoldFlakeConfettiGenerator />
         <div className="z-10 flex flex-col items-center text-center px-6 max-w-md">
           {/* Logo */}
-          <div className="mb-6 w-[100px] sm:w-[120px] drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]">
+          <Link 
+            to="/chocochi-form"
+            className="mb-6 w-[100px] sm:w-[120px] drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] cursor-pointer hover:scale-105 active:scale-95 transition-all duration-300 block group relative"
+            title="Go to Registration Portal"
+          >
+            <div className="absolute inset-0 rounded-lg bg-amber-500/10 opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-300 pointer-events-none" />
             <img
               src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Brand%20Logo%20(1)-1.png"
               alt="Chocochi Logo"
-              className="w-full h-auto rounded-lg border border-[#c5a059]/20"
+              className="w-full h-auto rounded-lg border border-[#c5a059]/20 relative z-10"
             />
-          </div>
+          </Link>
           {/* Icon */}
           <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-red-500/10 border-2 border-red-500/30 flex items-center justify-center mb-5 shadow-[0_0_30px_rgba(239,68,68,0.15)] animate-pulse">
             <span className="text-4xl sm:text-5xl select-none">🍫</span>
@@ -348,13 +354,18 @@ export default function SuntipsSpinner() {
       {/* TOP CONTAINER (Header & Title) */}
       <div className="w-full flex flex-col items-center z-10 text-center">
         {/* Brand Logo */}
-        <div className="mb-2 max-w-[85px] sm:max-w-[110px] md:max-w-[130px] drop-shadow-[0_4px_12px_rgba(0,0,0,0.55)]">
+        <Link
+          to="/chocochi-form"
+          className="mb-2 max-w-[85px] sm:max-w-[110px] md:max-w-[130px] drop-shadow-[0_4px_12px_rgba(0,0,0,0.55)] cursor-pointer hover:scale-105 active:scale-95 transition-all duration-300 block group relative"
+          title="Go to Registration Portal"
+        >
+          <div className="absolute inset-0 rounded-lg bg-amber-500/10 opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-300 pointer-events-none" />
           <img 
             src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Brand%20Logo%20(1)-1.png"
             alt="Chocochi Logo"
-            className="w-full h-auto rounded-lg border border-[#c5a059]/20"
+            className="w-full h-auto rounded-lg border border-[#c5a059]/20 relative z-10"
           />
-        </div>
+        </Link>
 
         {/* Badge Header */}
         <div className="mb-1 sm:mb-1.5">
