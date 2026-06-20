@@ -87,6 +87,7 @@ const ResetPassword = lazy(() =>
 );
 const Sakilan = lazy(() => import("./pages/Partnerships/sakilan"));
 const Partner2 = lazy(() => import("./pages/Partnerships/Partner2"));
+const Chocochi = lazy(() => import("./pages/Chocochi"));
 
 // Lazy-loaded Components
 const AddAchievementForm = lazy(
@@ -195,6 +196,7 @@ function ConditionalFooter() {
     "/admin/posters",
     "/treasure-hunt",
     "/leaderboard",
+    "/chocochi",
   ];
   const isIndividualTeamPage = location.pathname.toLowerCase().startsWith("/team/") && location.pathname.toLowerCase() !== "/team/";
 
@@ -233,7 +235,8 @@ function ConditionalNavbar() {
     "/suntips-spin",
     "/admin/suntips-claims",
     "/admin/posters",
-    "/treasure-hunt"
+    "/treasure-hunt",
+    "/chocochi"
   ];
 
 
@@ -670,6 +673,7 @@ function App() {
             <Route path="/partners/manage" element={<PartnerDashboard />} />
             <Route path="/partners/students" element={<StudentShowcase />} />
             <Route path="/partnership/Partner2" element={<Partner2 />} />
+            <Route path="/chocochi" element={<Chocochi />} />
             <Route path="/spinning-results" element={<SpinningResults />} />
             <Route path="/treasure-hunt" element={<TreasureHunt />} />
             <Route path="/fifa-world-cup" element={<FifaWorldcup />} />

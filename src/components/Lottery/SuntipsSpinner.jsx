@@ -3,7 +3,7 @@ import axios from "axios";
 import { BASE_URL } from "@/utils/urls";
 
 const wheelItems = [
-  { label: "Hot Chocolate Lollipop", emoji: null, image: "/assets/suntips-spin/hotchocolatelolipop.png", color: "#2d160f" },
+  { label: "Hot Chocolate Lollipop", emoji: null, image: "/assets/suntips-spin/hotchocolate.webp", color: "#2d160f" },
   { label: "Biscoff Wrap", emoji: null, image: "/assets/suntips-spin/BiscoffWrap.webp", color: "#42251a" },
   { label: "Try Again", emoji: "✨", image: null, color: "#150a06", isTryAgain: true },
   { label: "Hazelnut Wrap", emoji: null, image: "/assets/suntips-spin/Hazelnut Wrap.webp", color: "#8a6132" },
