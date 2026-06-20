@@ -491,6 +491,29 @@ export default function SuntipsSpinner() {
         </button>
       </div>
 
+      {/* FOOTER PARTNERSHIP BRANDING */}
+      <div className="z-10 w-full flex flex-col min-[480px]:flex-row items-center justify-center gap-4 min-[480px]:gap-6 mt-4 sm:mt-6 pb-8 text-slate-400 text-xs sm:text-sm">
+        <a 
+          href="https://www.socialbureau.in/" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
+        >
+          <span className="opacity-60 text-[11px] sm:text-xs tracking-wider uppercase font-bold">Powered by</span>
+          <img src="/assets/logo.webp" alt="Social Bureau" className="h-6 sm:h-7 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
+        </a>
+        <div className="hidden min-[480px]:block w-px h-5 bg-white/10" />
+        <a 
+          href="https://suntipstea.online/" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
+        >
+          <span className="opacity-60 text-[11px] sm:text-[12px] tracking-wider uppercase font-bold">Event Partner</span>
+          <img src="/assets/suntips-spin/suntip-logo-.webp" alt="Suntips" className="h-6 sm:h-7 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
+        </a>
+      </div>
+
       {/* WINNING CLAIM MODAL (CHOCOCHI STYLE) */}
       {showModal && currentWinner && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-955/85 backdrop-blur-md p-3 sm:p-4 overflow-y-auto" style={{ backgroundColor: 'rgba(2, 7, 22, 0.85)' }}>
