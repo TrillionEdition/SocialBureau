@@ -712,6 +712,7 @@ export const Home = () => {
   const [activePoster, setActivePoster] = useState(null);
   const homepageSchemas = generateHomepageSchemas();
   const [showHintPopup, setShowHintPopup] = useState(false);
+  const [showChocochiCard, setShowChocochiCard] = useState(true);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -1500,6 +1501,33 @@ export const Home = () => {
           onClose={() => setShowHintPopup(false)} 
         />
       )}
+
+      {/* Floating Chocochi Logo Redirect Badge */}
+      <Link
+        to="/chocochi-form"
+        className="fixed bottom-6 right-6 z-[9999] group"
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          whileHover={{ scale: 1.1, y: -4 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-stone-950/90 border-2 border-amber-500/40 shadow-[0_8px_32px_rgba(0,0,0,0.5),_0_0_16px_rgba(217,119,6,0.2)] p-2.5 flex items-center justify-center backdrop-blur-md hover:border-amber-400/80 hover:shadow-[0_12px_40px_rgba(0,0,0,0.6),_0_0_24px_rgba(217,119,6,0.45)] transition-all duration-300 overflow-hidden"
+        >
+          {/* Subtle gold ambient rotating glow */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/10 via-transparent to-yellow-400/10 animate-pulse pointer-events-none" />
+          
+          {/* Pulsing ring */}
+          <div className="absolute inset-0 rounded-full border border-amber-500/20 animate-ping opacity-40 pointer-events-none" style={{ animationDuration: '3s' }} />
+
+          <img
+            src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Brand%20Logo%20(1)-1.png"
+            alt="Chocochi Logo"
+            className="w-full h-full object-contain filter drop-shadow-[0_2px_10px_rgba(217,119,6,0.3)] transition-transform duration-300 group-hover:scale-105"
+          />
+        </motion.div>
+      </Link>
     </div>
   );
 };
