@@ -515,7 +515,7 @@ export default function SuntipsSpinner() {
         </a>
         <div className="hidden min-[480px]:block w-px h-5 bg-white/10" />
         <a 
-          href="https://suntipstea.online/" 
+          href="https://suntipstea.online/"  //rrrr
           target="_blank" 
           rel="noopener noreferrer" 
           className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
