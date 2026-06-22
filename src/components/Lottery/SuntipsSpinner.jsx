@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { BASE_URL } from "@/utils/urls";
+import { Link } from "react-router-dom";
 
 const wheelItems = [
-  { label: "Hot Chocolate Lollipop", emoji: null, image: "/assets/suntips-spin/hotchocolatelolipop.png", color: "#2d160f" },
+  { label: "Hot Chocolate Lollipop", emoji: null, image: "/assets/suntips-spin/hotchocolate.webp", color: "#2d160f" },
   { label: "Biscoff Wrap", emoji: null, image: "/assets/suntips-spin/BiscoffWrap.webp", color: "#42251a" },
   { label: "Try Again", emoji: "✨", image: null, color: "#150a06", isTryAgain: true },
   { label: "Hazelnut Wrap", emoji: null, image: "/assets/suntips-spin/Hazelnut Wrap.webp", color: "#8a6132" },
@@ -291,20 +292,25 @@ export default function SuntipsSpinner() {
   // ── OUT-OF-STOCK OVERLAY ────────────────────────────────────────────────────
   if (outOfStock) {
     return (
-      <div className="h-screen w-full flex flex-col items-center justify-center overflow-hidden relative" style={{ backgroundColor: '#020716' }}>
+      <div className="min-h-screen w-full flex flex-col items-center justify-center overflow-y-auto py-8 relative" style={{ backgroundColor: '#020716' }}>
         {/* Ambient glows */}
         <div className="absolute top-1/3 left-1/4 w-[300px] h-[300px] bg-red-900/10 blur-[120px] rounded-full pointer-events-none" />
         <div className="absolute bottom-1/3 right-1/4 w-[350px] h-[350px] bg-[#c5a059]/8 blur-[130px] rounded-full pointer-events-none" />
         <GoldFlakeConfettiGenerator />
         <div className="z-10 flex flex-col items-center text-center px-6 max-w-md">
           {/* Logo */}
-          <div className="mb-6 w-[100px] sm:w-[120px] drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]">
+          <Link 
+            to="/chocochi-form"
+            className="mb-6 w-[100px] sm:w-[120px] drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] cursor-pointer hover:scale-105 active:scale-95 transition-all duration-300 block group relative"
+            title="Go to Registration Portal"
+          >
+            <div className="absolute inset-0 rounded-lg bg-amber-500/10 opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-300 pointer-events-none" />
             <img
               src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Brand%20Logo%20(1)-1.png"
               alt="Chocochi Logo"
-              className="w-full h-auto rounded-lg border border-[#c5a059]/20"
+              className="w-full h-auto rounded-lg border border-[#c5a059]/20 relative z-10"
             />
-          </div>
+          </Link>
           {/* Icon */}
           <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-red-500/10 border-2 border-red-500/30 flex items-center justify-center mb-5 shadow-[0_0_30px_rgba(239,68,68,0.15)] animate-pulse">
             <span className="text-4xl sm:text-5xl select-none">🍫</span>
@@ -335,7 +341,7 @@ export default function SuntipsSpinner() {
   // ────────────────────────────────────────────────────────────────────────────
 
   return (
-    <div className="h-screen w-full flex flex-col items-center justify-between py-4 px-4 overflow-hidden relative" style={{ backgroundColor: '#020716' }}>
+    <div className="min-h-screen w-full flex flex-col items-center justify-start gap-4 sm:gap-8 py-6 sm:py-10 px-4 overflow-y-auto relative" style={{ backgroundColor: '#020716' }}>
 
       {/* Ambient Chocolate Glows */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-amber-500/5 blur-[120px] rounded-full pointer-events-none" />
@@ -348,16 +354,21 @@ export default function SuntipsSpinner() {
       {/* TOP CONTAINER (Header & Title) */}
       <div className="w-full flex flex-col items-center z-10 text-center">
         {/* Brand Logo */}
-        <div className="mb-3 max-w-[110px] sm:max-w-[130px] drop-shadow-[0_4px_12px_rgba(0,0,0,0.55)]">
+        <Link
+          to="/chocochi-form"
+          className="mb-2 max-w-[85px] sm:max-w-[110px] md:max-w-[130px] drop-shadow-[0_4px_12px_rgba(0,0,0,0.55)] cursor-pointer hover:scale-105 active:scale-95 transition-all duration-300 block group relative"
+          title="Go to Registration Portal"
+        >
+          <div className="absolute inset-0 rounded-lg bg-amber-500/10 opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-300 pointer-events-none" />
           <img 
             src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Brand%20Logo%20(1)-1.png"
             alt="Chocochi Logo"
-            className="w-full h-auto rounded-lg border border-[#c5a059]/20"
+            className="w-full h-auto rounded-lg border border-[#c5a059]/20 relative z-10"
           />
-        </div>
+        </Link>
 
         {/* Badge Header */}
-        <div className="mb-1.5">
+        <div className="mb-1 sm:mb-1.5">
           <span className="px-3 py-1 rounded-full bg-gradient-to-r from-[#8a6132]/35 to-[#c5a059]/30 border border-[#c5a059]/30 text-[#f3e5ab] font-extrabold text-[9px] sm:text-[10px] tracking-widest uppercase animate-pulse shadow-[0_0_12px_rgba(197,160,89,0.15)] flex items-center gap-1.5">
             <span className="inline-block text-[#c5a059]">✨</span> Premium Chocolate Spin <span className="inline-block text-[#c5a059]">✨</span>
           </span>
@@ -373,7 +384,7 @@ export default function SuntipsSpinner() {
       </div>
 
       {/* WHEEL CONTAINER */}
-      <div className="relative flex items-center justify-center z-10 my-2 max-w-full px-2">
+      <div className="relative flex items-center justify-center z-10 my-2 sm:my-4 max-w-full px-2">
 
         {/* POINTER */}
         <div className="absolute -top-4 sm:-top-5 left-1/2 -translate-x-1/2 z-30 drop-shadow-[0_3px_6px_rgba(0,0,0,0.6)]">
@@ -452,7 +463,7 @@ export default function SuntipsSpinner() {
       </div>
 
       {/* BUTTON & COOLDOWN */}
-      <div className="min-h-[50px] flex flex-col items-center justify-start z-10 w-full text-center my-1">
+      <div className="min-h-[60px] flex flex-col items-center justify-start z-10 w-full text-center my-2 sm:my-4 pb-6">
         <button
           onClick={spinWheel}
           disabled={spinning || cooldown > 0 || alreadyClaimed}
@@ -489,6 +500,29 @@ export default function SuntipsSpinner() {
             <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent group-hover:animate-[shimmer_1.5s_infinite] z-0" />
           )}
         </button>
+      </div>
+
+      {/* FOOTER PARTNERSHIP BRANDING */}
+      <div className="z-10 w-full flex flex-col min-[480px]:flex-row items-center justify-center gap-4 min-[480px]:gap-6 mt-4 sm:mt-6 pb-8 text-slate-400 text-xs sm:text-sm">
+        <a 
+          href="https://www.socialbureau.in/" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
+        >
+          <span className="opacity-60 text-[11px] sm:text-xs tracking-wider uppercase font-bold">Powered by</span>
+          <img src="/assets/logo.webp" alt="Social Bureau" className="h-6 sm:h-7 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
+        </a>
+        <div className="hidden min-[480px]:block w-px h-5 bg-white/10" />
+        <a 
+          href="https://suntipstea.online/"  //rrrr
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
+        >
+          <span className="opacity-60 text-[11px] sm:text-[12px] tracking-wider uppercase font-bold">Event Partner</span>
+          <img src="/assets/suntips-spin/suntips_logo_white.png" alt="Suntips" className="h-12 sm:h-14 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
+        </a>
       </div>
 
       {/* WINNING CLAIM MODAL (CHOCOCHI STYLE) */}

@@ -712,6 +712,7 @@ export const Home = () => {
   const [activePoster, setActivePoster] = useState(null);
   const homepageSchemas = generateHomepageSchemas();
   const [showHintPopup, setShowHintPopup] = useState(false);
+  const [showChocochiCard, setShowChocochiCard] = useState(true);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);

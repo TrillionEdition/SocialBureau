@@ -44,7 +44,7 @@ export const TeamSelector = () => {
   }, []);
 
   const orderedEmails = [
-    "ui.socialbureau@gmail.com", // Emil
+    // "ui.socialbureau@gmail.com", // Emil
     "webasst.socialbureau@outlook.com", // Hasna
     "webjr.socialbureau@gmail.com", // Reshma
     "web@socialbureau.in", // Elizebath
@@ -53,7 +53,7 @@ export const TeamSelector = () => {
     "admin@socialbureau.in", // Hajira
     "asst.hr.socialbureau@gmail.com", // Rachel
     "finance@socialbureau.in", // Keerthana
-    "pmo.socialbureau@gmail.com" // Athira
+    // "pmo.socialbureau@gmail.com" // Athira
   ];
 
   const orderedMembers = [];
@@ -64,7 +64,11 @@ export const TeamSelector = () => {
 
   // If some are missing from ordered list (new members like Alen), append them at the end
   const otherMembers = members.filter(m => !orderedMembers.find(om => String(om._id) === String(m._id)));
-  const finalMembers = [...orderedMembers, ...otherMembers];
+  const finalMembers = [...orderedMembers, ...otherMembers].filter(m => {
+    const email = m.email || (m.user && m.user.email);
+    const id = m.id || m._id;
+    return email !== "ui.socialbureau@gmail.com" && email !== "pmo.socialbureau@gmail.com" && id !== "emil" && id !== "athira";
+  });
 
   // Auto-rotation logic for mobile
   useEffect(() => {
