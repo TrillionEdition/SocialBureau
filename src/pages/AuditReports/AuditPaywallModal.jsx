@@ -12,6 +12,36 @@ export default function AuditPaywallModal({ isOpen, onClose, report, onPaymentSu
   const handlePayment = async () => {
     setLoading(true);
     try {
+      // Determine amount first
+      const amountNum = typeof report.amt === "number" && !isNaN(report.amt) ? report.amt : 1500;
+
+      // If amount is zero, skip payment gateway and mark as paid via backend
+      if (amountNum === 0) {
+        try {
+          const verifyRes = await fetch(`${BASE_URL}/payment/verify`, {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ reportId: report._id, free: true, amt: 0 }),
+          });
+          const verifyData = await verifyRes.json().catch(() => ({}));
+          if (verifyRes.ok && verifyData.success) {
+            toast.success("Report unlocked (no payment required).");
+            onPaymentSuccess(report._id);
+            onClose();
+            setLoading(false);
+            return;
+          } else {
+            throw new Error(verifyData.message || "Failed to unlock report");
+          }
+        } catch (err) {
+          console.error("Free unlock error:", err);
+          toast.error(err.message || "Failed to unlock report.");
+          setLoading(false);
+          return;
+        }
+      }
+
       // 1. Load Razorpay script
       const isLoaded = await loadRazorpay();
       if (!isLoaded) {
@@ -20,8 +50,7 @@ export default function AuditPaywallModal({ isOpen, onClose, report, onPaymentSu
         return;
       }
 
-      // 2. Create Razorpay order on backend (amount in rupees, e.g. 2 INR)
-      const amountNum = typeof report.amt === "number" && !isNaN(report.amt) ? report.amt : 1500;
+      // 2. Create Razorpay order on backend (amount in rupees)
       const resp = await fetch(`${BASE_URL}/payment/create-order`, {
         method: "POST",
         credentials: "include",
