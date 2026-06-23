@@ -4,14 +4,14 @@ import { BASE_URL } from "@/utils/urls";
 import { Link } from "react-router-dom";
 
 const wheelItems = [
-  { label: "Dubai Kunafa Cube 🍫 75%", emoji: null, image: "/assets/chocochi_Spinner/Dubai Kunafa Cube.webp", color: "#2d160f" },
-  { label: "Cafe Latte ☕️ 50%", emoji: null, image: "/assets/chocochi_Spinner/cafe_latte.webp", color: "#42251a" },
+  { label: "Dubai Kunafa Cube 75%", emoji: null, image: "/assets/chocochi_Spinner/DubaiKunafaCube.webp", color: "#2d160f" },
+  { label: "Cafe Latte 50%", emoji: null, image: "/assets/chocochi_Spinner/cafeLatte.webp", color: "#8a6132" },
   { label: "Try Again", emoji: "✨", image: null, color: "#150a06", isTryAgain: true },
-  { label: "Cappuccino ☕️ 50%", emoji: null, image: "/assets/chocochi_Spinner/cappuccino.webp", color: "#543325" },
+  { label: "Cappuccino 50%", emoji: null, image: "/assets/chocochi_Spinner/cappuccino.webp", color: "#42251a" },
+  { label: "Chocopayasam 50%", emoji: null, image: "/assets/chocochi_Spinner/chocopayasam.webp", color: "#70503f" },
   { label: "Try Again", emoji: "✨", image: null, color: "#150a06", isTryAgain: true },
-  { label: "Chocopayasam 🍮 50%", emoji: null, image: "/assets/chocochi_Spinner/chocopayasam.webp", color: "#784222" },
-  { label: "Hot Chocolate ☕️ 25%", emoji: null, image: "/assets/chocochi_Spinner/HotChocolate.webp", color: "#361b10" },
-  { label: "Chocolate Lollipop 🍭 50%", emoji: null, image: "/assets/chocochi_Spinner/chocolate Lolipop.webp", color: "#613a25" },
+  { label: "Hot Chocolate 25%", emoji: null, image: "/assets/chocochi_Spinner/hotChocolate.webp", color: "#523628" },
+  { label: "Chocolate Lollipop 50%", emoji: null, image: "/assets/chocochi_Spinner/chocolateLollipop.webp", color: "#6e3f16" },
 ];
 
 const GoldFlakeConfettiGenerator = () => {
@@ -89,6 +89,11 @@ const TransparentImage = ({ src, alt, className }) => {
 
   useEffect(() => {
     if (!src) return;
+    // Bypass canvas processing for WebP images and chocochi_Spinner assets
+    if (src.includes("chocochi_Spinner") || src.toLowerCase().endsWith(".webp")) {
+      setDataUrl(src);
+      return;
+    }
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.src = src;
@@ -571,9 +576,9 @@ export default function SuntipsSpinner() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h2 className="text-2xl sm:text-3xl font-black text-white mb-2 tracking-tight">Coupon Claim Submitted!</h2>
+                  <h2 className="text-2xl sm:text-3xl font-black text-white mb-2 tracking-tight">Delivery Claim Submitted!</h2>
                   <p className="text-slate-300 text-xs sm:text-sm mb-6 sm:mb-8 max-w-xs mx-auto font-medium">
-                    Your discount coupon for <span className="text-[#c5a059] font-extrabold text-base sm:text-lg">Chocochi {currentWinner.label}</span> has been securely processed. We will send your discount coupon details to your mobile number!
+                    Your shipment request for <span className="text-[#c5a059] font-extrabold text-base sm:text-lg">Chocochi {currentWinner.label}</span> has been securely processed. We will prepare your luxury chocolate pack for shipping!
                   </p>
                   <button 
                     onClick={() => setShowModal(false)}
@@ -610,7 +615,7 @@ export default function SuntipsSpinner() {
                     Won {currentWinner.label}!
                   </h2>
                   <p className="text-slate-350 mb-4 sm:mb-6 text-[10px] sm:text-xs max-w-xs mx-auto leading-relaxed">
-                    Congratulations! Enter your details below to claim your discount coupon.
+                    Congratulations! Enter your details below to receive your premium box of Chocochi luxury chocolates.
                   </p>
                   
                   <form onSubmit={handleFormSubmit} className="space-y-3 sm:space-y-4 text-left">
@@ -651,7 +656,7 @@ export default function SuntipsSpinner() {
                           </svg>
                           Submitting Claim...
                         </span>
-                      ) : "Claim Discount Coupon"}
+                      ) : "Claim Luxury Chocolate Box"}
                     </button>
                   </form>
                 </>
