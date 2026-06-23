@@ -2468,11 +2468,11 @@ const TeamDashboard = () => {
                                                     
                                                     {/* Upload Images (up to 3) */}
                                                     <div className="space-y-3 md:col-span-2">
-                                                        <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1 block">Showcase Images (Max 3, Square placeholders)</label>
+                                                        <label className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase ml-1 block">Showcase Images (Max 3, Widescreen 16:9)</label>
                                                         <div className="grid grid-cols-3 gap-4">
                                                             {/* Render uploaded images */}
                                                             {(workShowcaseForm.images || []).map((imgUrl, i) => (
-                                                                <div key={i} className="relative aspect-square bg-white/5 border border-white/10 rounded-2xl overflow-hidden group">
+                                                                <div key={i} className="relative aspect-video bg-white/5 border border-white/10 rounded-2xl overflow-hidden group">
                                                                     <img src={imgUrl} className="w-full h-full object-cover" alt={`Showcase ${i+1}`} />
                                                                     <button
                                                                         type="button"
@@ -2491,7 +2491,7 @@ const TeamDashboard = () => {
                                                             
                                                             {/* Render upload slot if less than 3 */}
                                                             {(!workShowcaseForm.images || workShowcaseForm.images.length < 3) && (
-                                                                <div className="aspect-square bg-white/5 border border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center relative hover:bg-white/[0.08] transition-all">
+                                                                <div className="aspect-video bg-white/5 border border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center relative hover:bg-white/[0.08] transition-all">
                                                                     {uploading.showcaseImage ? (
                                                                         <Loader2 className="animate-spin text-brand-pink" size={24} />
                                                                     ) : (
@@ -2501,7 +2501,7 @@ const TeamDashboard = () => {
                                                                             className="flex flex-col items-center gap-2 text-white/30 hover:text-white/60 transition-colors"
                                                                         >
                                                                             <Upload size={20} />
-                                                                            <span className="text-[8px] font-black tracking-widest uppercase">Upload Square</span>
+                                                                            <span className="text-[8px] font-black tracking-widest uppercase">Upload Screenshot</span>
                                                                         </button>
                                                                     )}
                                                                 </div>
