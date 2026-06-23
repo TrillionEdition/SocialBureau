@@ -1700,6 +1700,7 @@ const EmployeePage = () => {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [reviewsList, setReviewsList] = useState([]);
   const [reviewModalMode, setReviewModalMode] = useState("read");
+  const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {
     if (location.state?.openChat) {
@@ -4705,14 +4706,14 @@ const EmployeePage = () => {
                         {work.images.slice(0, 3).map((imgUrl, imgIdx) => (
                           <div
                             key={imgIdx}
-                            className="aspect-square rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group/thumb shadow-md"
+                            onClick={() => setPreviewImage(imgUrl)}
+                            className="aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group/thumb shadow-md cursor-zoom-in"
                           >
                             <img
                               src={imgUrl}
-                              className="w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-500"
-                              alt=""
+                              className="w-full h-full object-cover group-hover/thumb:scale-105 transition-transform duration-500"
+                              alt="Work Showcase screenshot"
                             />
-                            <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#2380DC]" />
                           </div>
                         ))}
                       </div>
@@ -5263,6 +5264,44 @@ const EmployeePage = () => {
         setIsOpen={setIsChatOpen}
         isTeamTheme={true}
       />
+
+      {/* FULL IMAGE LIGHTBOX MODAL */}
+      <AnimatePresence>
+        {previewImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setPreviewImage(null)}
+            className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 cursor-zoom-out"
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setPreviewImage(null)}
+              className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors cursor-pointer bg-white/10 hover:bg-white/20 p-3 rounded-full border border-white/10 z-[10010]"
+              aria-label="Close preview"
+            >
+              <i className="fa-solid fa-xmark text-lg" />
+            </button>
+
+            {/* Image Container */}
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="relative max-w-7xl max-h-[85vh] w-full flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={previewImage}
+                alt="Work Showcase Preview"
+                className="max-w-full max-h-[85vh] object-contain rounded-2xl border border-white/10 shadow-2xl bg-[#0f0817]"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
