@@ -162,6 +162,9 @@ export default function RevealPage() {
                   >
                     {latestReport.auditPeriod}
                   </span>
+                  <span className="text-sm mt-1" style={{ color: "#d9dadc" }}>
+                    Rate: ₹{(typeof latestReport.amt === "number" && !isNaN(latestReport.amt) ? latestReport.amt : 1500)}
+                  </span>
                 </div>
               </div>
             ) : (

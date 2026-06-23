@@ -21,13 +21,14 @@ export default function AuditPaywallModal({ isOpen, onClose, report, onPaymentSu
       }
 
       // 2. Create Razorpay order on backend (amount in rupees, e.g. 2 INR)
+      const amountNum = typeof report.amt === "number" && !isNaN(report.amt) ? report.amt : 1500;
       const resp = await fetch(`${BASE_URL}/payment/create-order`, {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ amount: 1500, currency: "INR" }),
+        body: JSON.stringify({ amount: amountNum, currency: "INR" }),
       });
 
       const data = await resp.json().catch(() => ({}));
@@ -160,7 +161,7 @@ export default function AuditPaywallModal({ isOpen, onClose, report, onPaymentSu
           >
             <div className="text-xs uppercase tracking-widest text-zinc-500 mb-1">Total Due</div>
             <div className="text-4xl font-black text-white" style={{ fontFamily: "Inter, sans-serif" }}>
-              ₹1500.00
+              ₹{(typeof report.amt === "number" && !isNaN(report.amt) ? report.amt : 1500).toFixed(2)}
             </div>
             <div className="text-[10px] text-zinc-500 mt-2">ONE-TIME ACCESS FEE</div>
           </div>

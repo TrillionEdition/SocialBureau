@@ -235,12 +235,20 @@ export default function ArchivePage() {
                         {isClientUser && !report.isPaid ? "lock" : "download"}
                       </span>
                     </button>
-                    <span
-                      className="text-xs font-bold"
-                      style={{ color: "#5f5e5e", fontFamily: "Inter, sans-serif" }}
-                    >
-                      {formatBytes(report.pdfSize)}
-                    </span>
+                    <div className="flex items-center gap-4">
+                      <span
+                        className="text-sm font-semibold"
+                        style={{ color: "#0A0A0A", fontFamily: "Inter, sans-serif" }}
+                      >
+                        ₹{(typeof report.amt === "number" && !isNaN(report.amt) ? report.amt : 0)}
+                      </span>
+                      <span
+                        className="text-xs font-bold"
+                        style={{ color: "#5f5e5e", fontFamily: "Inter, sans-serif" }}
+                      >
+                        {formatBytes(report.pdfSize)}
+                      </span>
+                    </div>
                   </div>
                 </article>
               ))}

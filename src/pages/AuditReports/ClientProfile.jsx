@@ -98,6 +98,7 @@ export default function ClientProfile() {
   const [editAuditPeriod, setEditAuditPeriod] = useState("");
   const [editDescription, setEditDescription] = useState("");
   const [editStatus, setEditStatus] = useState("published");
+  const [editAmt, setEditAmt] = useState(0);
   const [updating, setUpdating] = useState(false);
 
   const fetchClientDetails = async () => {
@@ -133,6 +134,7 @@ export default function ClientProfile() {
     setEditTitle(report.title); setEditCategory(report.category);
     setEditAuditPeriod(report.auditPeriod); setEditDescription(report.description || "");
     setEditStatus(report.status || "published"); setIsEditModalOpen(true);
+    setEditAmt(report.amt !== undefined ? report.amt : 0);
   };
 
   const handleEditSubmit = async (e) => {
@@ -142,7 +144,7 @@ export default function ClientProfile() {
       setUpdating(true);
       const res = await auditReportService.adminUpdateReport(editingReport._id, {
         title: editTitle, category: editCategory, auditPeriod: editAuditPeriod,
-        description: editDescription, status: editStatus,
+        description: editDescription, status: editStatus, amt: editAmt,
       });
       if (res.success) { toast.success("Report updated."); setIsEditModalOpen(false); fetchClientDetails(); }
     } catch { toast.error("Failed to update report."); }
@@ -369,9 +371,10 @@ export default function ClientProfile() {
                         </p>
 
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold" style={{ color: "#5f5e5e" }}>
-                            {formatBytes(report.pdfSize)} • PDF
-                          </span>
+                          <div className="text-xs font-bold" style={{ color: "#5f5e5e" }}>
+                            <span className="mr-3">₹{(typeof report.amt === "number" && !isNaN(report.amt) ? report.amt : 0)}</span>
+                            <span>{formatBytes(report.pdfSize)} • PDF</span>
+                          </div>
                           <div className="flex items-center gap-3">
                             <button
                               onClick={() => handleDownload(report._id)}
@@ -448,6 +451,10 @@ export default function ClientProfile() {
                   <label className="block text-xs uppercase tracking-widest mb-2" style={{ color: "#5f5e5e" }}>Description</label>
                   <textarea rows={3} value={editDescription} onChange={(e) => setEditDescription(e.target.value)}
                     style={{ ...inputStyle, resize: "none" }} />
+                </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-widest mb-2" style={{ color: "#5f5e5e" }}>Amount (₹)</label>
+                  <input type="number" value={editAmt} onChange={(e) => setEditAmt(Number(e.target.value))} style={inputStyle} />
                 </div>
               </div>
               <div className="flex gap-3 justify-end mt-8 pt-4" style={{ borderTop: "1px solid rgba(10,10,10,0.1)" }}>

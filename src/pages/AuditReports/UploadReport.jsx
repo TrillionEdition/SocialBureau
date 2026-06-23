@@ -111,6 +111,7 @@ export default function UploadReport() {
   const [customCategory, setCustomCategory] = useState("");
   const [auditPeriod, setAuditPeriod] = useState("");
   const [description, setDescription] = useState("");
+  const [amt, setAmt] = useState(0);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -118,6 +119,9 @@ export default function UploadReport() {
 
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadedReport, setUploadedReport] = useState(null);
+  const [editingRate, setEditingRate] = useState(false);
+  const [postUploadAmt, setPostUploadAmt] = useState(0);
 
   useEffect(() => {
     const fetchAllClients = async () => {
@@ -173,6 +177,7 @@ export default function UploadReport() {
     formData.append("auditPeriod", auditPeriod.trim());
     formData.append("description", description.trim());
     formData.append("status", status);
+    formData.append("amt", amt);
 
     try {
       setUploading(true);
@@ -182,13 +187,35 @@ export default function UploadReport() {
       setUploadProgress(100);
       if (res.success) {
         toast.success(status === "published" ? "Report published!" : "Saved as draft.");
-        setTimeout(() => navigate(`/admin/audit-reports/client/${clientId}`), 800);
+        const report = res.data; // controller returns {success,message,data: report}
+        if (report) {
+          setUploadedReport(report);
+          setPostUploadAmt(report.amt !== undefined ? report.amt : 0);
+          setEditingRate(true);
+        } else {
+          setTimeout(() => navigate(`/admin/audit-reports/client/${clientId}`), 800);
+        }
       }
     } catch (err) {
       toast.error(err?.response?.data?.message || "Failed to upload report.");
       setUploadProgress(0);
     } finally {
       setUploading(false);
+    }
+  };
+
+  const savePostUploadAmt = async () => {
+    if (!uploadedReport) return;
+    try {
+      setUploading(true);
+      await auditReportService.adminUpdateReport(uploadedReport._id, { amt: postUploadAmt });
+      toast.success("Amount saved.");
+      navigate(`/admin/audit-reports/client/${clientId}`);
+    } catch (err) {
+      toast.error("Failed to save amount.");
+    } finally {
+      setUploading(false);
+      setEditingRate(false);
     }
   };
 
@@ -396,6 +423,24 @@ export default function UploadReport() {
                   </div>
                 </div>
 
+                <div>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: "#5f5e5e" }}>
+                    Amount (₹)
+                  </label>
+                  <input
+                    type="number"
+                    value={amt}
+                    onChange={(e) => setAmt(Number(e.target.value))}
+                    placeholder="1500"
+                    className="w-full bg-transparent py-2 text-base focus:outline-none"
+                    style={{
+                      borderBottom: "1px solid rgba(10,10,10,0.2)",
+                      borderTop: "none", borderLeft: "none", borderRight: "none",
+                      borderRadius: 0, color: "#0A0A0A",
+                    }}
+                  />
+                </div>
+
                 {/* Description */}
                 <div>
                   <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: "#5f5e5e" }}>
@@ -549,6 +594,39 @@ export default function UploadReport() {
             </div>
           </form>
         </div>
+
+        {/* Post-upload Amount Edit Modal */}
+        {editingRate && (
+          <div className="fixed inset-0 z-[11000] flex items-center justify-center p-4" style={{ background: "rgba(10,10,10,0.7)", backdropFilter: "blur(8px)" }}>
+            <div className="bg-white w-full max-w-md relative" style={{ borderTop: "3px solid #b90012", boxShadow: "0 30px 60px rgba(0,0,0,0.2)" }}>
+              <div className="absolute top-4 right-4">
+                <button onClick={() => { setEditingRate(false); navigate(`/admin/audit-reports/client/${clientId}`); }} style={{ color: "#5f5e5e" }}>
+                  <span className="material-symbols-outlined">close</span>
+                </button>
+              </div>
+              <div className="p-8 md:p-10">
+                <h3 className="text-2xl font-medium mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Set Report Rate</h3>
+                <p className="text-sm text-muted mb-4" style={{ color: "#5f5e5e" }}>Adjust the amount for this report (₹).</p>
+                <div>
+                  <label className="block text-xs uppercase tracking-widest mb-2" style={{ color: "#5f5e5e" }}>Amount (₹)</label>
+                  <input type="number" value={postUploadAmt} onChange={(e) => setPostUploadAmt(Number(e.target.value))}
+                    className="w-full bg-transparent py-2 text-base focus:outline-none" style={{ borderBottom: "1px solid rgba(10,10,10,0.2)", borderRadius: 0, color: "#0A0A0A" }} />
+                </div>
+                <div className="flex gap-3 justify-end mt-8">
+                  <button onClick={() => { setEditingRate(false); navigate(`/admin/audit-reports/client/${clientId}`); }}
+                    className="px-6 py-3 text-sm font-semibold uppercase tracking-wider border" style={{ borderColor: "#0A0A0A", color: "#0A0A0A" }}>
+                    Skip
+                  </button>
+                  <button onClick={savePostUploadAmt} disabled={uploading}
+                    className="px-6 py-3 text-white text-sm font-semibold uppercase tracking-wider"
+                    style={{ background: "#b90012" }}>
+                    {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save Amount"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
