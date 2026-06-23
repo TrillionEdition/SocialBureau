@@ -4714,7 +4714,6 @@ const EmployeePage = () => {
                               className="w-full h-full object-cover group-hover/thumb:scale-105 transition-transform duration-500"
                               alt="Work Showcase screenshot"
                             />
-                            <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#2380DC]" />
                           </div>
                         ))}
                       </div>
