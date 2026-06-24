@@ -39,10 +39,17 @@ export default function ArchivePage() {
       setIsPaywallOpen(true);
     } else {
       try {
-        await auditReportService.downloadReport(report._id);
+        setLoading(true);
+        const res = await auditReportService.downloadReport(report._id);
+        if (res.success && res.url) {
+          window.open(res.url, "_blank");
+          toast.success("PDF opened successfully!");
+        }
       } catch (err) {
         const errorMsg = err.response?.data?.message || err.message || "Failed to download PDF";
         toast.error(errorMsg);
+      } finally {
+        setLoading(false);
       }
     }
   };
