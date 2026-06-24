@@ -11,12 +11,14 @@ import {
   FaBold, FaItalic, FaUnderline, FaStrikethrough,
   FaListUl, FaListOl, FaLink, FaImage,
   FaAlignLeft, FaAlignCenter, FaAlignRight,
-  FaQuoteRight, FaCode, FaMinus
+  FaQuoteRight, FaCode, FaMinus,
+  FaRobot, FaLightbulb, FaSpinner, FaSync, FaMagic
 } from "react-icons/fa";
 
 // ─── Rich Text Editor ──────────────────────────────────────────────────────────
-function RichEditor({ value, onChange }) {
-  const editorRef = useRef(null);
+function RichEditor({ value, onChange, editorRef: externalRef }) {
+  const internalRef = useRef(null);
+  const editorRef = externalRef || internalRef;
   const isInternalChange = useRef(false);
 
   // Sync external value into DOM only on first mount or when value is cleared
@@ -256,12 +258,321 @@ function RichEditor({ value, onChange }) {
   );
 }
 
+// ─── AI Assist Panel ──────────────────────────────────────────────────────────
+function AiAssistPanel({ title, category, onUseImage, onInsertTip, onClose }) {
+  const [activeTab, setActiveTab] = useState("tips"); // "tips" | "images"
+  const [tips, setTips] = useState(null);
+  const [tipsLoading, setTipsLoading] = useState(false);
+  const [tipsError, setTipsError] = useState(null);
+  const [images, setImages] = useState([]); // array of { url, prompt, loading }
+  const [imagesLoading, setImagesLoading] = useState(false);
+
+  // ── Fetch content tips via Claude API ──
+  const fetchTips = useCallback(async () => {
+    if (!title.trim()) return;
+    setTipsLoading(true);
+    setTipsError(null);
+    setTips(null);
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-6",
+          max_tokens: 1000,
+          messages: [{
+            role: "user",
+            content: `You are a blog writing coach for a digital marketing agency called SocialBureau. 
+A writer is working on a blog post titled: "${title}" in the category: ${category}.
+
+Return ONLY a valid JSON object (no markdown, no backticks) with exactly this shape:
+{
+  "hook": "A compelling opening sentence they could use",
+  "outline": ["Section heading 1", "Section heading 2", "Section heading 3", "Section heading 4", "Section heading 5"],
+  "tips": ["Writing tip 1", "Writing tip 2", "Writing tip 3"],
+  "seoKeywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"],
+  "cta": "A strong call-to-action sentence for the end of the post"
+}`
+          }]
+        })
+      });
+      const data = await response.json();
+      const raw = data.content?.map(b => b.text || "").join("") || "";
+      const clean = raw.replace(/```json|```/g, "").trim();
+      setTips(JSON.parse(clean));
+    } catch (err) {
+      setTipsError("Couldn't load suggestions. Check your connection and try again.");
+    } finally {
+      setTipsLoading(false);
+    }
+  }, [title, category]);
+
+  // ── Generate images via Pollinations.ai ──
+  const generateImages = useCallback(async () => {
+    if (!title.trim()) return;
+    setImagesLoading(true);
+
+    // Ask Claude for 3 distinct image prompts tailored to the title
+    let prompts = [];
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-6",
+          max_tokens: 400,
+          messages: [{
+            role: "user",
+            content: `Create 3 distinct, vivid image generation prompts for a blog hero image.
+Blog title: "${title}", Category: ${category}.
+Return ONLY a JSON array of 3 strings, each a detailed image prompt. No markdown, no backticks.
+Example: ["prompt one", "prompt two", "prompt three"]`
+          }]
+        })
+      });
+      const data = await response.json();
+      const raw = data.content?.map(b => b.text || "").join("").replace(/```json|```/g, "").trim();
+      prompts = JSON.parse(raw);
+    } catch {
+      // fallback prompts
+      prompts = [
+        `${title}, professional blog hero image, modern digital marketing, vibrant colors`,
+        `${title}, abstract concept illustration, clean minimal design, dark background`,
+        `${title}, business technology photo, high contrast, dramatic lighting`
+      ];
+    }
+
+    // Build Pollinations URLs — seed ensures uniqueness
+    const seed = Date.now();
+    const newImages = prompts.map((prompt, i) => ({
+      prompt,
+      url: `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1200&height=630&seed=${seed + i}&nologo=true`,
+      loaded: false,
+    }));
+    setImages(newImages);
+    setImagesLoading(false);
+  }, [title, category]);
+
+  // Auto-fetch tips when panel opens
+  useEffect(() => {
+    if (title.trim().length > 5) fetchTips();
+  }, []);
+
+  const Tab = ({ id, label, icon: Icon }) => (
+    <button
+      type="button"
+      onClick={() => {
+        setActiveTab(id);
+        if (id === "images" && images.length === 0 && !imagesLoading) generateImages();
+      }}
+      className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+        activeTab === id
+          ? "bg-red-600 text-white shadow"
+          : "text-gray-400 hover:text-white hover:bg-gray-800"
+      }`}
+    >
+      <Icon size={13} /> {label}
+    </button>
+  );
+
+  return (
+    <div className="fixed right-0 top-0 bottom-0 w-[380px] bg-gray-950 border-l border-red-900/40 shadow-2xl z-50 flex flex-col">
+      {/* Header */}
+      <div className="flex items-center justify-between px-5 py-4 border-b border-gray-800">
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-lg bg-red-600 flex items-center justify-center">
+            <FaRobot size={13} className="text-white" />
+          </div>
+          <span className="font-bold text-white text-sm">AI Assistant</span>
+        </div>
+        <button type="button" onClick={onClose} className="p-1.5 hover:bg-gray-800 rounded-lg transition text-gray-400 hover:text-white">
+          <FaTimes size={14} />
+        </button>
+      </div>
+
+      {/* Title display */}
+      <div className="px-5 py-3 bg-gray-900/60 border-b border-gray-800">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1">Based on your title</p>
+        <p className="text-sm text-gray-200 leading-snug line-clamp-2">{title || "Enter a title to get suggestions"}</p>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-2 px-5 py-3 border-b border-gray-800">
+        <Tab id="tips" label="Content Tips" icon={FaLightbulb} />
+        <Tab id="images" label="AI Images" icon={FaImage} />
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto px-5 py-4">
+
+        {/* ── Tips Tab ── */}
+        {activeTab === "tips" && (
+          <div className="space-y-5">
+            {!title.trim() && (
+              <p className="text-gray-500 text-sm text-center py-8">Enter a blog title first to get AI-powered suggestions.</p>
+            )}
+
+            {tipsLoading && (
+              <div className="flex flex-col items-center justify-center py-12 gap-3">
+                <FaSpinner className="text-red-500 animate-spin" size={24} />
+                <p className="text-gray-400 text-sm">Generating suggestions…</p>
+              </div>
+            )}
+
+            {tipsError && (
+              <div className="text-center py-8">
+                <p className="text-red-400 text-sm mb-3">{tipsError}</p>
+                <button type="button" onClick={fetchTips} className="text-xs px-3 py-1.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300 flex items-center gap-2 mx-auto">
+                  <FaSync size={10} /> Retry
+                </button>
+              </div>
+            )}
+
+            {tips && (
+              <>
+                {/* Hook */}
+                <div className="bg-gray-900 rounded-xl p-4 border border-gray-800">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-red-400 mb-2">Opening Hook</p>
+                  <p className="text-gray-200 text-sm leading-relaxed italic">"{tips.hook}"</p>
+                  <button
+                    type="button"
+                    onClick={() => onInsertTip(`<p><em>${tips.hook}</em></p><p></p>`)}
+                    className="mt-3 text-xs px-3 py-1.5 bg-red-600/20 hover:bg-red-600/40 text-red-300 rounded-lg transition flex items-center gap-1.5"
+                  >
+                    <FaMagic size={9} /> Insert into editor
+                  </button>
+                </div>
+
+                {/* Outline */}
+                <div className="bg-gray-900 rounded-xl p-4 border border-gray-800">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-red-400 mb-3">Suggested Outline</p>
+                  <ol className="space-y-2">
+                    {tips.outline.map((section, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="text-[10px] font-bold text-red-500 mt-0.5 w-4 shrink-0">{i + 1}.</span>
+                        <span className="text-gray-300 text-sm">{section}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const html = tips.outline.map(s => `<h2>${s}</h2><p></p>`).join("\n");
+                      onInsertTip(html);
+                    }}
+                    className="mt-3 text-xs px-3 py-1.5 bg-red-600/20 hover:bg-red-600/40 text-red-300 rounded-lg transition flex items-center gap-1.5"
+                  >
+                    <FaMagic size={9} /> Insert outline as headings
+                  </button>
+                </div>
+
+                {/* Writing Tips */}
+                <div className="bg-gray-900 rounded-xl p-4 border border-gray-800">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-red-400 mb-3">Writing Tips</p>
+                  <ul className="space-y-2.5">
+                    {tips.tips.map((tip, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
+                        <span className="text-red-500 mt-0.5 shrink-0">→</span>
+                        {tip}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* SEO Keywords */}
+                <div className="bg-gray-900 rounded-xl p-4 border border-gray-800">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-red-400 mb-3">Suggested SEO Keywords</p>
+                  <div className="flex flex-wrap gap-2">
+                    {tips.seoKeywords.map((kw, i) => (
+                      <span key={i} className="text-xs px-2.5 py-1 bg-gray-800 text-gray-300 rounded-full border border-gray-700">{kw}</span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* CTA */}
+                <div className="bg-gray-900 rounded-xl p-4 border border-gray-800">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-red-400 mb-2">Closing CTA</p>
+                  <p className="text-gray-200 text-sm leading-relaxed">"{tips.cta}"</p>
+                  <button
+                    type="button"
+                    onClick={() => onInsertTip(`<p><strong>${tips.cta}</strong></p>`)}
+                    className="mt-3 text-xs px-3 py-1.5 bg-red-600/20 hover:bg-red-600/40 text-red-300 rounded-lg transition flex items-center gap-1.5"
+                  >
+                    <FaMagic size={9} /> Insert into editor
+                  </button>
+                </div>
+
+                <button type="button" onClick={fetchTips}
+                  className="w-full py-2.5 text-xs text-gray-400 hover:text-white border border-gray-800 hover:border-gray-600 rounded-xl transition flex items-center justify-center gap-2">
+                  <FaSync size={10} /> Regenerate suggestions
+                </button>
+              </>
+            )}
+          </div>
+        )}
+
+        {/* ── Images Tab ── */}
+        {activeTab === "images" && (
+          <div className="space-y-4">
+            {!title.trim() && (
+              <p className="text-gray-500 text-sm text-center py-8">Enter a blog title first to generate images.</p>
+            )}
+
+            {imagesLoading && (
+              <div className="flex flex-col items-center justify-center py-12 gap-3">
+                <FaSpinner className="text-red-500 animate-spin" size={24} />
+                <p className="text-gray-400 text-sm">Generating images…</p>
+                <p className="text-gray-600 text-xs text-center">This may take 10–20 seconds</p>
+              </div>
+            )}
+
+            {!imagesLoading && images.length > 0 && (
+              <>
+                <p className="text-xs text-gray-500">Click an image to use it as your featured image.</p>
+                <div className="space-y-4">
+                  {images.map((img, i) => (
+                    <div key={i} className="rounded-xl overflow-hidden border border-gray-800 group relative">
+                      <img
+                        src={img.url}
+                        alt={`AI generated option ${i + 1}`}
+                        className="w-full aspect-video object-cover"
+                        onError={(e) => { e.target.src = ""; e.target.parentElement.classList.add("hidden"); }}
+                      />
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                        <button
+                          type="button"
+                          onClick={() => onUseImage(img.url)}
+                          className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-lg transition shadow-lg"
+                        >
+                          Use this image
+                        </button>
+                      </div>
+                      <div className="px-3 py-2 bg-gray-900">
+                        <p className="text-[10px] text-gray-500 line-clamp-1">{img.prompt}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <button type="button" onClick={generateImages}
+                  className="w-full py-2.5 text-xs text-gray-400 hover:text-white border border-gray-800 hover:border-gray-600 rounded-xl transition flex items-center justify-center gap-2 mt-2">
+                  <FaSync size={10} /> Generate new images
+                </button>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── Main Component ────────────────────────────────────────────────────────────
 export default function SubmitBlog() {
   const navigate = useNavigate();
   const location = useLocation();
   const queryClient = useQueryClient();
   const previewEditRef = useRef(null);
+  const richEditorRef = useRef(null);
   const [toast, setToast] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -269,6 +580,7 @@ export default function SubmitBlog() {
   const [isEditing, setIsEditing] = useState(false);
   const [editSlug, setEditSlug] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const [showAiPanel, setShowAiPanel] = useState(false);
 
   const applyFormat = (command, value = null) => {
     document.execCommand(command, false, value);
@@ -634,7 +946,37 @@ export default function SubmitBlog() {
   return (
     <>
       {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}
-      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-red-950 text-gray-100 py-12 px-4">
+
+      {/* AI Assist Panel */}
+      {showAiPanel && (
+        <AiAssistPanel
+          title={formData.title}
+          category={formData.category}
+          onClose={() => setShowAiPanel(false)}
+          onUseImage={(url) => {
+            setImageFile(null);
+            setImagePreview(url);
+            setToast({ type: "success", message: "AI image set as featured image!" });
+          }}
+          onInsertTip={(html) => {
+            if (richEditorRef.current) {
+              richEditorRef.current.focus();
+              // Move cursor to end
+              const range = document.createRange();
+              range.selectNodeContents(richEditorRef.current);
+              range.collapse(false);
+              const sel = window.getSelection();
+              sel.removeAllRanges();
+              sel.addRange(range);
+              document.execCommand("insertHTML", false, html);
+              setContent(richEditorRef.current.innerHTML);
+              setToast({ type: "success", message: "Content inserted into editor!" });
+            }
+          }}
+        />
+      )}
+
+      <div className={`min-h-screen bg-gradient-to-br from-black via-gray-900 to-red-950 text-gray-100 py-12 px-4 transition-all duration-300 ${showAiPanel ? "mr-[380px]" : ""}`}>
         <div className="max-w-5xl mx-auto">
           <div className="bg-black/40 backdrop-blur-xl border border-red-900/30 rounded-2xl p-8 shadow-2xl">
             <h1 className="text-4xl font-bold text-white mb-2">{isEditing ? "Edit Blog Post" : "Submit a Blog Post"}</h1>
@@ -644,9 +986,25 @@ export default function SubmitBlog() {
 
               {/* Title */}
               <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  Blog Title <span className="text-red-500">*</span>
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-semibold text-gray-300">
+                    Blog Title <span className="text-red-500">*</span>
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setShowAiPanel(v => !v)}
+                    disabled={!formData.title.trim()}
+                    title={formData.title.trim() ? "Open AI Assistant" : "Enter a title first"}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                      showAiPanel
+                        ? "bg-red-600 border-red-600 text-white shadow-lg shadow-red-900/30"
+                        : "bg-gray-800 border-gray-700 text-gray-300 hover:border-red-500 hover:text-red-400"
+                    } disabled:opacity-40 disabled:cursor-not-allowed`}
+                  >
+                    <FaRobot size={11} />
+                    {showAiPanel ? "Close AI" : "AI Assist"}
+                  </button>
+                </div>
                 <input type="text" name="title" value={formData.title} maxLength={100} onChange={handleInputChange}
                   placeholder="Enter blog title…"
                   className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-lg focus:outline-none focus:border-red-600 text-white placeholder-gray-500" required />
@@ -768,7 +1126,7 @@ export default function SubmitBlog() {
                   </span>
                 </div>
 
-                <RichEditor value={content} onChange={setContent} />
+                <RichEditor value={content} onChange={setContent} editorRef={richEditorRef} />
 
                 <p className="text-xs text-gray-500 mt-2">
                   Tip: Paste content from Google Docs, Word, or any web page — headings, bold, links, and lists are all preserved.
