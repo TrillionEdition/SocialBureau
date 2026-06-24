@@ -4,14 +4,14 @@ import { BASE_URL } from "@/utils/urls";
 import { Link } from "react-router-dom";
 
 const wheelItems = [
-  { label: "Hot Chocolate Lollipop", emoji: null, image: "/assets/suntips-spin/hotchocolate.webp", color: "#2d160f" },
-  { label: "Biscoff Wrap", emoji: null, image: "/assets/suntips-spin/BiscoffWrap.webp", color: "#42251a" },
+  { label: "Dubai Kunafa Cube 75%", emoji: null, image: "/assets/chocochi_Spinner/DubaiKunafaCube.webp", color: "#2d160f" },
+  { label: "Cafe Latte 50%", emoji: null, image: "/assets/chocochi_Spinner/cafeLatte.webp", color: "#8a6132" },
   { label: "Try Again", emoji: "✨", image: null, color: "#150a06", isTryAgain: true },
-  { label: "Hazelnut Wrap", emoji: null, image: "/assets/suntips-spin/Hazelnut Wrap.webp", color: "#8a6132" },
+  { label: "Cappuccino 50%", emoji: null, image: "/assets/chocochi_Spinner/cappuccino.webp", color: "#42251a" },
+  { label: "Chocopayasam 50%", emoji: null, image: "/assets/chocochi_Spinner/chocopayasam.webp", color: "#70503f" },
   { label: "Try Again", emoji: "✨", image: null, color: "#150a06", isTryAgain: true },
-  { label: "Coupon", emoji: "🎟️", image: null, color: "#70503f" },
-  { label: "Signature 20g Bars", emoji: null, image: "/assets/suntips-spin/signature 20 g Bars.webp", color: "#6e3f16" },
-  { label: "Try Again", emoji: "✨", image: null, color: "#150a06", isTryAgain: true },
+  { label: "Hot Chocolate 25%", emoji: null, image: "/assets/chocochi_Spinner/hotChocolate.webp", color: "#523628" },
+  { label: "Chocolate Lollipop 50%", emoji: null, image: "/assets/chocochi_Spinner/chocolateLollipop.webp", color: "#6e3f16" },
 ];
 
 const GoldFlakeConfettiGenerator = () => {
@@ -89,6 +89,11 @@ const TransparentImage = ({ src, alt, className }) => {
 
   useEffect(() => {
     if (!src) return;
+    // Bypass canvas processing for WebP images and chocochi_Spinner assets
+    if (src.includes("chocochi_Spinner") || src.toLowerCase().endsWith(".webp")) {
+      setDataUrl(src);
+      return;
+    }
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.src = src;
