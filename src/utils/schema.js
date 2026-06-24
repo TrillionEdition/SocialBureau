@@ -36,33 +36,37 @@ export function generateHomepageSchemas({
   };
 
   const localBusiness = {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    name,
-    image: logo,
-    '@id': url,
-    url,
-    telephone: telephone || undefined,
-    priceRange: undefined,
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: address.streetAddress,
-      addressLocality: address.addressLocality,
-      addressRegion: address.addressRegion,
-      addressCountry: address.addressCountry,
-      postalCode: address.postalCode,
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService", // Better for a marketing agency
+  name,
+  image: logo,
+  "@id": url,
+  url,
+  telephone: "+918714952665",
+  priceRange: "$$",
+
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: address.streetAddress,
+    addressLocality: address.addressLocality,
+    addressRegion: address.addressRegion,
+    postalCode: address.postalCode,
+    addressCountry: address.addressCountry,
+  },
+
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      telephone: "+918714952665",
+      contactType: "customer support",
     },
-    contactPoint: telephone
-      ? [
-          {
-            '@type': 'ContactPoint',
-            telephone,
-            contactType: 'customer support',
-          },
-        ]
-      : undefined,
-    additionalType: businessType,
-  };
+  ],
+
+  areaServed: {
+    "@type": "Country",
+    name: "India",
+  },
+};
 
   const website = {
     '@context': 'https://schema.org',
