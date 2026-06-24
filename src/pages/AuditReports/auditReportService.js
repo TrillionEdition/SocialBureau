@@ -12,9 +12,26 @@ const auditReportService = {
     return response.data;
   },
 
-  // Download secure PDF - let browser handle auth and redirect naturally
-  downloadReportUrl: (reportId) => {
-    return `${API_URL}/download/${reportId}`;
+  // Download secure PDF - authenticated, then redirect to R2
+  downloadReport: async (reportId) => {
+    try {
+      const response = await axios.get(`${API_URL}/download/${reportId}`, {
+        withCredentials: true,
+        maxRedirects: 0, // Don't auto-follow to avoid CORS with credentials
+      });
+      return response.data;
+    } catch (error) {
+      // Axios treats redirects as errors when maxRedirects: 0
+      if (error.response?.status >= 300 && error.response?.status < 400) {
+        const redirectUrl = error.response.headers.location;
+        if (redirectUrl) {
+          // Use window.location to navigate to R2 URL (bypasses CORS)
+          window.location.href = redirectUrl;
+          return { redirected: true };
+        }
+      }
+      throw error;
+    }
   },
 
   // ADMIN: Get all registered clients (paginated, filtered, searched)

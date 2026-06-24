@@ -33,13 +33,17 @@ export default function ArchivePage() {
 
   useEffect(() => { fetchReports(); }, []);
 
-  const handleDownloadClick = (report) => {
+  const handleDownloadClick = async (report) => {
     if (isClientUser && !report.isPaid) {
       setSelectedReport(report);
       setIsPaywallOpen(true);
     } else {
-      // Let browser handle auth cookies and redirects naturally
-      window.location.href = auditReportService.downloadReportUrl(report._id);
+      try {
+        await auditReportService.downloadReport(report._id);
+      } catch (err) {
+        const errorMsg = err.response?.data?.message || err.message || "Failed to download PDF";
+        toast.error(errorMsg);
+      }
     }
   };
 
