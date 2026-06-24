@@ -38,7 +38,8 @@ export default function ArchivePage() {
       setSelectedReport(report);
       setIsPaywallOpen(true);
     } else {
-      window.open(auditReportService.downloadReportUrl(report._id), "_blank");
+      // Let browser handle auth cookies and redirects naturally
+      window.location.href = auditReportService.downloadReportUrl(report._id);
     }
   };
 

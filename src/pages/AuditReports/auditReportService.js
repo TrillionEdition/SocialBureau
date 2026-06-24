@@ -12,7 +12,7 @@ const auditReportService = {
     return response.data;
   },
 
-  // Download secure PDF - this will open in a new window or trigger download
+  // Download secure PDF - let browser handle auth and redirect naturally
   downloadReportUrl: (reportId) => {
     return `${API_URL}/download/${reportId}`;
   },
