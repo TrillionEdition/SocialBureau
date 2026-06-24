@@ -267,14 +267,14 @@ function AiAssistPanel({ title, category, onUseImage, onInsertTip, onClose }) {
   const [images, setImages] = useState([]); // array of { url, prompt, loading }
   const [imagesLoading, setImagesLoading] = useState(false);
 
-  // ── Fetch content tips via Claude API ──
+  // ── Fetch content tips via backend proxy ──
   const fetchTips = useCallback(async () => {
     if (!title.trim()) return;
     setTipsLoading(true);
     setTipsError(null);
     setTips(null);
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch("/api/ai/claude", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -315,7 +315,7 @@ Return ONLY a valid JSON object (no markdown, no backticks) with exactly this sh
     // Ask Claude for 3 distinct image prompts tailored to the title
     let prompts = [];
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch("/api/ai/claude", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
