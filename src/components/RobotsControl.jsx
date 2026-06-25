@@ -17,7 +17,7 @@ export default function RobotsControl() {
     '/client-login',
     '/ajnoradashboard',
     '/lottery',
-    '/suntips-spin',
+    '/chocochi-spin',
     '/admin/suntips-claims',
     '/admin/posters',
     '/admin/reels',

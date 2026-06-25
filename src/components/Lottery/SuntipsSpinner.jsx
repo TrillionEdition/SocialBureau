@@ -10,7 +10,7 @@ const wheelItems = [
   { label: "Cappuccino 50%", emoji: null, image: "/assets/chocochi_Spinner/cappuccino.webp", color: "#42251a" },
   { label: "Chocopayasam 50%", emoji: null, image: "/assets/chocochi_Spinner/chocopayasam.webp", color: "#70503f" },
   { label: "Try Again", emoji: "✨", image: null, color: "#150a06", isTryAgain: true },
-  { label: "Hot Chocolate 25%", emoji: null, image: "/assets/chocochi_Spinner/hotChocolate.webp", color: "#523628" },
+  { label: "Hot Chocolate 25%", emoji: null, image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/image%20(17).webp", color: "#523628" },
   { label: "Chocolate Lollipop 50%", emoji: null, image: "/assets/chocochi_Spinner/chocolateLollipop.webp", color: "#6e3f16" },
 ];
 

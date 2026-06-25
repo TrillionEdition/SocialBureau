@@ -192,7 +192,7 @@ function ConditionalFooter() {
     "/admin",
     "/ajnoradashboard",
     "/lottery",
-    "/suntips-spin",
+    "/chocochi-spin",
     "/admin/suntips-claims",
     "/admin/posters",
     "/treasure-hunt",
@@ -234,7 +234,7 @@ function ConditionalNavbar() {
     "/admin",
     "/ajnoradashboard",
     "/lottery",
-    "/suntips-spin",
+    "/chocochi-spin",
     "/admin/suntips-claims",
     "/admin/posters",
     "/treasure-hunt",
@@ -628,7 +628,7 @@ function App() {
             <Route path="/client-login" element={<CLogin />} />
             <Route path="/admin/clickup-clients" element={<AdminRoute><AdminClickupClients /></AdminRoute>} />
             <Route path="/lottery" element={<SpinWheel />} />
-            <Route path="/suntips-spin" element={<SuntipsSpinner />} />
+            <Route path="/chocochi-spin" element={<SuntipsSpinner />} />
             <Route path="/api-marketing-dashboard" element={<AdminRoute><ApiMarketingDashboard /></AdminRoute>} />
             <Route path="/media-dashboard" element={<AdminRoute><MediaDashboard /></AdminRoute>} />
             <Route path="/admin/lottery-claims" element={<AdminRoute><LotteryClaims /></AdminRoute>} />
