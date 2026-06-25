@@ -1,628 +1,440 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Lock, User, Phone, Eye, EyeOff, CheckCircle2, AlertCircle, ArrowLeft } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  Mail, Lock, User, Phone, Eye, EyeOff,
+  CheckCircle2, AlertCircle, ArrowLeft, ArrowRight,
+} from "lucide-react";
 import { BASE_URL } from "@/utils/urls";
 import { setUserData } from "@/utils/authUtils";
 import { registerUserAPI } from "@/services/userServices";
 
-export const AuthPage = () => {
+const LOGIN_FIELDS = [
+  { name: "email",    label: "Email address", placeholder: "name@example.com", icon: Mail,  type: "email"    },
+  { name: "password", label: "Password",       placeholder: "••••••••",         icon: Lock,  type: "password" },
+];
+
+const SIGNUP_FIELDS = [
+  { name: "name",            label: "Full name",        placeholder: "John Doe",          icon: User,  type: "text"     },
+  { name: "email",           label: "Email address",    placeholder: "name@example.com",  icon: Mail,  type: "email"    },
+  { name: "phone",           label: "Phone number",     placeholder: "+1 (555) 123-4567", icon: Phone, type: "tel"      },
+  { name: "password",        label: "Password",         placeholder: "••••••••",          icon: Lock,  type: "password" },
+  { name: "confirmPassword", label: "Confirm password", placeholder: "••••••••",          icon: Lock,  type: "password" },
+];
+
+const EMPTY_SIGNUP = { name: "", email: "", phone: "", password: "", confirmPassword: "", emailOtp: "" };
+const EMPTY_LOGIN  = { email: "", password: "" };
+
+function ProgressDots({ total, current }) {
+  return (
+    <div className="flex gap-1 pt-2">
+      {Array.from({ length: total }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="h-[2px] flex-1 rounded-full"
+          animate={{ backgroundColor: i <= current ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.1)" }}
+          transition={{ duration: 0.4 }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function Spinner() {
+  return <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />;
+}
+
+export default function AuthPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isLogin, setIsLogin] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [step, setStep] = useState(0);
+
+  const [isLogin,      setIsLogin]      = useState(true);
+  const [step,         setStep]         = useState(0);
+  const [direction,    setDirection]    = useState(0);
+  const [loading,      setLoading]      = useState(false);
+  const [error,        setError]        = useState("");
+  const [success,      setSuccess]      = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [direction, setDirection] = useState(0);
-  const isTransitioning = useRef(false);
-
   const [captchaToken, setCaptchaToken] = useState(null);
-  const turnstileWidgetId = useRef(null);
+  const [loginForm,    setLoginForm]    = useState(EMPTY_LOGIN);
+  const [signupForm,   setSignupForm]   = useState(EMPTY_SIGNUP);
 
-  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
-  const [signupForm, setSignupForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirmPassword: "",
-    emailOtp: "",
-  });
+  const isTransitioning = useRef(false);
+  const turnstileId     = useRef(null);
 
-  const signupFields = [
-    { name: "name", label: "Full Name", placeholder: "John Doe", icon: User, type: "text" },
-    { name: "email", label: "Email Address", placeholder: "name@example.com", icon: Mail, type: "email" },
-    { name: "phone", label: "Phone Number", placeholder: "+1 (555) 123-4567", icon: Phone, type: "tel" },
-    { name: "password", label: "Password", placeholder: "••••••••", icon: Lock, type: "password" },
-    { name: "confirmPassword", label: "Confirm Password", placeholder: "••••••••", icon: Lock, type: "password" },
-    ...(signupForm.email.toLowerCase().includes("gmail.com") ? [
-      { name: "emailOtp", label: "Email Verification Code", placeholder: "Enter 6-digit OTP", icon: Mail, type: "text" }
-    ] : [])
-  ];
+  const gmailOtpField = signupForm.email.toLowerCase().includes("gmail.com")
+    ? [{ name: "emailOtp", label: "Email verification code", placeholder: "6-digit code", icon: Mail, type: "text" }]
+    : [];
 
-  const loginFields = [
-    { name: "email", label: "Email Address", placeholder: "name@example.com", icon: Mail, type: "email" },
-    { name: "password", label: "Password", placeholder: "••••••••", icon: Lock, type: "password" },
-  ];
+  const fields      = isLogin ? LOGIN_FIELDS : [...SIGNUP_FIELDS, ...gmailOtpField];
+  const currentF    = fields[step];
+  const isLastStep  = step === fields.length - 1;
+  const isPassField = currentF.name === "password" || currentF.name === "confirmPassword";
 
-  const currentFields = isLogin ? loginFields : signupFields;
-  const currentField = currentFields[step];
+  const getValue = (name) => (isLogin ? loginForm[name] : signupForm[name]) ?? "";
 
-  const handleInputChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    if (isLogin) {
-      setLoginForm(prev => ({ ...prev, [name]: value }));
-    } else {
-      setSignupForm(prev => ({ ...prev, [name]: value }));
-    }
     setError("");
+    isLogin
+      ? setLoginForm((p) => ({ ...p, [name]: value }))
+      : setSignupForm((p) => ({ ...p, [name]: value }));
   };
 
-  const validateCurrentField = () => {
-    const value = isLogin ? loginForm[currentField.name] : signupForm[currentField.name];
-    if (!value) {
-      setError(`${currentField.label} is required`);
-      return false;
-    }
-    if (currentField.name === "email" && !/\S+@\S+\.\S+/.test(value)) {
-      setError("Please enter a valid email");
-      return false;
-    }
-    if (currentField.name === "password" && value.length < 6) {
-      setError("Password must be at least 6 characters");
-      return false;
-    }
-    if (currentField.name === "confirmPassword" && value !== signupForm.password) {
-      setError("Passwords do not match");
-      return false;
-    }
-    if (currentField.name === "emailOtp" && !/^\d{6}$/.test(value)) {
-      setError("Code must be a 6-digit number");
-      return false;
-    }
-    return true;
+  const validate = () => {
+    const v = getValue(currentF.name);
+    if (!v)                                                               return `${currentF.label} is required`;
+    if (currentF.name === "email" && !/\S+@\S+\.\S+/.test(v))           return "Please enter a valid email";
+    if (currentF.name === "password" && v.length < 6)                    return "Password must be at least 6 characters";
+    if (currentF.name === "confirmPassword" && v !== signupForm.password) return "Passwords do not match";
+    if (currentF.name === "emailOtp" && !/^\d{6}$/.test(v))              return "Code must be 6 digits";
+    return null;
   };
 
-  const nextStep = async () => {
+  const next = async () => {
     if (isTransitioning.current) return;
-    if (!validateCurrentField()) return;
-
-    if (step === 0 && !captchaToken) {
-      setError("Please complete the captcha verification");
-      return;
-    }
+    const err = validate();
+    if (err) { setError(err); return; }
+    if (step === 0 && !captchaToken) { setError("Please complete the captcha"); return; }
 
     isTransitioning.current = true;
     try {
-      // If we are on step 4 (Confirm Password), send Email OTP first (only for Gmail)
       if (!isLogin && step === 4 && signupForm.email.toLowerCase().includes("gmail.com")) {
         setLoading(true);
-        setError("");
         try {
-          const response = await fetch(`${BASE_URL}/user/send-signup-email-otp`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+          const res  = await fetch(`${BASE_URL}/user/send-signup-email-otp`, {
+            method: "POST", headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email: signupForm.email }),
           });
-          const data = await response.json();
-          if (!response.ok) throw new Error(data.message || "Failed to send Email OTP");
-
-          setSuccess("Verification OTP sent to " + signupForm.email);
-          setTimeout(() => setSuccess(""), 3000);
-
-          setDirection(1);
-          setStep(5);
-        } catch (err) {
-          setError(err.message);
-        } finally {
-          setLoading(false);
-        }
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message || "Failed to send OTP");
+          setDirection(1); setStep(5);
+        } catch (e) { setError(e.message); }
+        finally     { setLoading(false); }
         return;
       }
-
-      // If we are on step 5 (Email OTP), verify it first, then proceed to register (for Gmail)
       if (!isLogin && step === 5) {
         setLoading(true);
-        setError("");
         try {
-          const emailOtp = signupForm.emailOtp;
-          const response = await fetch(`${BASE_URL}/user/verify-signup-email-otp`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: signupForm.email, otp: emailOtp }),
+          const res  = await fetch(`${BASE_URL}/user/verify-signup-email-otp`, {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: signupForm.email, otp: signupForm.emailOtp }),
           });
-          const data = await response.json();
-          if (!response.ok) throw new Error(data.message || "Invalid Email OTP");
-
-          // Verify successful, proceed directly to register
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message || "Invalid OTP");
           await handleSignup();
-        } catch (err) {
-          setError(err.message);
-          setLoading(false);
-        }
+        } catch (e) { setError(e.message); setLoading(false); }
         return;
       }
-
-      if (step < currentFields.length - 1) {
-        setDirection(1);
-        setStep(s => s + 1);
-        setError("");
+      if (!isLastStep) {
+        setDirection(1); setStep((s) => s + 1); setError("");
       } else {
-        if (isLogin) {
-          await handleLogin();
-        } else {
-          await handleSignup();
-        }
+        isLogin ? await handleLogin() : await handleSignup();
       }
-    } finally {
-      isTransitioning.current = false;
-    }
+    } finally { isTransitioning.current = false; }
   };
 
-  const prevStep = () => {
-    if (step > 0) {
-      setDirection(-1);
-      setStep(s => s - 1);
-      setError("");
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      nextStep();
-    }
+  const prev = () => {
+    if (step > 0) { setDirection(-1); setStep((s) => s - 1); setError(""); }
   };
 
   const handleLogin = async () => {
-    setLoading(true);
-    setError("");
+    setLoading(true); setError("");
     try {
-      const response = await fetch(`${BASE_URL}/user/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...loginForm, captchaToken }),
-        credentials: "include",
+      const res  = await fetch(`${BASE_URL}/user/login`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...loginForm, captchaToken }), credentials: "include",
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Login failed");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Login failed");
       if (data.user) {
         setUserData(data.user);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        if (data.token) localStorage.setItem('token', data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        if (data.token) localStorage.setItem("token", data.token);
       }
       setSuccess("Welcome back");
       window.dispatchEvent(new Event("authChange"));
-      const queryParams = new URLSearchParams(location.search);
-      const redirectParam = queryParams.get("redirect");
-      let from = location.state?.from?.pathname || redirectParam;
-
-      if (!from) {
-        if (data.user.role === 'admin') {
-          from = "/admin";
-        } else if (data.user.isEmployee) {
-          from = "/team/dashboard";
-        } else {
-          from = "/";
-        }
-      }
-
+      const redirect = new URLSearchParams(location.search).get("redirect");
+      const from = location.state?.from?.pathname || redirect
+        || (data.user.role === "admin" ? "/admin" : data.user.isEmployee ? "/team/dashboard" : "/");
       setTimeout(() => navigate(from, { replace: true }), 1500);
-    } catch (err) {
-      setError(err.message);
-      setDirection(-1);
-      setStep(0);
-      setCaptchaToken(null);
-    } finally {
-      setLoading(false);
-    }
+    } catch (e) {
+      setError(e.message); setDirection(-1); setStep(0); setCaptchaToken(null);
+    } finally { setLoading(false); }
   };
 
   const handleSignup = async () => {
-    setLoading(true);
-    setError("");
+    setLoading(true); setError("");
     try {
-      // Register user
       await registerUserAPI({ ...signupForm, role: "user", captchaToken });
-      setSuccess("Account created successfully! Redirecting to login...");
-
-      // Redirect to login page internally after 2 seconds
+      setSuccess("Account created! Redirecting…");
       setTimeout(() => {
-        setIsLogin(true);
-        setStep(0);
+        setIsLogin(true); setStep(0);
         setLoginForm({ email: signupForm.email, password: "" });
-        setSuccess("");
-        setError("");
-        setCaptchaToken(null);
-        setLoading(false);
+        setSignupForm(EMPTY_SIGNUP); setSuccess(""); setCaptchaToken(null); setLoading(false);
       }, 2000);
-    } catch (err) {
-      setError(err.response?.data?.message || err.message || "Registration failed");
-      setStep(0);
-      setCaptchaToken(null);
-      setLoading(false);
+    } catch (e) {
+      setError(e.response?.data?.message || e.message || "Registration failed");
+      setStep(0); setCaptchaToken(null); setLoading(false);
     }
   };
 
   const handleGoogleLogin = async (idToken) => {
-    setLoading(true);
-    setError("");
-    setSuccess("");
+    setLoading(true); setError("");
     try {
-      const response = await fetch(`${BASE_URL}/user/google-login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idToken }),
-        credentials: "include",
+      const res  = await fetch(`${BASE_URL}/user/google-login`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken }), credentials: "include",
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Google Login failed");
-      
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Google login failed");
       if (data.user) {
         setUserData(data.user);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        if (data.token) localStorage.setItem('token', data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        if (data.token) localStorage.setItem("token", data.token);
       }
-      
       setSuccess(data.message || "Welcome back");
       window.dispatchEvent(new Event("authChange"));
-      
-      const queryParams = new URLSearchParams(location.search);
-      const redirectParam = queryParams.get("redirect");
-      let from = location.state?.from?.pathname || redirectParam;
-
-      if (!from) {
-        if (data.user.role === 'admin') {
-          from = "/admin";
-        } else if (data.user.isEmployee) {
-          from = "/team/dashboard";
-        } else {
-          from = "/";
-        }
-      }
-
+      const redirect = new URLSearchParams(location.search).get("redirect");
+      const from = location.state?.from?.pathname || redirect
+        || (data.user.role === "admin" ? "/admin" : data.user.isEmployee ? "/team/dashboard" : "/");
       setTimeout(() => navigate(from, { replace: true }), 1500);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    } catch (e) { setError(e.message); }
+    finally     { setLoading(false); }
+  };
+
+  const toggleMode = () => {
+    setIsLogin((v) => !v); setStep(0);
+    setError(""); setSuccess(""); setCaptchaToken(null);
   };
 
   useEffect(() => {
-    if (step !== 0) {
-      return;
-    }
-
-    let isMounted = true;
-
-    const renderTurnstile = () => {
-      if (!isMounted) return;
+    if (step !== 0) return;
+    let alive = true;
+    const renderWidget = () => {
+      if (!alive) return;
       const container = document.getElementById("cf-turnstile-container");
-      const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
-      
-      if (!window.turnstile) {
-        setTimeout(renderTurnstile, 100);
-        return;
-      }
-
-      if (container && siteKey) {
-        container.innerHTML = "";
-        try {
-          turnstileWidgetId.current = window.turnstile.render("#cf-turnstile-container", {
-            sitekey: siteKey,
-            theme: "dark",
-            callback: (token) => {
-              if (isMounted) {
-                setCaptchaToken(token);
-                setError("");
-              }
-            },
-            "expired-callback": () => {
-              if (isMounted) setCaptchaToken(null);
-            },
-            "error-callback": () => {
-              if (isMounted) setCaptchaToken(null);
-            },
-          });
-        } catch (e) {
-          console.error("Turnstile render error:", e);
-        }
-      }
+      const siteKey   = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+      if (!window.turnstile || !container || !siteKey) { setTimeout(renderWidget, 100); return; }
+      container.innerHTML = "";
+      try {
+        turnstileId.current = window.turnstile.render("#cf-turnstile-container", {
+          sitekey: siteKey, theme: "dark",
+          callback:           (t) => { if (alive) { setCaptchaToken(t); setError(""); } },
+          "expired-callback": ()  => { if (alive) setCaptchaToken(null); },
+          "error-callback":   ()  => { if (alive) setCaptchaToken(null); },
+        });
+      } catch (e) { console.error("Turnstile:", e); }
     };
-
-    const existingScript = document.getElementById("cf-turnstile-script");
-    if (!existingScript) {
-      const script = document.createElement("script");
-      script.id = "cf-turnstile-script";
-      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
-      script.async = true;
-      script.defer = true;
-      script.onload = () => {
-        setTimeout(renderTurnstile, 100);
-      };
-      document.body.appendChild(script);
+    const existing = document.getElementById("cf-turnstile-script");
+    if (!existing) {
+      const s = document.createElement("script");
+      s.id = "cf-turnstile-script";
+      s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      s.async = s.defer = true;
+      s.onload = () => setTimeout(renderWidget, 100);
+      document.body.appendChild(s);
     } else {
-      if (window.turnstile) {
-        setTimeout(renderTurnstile, 50);
-      } else {
-        existingScript.addEventListener("load", renderTurnstile);
-      }
+      window.turnstile ? setTimeout(renderWidget, 50) : existing.addEventListener("load", renderWidget);
     }
-
     return () => {
-      isMounted = false;
-      const scriptEl = document.getElementById("cf-turnstile-script");
-      if (scriptEl) {
-        scriptEl.removeEventListener("load", renderTurnstile);
-      }
-      if (window.turnstile && turnstileWidgetId.current !== null) {
-        try {
-          window.turnstile.remove(turnstileWidgetId.current);
-        } catch (e) {
-          // ignore
-        }
-        turnstileWidgetId.current = null;
+      alive = false;
+      if (window.turnstile && turnstileId.current != null) {
+        try { window.turnstile.remove(turnstileId.current); } catch {}
+        turnstileId.current = null;
       }
     };
   }, [step, isLogin]);
 
   useEffect(() => {
-    let script;
-    const initGoogleSignIn = () => {
-      if (window.google && step === 0) {
-        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-        if (!clientId) {
-          console.warn("⚠️ VITE_GOOGLE_CLIENT_ID is not configured in frontend environment variables.");
-        }
-        
-        window.google.accounts.id.initialize({
-          client_id: clientId || "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
-          callback: (response) => {
-            if (response.credential) {
-              handleGoogleLogin(response.credential);
-            }
-          },
+    if (step !== 0) return;
+    const init = () => {
+      if (!window.google) return;
+      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+      window.google.accounts.id.initialize({
+        client_id: clientId || "YOUR_CLIENT_ID.apps.googleusercontent.com",
+        callback: (r) => { if (r.credential) handleGoogleLogin(r.credential); },
+      });
+      const btn = document.getElementById("google-signin-button");
+      if (btn) {
+        window.google.accounts.id.renderButton(btn, {
+          theme: "outline", size: "large",
+          text: isLogin ? "signin_with" : "signup_with",
+          shape: "pill", width: "300",
         });
-        
-        const container = document.getElementById("google-signin-button");
-        if (container) {
-          window.google.accounts.id.renderButton(container, {
-            theme: "outline",
-            size: "large",
-            text: isLogin ? "signin_with" : "signup_with",
-            shape: "pill",
-            width: "320",
-          });
-        }
       }
     };
-
-    // Check if script already exists
-    const existingScript = document.getElementById("google-gsi-script");
-    if (!existingScript) {
-      script = document.createElement("script");
-      script.id = "google-gsi-script";
-      script.src = "https://accounts.google.com/gsi/client";
-      script.async = true;
-      script.defer = true;
-      script.onload = initGoogleSignIn;
-      document.body.appendChild(script);
+    const existing = document.getElementById("google-gsi-script");
+    const timer = setTimeout(init, 50);
+    if (!existing) {
+      const s = document.createElement("script");
+      s.id = "google-gsi-script"; s.src = "https://accounts.google.com/gsi/client";
+      s.async = s.defer = true; s.onload = init;
+      document.body.appendChild(s);
     } else {
-      if (window.google) {
-        initGoogleSignIn();
-      } else {
-        existingScript.addEventListener("load", initGoogleSignIn);
-      }
+      window.google ? init() : existing.addEventListener("load", init);
     }
-
-    const timer = setTimeout(initGoogleSignIn, 50);
-
     return () => {
       clearTimeout(timer);
-      const scriptEl = document.getElementById("google-gsi-script");
-      if (scriptEl) {
-        scriptEl.removeEventListener("load", initGoogleSignIn);
-      }
+      document.getElementById("google-gsi-script")?.removeEventListener("load", init);
     };
   }, [step, isLogin]);
 
-  const toggleAuth = () => {
-    setIsLogin(!isLogin);
-    setStep(0);
-    setError("");
-    setSuccess("");
-    setCaptchaToken(null);
-  };
-
   return (
-    <div className="min-h-screen w-full bg-black flex items-center justify-center p-4 overflow-hidden">
+    <div className="min-h-screen w-full bg-black flex overflow-hidden">
 
-      <div className="w-full max-w-2xl z-10">
-        {/* Header - Apple TV Style */}
+      {/* ── LEFT PANEL — auth form ───────────────────────────────── */}
+      <div className="relative z-10 flex flex-col justify-center w-full lg:w-1/2 px-8 sm:px-14 py-12 bg-black">
+
+        {/* Card */}
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-16 text-center"
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="rounded-3xl bg-white/[0.03] border border-white/10 px-8 py-8 backdrop-blur-xl relative overflow-hidden"
         >
-          <div className="inline-block mb-8">
-            <h1 className="text-6xl md:text-7xl font-black tracking-tight text-white">
-              <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
-                Social<span className="text-[#ff0000]">B</span>ureau
-              </a>
-            </h1>
-            <p className="text-sm font-light text-gray-400 mt-3 tracking-widest uppercase">
-              World’s First API-Driven Marketing Agency
-            </p>
-          </div>
-        </motion.div>
+          {/* Glow accent top-right */}
+          <div className="absolute top-0 right-0 w-56 h-56 bg-[#dc1e1e]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
-        {/* Main Card */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative rounded-3xl bg-white/[0.02] backdrop-blur-xl border border-white/10 p-12 md:p-16 overflow-hidden"
-        >
-          {/* Subtle Corner Accent */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl -mr-48 -mt-48" />
+          {/* Mode tabs */}
+          <div className="flex gap-1 bg-white/[0.05] rounded-full p-1 mb-7">
+            {["Sign in", "Create account"].map((label, i) => {
+              const active = isLogin ? i === 0 : i === 1;
+              return (
+                <button
+                  key={label}
+                  onClick={() => { setIsLogin(i === 0); setStep(0); setError(""); setSuccess(""); setCaptchaToken(null); }}
+                  className={`flex-1 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    active ? "bg-white text-black" : "text-white/40 hover:text-white/70"
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
 
           <AnimatePresence mode="wait">
             {success ? (
-              // Success State
               <motion.div
                 key="success"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="flex flex-col items-center justify-center py-20 text-center"
+                className="flex flex-col items-center py-14 text-center gap-4"
               >
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.2, duration: 0.5 }}
-                  className="mb-8"
-                >
-                  <CheckCircle2 className="w-20 h-20 text-emerald-500" strokeWidth={1} />
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.15, type: "spring" }}>
+                  <CheckCircle2 className="w-14 h-14 text-emerald-400" strokeWidth={1} />
                 </motion.div>
-                <h2 className="text-4xl font-light text-white mb-2">{success}</h2>
-                <p className="text-gray-500 text-sm tracking-wide">Entering your account...</p>
+                <h2 className="text-3xl font-light text-white">{success}</h2>
+                <p className="text-sm text-white/30 tracking-wide">Entering your account…</p>
               </motion.div>
             ) : (
-              // Form State
               <motion.div
-                key={`${isLogin ? 'login' : 'signup'}-${step}`}
-                initial={{ opacity: 0, x: direction > 0 ? 40 : -40 }}
+                key={`${isLogin}-${step}`}
+                initial={{ opacity: 0, x: direction > 0 ? 28 : -28 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: direction > 0 ? -40 : 40 }}
-                transition={{ duration: 0.5 }}
-                className="space-y-12"
+                exit={{ opacity: 0, x: direction > 0 ? -28 : 28 }}
+                transition={{ duration: 0.32 }}
+                className="space-y-7"
               >
-                {/* Form Header */}
-                <div className="space-y-4">
-                  <h2 className="text-5xl md:text-6xl font-light text-white tracking-tight">
-                    {isLogin ? "Sign In" : "Create Account"}
+                {/* Header */}
+                <div>
+                  <h2 className="text-3xl font-light text-white tracking-tight">
+                    {isLogin ? "Welcome back" : "Join us"}
                   </h2>
-                  <p className="text-gray-500 text-lg font-light">
-                    {currentField.label}
-                  </p>
+                  <p className="text-sm text-white/35 mt-1">{currentF.label}</p>
                 </div>
 
-                {/* Input Field - Apple Style */}
-                <div className="space-y-4">
-                  <div className="relative group">
+                {/* Input */}
+                <div className="space-y-3">
+                  <div className="relative">
+                    <currentF.icon size={17} strokeWidth={1.5} className="absolute left-0 top-1/2 -translate-y-1/2 text-white/25" />
                     <input
                       autoFocus
-                      type={currentField.name === "password" || currentField.name === "confirmPassword" ? (showPassword ? "text" : "password") : currentField.type}
-                      name={currentField.name}
-                      placeholder={currentField.placeholder}
-                      value={isLogin ? loginForm[currentField.name] : signupForm[currentField.name]}
-                      onChange={handleInputChange}
-                      onKeyDown={handleKeyPress}
+                      name={currentF.name}
+                      type={isPassField ? (showPassword ? "text" : "password") : currentF.type}
+                      placeholder={currentF.placeholder}
+                      value={getValue(currentF.name)}
+                      onChange={handleChange}
+                      onKeyDown={(e) => e.key === "Enter" && next()}
                       autoComplete="off"
-                      className="w-full bg-white/[0.03] border-b border-white/10 px-0 py-5 text-white text-2xl font-light outline-none placeholder:text-gray-700 transition-all duration-300 focus:border-white/30 focus:bg-white/[0.05]"
+                      className="w-full bg-transparent border-b border-white/10 pl-6 pr-9 py-3.5 text-white text-lg font-light outline-none placeholder:text-white/15 focus:border-white/30 transition-colors duration-300"
                     />
-
-                    {(currentField.name === "password" || currentField.name === "confirmPassword") && (
+                    {isPassField && (
                       <button
                         type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-0 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-gray-300 transition-colors"
+                        onClick={() => setShowPassword((v) => !v)}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 p-1 text-white/30 hover:text-white/60 transition-colors"
+                        aria-label="Toggle password visibility"
                       >
-                        {showPassword ? <EyeOff size={24} strokeWidth={1.5} /> : <Eye size={24} strokeWidth={1.5} />}
+                        {showPassword ? <EyeOff size={18} strokeWidth={1.5} /> : <Eye size={18} strokeWidth={1.5} />}
                       </button>
                     )}
                   </div>
 
-                  {/* Progress Indicator */}
-                  <div className="flex flex-col gap-4">
-                    <div className="flex gap-1 pt-4">
-                      {currentFields.map((_, i) => (
-                        <motion.div
-                          key={i}
-                          className={`h-0.5 flex-1 rounded-full transition-all duration-500 ${i <= step ? 'bg-white/40' : 'bg-white/10'
-                            }`}
-                        />
-                      ))}
-                    </div>
+                  <ProgressDots total={fields.length} current={step} />
 
-                    {isLogin && step === 1 && (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="flex justify-end"
+                  {isLogin && step === 1 && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-end">
+                      <button
+                        type="button"
+                        onClick={() => navigate("/forgot-password?from=user")}
+                        className="text-xs text-white/30 hover:text-white/70 transition-colors"
                       >
-                        <button
-                          type="button"
-                          onClick={() => navigate("/forgot-password?from=user")}
-                          className="text-sm text-gray-500 hover:text-white transition-colors animate-pulse"
-                        >
-                          Forgot password?
-                        </button>
-                      </motion.div>
-                    )}
-                  </div>
-
-                  {step === 0 && (
-                    <div id="cf-turnstile-container" className="w-full flex justify-center mt-6 min-h-[70px]" />
+                        Forgot password?
+                      </button>
+                    </motion.div>
                   )}
                 </div>
 
+                {step === 0 && <div id="cf-turnstile-container" className="flex justify-center min-h-[65px]" />}
+
                 {step === 0 && (
-                  <div className="mt-8 flex flex-col items-center gap-6">
-                    <div className="flex items-center gap-4 w-full">
-                      <div className="h-[1px] bg-white/10 flex-1" />
-                      <span className="text-gray-500 text-xs font-light tracking-widest uppercase">Or</span>
-                      <div className="h-[1px] bg-white/10 flex-1" />
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="flex items-center gap-3 w-full">
+                      <div className="flex-1 h-px bg-white/8" />
+                      <span className="text-[10px] text-white/25 tracking-[2px] uppercase">Or</span>
+                      <div className="flex-1 h-px bg-white/8" />
                     </div>
-                    <div className="w-full flex justify-center">
-                      <div id="google-signin-button" className="w-full flex justify-center" />
-                    </div>
+                    <div id="google-signin-button" className="w-full flex justify-center" />
                   </div>
                 )}
 
-                {/* Error State */}
                 <AnimatePresence>
                   {error && (
                     <motion.div
-                      initial={{ opacity: 0, y: -10 }}
+                      key="err"
+                      initial={{ opacity: 0, y: -6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="flex items-start gap-3 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl"
+                      exit={{ opacity: 0 }}
+                      className="flex items-start gap-3 p-3.5 bg-red-500/10 border border-red-500/20 rounded-2xl"
                     >
-                      <AlertCircle size={20} className="text-red-500 mt-0.5 flex-shrink-0" strokeWidth={1.5} />
+                      <AlertCircle size={16} className="text-red-400 mt-0.5 shrink-0" strokeWidth={1.5} />
                       <p className="text-red-400 text-sm font-light">{error}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
 
-                {/* Action Controls */}
-                <div className="flex gap-4 pt-8">
+                <div className="flex gap-3 pt-1">
                   {step > 0 && (
                     <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={prevStep}
-                      className="px-8 py-3 rounded-full border border-white/20 text-white hover:border-white/40 transition-all text-sm font-light"
+                      whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                      onClick={prev}
+                      className="px-4 py-3.5 rounded-full border border-white/15 text-white hover:border-white/40 transition-colors"
+                      aria-label="Go back"
                     >
-                      Back
+                      <ArrowLeft size={17} strokeWidth={1.5} />
                     </motion.button>
                   )}
-
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={nextStep}
+                    whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
+                    onClick={next}
                     disabled={loading}
-                    className="flex-1 py-4 px-8 rounded-full bg-white text-black font-semibold text-lg hover:bg-gray-100 disabled:opacity-50 transition-all flex items-center justify-center gap-3"
+                    className="flex-1 py-3.5 rounded-full bg-white text-black font-semibold text-sm hover:bg-gray-100 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
                   >
-                    {loading ? (
-                      <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
-                    ) : (
-                      <span>{step === currentFields.length - 1 ? "Complete" : "Continue"}</span>
-                    )}
+                    {loading
+                      ? <Spinner />
+                      : <><span>{isLastStep ? "Complete" : "Continue"}</span><ArrowRight size={15} strokeWidth={2} /></>}
                   </motion.button>
                 </div>
               </motion.div>
@@ -630,38 +442,50 @@ export const AuthPage = () => {
           </AnimatePresence>
         </motion.div>
 
-        {/* Toggle Auth Link */}
+        {/* Toggle */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="mt-12 text-center flex flex-col items-center gap-4"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
+          className="mt-6 flex items-center gap-3 justify-center"
         >
-          <p className="text-gray-500 text-sm font-light">
+          <p className="text-xs text-white/30">
             {isLogin ? "Don't have an account?" : "Already have an account?"}
           </p>
           <button
-            onClick={toggleAuth}
-            className="text-white text-sm font-semibold hover:text-gray-300 transition-colors"
+            onClick={toggleMode}
+            className="text-xs font-semibold text-white hover:text-white/60 transition-colors"
           >
-            {isLogin ? "Create Account" : "Sign In"}
+            {isLogin ? "Create account" : "Sign in"}
           </button>
         </motion.div>
       </div>
 
-      <style>{`
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover,
-        input:-webkit-autofill:focus {
-          -webkit-text-fill-color: white;
-          -webkit-box-shadow: 0 0 0px 1000px transparent inset;
-          transition: background-color 5000s ease-in-out 0s;
-        }
-      `}</style>
+      {/* ── RIGHT PANEL — video ──────────────────────────────────── */}
+      <div className="hidden lg:block relative w-1/2 overflow-hidden">
+        {/* Gradient fade on left edge to blend into the form panel */}
+        <div className="absolute inset-y-0 left-0 w-24 z-10 bg-gradient-to-r from-black to-transparent pointer-events-none" />
+
+        <video
+          autoPlay muted loop playsInline
+          className="absolute inset-0 w-full h-full"
+        >
+          <source src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/image_picker_9EE3055C-FCF2-4382-AE9A-CB6487398069-92697-00001414A63D736B4.mp4" type="video/mp4" />
+        </video>
+
+        {/* Subtle dark tint so it doesn't blow out */}
+        <div className="absolute inset-0 bg-black/30" />
+
+        {/* Tagline overlay bottom-left of the video panel */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.6 }}
+          className="absolute bottom-10 left-10 z-20"
+        >
+          <p className="text-white/70 text-xs tracking-[3px] uppercase mb-1">Define · Design · Deliver</p>
+          <div className="h-px w-16 bg-[#dc1e1e]" />
+        </motion.div>
+      </div>
+
     </div>
   );
-};
-
-export default AuthPage;
-
-
+}
