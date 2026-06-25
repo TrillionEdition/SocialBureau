@@ -155,6 +155,7 @@ const AuditArchivePage = lazy(() => import("./pages/AuditReports/ArchivePage"));
 const AuditClientList = lazy(() => import("./pages/AuditReports/ClientList"));
 const AuditClientProfile = lazy(() => import("./pages/AuditReports/ClientProfile"));
 const AuditUploadReport = lazy(() => import("./pages/AuditReports/UploadReport"));
+const DocumentViewerPage = lazy(() => import("./pages/AuditReports/DocumentViewerPage"));
 
 import FloatingTreasureHuntClue from "./components/FloatingTreasureHuntClue";
 import TreasureHuntTimer from "./components/TreasureHuntTimer";
@@ -199,6 +200,7 @@ function ConditionalFooter() {
     "/leaderboard",
     "/chocochi",
     "/chocochi-form",
+    "/audit-reports/view",
   ];
   const isIndividualTeamPage = location.pathname.toLowerCase().startsWith("/team/") && location.pathname.toLowerCase() !== "/team/";
 
@@ -239,7 +241,8 @@ function ConditionalNavbar() {
     "/admin/posters",
     "/treasure-hunt",
     "/chocochi",
-    "/chocochi-form"
+    "/chocochi-form",
+    "/audit-reports/view"
   ];
 
 
@@ -697,6 +700,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AuditArchivePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/audit-reports/view/:reportId"
+              element={
+                <ProtectedRoute>
+                  <DocumentViewerPage />
                 </ProtectedRoute>
               }
             />

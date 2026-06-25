@@ -61,6 +61,16 @@ export default function ArchivePage() {
     window.open(auditReportService.downloadReportUrl(reportId), "_blank");
   };
 
+  const handleViewClick = (report) => {
+    if (isClientUser && !report.isPaid) {
+      setSelectedReport(report);
+      setIsPaywallOpen(true);
+    } else {
+      // Navigate to viewer page with report data
+      navigate(`/audit-reports/view/${report._id}`, { state: { report } });
+    }
+  };
+
   const formatBytes = (bytes) => {
     if (!bytes) return "0 B";
     const k = 1024; const sizes = ["B", "KB", "MB", "GB"];
@@ -231,22 +241,38 @@ export default function ArchivePage() {
                   )}
 
                   <div className="mt-auto flex flex-wrap gap-4 items-center justify-between">
-                    <button
-                      onClick={() => handleDownloadClick(report)}
-                      className="flex items-center gap-2 px-6 py-3 text-white text-sm font-semibold uppercase tracking-widest transition-all hover:-translate-y-0.5"
-                      style={{
-                        background: "#b90012",
-                        border: "1px solid #b90012",
-                        fontFamily: "Inter, sans-serif",
-                      }}
-                      onMouseEnter={(e) => { e.currentTarget.style.background = "#0A0A0A"; e.currentTarget.style.borderColor = "#0A0A0A"; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.background = "#b90012"; e.currentTarget.style.borderColor = "#b90012"; }}
-                    >
-                      <span>{isClientUser && !report.isPaid ? "Unlock PDF" : "Download PDF"}</span>
-                      <span className="material-symbols-outlined text-sm">
-                        {isClientUser && !report.isPaid ? "lock" : "download"}
-                      </span>
-                    </button>
+                    <div className="flex gap-2 flex-wrap">
+                      <button
+                        onClick={() => handleViewClick(report)}
+                        className="flex items-center gap-2 px-4 py-3 text-white text-xs font-semibold uppercase tracking-widest transition-all hover:-translate-y-0.5"
+                        style={{
+                          background: "#0A0A0A",
+                          border: "1px solid #0A0A0A",
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = "#b90012"; e.currentTarget.style.borderColor = "#b90012"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = "#0A0A0A"; e.currentTarget.style.borderColor = "#0A0A0A"; }}
+                      >
+                        <span className="material-symbols-outlined text-sm">visibility</span>
+                        <span>View</span>
+                      </button>
+                      <button
+                        onClick={() => handleDownloadClick(report)}
+                        className="flex items-center gap-2 px-6 py-3 text-white text-xs font-semibold uppercase tracking-widest transition-all hover:-translate-y-0.5"
+                        style={{
+                          background: "#b90012",
+                          border: "1px solid #b90012",
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = "#0A0A0A"; e.currentTarget.style.borderColor = "#0A0A0A"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = "#b90012"; e.currentTarget.style.borderColor = "#b90012"; }}
+                      >
+                        <span>{isClientUser && !report.isPaid ? "Unlock PDF" : "Download PDF"}</span>
+                        <span className="material-symbols-outlined text-sm">
+                          {isClientUser && !report.isPaid ? "lock" : "download"}
+                        </span>
+                      </button>
+                    </div>
                     <div className="flex items-center gap-4">
                       <span
                         className="text-sm font-semibold"

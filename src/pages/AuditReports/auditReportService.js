@@ -70,6 +70,19 @@ const auditReportService = {
     });
     return response.data;
   },
+
+  // Get secure PDF URL for viewing inside the website
+  getViewerUrl: async (reportId) => {
+    const response = await axios.get(`${API_URL}/viewer/${reportId}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  },
+
+  // Get download URL directly
+  downloadReportUrl: (reportId) => {
+    return `${API_URL}/download/${reportId}`;
+  },
 };
 
 export default auditReportService;
