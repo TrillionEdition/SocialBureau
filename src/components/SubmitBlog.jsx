@@ -259,17 +259,25 @@ function RichEditor({ value, onChange, editorRef: externalRef }) {
 }
 
 // ─── AI Assist Panel ──────────────────────────────────────────────────────────
-function AiAssistPanel({ title, category, onUseImage, onInsertTip, onClose }) {
-  const [activeTab, setActiveTab] = useState("tips"); // "tips" | "images"
+function AiAssistPanel({ title, category, onUseImage, onInsertTip, onSelectTitle, onSelectCategory, onClose }) {
+  const [activeTab, setActiveTab] = useState(() => {
+    return title.trim().length > 5 ? "tips" : "trending";
+  });
   const [tips, setTips] = useState(null);
   const [tipsLoading, setTipsLoading] = useState(false);
   const [tipsError, setTipsError] = useState(null);
   const [images, setImages] = useState([]); // array of { url, prompt, loading }
   const [imagesLoading, setImagesLoading] = useState(false);
 
+  // Trending Topics state
+  const [trendingTopics, setTrendingTopics] = useState(null);
+  const [trendingLoading, setTrendingLoading] = useState(false);
+  const [trendingError, setTrendingError] = useState(null);
+
   // ── Fetch content tips via backend proxy ──
-  const fetchTips = useCallback(async () => {
-    if (!title.trim()) return;
+  const fetchTips = useCallback(async (targetTitle) => {
+    const activeTitle = typeof targetTitle === "string" ? targetTitle : title;
+    if (!activeTitle || !activeTitle.trim()) return;
     setTipsLoading(true);
     setTipsError(null);
     setTips(null);
@@ -283,7 +291,7 @@ function AiAssistPanel({ title, category, onUseImage, onInsertTip, onClose }) {
           messages: [{
             role: "user",
             content: `You are a blog writing coach for a digital marketing agency called SocialBureau. 
-A writer is working on a blog post titled: "${title}" in the category: ${category}.
+A writer is working on a blog post titled: "${activeTitle}" in the category: ${category}.
 
 Return ONLY a valid JSON object (no markdown, no backticks) with exactly this shape:
 {
@@ -305,7 +313,7 @@ Return ONLY a valid JSON object (no markdown, no backticks) with exactly this sh
     } finally {
       setTipsLoading(false);
     }
-  }, [title, category]);
+  }, [category]); // Remove title from dependencies to prevent keystroke recreation
 
   // ── Generate images via Pollinations.ai ──
   const generateImages = useCallback(async () => {
@@ -353,10 +361,57 @@ Example: ["prompt one", "prompt two", "prompt three"]`
     setImagesLoading(false);
   }, [title, category]);
 
-  // Auto-fetch tips when panel opens
+  // ── Fetch trending topics via backend proxy ──
+  const fetchTrendingTopics = useCallback(async () => {
+    setTrendingLoading(true);
+    setTrendingError(null);
+    setTrendingTopics(null);
+    try {
+      const response = await fetch("/api/ai/claude", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-6",
+          max_tokens: 1000,
+          messages: [{
+            role: "user",
+            content: `You are a professional content strategist and digital marketer at SocialBureau.
+Analyze the current industry trends and generate 5 highly engaging, currently trending blog topic ideas for the category: "${category}".
+
+Return ONLY a valid JSON array of objects (no markdown, no backticks) with exactly this shape:
+[
+  {
+    "title": "Catchy, SEO-friendly Blog Title",
+    "description": "A 1-sentence hook explaining why this topic is trending and what the post should cover."
+  }
+]`
+          }]
+        })
+      });
+      const data = await response.json();
+      const raw = data.content?.map(b => b.text || "").join("") || "";
+      const clean = raw.replace(/```json|```/g, "").trim();
+      setTrendingTopics(JSON.parse(clean));
+    } catch (err) {
+      setTrendingError("Couldn't load trending topics. Check your connection and try again.");
+    } finally {
+      setTrendingLoading(false);
+    }
+  }, [category]);
+
+  // Auto-fetch tips when active tab is tips and title becomes valid
   useEffect(() => {
-    if (title.trim().length > 5) fetchTips();
-  }, []);
+    if (activeTab === "tips" && title.trim().length > 5 && !tips && !tipsLoading && !tipsError) {
+      fetchTips(title);
+    }
+  }, [activeTab]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Auto-fetch trending topics when tab changes to trending or category changes
+  useEffect(() => {
+    if (activeTab === "trending" && !trendingLoading) {
+      fetchTrendingTopics();
+    }
+  }, [activeTab, category, fetchTrendingTopics]);
 
   const Tab = ({ id, label, icon: Icon }) => (
     <button
@@ -364,19 +419,20 @@ Example: ["prompt one", "prompt two", "prompt three"]`
       onClick={() => {
         setActiveTab(id);
         if (id === "images" && images.length === 0 && !imagesLoading) generateImages();
+        if (id === "trending" && !trendingTopics && !trendingLoading) fetchTrendingTopics();
       }}
-      className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+      className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
         activeTab === id
           ? "bg-red-600 text-white shadow"
           : "text-gray-400 hover:text-white hover:bg-gray-800"
       }`}
     >
-      <Icon size={13} /> {label}
+      <Icon size={12} /> {label}
     </button>
   );
 
   return (
-    <div className="fixed right-0 top-0 bottom-0 w-[380px] bg-gray-950 border-l border-red-900/40 shadow-2xl z-50 flex flex-col">
+    <div data-lenis-prevent className="fixed right-0 top-0 bottom-0 w-[380px] bg-gray-950 border-l border-red-900/40 shadow-2xl z-50 flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-4 border-b border-gray-800">
         <div className="flex items-center gap-2">
@@ -397,13 +453,90 @@ Example: ["prompt one", "prompt two", "prompt three"]`
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 px-5 py-3 border-b border-gray-800">
+      <div className="flex gap-1 px-4 py-3 border-b border-gray-800 flex-wrap">
+        <Tab id="trending" label="Trending" icon={FaMagic} />
         <Tab id="tips" label="Content Tips" icon={FaLightbulb} />
         <Tab id="images" label="AI Images" icon={FaImage} />
       </div>
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto px-5 py-4">
+
+        {/* ── Trending Tab ── */}
+        {activeTab === "trending" && (
+          <div className="space-y-4">
+            {/* Inline Category Selector */}
+            <div className="bg-gray-900 rounded-xl p-4 border border-gray-800">
+              <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Select Category</label>
+              <select
+                value={category}
+                onChange={(e) => onSelectCategory(e.target.value)}
+                className="w-full px-3 py-2.5 bg-gray-950 border border-gray-800 focus:border-red-600 rounded-lg text-xs text-gray-200 outline-none cursor-pointer font-semibold transition-colors"
+              >
+                <option value="Marketing">Marketing</option>
+                <option value="Creatives">Creatives</option>
+                <option value="Case Studies">Case Studies</option>
+                <option value="Technology">Technology</option>
+                <option value="Advertisement">Advertisement</option>
+              </select>
+              <p className="text-[9px] text-gray-500 mt-2">
+                Note: Changing category here automatically updates your blog settings.
+              </p>
+            </div>
+
+            <div className="bg-gray-900/30 border border-gray-800/60 rounded-xl p-3 text-center">
+              <p className="text-[11px] text-gray-400 leading-relaxed">
+                Showing trending topics for <span className="font-semibold text-red-400">{category}</span>. 
+                Select a topic below to set it as your title.
+              </p>
+            </div>
+
+            {trendingLoading && (
+              <div className="flex flex-col items-center justify-center py-12 gap-3">
+                <FaSpinner className="text-red-500 animate-spin" size={24} />
+                <p className="text-gray-400 text-sm">Finding trends…</p>
+              </div>
+            )}
+
+            {trendingError && (
+              <div className="text-center py-8">
+                <p className="text-red-400 text-sm mb-3">{trendingError}</p>
+                <button type="button" onClick={fetchTrendingTopics} className="text-xs px-3 py-1.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300 flex items-center gap-2 mx-auto">
+                  <FaSync size={10} /> Retry
+                </button>
+              </div>
+            )}
+
+            {trendingTopics && (
+              <div className="space-y-4">
+                {trendingTopics.map((topic, i) => (
+                  <div key={i} className="bg-gray-900 rounded-xl p-4 border border-gray-800 hover:border-red-900/40 transition-colors group">
+                    <h4 className="text-sm font-bold text-gray-200 group-hover:text-white leading-snug mb-1">{topic.title}</h4>
+                    <p className="text-xs text-gray-400 leading-relaxed mb-3">{topic.description}</p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setTips(null);
+                        setImages([]);
+                        onSelectTitle(topic.title);
+                        setActiveTab("tips");
+                        fetchTips(topic.title); // Trigger immediate fetch
+                      }}
+                      className="text-xs px-3 py-1.5 bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white rounded-lg transition-all flex items-center gap-1.5 font-semibold"
+                    >
+                      <FaMagic size={10} /> Use this topic
+                    </button>
+                  </div>
+                ))}
+                
+                <button type="button" onClick={fetchTrendingTopics}
+                  className="w-full py-2.5 text-xs text-gray-400 hover:text-white border border-gray-800 hover:border-gray-600 rounded-xl transition flex items-center justify-center gap-2 mt-2">
+                  <FaSync size={10} /> Refresh trending topics
+                </button>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* ── Tips Tab ── */}
         {activeTab === "tips" && (
@@ -973,6 +1106,13 @@ export default function SubmitBlog() {
               setToast({ type: "success", message: "Content inserted into editor!" });
             }
           }}
+          onSelectTitle={(newTitle) => {
+            setFormData(prev => ({ ...prev, title: newTitle }));
+            setToast({ type: "success", message: `Title set to: "${newTitle}"` });
+          }}
+          onSelectCategory={(newCategory) => {
+            setFormData(prev => ({ ...prev, category: newCategory }));
+          }}
         />
       )}
 
@@ -993,13 +1133,12 @@ export default function SubmitBlog() {
                   <button
                     type="button"
                     onClick={() => setShowAiPanel(v => !v)}
-                    disabled={!formData.title.trim()}
-                    title={formData.title.trim() ? "Open AI Assistant" : "Enter a title first"}
+                    title="Open AI Assistant"
                     className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
                       showAiPanel
                         ? "bg-red-600 border-red-600 text-white shadow-lg shadow-red-900/30"
                         : "bg-gray-800 border-gray-700 text-gray-300 hover:border-red-500 hover:text-red-400"
-                    } disabled:opacity-40 disabled:cursor-not-allowed`}
+                    }`}
                   >
                     <FaRobot size={11} />
                     {showAiPanel ? "Close AI" : "AI Assist"}
