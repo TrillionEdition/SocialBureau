@@ -103,18 +103,20 @@ const PartnerLogin = () => {
   };
 
   useEffect(() => {
+    const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+    if (!siteKey) return;
+
     let isMounted = true;
     const renderTurnstile = () => {
       if (!isMounted) return;
       const container = document.getElementById("cf-turnstile-container");
-      const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
       
       if (!window.turnstile) {
         setTimeout(renderTurnstile, 100);
         return;
       }
 
-      if (container && siteKey) {
+      if (container) {
         container.innerHTML = "";
         try {
           turnstileWidgetId.current = window.turnstile.render("#cf-turnstile-container", {
@@ -237,7 +239,8 @@ const PartnerLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!captchaToken) {
+    const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+    if (siteKey && !captchaToken) {
       setError("Please complete the captcha verification");
       return;
     }
