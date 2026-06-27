@@ -95,7 +95,7 @@ export default function AuthPage() {
     if (isTransitioning.current) return;
     const err = validate();
     if (err) { setError(err); return; }
-    const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+    const siteKey = window.location.hostname.includes("socialbureau.in") ? import.meta.env.VITE_TURNSTILE_SITE_KEY : null;
     if (step === 0 && siteKey && !captchaToken) { setError("Please complete the captcha"); return; }
 
     isTransitioning.current = true;
@@ -211,7 +211,7 @@ export default function AuthPage() {
 
   useEffect(() => {
     if (step !== 0) return;
-    const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+    const siteKey = window.location.hostname.includes("socialbureau.in") ? import.meta.env.VITE_TURNSTILE_SITE_KEY : null;
     if (!siteKey) return;
     
     let alive = true;

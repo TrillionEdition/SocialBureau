@@ -90,7 +90,7 @@ const PartnerRegister = () => {
   };
 
   useEffect(() => {
-    const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+    const siteKey = window.location.hostname.includes("socialbureau.in") ? import.meta.env.VITE_TURNSTILE_SITE_KEY : null;
     if (!siteKey) return;
 
     let isMounted = true;
@@ -296,7 +296,7 @@ const PartnerRegister = () => {
       setError("Please verify your email address with the OTP code first");
       return false;
     }
-    const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+    const siteKey = window.location.hostname.includes("socialbureau.in") ? import.meta.env.VITE_TURNSTILE_SITE_KEY : null;
     if (siteKey && !captchaToken) {
       setError("Please complete the captcha verification");
       return false;

@@ -103,7 +103,7 @@ const PartnerLogin = () => {
   };
 
   useEffect(() => {
-    const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+    const siteKey = window.location.hostname.includes("socialbureau.in") ? import.meta.env.VITE_TURNSTILE_SITE_KEY : null;
     if (!siteKey) return;
 
     let isMounted = true;
@@ -239,7 +239,7 @@ const PartnerLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+    const siteKey = window.location.hostname.includes("socialbureau.in") ? import.meta.env.VITE_TURNSTILE_SITE_KEY : null;
     if (siteKey && !captchaToken) {
       setError("Please complete the captcha verification");
       return;
