@@ -276,7 +276,7 @@ export default function AuthPage() {
         turnstileId.current = null;
       }
     };
-  }, [step]);
+  }, [step, isLogin]);
 
   useEffect(() => {
     if (step !== 0) return;
@@ -420,11 +420,17 @@ export default function AuthPage() {
                 </div>
 
                 {step === 0 && (
-                  <div 
-                    key="cf-turnstile-shared" 
-                    id="cf-turnstile-container" 
-                    className="flex justify-center min-h-[65px]" 
-                  />
+                  captchaToken ? (
+                    <div className="flex items-center justify-center gap-2.5 py-3.5 px-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-400 text-sm font-medium tracking-wide shadow-[0_0_20px_rgba(16,185,129,0.05)] w-full">
+                      <CheckCircle2 size={16} strokeWidth={2} className="text-emerald-400" />
+                      Captcha Verified Successfully
+                    </div>
+                  ) : (
+                    <div 
+                      id="cf-turnstile-container" 
+                      className="flex justify-center min-h-[65px]" 
+                    />
+                  )
                 )}
 
                 {step === 0 && (
