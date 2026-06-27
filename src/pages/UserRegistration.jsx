@@ -207,11 +207,12 @@ export default function AuthPage() {
 
   const toggleMode = () => {
     setIsLogin((v) => !v); setStep(0);
-    setError(""); setSuccess(""); setCaptchaToken(null);
+    setError(""); setSuccess("");
   };
 
   useEffect(() => {
     if (step !== 0) return;
+    if (captchaToken) return; // Keep existing solved captcha
     let alive = true;
     let retries = 0;
     const renderWidget = () => {
@@ -237,23 +238,24 @@ export default function AuthPage() {
         setTimeout(renderWidget, 100);
         return;
       }
-      container.innerHTML = "";
-      try {
-        setTurnstileAvailable(true);
-        turnstileId.current = window.turnstile.render("#cf-turnstile-container", {
-          sitekey: siteKey, theme: "dark",
-          callback:           (t) => { if (alive) { setCaptchaToken(t); setError(""); } },
-          "expired-callback": ()  => { if (alive) setCaptchaToken(null); },
-          "error-callback":   ()  => { 
-            if (alive) {
-              setCaptchaToken(null); 
-              setTurnstileAvailable(false); 
-            }
-          },
-        });
-      } catch (e) {
-        console.error("Turnstile render error:", e);
-        setTurnstileAvailable(false);
+      if (container.children.length === 0) {
+        try {
+          setTurnstileAvailable(true);
+          turnstileId.current = window.turnstile.render("#cf-turnstile-container", {
+            sitekey: siteKey, theme: "dark",
+            callback:           (t) => { if (alive) { setCaptchaToken(t); setError(""); } },
+            "expired-callback": ()  => { if (alive) setCaptchaToken(null); },
+            "error-callback":   ()  => { 
+              if (alive) {
+                setCaptchaToken(null); 
+                setTurnstileAvailable(false); 
+              }
+            },
+          });
+        } catch (e) {
+          console.error("Turnstile render error:", e);
+          setTurnstileAvailable(false);
+        }
       }
     };
     const existing = document.getElementById("cf-turnstile-script");
@@ -333,7 +335,7 @@ export default function AuthPage() {
               return (
                 <button
                   key={label}
-                  onClick={() => { setIsLogin(i === 0); setStep(0); setError(""); setSuccess(""); setCaptchaToken(null); }}
+                  onClick={() => { setIsLogin(i === 0); setStep(0); setError(""); setSuccess(""); }}
                   className={`flex-1 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                     active ? "bg-white text-black" : "text-white/40 hover:text-white/70"
                   }`}
@@ -419,7 +421,7 @@ export default function AuthPage() {
 
                 {step === 0 && (
                   <div 
-                    key={isLogin ? "login-turnstile" : "signup-turnstile"} 
+                    key="cf-turnstile-shared" 
                     id="cf-turnstile-container" 
                     className="flex justify-center min-h-[65px]" 
                   />
