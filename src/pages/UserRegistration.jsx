@@ -95,7 +95,7 @@ export default function AuthPage() {
     if (isTransitioning.current) return;
     const err = validate();
     if (err) { setError(err); return; }
-    const siteKey = window.location.hostname.includes("socialbureau.in") ? import.meta.env.VITE_TURNSTILE_SITE_KEY : null;
+    const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
     if (step === 0 && siteKey && !captchaToken) { setError("Please complete the captcha"); return; }
 
     isTransitioning.current = true;
@@ -211,13 +211,15 @@ export default function AuthPage() {
 
   useEffect(() => {
     if (step !== 0) return;
-    const siteKey = window.location.hostname.includes("socialbureau.in") ? import.meta.env.VITE_TURNSTILE_SITE_KEY : null;
-    if (!siteKey) return;
-    
     let alive = true;
     const renderWidget = () => {
       if (!alive) return;
       const container = document.getElementById("cf-turnstile-container");
+      const siteKey   = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+      if (!siteKey) {
+        console.warn("VITE_TURNSTILE_SITE_KEY is not defined in the environment variables!");
+        return;
+      }
       if (!window.turnstile || !container) { setTimeout(renderWidget, 100); return; }
       container.innerHTML = "";
       try {
