@@ -276,7 +276,7 @@ export default function AuthPage() {
         turnstileId.current = null;
       }
     };
-  }, [step, isLogin]);
+  }, [step]);
 
   useEffect(() => {
     if (step !== 0) return;
