@@ -76,13 +76,13 @@ export default function TableOfContents({ content }) {
             <li key={index} className={`${indentClass}`}>
               <button
                 onClick={() => scrollToHeading(heading.id)}
-                className="flex items-center gap-3 text-gray-700 hover:text-red-600 p-2 rounded-lg hover:bg-white transition-colors group w-full text-left"
+                className="flex items-baseline gap-3 text-gray-700 hover:text-red-600 p-2 rounded-lg hover:bg-white transition-colors group w-full text-left"
               >
                 <span className="text-sm text-red-600 font-medium min-w-[30px]">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <span className="flex-1 text-sm">{heading.text}</span>
-                <FaChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                <FaChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 self-center" />
               </button>
             </li>
           );

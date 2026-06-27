@@ -98,13 +98,13 @@ function TableOfContents({ headings }) {
             <li key={heading.id} className={indentClass}>
               <button
                 onClick={() => scrollToHeading(heading.id)}
-                className="flex items-center gap-3 text-gray-700 hover:text-red-600 p-2 rounded-lg hover:bg-gray-50 transition-colors group w-full text-left"
+                className="flex items-baseline gap-3 text-gray-700 hover:text-red-600 p-2 rounded-lg hover:bg-gray-50 transition-colors group w-full text-left"
               >
                 <span className="text-sm text-red-600 font-medium min-w-[30px]">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <span className="flex-1 text-sm line-clamp-2">{heading.text}</span>
-                <FaChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 text-gray-400" />
+                <FaChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 text-gray-400 self-center" />
               </button>
             </li>
           );

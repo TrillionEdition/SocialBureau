@@ -88,6 +88,7 @@ export default function Navbar() {
 
   const navItems = [
     { label: "Home", href: homeLink },
+    { label: "Solutions", href: "/solutions" },
     {
       label: "Services",
       href: "#",

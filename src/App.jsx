@@ -88,6 +88,7 @@ const ResetPassword = lazy(() =>
 const Sakilan = lazy(() => import("./pages/Partnerships/sakilan"));
 const Partner2 = lazy(() => import("./pages/Partnerships/Partner2"));
 const Chocochi = lazy(() => import("./pages/Chocochi"));
+const Solutions = lazy(() => import("./pages/Solutions/Solutions"));
 
 // Lazy-loaded Components
 const AddAchievementForm = lazy(
@@ -453,6 +454,7 @@ function App() {
             <Route path="/" element={<HomeWrapper />} />
             <Route path="/home" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/solutions" element={<Solutions />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/clickup" element={<Clickup />} />
             <Route
