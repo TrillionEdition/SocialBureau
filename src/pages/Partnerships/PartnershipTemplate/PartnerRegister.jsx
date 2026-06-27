@@ -90,18 +90,20 @@ const PartnerRegister = () => {
   };
 
   useEffect(() => {
+    const siteKey = window.location.hostname.includes("socialbureau.in") ? import.meta.env.VITE_TURNSTILE_SITE_KEY : null;
+    if (!siteKey) return;
+
     let isMounted = true;
     const renderTurnstile = () => {
       if (!isMounted) return;
       const container = document.getElementById("cf-turnstile-container");
-      const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
       
       if (!window.turnstile) {
         setTimeout(renderTurnstile, 100);
         return;
       }
 
-      if (container && siteKey) {
+      if (container) {
         container.innerHTML = "";
         try {
           turnstileWidgetId.current = window.turnstile.render("#cf-turnstile-container", {
@@ -294,7 +296,8 @@ const PartnerRegister = () => {
       setError("Please verify your email address with the OTP code first");
       return false;
     }
-    if (!captchaToken) {
+    const siteKey = window.location.hostname.includes("socialbureau.in") ? import.meta.env.VITE_TURNSTILE_SITE_KEY : null;
+    if (siteKey && !captchaToken) {
       setError("Please complete the captcha verification");
       return false;
     }

@@ -95,7 +95,8 @@ export default function AuthPage() {
     if (isTransitioning.current) return;
     const err = validate();
     if (err) { setError(err); return; }
-    if (step === 0 && !captchaToken) { setError("Please complete the captcha"); return; }
+    const siteKey = window.location.hostname.includes("socialbureau.in") ? import.meta.env.VITE_TURNSTILE_SITE_KEY : null;
+    if (step === 0 && siteKey && !captchaToken) { setError("Please complete the captcha"); return; }
 
     isTransitioning.current = true;
     try {
@@ -210,12 +211,14 @@ export default function AuthPage() {
 
   useEffect(() => {
     if (step !== 0) return;
+    const siteKey = window.location.hostname.includes("socialbureau.in") ? import.meta.env.VITE_TURNSTILE_SITE_KEY : null;
+    if (!siteKey) return;
+    
     let alive = true;
     const renderWidget = () => {
       if (!alive) return;
       const container = document.getElementById("cf-turnstile-container");
-      const siteKey   = import.meta.env.VITE_TURNSTILE_SITE_KEY;
-      if (!window.turnstile || !container || !siteKey) { setTimeout(renderWidget, 100); return; }
+      if (!window.turnstile || !container) { setTimeout(renderWidget, 100); return; }
       container.innerHTML = "";
       try {
         turnstileId.current = window.turnstile.render("#cf-turnstile-container", {
