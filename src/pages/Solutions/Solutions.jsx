@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import {
@@ -7,6 +8,17 @@ import {
   Upload, Trash2, Download, Copy, Play, Loader2, FileCheck, CheckCircle, File
 } from "lucide-react";
 import { BASE_URL } from "@/utils/urls";
+
+// Hide scrollbar but keep scroll functionality
+const scrollbarHideStyle = `
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+`;
 
 const PRESETS = [
   { key: "blueprint", label: "Blueprint", value: "technical blueprint drawing on cyan paper, line art" },
@@ -229,8 +241,26 @@ const TOOL_CATEGORIES = [
 ];
 
 export default function Solutions() {
-  const [activeCategory, setActiveCategory] = useState("pdf");
-  const [activeToolSlug, setActiveToolSlug] = useState("merge");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Derive active category from URL, with fallback to 'pdf'
+  const activeCategory = useMemo(() => {
+    const urlCategory = searchParams.get('category');
+    return (urlCategory && TOOL_CATEGORIES.some(c => c.key === urlCategory))
+      ? urlCategory
+      : 'pdf';
+  }, [searchParams]);
+
+  // Derive active tool from URL, with fallback logic
+  const activeToolSlug = useMemo(() => {
+    const urlTool = searchParams.get('tool');
+    const category = activeCategory;
+    const cat = TOOL_CATEGORIES.find(c => c.key === category);
+    return (urlTool && cat?.tools.some(t => t.slug === urlTool))
+      ? urlTool
+      : cat?.tools[0]?.slug || 'merge';
+  }, [searchParams, activeCategory]);
+
   const [files, setFiles] = useState([]);
   const [busy, setBusy] = useState(false);
   const [dragActive, setDragActive] = useState(false);
@@ -283,11 +313,9 @@ export default function Solutions() {
 
   // Change category helper
   const handleCategoryChange = (catKey) => {
-    setActiveCategory(catKey);
     const cat = TOOL_CATEGORIES.find(c => c.key === catKey);
-    if (cat && cat.tools.length > 0) {
-      setActiveToolSlug(cat.tools[0].slug);
-    }
+    const newTool = cat && cat.tools.length > 0 ? cat.tools[0].slug : 'merge';
+    setSearchParams({ category: catKey, tool: newTool });
   };
 
   // Drag & drop handlers
@@ -518,22 +546,23 @@ export default function Solutions() {
   };
 
   return (
-    <div className="w-full h-screen bg-slate-50 pt-16 pb-4 px-4 md:px-6 text-slate-800 flex flex-col overflow-hidden transition-all duration-300">
+    <div className="w-full min-h-screen bg-[#0A0A0A] pt-20 pb-8 px-4 sm:px-6 lg:px-8 text-white flex flex-col transition-all duration-300">
+      <style>{scrollbarHideStyle}</style>
       <div className="max-w-7xl w-full mx-auto flex-1 flex flex-col min-h-0">
         
-        {/* Title Header Inline with Categories (Row 1 - Canva / Ezgif Style) */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-2 mb-2.5 shrink-0 gap-3">
-          <div className="flex items-center gap-2">
-            <h1 className="text-lg font-black text-slate-900 tracking-tight uppercase whitespace-nowrap">
-              Solutions Suite
-            </h1>
-            <span className="text-[9px] font-bold tracking-wider text-indigo-600 uppercase bg-indigo-50 px-2 py-0.5 rounded-full shrink-0">
-              In-Memory Engine
-            </span>
-          </div>
-          
-          {/* Categories Tab Navigation */}
-          <div className="flex gap-1 overflow-x-auto pb-px">
+        {/* Title Header */}
+        <div className="flex flex-col items-center text-center mb-6 sm:mb-8 shrink-0">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight uppercase mb-2 bg-gradient-to-r from-[#E8001A] to-[#FF3333] bg-clip-text text-transparent">
+            Solutions Suite
+          </h1>
+          <p className="text-sm sm:text-base text-white/60 font-medium">
+            Professional Tools & AI-Powered Studio
+          </p>
+        </div>
+
+        {/* Categories Tab Navigation - Horizontal Scroll on Mobile */}
+        <div className="mb-4 sm:mb-6 shrink-0">
+          <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 md:flex-wrap md:justify-center scrollbar-hide">
             {TOOL_CATEGORIES.map((cat) => {
               const CatIcon = cat.icon;
               const isActive = activeCategory === cat.key;
@@ -541,13 +570,13 @@ export default function Solutions() {
                 <button
                   key={cat.key}
                   onClick={() => handleCategoryChange(cat.key)}
-                  className={`flex items-center gap-1.5 px-4 py-2 border-b-2 font-bold text-xs uppercase transition-all whitespace-nowrap cursor-pointer ${
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-bold text-xs sm:text-sm uppercase tracking-wider transition-all whitespace-nowrap flex-shrink-0 ${
                     isActive
-                      ? "border-indigo-600 text-indigo-600 bg-white"
-                      : "border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/50"
+                      ? "bg-[#E8001A] text-white shadow-lg shadow-[#E8001A]/30 border border-[#E8001A]"
+                      : "bg-white/5 text-white/70 border border-white/10 hover:bg-white/10 hover:text-white hover:border-[#E8001A]/50"
                   }`}
                 >
-                  <CatIcon size={14} />
+                  <CatIcon size={16} />
                   <span>{cat.label}</span>
                 </button>
               );
@@ -555,48 +584,48 @@ export default function Solutions() {
           </div>
         </div>
 
-        {/* Tools Sub Navigation (Row 2 - Ezgif Style) */}
-        <div className="flex flex-wrap gap-1.5 mb-3.5 bg-white p-1.5 rounded-xl border border-slate-100 shadow-sm shrink-0">
+        {/* Tools Sub Navigation - Horizontal Scroll on Mobile */}
+        <div className="flex gap-2 overflow-x-auto pb-3 md:pb-0 md:flex-wrap md:justify-center mb-4 sm:mb-6 shrink-0 scrollbar-hide">
           {currentCategory.tools.map((tool) => {
             const ToolIcon = tool.icon;
             const isActive = activeToolSlug === tool.slug;
             return (
               <button
                 key={tool.slug}
-                onClick={() => setActiveToolSlug(tool.slug)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-semibold uppercase tracking-wider transition-all cursor-pointer ${
+                onClick={() => setSearchParams({ category: activeCategory, tool: tool.slug })}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer flex-shrink-0 ${
                   isActive
-                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-100"
-                    : "text-slate-500 hover:text-slate-800 hover:bg-slate-100"
+                    ? "bg-[#E8001A] text-white shadow-md shadow-[#E8001A]/20 border border-[#E8001A]"
+                    : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/10 hover:text-white/80"
                 }`}
               >
-                <ToolIcon size={12} />
-                <span>{tool.name}</span>
+                <ToolIcon size={14} />
+                <span className="hidden sm:inline">{tool.name}</span>
               </button>
             );
           })}
         </div>
 
         {/* Main Workspace Card */}
-        <div className="flex-1 bg-white border border-slate-100 shadow-[0_4px_25px_rgba(0,0,0,0.015)] rounded-2xl p-4 md:p-5 min-h-0 flex flex-col overflow-hidden">
+        <div className="flex-1 bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/10 shadow-2xl rounded-2xl p-4 sm:p-6 min-h-0 flex flex-col overflow-hidden backdrop-blur-lg">
           
           {/* Active Tool Summary */}
-          <div className="mb-4 border-b border-slate-100 pb-3 shrink-0 flex items-center justify-between">
+          <div className="mb-4 border-b border-white/10 pb-3 shrink-0 flex items-start sm:items-center justify-between gap-2">
             <div>
-              <h2 className="text-sm font-bold text-slate-900 uppercase tracking-tight flex items-center gap-2">
-                <span className="p-1.5 bg-indigo-50 text-indigo-600 rounded-lg shrink-0">
-                  {React.createElement(currentTool.icon, { size: 14 })}
+              <h2 className="text-base sm:text-lg font-bold text-white uppercase tracking-tight flex items-center gap-2 mb-1">
+                <span className="p-1.5 bg-[#E8001A]/20 text-[#E8001A] rounded-lg shrink-0">
+                  {React.createElement(currentTool.icon, { size: 16 })}
                 </span>
                 {currentTool.name}
               </h2>
-              <p className="text-[11px] text-slate-400 mt-0.5">{currentTool.desc}</p>
+              <p className="text-xs sm:text-sm text-white/50">{currentTool.desc}</p>
             </div>
           </div>
 
           {/* Render Tool Interface */}
           {currentTool.isCustomAi ? (
             /* AI TOOL LAYOUT */
-            <div className="flex-1 min-h-0 grid md:grid-cols-12 gap-6 overflow-hidden">
+            <div className="flex-1 min-h-0 grid md:grid-cols-12 gap-4 sm:gap-6 overflow-hidden">
               {/* Inputs */}
               <div className="md:col-span-5 flex flex-col justify-between overflow-y-auto pr-1 pb-1">
                 <div className="space-y-4">
@@ -604,30 +633,30 @@ export default function Solutions() {
                     /* AI Image Inputs */
                     <>
                       <div className="space-y-1.5">
-                        <label className="text-[10px] font-bold text-slate-700 tracking-wider uppercase block">
+                        <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
                           Describe Your Scene
                         </label>
                         <textarea
                           value={aiPrompt}
                           onChange={(e) => setAiPrompt(e.target.value)}
                           rows={3}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-800 focus:border-indigo-500 focus:bg-white focus:outline-none leading-relaxed transition-all"
+                          className="w-full bg-white/[0.03] border border-white/10 rounded-xl p-3 text-sm text-white placeholder-white/30 focus:border-[#E8001A] focus:bg-white/[0.05] focus:outline-none leading-relaxed transition-all"
                           placeholder="Provide details about machinery, automotive factory floor, layout..."
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-slate-700 tracking-wider uppercase block">
+                        <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
                           Select Preset Style
                         </label>
-                        <div className="flex flex-wrap gap-1">
+                        <div className="flex flex-wrap gap-2">
                           {PRESETS.map((p) => (
                             <button
                               key={p.key}
                               onClick={() => setAiStyle(p.value)}
-                              className={`px-2 py-1 text-[9px] font-bold uppercase tracking-wider rounded-lg border transition-all cursor-pointer ${
+                              className={`px-3 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-lg border transition-all cursor-pointer ${
                                 aiStyle === p.value
-                                  ? "border-indigo-600 text-indigo-600 bg-indigo-50"
-                                  : "border-slate-200 text-slate-655 hover:border-slate-350"
+                                  ? "border-[#E8001A] text-[#E8001A] bg-[#E8001A]/20"
+                                  : "border-white/10 text-white/60 bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/20"
                               }`}
                             >
                               {p.label}
@@ -637,7 +666,7 @@ export default function Solutions() {
                         <input
                           value={aiStyle}
                           onChange={(e) => setAiStyle(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-[10px] font-mono text-slate-500 focus:border-indigo-500 focus:outline-none"
+                          className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-3 py-1.5 text-xs font-mono text-white/60 focus:border-[#E8001A] focus:outline-none"
                         />
                       </div>
                     </>
@@ -645,24 +674,24 @@ export default function Solutions() {
                     /* AI Prompt Inputs */
                     <>
                       <div className="space-y-1.5">
-                        <label className="text-[10px] font-bold text-slate-700 tracking-wider uppercase block">
+                        <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
                           Topic / Subject
                         </label>
                         <input
                           value={aiTopic}
                           onChange={(e) => setAiTopic(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-800 focus:border-indigo-500 focus:bg-white focus:outline-none transition-all"
+                          className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white placeholder-white/30 focus:border-[#E8001A] focus:bg-white/[0.05] focus:outline-none transition-all"
                           placeholder="CNC machine, metal lathe..."
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-[10px] font-bold text-slate-700 tracking-wider uppercase block">
+                        <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
                           Use Case
                         </label>
                         <select
                           value={aiUseCase}
                           onChange={(e) => setAiUseCase(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-800 focus:border-indigo-500 focus:bg-white focus:outline-none transition-all"
+                          className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:border-[#E8001A] focus:bg-white/[0.05] focus:outline-none transition-all"
                         >
                           {USE_CASES.map((u) => (
                             <option key={u.value} value={u.value}>
@@ -672,18 +701,18 @@ export default function Solutions() {
                         </select>
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-[10px] font-bold text-slate-700 tracking-wider uppercase block">
+                        <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
                           Tone
                         </label>
-                        <div className="flex flex-wrap gap-1">
+                        <div className="flex flex-wrap gap-2">
                           {TONES.map((t) => (
                             <button
                               key={t}
                               onClick={() => setAiTone(t)}
-                              className={`px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider rounded-lg border transition-all cursor-pointer ${
+                              className={`px-3 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-lg border transition-all cursor-pointer ${
                                 aiTone === t
-                                  ? "border-indigo-600 text-indigo-600 bg-indigo-50"
-                                  : "border-slate-200 text-slate-650 hover:border-slate-350"
+                                  ? "border-[#E8001A] text-[#E8001A] bg-[#E8001A]/20"
+                                  : "border-white/10 text-white/60 bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/20"
                               }`}
                             >
                               {t}
@@ -692,14 +721,14 @@ export default function Solutions() {
                         </div>
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-[10px] font-bold text-slate-700 tracking-wider uppercase block">
+                        <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
                           Extra Constraints (Optional)
                         </label>
                         <textarea
                           value={aiDetails}
                           onChange={(e) => setAiDetails(e.target.value)}
                           rows={2}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-800 focus:border-indigo-500 focus:bg-white focus:outline-none leading-relaxed transition-all"
+                          className="w-full bg-white/[0.03] border border-white/10 rounded-xl p-3 text-sm text-white placeholder-white/30 focus:border-[#E8001A] focus:bg-white/[0.05] focus:outline-none leading-relaxed transition-all"
                           placeholder="Audience parameters, keywords..."
                         />
                       </div>
@@ -710,48 +739,48 @@ export default function Solutions() {
                 <button
                   onClick={handleRun}
                   disabled={busy}
-                  className="w-full flex items-center justify-center gap-2 py-3 bg-indigo-600 text-white rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-indigo-700 disabled:opacity-50 transition-all shadow-md shadow-indigo-50 cursor-pointer mt-4"
+                  className="w-full flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-[#E8001A] to-[#FF3333] text-white rounded-xl font-bold text-xs sm:text-sm uppercase tracking-wider hover:from-[#E8001A]/90 hover:to-[#FF3333]/90 disabled:opacity-50 transition-all shadow-lg shadow-[#E8001A]/30 cursor-pointer mt-4"
                 >
                   {busy ? (
-                    <Loader2 size={14} className="animate-spin" />
+                    <Loader2 size={16} className="animate-spin" />
                   ) : (
-                    currentTool.slug === "image" ? <Sparkles size={14} /> : <Wand2 size={14} />
+                    currentTool.slug === "image" ? <Sparkles size={16} /> : <Wand2 size={16} />
                   )}
                   {busy ? "Drafting..." : (currentTool.slug === "image" ? "Generate Image" : "Generate Prompt")}
                 </button>
               </div>
 
               {/* Outputs */}
-              <div className="md:col-span-7 border-l border-slate-100 md:pl-6 flex flex-col overflow-hidden">
+              <div className="md:col-span-7 border-l border-white/10 md:pl-6 flex flex-col overflow-hidden">
                 <div className="flex items-center justify-between mb-3 shrink-0">
-                  <span className="text-[10px] font-bold text-slate-700 tracking-wider uppercase">
+                  <span className="text-xs font-bold text-white/70 tracking-wider uppercase">
                     Result Output
                   </span>
                   {textResult && currentTool.slug === "prompt" && (
                     <button
                       onClick={copyOutput}
-                      className="flex items-center gap-1 text-[10px] text-indigo-600 font-bold uppercase hover:text-indigo-700 transition-colors cursor-pointer"
+                      className="flex items-center gap-1 text-xs text-[#E8001A] font-bold uppercase hover:text-[#FF3333] transition-colors cursor-pointer"
                     >
-                      <Copy size={12} />
+                      <Copy size={14} />
                       Copy Output
                     </button>
                   )}
                 </div>
 
-                <div className="flex-1 bg-slate-50 rounded-2xl border border-slate-100 flex flex-col justify-center items-center overflow-hidden p-4 relative min-h-0">
+                <div className="flex-1 bg-white/[0.02] rounded-2xl border border-white/10 flex flex-col justify-center items-center overflow-hidden p-4 relative min-h-0">
                   {!busy && !aiImageResult && !textResult && (
-                    <div className="text-center text-slate-400">
-                      <div className="w-10 h-10 bg-white shadow-sm border border-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-3 text-slate-350">
+                    <div className="text-center text-white/40">
+                      <div className="w-10 h-10 bg-white/[0.05] shadow-sm border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-3 text-white/30">
                         {currentTool.slug === "image" ? <Sparkles size={20} /> : <Wand2 size={20} />}
                       </div>
-                      <p className="text-[10px] font-bold uppercase tracking-wider">Awaiting Execution Input</p>
+                      <p className="text-xs font-bold uppercase tracking-wider">Awaiting Execution Input</p>
                     </div>
                   )}
 
                   {busy && (
-                    <div className="text-center text-slate-550">
-                      <Loader2 size={30} className="animate-spin text-indigo-650 mx-auto mb-3" />
-                      <p className="text-[10px] font-bold uppercase tracking-wider">Rendering Industrial Workspace...</p>
+                    <div className="text-center text-white/60">
+                      <Loader2 size={32} className="animate-spin text-[#E8001A] mx-auto mb-3" />
+                      <p className="text-xs font-bold uppercase tracking-wider">Rendering Industrial Workspace...</p>
                     </div>
                   )}
 
@@ -765,7 +794,7 @@ export default function Solutions() {
                       />
                       <button
                         onClick={downloadAiImage}
-                        className="absolute bottom-2.5 right-2.5 flex items-center gap-1.5 bg-slate-900/90 hover:bg-slate-800 text-white rounded-lg px-3 py-1.5 text-[10px] font-bold uppercase transition-colors shadow-lg cursor-pointer"
+                        className="absolute bottom-2.5 right-2.5 flex items-center gap-1.5 bg-[#E8001A]/90 hover:bg-[#E8001A] text-white rounded-lg px-3 py-1.5 text-xs font-bold uppercase transition-colors shadow-lg cursor-pointer"
                       >
                         <Download size={12} />
                         Download Visual
@@ -776,13 +805,13 @@ export default function Solutions() {
                   {/* Render Extracted Text / Prompts */}
                   {!busy && textResult && (
                     <div className="w-full h-full flex flex-col min-h-0">
-                      <pre className="flex-1 whitespace-pre-wrap font-mono text-[11px] text-slate-700 bg-white border border-slate-200/60 rounded-xl p-3.5 overflow-y-auto leading-relaxed text-left">
+                      <pre className="flex-1 whitespace-pre-wrap font-mono text-xs sm:text-sm text-white/80 bg-white/[0.02] border border-white/10 rounded-xl p-3 overflow-y-auto leading-relaxed text-left">
                         {textResult}
                       </pre>
                       {currentTool.slug === "prompt" && (
                         <button
                           onClick={() => triggerDownload(new Blob([textResult], { type: "text/plain" }), "engineered-prompt.txt")}
-                          className="mt-2.5 self-end flex items-center gap-1 text-[10px] text-indigo-600 font-bold uppercase hover:text-indigo-700 transition-colors cursor-pointer"
+                          className="mt-2.5 self-end flex items-center gap-1 text-xs text-[#E8001A] font-bold uppercase hover:text-[#FF3333] transition-colors cursor-pointer"
                         >
                           <Download size={12} />
                           Download as Text File
@@ -795,13 +824,13 @@ export default function Solutions() {
             </div>
           ) : (
             /* STANDARD FILE CONVERTERS LAYOUT */
-            <div className="flex-1 min-h-0 grid md:grid-cols-12 gap-6 overflow-hidden">
+            <div className="flex-1 min-h-0 grid md:grid-cols-12 gap-4 sm:gap-6 overflow-hidden">
               {/* Inputs & Parameters */}
               <div className="md:col-span-7 flex flex-col justify-between overflow-y-auto pr-1 pb-1">
                 <div className="space-y-4">
                   {/* Drag and drop zone */}
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-700 tracking-wider uppercase block">
+                    <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
                       Upload Input File
                     </label>
                     <div
@@ -810,10 +839,10 @@ export default function Solutions() {
                       onDragLeave={handleDrag}
                       onDrop={handleDrop}
                       onClick={() => fileInputRef.current?.click()}
-                      className={`border-2 border-dashed rounded-2xl p-5 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${
+                      className={`border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${
                         dragActive
-                          ? "border-indigo-600 bg-indigo-50/20"
-                          : "border-slate-200 hover:border-indigo-400 bg-slate-50/50 hover:bg-slate-50"
+                          ? "border-[#E8001A] bg-[#E8001A]/10"
+                          : "border-white/20 hover:border-[#E8001A]/50 bg-white/[0.02] hover:bg-white/[0.05]"
                       }`}
                     >
                       <input
@@ -824,11 +853,11 @@ export default function Solutions() {
                         multiple={currentTool.multi}
                         accept={currentTool.accept}
                       />
-                      <Upload size={24} className="text-slate-400 mb-2" />
-                      <p className="text-xs font-bold text-slate-700">
+                      <Upload size={28} className="text-white/50 mb-2" />
+                      <p className="text-sm font-bold text-white/80">
                         Drag & Drop your file here
                       </p>
-                      <p className="text-[10px] text-slate-400 mt-0.5">
+                      <p className="text-xs text-white/50 mt-0.5">
                         Or click to browse (Supports {currentTool.multi ? "multiple files" : "single file"})
                       </p>
                     </div>
@@ -836,21 +865,21 @@ export default function Solutions() {
 
                   {/* Parameters inputs */}
                   {currentTool.params && currentTool.params.length > 0 && (
-                    <div className="space-y-3 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-                      <h3 className="text-[10px] font-bold text-slate-700 tracking-wider uppercase">
+                    <div className="space-y-3 bg-white/[0.02] p-4 rounded-xl border border-white/10">
+                      <h3 className="text-xs font-bold text-white/80 tracking-wider uppercase">
                         Configuration Controls
                       </h3>
                       <div className="grid sm:grid-cols-2 gap-3">
                         {currentTool.params.map((p) => (
                           <div key={p.key} className="space-y-1">
-                            <label className="text-[9px] font-bold text-slate-500 tracking-wider uppercase block">
+                            <label className="text-[11px] font-bold text-white/60 tracking-wider uppercase block">
                               {p.label}
                             </label>
                             {p.type === "select" ? (
                               <select
                                 value={params[p.key] || ""}
                                 onChange={(e) => setParams({ ...params, [p.key]: e.target.value })}
-                                className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 focus:border-indigo-500 focus:outline-none"
+                                className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:border-[#E8001A] focus:outline-none"
                               >
                                 {p.options.map((opt) => (
                                   <option key={opt} value={opt}>
@@ -867,7 +896,7 @@ export default function Solutions() {
                                   ...params,
                                   [p.key]: p.type === "number" ? (e.target.value === "" ? "" : Number(e.target.value)) : e.target.value
                                 })}
-                                className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 font-mono focus:border-indigo-500 focus:outline-none"
+                                className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2 text-xs text-white font-mono focus:border-[#E8001A] focus:outline-none"
                               />
                             )}
                           </div>
@@ -880,46 +909,46 @@ export default function Solutions() {
                 <button
                   onClick={handleRun}
                   disabled={busy}
-                  className="w-full flex items-center justify-center gap-2 py-3 bg-indigo-600 text-white rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-indigo-700 disabled:opacity-50 transition-all shadow-md shadow-indigo-50 cursor-pointer mt-4"
+                  className="w-full flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-[#E8001A] to-[#FF3333] text-white rounded-xl font-bold text-xs sm:text-sm uppercase tracking-wider hover:from-[#E8001A]/90 hover:to-[#FF3333]/90 disabled:opacity-50 transition-all shadow-lg shadow-[#E8001A]/30 cursor-pointer mt-4"
                 >
                   {busy ? (
-                    <Loader2 size={14} className="animate-spin" />
+                    <Loader2 size={16} className="animate-spin" />
                   ) : (
-                    <Play size={14} />
+                    <Play size={16} />
                   )}
                   {busy ? "Processing Pipeline..." : "Execute Tool"}
                 </button>
               </div>
 
               {/* Uploaded Files & Output result */}
-              <div className="md:col-span-5 border-l border-slate-100 md:pl-6 flex flex-col min-h-0 justify-between overflow-hidden">
+              <div className="md:col-span-5 border-l border-white/10 md:pl-6 flex flex-col min-h-0 justify-between overflow-hidden">
                 {/* Uploaded files section */}
                 <div className="flex flex-col min-h-0 max-h-[160px] mb-4 shrink-0">
-                  <h3 className="text-[10px] font-bold text-slate-700 tracking-wider uppercase mb-2">
+                  <h3 className="text-xs font-bold text-white/80 tracking-wider uppercase mb-2">
                     Uploaded Files ({files.length})
                   </h3>
 
                   {files.length === 0 ? (
-                    <div className="text-center py-4 bg-slate-50/50 rounded-xl border border-slate-100 text-slate-400 text-[10px]">
+                    <div className="text-center py-4 bg-white/[0.02] rounded-xl border border-white/10 text-white/40 text-xs">
                       No files selected
                     </div>
                   ) : (
                     <div className="space-y-1.5 overflow-y-auto flex-1 pr-1">
                       {files.map((file, idx) => (
-                        <div key={idx} className="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-100 rounded-xl text-[11px]">
+                        <div key={idx} className="flex items-center justify-between p-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-xs">
                           <div className="flex items-center gap-2 min-w-0">
-                            <File size={14} className="text-slate-400 shrink-0" />
-                            <span className="font-medium text-slate-700 truncate max-w-[150px]">
+                            <File size={14} className="text-white/40 shrink-0" />
+                            <span className="font-medium text-white/80 truncate max-w-[150px]">
                               {file.name}
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="text-[9px] text-slate-400 font-mono">
+                            <span className="text-[10px] text-white/40 font-mono">
                               {(file.size / 1024).toFixed(1)} KB
                             </span>
                             <button
                               onClick={() => removeFile(idx)}
-                              className="text-red-500 hover:text-red-650 cursor-pointer"
+                              className="text-[#E8001A]/70 hover:text-[#E8001A] cursor-pointer transition-colors"
                             >
                               <Trash2 size={12} />
                             </button>
@@ -931,30 +960,30 @@ export default function Solutions() {
                 </div>
 
                 {/* Processing Outputs */}
-                <div className="flex-1 min-h-0 border border-slate-100 bg-slate-50 rounded-2xl p-4 flex flex-col justify-center items-center overflow-hidden relative">
+                <div className="flex-1 min-h-0 border border-white/10 bg-white/[0.02] rounded-2xl p-4 flex flex-col justify-center items-center overflow-hidden relative">
                   {!busy && !textResult && !doneFile && (
-                    <div className="text-center text-slate-400">
-                      <div className="w-10 h-10 bg-white shadow-sm border border-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-2.5">
-                        <FileCheck size={18} className="text-slate-350" />
+                    <div className="text-center text-white/40">
+                      <div className="w-10 h-10 bg-white/[0.05] shadow-sm border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-2.5">
+                        <FileCheck size={18} className="text-white/30" />
                       </div>
-                      <p className="text-[10px] font-bold uppercase tracking-wider">Awaiting pipeline run</p>
+                      <p className="text-xs font-bold uppercase tracking-wider">Awaiting pipeline run</p>
                     </div>
                   )}
 
                   {busy && (
-                    <div className="text-center text-slate-500">
-                      <Loader2 size={28} className="animate-spin text-indigo-650 mx-auto mb-2.5" />
-                      <p className="text-[10px] font-bold uppercase tracking-wider">Executing in memory...</p>
+                    <div className="text-center text-white/50">
+                      <Loader2 size={32} className="animate-spin text-[#E8001A] mx-auto mb-2.5" />
+                      <p className="text-xs font-bold uppercase tracking-wider">Executing in memory...</p>
                     </div>
                   )}
 
                   {!busy && textResult && (
                     <div className="w-full h-full flex flex-col min-h-0">
-                      <div className="flex items-center gap-1.5 text-emerald-600 mb-1.5 shrink-0">
-                        <CheckCircle size={12} />
-                        <span className="text-[9px] font-bold uppercase tracking-wider">Text Extracted</span>
+                      <div className="flex items-center gap-1.5 text-[#E8001A] mb-1.5 shrink-0">
+                        <CheckCircle size={14} />
+                        <span className="text-[10px] font-bold uppercase tracking-wider">Text Extracted</span>
                       </div>
-                      <pre className="flex-1 whitespace-pre-wrap font-mono text-[10px] text-slate-700 bg-white border border-slate-200 rounded-xl p-2.5 overflow-y-auto text-left leading-normal">
+                      <pre className="flex-1 whitespace-pre-wrap font-mono text-xs text-white/80 bg-white/[0.02] border border-white/10 rounded-xl p-2.5 overflow-y-auto text-left leading-normal">
                         {textResult}
                       </pre>
                       <div className="flex gap-1.5 mt-2 self-end shrink-0">
@@ -963,14 +992,14 @@ export default function Solutions() {
                             navigator.clipboard.writeText(textResult);
                             toast.success("Text copied!");
                           }}
-                          className="flex items-center gap-1 px-2.5 py-1 border border-slate-200 hover:bg-slate-100 text-slate-600 rounded-lg text-[9px] font-bold uppercase transition-all cursor-pointer"
+                          className="flex items-center gap-1 px-3 py-1.5 border border-white/10 hover:bg-white/[0.08] text-white/80 rounded-lg text-xs font-bold uppercase transition-all cursor-pointer"
                         >
                           <Copy size={10} />
                           Copy
                         </button>
                         <button
                           onClick={() => triggerDownload(new Blob([textResult], { type: "text/plain" }), "extracted-content.txt")}
-                          className="flex items-center gap-1 px-2.5 py-1 bg-indigo-600 text-white rounded-lg text-[9px] font-bold uppercase hover:bg-indigo-700 transition-all cursor-pointer"
+                          className="flex items-center gap-1 px-3 py-1.5 bg-[#E8001A] text-white rounded-lg text-xs font-bold uppercase hover:bg-[#FF3333] transition-all cursor-pointer"
                         >
                           <Download size={10} />
                           Download
@@ -981,23 +1010,23 @@ export default function Solutions() {
 
                   {!busy && doneFile && (
                     <div className="w-full space-y-3 shrink-0">
-                      <div className="flex items-center gap-1.5 text-emerald-600">
-                        <CheckCircle size={14} />
-                        <span className="text-[10px] font-bold uppercase tracking-wider">Pipeline complete</span>
+                      <div className="flex items-center gap-1.5 text-[#E8001A]">
+                        <CheckCircle size={16} />
+                        <span className="text-xs font-bold uppercase tracking-wider">Pipeline complete</span>
                       </div>
-                      <div className="bg-white p-3 border border-slate-100 rounded-xl">
-                        <p className="font-mono text-[11px] text-slate-700 break-all leading-normal">
+                      <div className="bg-white/[0.03] p-3 border border-white/10 rounded-xl">
+                        <p className="font-mono text-xs text-white/80 break-all leading-normal">
                           {doneFile.filename}
                         </p>
-                        <p className="font-mono text-[9px] text-slate-400 mt-0.5">
+                        <p className="font-mono text-[10px] text-white/40 mt-0.5">
                           {(doneFile.size / 1024).toFixed(1)} KB
                         </p>
                       </div>
                       <button
                         onClick={() => triggerDownload(doneFile.blob, doneFile.filename)}
-                        className="w-full flex items-center justify-center gap-1.5 py-2 bg-emerald-600 text-white rounded-lg text-[10px] font-bold uppercase hover:bg-emerald-700 transition-colors shadow-md shadow-emerald-50 cursor-pointer"
+                        className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-[#E8001A] text-white rounded-lg text-xs font-bold uppercase hover:bg-[#FF3333] transition-colors shadow-lg shadow-[#E8001A]/30 cursor-pointer"
                       >
-                        <Download size={12} /> Download Output File
+                        <Download size={14} /> Download Output File
                       </button>
                     </div>
                   )}

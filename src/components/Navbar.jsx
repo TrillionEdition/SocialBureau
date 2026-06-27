@@ -88,7 +88,48 @@ export default function Navbar() {
 
   const navItems = [
     { label: "Home", href: homeLink },
-    { label: "Solutions", href: "/solutions" },
+    {
+  label: "Solutions",
+  href: "/solutions",
+  columns: [
+    {
+      title: "PDF TOOLKIT",
+      items: [
+        { label: "Merge PDF", href: "/solutions?category=pdf&tool=merge" },
+        { label: "Split PDF", href: "/solutions?category=pdf&tool=split" },
+        { label: "Compress PDF", href: "/solutions?category=pdf&tool=compress" },
+        { label: "PDF to Images", href: "/solutions?category=pdf&tool=to-images" },
+        { label: "Images to PDF", href: "/solutions?category=pdf&tool=from-images" },
+        { label: "PDF to Word", href: "/solutions?category=pdf&tool=to-word" },
+        { label: "Word to PDF", href: "/solutions?category=pdf&tool=from-word" },
+        { label: "PDF to Text", href: "/solutions?category=pdf&tool=to-text" },
+      ],
+    },
+    {
+      title: "IMAGE TOOLKIT",
+      items: [
+        { label: "Resize Image", href: "/solutions?category=image&tool=resize" },
+        { label: "Compress Image", href: "/solutions?category=image&tool=compress" },
+        { label: "Convert Image Format", href: "/solutions?category=image&tool=convert" },
+        { label: "Rotate Image", href: "/solutions?category=image&tool=rotate" },
+        { label: "Grayscale Image", href: "/solutions?category=image&tool=grayscale" },
+      ],
+    },
+    {
+      title: "AI STUDIO",
+      items: [
+        {
+          label: "AI Industrial Image",
+          href: "/solutions?category=ai&tool=image",
+        },
+        {
+          label: "AI Prompt Engineer",
+          href: "/solutions?category=ai&tool=prompt",
+        },
+      ],
+    },
+  ],
+},
     {
       label: "Services",
       href: "#",
