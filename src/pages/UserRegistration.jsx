@@ -56,6 +56,7 @@ export default function AuthPage() {
   const [success,      setSuccess]      = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [captchaToken, setCaptchaToken] = useState(null);
+  const [turnstileAvailable, setTurnstileAvailable] = useState(true);
   const [loginForm,    setLoginForm]    = useState(EMPTY_LOGIN);
   const [signupForm,   setSignupForm]   = useState(EMPTY_SIGNUP);
 
@@ -95,8 +96,8 @@ export default function AuthPage() {
     if (isTransitioning.current) return;
     const err = validate();
     if (err) { setError(err); return; }
-    const siteKey = window.location.hostname.includes("socialbureau.in") ? import.meta.env.VITE_TURNSTILE_SITE_KEY : null;
-    if (step === 0 && siteKey && !captchaToken) { setError("Please complete the captcha"); return; }
+    const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+    if (step === 0 && siteKey && turnstileAvailable && !captchaToken) { setError("Please complete the captcha"); return; }
 
     isTransitioning.current = true;
     try {
@@ -206,28 +207,57 @@ export default function AuthPage() {
 
   const toggleMode = () => {
     setIsLogin((v) => !v); setStep(0);
-    setError(""); setSuccess(""); setCaptchaToken(null);
+    setError(""); setSuccess("");
   };
 
   useEffect(() => {
     if (step !== 0) return;
-    const siteKey = window.location.hostname.includes("socialbureau.in") ? import.meta.env.VITE_TURNSTILE_SITE_KEY : null;
-    if (!siteKey) return;
-    
+    if (captchaToken) return; // Keep existing solved captcha
     let alive = true;
+    let retries = 0;
     const renderWidget = () => {
       if (!alive) return;
-      const container = document.getElementById("cf-turnstile-container");
-      if (!window.turnstile || !container) { setTimeout(renderWidget, 100); return; }
-      container.innerHTML = "";
-      try {
-        turnstileId.current = window.turnstile.render("#cf-turnstile-container", {
-          sitekey: siteKey, theme: "dark",
-          callback:           (t) => { if (alive) { setCaptchaToken(t); setError(""); } },
-          "expired-callback": ()  => { if (alive) setCaptchaToken(null); },
-          "error-callback":   ()  => { if (alive) setCaptchaToken(null); },
-        });
-      } catch (e) { console.error("Turnstile:", e); }
+      const containerId = isLogin ? "cf-turnstile-login" : "cf-turnstile-signup";
+      const container = document.getElementById(containerId);
+      const siteKey   = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+      if (!siteKey) {
+        console.warn("VITE_TURNSTILE_SITE_KEY is not defined in the environment variables!");
+        setTurnstileAvailable(false);
+        return;
+      }
+      if (!window.turnstile) {
+        retries++;
+        if (retries > 30) {
+          console.warn("Cloudflare Turnstile script failed to load. Bypassing captcha verification.");
+          setTurnstileAvailable(false);
+          return;
+        }
+        setTimeout(renderWidget, 100);
+        return;
+      }
+      if (!container) {
+        setTimeout(renderWidget, 100);
+        return;
+      }
+      if (container.children.length === 0) {
+        try {
+          setTurnstileAvailable(true);
+          turnstileId.current = window.turnstile.render("#" + containerId, {
+            sitekey: siteKey, theme: "dark",
+            callback:           (t) => { if (alive) { setCaptchaToken(t); setError(""); } },
+            "expired-callback": ()  => { if (alive) setCaptchaToken(null); },
+            "error-callback":   ()  => { 
+              if (alive) {
+                setCaptchaToken(null); 
+                setTurnstileAvailable(false); 
+              }
+            },
+          });
+        } catch (e) {
+          console.error("Turnstile render error:", e);
+          setTurnstileAvailable(false);
+        }
+      }
     };
     const existing = document.getElementById("cf-turnstile-script");
     if (!existing) {
@@ -306,7 +336,7 @@ export default function AuthPage() {
               return (
                 <button
                   key={label}
-                  onClick={() => { setIsLogin(i === 0); setStep(0); setError(""); setSuccess(""); setCaptchaToken(null); }}
+                  onClick={() => { setIsLogin(i === 0); setStep(0); setError(""); setSuccess(""); }}
                   className={`flex-1 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                     active ? "bg-white text-black" : "text-white/40 hover:text-white/70"
                   }`}
@@ -390,7 +420,19 @@ export default function AuthPage() {
                   )}
                 </div>
 
-                {step === 0 && <div id="cf-turnstile-container" className="flex justify-center min-h-[65px]" />}
+                {step === 0 && (
+                  captchaToken ? (
+                    <div className="flex items-center justify-center gap-2.5 py-3.5 px-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-400 text-sm font-medium tracking-wide shadow-[0_0_20px_rgba(16,185,129,0.05)] w-full">
+                      <CheckCircle2 size={16} strokeWidth={2} className="text-emerald-400" />
+                      Captcha Verified Successfully
+                    </div>
+                  ) : (
+                    <div 
+                      id={isLogin ? "cf-turnstile-login" : "cf-turnstile-signup"} 
+                      className="flex justify-center min-h-[65px]" 
+                    />
+                  )
+                )}
 
                 {step === 0 && (
                   <div className="flex flex-col items-center gap-4">
