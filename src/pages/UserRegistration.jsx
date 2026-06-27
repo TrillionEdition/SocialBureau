@@ -217,7 +217,8 @@ export default function AuthPage() {
     let retries = 0;
     const renderWidget = () => {
       if (!alive) return;
-      const container = document.getElementById("cf-turnstile-container");
+      const containerId = isLogin ? "cf-turnstile-login" : "cf-turnstile-signup";
+      const container = document.getElementById(containerId);
       const siteKey   = import.meta.env.VITE_TURNSTILE_SITE_KEY;
       if (!siteKey) {
         console.warn("VITE_TURNSTILE_SITE_KEY is not defined in the environment variables!");
@@ -241,7 +242,7 @@ export default function AuthPage() {
       if (container.children.length === 0) {
         try {
           setTurnstileAvailable(true);
-          turnstileId.current = window.turnstile.render("#cf-turnstile-container", {
+          turnstileId.current = window.turnstile.render("#" + containerId, {
             sitekey: siteKey, theme: "dark",
             callback:           (t) => { if (alive) { setCaptchaToken(t); setError(""); } },
             "expired-callback": ()  => { if (alive) setCaptchaToken(null); },
@@ -427,7 +428,7 @@ export default function AuthPage() {
                     </div>
                   ) : (
                     <div 
-                      id="cf-turnstile-container" 
+                      id={isLogin ? "cf-turnstile-login" : "cf-turnstile-signup"} 
                       className="flex justify-center min-h-[65px]" 
                     />
                   )
