@@ -800,7 +800,7 @@ export const Home = () => {
   const heroImages = {
   desktop: [
     // "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT%20Image%20Jun%2011%2C%202026%2C%2006_27_01%20PM.png",
-    "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/f60acdab-e724-495e-aabf-9a83ea997cbc.png",
+    "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/fifa.png",
   ],
   mobile: [
     // "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/f60acdab-e724-495e-aabf-9a83ea997cbc.png",
