@@ -56,6 +56,7 @@ export default function AuthPage() {
   const [success,      setSuccess]      = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [captchaToken, setCaptchaToken] = useState(null);
+  const [turnstileAvailable, setTurnstileAvailable] = useState(true);
   const [loginForm,    setLoginForm]    = useState(EMPTY_LOGIN);
   const [signupForm,   setSignupForm]   = useState(EMPTY_SIGNUP);
 
@@ -96,7 +97,7 @@ export default function AuthPage() {
     const err = validate();
     if (err) { setError(err); return; }
     const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
-    if (step === 0 && siteKey && !captchaToken) { setError("Please complete the captcha"); return; }
+    if (step === 0 && siteKey && turnstileAvailable && !captchaToken) { setError("Please complete the captcha"); return; }
 
     isTransitioning.current = true;
     try {
@@ -212,24 +213,48 @@ export default function AuthPage() {
   useEffect(() => {
     if (step !== 0) return;
     let alive = true;
+    let retries = 0;
     const renderWidget = () => {
       if (!alive) return;
       const container = document.getElementById("cf-turnstile-container");
       const siteKey   = import.meta.env.VITE_TURNSTILE_SITE_KEY;
       if (!siteKey) {
         console.warn("VITE_TURNSTILE_SITE_KEY is not defined in the environment variables!");
+        setTurnstileAvailable(false);
         return;
       }
-      if (!window.turnstile || !container) { setTimeout(renderWidget, 100); return; }
+      if (!window.turnstile) {
+        retries++;
+        if (retries > 30) {
+          console.warn("Cloudflare Turnstile script failed to load. Bypassing captcha verification.");
+          setTurnstileAvailable(false);
+          return;
+        }
+        setTimeout(renderWidget, 100);
+        return;
+      }
+      if (!container) {
+        setTimeout(renderWidget, 100);
+        return;
+      }
       container.innerHTML = "";
       try {
+        setTurnstileAvailable(true);
         turnstileId.current = window.turnstile.render("#cf-turnstile-container", {
           sitekey: siteKey, theme: "dark",
           callback:           (t) => { if (alive) { setCaptchaToken(t); setError(""); } },
           "expired-callback": ()  => { if (alive) setCaptchaToken(null); },
-          "error-callback":   ()  => { if (alive) setCaptchaToken(null); },
+          "error-callback":   ()  => { 
+            if (alive) {
+              setCaptchaToken(null); 
+              setTurnstileAvailable(false); 
+            }
+          },
         });
-      } catch (e) { console.error("Turnstile:", e); }
+      } catch (e) {
+        console.error("Turnstile render error:", e);
+        setTurnstileAvailable(false);
+      }
     };
     const existing = document.getElementById("cf-turnstile-script");
     if (!existing) {
@@ -392,7 +417,13 @@ export default function AuthPage() {
                   )}
                 </div>
 
-                {step === 0 && <div id="cf-turnstile-container" className="flex justify-center min-h-[65px]" />}
+                {step === 0 && (
+                  <div 
+                    key={isLogin ? "login-turnstile" : "signup-turnstile"} 
+                    id="cf-turnstile-container" 
+                    className="flex justify-center min-h-[65px]" 
+                  />
+                )}
 
                 {step === 0 && (
                   <div className="flex flex-col items-center gap-4">

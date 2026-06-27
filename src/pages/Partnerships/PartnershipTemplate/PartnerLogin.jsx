@@ -19,6 +19,7 @@ const PartnerLogin = () => {
   });
 
   const [captchaToken, setCaptchaToken] = useState(null);
+  const [turnstileAvailable, setTurnstileAvailable] = useState(true);
   const turnstileWidgetId = useRef(null);
 
   useEffect(() => {
@@ -104,14 +105,24 @@ const PartnerLogin = () => {
 
   useEffect(() => {
     let isMounted = true;
+    let retries = 0;
     const renderTurnstile = () => {
       if (!isMounted) return;
       const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
-      if (!siteKey) return;
+      if (!siteKey) {
+        setTurnstileAvailable(false);
+        return;
+      }
       
       const container = document.getElementById("cf-turnstile-container");
       
       if (!window.turnstile) {
+        retries++;
+        if (retries > 30) {
+          console.warn("Cloudflare Turnstile script failed to load. Bypassing captcha verification.");
+          setTurnstileAvailable(false);
+          return;
+        }
         setTimeout(renderTurnstile, 100);
         return;
       }
@@ -119,6 +130,7 @@ const PartnerLogin = () => {
       if (container) {
         container.innerHTML = "";
         try {
+          setTurnstileAvailable(true);
           turnstileWidgetId.current = window.turnstile.render("#cf-turnstile-container", {
             sitekey: siteKey,
             theme: "dark",
@@ -132,11 +144,15 @@ const PartnerLogin = () => {
               if (isMounted) setCaptchaToken(null);
             },
             "error-callback": () => {
-              if (isMounted) setCaptchaToken(null);
+              if (isMounted) {
+                setCaptchaToken(null);
+                setTurnstileAvailable(false);
+              }
             },
           });
         } catch (e) {
           console.error("Turnstile render error:", e);
+          setTurnstileAvailable(false);
         }
       }
     };
@@ -240,7 +256,7 @@ const PartnerLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
-    if (siteKey && !captchaToken) {
+    if (siteKey && turnstileAvailable && !captchaToken) {
       setError("Please complete the captcha verification");
       return;
     }
