@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import {
@@ -44,9 +44,11 @@ const TOOL_CATEGORIES = [
     key: "pdf",
     label: "PDF Toolkit",
     icon: FileText,
+    urlPrefix: "pdf-tools",
     tools: [
       {
         slug: "merge",
+        urlSlug: "merge-pdf",
         name: "Merge PDF",
         desc: "Combine multiple PDFs into one production-ready file.",
         icon: Combine,
@@ -57,6 +59,7 @@ const TOOL_CATEGORIES = [
       },
       {
         slug: "split",
+        urlSlug: "split-pdf",
         name: "Split PDF",
         desc: "Extract specific pages or ranges (e.g. 1-3,5,7-9).",
         icon: Scissors,
@@ -75,6 +78,7 @@ const TOOL_CATEGORIES = [
       },
       {
         slug: "compress",
+        urlSlug: "compress-pdf",
         name: "Compress PDF",
         desc: "Optimize PDF streams and reduce file size.",
         icon: ArchiveRestore,
@@ -85,6 +89,7 @@ const TOOL_CATEGORIES = [
       },
       {
         slug: "to-images",
+        urlSlug: "pdf-to-images",
         name: "PDF → Images",
         desc: "Render each PDF page to a high-DPI PNG, packaged in ZIP.",
         icon: FileImage,
@@ -102,6 +107,7 @@ const TOOL_CATEGORIES = [
       },
       {
         slug: "from-images",
+        urlSlug: "images-to-pdf",
         name: "Images → PDF",
         desc: "Compile a sequence of images into a single PDF.",
         icon: FileSymlink,
@@ -112,6 +118,7 @@ const TOOL_CATEGORIES = [
       },
       {
         slug: "to-word",
+        urlSlug: "pdf-to-word",
         name: "PDF → Word",
         desc: "Convert PDF to an editable .docx document.",
         icon: FileType,
@@ -122,6 +129,7 @@ const TOOL_CATEGORIES = [
       },
       {
         slug: "from-word",
+        urlSlug: "word-to-pdf",
         name: "Word → PDF",
         desc: "Convert a Microsoft Word .docx file into a standard PDF.",
         icon: FileSymlink,
@@ -132,6 +140,7 @@ const TOOL_CATEGORIES = [
       },
       {
         slug: "to-text",
+        urlSlug: "pdf-to-text",
         name: "PDF → Text",
         desc: "Extract raw text from a PDF (no download).",
         icon: FileText,
@@ -147,9 +156,11 @@ const TOOL_CATEGORIES = [
     key: "image",
     label: "Image Toolkit",
     icon: Crop,
+    urlPrefix: "image-tools",
     tools: [
       {
         slug: "resize",
+        urlSlug: "resize-image",
         name: "Resize",
         desc: "Set exact width and height in pixels.",
         icon: Crop,
@@ -163,6 +174,7 @@ const TOOL_CATEGORIES = [
       },
       {
         slug: "compress",
+        urlSlug: "compress-image",
         name: "Compress",
         desc: "Reduce image size with JPEG quality control.",
         icon: ImageDown,
@@ -175,6 +187,7 @@ const TOOL_CATEGORIES = [
       },
       {
         slug: "convert",
+        urlSlug: "convert-image-format",
         name: "Convert Format",
         desc: "Convert between PNG, JPG, WEBP, BMP.",
         icon: ImagePlus,
@@ -193,6 +206,7 @@ const TOOL_CATEGORIES = [
       },
       {
         slug: "rotate",
+        urlSlug: "rotate-image",
         name: "Rotate",
         desc: "Rotate image by any degree (positive = clockwise).",
         icon: RotateCw,
@@ -205,6 +219,7 @@ const TOOL_CATEGORIES = [
       },
       {
         slug: "grayscale",
+        urlSlug: "grayscale-image",
         name: "Grayscale",
         desc: "Strip color and output a monochrome PNG.",
         icon: Contrast,
@@ -219,9 +234,11 @@ const TOOL_CATEGORIES = [
     key: "ai",
     label: "AI Studio",
     icon: Sparkles,
+    urlPrefix: "ai-studio",
     tools: [
       {
         slug: "image",
+        urlSlug: "ai-image-generator",
         name: "AI Industrial Image",
         desc: "Generate factory, machinery, blueprint and product visuals.",
         icon: Sparkles,
@@ -230,6 +247,7 @@ const TOOL_CATEGORIES = [
       },
       {
         slug: "prompt",
+        urlSlug: "ai-prompt-engineer",
         name: "AI Prompt Engineer",
         desc: "Generate optimized prompts and industrial copy.",
         icon: Wand2,
@@ -241,25 +259,23 @@ const TOOL_CATEGORIES = [
 ];
 
 export default function Solutions() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { toolUrl } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  // Derive active category from URL, with fallback to 'pdf'
-  const activeCategory = useMemo(() => {
-    const urlCategory = searchParams.get('category');
-    return (urlCategory && TOOL_CATEGORIES.some(c => c.key === urlCategory))
-      ? urlCategory
-      : 'pdf';
-  }, [searchParams]);
+  // Derive active category from URL path prefix (e.g. /pdf-tools/merge-pdf)
+  const currentCategory = useMemo(() => {
+    const prefix = location.pathname.split('/')[1];
+    return TOOL_CATEGORIES.find(c => c.urlPrefix === prefix) || TOOL_CATEGORIES[0];
+  }, [location.pathname]);
 
-  // Derive active tool from URL, with fallback logic
+  const activeCategory = currentCategory.key;
+
+  // Derive active tool from URL path segment
   const activeToolSlug = useMemo(() => {
-    const urlTool = searchParams.get('tool');
-    const category = activeCategory;
-    const cat = TOOL_CATEGORIES.find(c => c.key === category);
-    return (urlTool && cat?.tools.some(t => t.slug === urlTool))
-      ? urlTool
-      : cat?.tools[0]?.slug || 'merge';
-  }, [searchParams, activeCategory]);
+    const tool = currentCategory.tools.find(t => t.urlSlug === toolUrl);
+    return tool ? tool.slug : currentCategory.tools[0]?.slug || 'merge';
+  }, [currentCategory, toolUrl]);
 
   const [files, setFiles] = useState([]);
   const [busy, setBusy] = useState(false);
@@ -285,11 +301,6 @@ export default function Solutions() {
 
   const fileInputRef = useRef(null);
 
-  // Active category & tool config
-  const currentCategory = useMemo(() => {
-    return TOOL_CATEGORIES.find(c => c.key === activeCategory) || TOOL_CATEGORIES[0];
-  }, [activeCategory]);
-
   const currentTool = useMemo(() => {
     return currentCategory.tools.find(t => t.slug === activeToolSlug) || currentCategory.tools[0];
   }, [currentCategory, activeToolSlug]);
@@ -314,8 +325,9 @@ export default function Solutions() {
   // Change category helper
   const handleCategoryChange = (catKey) => {
     const cat = TOOL_CATEGORIES.find(c => c.key === catKey);
-    const newTool = cat && cat.tools.length > 0 ? cat.tools[0].slug : 'merge';
-    setSearchParams({ category: catKey, tool: newTool });
+    if (cat && cat.tools.length > 0) {
+      navigate(`/${cat.urlPrefix}/${cat.tools[0].urlSlug}`);
+    }
   };
 
   // Drag & drop handlers
@@ -592,7 +604,7 @@ export default function Solutions() {
             return (
               <button
                 key={tool.slug}
-                onClick={() => setSearchParams({ category: activeCategory, tool: tool.slug })}
+                onClick={() => navigate(`/${currentCategory.urlPrefix}/${tool.urlSlug}`)}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer flex-shrink-0 ${
                   isActive
                     ? "bg-[#E8001A] text-white shadow-md shadow-[#E8001A]/20 border border-[#E8001A]"
