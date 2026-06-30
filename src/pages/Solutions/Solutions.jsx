@@ -8,6 +8,7 @@ import {
   Upload, Trash2, Download, Copy, Play, Loader2, FileCheck, CheckCircle, File
 } from "lucide-react";
 import { BASE_URL } from "@/utils/urls";
+import { Helmet } from "react-helmet-async";
 
 // Hide scrollbar but keep scroll functionality
 const scrollbarHideStyle = `
@@ -258,6 +259,264 @@ const TOOL_CATEGORIES = [
   },
 ];
 
+const TOOL_SEO = {
+  "merge-pdf": {
+    title: "Merge PDF Online Free – Combine PDF Files Instantly | SocialBureau",
+    h1: "Merge PDF Files Online",
+    description: "Merge multiple PDF files into one document online for free. Fast, secure PDF merger with no signup and no watermark. Works on desktop and mobile.",
+    body: [
+      "Merge PDF Files Online is a free tool from SocialBureau that allows you to combine multiple PDF documents into a single, production-ready file within seconds. Simply upload your PDFs and click Merge — no registration, no installation, and no watermark, just a clean merged output ready for download.",
+      "The merged file preserves all original formatting, fonts, embedded images, and page layouts without quality loss. This tool is ideal for businesses consolidating contracts, invoices, or reports; students compiling multi-part assignments; and designers assembling multi-page documents from separate exports.",
+      "Your files are processed securely within your browser session. No data is stored permanently on our servers and the merged PDF is available for immediate download.",
+    ],
+    faqs: [
+      { q: "Can I merge PDFs for free?", a: "Yes, SocialBureau's PDF merger is completely free with no signup required." },
+      { q: "Is there a file size limit?", a: "You can merge multiple files up to the supported upload size per session." },
+      { q: "Is my data secure?", a: "Files are processed securely and deleted after your session ends." },
+      { q: "Does it work on mobile?", a: "Yes, fully responsive and works on all modern mobile browsers." },
+      { q: "Will the merged PDF lose quality?", a: "No, original formatting, fonts, and images are fully preserved in the merged output." },
+    ],
+  },
+  "split-pdf": {
+    title: "Split PDF Online – Separate PDF Pages Instantly | SocialBureau",
+    h1: "Split PDF Files Online",
+    description: "Split a PDF into specific pages or custom page ranges online for free. No installation needed. Fast, secure, and works on all devices.",
+    body: [
+      "Split PDF Files Online lets you extract any pages or custom page ranges from a PDF document instantly. Enter your desired ranges — for example 1-3, 5, 7-9 — and download the trimmed output in seconds.",
+      "This is ideal for extracting invoice pages from a batch file, sharing specific sections of a report, or separating chapters from a long document. No account or software installation is needed — everything runs directly in your browser.",
+      "The resulting PDF contains only the pages you selected, with all original formatting and content intact. Files are processed securely within your browser session and are not stored on our servers.",
+    ],
+    faqs: [
+      { q: "Can I split a PDF for free?", a: "Yes, the tool is completely free with no login required." },
+      { q: "What range format should I use?", a: "Use comma-separated ranges such as 1-3,5,7-9 to select specific pages." },
+      { q: "Will splitting affect the original file?", a: "No, a new file is created. Your uploaded original is not modified." },
+      { q: "Can I extract a single page?", a: "Yes, simply enter a single page number like 3 to extract that one page." },
+      { q: "Does it work on mobile?", a: "Yes, fully compatible with all modern mobile browsers." },
+    ],
+  },
+  "compress-pdf": {
+    title: "Compress PDF Online Free Without Losing Quality | SocialBureau",
+    h1: "Compress PDF Online",
+    description: "Reduce PDF file size online for free without losing quality. Optimize PDFs instantly for email, web, and storage. No signup required.",
+    body: [
+      "Compress PDF Online reduces your PDF file size by optimizing internal streams and removing redundant data — without visually degrading your content. This is particularly useful when you need to email a large document, upload a PDF to a portal with strict size limits, or save storage space.",
+      "Our compression engine works across all types of PDFs including text-heavy reports, image-rich brochures, and scanned documents. The output file retains all content, fonts, and structure while achieving a meaningfully smaller file size.",
+      "No account or software installation required. Simply upload your PDF, click Compress, and download the optimized file instantly. Files are processed securely in your session and are not retained on our servers.",
+    ],
+    faqs: [
+      { q: "Will compression reduce quality?", a: "Our tool optimizes file structure and streams. Visible content quality is typically fully preserved." },
+      { q: "How much can a PDF be compressed?", a: "Results vary based on content type. PDFs with large images generally compress the most." },
+      { q: "Is it free?", a: "Yes, completely free with no registration required." },
+      { q: "Is my file secure?", a: "Files are processed in your session and deleted immediately after download." },
+      { q: "Does it work on all devices?", a: "Yes, it works on desktop and mobile browsers without any installation." },
+    ],
+  },
+  "pdf-to-images": {
+    title: "Convert PDF to Images Online Free – High-DPI PNG Export | SocialBureau",
+    h1: "Convert PDF to Images Online",
+    description: "Convert every page of a PDF to high-resolution PNG images online for free. Download as a ZIP archive instantly. No signup needed.",
+    body: [
+      "Convert PDF to Images Online renders every page of your PDF document into high-resolution PNG images, packaged neatly into a ZIP archive for easy download. Choose your preferred DPI setting to balance output resolution against file size — higher DPI values produce sharper images suitable for print, while lower values are ideal for web or screen use.",
+      "This tool is useful for extracting diagrams, sharing individual document pages as images, creating presentation slide assets, or archiving document content visually. It handles both text-heavy and image-rich PDFs with equal reliability.",
+      "No software installation or account is needed. Upload your PDF, set the DPI, and the packaged images are ready for download within moments.",
+    ],
+    faqs: [
+      { q: "What image format is the output?", a: "Each page is exported as a high-resolution PNG image." },
+      { q: "How are the images delivered?", a: "All page images are packaged into a single ZIP file for easy download." },
+      { q: "Can I control image quality?", a: "Yes, set the DPI to control output resolution. Higher DPI produces sharper images." },
+      { q: "Is there a page limit?", a: "There is no strict page limit, but very large PDFs may take longer to process." },
+      { q: "Is it free?", a: "Yes, completely free with no registration required." },
+    ],
+  },
+  "images-to-pdf": {
+    title: "Convert Images to PDF Online Free – Combine Photos into PDF | SocialBureau",
+    h1: "Convert Images to PDF Online",
+    description: "Combine multiple images into a single PDF online for free. Upload JPG, PNG, or WEBP files and download your PDF instantly. No signup required.",
+    body: [
+      "Convert Images to PDF Online compiles multiple image files into a single, shareable PDF document in seconds. Upload your JPG, PNG, BMP, or WEBP images, and the tool will arrange them one per page into a clean, standard PDF file.",
+      "This is perfect for creating photo portfolios, scanned document archives, assignment submissions, product catalogues, or image-based presentations. Images are embedded at their original resolution to ensure the output PDF looks as sharp as your source files.",
+      "No account or software installation is needed. Your files are processed securely within your session and the resulting PDF is available for immediate download.",
+    ],
+    faqs: [
+      { q: "What image formats are supported?", a: "JPG, PNG, WEBP, and BMP images are all supported." },
+      { q: "Can I upload multiple images?", a: "Yes, upload multiple images and they will all be compiled into a single PDF." },
+      { q: "Will image quality be preserved?", a: "Yes, images are embedded at full resolution in the resulting PDF." },
+      { q: "Is there a limit on the number of images?", a: "There is no strict limit, though very large batches may take more time to process." },
+      { q: "Is it free?", a: "Yes, completely free with no registration needed." },
+    ],
+  },
+  "pdf-to-word": {
+    title: "Convert PDF to Word Online Free – Editable DOCX | SocialBureau",
+    h1: "Convert PDF to Word Online",
+    description: "Convert PDF to editable Word (.docx) online for free. Fast, accurate PDF to Word conversion with no signup and no watermark.",
+    body: [
+      "Convert PDF to Word Online transforms your PDF documents into fully editable Microsoft Word (.docx) files in seconds. This is ideal when you need to edit, update, or reformat a document that only exists in PDF form — saving you hours of manual re-typing.",
+      "Our converter attempts to preserve headings, paragraphs, tables, bullet points, and formatting as closely as possible in the Word output. The resulting .docx file is fully compatible with Microsoft Word, Google Docs, LibreOffice, and all major word processors.",
+      "No account or installation required. Simply upload your PDF and download the DOCX file instantly. Files are processed securely and are not stored on our servers after your session ends.",
+    ],
+    faqs: [
+      { q: "Is PDF to Word conversion free?", a: "Yes, completely free with no account required." },
+      { q: "Will formatting be preserved?", a: "We preserve headings, paragraphs, and tables as closely as possible, though complex layouts may vary slightly." },
+      { q: "What format is the output?", a: "The output is a standard .docx file compatible with Microsoft Word and Google Docs." },
+      { q: "Does it work with scanned PDFs?", a: "Scanned PDFs contain images rather than text and may produce limited results." },
+      { q: "Is my file secure?", a: "Files are processed in your session and are not stored after your download." },
+    ],
+  },
+  "word-to-pdf": {
+    title: "Convert Word to PDF Online Free | SocialBureau",
+    h1: "Convert Word to PDF Online",
+    description: "Convert Microsoft Word (.docx) files to PDF online for free. Fast, accurate Word to PDF conversion with no signup and no watermark.",
+    body: [
+      "Convert Word to PDF Online transforms your Microsoft Word .docx documents into universally compatible PDF files in seconds. This ensures your document's formatting, fonts, tables, images, and layout look exactly as intended on any device, operating system, or screen size.",
+      "PDF is the standard format for sharing final documents, submitting forms, and distributing reports professionally. Our converter maintains all content fidelity during the conversion process — no watermarks, no data loss.",
+      "No account creation or software installation required. Upload your .docx file, and your PDF will be ready to download immediately. Files are processed securely and are not retained on our servers.",
+    ],
+    faqs: [
+      { q: "Is Word to PDF conversion free?", a: "Yes, completely free with no login required." },
+      { q: "Does it support .doc files?", a: "Currently only .docx format is supported. Please save your file as .docx before uploading." },
+      { q: "Will my formatting be preserved?", a: "Yes, fonts, tables, images, and layout are faithfully preserved in the PDF output." },
+      { q: "Does it work on mobile?", a: "Yes, fully compatible with all modern mobile browsers." },
+      { q: "Is my file secure?", a: "Files are processed securely and deleted after your session ends." },
+    ],
+  },
+  "pdf-to-text": {
+    title: "Extract Text from PDF Online Free | SocialBureau",
+    h1: "Extract Text from PDF Online",
+    description: "Extract raw text from any PDF document online for free. Copy or download the extracted text instantly. No signup required.",
+    body: [
+      "Extract Text from PDF Online pulls all readable text content out of any PDF document and displays it as plain, copyable text — directly in your browser. This is useful for searching document content, feeding text into writing or translation tools, and extracting data from reports without re-typing.",
+      "The tool works on PDFs with embedded text layers. All extracted text is presented in reading order across all pages, ready to copy to clipboard or download as a .txt file.",
+      "No account or software needed. Simply upload your PDF and the full extracted text appears within seconds. Files are processed securely in your session and are not stored on our servers.",
+    ],
+    faqs: [
+      { q: "Does it work with scanned PDFs?", a: "Scanned PDFs contain images rather than text layers, so text extraction will not work on them." },
+      { q: "Can I download the extracted text?", a: "Yes, a download button allows you to save the extracted content as a .txt file." },
+      { q: "Is it free?", a: "Yes, completely free with no registration needed." },
+      { q: "Will all pages be extracted?", a: "Yes, text from all pages is extracted and displayed in reading order." },
+      { q: "Is my file secure?", a: "Files are processed in your session and are not stored on our servers." },
+    ],
+  },
+  "resize-image": {
+    title: "Resize Image Online Free – Set Exact Width & Height | SocialBureau",
+    h1: "Resize Image Online",
+    description: "Resize images to exact pixel dimensions online for free. Set width and height instantly. Supports JPG, PNG, WEBP. No signup required.",
+    body: [
+      "Resize Image Online lets you scale any image to precise pixel dimensions in seconds. Enter your desired width and height in pixels, upload your image, and download the perfectly resized result immediately.",
+      "This is useful for preparing images for websites with specific dimension requirements, social media platforms, product listings, print templates, and presentations. Supports JPG, PNG, WEBP, and BMP image formats.",
+      "No account or software installation required. Enlarging an image beyond its original resolution may reduce sharpness, while downsizing generally produces clean, crisp results. Files are processed securely in your session.",
+    ],
+    faqs: [
+      { q: "Can I resize without losing quality?", a: "Downsizing generally preserves quality. Enlarging beyond the original resolution may reduce sharpness." },
+      { q: "What formats are supported?", a: "JPG, PNG, WEBP, and BMP images are all supported." },
+      { q: "Can I set completely custom dimensions?", a: "Yes, enter any width and height in pixels for a fully custom result." },
+      { q: "Is it free?", a: "Yes, completely free with no signup required." },
+      { q: "Does it preserve the aspect ratio?", a: "The tool resizes to your exact dimensions. Calculate proportional values first if you need to preserve the ratio." },
+    ],
+  },
+  "compress-image": {
+    title: "Compress Image Online Free Without Losing Quality | SocialBureau",
+    h1: "Compress Image Online",
+    description: "Reduce image file size online for free using quality control. Compress JPG and PNG images instantly. No signup or watermark.",
+    body: [
+      "Compress Image Online reduces your image file size by adjusting the JPEG quality level, making files significantly smaller for faster web page loading, leaner email attachments, or efficient cloud storage.",
+      "Set the quality value between 1 (maximum compression, smallest file) and 95 (near-original quality, larger file) to find the right balance for your use case. A quality of 70–80 is typically the sweet spot for web images. Supports JPG, PNG, and WEBP input formats.",
+      "No account or software required. Upload your image, adjust the quality, and download your compressed file instantly. No watermarks are added to compressed images.",
+    ],
+    faqs: [
+      { q: "What quality setting should I use?", a: "A quality of 70–80 is a good balance between file size reduction and visual quality for most uses." },
+      { q: "What formats are supported?", a: "JPG, PNG, and WEBP images are supported as inputs." },
+      { q: "Is it free?", a: "Yes, completely free with no login required." },
+      { q: "Will there be a watermark?", a: "No, there are no watermarks on compressed output images." },
+      { q: "How much will the file size be reduced?", a: "Results vary. Lower quality values produce smaller files. Typical reductions range from 20% to 70%." },
+    ],
+  },
+  "convert-image-format": {
+    title: "Convert Image Format Online Free – PNG, JPG, WEBP, BMP | SocialBureau",
+    h1: "Convert Image Format Online",
+    description: "Convert images between PNG, JPG, WEBP, and BMP formats online for free. Fast, instant image conversion with no signup required.",
+    body: [
+      "Convert Image Format Online lets you instantly switch your image between PNG, JPG, WEBP, and BMP formats with a single click. Whether you need a PNG for transparent backgrounds, a WEBP for faster web loading, a JPG for universal compatibility, or a BMP for legacy software requirements — our converter handles all combinations.",
+      "WEBP offers excellent compression with high visual quality and is ideal for web use. PNG supports transparency and is best for graphics. JPG is the most universally supported format for photos. BMP is an uncompressed format required by some older applications.",
+      "No software installation or account required. Upload your image, choose the target format, and download the converted file instantly.",
+    ],
+    faqs: [
+      { q: "Which formats are supported?", a: "Convert between PNG, JPG, WEBP, and BMP in any combination." },
+      { q: "Does PNG to JPG conversion remove transparency?", a: "Yes, JPG does not support transparency. Transparent areas will be filled with a white background." },
+      { q: "Is WEBP good for websites?", a: "Yes, WEBP offers excellent compression with high quality, making it ideal for web images." },
+      { q: "Is it free?", a: "Yes, completely free with no signup required." },
+      { q: "Is there a file size limit?", a: "Standard web image sizes are fully supported. Very large files may take a moment longer to process." },
+    ],
+  },
+  "rotate-image": {
+    title: "Rotate Image Online Free – Any Angle | SocialBureau",
+    h1: "Rotate Image Online",
+    description: "Rotate images by any degree online for free. Clockwise, counterclockwise, or custom angle rotation. Supports JPG, PNG, WEBP. No signup.",
+    body: [
+      "Rotate Image Online lets you rotate any image to any angle you choose. Enter a positive degree value to rotate clockwise, or a negative value for counterclockwise rotation. Common values like 90°, 180°, and 270° work perfectly for quick orientation fixes, while custom angles allow creative or precise adjustments.",
+      "This tool is useful for correcting the orientation of photos taken at an angle, preparing design assets, adjusting scanned documents that came out sideways, or creating rotated versions for presentations. Supports JPG, PNG, WEBP, and BMP image formats.",
+      "No account or software installation needed. Upload your image, enter the desired angle, and download the rotated result instantly.",
+    ],
+    faqs: [
+      { q: "Can I rotate by any angle?", a: "Yes, enter any degree value — positive for clockwise, negative for counterclockwise rotation." },
+      { q: "What formats are supported?", a: "JPG, PNG, WEBP, and BMP images are all supported." },
+      { q: "Does rotation affect image quality?", a: "Rotation at non-right-angle values may introduce minor anti-aliasing at image edges, which is normal." },
+      { q: "Is it free?", a: "Yes, completely free with no registration required." },
+      { q: "Can I rotate a PDF instead?", a: "This tool is for images only. Use the PDF Toolkit for PDF-related operations." },
+    ],
+  },
+  "grayscale-image": {
+    title: "Convert Image to Grayscale Online Free | SocialBureau",
+    h1: "Convert Image to Grayscale Online",
+    description: "Convert any image to grayscale (black and white) online for free. Instant monochrome conversion. Supports JPG, PNG, WEBP. No signup.",
+    body: [
+      "Convert Image to Grayscale Online strips all colour information from your image and outputs a clean, high-contrast monochrome PNG. This is useful for preparing print-ready designs, creating artistic black-and-white effects, meeting document requirements that call for grayscale images, or reducing the colour complexity of assets.",
+      "The conversion retains full detail, shading, and tonal contrast while removing all colour channels. The output is always a PNG file to ensure lossless quality in the grayscale result. Supports JPG, PNG, WEBP, and BMP as input formats.",
+      "No account or software installation required. Upload your image and the grayscale version is ready for download in seconds.",
+    ],
+    faqs: [
+      { q: "What does grayscale mean?", a: "Grayscale converts a colour image to shades of black, white, and grey only — removing all colour information." },
+      { q: "What format is the output?", a: "The output is always a PNG file to preserve lossless quality." },
+      { q: "What input formats are supported?", a: "JPG, PNG, WEBP, and BMP images are all supported as inputs." },
+      { q: "Is it free?", a: "Yes, completely free with no signup required." },
+      { q: "Can the grayscale be reversed?", a: "No, colour information is permanently removed during the conversion process." },
+    ],
+  },
+  "ai-image-generator": {
+    title: "AI Industrial Image Generator Online – Factory & Machinery Visuals | SocialBureau",
+    h1: "AI Industrial Image Generator",
+    description: "Generate factory floors, machinery, blueprints, and product visuals using AI. Free industrial image generator online. No signup required.",
+    body: [
+      "AI Industrial Image Generator uses advanced artificial intelligence to create photorealistic and stylised visuals of factory floors, industrial machinery, technical blueprints, and product mockups from a simple text description.",
+      "Choose from preset styles — Blueprint, Factory Floor, Isometric CAD, Product Mock, and Heavy Machinery — or write a fully custom prompt to describe your scene in detail. The AI generates a high-quality image within seconds, ready to download as a PNG file.",
+      "This tool is ideal for marketing materials, pitch decks, technical presentations, concept visualisation, and social media content — without the cost or logistics of a professional photography shoot.",
+    ],
+    faqs: [
+      { q: "What types of images can it generate?", a: "Factory floors, machinery close-ups, technical blueprints, isometric CAD renders, and industrial product mockups." },
+      { q: "Can I write a custom prompt?", a: "Yes, describe your scene in detail and the AI will generate a matching image." },
+      { q: "What are preset styles?", a: "Presets are curated style guides that shape the visual output — e.g. Blueprint, Factory Floor, Isometric CAD." },
+      { q: "Is it free?", a: "Yes, completely free to use with no account required." },
+      { q: "What format is the generated image?", a: "Generated images are provided as PNG files ready for immediate download." },
+    ],
+  },
+  "ai-prompt-engineer": {
+    title: "AI Prompt Engineer for Industrial Content – Free Online Tool | SocialBureau",
+    h1: "AI Prompt Engineer Online",
+    description: "Generate optimised AI prompts, marketing copy, technical specs, and social posts for industrial topics. Free AI prompt writer. No signup.",
+    body: [
+      "AI Prompt Engineer Online uses AI to generate high-quality, purpose-built text content for industrial and manufacturing topics. Provide a subject, choose your use case — marketing copy, technical specification, safety notice, or social media post — select a tone, and receive a fully drafted output in seconds.",
+      "This tool is especially useful for creating content ready to feed into AI image generators, or for directly using in marketing campaigns, product catalogues, internal documents, and training materials. The tone options — technical, persuasive, formal, concise — let you tailor the output precisely.",
+      "All generated content can be copied to clipboard or downloaded as a plain text file for use anywhere.",
+    ],
+    faqs: [
+      { q: "What content types can it generate?", a: "Marketing copy, technical specifications, factory image prompts, product image prompts, safety notices, and social media posts." },
+      { q: "Can I customise the tone?", a: "Yes, choose from technical, persuasive, formal, or concise tones to match your audience." },
+      { q: "Can I copy the output?", a: "Yes, use the Copy button to copy the full generated output to your clipboard." },
+      { q: "Can I download the output?", a: "Yes, download the generated content as a plain text .txt file." },
+      { q: "Is it free?", a: "Yes, completely free with no registration required." },
+    ],
+  },
+};
+
 export default function Solutions() {
   const { toolUrl } = useParams();
   const navigate = useNavigate();
@@ -304,6 +563,8 @@ export default function Solutions() {
   const currentTool = useMemo(() => {
     return currentCategory.tools.find(t => t.slug === activeToolSlug) || currentCategory.tools[0];
   }, [currentCategory, activeToolSlug]);
+
+  const seo = TOOL_SEO[currentTool?.urlSlug] || {};
 
   // Reset tool-specific states on tab change
   useEffect(() => {
@@ -559,16 +820,22 @@ export default function Solutions() {
 
   return (
     <div className="w-full min-h-screen bg-[#0A0A0A] pt-20 pb-8 px-4 sm:px-6 lg:px-8 text-white flex flex-col transition-all duration-300">
+      <Helmet>
+        <title>{seo.title || `${currentTool.name} | SocialBureau`}</title>
+        <meta name="description" content={seo.description || currentTool.desc} />
+        <link rel="canonical" href={`https://www.socialbureau.in/${currentCategory.urlPrefix}/${currentTool.urlSlug}`} />
+      </Helmet>
       <style>{scrollbarHideStyle}</style>
       <div className="max-w-7xl w-full mx-auto flex-1 flex flex-col min-h-0">
         
         {/* Title Header */}
         <div className="flex flex-col items-center text-center mb-6 sm:mb-8 shrink-0">
+          <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-1">Solutions Suite</p>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight uppercase mb-2 bg-gradient-to-r from-[#E8001A] to-[#FF3333] bg-clip-text text-transparent">
-            Solutions Suite
+            {seo.h1 || currentTool.name}
           </h1>
           <p className="text-sm sm:text-base text-white/60 font-medium">
-            Professional Tools & AI-Powered Studio
+            {currentTool.desc}
           </p>
         </div>
 
@@ -1047,6 +1314,34 @@ export default function Solutions() {
             </div>
           )}
         </div>
+
+        {/* SEO Content: Description & FAQs */}
+        {seo.body && (
+          <div className="mt-10 space-y-8 shrink-0">
+            <div className="space-y-3">
+              {seo.body.map((para, i) => (
+                <p key={i} className="text-sm text-white/55 leading-relaxed">{para}</p>
+              ))}
+            </div>
+            {seo.faqs && seo.faqs.length > 0 && (
+              <div>
+                <h2 className="text-base font-black text-white uppercase tracking-tight mb-4">Frequently Asked Questions</h2>
+                <div className="space-y-2">
+                  {seo.faqs.map((faq, i) => (
+                    <details key={i} className="group bg-white/[0.02] border border-white/10 rounded-xl overflow-hidden">
+                      <summary className="px-4 py-3 text-sm font-semibold text-white/80 cursor-pointer list-none flex items-center justify-between hover:bg-white/[0.03] transition-colors">
+                        {faq.q}
+                        <span className="text-white/40 ml-3 shrink-0 group-open:hidden">+</span>
+                        <span className="text-white/40 ml-3 shrink-0 hidden group-open:inline">−</span>
+                      </summary>
+                      <p className="px-4 pb-3 pt-1 text-sm text-white/50 leading-relaxed border-t border-white/5">{faq.a}</p>
+                    </details>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
