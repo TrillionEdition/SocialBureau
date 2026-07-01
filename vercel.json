@@ -2,6 +2,10 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/sitemap-news.xml",
+      "destination": "/api/sitemap-news.xml"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "https://13.207.200.198.nip.io/socialbureau/api/$1"
     },
