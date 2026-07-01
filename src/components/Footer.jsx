@@ -268,6 +268,14 @@ export default function Footer() {
     >
       Code of Ethics
     </Link>
+    <span className="text-gray-400">|</span>
+
+    <Link
+      to="/terms-of-service"
+      className="hover:text-gray-700 transition-colors"
+    >
+      Terms of Service
+    </Link>
   </div>
 </div>
         </motion.div>

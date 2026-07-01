@@ -207,7 +207,7 @@ const PrivacyPolicy = () => {
               deletion or data erasure may be initiated through the user
               account settings or by contacting our privacy team at
               <span className="text-[#ff0000]">
-                {" "}privacy@socialbureau.in
+                {" "}info@socialbureau.in
               </span>.
             </p>
           </section>
@@ -323,7 +323,7 @@ const PrivacyPolicy = () => {
               <p className="mt-4">
                 <strong>Email:</strong>{" "}
                 <span className="text-[#ff0000]">
-                  privacy@socialbureau.in
+                  info@socialbureau.in
                 </span>
               </p>
 
