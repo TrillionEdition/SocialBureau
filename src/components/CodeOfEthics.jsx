@@ -16,7 +16,9 @@ export default function CodeOfEthics() {
 
         <div className="prose max-w-none text-gray-800">
           <p>
-            SocialBureau operates with complete editorial independence. Our news coverage is driven solely by public interest and market relevance. We enforce a strict separation between our independent editorial team and commercial advertising/sponsored partnerships.
+            <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a> operates with complete editorial independence. Our news coverage is driven solely by public interest and market relevance. We enforce a strict separation between our independent editorial team and commercial advertising/sponsored partnerships.
           </p>
           <p>
             We explicitly prohibit 'pay-for-coverage' models disguised as standard news. Any material support, affiliate interests, brand sponsorships, or native advertising will be explicitly disclosed to the reader with visible 'Sponsored' or 'Advertisement' labels in full compliance with Google News transparency guidelines.

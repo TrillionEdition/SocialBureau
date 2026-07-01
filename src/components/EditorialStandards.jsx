@@ -16,7 +16,11 @@ export default function EditorialStandards() {
 
         <div className="prose max-w-none text-gray-800">
           <p>
-            Welcome to SocialBureau (socialbureau.in). We are committed to delivering accurate, unbiased, and timely news, analysis, and insights. Our editorial process is governed by strict professional journalistic standards. All articles published on SocialBureau are rigorously fact-checked prior to publication.
+            Welcome to <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a> (socialbureau.in). We are committed to delivering accurate, unbiased, and timely news, analysis, and insights. Our editorial process is governed by strict professional journalistic standards. All articles published on <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
+              Social<span className="text-[#ff0000]">B</span>ureau
+            </a> are rigorously fact-checked prior to publication.
           </p>
           <p>
             We rely primarily on original sources, primary public data, official press announcements, and direct statements from verified industry experts. Secondary sources are always cited and clearly hyperlinked. We utilize advanced technological tools, including AI-assisted workflows, to streamline data gathering, research, and initial drafting. However, no article is published purely through automation.
