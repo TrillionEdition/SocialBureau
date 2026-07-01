@@ -16,4 +16,8 @@
     <loc>https://www.socialbureau.in/sitemap-blog.xml</loc>
     <lastmod>2026-06-03</lastmod>
   </sitemap>
+  <sitemap>
+    <loc>https://www.socialbureau.in/sitemap-news.xml</loc>
+    <lastmod>2026-07-01</lastmod>
+  </sitemap>
 </sitemapindex>

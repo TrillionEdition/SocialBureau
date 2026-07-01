@@ -7,6 +7,7 @@ import { FaHeart, FaCalendarAlt, FaUser, FaTag, FaTrashAlt, FaEdit } from "react
 const Seo = lazy(() => import("./Seo"));
 const SchemaMarkup = lazy(() => import("./SchemaMarkup"));
 const Toast = lazy(() => import("./Toast"));
+import NewsArticleJsonLd from "./NewsArticleJsonLd";
 import { generateBlogPostingSchema } from "@/utils/schema";
 import {
   FaWhatsapp,
@@ -522,6 +523,7 @@ if (error || !post) {
           canonicalUrl={`https://www.socialbureau.in/blogs/${post.slug}`}
         />
         <SchemaMarkup data={generateBlogPostingSchema(post)} />
+        <NewsArticleJsonLd post={post} />
       </Suspense>
 
       {toast && (

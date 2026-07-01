@@ -225,7 +225,7 @@ export default function Footer() {
   </div>
 
   {/* Right */}
-  <div className="flex gap-4 flex-wrap justify-center md:justify-end">
+  <div className="flex gap-1 flex-wrap justify-center md:justify-end">
     <Link
       to="/privacy-policy"
       className="hover:text-gray-700 transition-colors"
@@ -249,6 +249,24 @@ export default function Footer() {
       className="hover:text-gray-700 transition-colors"
     >
       Cookie Policy
+    </Link>
+
+    <span className="text-gray-400">|</span>
+
+    <Link
+      to="/editorial-standards"
+      className="hover:text-gray-700 transition-colors"
+    >
+      Editorial Standards
+    </Link>
+
+    <span className="text-gray-400">|</span>
+
+    <Link
+      to="/code-of-ethics"
+      className="hover:text-gray-700 transition-colors"
+    >
+      Code of Ethics
     </Link>
   </div>
 </div>

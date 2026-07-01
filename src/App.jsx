@@ -128,6 +128,8 @@ const Niche = lazy(() => import("./components/Niche"));
 const Partnership = lazy(() => import("./components/Partnership"));
 const PerformanceMarketing = lazy(  () => import("./components/PerformanceMarketing"),);
 const PrivacyPolicy = lazy(() => import("./components/PrivacyPolicy"));
+const EditorialStandards = lazy(() => import("./components/EditorialStandards"));
+const CodeOfEthics = lazy(() => import("./components/CodeOfEthics"));
 const ProfilePage = lazy(() => import("./components/Profile"));
 const Sivaprasad = lazy(() => import("./components/Sivaprasad"));
 const SubmitBlog = lazy(() => import("./components/SubmitBlog"));
@@ -499,6 +501,8 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/disclaimer" element={<Disclaimer />} />
+            <Route path="/editorial-standards" element={<EditorialStandards />} />
+            <Route path="/code-of-ethics" element={<CodeOfEthics />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/our-works" element={<OurWork />} />
             <Route path="/achievements" element={<CompanyAchievements />} />
