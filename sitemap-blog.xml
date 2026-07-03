@@ -90,4 +90,40 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://www.socialbureau.in/blogs/why-brand-architecture-matters-more-than-marketing</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.socialbureau.in/blogs/leadership-in-business</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.socialbureau.in/blogs/the-future-of-real-estate-development-building-value-beyond</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.socialbureau.in/blogs/why-api-marketing-changes-everything-for-developers-market</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.socialbureau.in/blogs/the-secret-language-of-logos-how-branding-websites-and-marketing-build-recognition</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.socialbureau.in/blogs/socialbureau-toolkit-free-online-pdf-image-ai-tools</loc>
+    <lastmod>2026-06-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

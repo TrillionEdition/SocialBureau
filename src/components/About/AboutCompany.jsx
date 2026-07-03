@@ -117,6 +117,12 @@ export const AboutCompany = () => {
           </motion.div>
         ))}
       </div>
+      <div className="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-100">
+        <h3 className="text-[16px] font-semibold mb-2">Corporate Office</h3>
+        <p className="text-[14px] text-gray-600 mb-1">Registered Office: Kochi, Kerala, India</p>
+        <p className="text-[14px] text-gray-600">Email: <a href="mailto:info@socialbureau.in" className="text-blue-600">info@socialbureau.in</a></p>
+      </div>
+
       <a href='/blog'>
         <button className='bg-[#8D0F16] text-white pt-3 px-5 py-3 rounded-full' style={{ marginLeft: '50%' }}>OUR BLOG</button></a>
 

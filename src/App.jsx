@@ -128,6 +128,8 @@ const Niche = lazy(() => import("./components/Niche"));
 const Partnership = lazy(() => import("./components/Partnership"));
 const PerformanceMarketing = lazy(  () => import("./components/PerformanceMarketing"),);
 const PrivacyPolicy = lazy(() => import("./components/PrivacyPolicy"));
+const EditorialStandards = lazy(() => import("./components/EditorialStandards"));
+const CodeOfEthics = lazy(() => import("./components/CodeOfEthics"));
 const ProfilePage = lazy(() => import("./components/Profile"));
 const Sivaprasad = lazy(() => import("./components/Sivaprasad"));
 const SubmitBlog = lazy(() => import("./components/SubmitBlog"));
@@ -168,6 +170,7 @@ import {
   getTreasureHuntStep, 
   CLUES 
 } from "./utils/treasureHunt";
+import TermsOfService from "./components/TermsOfService";
 
 function ConditionalFooter() {
   const location = useLocation();
@@ -454,7 +457,10 @@ function App() {
             <Route path="/" element={<HomeWrapper />} />
             <Route path="/home" element={<Home />} />
             <Route path="/about" element={<About />} />
-            <Route path="/solutions" element={<Solutions />} />
+            <Route path="/solutions" element={<Navigate to="/pdf-tools/merge-pdf" replace />} />
+            <Route path="/pdf-tools/:toolUrl" element={<Solutions />} />
+            <Route path="/image-tools/:toolUrl" element={<Solutions />} />
+            <Route path="/ai-studio/:toolUrl" element={<Solutions />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/clickup" element={<Clickup />} />
             <Route
@@ -494,8 +500,11 @@ function App() {
               }
             />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/disclaimer" element={<Disclaimer />} />
+            <Route path="/editorial-standards" element={<EditorialStandards />} />
+            <Route path="/code-of-ethics" element={<CodeOfEthics />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/our-works" element={<OurWork />} />
             <Route path="/achievements" element={<CompanyAchievements />} />
