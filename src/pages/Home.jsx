@@ -12,6 +12,7 @@ import PortfolioPopup from '../components/PortfolioPopup';
 import Popup from '@/components/Popup';
 import HintCard from './TreasureHunt/HintCard';
 import { startTreasureHunt, startTreasureHuntTimer } from "../utils/treasureHunt";
+import LogoMarquee from '@/components/LogoMarquee';
 
 const handleJoinWaitingList = async ({ onResult } = {}) => {
   let email = null;
@@ -886,6 +887,7 @@ export const Home = () => {
 </video>
   </a>
 </section> */}
+<LogoMarquee />
       {/* ---- HERO SECTION ---- */}
       <section className="min-h-screen flex flex-col justify-center pt-2 sm:pt-20 relative overflow-hidden">
         {/* Hero Background Gradient Mesh */}
