@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, ChevronRight, Trophy, User, FileText, BarChart3 } from "lucide-react";
 // eslint-disable-next-line no-unused-vars
@@ -56,12 +56,11 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isGoldTheme, setIsGoldTheme] = useState(false);
   const [visible, setVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [expandedMobileCategory, setExpandedMobileCategory] = useState(null);
    const navigate = useNavigate();
   const location = useLocation();
   const { isLoggedIn, isAdmin, isPartnership, isEmployee } = useAuth();
-  
+  const lastScrollY = useRef(0);
   const isTeamPage = location.pathname.startsWith('/team');
 
   const [homeLink, setHomeLink] = useState("/");

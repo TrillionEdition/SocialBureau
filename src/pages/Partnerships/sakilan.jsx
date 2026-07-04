@@ -169,12 +169,19 @@ const Statement = () => {
           audiences across Tamil Nadu and beyond.
         </TextReveal>
         <div className="mt-8 flex justify-center">
-          <img
-            src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/SVK_0546.jpg.jpeg"
-            alt="Sakilan Padmanabhan"
-            className="w-full max-w-md rounded-sm object-cover border border-white/5 opacity-95"
-            referrerPolicy="no-referrer"
-          />
+          <a
+            href="https://www.instagram.com/p/DaVDFMDGg7K"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View Instagram post"
+          >
+            <img
+              src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/SVK_0546.jpg.jpeg"
+              alt="Sakilan Padmanabhan"
+              className="w-full max-w-md rounded-sm object-cover border border-white/5 opacity-95 hover:opacity-100 transition-opacity cursor-pointer"
+              referrerPolicy="no-referrer"
+            />
+          </a>
         </div>
       </div>
     </section>
