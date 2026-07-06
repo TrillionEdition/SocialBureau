@@ -610,15 +610,26 @@ const generateIcoFavicon = (file) => {
     img.src = URL.createObjectURL(file);
     img.onload = async () => {
       try {
-        const sizes = [16, 32, 48];
+        const sizes = [16, 32, 48, 64, 128, 256];
         const pngBuffers = [];
+        
+        // Calculate center crop square parameters to keep original aspect ratio
+        const minDim = Math.min(img.width, img.height);
+        const sx = (img.width - minDim) / 2;
+        const sy = (img.height - minDim) / 2;
         
         for (const size of sizes) {
           const canvas = document.createElement("canvas");
           canvas.width = size;
           canvas.height = size;
           const ctx = canvas.getContext("2d");
-          ctx.drawImage(img, 0, 0, size, size);
+          
+          // Apply high-quality rendering configuration
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = "high";
+          
+          // Draw center-cropped square image
+          ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
           
           const pngBlob = await new Promise(res => canvas.toBlob(res, "image/png"));
           const arrayBuffer = await pngBlob.arrayBuffer();
@@ -627,8 +638,8 @@ const generateIcoFavicon = (file) => {
         
         // Compile ICO structure
         // Header: 6 bytes
-        // Directories: 16 bytes * 3 = 48 bytes
-        const totalHeaderAndDirsSize = 6 + 48;
+        // Directories: 16 bytes * sizes.length
+        const totalHeaderAndDirsSize = 6 + 16 * sizes.length;
         let totalSize = totalHeaderAndDirsSize;
         pngBuffers.forEach(buf => totalSize += buf.length);
         
@@ -638,7 +649,7 @@ const generateIcoFavicon = (file) => {
         // Write Header
         view.setUint16(0, 0, true); // Reserved (0)
         view.setUint16(2, 1, true); // Type (1 = ICO)
-        view.setUint16(4, 3, true); // Number of images (3)
+        view.setUint16(4, sizes.length, true); // Number of images
         
         let currentOffset = totalHeaderAndDirsSize;
         
@@ -647,8 +658,12 @@ const generateIcoFavicon = (file) => {
           const dirOffset = 6 + idx * 16;
           const pngLength = pngBuffers[idx].length;
           
-          view.setUint8(dirOffset, size); // Width
-          view.setUint8(dirOffset + 1, size); // Height
+          // ICO format width and height are 1 byte each; 256 is represented as 0
+          const w = size === 256 ? 0 : size;
+          const h = size === 256 ? 0 : size;
+          
+          view.setUint8(dirOffset, w); // Width
+          view.setUint8(dirOffset + 1, h); // Height
           view.setUint8(dirOffset + 2, 0); // Color palette
           view.setUint8(dirOffset + 3, 0); // Reserved
           view.setUint16(dirOffset + 4, 1, true); // Color planes
