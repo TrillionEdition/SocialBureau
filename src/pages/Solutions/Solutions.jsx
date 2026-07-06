@@ -1544,7 +1544,31 @@ export default function Solutions() {
       setTextResult("");
       setDoneFile(null);
       try {
-        const file = files[0];
+        let file = files[0];
+        const isIco = file.name.toLowerCase().endsWith(".ico") || file.type === "image/x-icon";
+        if (isIco) {
+          const toastConvertId = toast.info("Converting ICO to PNG for AI processing...", { autoClose: 3000 });
+          file = await new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            img.onload = () => {
+              const canvas = document.createElement("canvas");
+              canvas.width = img.width || 256;
+              canvas.height = img.height || 256;
+              const ctx = canvas.getContext("2d");
+              ctx.drawImage(img, 0, 0);
+              canvas.toBlob((blob) => {
+                if (blob) {
+                  resolve(new File([blob], file.name.replace(/\.ico$/i, ".png"), { type: "image/png" }));
+                } else {
+                  reject(new Error("Failed to convert ICO to PNG"));
+                }
+              }, "image/png");
+            };
+            img.onerror = (e) => reject(new Error("Failed to load ICO image"));
+          });
+        }
+
         const toastId = toast.info("Initializing AI model... Please wait...", { autoClose: false });
         const { removeBackground } = await import("https://cdn.jsdelivr.net/npm/@imgly/background-removal/+esm");
         const blob = await removeBackground(file);
