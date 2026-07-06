@@ -462,6 +462,8 @@ function App() {
             <Route path="/pdf-tools/:toolUrl" element={<Solutions />} />
             <Route path="/image-tools" element={<Solutions />} />
             <Route path="/image-tools/:toolUrl" element={<Solutions />} />
+            <Route path="/content-tools" element={<Solutions />} />
+            <Route path="/content-tools/:toolUrl" element={<Solutions />} />
             <Route path="/ai-studio" element={<Solutions />} />
             <Route path="/ai-studio/:toolUrl" element={<Solutions />} />
             <Route path="/blog" element={<Blog />} />

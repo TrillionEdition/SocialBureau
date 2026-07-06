@@ -6,7 +6,7 @@ import {
   FileText, Combine, Scissors, ArchiveRestore, FileImage, FileType, FileSymlink,
   Crop, ImageDown, ImagePlus, RotateCw, Contrast, Sparkles, Wand2,
   Upload, Trash2, Download, Copy, Play, Loader2, FileCheck, CheckCircle, File,
-  Edit3, PenTool
+  Edit3, PenTool, Hash, AlignLeft
 } from "lucide-react";
 import { BASE_URL } from "@/utils/urls";
 import { Helmet } from "react-helmet-async";
@@ -19,6 +19,20 @@ const scrollbarHideStyle = `
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+  }
+  .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
   }
 `;
 
@@ -287,6 +301,24 @@ const TOOL_CATEGORIES = [
         multi: false,
         accept: "image/*",
         isClientRemoveBg: true,
+        params: [],
+      },
+    ],
+  },
+  {
+    key: "content",
+    label: "Content Toolkit",
+    icon: AlignLeft,
+    urlPrefix: "content-tools",
+    tools: [
+      {
+        slug: "word-counter",
+        urlSlug: "word-counter",
+        name: "Word Counter",
+        desc: "Count words, characters, sentences, paragraphs, and reading time in real-time.",
+        icon: Hash,
+        multi: false,
+        isCustomContent: true,
         params: [],
       },
     ],
@@ -1080,6 +1112,36 @@ const TOOL_SEO = {
       { q: "What formats are supported?", a: "We support PNG, JPG, and WEBP inputs. The output is always returned as a transparent PNG." }
     ]
   },
+  "content-landing": {
+    title: "Online Content Toolkit – Free Word Counter & Text Analysis | SocialBureau",
+    h1: "Content Toolkit",
+    description: "Analyze, audit, and optimize your writing online for free. Real-time metrics counting words, characters, sentences, paragraphs, and reading times dynamically.",
+    keywords: "content toolkit, online writing tools, text analyzer free, word counter online, word count tracker, free seo text utility, copy editor tools, character counter website",
+    body: [
+      "Improve your writing efficiency with SocialBureau's Content Toolkit. Designed for authors, marketers, editors, and students, these utilities help you inspect and refine copy directly inside your browser.",
+      "Get instant structural breakdowns of articles, essays, or posts, and evaluate estimated speaking and reading durations without uploading your text to any server."
+    ],
+    faqs: [
+      { q: "Is the Content Toolkit free?", a: "Yes, it is 100% free with no registration, no watermarks, and no limits." },
+      { q: "Is my text data safe?", a: "Absolutely. All processing runs locally in your browser memory. Your text is never stored or sent to any server." }
+    ]
+  },
+  "word-counter": {
+    title: "Word Counter Online Free – Live Character & Text Analysis | SocialBureau",
+    h1: "Word Counter Utility",
+    description: "Count words, characters, spaces, sentences, and paragraphs in real-time. Estimate reading and speaking times instantly. Free and secure online text analyzer.",
+    keywords: "word counter, character counter, text length analyzer, count words online free, live word counter, paragraph counter online, reading time estimator, speaking time writer tool",
+    body: [
+      "Word Counter Utility is a professional-grade text analytics dashboard. Write or paste your text directly into the editor, or upload a .txt file to immediately audit your word count metrics.",
+      "Keep track of words, characters (with and without spaces), sentences, and paragraphs in real-time. The panel also estimates the time required for a person to read (average 200 WPM) or speak (average 130 WPM) the text.",
+      "This is perfect for social media character constraints, school essays, copywriting limits, scriptwriting, and editing drafts."
+    ],
+    faqs: [
+      { q: "Can I upload text files?", a: "Yes, you can click 'Load File' or drag-and-drop any plain text (.txt) file directly into the editor." },
+      { q: "Does the counter have a character limit?", a: "No, you can paste long-form content like book chapters or articles without restrictions." },
+      { q: "How are reading and speaking times computed?", a: "Reading time is calculated at a standard average speed of 200 words per minute (WPM), and speaking time at 130 WPM." }
+    ]
+  },
 };
 
 export default function Solutions() {
@@ -1093,6 +1155,7 @@ export default function Solutions() {
     const prefix = segments[0] || "";
     if (prefix === "pdf-tools") return "pdf";
     if (prefix === "image-tools") return "image";
+    if (prefix === "content-tools") return "content";
     if (prefix === "ai-studio") return "ai";
     return "all";
   }, [location.pathname]);
@@ -1142,6 +1205,10 @@ export default function Solutions() {
             tags = ["convert"];
           } else if (tool.slug === "rotate" || tool.slug === "grayscale") {
             tags = ["adjust"];
+          }
+        } else if (cat.key === "content") {
+          if (tool.slug === "word-counter") {
+            tags = ["analysis", "writing"];
           }
         } else if (cat.key === "ai") {
           tags = ["ai", "intelligence"];
@@ -1218,6 +1285,7 @@ export default function Solutions() {
   const [aiImageResult, setAiImageResult] = useState(null);
 
   const [donePreviewUrl, setDonePreviewUrl] = useState(null);
+  const [contentText, setContentText] = useState("");
 
   useEffect(() => {
     if (doneFile && doneFile.blob) {
@@ -1255,6 +1323,7 @@ export default function Solutions() {
     if (isWorkspaceMode) return toolSeo;
     if (pathCategory === "pdf") return TOOL_SEO["pdf-landing"];
     if (pathCategory === "image") return TOOL_SEO["image-landing"];
+    if (pathCategory === "content") return TOOL_SEO["content-landing"];
     if (pathCategory === "ai") return TOOL_SEO["ai-landing"];
     return TOOL_SEO["solutions-landing"];
   }, [isWorkspaceMode, toolSeo, pathCategory]);
@@ -1270,6 +1339,11 @@ export default function Solutions() {
         return {
           bg: "bg-emerald-500/10 border border-emerald-500/20",
           text: "text-emerald-400"
+        };
+      case "content":
+        return {
+          bg: "bg-blue-500/10 border border-blue-505/20",
+          text: "text-blue-400"
         };
       case "ai":
         return {
@@ -1309,6 +1383,7 @@ export default function Solutions() {
     setTextResult("");
     setDoneFile(null);
     setAiImageResult(null);
+    setContentText("");
 
     // Reset signature fields
     setSigType("draw");
@@ -1411,6 +1486,41 @@ export default function Solutions() {
 
   const removeFile = (index) => {
     setFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleContentFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.type === "text/plain" || file.name.endsWith(".txt")) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          setContentText(event.target.result || "");
+          toast.success("Text loaded from file!");
+        };
+        reader.readAsText(file);
+      } else {
+        toast.error("Please upload a standard text (.txt) file.");
+      }
+    }
+  };
+
+  const handleContentFileDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      if (file.type === "text/plain" || file.name.endsWith(".txt")) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          setContentText(event.target.result || "");
+          toast.success("Text loaded from dropped file!");
+        };
+        reader.readAsText(file);
+      } else {
+        toast.error("Please upload a standard text (.txt) file.");
+      }
+    }
   };
 
   const triggerDownload = (blob, filename) => {
@@ -1765,6 +1875,13 @@ export default function Solutions() {
         { key: "compress", label: "Compress" },
         { key: "convert", label: "Convert" },
         { key: "adjust", label: "Adjust" },
+      ];
+    }
+    if (pathCategory === "content") {
+      return [
+        { key: "all", label: "All" },
+        { key: "analysis", label: "Analysis" },
+        { key: "writing", label: "Writing" },
       ];
     }
     return [];
@@ -2428,7 +2545,7 @@ export default function Solutions() {
                   {/* Render Extracted Text / Prompts */}
                   {!busy && textResult && (
                     <div className="w-full h-full flex flex-col min-h-0">
-                      <pre className="flex-1 whitespace-pre-wrap font-mono text-xs sm:text-sm text-white/80 bg-white/[0.02] border border-white/10 rounded-xl p-3 overflow-y-auto leading-relaxed text-left">
+                      <pre className="flex-1 whitespace-pre-wrap font-mono text-xs sm:text-sm text-white/80 bg-white/[0.02] border border-white/10 rounded-xl p-3 overflow-y-auto leading-relaxed text-left custom-scrollbar">
                         {textResult}
                       </pre>
                       {currentTool.slug === "prompt" && (
@@ -2442,6 +2559,139 @@ export default function Solutions() {
                       )}
                     </div>
                   )}
+                </div>
+              </div>
+            </div>
+          ) : currentTool.isCustomContent ? (
+            /* WORD COUNTER LAYOUT */
+            <div className="flex-1 min-h-0 grid md:grid-cols-12 gap-6 overflow-hidden">
+              {/* Left Side: Textarea and Quick Tools */}
+              <div className="md:col-span-8 flex flex-col justify-between min-h-0">
+                <div className="flex-1 flex flex-col min-h-0 space-y-3">
+                  <div className="flex items-center justify-between shrink-0">
+                    <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
+                      Enter or Paste Your Text
+                    </label>
+                    <div className="flex items-center gap-2">
+                      {/* Load file button */}
+                      <label className="flex items-center gap-1.5 px-2.5 py-1 bg-white/5 hover:bg-white/10 text-white/80 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-white/10 transition-colors cursor-pointer">
+                        <Upload size={12} />
+                        Load File (.txt)
+                        <input
+                          type="file"
+                          accept=".txt,text/plain"
+                          onChange={handleContentFileUpload}
+                          className="hidden"
+                        />
+                      </label>
+                      <button
+                        onClick={() => {
+                          setContentText("");
+                          toast.success("Editor cleared!");
+                        }}
+                        className="flex items-center gap-1.5 px-2.5 py-1 bg-red-500/10 hover:bg-red-500/20 text-[#E8001A] rounded-lg text-[10px] font-bold uppercase tracking-wider border border-red-500/20 transition-colors cursor-pointer"
+                      >
+                        <Trash2 size={12} />
+                        Clear Text
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Drop zone wrapper for textarea */}
+                  <div 
+                    onDragOver={handleDrag}
+                    onDragEnter={handleDrag}
+                    onDragLeave={handleDrag}
+                    onDrop={handleContentFileDrop}
+                    className={`flex-1 flex flex-col min-h-[300px] rounded-xl border relative overflow-hidden transition-all duration-300 ${
+                      dragActive ? "border-[#E8001A] bg-[#E8001A]/5" : "border-white/10 bg-white/[0.02]"
+                    }`}
+                  >
+                    <textarea
+                      value={contentText}
+                      onChange={(e) => setContentText(e.target.value)}
+                      placeholder="Type, paste, or drag-and-drop a text file (.txt) here to start counting..."
+                      className="w-full h-full p-4 text-sm bg-transparent border-0 text-white placeholder-white/20 focus:outline-none resize-none leading-relaxed overflow-y-auto custom-scrollbar"
+                    />
+                    
+                    {dragActive && (
+                      <div className="absolute inset-0 bg-[#0A0A0A]/85 backdrop-blur-sm flex flex-col items-center justify-center pointer-events-none border-2 border-dashed border-[#E8001A] rounded-xl">
+                        <Upload size={32} className="text-[#E8001A] mb-2 animate-bounce" />
+                        <p className="text-sm font-bold text-white uppercase tracking-wider">Drop TXT file here</p>
+                        <p className="text-[10px] text-white/50 mt-1">To extract all text content automatically</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center mt-3 shrink-0">
+                  <p className="text-[10px] text-white/40">
+                    💡 Statistics calculate automatically as you type.
+                  </p>
+                  {contentText && (
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(contentText);
+                        toast.success("Text copied to clipboard!");
+                      }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-[#E8001A] hover:bg-[#E8001A]/90 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider transition-colors cursor-pointer"
+                    >
+                      <Copy size={12} />
+                      Copy Text
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Right Side: Statistics Grid */}
+              <div className="md:col-span-4 border-l border-white/10 md:pl-6 flex flex-col justify-between shrink-0">
+                <div className="space-y-4">
+                  <h3 className="text-xs font-bold text-white/70 tracking-wider uppercase">
+                    Text Metrics
+                  </h3>
+                  
+                  {/* Grid layout */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {/* Words */}
+                    <div className="bg-white/[0.02] border border-white/5 p-3 rounded-xl flex flex-col">
+                      <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider mb-1">Words</span>
+                      <span className="text-xl font-mono font-black text-white">{contentText.trim() === "" ? 0 : contentText.trim().split(/\s+/).length}</span>
+                    </div>
+                    {/* Characters with spaces */}
+                    <div className="bg-white/[0.02] border border-white/5 p-3 rounded-xl flex flex-col">
+                      <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider mb-1">Characters</span>
+                      <span className="text-xl font-mono font-black text-white">{contentText.length}</span>
+                    </div>
+                    {/* Characters without spaces */}
+                    <div className="bg-white/[0.02] border border-white/5 p-3 rounded-xl flex flex-col">
+                      <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider mb-1">Chars (no spaces)</span>
+                      <span className="text-xl font-mono font-black text-white">{contentText.replace(/\s/g, "").length}</span>
+                    </div>
+                    {/* Sentences */}
+                    <div className="bg-white/[0.02] border border-white/5 p-3 rounded-xl flex flex-col">
+                      <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider mb-1">Sentences</span>
+                      <span className="text-xl font-mono font-black text-white">{contentText.trim() === "" ? 0 : contentText.split(/[.!?]+/).filter(s => s.trim().length > 0).length}</span>
+                    </div>
+                    {/* Paragraphs */}
+                    <div className="bg-white/[0.02] border border-white/5 p-3 rounded-xl flex flex-col">
+                      <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider mb-1">Paragraphs</span>
+                      <span className="text-xl font-mono font-black text-white">{contentText.trim() === "" ? 0 : contentText.split(/\n+/).filter(p => p.trim().length > 0).length}</span>
+                    </div>
+                    {/* Reading Time */}
+                    <div className="bg-white/[0.02] border border-white/5 p-3 rounded-xl flex flex-col col-span-2">
+                      <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider mb-1">Estimated Reading Time</span>
+                      <span className="text-sm font-bold text-emerald-400">
+                        ~{Math.ceil((contentText.trim() === "" ? 0 : contentText.trim().split(/\s+/).length) / 200)} min <span className="text-white/40 text-[10px] font-normal font-sans">(avg. 200 WPM)</span>
+                      </span>
+                    </div>
+                    {/* Speaking Time */}
+                    <div className="bg-white/[0.02] border border-white/5 p-3 rounded-xl flex flex-col col-span-2">
+                      <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider mb-1">Estimated Speaking Time</span>
+                      <span className="text-sm font-bold text-violet-400">
+                        ~{Math.ceil((contentText.trim() === "" ? 0 : contentText.trim().split(/\s+/).length) / 130)} min <span className="text-white/40 text-[10px] font-normal font-sans">(avg. 130 WPM)</span>
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
