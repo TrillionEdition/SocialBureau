@@ -265,6 +265,30 @@ const TOOL_CATEGORIES = [
         accept: "image/*",
         params: [],
       },
+      {
+        slug: "favicon",
+        urlSlug: "favicon-generator",
+        name: "Favicon Creator",
+        desc: "Generate standard multi-resolution favicon.ico file.",
+        icon: Sparkles,
+        endpoint: "/image/favicon",
+        multi: false,
+        accept: "image/*",
+        isClientFavicon: true,
+        params: [],
+      },
+      {
+        slug: "remove-bg",
+        urlSlug: "background-remover",
+        name: "AI Background Remover",
+        desc: "Remove image background automatically in your browser using AI.",
+        icon: Wand2,
+        endpoint: "/image/remove-bg",
+        multi: false,
+        accept: "image/*",
+        isClientRemoveBg: true,
+        params: [],
+      },
     ],
   },
 ];
@@ -578,6 +602,78 @@ const InteractivePdfPreview = ({
       </p>
     </div>
   );
+};
+
+const generateIcoFavicon = (file) => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+    img.onload = async () => {
+      try {
+        const sizes = [16, 32, 48];
+        const pngBuffers = [];
+        
+        for (const size of sizes) {
+          const canvas = document.createElement("canvas");
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, size, size);
+          
+          const pngBlob = await new Promise(res => canvas.toBlob(res, "image/png"));
+          const arrayBuffer = await pngBlob.arrayBuffer();
+          pngBuffers.push(new Uint8Array(arrayBuffer));
+        }
+        
+        // Compile ICO structure
+        // Header: 6 bytes
+        // Directories: 16 bytes * 3 = 48 bytes
+        const totalHeaderAndDirsSize = 6 + 48;
+        let totalSize = totalHeaderAndDirsSize;
+        pngBuffers.forEach(buf => totalSize += buf.length);
+        
+        const icoBuffer = new ArrayBuffer(totalSize);
+        const view = new DataView(icoBuffer);
+        
+        // Write Header
+        view.setUint16(0, 0, true); // Reserved (0)
+        view.setUint16(2, 1, true); // Type (1 = ICO)
+        view.setUint16(4, 3, true); // Number of images (3)
+        
+        let currentOffset = totalHeaderAndDirsSize;
+        
+        // Write Directories
+        sizes.forEach((size, idx) => {
+          const dirOffset = 6 + idx * 16;
+          const pngLength = pngBuffers[idx].length;
+          
+          view.setUint8(dirOffset, size); // Width
+          view.setUint8(dirOffset + 1, size); // Height
+          view.setUint8(dirOffset + 2, 0); // Color palette
+          view.setUint8(dirOffset + 3, 0); // Reserved
+          view.setUint16(dirOffset + 4, 1, true); // Color planes
+          view.setUint16(dirOffset + 6, 32, true); // Bits per pixel
+          view.setUint32(dirOffset + 8, pngLength, true); // Image size
+          view.setUint32(dirOffset + 12, currentOffset, true); // Offset
+          
+          currentOffset += pngLength;
+        });
+        
+        // Write Image Data
+        const finalArray = new Uint8Array(icoBuffer);
+        let writeOffset = totalHeaderAndDirsSize;
+        pngBuffers.forEach(buf => {
+          finalArray.set(buf, writeOffset);
+          writeOffset += buf.length;
+        });
+        
+        resolve(new Blob([finalArray], { type: "image/x-icon" }));
+      } catch (err) {
+        reject(err);
+      }
+    };
+    img.onerror = reject;
+  });
 };
 
 const TOOL_SEO = {
@@ -935,6 +1031,39 @@ const TOOL_SEO = {
       { q: "How long does AI image generation take?", a: "Typically, generating a custom photorealistic or CAD industrial visual takes between 5 to 10 seconds." },
       { q: "Can I download the AI-drafted prompts?", a: "Yes, you can copy the drafted prompts directly to your clipboard or download them as a standard text file." },
     ],
+  },
+  "favicon-generator": {
+    title: "Favicon Creator Free – Generate favicon.ico Instantly | SocialBureau",
+    h1: "Favicon Creator Online",
+    description: "Create standard favicon.ico files online for free from JPG, PNG, or WEBP images. Multi-resolution support for 16x16, 32x32, and 48x48 sizes. No signup required.",
+    keywords: "favicon generator, favicon creator, make favicon online, generate favicon.ico, convert png to ico, convert jpg to ico, free online favicon creator, multi-resolution ico generator, website icon maker",
+    body: [
+      "Favicon Creator Online is a free utility from SocialBureau to generate standard web favicons instantly. Upload any image — JPG, PNG, BMP, or WEBP — and compile a custom favicon.ico file containing 16x16, 32x32, and 48x48 layer versions in a single click.",
+      "A favicon is crucial for branding, establishing credibility, and improving user navigation. It is displayed in browser tabs, address bars, bookmarks list, and mobile home screen shortcuts.",
+      "Our tool runs 100% locally in your browser session using Canvas, ensuring total data privacy. Your files are never uploaded to any server."
+    ],
+    faqs: [
+      { q: "What sizes are included in the .ico file?", a: "The generated favicon.ico includes standard 16x16, 32x32, and 48x48 pixel resolutions." },
+      { q: "Is it free to use?", a: "Yes, 100% free with no limits and no signup required." },
+      { q: "Does the generator upload my image?", a: "No. The entire favicon generation and compilation happens client-side in your browser for complete privacy." },
+    ]
+  },
+  "background-remover": {
+    title: "AI Background Remover Free – Remove Image Background | SocialBureau",
+    h1: "AI Background Remover",
+    description: "Remove background from images online for free using AI. 100% local, safe, and private processing in your browser. No signup required.",
+    keywords: "remove background online, bg remover free, ai background remover, delete background from photo, transparent background generator, image background eraser online, automatic background removal free",
+    body: [
+      "AI Background Remover allows you to instantly isolate subjects and strip backgrounds from photos using local neural network processing. The tool outputs a clean, transparent PNG format with high edge fidelity.",
+      "Perfect for product listings, marketing banners, portrait headshots, graphic designs, and profile pictures. Since it runs client-side using WebAssembly, it does not send your photos to external APIs or servers.",
+      "The tool downloads the AI model locally on the first run, which may take a few seconds. Subsequent runs use the cached model and execute near-instantly."
+    ],
+    faqs: [
+      { q: "How much does it cost?", a: "It is completely free with no limits and no hidden costs." },
+      { q: "Is my image private?", a: "Yes. Processing is run 100% locally in your browser. Your images never leave your machine." },
+      { q: "Why is the first run slow?", a: "The first run downloads the neural network model (~30MB) to your browser cache. Subsequent runs are much faster." },
+      { q: "What formats are supported?", a: "We support PNG, JPG, and WEBP inputs. The output is always returned as a transparent PNG." }
+    ]
   },
 };
 
@@ -1369,6 +1498,53 @@ export default function Solutions() {
 
   // Run the job
   const handleRun = async () => {
+    if (currentTool.isClientFavicon) {
+      if (!files.length) {
+        toast.error("Please upload an image first");
+        return;
+      }
+      setBusy(true);
+      setTextResult("");
+      setDoneFile(null);
+      try {
+        const file = files[0];
+        const blob = await generateIcoFavicon(file);
+        setDoneFile({ blob, filename: "favicon.ico", size: blob.size });
+        toast.success("Favicon generated successfully!");
+      } catch (err) {
+        console.error("Favicon generation failed:", err);
+        toast.error("Failed to generate favicon. Make sure file is a valid image.");
+      } finally {
+        setBusy(false);
+      }
+      return;
+    }
+
+    if (currentTool.isClientRemoveBg) {
+      if (!files.length) {
+        toast.error("Please upload an image first");
+        return;
+      }
+      setBusy(true);
+      setTextResult("");
+      setDoneFile(null);
+      try {
+        const file = files[0];
+        const toastId = toast.info("Initializing AI model... Please wait...", { autoClose: false });
+        const { removeBackground } = await import("https://cdn.jsdelivr.net/npm/@imgly/background-removal/+esm");
+        const blob = await removeBackground(file);
+        toast.dismiss(toastId);
+        setDoneFile({ blob, filename: "removed-background.png", size: blob.size });
+        toast.success("Background removed successfully!");
+      } catch (err) {
+        console.error("Background removal failed:", err);
+        toast.error("Failed to remove background. Make sure your browser supports WebGL.");
+      } finally {
+        setBusy(false);
+      }
+      return;
+    }
+
     if (currentTool.isCustomSign) {
       await handleSignPdf();
       return;
