@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, ChevronRight, Trophy, User, FileText, BarChart3 } from "lucide-react";
 // eslint-disable-next-line no-unused-vars
@@ -56,12 +56,11 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isGoldTheme, setIsGoldTheme] = useState(false);
   const [visible, setVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [expandedMobileCategory, setExpandedMobileCategory] = useState(null);
    const navigate = useNavigate();
   const location = useLocation();
   const { isLoggedIn, isAdmin, isPartnership, isEmployee } = useAuth();
-  
+  const lastScrollY = useRef(0);
   const isTeamPage = location.pathname.startsWith('/team');
 
   const [homeLink, setHomeLink] = useState("/");
@@ -118,100 +117,136 @@ export default function Navbar() {
   ],
 },
     {
-      label: "Services",
-      href: "#",
-      columns: [
+  label: "Services",
+  href: "#",
+  columns: [
+    {
+      title: "Marketing Services",
+      items: [
         {
-          title: "MARKETING SERVICES",
-          items: [
-            { label: "API Marketing", href: "/api-marketing-agency-in-kochi" },
-            {
-              label: "Performance Marketing",
-              href: "/performance-marketing-agency-in-kochi",
-            },
-            {
-              label: "Niche Marketing",
-              href: "/niche-marketing-agency-in-kochi",
-            },
-            {
-              label: "Content Marketing",
-              href: "/content-marketing-agency-in-kochi",
-            },
-            {
-              label: "AdTech Marketing",
-              href: "/adTech-marketing-agency-in-kochi",
-            },
-          ],
+          label: "Performance Marketing",
+          href: "/performance-marketing-agency-in-kochi",
         },
         {
-          title: "Design & Tech",
-          items: [
-            {
-              label: "Web Development",
-              href: "/web-development-agency-in-kochi",
-            },
-          ],
+          label: "API Marketing",
+          href: "/api-marketing-agency-in-kochi",
         },
         {
-          title: "Performance Marketing",
-          items: [
-            {
-              label: "Content Marketing Blog",
-              href: "https://socialbureau.in/blogs/why-content-marketing-is-essential-for-seo-success-in-2026",
-            },
-            {
-              label: "Niche Brands and Build",
-              href: "https://socialbureau.in/blogs/niche-brands-and-build",
-            },
-            {
-              label: "Dark Social in Digital",
-              href: "https://socialbureau.in/blogs/the-hidden-power-of-dark-social-in-digital",
-            },
-            {
-              label: "Niche Marketing for Startups",
-              href: "https://socialbureau.in/blogs/niche-marketing-for-startups",
-            },
-            {
-              label: "Digital Marketing Belongs to Bold Ideas",
-              href: "https://socialbureau.in/blogs/digital-marketing-belongs-to-bold-ideas",
-            },
-            {
-              label: "Where ROI Meets Creative Flow",
-              href: "https://socialbureau.in/blogs/where-roi-meets-creative-flow",
-            },
-          ],
+          label: "Niche Marketing",
+          href: "/niche-marketing-agency-in-kochi",
         },
         {
-          title: "More Services",
-          items: [
-            {
-              label: "Conversion & Sales Campaigns",
-              href: "/blogs/conversion-sales-campaigns",
-            },
-            {
-              label: "Retargeting & Remarketing",
-              href: "/blogs/retargeting-remarketing-the-complete-guide-to-recover-los",
-            },
-            {
-              label: "Affiliate Marketing",
-              href: "/blogs/affiliate-marketing-the-ultimate-guide-to-building-passive-",
-            },
-            {
-              label: "Landing Page & Funnel Optimization",
-              href: "/blogs/landing-page-funnel-optimization-the-ultimate-guide-to-in",
-            },
-            {
-              label: "Conversion Rate Optimization (CRO)",
-              href: "/blogs/conversion-rate-optimization-cro-the-complete-guide-to-in",
-            },
-            {
-              label: "Marketing Automation",
-              href: "/blogs/marketing-automation",
-            },
-          ],
+          label: "Content Marketing",
+          href: "/content-marketing-agency-in-kochi",
+        },
+        {
+          label: "AdTech Marketing",
+          href: "/adtech-marketing-agency-in-kochi",
         },
       ],
     },
+
+    {
+      title: "Advertising Services",
+      items: [
+        {
+          label: "Google Ads Management",
+          href: "/google-ads-agency-in-kochi",
+        },
+        {
+          label: "Meta Ads Management",
+          href: "/meta-ads-agency-in-kochi",
+        },
+        {
+          label: "LinkedIn Ads",
+          href: "/linkedin-ads-agency-in-kochi",
+        },
+        {
+          label: "YouTube Advertising",
+          href: "/youtube-ads-agency-in-kochi",
+        },
+        {
+          label: "Amazon Ads",
+          href: "/amazon-ads-agency-in-kochi",
+        },
+        {
+          label: "Programmatic Advertising",
+          href: "/programmatic-advertising-agency-in-kochi",
+        },
+      ],
+    },
+
+    {
+      title: "Development & Analytics",
+      items: [
+        {
+          label: "Web Development",
+          href: "/web-development-agency-in-kochi",
+        },
+        {
+          label: "Marketing Automation",
+          href: "/marketing-automation-agency-in-kochi",
+        },
+        {
+          label: "Conversion Rate Optimization (CRO)",
+          href: "/cro-agency-in-kochi",
+        },
+        {
+          label: "Landing Page Optimization",
+          href: "/landing-page-optimization",
+        },
+        {
+          label: "Analytics & Reporting",
+          href: "/marketing-analytics-dashboard",
+        },
+      ],
+    },
+
+    {
+      title: "Platforms We Work With",
+      items: [
+        { label: "Google Marketing Platform", href: "#" },
+        { label: "Meta Business Manager", href: "#" },
+        { label: "Google Ads MCC", href: "#" },
+        { label: "DV360", href: "#" },
+        { label: "Amazon DSP", href: "#" },
+        { label: "The Trade Desk", href: "#" },
+        { label: "StackAdapt", href: "#" },
+        { label: "Google Analytics 4 (GA4)", href: "#" },
+        { label: "Google Tag Manager", href: "#" },
+        { label: "Microsoft Clarity", href: "#" },
+      ],
+    },
+
+    {
+      title: "Streaming & OTT Advertising",
+      items: [
+        { label: "JioHotstar Ads", href: "#" },
+        { label: "Netflix Ads", href: "#" },
+        { label: "Amazon Prime Video Ads", href: "#" },
+        { label: "Sony LIV Ads", href: "#" },
+        { label: "ZEE5 Ads", href: "#" },
+        { label: "Spotify Advertising", href: "#" },
+        { label: "Apple Podcasts Sponsorships", href: "#" },
+        { label: "Gaana Ads", href: "#" },
+        { label: "JioSaavn Ads", href: "#" },
+      ],
+    },
+
+    {
+      title: "Retail & Commerce Media",
+      items: [
+        { label: "Amazon Ads", href: "#" },
+        { label: "Flipkart Ads", href: "#" },
+        { label: "Myntra Ads", href: "#" },
+        { label: "Blinkit Ads", href: "#" },
+        { label: "Zepto Ads", href: "#" },
+        { label: "Swiggy Ads", href: "#" },
+        { label: "Zomato Ads", href: "#" },
+      ],
+    },
+  ],
+},
     {
       label: "Company",
       columns: [
