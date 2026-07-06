@@ -2545,7 +2545,10 @@ export default function Solutions() {
                   {/* Render Extracted Text / Prompts */}
                   {!busy && textResult && (
                     <div className="w-full h-full flex flex-col min-h-0">
-                      <pre className="flex-1 whitespace-pre-wrap font-mono text-xs sm:text-sm text-white/80 bg-white/[0.02] border border-white/10 rounded-xl p-3 overflow-y-auto leading-relaxed text-left custom-scrollbar">
+                      <pre 
+                        data-lenis-prevent
+                        className="flex-1 whitespace-pre-wrap font-mono text-xs sm:text-sm text-white/80 bg-white/[0.02] border border-white/10 rounded-xl p-3 overflow-y-auto leading-relaxed text-left custom-scrollbar"
+                      >
                         {textResult}
                       </pre>
                       {currentTool.slug === "prompt" && (
@@ -2611,6 +2614,7 @@ export default function Solutions() {
                       value={contentText}
                       onChange={(e) => setContentText(e.target.value)}
                       placeholder="Type, paste, or drag-and-drop a text file (.txt) here to start counting..."
+                      data-lenis-prevent
                       className="w-full h-full p-4 text-sm bg-transparent border-0 text-white placeholder-white/20 focus:outline-none resize-none leading-relaxed overflow-y-auto custom-scrollbar"
                     />
                     
