@@ -457,9 +457,12 @@ function App() {
             <Route path="/" element={<HomeWrapper />} />
             <Route path="/home" element={<Home />} />
             <Route path="/about" element={<About />} />
-            <Route path="/solutions" element={<Navigate to="/pdf-tools/merge-pdf" replace />} />
+            <Route path="/solutions" element={<Solutions />} />
+            <Route path="/pdf-tools" element={<Solutions />} />
             <Route path="/pdf-tools/:toolUrl" element={<Solutions />} />
+            <Route path="/image-tools" element={<Solutions />} />
             <Route path="/image-tools/:toolUrl" element={<Solutions />} />
+            <Route path="/ai-studio" element={<Solutions />} />
             <Route path="/ai-studio/:toolUrl" element={<Solutions />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/clickup" element={<Clickup />} />
