@@ -6,7 +6,7 @@ import {
   FileText, Combine, Scissors, ArchiveRestore, FileImage, FileType, FileSymlink,
   Crop, ImageDown, ImagePlus, RotateCw, Contrast, Sparkles, Wand2,
   Upload, Trash2, Download, Copy, Play, Loader2, FileCheck, CheckCircle, File,
-  Edit3, PenTool, Hash, AlignLeft
+  Edit3, PenTool, Hash, AlignLeft, Heading1, MessageSquare
 } from "lucide-react";
 import { BASE_URL } from "@/utils/urls";
 import { Helmet } from "react-helmet-async";
@@ -319,6 +319,50 @@ const TOOL_CATEGORIES = [
         icon: Hash,
         multi: false,
         isCustomContent: true,
+        params: [],
+      },
+      {
+        slug: "blog-title",
+        urlSlug: "blog-title-generator",
+        name: "Blog Title Generator",
+        desc: "Generate high-CTR, SEO-optimized blog post titles and headlines using AI.",
+        icon: Heading1,
+        multi: false,
+        isCustomGenerator: true,
+        generatorType: "blog-title",
+        params: [],
+      },
+      {
+        slug: "meta-desc",
+        urlSlug: "meta-description-generator",
+        name: "Meta Description Generator",
+        desc: "Generate professional SEO page meta descriptions with optimal length limits using AI.",
+        icon: FileText,
+        multi: false,
+        isCustomGenerator: true,
+        generatorType: "meta-desc",
+        params: [],
+      },
+      {
+        slug: "caption",
+        urlSlug: "caption-generator",
+        name: "Caption Generator",
+        desc: "Draft highly engaging social media captions and hooks tailored for any platform.",
+        icon: MessageSquare,
+        multi: false,
+        isCustomGenerator: true,
+        generatorType: "caption",
+        params: [],
+      },
+      {
+        slug: "hashtag",
+        urlSlug: "hashtag-generator",
+        name: "Hashtag Generator",
+        desc: "Generate high-visibility social hashtags categorized by volume and relevance.",
+        icon: Hash,
+        multi: false,
+        isCustomGenerator: true,
+        generatorType: "hashtag",
         params: [],
       },
     ],
@@ -1142,6 +1186,66 @@ const TOOL_SEO = {
       { q: "How are reading and speaking times computed?", a: "Reading time is calculated at a standard average speed of 200 words per minute (WPM), and speaking time at 130 WPM." }
     ]
   },
+  "blog-title-generator": {
+    title: "Blog Title Generator Free – AI Headline & Catchy Title Maker | SocialBureau",
+    h1: "Blog Title Generator",
+    description: "Generate highly clickable, catchy, and SEO-optimized blog titles, headlines, and subheadings instantly using AI. Free headline writer tool.",
+    keywords: "blog title generator, headline generator, catchy title maker, clickbait titles free, seo title creator online, blog headline ideas, free content writer tools",
+    body: [
+      "Blog Title Generator is a free AI-powered writing assistant designed to draft high-CTR blog headlines instantly.",
+      "Just input your target niche or article topic, optional target keywords, select your preferred tone, and let our engine output 10 creative title hooks categorized across diverse styles.",
+      "Perfect for bloggers, copywriters, SEO managers, and social content creators looking to maximize engagement."
+    ],
+    faqs: [
+      { q: "How many blog titles are generated at once?", a: "Each search generates 10 distinct title ideas matching listicles, ultimate guides, question hooks, and intriguing formats." },
+      { q: "Is the Blog Title Generator free?", a: "Yes, it is 100% free with no daily limits or registration required." }
+    ]
+  },
+  "meta-description-generator": {
+    title: "Meta Description Generator Free – SEO Snip Maker | SocialBureau",
+    h1: "Meta Description Generator",
+    description: "Generate professional SEO page meta descriptions online for free. Custom AI drafts compelling snippets between 120-160 characters to maximize CTR.",
+    keywords: "meta description generator, seo meta tags writer, website description maker, online snippet writer, free seo description generator, page description optimizer",
+    body: [
+      "Meta Description Generator is a specialized SEO copywriting tool.",
+      "Create high-performance meta descriptions that search engines love and users click on. The generator outputs 5 unique page descriptions that strictly adhere to the optimal length of 120 to 160 characters.",
+      "Avoid search console clipping errors while maintaining brand tone and target keywords seamlessly."
+    ],
+    faqs: [
+      { q: "What is the character limit for meta descriptions?", a: "Search engines typically show up to 155-160 characters. Our tool strictly keeps results within this safe margin." },
+      { q: "Can I input keywords?", a: "Yes. Adding your primary keywords ensures the AI seamlessly weaves them in for better SEO relevance." }
+    ]
+  },
+  "caption-generator": {
+    title: "Caption Generator Free – Social Media Hook & Post Writer | SocialBureau",
+    h1: "Social Caption Generator",
+    description: "Draft highly engaging social captions, taglines, and hooks for LinkedIn, Instagram, and Twitter using AI. Free social post copywriter.",
+    keywords: "caption generator, instagram caption maker, linkedin post generator, twitter hook creator, social media post writer, free brand caption tool online",
+    body: [
+      "Draft conversion-optimized social media posts with SocialBureau's Caption Generator.",
+      "Select your target platform (LinkedIn, Twitter, Instagram, or Generic), type in your main post concept, set the tone, and receive tailored captions optimized with proper spacing, emojis, and hashtags.",
+      "Save hours of copywriting blocks and build consistent social media presence across channels."
+    ],
+    faqs: [
+      { q: "Which social platforms are supported?", a: "We support LinkedIn, Twitter/X, Instagram, and a versatile generic option." },
+      { q: "Are hashtags included?", a: "Yes, each output includes platform-native hashtags appended to the end of the post copy." }
+    ]
+  },
+  "hashtag-generator": {
+    title: "Hashtag Generator Free – Viral Niche Hash Tag Finder | SocialBureau",
+    h1: "AI Hashtag Generator",
+    description: "Find viral, relevant, and high-engagement hashtags online for free. Categorized lists matching popular, niche, and long-tail topics.",
+    keywords: "hashtag generator, find hashtags online, free instagram tags finder, tiktok hashtag generator, seo niche tags creator, viral hashtags tracker free",
+    body: [
+      "Reach larger audiences and bypass algorithm bottlenecks using the Hashtag Generator.",
+      "Enter your content topic or niche, and the AI will generate 30 high-volume, niche-targeted, and long-tail hashtags.",
+      "Using structured categories makes it simple to mix broad tags with low-competition niche tags for optimal organic reach."
+    ],
+    faqs: [
+      { q: "How many hashtags does the generator produce?", a: "It generates 30 relevant hashtags organized by search volume tiers (High, Medium, and Low volume)." },
+      { q: "Can I copy them easily?", a: "Yes, you can copy the full list to your clipboard or download them as a standard text file in one click." }
+    ]
+  },
 };
 
 export default function Solutions() {
@@ -1209,6 +1313,10 @@ export default function Solutions() {
         } else if (cat.key === "content") {
           if (tool.slug === "word-counter") {
             tags = ["analysis", "writing"];
+          } else if (["blog-title", "meta-desc", "caption"].includes(tool.slug)) {
+            tags = ["writing"];
+          } else if (tool.slug === "hashtag") {
+            tags = ["analysis"];
           }
         } else if (cat.key === "ai") {
           tags = ["ai", "intelligence"];
@@ -1286,6 +1394,11 @@ export default function Solutions() {
 
   const [donePreviewUrl, setDonePreviewUrl] = useState(null);
   const [contentText, setContentText] = useState("");
+  const [genTopic, setGenTopic] = useState("");
+  const [genTone, setGenTone] = useState("professional");
+  const [genKeywords, setGenKeywords] = useState("");
+  const [genPlatform, setGenPlatform] = useState("generic");
+  const [genOutput, setGenOutput] = useState("");
 
   useEffect(() => {
     if (doneFile && doneFile.blob) {
@@ -1384,6 +1497,11 @@ export default function Solutions() {
     setDoneFile(null);
     setAiImageResult(null);
     setContentText("");
+    setGenTopic("");
+    setGenTone("professional");
+    setGenKeywords("");
+    setGenPlatform("generic");
+    setGenOutput("");
 
     // Reset signature fields
     setSigType("draw");
@@ -1708,6 +1826,11 @@ export default function Solutions() {
       return;
     }
 
+    if (currentTool.isCustomGenerator) {
+      await handleGenerateContent();
+      return;
+    }
+
     if (!files.length) {
       toast.error("Please upload a file first");
       return;
@@ -1831,6 +1954,33 @@ export default function Solutions() {
     } catch (e) {
       const msg = e?.response?.data?.message || e?.message || "Drafting failed";
       toast.error(typeof msg === "string" ? msg : "Drafting failed");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  // Generate Content
+  const handleGenerateContent = async () => {
+    if (!genTopic.trim()) {
+      toast.error("Please enter a topic or keyword first");
+      return;
+    }
+    setBusy(true);
+    setGenOutput("");
+    try {
+      const res = await axios.post(`${BASE_URL}/api/ai/content-generator`, {
+        type: currentTool.generatorType,
+        topic: genTopic,
+        tone: genTone,
+        keywords: genKeywords,
+        platform: genPlatform,
+      });
+      setGenOutput(res.data.output || "");
+      toast.success("Content generated successfully!");
+    } catch (e) {
+      console.error(e);
+      const msg = e.response?.data?.message || e.message || "Failed to generate content";
+      toast.error(typeof msg === "string" ? msg : "Failed to generate content");
     } finally {
       setBusy(false);
     }
@@ -2696,6 +2846,173 @@ export default function Solutions() {
                       </span>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          ) : currentTool.isCustomGenerator ? (
+            /* CONTENT GENERATORS LAYOUT */
+            <div className="flex-1 min-h-0 grid md:grid-cols-12 gap-6 overflow-hidden">
+              {/* Left Side: Inputs */}
+              <div className="md:col-span-5 flex flex-col justify-between overflow-y-auto pr-1 pb-1 custom-scrollbar" data-lenis-prevent>
+                <div className="space-y-4">
+                  {/* Topic / Prompt */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
+                      {currentTool.slug === "hashtag" ? "Hashtag Topic / Niche" : "Topic / Post Idea"}
+                    </label>
+                    <textarea
+                      value={genTopic}
+                      onChange={(e) => setGenTopic(e.target.value)}
+                      rows={3}
+                      className="w-full bg-white/[0.03] border border-white/10 rounded-xl p-3 text-sm text-white placeholder-white/30 focus:border-[#E8001A] focus:bg-white/[0.05] focus:outline-none leading-relaxed transition-all"
+                      placeholder={
+                        currentTool.slug === "blog-title"
+                          ? "Enter what your blog post is about (e.g., remote team productivity tools)..."
+                          : currentTool.slug === "meta-desc"
+                          ? "Enter the page topic or summary (e.g., free PDF converter suite)..."
+                          : currentTool.slug === "caption"
+                          ? "Enter the caption subject (e.g., launching our new design system)..."
+                          : "Enter keywords or niche topic (e.g., mechanical engineering, automation)..."
+                      }
+                    />
+                  </div>
+
+                  {/* Target Keywords */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
+                      Target Keywords (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      value={genKeywords}
+                      onChange={(e) => setGenKeywords(e.target.value)}
+                      className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2 text-xs font-semibold text-white placeholder-white/30 focus:border-[#E8001A] focus:outline-none"
+                      placeholder="e.g., productivity, remote work, pdf merger"
+                    />
+                  </div>
+
+                  {/* Platform selection (only for caption-generator) */}
+                  {currentTool.slug === "caption" && (
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
+                        Social Platform
+                      </label>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        {["generic", "linkedin", "twitter", "instagram"].map((p) => (
+                          <button
+                            key={p}
+                            type="button"
+                            onClick={() => setGenPlatform(p)}
+                            className={`py-1.5 text-[10px] font-bold uppercase rounded-lg border transition-all cursor-pointer ${
+                              genPlatform === p
+                                ? "border-[#E8001A] text-[#E8001A] bg-[#E8001A]/20"
+                                : "border-white/10 text-white/60 bg-white/[0.03] hover:bg-white/[0.08]"
+                            }`}
+                          >
+                            {p === "generic" && "Generic"}
+                            {p === "linkedin" && "LinkedIn"}
+                            {p === "twitter" && "Twitter/X"}
+                            {p === "instagram" && "Instagram"}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Tone selection */}
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
+                      Writing Tone
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {["professional", "creative", "persuasive", "casual", "technical"].map((t) => (
+                        <button
+                          key={t}
+                          type="button"
+                          onClick={() => setGenTone(t)}
+                          className={`px-3 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-lg border transition-all cursor-pointer ${
+                            genTone === t
+                              ? "border-[#E8001A] text-[#E8001A] bg-[#E8001A]/20"
+                              : "border-white/10 text-white/60 bg-white/[0.03] hover:bg-white/[0.08]"
+                          }`}
+                        >
+                          {t}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleRun}
+                  disabled={busy}
+                  className="w-full flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-[#E8001A] to-[#FF3333] hover:from-[#E8001A]/90 hover:to-[#FF3333]/90 text-white rounded-xl font-bold text-xs uppercase tracking-wider disabled:opacity-50 transition-all shadow-lg shadow-[#E8001A]/30 cursor-pointer mt-4"
+                >
+                  {busy ? (
+                    <Loader2 size={14} className="animate-spin" />
+                  ) : (
+                    <Sparkles size={14} />
+                  )}
+                  {busy ? "Generating Content..." : "Generate with AI"}
+                </button>
+              </div>
+
+              {/* Right Side: Output Results */}
+              <div className="md:col-span-7 border-l border-white/10 md:pl-6 flex flex-col justify-between overflow-hidden">
+                <div className="flex items-center justify-between mb-3 shrink-0">
+                  <span className="text-xs font-bold text-white/70 tracking-wider uppercase">
+                    AI Output Preview
+                  </span>
+                  {genOutput && (
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(genOutput);
+                        toast.success("Output copied to clipboard!");
+                      }}
+                      className="flex items-center gap-1 text-xs text-[#E8001A] font-bold uppercase hover:text-[#FF3333] transition-colors cursor-pointer"
+                    >
+                      <Copy size={14} />
+                      Copy Output
+                    </button>
+                  )}
+                </div>
+
+                <div className={`flex-1 bg-white/[0.02] rounded-2xl border border-white/10 flex flex-col overflow-hidden p-4 relative min-h-0 ${
+                  (!busy && !genOutput) ? "justify-center items-center" : ""
+                }`}>
+                  {!busy && !genOutput && (
+                    <div className="text-center text-white/40">
+                      <div className="w-10 h-10 bg-white/[0.05] shadow-sm border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-3 text-white/30">
+                        <Sparkles size={20} />
+                      </div>
+                      <p className="text-xs font-bold uppercase tracking-wider">Awaiting AI Input Params</p>
+                    </div>
+                  )}
+
+                  {busy && (
+                    <div className="text-center text-white/60">
+                      <Loader2 size={32} className="animate-spin text-[#E8001A] mx-auto mb-3" />
+                      <p className="text-xs font-bold uppercase tracking-wider">Generating copy via neural network...</p>
+                    </div>
+                  )}
+
+                  {!busy && genOutput && (
+                    <div className="w-full h-full flex flex-col min-h-0">
+                      <pre 
+                        data-lenis-prevent
+                        className="flex-1 whitespace-pre-wrap font-mono text-xs sm:text-sm text-white/80 bg-white/[0.02] border border-white/10 rounded-xl p-3 overflow-y-auto leading-relaxed text-left custom-scrollbar"
+                      >
+                        {genOutput}
+                      </pre>
+                      <button
+                        onClick={() => triggerDownload(new Blob([genOutput], { type: "text/plain" }), `${currentTool.slug}-result.txt`)}
+                        className="mt-2.5 self-end flex items-center gap-1.5 text-xs text-emerald-500 font-bold uppercase hover:text-emerald-400 transition-colors cursor-pointer"
+                      >
+                        <Download size={14} />
+                        Download as TXT file
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
