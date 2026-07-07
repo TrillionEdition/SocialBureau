@@ -167,6 +167,32 @@ export default function ContactSection() {
         </h2>
 
         <div className="bg-[#ffffffc1] p-6 rounded-lg shadow-lg space-y-4">
+          {/* Tab Switcher */}
+          <div className="flex border-b border-gray-200 pb-2 mb-4">
+            <button
+              type="button"
+              onClick={() => setActiveTab("meeting")}
+              className={`flex-1 pb-2 text-xs font-bold uppercase tracking-widest transition-all cursor-pointer ${
+                activeTab === "meeting"
+                  ? "border-b-2 border-[#ff0000] text-black"
+                  : "text-gray-400 hover:text-gray-600"
+              }`}
+            >
+              Schedule Session
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab("message")}
+              className={`flex-1 pb-2 text-xs font-bold uppercase tracking-widest transition-all cursor-pointer ${
+                activeTab === "message"
+                  ? "border-b-2 border-[#ff0000] text-black"
+                  : "text-gray-400 hover:text-gray-600"
+              }`}
+            >
+              Send Message
+            </button>
+          </div>
+
           <AnimatePresence mode="wait">
             {activeTab === "meeting" && meetingSuccess ? (
               <motion.div
@@ -256,7 +282,7 @@ export default function ContactSection() {
                   Book Another Session
                 </button>
               </motion.div>
-            ) : (
+            ) : activeTab === "meeting" ? (
               <motion.form
                 key="meeting-form"
                 onSubmit={handleMeetingSubmit}
@@ -376,6 +402,146 @@ export default function ContactSection() {
                   ) : (
                     <>
                       Schedule Session <ArrowRight className="w-3.5 h-3.5" />
+                    </>
+                  )}
+                </button>
+              </motion.form>
+            ) : (
+              <motion.form
+                key="message-form"
+                onSubmit={handleSubmit}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+                className="space-y-6"
+              >
+                {/* GRID */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* NAME */}
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="peer w-full p-3 pt-6 rounded border border-gray-200 focus:border-[#ff0000] placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]/10 bg-gray-50"
+                    />
+                    <label className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200 pointer-events-none
+                    peer-focus:-top-2 peer-focus:text-xs peer-focus:text-black peer-focus:bg-white peer-focus:px-1
+                    peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-white peer-valid:px-1">
+                      Name *
+                    </label>
+                  </div>
+
+                  {/* COMPANY */}
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="company"
+                      value={formData.company}
+                      onChange={handleChange}
+                      required
+                      className="peer w-full p-3 pt-6 rounded border border-gray-200 focus:border-[#ff0000] placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]/10 bg-gray-50"
+                    />
+                    <label className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200 pointer-events-none
+                    peer-focus:-top-2 peer-focus:text-xs peer-focus:text-black peer-focus:bg-white peer-focus:px-1
+                    peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-white peer-valid:px-1">
+                      Company *
+                    </label>
+                  </div>
+
+                  {/* ROLE */}
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="role"
+                      value={formData.role}
+                      onChange={handleChange}
+                      required
+                      className="peer w-full p-3 pt-6 rounded border border-gray-200 focus:border-[#ff0000] placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]/10 bg-gray-50"
+                    />
+                    <label className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200 pointer-events-none
+                    peer-focus:-top-2 peer-focus:text-xs peer-focus:text-black peer-focus:bg-white peer-focus:px-1
+                    peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-white peer-valid:px-1">
+                      Role *
+                    </label>
+                  </div>
+
+                  {/* EMAIL */}
+                  <div className="relative">
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="peer w-full p-3 pt-6 rounded border border-gray-200 focus:border-[#ff0000] placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]/10 bg-gray-50"
+                    />
+                    <label className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200 pointer-events-none
+                    peer-focus:-top-2 peer-focus:text-xs peer-focus:text-black peer-focus:bg-white peer-focus:px-1
+                    peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-white peer-valid:px-1">
+                      Email *
+                    </label>
+                  </div>
+                </div>
+
+                {/* WEBSITE */}
+                <div className="relative">
+                  <input
+                    type="url"
+                    name="website"
+                    value={formData.website}
+                    onChange={handleChange}
+                    required
+                    className="peer w-full p-3 pt-6 rounded border border-gray-200 focus:border-[#ff0000] placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]/10 bg-gray-50"
+                  />
+                  <label className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200 pointer-events-none
+                  peer-focus:-top-2 peer-focus:text-xs peer-focus:text-black peer-focus:bg-white peer-focus:px-1
+                  peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-white peer-valid:px-1">
+                    Website *
+                  </label>
+                </div>
+
+                {/* MESSAGE */}
+                <div className="relative">
+                  <textarea
+                    name="message"
+                    rows={4}
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    className="peer w-full p-3 pt-6 rounded resize-none border border-gray-200 focus:border-[#ff0000] placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#ff0000]/10 bg-gray-50"
+                  />
+                  <label className="absolute left-3 top-3 text-gray-400 text-base transition-all duration-200 pointer-events-none
+                    peer-focus:-top-2 peer-focus:text-xs peer-focus:text-black peer-focus:bg-white peer-focus:px-1
+                    peer-valid:-top-2 peer-valid:text-xs peer-valid:text-[#ff0000] peer-valid:bg-white peer-valid:px-1">
+                    Message *
+                  </label>
+                </div>
+
+                {/* SUBMIT */}
+                <button
+                  type="submit"
+                  disabled={
+                    isSubmitting ||
+                    !formData.name ||
+                    !formData.email ||
+                    !formData.company ||
+                    !formData.role ||
+                    !formData.message
+                  }
+                  className="w-full border border-[#ff0000] text-white bg-[#ff0000] transition-all duration-300 font-medium py-3 rounded-md flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Submit Message <ArrowRight className="w-3.5 h-3.5" />
                     </>
                   )}
                 </button>
