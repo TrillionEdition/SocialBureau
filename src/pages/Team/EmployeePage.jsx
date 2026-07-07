@@ -59,6 +59,7 @@ import BookSessionModal from "./BookSessionModal";
 import ReviewModal from "./ReviewModal";
 import PartnershipChatbot from "../../components/PartnershipChatbot";
 import { TEAM_MEMBERS } from "./constants";
+import { BASE_URL } from "../../utils/urls";
 
 function cn(...inputs) {
   return clsx(inputs);
@@ -1898,7 +1899,6 @@ const EmployeePage = () => {
         } else {
           setAttendanceLoading(true);
         }
-        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
         const isAlenOrSham = [
           "alen-jacob",
           "alen",
@@ -1910,7 +1910,7 @@ const EmployeePage = () => {
         // If the user is logged in and cookies are present, backend will return ClickUp metrics.
         try {
           const authResp = await fetch(
-            `${API_URL}/clickup/member-details?slug=${slug}&month=${selectedMonth}&year=${selectedYear}`,
+            `${BASE_URL}/clickup/member-details?slug=${slug}&month=${selectedMonth}&year=${selectedYear}`,
             {
               credentials: "include",
               headers: { Accept: "application/json" },
@@ -1933,7 +1933,7 @@ const EmployeePage = () => {
         // 2) Try the public endpoint (no auth) to get DB member info for visitors
         try {
           const publicResp = await fetch(
-            `${API_URL}/clickup/public-member-details?slug=${slug}&month=${selectedMonth}&year=${selectedYear}`,
+            `${BASE_URL}/clickup/public-member-details?slug=${slug}&month=${selectedMonth}&year=${selectedYear}`,
           );
           const publicJson = await publicResp.json().catch(() => ({}));
           if (publicResp.ok && publicJson.member) {

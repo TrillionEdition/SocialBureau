@@ -12,8 +12,7 @@ export const FullRoster = () => {
   useEffect(() => {
     const fetchTeam = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        const res = await fetch(`${apiUrl}/team-v2`);
+        const res = await fetch(`${BASE_URL}/team-v2`);
         const data = await res.json();
         if (data.success && data.data.length > 0) {
           const apiMembers = data.data;
