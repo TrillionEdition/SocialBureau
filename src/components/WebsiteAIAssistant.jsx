@@ -518,7 +518,7 @@ export default function WebsiteAIAssistant() {
     const timer = setTimeout(() => {
       if (!hasGreeted && !isOpen) {
         setExpression("greeting");
-        setPromptText("Hi there! I'm Reliza. Need a hand? 🚀");
+        setPromptText("Hi there! I'm Reliza. Need a hand?");
         setShowPrompt(true);
         setHasGreeted(true);
 
