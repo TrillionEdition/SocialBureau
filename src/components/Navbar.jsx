@@ -60,11 +60,10 @@ export default function Navbar() {
    const navigate = useNavigate();
   const location = useLocation();
   const { isLoggedIn, isAdmin, isPartnership, isEmployee } = useAuth();
-  const lastScrollY = useRef(0);
+  const [lastScrollY, setLastScrollY] = useState(0); 
   const isTeamPage = location.pathname.startsWith('/team');
 
   const [homeLink, setHomeLink] = useState("/");
-
   useEffect(() => {
     const checkLotteryRedirect = async () => {
       try {
@@ -84,7 +83,6 @@ export default function Navbar() {
     };
     checkLotteryRedirect();
   }, []);
-
   const navItems = [
     { label: "Home", href: homeLink },
     {
