@@ -6,7 +6,7 @@ import {
   FileText, Combine, Scissors, ArchiveRestore, FileImage, FileType, FileSymlink,
   Crop, ImageDown, ImagePlus, RotateCw, Contrast, Sparkles, Wand2,
   Upload, Trash2, Download, Copy, Play, Loader2, FileCheck, CheckCircle, File,
-  Edit3, PenTool
+  Edit3, PenTool, Hash, AlignLeft, Heading1, MessageSquare
 } from "lucide-react";
 import { BASE_URL } from "@/utils/urls";
 import { Helmet } from "react-helmet-async";
@@ -19,6 +19,20 @@ const scrollbarHideStyle = `
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+  }
+  .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
   }
 `;
 
@@ -265,31 +279,47 @@ const TOOL_CATEGORIES = [
         accept: "image/*",
         params: [],
       },
+      {
+        slug: "favicon",
+        urlSlug: "favicon-generator",
+        name: "Favicon Creator",
+        desc: "Generate standard multi-resolution favicon.ico file.",
+        icon: Sparkles,
+        endpoint: "/image/favicon",
+        multi: false,
+        accept: "image/*",
+        isClientFavicon: true,
+        params: [],
+      },
+      {
+        slug: "remove-bg",
+        urlSlug: "background-remover",
+        name: "AI Background Remover",
+        desc: "Remove image background automatically in your browser using AI.",
+        icon: Wand2,
+        endpoint: "/image/remove-bg",
+        multi: false,
+        accept: "image/*",
+        isClientRemoveBg: true,
+        params: [],
+      },
     ],
   },
   {
-    key: "ai",
-    label: "AI Studio",
-    icon: Sparkles,
-    urlPrefix: "ai-studio",
+    key: "content",
+    label: "Content Toolkit",
+    icon: AlignLeft,
+    urlPrefix: "content-tools",
     tools: [
       {
-        slug: "image",
-        urlSlug: "ai-image-generator",
-        name: "AI Industrial Image",
-        desc: "Generate factory, machinery, blueprint and product visuals.",
-        icon: Sparkles,
-        endpoint: "/ai/image",
-        isCustomAi: true,
-      },
-      {
-        slug: "prompt",
-        urlSlug: "ai-prompt-engineer",
-        name: "AI Prompt Engineer",
-        desc: "Generate optimized prompts and industrial copy.",
-        icon: Wand2,
-        endpoint: "/ai/prompt",
-        isCustomAi: true,
+        slug: "word-counter",
+        urlSlug: "word-counter",
+        name: "Word Counter",
+        desc: "Count words, characters, sentences, paragraphs, and reading time in real-time.",
+        icon: Hash,
+        multi: false,
+        isCustomContent: true,
+        params: [],
       },
     ],
   },
@@ -395,11 +425,310 @@ const SignaturePad = ({ onChange, onClear }) => {
   );
 };
 
+const InteractivePdfPreview = ({ 
+  previewUrl, 
+  onCoordsSelected, 
+  selectedPage, 
+  selectedX, 
+  selectedY, 
+  overlayText, 
+  overlayColor,
+  overlayFontSize,
+  overlaySignature,
+  sigType,
+  sigWidth,
+  sigHeight
+}) => {
+  const [pdfDoc, setPdfDoc] = useState(null);
+  const [numPages, setNumPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const canvasRef = useRef(null);
+  const containerRef = useRef(null);
+  const [scale, setScale] = useState(1.0);
+  const [viewportSize, setViewportSize] = useState({ width: 0, height: 0, pdfWidth: 0, pdfHeight: 0 });
+  const [pdfjsLoaded, setPdfjsLoaded] = useState(!!window.pdfjsLib);
+
+  useEffect(() => {
+    if (window.pdfjsLib) {
+      setPdfjsLoaded(true);
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+    script.onload = () => {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      setPdfjsLoaded(true);
+    };
+    document.body.appendChild(script);
+  }, []);
+
+  useEffect(() => {
+    if (!pdfjsLoaded || !previewUrl || !window.pdfjsLib) return;
+    const loadingTask = window.pdfjsLib.getDocument(previewUrl);
+    loadingTask.promise.then((pdf) => {
+      setPdfDoc(pdf);
+      setNumPages(pdf.numPages);
+      setCurrentPage(1);
+    }).catch((err) => {
+      console.error("Error loading PDF with PDF.js:", err);
+    });
+  }, [pdfjsLoaded, previewUrl]);
+
+  useEffect(() => {
+    if (!pdfDoc || !canvasRef.current) return;
+    pdfDoc.getPage(currentPage).then((page) => {
+      const canvas = canvasRef.current;
+      const context = canvas.getContext("2d");
+      
+      const containerWidth = containerRef.current?.clientWidth || 400;
+      const unscaledViewport = page.getViewport({ scale: 1.0 });
+      const computedScale = Math.max(0.4, (containerWidth - 32) / unscaledViewport.width);
+      const viewport = page.getViewport({ scale: computedScale });
+      
+      setScale(computedScale);
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      setViewportSize({ 
+        width: viewport.width, 
+        height: viewport.height, 
+        pdfWidth: unscaledViewport.width, 
+        pdfHeight: unscaledViewport.height 
+      });
+
+      const renderContext = {
+        canvasContext: context,
+        viewport: viewport,
+      };
+      page.render(renderContext);
+    });
+  }, [pdfDoc, currentPage]);
+
+  const handleCanvasClick = (e) => {
+    const canvas = canvasRef.current;
+    if (!canvas || !viewportSize.pdfWidth) return;
+    const rect = canvas.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+
+    const pdfX = (clickX / canvas.width) * viewportSize.pdfWidth;
+    const pdfY = (1 - (clickY / canvas.height)) * viewportSize.pdfHeight;
+
+    onCoordsSelected(currentPage, Math.round(pdfX), Math.round(pdfY));
+  };
+
+  const overlayLeft = viewportSize.pdfWidth 
+    ? (selectedX / viewportSize.pdfWidth) * viewportSize.width 
+    : 0;
+  const overlayTop = viewportSize.pdfHeight 
+    ? (1 - (selectedY / viewportSize.pdfHeight)) * viewportSize.height 
+    : 0;
+
+  const fs = overlayText 
+    ? Math.max(8, Math.round(overlayFontSize * scale))
+    : (overlaySignature && (sigType !== "draw" && sigType !== "upload"))
+      ? Math.max(8, Math.round((overlayFontSize || 20) * scale))
+      : 0;
+
+  // Helvetica descender is roughly 22% of font size.
+  // Add 3px for the bottom border (1px) and padding py-0.5 (2px).
+  const offsetY = fs > 0 ? (fs * 0.22) + 3 : 0;
+
+  return (
+    <div ref={containerRef} className="w-full h-full flex flex-col items-center justify-between min-h-0">
+      {numPages > 1 && (
+        <div className="flex items-center gap-4 mb-2 shrink-0 bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl text-xs">
+          <button
+            type="button"
+            onClick={() => {
+              const prev = Math.max(1, currentPage - 1);
+              setCurrentPage(prev);
+              onCoordsSelected(prev, selectedX, selectedY);
+            }}
+            disabled={currentPage === 1}
+            className="px-2 py-0.5 bg-white/10 rounded disabled:opacity-30 cursor-pointer font-bold hover:bg-white/20 transition-all text-white"
+          >
+            Prev
+          </button>
+          <span className="font-semibold text-white/85 font-mono">Page {currentPage} of {numPages}</span>
+          <button
+            type="button"
+            onClick={() => {
+              const next = Math.min(numPages, currentPage + 1);
+              setCurrentPage(next);
+              onCoordsSelected(next, selectedX, selectedY);
+            }}
+            disabled={currentPage === numPages}
+            className="px-2 py-0.5 bg-white/10 rounded disabled:opacity-30 cursor-pointer font-bold hover:bg-white/20 transition-all text-white"
+          >
+            Next
+          </button>
+        </div>
+      )}
+
+      <div className="flex-1 w-full flex items-center justify-center min-h-0 overflow-y-auto relative p-2 scrollbar-hide">
+        {!pdfjsLoaded ? (
+          <div className="text-white/40 text-xs font-mono">Loading PDF library...</div>
+        ) : !pdfDoc ? (
+          <div className="text-white/40 text-xs font-mono">Rendering page...</div>
+        ) : (
+          <div className="relative border border-white/20 shadow-xl" style={{ width: viewportSize.width, height: viewportSize.height }}>
+            <canvas 
+              ref={canvasRef} 
+              onClick={handleCanvasClick}
+              className="cursor-crosshair block bg-white"
+            />
+            {selectedPage === currentPage && (
+              <div 
+                className="absolute pointer-events-none select-none"
+                style={{ 
+                  left: overlayLeft, 
+                  top: overlayTop,
+                  transform: `translate(0, calc(-100% + ${offsetY}px))`,
+                }}
+              >
+                {overlayText ? (
+                  <span 
+                    style={{ 
+                      color: overlayColor || "black", 
+                      fontSize: `${fs}px`,
+                      lineHeight: 1,
+                      textShadow: "0 0 2px rgba(255,255,255,0.8)"
+                    }}
+                    className="font-bold whitespace-nowrap bg-yellow-400/20 px-1.5 py-0.5 rounded border border-yellow-400/40"
+                  >
+                    {overlayText}
+                  </span>
+                ) : overlaySignature ? (
+                  sigType === "draw" || sigType === "upload" ? (
+                    <img 
+                      src={overlaySignature} 
+                      style={{ 
+                        width: `${Math.max(20, Math.round((sigWidth || 120) * scale))}px`, 
+                        height: `${Math.max(10, Math.round((sigHeight || 40) * scale))}px`, 
+                        objectFit: "contain",
+                        filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))" 
+                      }} 
+                      alt="Signature Overlay" 
+                    />
+                  ) : (
+                    <span 
+                      className="font-serif italic text-black font-bold whitespace-nowrap bg-white/90 border border-slate-350 rounded px-1.5 py-0.5 shadow-md"
+                      style={{ 
+                        fontSize: `${fs}px`,
+                        lineHeight: 1 
+                      }}
+                    >
+                      {overlaySignature}
+                    </span>
+                  )
+                ) : (
+                  <div className="w-4 h-4 rounded-full bg-red-650 border-2 border-white animate-ping" />
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+      <p className="text-[10px] text-white/40 mt-2 shrink-0">
+        💡 Click directly on the PDF preview to set the placement coordinates instantly!
+      </p>
+    </div>
+  );
+};
+
+const generateIcoFavicon = (file) => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+    img.onload = async () => {
+      try {
+        const sizes = [16, 32, 48, 64, 128, 256];
+        const pngBuffers = [];
+        
+        // Calculate center crop square parameters to keep original aspect ratio
+        const minDim = Math.min(img.width, img.height);
+        const sx = (img.width - minDim) / 2;
+        const sy = (img.height - minDim) / 2;
+        
+        for (const size of sizes) {
+          const canvas = document.createElement("canvas");
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext("2d");
+          
+          // Apply high-quality rendering configuration
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = "high";
+          
+          // Draw center-cropped square image
+          ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
+          
+          const pngBlob = await new Promise(res => canvas.toBlob(res, "image/png"));
+          const arrayBuffer = await pngBlob.arrayBuffer();
+          pngBuffers.push(new Uint8Array(arrayBuffer));
+        }
+        
+        // Compile ICO structure
+        // Header: 6 bytes
+        // Directories: 16 bytes * sizes.length
+        const totalHeaderAndDirsSize = 6 + 16 * sizes.length;
+        let totalSize = totalHeaderAndDirsSize;
+        pngBuffers.forEach(buf => totalSize += buf.length);
+        
+        const icoBuffer = new ArrayBuffer(totalSize);
+        const view = new DataView(icoBuffer);
+        
+        // Write Header
+        view.setUint16(0, 0, true); // Reserved (0)
+        view.setUint16(2, 1, true); // Type (1 = ICO)
+        view.setUint16(4, sizes.length, true); // Number of images
+        
+        let currentOffset = totalHeaderAndDirsSize;
+        
+        // Write Directories
+        sizes.forEach((size, idx) => {
+          const dirOffset = 6 + idx * 16;
+          const pngLength = pngBuffers[idx].length;
+          
+          // ICO format width and height are 1 byte each; 256 is represented as 0
+          const w = size === 256 ? 0 : size;
+          const h = size === 256 ? 0 : size;
+          
+          view.setUint8(dirOffset, w); // Width
+          view.setUint8(dirOffset + 1, h); // Height
+          view.setUint8(dirOffset + 2, 0); // Color palette
+          view.setUint8(dirOffset + 3, 0); // Reserved
+          view.setUint16(dirOffset + 4, 1, true); // Color planes
+          view.setUint16(dirOffset + 6, 32, true); // Bits per pixel
+          view.setUint32(dirOffset + 8, pngLength, true); // Image size
+          view.setUint32(dirOffset + 12, currentOffset, true); // Offset
+          
+          currentOffset += pngLength;
+        });
+        
+        // Write Image Data
+        const finalArray = new Uint8Array(icoBuffer);
+        let writeOffset = totalHeaderAndDirsSize;
+        pngBuffers.forEach(buf => {
+          finalArray.set(buf, writeOffset);
+          writeOffset += buf.length;
+        });
+        
+        resolve(new Blob([finalArray], { type: "image/x-icon" }));
+      } catch (err) {
+        reject(err);
+      }
+    };
+    img.onerror = reject;
+  });
+};
+
 const TOOL_SEO = {
   "merge-pdf": {
     title: "Merge PDF Online Free – Combine PDF Files Instantly | SocialBureau",
     h1: "Merge PDF Files Online",
-    description: "Merge multiple PDF files into one document online for free. Fast, secure PDF merger with no signup and no watermark. Works on desktop and mobile.",
+    description: "Merge multiple PDF files into one document online for free. Fast, secure PDF merger with no signup, no limits and no watermark. Works on desktop and mobile.",
+    keywords: "merge pdf, combine pdf files, join pdf online, free pdf merger, merge pdf files free, merge pdf files online, concatenate pdf, combine documents free, pdf joiner, combine pdfs, how to merge pdf files, combine pdf files free, merge pdf documents",
     body: [
       "Merge PDF Files Online is a free tool from SocialBureau that allows you to combine multiple PDF documents into a single, production-ready file within seconds. Simply upload your PDFs and click Merge — no registration, no installation, and no watermark, just a clean merged output ready for download.",
       "The merged file preserves all original formatting, fonts, embedded images, and page layouts without quality loss. This tool is ideal for businesses consolidating contracts, invoices, or reports; students compiling multi-part assignments; and designers assembling multi-page documents from separate exports.",
@@ -414,9 +743,10 @@ const TOOL_SEO = {
     ],
   },
   "split-pdf": {
-    title: "Split PDF Online – Separate PDF Pages Instantly | SocialBureau",
+    title: "Split PDF Online Free – Separate and Extract PDF Pages | SocialBureau",
     h1: "Split PDF Files Online",
-    description: "Split a PDF into specific pages or custom page ranges online for free. No installation needed. Fast, secure, and works on all devices.",
+    description: "Split a PDF into specific pages or custom page ranges online for free. Highly secure, no installation needed. Extract pages from PDF instantly.",
+    keywords: "split pdf, extract pages from pdf, split pdf pages, divide pdf online, free pdf splitter, cut pdf, separate pdf pages, pdf page extractor, split pdf documents, pdf range splitter, extract pdf pages free, how to separate pages in pdf",
     body: [
       "Split PDF Files Online lets you extract any pages or custom page ranges from a PDF document instantly. Enter your desired ranges — for example 1-3, 5, 7-9 — and download the trimmed output in seconds.",
       "This is ideal for extracting invoice pages from a batch file, sharing specific sections of a report, or separating chapters from a long document. No account or software installation is needed — everything runs directly in your browser.",
@@ -431,9 +761,10 @@ const TOOL_SEO = {
     ],
   },
   "compress-pdf": {
-    title: "Compress PDF Online Free Without Losing Quality | SocialBureau",
+    title: "Compress PDF Online Free – Reduce PDF File Size | SocialBureau",
     h1: "Compress PDF Online",
-    description: "Reduce PDF file size online for free without losing quality. Optimize PDFs instantly for email, web, and storage. No signup required.",
+    description: "Reduce PDF file size online for free without losing quality. Optimize PDFs instantly for email, web, and storage. Safe and secure, no signup required.",
+    keywords: "compress pdf, reduce pdf size, shrink pdf online, optimize pdf size, free pdf compressor, make pdf smaller, decrease pdf file size, compress pdf document, pdf optimizer free, online pdf size reducer, compress pdf quality, how to make a pdf smaller",
     body: [
       "Compress PDF Online reduces your PDF file size by optimizing internal streams and removing redundant data — without visually degrading your content. This is particularly useful when you need to email a large document, upload a PDF to a portal with strict size limits, or save storage space.",
       "Our compression engine works across all types of PDFs including text-heavy reports, image-rich brochures, and scanned documents. The output file retains all content, fonts, and structure while achieving a meaningfully smaller file size.",
@@ -448,9 +779,10 @@ const TOOL_SEO = {
     ],
   },
   "pdf-to-images": {
-    title: "Convert PDF to Images Online Free – High-DPI PNG Export | SocialBureau",
+    title: "Convert PDF to Images Online Free – Export PDF to PNG | SocialBureau",
     h1: "Convert PDF to Images Online",
-    description: "Convert every page of a PDF to high-resolution PNG images online for free. Download as a ZIP archive instantly. No signup needed.",
+    description: "Convert every page of a PDF to high-resolution PNG images online for free. Set custom DPI and download as a ZIP archive instantly. No signup needed.",
+    keywords: "convert pdf to png, pdf to images, export pdf to image, pdf pages to png, high-dpi pdf to images, extract images from pdf, pdf converter, pdf to image zip, free online pdf to png, convert pdf to jpg, render pdf pages to images",
     body: [
       "Convert PDF to Images Online renders every page of your PDF document into high-resolution PNG images, packaged neatly into a ZIP archive for easy download. Choose your preferred DPI setting to balance output resolution against file size — higher DPI values produce sharper images suitable for print, while lower values are ideal for web or screen use.",
       "This tool is useful for extracting diagrams, sharing individual document pages as images, creating presentation slide assets, or archiving document content visually. It handles both text-heavy and image-rich PDFs with equal reliability.",
@@ -467,7 +799,8 @@ const TOOL_SEO = {
   "images-to-pdf": {
     title: "Convert Images to PDF Online Free – Combine Photos into PDF | SocialBureau",
     h1: "Convert Images to PDF Online",
-    description: "Combine multiple images into a single PDF online for free. Upload JPG, PNG, or WEBP files and download your PDF instantly. No signup required.",
+    description: "Combine multiple images into a single PDF online for free. Upload JPG, PNG, or WEBP files and download your PDF instantly. No registration required.",
+    keywords: "convert images to pdf, jpg to pdf, png to pdf, combine photos to pdf, image to pdf converter, create pdf from images, online image to pdf, compile jpg to pdf, make pdf from png, multi image to pdf, free image to pdf converter",
     body: [
       "Convert Images to PDF Online compiles multiple image files into a single, shareable PDF document in seconds. Upload your JPG, PNG, BMP, or WEBP images, and the tool will arrange them one per page into a clean, standard PDF file.",
       "This is perfect for creating photo portfolios, scanned document archives, assignment submissions, product catalogues, or image-based presentations. Images are embedded at their original resolution to ensure the output PDF looks as sharp as your source files.",
@@ -482,9 +815,10 @@ const TOOL_SEO = {
     ],
   },
   "pdf-to-word": {
-    title: "Convert PDF to Word Online Free – Editable DOCX | SocialBureau",
+    title: "Convert PDF to Word Online Free – Editable DOCX Converter | SocialBureau",
     h1: "Convert PDF to Word Online",
-    description: "Convert PDF to editable Word (.docx) online for free. Fast, accurate PDF to Word conversion with no signup and no watermark.",
+    description: "Convert PDF to editable Word (.docx) online for free. Highly accurate layout preservation. Fast, secure, and no watermark.",
+    keywords: "convert pdf to word, pdf to docx, convert pdf to doc, free pdf to word converter, editable word document, pdf to docx online free, convert pdf to word docx, pdf to doc converter online free, convert pdf into editable document",
     body: [
       "Convert PDF to Word Online transforms your PDF documents into fully editable Microsoft Word (.docx) files in seconds. This is ideal when you need to edit, update, or reformat a document that only exists in PDF form — saving you hours of manual re-typing.",
       "Our converter attempts to preserve headings, paragraphs, tables, bullet points, and formatting as closely as possible in the Word output. The resulting .docx file is fully compatible with Microsoft Word, Google Docs, LibreOffice, and all major word processors.",
@@ -493,15 +827,16 @@ const TOOL_SEO = {
     faqs: [
       { q: "Is PDF to Word conversion free?", a: "Yes, completely free with no account required." },
       { q: "Will formatting be preserved?", a: "We preserve headings, paragraphs, and tables as closely as possible, though complex layouts may vary slightly." },
-      { q: "What format is the output?", a: "The output is a standard .docx file compatible with Microsoft Word and Google Docs." },
-      { q: "Does it work with scanned PDFs?", a: "Scanned PDFs contain images rather than text and may produce limited results." },
+      { q: "What format is the output?", a: "The output is a text-based editable Word .docx file." },
+      { q: "Does it work with scanned PDFs?", a: "Scanned PDFs contain images rather than text and may produce limited results without OCR." },
       { q: "Is my file secure?", a: "Files are processed in your session and are not stored after your download." },
     ],
   },
   "word-to-pdf": {
-    title: "Convert Word to PDF Online Free | SocialBureau",
+    title: "Convert Word to PDF Online Free – DOCX to PDF | SocialBureau",
     h1: "Convert Word to PDF Online",
-    description: "Convert Microsoft Word (.docx) files to PDF online for free. Fast, accurate Word to PDF conversion with no signup and no watermark.",
+    description: "Convert Microsoft Word (.docx) files to PDF online for free. Fast, accurate Word to PDF converter with no signup and no watermark.",
+    keywords: "convert word to pdf, docx to pdf, convert doc to pdf, free word to pdf converter, docx to pdf converter online, Microsoft Word to PDF, docx to pdf free, convert word document to pdf online free",
     body: [
       "Convert Word to PDF Online transforms your Microsoft Word .docx documents into universally compatible PDF files in seconds. This ensures your document's formatting, fonts, tables, images, and layout look exactly as intended on any device, operating system, or screen size.",
       "PDF is the standard format for sharing final documents, submitting forms, and distributing reports professionally. Our converter maintains all content fidelity during the conversion process — no watermarks, no data loss.",
@@ -516,9 +851,10 @@ const TOOL_SEO = {
     ],
   },
   "pdf-to-text": {
-    title: "Extract Text from PDF Online Free | SocialBureau",
+    title: "Extract Text from PDF Online Free – PDF to TXT Converter | SocialBureau",
     h1: "Extract Text from PDF Online",
-    description: "Extract raw text from any PDF document online for free. Copy or download the extracted text instantly. No signup required.",
+    description: "Extract raw text from any PDF document online for free. Copy to clipboard or download as a plain text file instantly. No signup required.",
+    keywords: "extract text from pdf, pdf to txt, convert pdf to text, copy text from pdf, read pdf text online, pdf text extractor free, extract text from pdf file, pdf to text converter online, extract text from scanned pdf",
     body: [
       "Extract Text from PDF Online pulls all readable text content out of any PDF document and displays it as plain, copyable text — directly in your browser. This is useful for searching document content, feeding text into writing or translation tools, and extracting data from reports without re-typing.",
       "The tool works on PDFs with embedded text layers. All extracted text is presented in reading order across all pages, ready to copy to clipboard or download as a .txt file.",
@@ -532,10 +868,45 @@ const TOOL_SEO = {
       { q: "Is my file secure?", a: "Files are processed in your session and are not stored on our servers." },
     ],
   },
+  "edit-pdf": {
+    title: "Edit PDF Online Free – Add Text and Annotate PDFs | SocialBureau",
+    h1: "Edit PDF Files Online",
+    description: "Overlay custom text annotations on any page of your PDF file online for free. Easy click-to-place editor with font size and color controls.",
+    keywords: "edit pdf online, annotate pdf, add text to pdf, overlay text on pdf, free pdf editor, write on pdf, write text on pdf document free, insert text in pdf, online pdf writer, annotate pdf online free, customize pdf text",
+    body: [
+      "Edit PDF Online is a free tool from SocialBureau that allows you to easily add custom text overlays and annotations directly onto your PDF documents. Simply upload your PDF, click anywhere on the page layout preview to place your text, and download your updated PDF instantly.",
+      "You can configure font size, text alignment, and colors (black, blue, red, green) for the overlay. This tool is perfect for filling out forms, adding notes to designs, grading papers, or adding custom disclaimers to documents.",
+      "Everything runs securely inside your web browser. No permanent copy of your uploaded or annotated file is stored on our servers.",
+    ],
+    faqs: [
+      { q: "Can I edit PDF text for free?", a: "Yes, our tool lets you overlay text onto any PDF page completely free of charge." },
+      { q: "How do I position the text?", a: "Click directly on the PDF preview layout to instantly place the text box where you want it." },
+      { q: "Can I choose text colors?", a: "Yes, choose from black, blue, red, green, or input custom hex colors." },
+      { q: "Is my data secure?", a: "Yes, files are processed dynamically in your browser memory and never stored." },
+    ],
+  },
+  "sign-pdf": {
+    title: "Sign PDF Online Free – Add Digital Signatures to PDF | SocialBureau",
+    h1: "Sign PDF Files Online",
+    description: "Add a secure digital signature to your PDF online for free. Draw, type, or upload an image signature and position it on any page instantly.",
+    keywords: "sign pdf online, digital signature pdf, sign document free, sign pdf free, insert signature in pdf, sign contract online, write signature on pdf, draw signature online, typed signature creator, upload signature image, sign document electronically",
+    body: [
+      "Sign PDF Files Online is a free utility to overlay custom electronic signatures on your PDF. You can draw your signature using a mouse or touch screen, type your name to auto-generate a calligraphic signature, or upload a PNG signature image.",
+      "Once created, click anywhere on the PDF page layout to place and size your signature. The backend burns the signature exactly onto the PDF canvas without altering structural metadata.",
+      "Sign contracts, invoices, and agreements securely in seconds. No login or signup required, and your private files are processed securely in real-time.",
+    ],
+    faqs: [
+      { q: "Is it free to sign a PDF?", a: "Yes, our electronic signature tool is completely free with no limits." },
+      { q: "What signature types are supported?", a: "You can draw a signature, type your name, or upload an image (PNG/JPG)." },
+      { q: "Can I size the signature?", a: "Yes, adjust the Width and Height inputs in real-time to fit signature areas." },
+      { q: "Can I place it on any page?", a: "Yes, select the page number and click on the PDF preview to position it." },
+    ],
+  },
   "resize-image": {
-    title: "Resize Image Online Free – Set Exact Width & Height | SocialBureau",
+    title: "Resize Image Online Free – Set Width & Height in Pixels | SocialBureau",
     h1: "Resize Image Online",
-    description: "Resize images to exact pixel dimensions online for free. Set width and height instantly. Supports JPG, PNG, WEBP. No signup required.",
+    description: "Resize JPG, PNG, and WEBP images to exact pixel dimensions online for free. Scale width and height with ease. No signup required.",
+    keywords: "resize image online, change image dimensions, scale image px, resize jpg, resize png, free image resizer, image scale width height, crop image online, scale png, photo resizer online free, image pixel changer",
     body: [
       "Resize Image Online lets you scale any image to precise pixel dimensions in seconds. Enter your desired width and height in pixels, upload your image, and download the perfectly resized result immediately.",
       "This is useful for preparing images for websites with specific dimension requirements, social media platforms, product listings, print templates, and presentations. Supports JPG, PNG, WEBP, and BMP image formats.",
@@ -546,13 +917,13 @@ const TOOL_SEO = {
       { q: "What formats are supported?", a: "JPG, PNG, WEBP, and BMP images are all supported." },
       { q: "Can I set completely custom dimensions?", a: "Yes, enter any width and height in pixels for a fully custom result." },
       { q: "Is it free?", a: "Yes, completely free with no signup required." },
-      { q: "Does it preserve the aspect ratio?", a: "The tool resizes to your exact dimensions. Calculate proportional values first if you need to preserve the ratio." },
     ],
   },
   "compress-image": {
-    title: "Compress Image Online Free Without Losing Quality | SocialBureau",
+    title: "Compress Image Online Free – Optimize Image File Size | SocialBureau",
     h1: "Compress Image Online",
-    description: "Reduce image file size online for free using quality control. Compress JPG and PNG images instantly. No signup or watermark.",
+    description: "Reduce image file size online for free using quality control. Compress JPG, PNG, and WEBP images instantly. No signup or watermark.",
+    keywords: "compress image online, reduce image size, compress png, compress jpg, shrink image file size, image optimizer, free image compressor, compress image online without losing quality, make image file smaller",
     body: [
       "Compress Image Online reduces your image file size by adjusting the JPEG quality level, making files significantly smaller for faster web page loading, leaner email attachments, or efficient cloud storage.",
       "Set the quality value between 1 (maximum compression, smallest file) and 95 (near-original quality, larger file) to find the right balance for your use case. A quality of 70–80 is typically the sweet spot for web images. Supports JPG, PNG, and WEBP input formats.",
@@ -563,13 +934,13 @@ const TOOL_SEO = {
       { q: "What formats are supported?", a: "JPG, PNG, and WEBP images are supported as inputs." },
       { q: "Is it free?", a: "Yes, completely free with no login required." },
       { q: "Will there be a watermark?", a: "No, there are no watermarks on compressed output images." },
-      { q: "How much will the file size be reduced?", a: "Results vary. Lower quality values produce smaller files. Typical reductions range from 20% to 70%." },
     ],
   },
   "convert-image-format": {
-    title: "Convert Image Format Online Free – PNG, JPG, WEBP, BMP | SocialBureau",
+    title: "Convert Image Format Online Free – PNG, JPG, WEBP | SocialBureau",
     h1: "Convert Image Format Online",
     description: "Convert images between PNG, JPG, WEBP, and BMP formats online for free. Fast, instant image conversion with no signup required.",
+    keywords: "convert image format, png to jpg, jpg to webp, png to webp, webp to png, image converter online, change image file type free, png to jpg converter online free, convert photo to webp",
     body: [
       "Convert Image Format Online lets you instantly switch your image between PNG, JPG, WEBP, and BMP formats with a single click. Whether you need a PNG for transparent backgrounds, a WEBP for faster web loading, a JPG for universal compatibility, or a BMP for legacy software requirements — our converter handles all combinations.",
       "WEBP offers excellent compression with high visual quality and is ideal for web use. PNG supports transparency and is best for graphics. JPG is the most universally supported format for photos. BMP is an uncompressed format required by some older applications.",
@@ -580,13 +951,13 @@ const TOOL_SEO = {
       { q: "Does PNG to JPG conversion remove transparency?", a: "Yes, JPG does not support transparency. Transparent areas will be filled with a white background." },
       { q: "Is WEBP good for websites?", a: "Yes, WEBP offers excellent compression with high quality, making it ideal for web images." },
       { q: "Is it free?", a: "Yes, completely free with no signup required." },
-      { q: "Is there a file size limit?", a: "Standard web image sizes are fully supported. Very large files may take a moment longer to process." },
     ],
   },
   "rotate-image": {
-    title: "Rotate Image Online Free – Any Angle | SocialBureau",
+    title: "Rotate Image Online Free – Flip and Align Pictures | SocialBureau",
     h1: "Rotate Image Online",
     description: "Rotate images by any degree online for free. Clockwise, counterclockwise, or custom angle rotation. Supports JPG, PNG, WEBP. No signup.",
+    keywords: "rotate image online, flip image, rotate picture, rotate jpg, rotate png, flip picture vertically, rotate image custom degree free, straighten photo online, horizontal image flip, image orientator",
     body: [
       "Rotate Image Online lets you rotate any image to any angle you choose. Enter a positive degree value to rotate clockwise, or a negative value for counterclockwise rotation. Common values like 90°, 180°, and 270° work perfectly for quick orientation fixes, while custom angles allow creative or precise adjustments.",
       "This tool is useful for correcting the orientation of photos taken at an angle, preparing design assets, adjusting scanned documents that came out sideways, or creating rotated versions for presentations. Supports JPG, PNG, WEBP, and BMP image formats.",
@@ -597,13 +968,13 @@ const TOOL_SEO = {
       { q: "What formats are supported?", a: "JPG, PNG, WEBP, and BMP images are all supported." },
       { q: "Does rotation affect image quality?", a: "Rotation at non-right-angle values may introduce minor anti-aliasing at image edges, which is normal." },
       { q: "Is it free?", a: "Yes, completely free with no registration required." },
-      { q: "Can I rotate a PDF instead?", a: "This tool is for images only. Use the PDF Toolkit for PDF-related operations." },
     ],
   },
   "grayscale-image": {
-    title: "Convert Image to Grayscale Online Free | SocialBureau",
+    title: "Convert Image to Grayscale Online Free – Black & White | SocialBureau",
     h1: "Convert Image to Grayscale Online",
-    description: "Convert any image to grayscale (black and white) online for free. Instant monochrome conversion. Supports JPG, PNG, WEBP. No signup.",
+    description: "Convert any image to grayscale (black and white) online for free. Lossless monochrome PNG output. Supports JPG, PNG, WEBP. No signup.",
+    keywords: "convert image to grayscale, black and white image, make photo b&w, monochrome image converter, grayscale photo converter free, b&w filter online, remove color from picture online free",
     body: [
       "Convert Image to Grayscale Online strips all colour information from your image and outputs a clean, high-contrast monochrome PNG. This is useful for preparing print-ready designs, creating artistic black-and-white effects, meeting document requirements that call for grayscale images, or reducing the colour complexity of assets.",
       "The conversion retains full detail, shading, and tonal contrast while removing all colour channels. The output is always a PNG file to ensure lossless quality in the grayscale result. Supports JPG, PNG, WEBP, and BMP as input formats.",
@@ -614,13 +985,13 @@ const TOOL_SEO = {
       { q: "What format is the output?", a: "The output is always a PNG file to preserve lossless quality." },
       { q: "What input formats are supported?", a: "JPG, PNG, WEBP, and BMP images are all supported as inputs." },
       { q: "Is it free?", a: "Yes, completely free with no signup required." },
-      { q: "Can the grayscale be reversed?", a: "No, colour information is permanently removed during the conversion process." },
     ],
   },
   "ai-image-generator": {
-    title: "AI Industrial Image Generator Online – Factory & Machinery Visuals | SocialBureau",
+    title: "AI Industrial Image Generator Free – Render Factory & CAD | SocialBureau",
     h1: "AI Industrial Image Generator",
-    description: "Generate factory floors, machinery, blueprints, and product visuals using AI. Free industrial image generator online. No signup required.",
+    description: "Generate factory floors, machinery blueprints, and isometric CAD renders using AI. Free industrial image generator online. No signup required.",
+    keywords: "ai industrial image generator, generate blueprint online, CAD layout generator, factory layout maker, industrial design ai, generate factory visual free, machinery layout ai, isometric blueprint generator",
     body: [
       "AI Industrial Image Generator uses advanced artificial intelligence to create photorealistic and stylised visuals of factory floors, industrial machinery, technical blueprints, and product mockups from a simple text description.",
       "Choose from preset styles — Blueprint, Factory Floor, Isometric CAD, Product Mock, and Heavy Machinery — or write a fully custom prompt to describe your scene in detail. The AI generates a high-quality image within seconds, ready to download as a PNG file.",
@@ -631,13 +1002,13 @@ const TOOL_SEO = {
       { q: "Can I write a custom prompt?", a: "Yes, describe your scene in detail and the AI will generate a matching image." },
       { q: "What are preset styles?", a: "Presets are curated style guides that shape the visual output — e.g. Blueprint, Factory Floor, Isometric CAD." },
       { q: "Is it free?", a: "Yes, completely free to use with no account required." },
-      { q: "What format is the generated image?", a: "Generated images are provided as PNG files ready for immediate download." },
     ],
   },
   "ai-prompt-engineer": {
-    title: "AI Prompt Engineer for Industrial Content – Free Online Tool | SocialBureau",
+    title: "AI Prompt Engineer for Industrial Content – Free Online | SocialBureau",
     h1: "AI Prompt Engineer Online",
-    description: "Generate optimised AI prompts, marketing copy, technical specs, and social posts for industrial topics. Free AI prompt writer. No signup.",
+    description: "Optimize AI prompts and generate technical specifications, safety notices, marketing copy, or social posts for industrial topics. Free AI prompt writer.",
+    keywords: "ai prompt engineer, write prompts online, industrial safety writer, technical specification generator, copywriter generator, prompt optimizer free, engineering copy writer ai",
     body: [
       "AI Prompt Engineer Online uses AI to generate high-quality, purpose-built text content for industrial and manufacturing topics. Provide a subject, choose your use case — marketing copy, technical specification, safety notice, or social media post — select a tone, and receive a fully drafted output in seconds.",
       "This tool is especially useful for creating content ready to feed into AI image generators, or for directly using in marketing campaigns, product catalogues, internal documents, and training materials. The tone options — technical, persuasive, formal, concise — let you tailor the output precisely.",
@@ -651,12 +1022,205 @@ const TOOL_SEO = {
       { q: "Is it free?", a: "Yes, completely free with no registration required." },
     ],
   },
+  "solutions-landing": {
+    title: "Free PDF Tools, Image Converter & AI Solutions | SocialBureau",
+    h1: "Solutions Suite",
+    description: "Explore our collection of free, secure online document, image processing, and AI tools. Built for speed, quality, and complete browser-level privacy.",
+    keywords: "free online pdf tools, image converter tools, industrial ai studio, merge pdf, convert docx to pdf, compress images free, edit pdf online, digital signature maker, text extractor, image resizer online",
+    body: [
+      "The SocialBureau Solutions Suite offers a comprehensive set of free, fast, and completely secure online tools. Our utilities run locally in your browser, ensuring that your confidential documents, private photos, and sensitive data are processed with complete privacy.",
+      "Whether you need to merge or compress business PDF reports, scale and convert image files for web development, or harness generative AI to create high-quality factory layouts and engineering prompts, the Solutions Suite provides a professional-grade workspace with no signup required.",
+    ],
+    faqs: [
+      { q: "Are the tools free to use?", a: "Yes, all tools in the SocialBureau Solutions Suite are completely free with no registration or signup required." },
+      { q: "Is my data secure?", a: "Absolutely. Your files are processed securely in your browser session and are not stored permanently on our servers." },
+      { q: "Do I need to install any software?", a: "No. All tools are fully web-based and work instantly on desktop and mobile browsers." },
+    ],
+  },
+  "pdf-landing": {
+    title: "Online PDF Toolkit – Free PDF Editor, Merger & Converter | SocialBureau",
+    h1: "PDF Toolkit",
+    description: "Free, secure, and fast online PDF tools. Merge multiple PDFs, split page ranges, compress file size, convert to/from Word and images, sign and edit PDFs.",
+    keywords: "online pdf toolkit, free pdf editor, pdf merger, pdf page splitter, compress pdf free, convert pdf to word, docx to pdf converter, sign contract pdf online, annotate pdf file online free",
+    body: [
+      "Optimize your document workflows with SocialBureau's PDF Toolkit. Our suite of PDF utilities allows you to organize, compress, and edit PDF files online without compromising on layout quality or security.",
+      "From splitting long manuals to signing official contracts or converting DOCX documents into standard PDFs, everything is executed securely in real-time.",
+    ],
+    faqs: [
+      { q: "Can I merge multiple PDFs at once?", a: "Yes, our Merge PDF tool supports uploading and combining multiple documents in one pipeline." },
+      { q: "Can I sign documents electronically?", a: "Yes, the Sign PDF tool allows you to draw, type, or upload an image of your signature." },
+    ],
+  },
+  "image-landing": {
+    title: "Online Image Toolkit – Free Image Resizer, Compressor & Converter | SocialBureau",
+    h1: "Image Toolkit",
+    description: "Optimize and edit your images online for free. Resize to exact dimensions, compress with JPG quality control, convert formats (PNG, JPG, WEBP), and rotate.",
+    keywords: "online image toolkit, free image resizer, image compressor online, convert png to jpg, convert jpg to webp, rotate photo online, grayscale converter free, image optimizer for websites",
+    body: [
+      "Process and optimize graphics instantly with the SocialBureau Image Toolkit. Designed for web designers, content creators, and developers, this suite makes image manipulation fast and effortless.",
+      "Quickly scale image widths, reduce file sizes for web load-time optimizations, and convert between popular formats including PNG, JPG, WEBP, and BMP.",
+    ],
+    faqs: [
+      { q: "Which image formats are supported?", a: "We support PNG, JPG, WEBP, and BMP image formats for resizing, compression, and format conversions." },
+      { q: "Will image quality degrade after compression?", a: "Our Compress Image tool provides a quality slider (1-95) so you can control the exact compression level." },
+    ],
+  },
+  "ai-landing": {
+    title: "AI Studio – Free Factory Image Generator & Prompt Optimizer | SocialBureau",
+    h1: "AI Studio",
+    description: "Harness artificial intelligence to generate photorealistic industrial visuals, blueprint layouts, CAD-style renders, and draft professional technical copy or prompts.",
+    keywords: "ai studio free, factory image generator, prompt optimizer online, generate blueprint online, industrial safety writer, CAD layout generator, copywriter generator, AI prompt engineer",
+    body: [
+      "Step into the future of industrial design and content creation with SocialBureau's AI Studio. Using advanced neural generation models, we make it easy to draft high-quality copy and render stunning technical visuals.",
+      "Generate custom blueprint styles, factory floors, CAD renders, or use the Prompt Engineer to draft highly persuasive safety manuals, technical specifications, and marketing posts.",
+    ],
+    faqs: [
+      { q: "How long does AI image generation take?", a: "Typically, generating a custom photorealistic or CAD industrial visual takes between 5 to 10 seconds." },
+      { q: "Can I download the AI-drafted prompts?", a: "Yes, you can copy the drafted prompts directly to your clipboard or download them as a standard text file." },
+    ],
+  },
+  "favicon-generator": {
+    title: "Favicon Creator Free – Generate favicon.ico Instantly | SocialBureau",
+    h1: "Favicon Creator Online",
+    description: "Create standard favicon.ico files online for free from JPG, PNG, or WEBP images. Multi-resolution support for 16x16, 32x32, and 48x48 sizes. No signup required.",
+    keywords: "favicon generator, favicon creator, make favicon online, generate favicon.ico, convert png to ico, convert jpg to ico, free online favicon creator, multi-resolution ico generator, website icon maker",
+    body: [
+      "Favicon Creator Online is a free utility from SocialBureau to generate standard web favicons instantly. Upload any image — JPG, PNG, BMP, or WEBP — and compile a custom favicon.ico file containing 16x16, 32x32, and 48x48 layer versions in a single click.",
+      "A favicon is crucial for branding, establishing credibility, and improving user navigation. It is displayed in browser tabs, address bars, bookmarks list, and mobile home screen shortcuts.",
+      "Our tool runs 100% locally in your browser session using Canvas, ensuring total data privacy. Your files are never uploaded to any server."
+    ],
+    faqs: [
+      { q: "What sizes are included in the .ico file?", a: "The generated favicon.ico includes standard 16x16, 32x32, and 48x48 pixel resolutions." },
+      { q: "Is it free to use?", a: "Yes, 100% free with no limits and no signup required." },
+      { q: "Does the generator upload my image?", a: "No. The entire favicon generation and compilation happens client-side in your browser for complete privacy." },
+    ]
+  },
+  "background-remover": {
+    title: "AI Background Remover Free – Remove Image Background | SocialBureau",
+    h1: "AI Background Remover",
+    description: "Remove background from images online for free using AI. 100% local, safe, and private processing in your browser. No signup required.",
+    keywords: "remove background online, bg remover free, ai background remover, delete background from photo, transparent background generator, image background eraser online, automatic background removal free",
+    body: [
+      "AI Background Remover allows you to instantly isolate subjects and strip backgrounds from photos using local neural network processing. The tool outputs a clean, transparent PNG format with high edge fidelity.",
+      "Perfect for product listings, marketing banners, portrait headshots, graphic designs, and profile pictures. Since it runs client-side using WebAssembly, it does not send your photos to external APIs or servers.",
+      "The tool downloads the AI model locally on the first run, which may take a few seconds. Subsequent runs use the cached model and execute near-instantly."
+    ],
+    faqs: [
+      { q: "How much does it cost?", a: "It is completely free with no limits and no hidden costs." },
+      { q: "Is my image private?", a: "Yes. Processing is run 100% locally in your browser. Your images never leave your machine." },
+      { q: "Why is the first run slow?", a: "The first run downloads the neural network model (~30MB) to your browser cache. Subsequent runs are much faster." },
+      { q: "What formats are supported?", a: "We support PNG, JPG, and WEBP inputs. The output is always returned as a transparent PNG." }
+    ]
+  },
+  "content-landing": {
+    title: "Online Content Toolkit – Free Word Counter & Text Analysis | SocialBureau",
+    h1: "Content Toolkit",
+    description: "Analyze, audit, and optimize your writing online for free. Real-time metrics counting words, characters, sentences, paragraphs, and reading times dynamically.",
+    keywords: "content toolkit, online writing tools, text analyzer free, word counter online, word count tracker, free seo text utility, copy editor tools, character counter website",
+    body: [
+      "Improve your writing efficiency with SocialBureau's Content Toolkit. Designed for authors, marketers, editors, and students, these utilities help you inspect and refine copy directly inside your browser.",
+      "Get instant structural breakdowns of articles, essays, or posts, and evaluate estimated speaking and reading durations without uploading your text to any server."
+    ],
+    faqs: [
+      { q: "Is the Content Toolkit free?", a: "Yes, it is 100% free with no registration, no watermarks, and no limits." },
+      { q: "Is my text data safe?", a: "Absolutely. All processing runs locally in your browser memory. Your text is never stored or sent to any server." }
+    ]
+  },
+  "word-counter": {
+    title: "Word Counter Online Free – Live Character & Text Analysis | SocialBureau",
+    h1: "Word Counter Utility",
+    description: "Count words, characters, spaces, sentences, and paragraphs in real-time. Estimate reading and speaking times instantly. Free and secure online text analyzer.",
+    keywords: "word counter, character counter, text length analyzer, count words online free, live word counter, paragraph counter online, reading time estimator, speaking time writer tool",
+    body: [
+      "Word Counter Utility is a professional-grade text analytics dashboard. Write or paste your text directly into the editor, or upload a .txt file to immediately audit your word count metrics.",
+      "Keep track of words, characters (with and without spaces), sentences, and paragraphs in real-time. The panel also estimates the time required for a person to read (average 200 WPM) or speak (average 130 WPM) the text.",
+      "This is perfect for social media character constraints, school essays, copywriting limits, scriptwriting, and editing drafts."
+    ],
+    faqs: [
+      { q: "Can I upload text files?", a: "Yes, you can click 'Load File' or drag-and-drop any plain text (.txt) file directly into the editor." },
+      { q: "Does the counter have a character limit?", a: "No, you can paste long-form content like book chapters or articles without restrictions." },
+      { q: "How are reading and speaking times computed?", a: "Reading time is calculated at a standard average speed of 200 words per minute (WPM), and speaking time at 130 WPM." }
+    ]
+  },
+  "blog-title-generator": {
+    title: "Blog Title Generator Free – AI Headline & Catchy Title Maker | SocialBureau",
+    h1: "Blog Title Generator",
+    description: "Generate highly clickable, catchy, and SEO-optimized blog titles, headlines, and subheadings instantly using AI. Free headline writer tool.",
+    keywords: "blog title generator, headline generator, catchy title maker, clickbait titles free, seo title creator online, blog headline ideas, free content writer tools",
+    body: [
+      "Blog Title Generator is a free AI-powered writing assistant designed to draft high-CTR blog headlines instantly.",
+      "Just input your target niche or article topic, optional target keywords, select your preferred tone, and let our engine output 10 creative title hooks categorized across diverse styles.",
+      "Perfect for bloggers, copywriters, SEO managers, and social content creators looking to maximize engagement."
+    ],
+    faqs: [
+      { q: "How many blog titles are generated at once?", a: "Each search generates 10 distinct title ideas matching listicles, ultimate guides, question hooks, and intriguing formats." },
+      { q: "Is the Blog Title Generator free?", a: "Yes, it is 100% free with no daily limits or registration required." }
+    ]
+  },
+  "meta-description-generator": {
+    title: "Meta Description Generator Free – SEO Snip Maker | SocialBureau",
+    h1: "Meta Description Generator",
+    description: "Generate professional SEO page meta descriptions online for free. Custom AI drafts compelling snippets between 120-160 characters to maximize CTR.",
+    keywords: "meta description generator, seo meta tags writer, website description maker, online snippet writer, free seo description generator, page description optimizer",
+    body: [
+      "Meta Description Generator is a specialized SEO copywriting tool.",
+      "Create high-performance meta descriptions that search engines love and users click on. The generator outputs 5 unique page descriptions that strictly adhere to the optimal length of 120 to 160 characters.",
+      "Avoid search console clipping errors while maintaining brand tone and target keywords seamlessly."
+    ],
+    faqs: [
+      { q: "What is the character limit for meta descriptions?", a: "Search engines typically show up to 155-160 characters. Our tool strictly keeps results within this safe margin." },
+      { q: "Can I input keywords?", a: "Yes. Adding your primary keywords ensures the AI seamlessly weaves them in for better SEO relevance." }
+    ]
+  },
+  "caption-generator": {
+    title: "Caption Generator Free – Social Media Hook & Post Writer | SocialBureau",
+    h1: "Social Caption Generator",
+    description: "Draft highly engaging social captions, taglines, and hooks for LinkedIn, Instagram, and Twitter using AI. Free social post copywriter.",
+    keywords: "caption generator, instagram caption maker, linkedin post generator, twitter hook creator, social media post writer, free brand caption tool online",
+    body: [
+      "Draft conversion-optimized social media posts with SocialBureau's Caption Generator.",
+      "Select your target platform (LinkedIn, Twitter, Instagram, or Generic), type in your main post concept, set the tone, and receive tailored captions optimized with proper spacing, emojis, and hashtags.",
+      "Save hours of copywriting blocks and build consistent social media presence across channels."
+    ],
+    faqs: [
+      { q: "Which social platforms are supported?", a: "We support LinkedIn, Twitter/X, Instagram, and a versatile generic option." },
+      { q: "Are hashtags included?", a: "Yes, each output includes platform-native hashtags appended to the end of the post copy." }
+    ]
+  },
+  "hashtag-generator": {
+    title: "Hashtag Generator Free – Viral Niche Hash Tag Finder | SocialBureau",
+    h1: "AI Hashtag Generator",
+    description: "Find viral, relevant, and high-engagement hashtags online for free. Categorized lists matching popular, niche, and long-tail topics.",
+    keywords: "hashtag generator, find hashtags online, free instagram tags finder, tiktok hashtag generator, seo niche tags creator, viral hashtags tracker free",
+    body: [
+      "Reach larger audiences and bypass algorithm bottlenecks using the Hashtag Generator.",
+      "Enter your content topic or niche, and the AI will generate 30 high-volume, niche-targeted, and long-tail hashtags.",
+      "Using structured categories makes it simple to mix broad tags with low-competition niche tags for optimal organic reach."
+    ],
+    faqs: [
+      { q: "How many hashtags does the generator produce?", a: "It generates 30 relevant hashtags organized by search volume tiers (High, Medium, and Low volume)." },
+      { q: "Can I copy them easily?", a: "Yes, you can copy the full list to your clipboard or download them as a standard text file in one click." }
+    ]
+  },
 };
 
 export default function Solutions() {
   const { toolUrl } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Derive path-based category
+  const pathCategory = useMemo(() => {
+    const segments = location.pathname.split("/").filter(Boolean);
+    const prefix = segments[0] || "";
+    if (prefix === "pdf-tools") return "pdf";
+    if (prefix === "image-tools") return "image";
+    if (prefix === "content-tools") return "content";
+    if (prefix === "ai-studio") return "ai";
+    return "all";
+  }, [location.pathname]);
+
+  const isWorkspaceMode = !!toolUrl;
 
   // Derive active category from URL path prefix (e.g. /pdf-tools/merge-pdf)
   const currentCategory = useMemo(() => {
@@ -672,7 +1236,97 @@ export default function Solutions() {
     return tool ? tool.slug : currentCategory.tools[0]?.slug || 'merge';
   }, [currentCategory, toolUrl]);
 
+  // Flatten tools with tag mapping
+  const flatToolsList = useMemo(() => {
+    const list = [];
+    TOOL_CATEGORIES.forEach((cat) => {
+      cat.tools.forEach((tool) => {
+        let tags = [];
+        if (cat.key === "pdf") {
+          if (tool.slug === "merge" || tool.slug === "split") {
+            tags = ["workflows", "organize"];
+          } else if (tool.slug === "compress") {
+            tags = ["workflows", "optimize"];
+          } else if (["to-images", "from-images", "to-word", "from-word"].includes(tool.slug)) {
+            tags = ["convert"];
+          } else if (tool.slug === "to-text") {
+            tags = ["convert", "intelligence"];
+          } else if (tool.slug === "edit") {
+            tags = ["edit"];
+          } else if (tool.slug === "sign") {
+            tags = ["edit", "security"];
+          }
+        } else if (cat.key === "image") {
+          if (tool.slug === "resize") {
+            tags = ["resize"];
+          } else if (tool.slug === "compress") {
+            tags = ["compress"];
+          } else if (tool.slug === "convert") {
+            tags = ["convert"];
+          } else if (tool.slug === "rotate" || tool.slug === "grayscale") {
+            tags = ["adjust"];
+          }
+        } else if (cat.key === "content") {
+          if (tool.slug === "word-counter") {
+            tags = ["analysis", "writing"];
+          } else if (["blog-title", "meta-desc", "caption"].includes(tool.slug)) {
+            tags = ["writing"];
+          } else if (tool.slug === "hashtag") {
+            tags = ["analysis"];
+          }
+        } else if (cat.key === "ai") {
+          tags = ["ai", "intelligence"];
+        }
+
+        list.push({
+          ...tool,
+          category: cat.key,
+          urlPrefix: cat.urlPrefix,
+          tags,
+        });
+      });
+    });
+    return list;
+  }, []);
+
+  const [activeFilter, setActiveFilter] = useState("all");
+
+  // Reset active filter when category path changes
+  useEffect(() => {
+    setActiveFilter("all");
+  }, [pathCategory]);
+
+  // Filtered tools for directory view
+  const filteredTools = useMemo(() => {
+    let result = flatToolsList;
+    if (pathCategory !== "all") {
+      result = result.filter((t) => t.category === pathCategory);
+    }
+    if (activeFilter !== "all") {
+      result = result.filter((t) => t.tags.includes(activeFilter));
+    }
+    return result;
+  }, [flatToolsList, pathCategory, activeFilter]);
+
   const [files, setFiles] = useState([]);
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  useEffect(() => {
+    if (files && files[0]) {
+      const file = files[0];
+      const isImage = file.type.startsWith("image/") || file.name.toLowerCase().match(/\.(jpe?g|png|gif|webp|bmp)$/i);
+      const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+      if (isImage || isPdf) {
+        const url = URL.createObjectURL(file);
+        setPreviewUrl(url);
+        return () => {
+          URL.revokeObjectURL(url);
+        };
+      }
+    }
+    setPreviewUrl(null);
+  }, [files]);
+
   const [busy, setBusy] = useState(false);
   const [dragActive, setDragActive] = useState(false);
 
@@ -694,6 +1348,26 @@ export default function Solutions() {
   const [doneFile, setDoneFile] = useState(null);
   const [aiImageResult, setAiImageResult] = useState(null);
 
+  const [donePreviewUrl, setDonePreviewUrl] = useState(null);
+  const [contentText, setContentText] = useState("");
+  const [genTopic, setGenTopic] = useState("");
+  const [genTone, setGenTone] = useState("professional");
+  const [genKeywords, setGenKeywords] = useState("");
+  const [genPlatform, setGenPlatform] = useState("generic");
+  const [genOutput, setGenOutput] = useState("");
+
+  useEffect(() => {
+    if (doneFile && doneFile.blob) {
+      const url = URL.createObjectURL(doneFile.blob);
+      setDonePreviewUrl(url);
+      return () => {
+        URL.revokeObjectURL(url);
+      };
+    } else {
+      setDonePreviewUrl(null);
+    }
+  }, [doneFile]);
+
   const fileInputRef = useRef(null);
 
   // Sign PDF specific states
@@ -706,12 +1380,71 @@ export default function Solutions() {
   const [sigY, setSigY] = useState(100);
   const [sigWidth, setSigWidth] = useState(120);
   const [sigHeight, setSigHeight] = useState(40);
+  const [sigFontSize, setSigFontSize] = useState(20);
 
   const currentTool = useMemo(() => {
     return currentCategory.tools.find(t => t.slug === activeToolSlug) || currentCategory.tools[0];
   }, [currentCategory, activeToolSlug]);
 
-  const seo = TOOL_SEO[currentTool?.urlSlug] || {};
+  const toolSeo = TOOL_SEO[currentTool?.urlSlug] || {};
+
+  const seo = useMemo(() => {
+    if (isWorkspaceMode) return toolSeo;
+    if (pathCategory === "pdf") return TOOL_SEO["pdf-landing"];
+    if (pathCategory === "image") return TOOL_SEO["image-landing"];
+    if (pathCategory === "content") return TOOL_SEO["content-landing"];
+    if (pathCategory === "ai") return TOOL_SEO["ai-landing"];
+    return TOOL_SEO["solutions-landing"];
+  }, [isWorkspaceMode, toolSeo, pathCategory]);
+
+  const getBadgeStyle = (category) => {
+    switch (category) {
+      case "pdf":
+        return {
+          bg: "bg-red-500/10 border border-red-500/20",
+          text: "text-[#E8001A]"
+        };
+      case "image":
+        return {
+          bg: "bg-emerald-500/10 border border-emerald-500/20",
+          text: "text-emerald-400"
+        };
+      case "content":
+        return {
+          bg: "bg-blue-500/10 border border-blue-505/20",
+          text: "text-blue-400"
+        };
+      case "ai":
+        return {
+          bg: "bg-violet-500/10 border border-violet-500/20",
+          text: "text-violet-400"
+        };
+      default:
+        return {
+          bg: "bg-white/10 border border-white/20",
+          text: "text-white"
+        };
+    }
+  };
+
+  // Backwards compatibility for query parameter links from Navbar
+  const queryParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
+  const categoryParam = queryParams.get("category");
+  const toolParam = queryParams.get("tool");
+
+  useEffect(() => {
+    if (categoryParam && toolParam) {
+      const cat = TOOL_CATEGORIES.find((c) => c.key === categoryParam);
+      if (cat) {
+        const tool = cat.tools.find((t) => t.slug === toolParam);
+        if (tool) {
+          navigate(`/${cat.urlPrefix}/${tool.urlSlug}`, { replace: true });
+        }
+      }
+    }
+  }, [categoryParam, toolParam, navigate]);
+
+  const seoDummyPlaceholder = {};
 
   // Reset tool-specific states on tab change
   useEffect(() => {
@@ -719,6 +1452,12 @@ export default function Solutions() {
     setTextResult("");
     setDoneFile(null);
     setAiImageResult(null);
+    setContentText("");
+    setGenTopic("");
+    setGenTone("professional");
+    setGenKeywords("");
+    setGenPlatform("generic");
+    setGenOutput("");
 
     // Reset signature fields
     setSigType("draw");
@@ -730,6 +1469,7 @@ export default function Solutions() {
     setSigY(100);
     setSigWidth(120);
     setSigHeight(40);
+    setSigFontSize(20);
 
     // Initialize params
     const init = {};
@@ -748,6 +1488,21 @@ export default function Solutions() {
       navigate(`/${cat.urlPrefix}/${cat.tools[0].urlSlug}`);
     }
   };
+
+  const handleCoordsSelectedForEdit = React.useCallback((page, x, y) => {
+    setParams((prev) => ({
+      ...prev,
+      page,
+      x,
+      y,
+    }));
+  }, []);
+
+  const handleCoordsSelectedForSign = React.useCallback((page, x, y) => {
+    setSigPage(page);
+    setSigX(x);
+    setSigY(y);
+  }, []);
 
   // Drag & drop handlers
   const handleDrag = (e) => {
@@ -805,6 +1560,41 @@ export default function Solutions() {
 
   const removeFile = (index) => {
     setFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleContentFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.type === "text/plain" || file.name.endsWith(".txt")) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          setContentText(event.target.result || "");
+          toast.success("Text loaded from file!");
+        };
+        reader.readAsText(file);
+      } else {
+        toast.error("Please upload a standard text (.txt) file.");
+      }
+    }
+  };
+
+  const handleContentFileDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      if (file.type === "text/plain" || file.name.endsWith(".txt")) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          setContentText(event.target.result || "");
+          toast.success("Text loaded from dropped file!");
+        };
+        reader.readAsText(file);
+      } else {
+        toast.error("Please upload a standard text (.txt) file.");
+      }
+    }
   };
 
   const triggerDownload = (blob, filename) => {
@@ -872,6 +1662,7 @@ export default function Solutions() {
       fd.append("page", sigPage);
       fd.append("width", sigWidth);
       fd.append("height", sigHeight);
+      fd.append("fontSize", sigFontSize);
 
       const url = `${BASE_URL}/api/pdf/sign`;
       const res = await axios.post(url, fd, {
@@ -906,6 +1697,77 @@ export default function Solutions() {
 
   // Run the job
   const handleRun = async () => {
+    if (currentTool.isClientFavicon) {
+      if (!files.length) {
+        toast.error("Please upload an image first");
+        return;
+      }
+      setBusy(true);
+      setTextResult("");
+      setDoneFile(null);
+      try {
+        const file = files[0];
+        const blob = await generateIcoFavicon(file);
+        setDoneFile({ blob, filename: "favicon.ico", size: blob.size });
+        toast.success("Favicon generated successfully!");
+      } catch (err) {
+        console.error("Favicon generation failed:", err);
+        toast.error("Failed to generate favicon. Make sure file is a valid image.");
+      } finally {
+        setBusy(false);
+      }
+      return;
+    }
+
+    if (currentTool.isClientRemoveBg) {
+      if (!files.length) {
+        toast.error("Please upload an image first");
+        return;
+      }
+      setBusy(true);
+      setTextResult("");
+      setDoneFile(null);
+      try {
+        let file = files[0];
+        const isIco = file.name.toLowerCase().endsWith(".ico") || file.type === "image/x-icon";
+        if (isIco) {
+          const toastConvertId = toast.info("Converting ICO to PNG for AI processing...", { autoClose: 3000 });
+          file = await new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            img.onload = () => {
+              const canvas = document.createElement("canvas");
+              canvas.width = img.width || 256;
+              canvas.height = img.height || 256;
+              const ctx = canvas.getContext("2d");
+              ctx.drawImage(img, 0, 0);
+              canvas.toBlob((blob) => {
+                if (blob) {
+                  resolve(new File([blob], file.name.replace(/\.ico$/i, ".png"), { type: "image/png" }));
+                } else {
+                  reject(new Error("Failed to convert ICO to PNG"));
+                }
+              }, "image/png");
+            };
+            img.onerror = (e) => reject(new Error("Failed to load ICO image"));
+          });
+        }
+
+        const toastId = toast.info("Initializing AI model... Please wait...", { autoClose: false });
+        const { removeBackground } = await import("https://cdn.jsdelivr.net/npm/@imgly/background-removal/+esm");
+        const blob = await removeBackground(file);
+        toast.dismiss(toastId);
+        setDoneFile({ blob, filename: "removed-background.png", size: blob.size });
+        toast.success("Background removed successfully!");
+      } catch (err) {
+        console.error("Background removal failed:", err);
+        toast.error("Failed to remove background. Make sure your browser supports WebGL.");
+      } finally {
+        setBusy(false);
+      }
+      return;
+    }
+
     if (currentTool.isCustomSign) {
       await handleSignPdf();
       return;
@@ -917,6 +1779,11 @@ export default function Solutions() {
       } else {
         await handleGenerateAiPrompt();
       }
+      return;
+    }
+
+    if (currentTool.isCustomGenerator) {
+      await handleGenerateContent();
       return;
     }
 
@@ -1048,6 +1915,33 @@ export default function Solutions() {
     }
   };
 
+  // Generate Content
+  const handleGenerateContent = async () => {
+    if (!genTopic.trim()) {
+      toast.error("Please enter a topic or keyword first");
+      return;
+    }
+    setBusy(true);
+    setGenOutput("");
+    try {
+      const res = await axios.post(`${BASE_URL}/api/ai/content-generator`, {
+        type: currentTool.generatorType,
+        topic: genTopic,
+        tone: genTone,
+        keywords: genKeywords,
+        platform: genPlatform,
+      });
+      setGenOutput(res.data.output || "");
+      toast.success("Content generated successfully!");
+    } catch (e) {
+      console.error(e);
+      const msg = e.response?.data?.message || e.message || "Failed to generate content";
+      toast.error(typeof msg === "string" ? msg : "Failed to generate content");
+    } finally {
+      setBusy(false);
+    }
+  };
+
   // Copy AI Prompt Output
   const copyOutput = () => {
     if (!textResult) return;
@@ -1067,37 +1961,112 @@ export default function Solutions() {
     triggerDownload(blob, "industrial-visual.png");
   };
 
+  const currentSubFilters = useMemo(() => {
+    if (pathCategory === "pdf") {
+      return [
+        { key: "all", label: "All" },
+        { key: "workflows", label: "Workflows" },
+        { key: "organize", label: "Organize PDF" },
+        { key: "optimize", label: "Optimize PDF" },
+        { key: "convert", label: "Convert PDF" },
+        { key: "edit", label: "Edit PDF" },
+        { key: "security", label: "PDF Security" },
+        { key: "intelligence", label: "PDF Intelligence" },
+      ];
+    }
+    if (pathCategory === "image") {
+      return [
+        { key: "all", label: "All" },
+        { key: "resize", label: "Resize" },
+        { key: "compress", label: "Compress" },
+        { key: "convert", label: "Convert" },
+        { key: "adjust", label: "Adjust" },
+      ];
+    }
+    if (pathCategory === "content") {
+      return [
+        { key: "all", label: "All" },
+        { key: "analysis", label: "Analysis" },
+        { key: "writing", label: "Writing" },
+      ];
+    }
+    return [];
+  }, [pathCategory]);
+
   return (
     <div className="w-full min-h-screen bg-[#0A0A0A] pt-20 pb-8 px-4 sm:px-6 lg:px-8 text-white flex flex-col transition-all duration-300">
       <Helmet>
-        <title>{seo.title || `${currentTool.name} | SocialBureau`}</title>
-        <meta name="description" content={seo.description || currentTool.desc} />
-        <link rel="canonical" href={`https://www.socialbureau.in/${currentCategory.urlPrefix}/${currentTool.urlSlug}`} />
+        <title>{seo.title || (isWorkspaceMode ? `${currentTool?.name} | SocialBureau` : "Solutions Suite | SocialBureau")}</title>
+        <meta name="description" content={seo.description || (isWorkspaceMode ? currentTool?.desc : "Explore SocialBureau's comprehensive toolkit of document, image, and AI utilities.")} />
+        {seo.keywords && <meta name="keywords" content={seo.keywords} />}
+        <meta name="robots" content="index, follow" />
+        
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content={seo.title || (isWorkspaceMode ? `${currentTool?.name} | SocialBureau` : "Solutions Suite | SocialBureau")} />
+        <meta property="og:description" content={seo.description || (isWorkspaceMode ? currentTool?.desc : "Explore SocialBureau's comprehensive toolkit of document, image, and AI utilities.")} />
+        <meta property="og:type" content="website" />
+        <meta 
+          property="og:url" 
+          content={isWorkspaceMode 
+            ? `https://www.socialbureau.in/${currentCategory.urlPrefix}/${currentTool?.urlSlug}` 
+            : `https://www.socialbureau.in/${pathCategory === "all" ? "solutions" : currentCategory.urlPrefix}`
+          } 
+        />
+        <meta property="og:image" content="https://www.socialbureau.in/og-image.png" />
+        
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={seo.title || (isWorkspaceMode ? `${currentTool?.name} | SocialBureau` : "Solutions Suite | SocialBureau")} />
+        <meta name="twitter:description" content={seo.description || (isWorkspaceMode ? currentTool?.desc : "Explore SocialBureau's comprehensive toolkit of document, image, and AI utilities.")} />
+        <meta name="twitter:image" content="https://www.socialbureau.in/og-image.png" />
+
+        <link 
+          rel="canonical" 
+          href={isWorkspaceMode 
+            ? `https://www.socialbureau.in/${currentCategory.urlPrefix}/${currentTool?.urlSlug}` 
+            : `https://www.socialbureau.in/${pathCategory === "all" ? "solutions" : currentCategory.urlPrefix}`
+          } 
+        />
       </Helmet>
       <style>{scrollbarHideStyle}</style>
       <div className="max-w-7xl w-full mx-auto flex-1 flex flex-col min-h-0">
         
         {/* Title Header */}
         <div className="flex flex-col items-center text-center mb-6 sm:mb-8 shrink-0">
-          <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-1">Solutions Suite</p>
+          <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-1">
+            {isWorkspaceMode ? "Tool Workspace" : "Solutions Suite"}
+          </p>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight uppercase mb-2 bg-gradient-to-r from-[#E8001A] to-[#FF3333] bg-clip-text text-transparent">
-            {seo.h1 || currentTool.name}
+            {seo.h1 || "Solutions Suite"}
           </h1>
-          <p className="text-sm sm:text-base text-white/60 font-medium">
-            {currentTool.desc}
+          <p className="text-sm sm:text-base text-white/60 font-medium max-w-2xl">
+            {isWorkspaceMode ? currentTool?.desc : (seo.description || "Fast, secure, and production-ready toolkits for your documents and assets.")}
           </p>
         </div>
 
-        {/* Categories Tab Navigation - Horizontal Scroll on Mobile */}
+        {/* Categories Tab Navigation */}
         <div className="mb-4 sm:mb-6 shrink-0">
           <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 md:flex-wrap md:justify-center scrollbar-hide">
+            {!isWorkspaceMode && (
+              <button
+                onClick={() => navigate("/solutions")}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-bold text-xs sm:text-sm uppercase tracking-wider transition-all whitespace-nowrap flex-shrink-0 ${
+                  pathCategory === "all"
+                    ? "bg-[#E8001A] text-white shadow-lg shadow-[#E8001A]/30 border border-[#E8001A]"
+                    : "bg-white/5 text-white/70 border border-white/10 hover:bg-white/10 hover:text-white hover:border-[#E8001A]/50"
+                }`}
+              >
+                <FileText size={16} />
+                <span>All Tools</span>
+              </button>
+            )}
             {TOOL_CATEGORIES.map((cat) => {
               const CatIcon = cat.icon;
-              const isActive = activeCategory === cat.key;
+              const isActive = pathCategory === cat.key;
               return (
                 <button
                   key={cat.key}
-                  onClick={() => handleCategoryChange(cat.key)}
+                  onClick={() => navigate(isWorkspaceMode ? `/${cat.urlPrefix}/${cat.tools[0].urlSlug}` : `/${cat.urlPrefix}`)}
                   className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-bold text-xs sm:text-sm uppercase tracking-wider transition-all whitespace-nowrap flex-shrink-0 ${
                     isActive
                       ? "bg-[#E8001A] text-white shadow-lg shadow-[#E8001A]/30 border border-[#E8001A]"
@@ -1112,46 +2081,76 @@ export default function Solutions() {
           </div>
         </div>
 
-        {/* Tools Sub Navigation - Horizontal Scroll on Mobile */}
-        <div className="flex gap-2 overflow-x-auto pb-3 md:pb-0 md:flex-wrap md:justify-center mb-4 sm:mb-6 shrink-0 scrollbar-hide">
-          {currentCategory.tools.map((tool) => {
-            const ToolIcon = tool.icon;
-            const isActive = activeToolSlug === tool.slug;
-            return (
-              <button
-                key={tool.slug}
-                onClick={() => navigate(`/${currentCategory.urlPrefix}/${tool.urlSlug}`)}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer flex-shrink-0 ${
-                  isActive
-                    ? "bg-[#E8001A] text-white shadow-md shadow-[#E8001A]/20 border border-[#E8001A]"
-                    : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/10 hover:text-white/80"
-                }`}
-              >
-                <ToolIcon size={14} />
-                <span className="hidden sm:inline">{tool.name}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Main Workspace Card */}
-        <div className="flex-1 bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/10 shadow-2xl rounded-2xl p-4 sm:p-6 min-h-0 flex flex-col overflow-hidden backdrop-blur-lg">
-          
-          {/* Active Tool Summary */}
-          <div className="mb-4 border-b border-white/10 pb-3 shrink-0 flex items-start sm:items-center justify-between gap-2">
-            <div>
-              <h2 className="text-base sm:text-lg font-bold text-white uppercase tracking-tight flex items-center gap-2 mb-1">
-                <span className="p-1.5 bg-[#E8001A]/20 text-[#E8001A] rounded-lg shrink-0">
-                  {React.createElement(currentTool.icon, { size: 16 })}
-                </span>
-                {currentTool.name}
-              </h2>
-              <p className="text-xs sm:text-sm text-white/50">{currentTool.desc}</p>
+        {/* Horizontal Sub-Filters or Tool Selection */}
+        {!isWorkspaceMode ? (
+          currentSubFilters.length > 0 && (
+            <div className="flex gap-2 overflow-x-auto pb-3 md:pb-0 md:flex-wrap md:justify-center mb-6 shrink-0 scrollbar-hide">
+              {currentSubFilters.map((filter) => {
+                const isActive = activeFilter === filter.key;
+                return (
+                  <button
+                    key={filter.key}
+                    onClick={() => setActiveFilter(filter.key)}
+                    className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex-shrink-0 border ${
+                      isActive
+                        ? "bg-white text-black border-white shadow-md"
+                        : "bg-white/5 text-white/60 border-white/10 hover:bg-white/10 hover:text-white"
+                    }`}
+                  >
+                    <span>{filter.label}</span>
+                  </button>
+                );
+              })}
             </div>
+          )
+        ) : (
+          <div className="flex gap-2 overflow-x-auto pb-3 md:pb-0 md:flex-wrap md:justify-center mb-4 sm:mb-6 shrink-0 scrollbar-hide">
+            <button
+              onClick={() => navigate("/solutions")}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/30 cursor-pointer flex-shrink-0"
+            >
+              <span>← Back</span>
+            </button>
+            {currentCategory.tools.map((tool) => {
+              const ToolIcon = tool.icon;
+              const isActive = activeToolSlug === tool.slug;
+              return (
+                <button
+                  key={tool.slug}
+                  onClick={() => navigate(`/${currentCategory.urlPrefix}/${tool.urlSlug}`)}
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer flex-shrink-0 ${
+                    isActive
+                      ? "bg-[#E8001A] text-white shadow-md shadow-[#E8001A]/20 border border-[#E8001A]"
+                      : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/10 hover:text-white/80"
+                  }`}
+                >
+                  <ToolIcon size={14} />
+                  <span className="hidden sm:inline">{tool.name}</span>
+                </button>
+              );
+            })}
           </div>
+        )}
 
-          {/* Render Tool Interface */}
-          {currentTool.isCustomSign ? (
+        {isWorkspaceMode ? (
+          /* Main Workspace Card */
+          <div className="flex-1 bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/10 shadow-2xl rounded-2xl p-4 sm:p-6 min-h-0 flex flex-col overflow-hidden backdrop-blur-lg">
+            
+            {/* Active Tool Summary */}
+            <div className="mb-4 border-b border-white/10 pb-3 shrink-0 flex items-start sm:items-center justify-between gap-2">
+              <div>
+                <h2 className="text-base sm:text-lg font-bold text-white uppercase tracking-tight flex items-center gap-2 mb-1">
+                  <span className="p-1.5 bg-[#E8001A]/20 text-[#E8001A] rounded-lg shrink-0">
+                    {React.createElement(currentTool.icon, { size: 16 })}
+                  </span>
+                  {currentTool.name}
+                </h2>
+                <p className="text-xs sm:text-sm text-white/50">{currentTool.desc}</p>
+              </div>
+            </div>
+
+            {/* Render Tool Interface */}
+            {currentTool.isCustomSign ? (
             /* SIGN PDF CUSTOM LAYOUT */
             <div className="flex-1 min-h-0 grid md:grid-cols-12 gap-6 overflow-hidden">
               {/* Left Side: Inputs & Signature pad */}
@@ -1159,7 +2158,7 @@ export default function Solutions() {
                 <div className="space-y-4">
                   {/* PDF Upload */}
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-700 tracking-wider uppercase block">
+                    <label className="text-[10px] font-bold text-white/50 tracking-wider uppercase block">
                       Upload PDF to Sign
                     </label>
                     <div
@@ -1170,8 +2169,8 @@ export default function Solutions() {
                       onClick={() => fileInputRef.current?.click()}
                       className={`border-2 border-dashed rounded-2xl p-5 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${
                         dragActive
-                          ? "border-indigo-600 bg-indigo-50/20"
-                          : "border-slate-200 hover:border-indigo-400 bg-slate-50/50 hover:bg-slate-50"
+                          ? "border-indigo-500 bg-indigo-500/10"
+                          : "border-white/10 hover:border-indigo-500/50 bg-white/[0.02] hover:bg-white/[0.05]"
                       }`}
                     >
                       <input
@@ -1182,22 +2181,22 @@ export default function Solutions() {
                         multiple={false}
                         accept="application/pdf"
                       />
-                      <Upload size={24} className="text-slate-400 mb-2" />
-                      <p className="text-xs font-bold text-slate-700">
+                      <Upload size={24} className="text-white/40 mb-2" />
+                      <p className="text-xs font-bold text-white/80">
                         Drag & Drop your PDF file here
                       </p>
-                      <p className="text-[10px] text-slate-400 mt-0.5">
+                      <p className="text-[10px] text-white/40 mt-0.5">
                         Or click to browse
                       </p>
                     </div>
                   </div>
 
                   {/* Signature Type Selection Tabs */}
-                  <div className="space-y-2 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-                    <label className="text-[10px] font-bold text-slate-700 tracking-wider uppercase block">
+                  <div className="space-y-2 bg-white/[0.02] p-3.5 rounded-xl border border-white/10">
+                    <label className="text-[10px] font-bold text-white/50 tracking-wider uppercase block">
                       Choose Signature Type
                     </label>
-                    <div className="grid grid-cols-3 gap-1 p-1 bg-slate-200/50 rounded-lg">
+                    <div className="grid grid-cols-3 gap-1 p-1 bg-white/[0.04] rounded-lg">
                       {["draw", "text", "upload"].map((type) => (
                         <button
                           key={type}
@@ -1205,8 +2204,8 @@ export default function Solutions() {
                           onClick={() => setSigType(type)}
                           className={`py-1.5 text-[10px] font-bold uppercase rounded-md transition-all cursor-pointer ${
                             sigType === type
-                              ? "bg-white text-indigo-600 shadow-sm"
-                              : "text-slate-500 hover:text-slate-800"
+                              ? "bg-indigo-650 text-white shadow-sm"
+                              : "text-white/60 hover:text-white"
                           }`}
                         >
                           {type === "draw" && "Draw"}
@@ -1231,16 +2230,16 @@ export default function Solutions() {
                             value={sigText}
                             onChange={(e) => setSigText(e.target.value)}
                             placeholder="Enter signature text"
-                            className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs font-semibold text-slate-800 focus:border-indigo-500 focus:outline-none"
+                            className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2 text-xs font-semibold text-white placeholder-white/30 focus:border-indigo-500 focus:outline-none"
                           />
-                          <p className="text-[9px] text-slate-400">
+                          <p className="text-[9px] text-white/40">
                             Your signature will be styled in a beautiful dark-blue calligraphic script.
                           </p>
                         </div>
                       )}
                       {sigType === "upload" && (
                         <div className="space-y-2">
-                          <div className="flex items-center justify-center border border-dashed border-slate-300 rounded-lg p-4 bg-white hover:bg-slate-50 transition-colors relative cursor-pointer">
+                          <div className="flex items-center justify-center border border-dashed border-white/15 rounded-lg p-4 bg-white/[0.01] hover:bg-white/[0.03] transition-colors relative cursor-pointer">
                             <input
                               type="file"
                               accept="image/*"
@@ -1248,14 +2247,14 @@ export default function Solutions() {
                               className="absolute inset-0 opacity-0 cursor-pointer"
                             />
                             <div className="text-center">
-                              <FileImage size={20} className="text-slate-400 mx-auto mb-1" />
-                              <span className="text-[10px] text-indigo-650 font-bold uppercase">
+                              <FileImage size={20} className="text-white/40 mx-auto mb-1" />
+                              <span className="text-[10px] text-indigo-400 font-bold uppercase">
                                 {sigUploadedFile ? "Change Image" : "Select PNG/JPG Signature"}
                               </span>
                             </div>
                           </div>
                           {sigUploadedFile && (
-                            <div className="border border-slate-100 rounded-lg p-2 bg-slate-100/50 flex justify-center items-center h-20 overflow-hidden">
+                            <div className="border border-white/10 rounded-lg p-2 bg-white/[0.02] flex justify-center items-center h-20 overflow-hidden">
                               <img
                                 src={sigUploadedFile}
                                 alt="Uploaded Signature Preview"
@@ -1269,59 +2268,64 @@ export default function Solutions() {
                   </div>
 
                   {/* Positioning Coordinates Controls */}
-                  <div className="space-y-3 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-                    <h3 className="text-[10px] font-bold text-slate-700 tracking-wider uppercase">
+                  <div className="space-y-3 bg-white/[0.02] p-3.5 rounded-xl border border-white/10">
+                    <h3 className="text-[10px] font-bold text-white/50 tracking-wider uppercase">
                       Signature Placement & Size
                     </h3>
                     <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
                       <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-slate-500 tracking-wider uppercase block">
+                        <label className="text-[9px] font-bold text-white/40 tracking-wider uppercase block">
                           Page Number
                         </label>
                         <input
                           type="number"
                           value={sigPage}
                           onChange={(e) => setSigPage(Math.max(1, parseInt(e.target.value) || 1))}
-                          className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-750 font-mono focus:border-indigo-500 focus:outline-none"
+                          className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono focus:border-indigo-500 focus:outline-none"
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-slate-500 tracking-wider uppercase block">
+                        <label className="text-[9px] font-bold text-white/40 tracking-wider uppercase block">
                           X (from Left)
                         </label>
                         <input
                           type="number"
                           value={sigX}
                           onChange={(e) => setSigX(parseInt(e.target.value) || 0)}
-                          className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-750 font-mono focus:border-indigo-500 focus:outline-none"
+                          className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono focus:border-indigo-500 focus:outline-none"
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-slate-500 tracking-wider uppercase block">
+                        <label className="text-[9px] font-bold text-white/40 tracking-wider uppercase block">
                           Y (from Bottom)
                         </label>
                         <input
                           type="number"
                           value={sigY}
                           onChange={(e) => setSigY(parseInt(e.target.value) || 0)}
-                          className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-750 font-mono focus:border-indigo-500 focus:outline-none"
+                          className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono focus:border-indigo-500 focus:outline-none"
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-slate-500 tracking-wider uppercase block">
-                          Width
+                        <label className="text-[9px] font-bold text-white/40 tracking-wider uppercase block">
+                          {sigType === "text" ? "Font Size" : "Width"}
                         </label>
                         <input
                           type="number"
-                          value={sigWidth}
-                          disabled={sigType === "text"}
-                          placeholder={sigType === "text" ? "Auto" : ""}
-                          onChange={(e) => setSigWidth(parseInt(e.target.value) || 0)}
-                          className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-750 font-mono focus:border-indigo-500 focus:outline-none disabled:opacity-50"
+                          value={sigType === "text" ? sigFontSize : sigWidth}
+                          onChange={(e) => {
+                            const val = parseInt(e.target.value) || 0;
+                            if (sigType === "text") {
+                              setSigFontSize(val);
+                            } else {
+                              setSigWidth(val);
+                            }
+                          }}
+                          className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono focus:border-indigo-500 focus:outline-none"
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-slate-500 tracking-wider uppercase block">
+                        <label className="text-[9px] font-bold text-white/40 tracking-wider uppercase block">
                           Height
                         </label>
                         <input
@@ -1330,11 +2334,11 @@ export default function Solutions() {
                           disabled={sigType === "text"}
                           placeholder={sigType === "text" ? "Auto" : ""}
                           onChange={(e) => setSigHeight(parseInt(e.target.value) || 0)}
-                          className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-750 font-mono focus:border-indigo-500 focus:outline-none disabled:opacity-50"
+                          className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono focus:border-indigo-500 focus:outline-none disabled:opacity-30"
                         />
                       </div>
                     </div>
-                    <p className="text-[10px] text-indigo-650 bg-indigo-50/50 p-2 rounded-lg leading-normal">
+                    <p className="text-[10px] text-indigo-400 bg-indigo-500/10 p-2 rounded-lg leading-normal">
                       💡 <strong>Pro Tip:</strong> PDF coordinates start from the bottom-left corner of the page.
                     </p>
                   </div>
@@ -1343,7 +2347,7 @@ export default function Solutions() {
                 <button
                   onClick={handleRun}
                   disabled={busy}
-                  className="w-full flex items-center justify-center gap-2 py-3 bg-indigo-600 text-white rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-indigo-700 disabled:opacity-50 transition-all shadow-md shadow-indigo-50 cursor-pointer mt-4"
+                  className="w-full flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-[#E8001A] to-[#FF3333] hover:from-[#E8001A]/90 hover:to-[#FF3333]/90 text-white rounded-xl font-bold text-xs uppercase tracking-wider disabled:opacity-50 transition-all shadow-lg shadow-[#E8001A]/30 cursor-pointer mt-4"
                 >
                   {busy ? (
                     <Loader2 size={14} className="animate-spin" />
@@ -1355,31 +2359,31 @@ export default function Solutions() {
               </div>
 
               {/* Right Side: Uploaded file list & result download */}
-              <div className="md:col-span-5 border-l border-slate-100 md:pl-6 flex flex-col min-h-0 justify-between overflow-hidden">
+              <div className="md:col-span-5 border-l border-white/10 md:pl-6 flex flex-col min-h-0 justify-between overflow-hidden">
                 {/* Uploaded PDF info */}
                 <div className="flex flex-col min-h-0 max-h-[160px] mb-4 shrink-0">
-                  <h3 className="text-[10px] font-bold text-slate-700 tracking-wider uppercase mb-2">
+                  <h3 className="text-[10px] font-bold text-white/50 tracking-wider uppercase mb-2">
                     Uploaded PDF File ({files.length})
                   </h3>
                   {files.length === 0 ? (
-                    <div className="text-center py-4 bg-slate-50/50 rounded-xl border border-slate-100 text-slate-400 text-[10px]">
+                    <div className="text-center py-4 bg-white/[0.02] rounded-xl border border-white/10 text-white/40 text-[10px]">
                       No PDF uploaded
                     </div>
                   ) : (
-                    <div className="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-100 rounded-xl text-[11px]">
+                    <div className="flex items-center justify-between p-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-[11px]">
                       <div className="flex items-center gap-2 min-w-0">
-                        <File size={14} className="text-slate-400 shrink-0" />
-                        <span className="font-medium text-slate-700 truncate max-w-[150px]">
+                        <File size={14} className="text-white/40 shrink-0" />
+                        <span className="font-medium text-white/80 truncate max-w-[150px]">
                           {files[0].name}
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[9px] text-slate-400 font-mono">
+                        <span className="text-[9px] text-white/40 font-mono">
                           {(files[0].size / 1024).toFixed(1)} KB
                         </span>
                         <button
                           onClick={() => removeFile(0)}
-                          className="text-red-500 hover:text-red-650 cursor-pointer"
+                          className="text-red-500 hover:text-red-400 cursor-pointer"
                         >
                           <Trash2 size={12} />
                         </button>
@@ -1389,14 +2393,37 @@ export default function Solutions() {
                 </div>
 
                 {/* Outputs */}
-                <div className="flex-1 min-h-0 border border-slate-100 bg-slate-50 rounded-2xl p-4 flex flex-col justify-center items-center overflow-hidden relative">
+                <div className={`flex-1 min-h-[350px] border border-white/10 bg-white/[0.02] rounded-2xl p-4 flex flex-col overflow-hidden relative ${
+                  (!busy && !doneFile && !previewUrl) ? "justify-center items-center" : ""
+                }`}>
                   {!busy && !doneFile && (
-                    <div className="text-center text-slate-400">
-                      <div className="w-10 h-10 bg-white shadow-sm border border-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-2.5">
-                        <FileCheck size={18} className="text-slate-350" />
+                    files.length > 0 && previewUrl ? (
+                      <InteractivePdfPreview
+                        previewUrl={previewUrl}
+                        onCoordsSelected={handleCoordsSelectedForSign}
+                        selectedPage={sigPage}
+                        selectedX={sigX}
+                        selectedY={sigY}
+                        sigType={sigType}
+                        overlayFontSize={sigType === "text" ? sigFontSize : undefined}
+                        sigWidth={sigWidth}
+                        sigHeight={sigHeight}
+                        overlaySignature={
+                          sigType === "draw"
+                            ? sigDrawData
+                            : sigType === "text"
+                            ? sigText
+                            : sigUploadedFile
+                        }
+                      />
+                    ) : (
+                      <div className="text-center text-slate-400">
+                        <div className="w-10 h-10 bg-white shadow-sm border border-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-2.5">
+                          <FileCheck size={18} className="text-slate-350" />
+                        </div>
+                        <p className="text-[10px] font-bold uppercase tracking-wider">Awaiting Signature Application</p>
                       </div>
-                      <p className="text-[10px] font-bold uppercase tracking-wider">Awaiting Signature Application</p>
-                    </div>
+                    )
                   )}
 
                   {busy && (
@@ -1406,26 +2433,35 @@ export default function Solutions() {
                     </div>
                   )}
 
-                  {!busy && doneFile && (
-                    <div className="w-full space-y-3 shrink-0">
-                      <div className="flex items-center gap-1.5 text-emerald-600">
-                        <CheckCircle size={14} />
-                        <span className="text-[10px] font-bold uppercase tracking-wider">PDF Signed Successfully</span>
+                  {!busy && doneFile && donePreviewUrl && (
+                    <div className="w-full h-full flex flex-col min-h-0">
+                      {/* Top Bar with download button */}
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 bg-white/[0.03] border border-white/10 rounded-xl mb-3 shrink-0">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5 text-emerald-500 font-bold text-xs uppercase tracking-wider mb-1">
+                            <CheckCircle size={14} />
+                            <span>PDF Signed Successfully</span>
+                          </div>
+                          <p className="font-mono text-xs text-white/80 truncate max-w-[180px] sm:max-w-[250px]">
+                            {doneFile.filename} ({(doneFile.size / 1024).toFixed(1)} KB)
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => triggerDownload(doneFile.blob, doneFile.filename)}
+                          className="flex items-center justify-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold uppercase transition-colors shadow-md shadow-emerald-950/20 cursor-pointer shrink-0"
+                        >
+                          <Download size={14} /> Download Signed PDF
+                        </button>
                       </div>
-                      <div className="bg-white p-3 border border-slate-100 rounded-xl">
-                        <p className="font-mono text-[11px] text-slate-700 break-all leading-normal">
-                          {doneFile.filename}
-                        </p>
-                        <p className="font-mono text-[9px] text-slate-400 mt-0.5">
-                          {(doneFile.size / 1024).toFixed(1)} KB
-                        </p>
+                      
+                      {/* Live Preview of the completed PDF */}
+                      <div className="flex-1 min-h-0 bg-white rounded-xl overflow-hidden shadow-inner">
+                        <iframe
+                          src={`${donePreviewUrl}#toolbar=0`}
+                          className="w-full h-full border-0"
+                          title="Signed PDF Preview"
+                        />
                       </div>
-                      <button
-                        onClick={() => triggerDownload(doneFile.blob, doneFile.filename)}
-                        className="w-full flex items-center justify-center gap-1.5 py-2 bg-emerald-600 text-white rounded-lg text-[10px] font-bold uppercase hover:bg-emerald-700 transition-colors shadow-md shadow-emerald-50 cursor-pointer"
-                      >
-                        <Download size={12} /> Download Signed PDF
-                      </button>
                     </div>
                   )}
                 </div>
@@ -1502,7 +2538,7 @@ export default function Solutions() {
                           className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:border-[#E8001A] focus:bg-white/[0.05] focus:outline-none transition-all"
                         >
                           {USE_CASES.map((u) => (
-                            <option key={u.value} value={u.value}>
+                            <option key={u.value} value={u.value} className="bg-[#1A1A1A] text-white">
                               {u.label}
                             </option>
                           ))}
@@ -1575,7 +2611,9 @@ export default function Solutions() {
                   )}
                 </div>
 
-                <div className="flex-1 bg-white/[0.02] rounded-2xl border border-white/10 flex flex-col justify-center items-center overflow-hidden p-4 relative min-h-0">
+                <div className={`flex-1 bg-white/[0.02] rounded-2xl border border-white/10 flex flex-col overflow-hidden p-4 relative min-h-0 ${
+                  (!busy && !aiImageResult && !textResult) ? "justify-center items-center" : ""
+                }`}>
                   {!busy && !aiImageResult && !textResult && (
                     <div className="text-center text-white/40">
                       <div className="w-10 h-10 bg-white/[0.05] shadow-sm border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-3 text-white/30">
@@ -1602,7 +2640,7 @@ export default function Solutions() {
                       />
                       <button
                         onClick={downloadAiImage}
-                        className="absolute bottom-2.5 right-2.5 flex items-center gap-1.5 bg-[#E8001A]/90 hover:bg-[#E8001A] text-white rounded-lg px-3 py-1.5 text-xs font-bold uppercase transition-colors shadow-lg cursor-pointer"
+                        className="absolute bottom-2.5 right-2.5 flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-3 py-1.5 text-xs font-bold uppercase transition-colors shadow-lg shadow-emerald-950/20 cursor-pointer"
                       >
                         <Download size={12} />
                         Download Visual
@@ -1613,18 +2651,322 @@ export default function Solutions() {
                   {/* Render Extracted Text / Prompts */}
                   {!busy && textResult && (
                     <div className="w-full h-full flex flex-col min-h-0">
-                      <pre className="flex-1 whitespace-pre-wrap font-mono text-xs sm:text-sm text-white/80 bg-white/[0.02] border border-white/10 rounded-xl p-3 overflow-y-auto leading-relaxed text-left">
+                      <pre 
+                        data-lenis-prevent
+                        className="flex-1 whitespace-pre-wrap font-mono text-xs sm:text-sm text-white/80 bg-white/[0.02] border border-white/10 rounded-xl p-3 overflow-y-auto leading-relaxed text-left custom-scrollbar"
+                      >
                         {textResult}
                       </pre>
                       {currentTool.slug === "prompt" && (
                         <button
                           onClick={() => triggerDownload(new Blob([textResult], { type: "text/plain" }), "engineered-prompt.txt")}
-                          className="mt-2.5 self-end flex items-center gap-1 text-xs text-[#E8001A] font-bold uppercase hover:text-[#FF3333] transition-colors cursor-pointer"
+                          className="mt-2.5 self-end flex items-center gap-1 text-xs text-emerald-500 font-bold uppercase hover:text-emerald-400 transition-colors cursor-pointer"
                         >
                           <Download size={12} />
                           Download as Text File
                         </button>
                       )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ) : currentTool.isCustomContent ? (
+            /* WORD COUNTER LAYOUT */
+            <div className="flex-1 min-h-0 grid md:grid-cols-12 gap-6 overflow-hidden">
+              {/* Left Side: Textarea and Quick Tools */}
+              <div className="md:col-span-8 flex flex-col justify-between min-h-0">
+                <div className="flex-1 flex flex-col min-h-0 space-y-3">
+                  <div className="flex items-center justify-between shrink-0">
+                    <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
+                      Enter or Paste Your Text
+                    </label>
+                    <div className="flex items-center gap-2">
+                      {/* Load file button */}
+                      <label className="flex items-center gap-1.5 px-2.5 py-1 bg-white/5 hover:bg-white/10 text-white/80 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-white/10 transition-colors cursor-pointer">
+                        <Upload size={12} />
+                        Load File (.txt)
+                        <input
+                          type="file"
+                          accept=".txt,text/plain"
+                          onChange={handleContentFileUpload}
+                          className="hidden"
+                        />
+                      </label>
+                      <button
+                        onClick={() => {
+                          setContentText("");
+                          toast.success("Editor cleared!");
+                        }}
+                        className="flex items-center gap-1.5 px-2.5 py-1 bg-red-500/10 hover:bg-red-500/20 text-[#E8001A] rounded-lg text-[10px] font-bold uppercase tracking-wider border border-red-500/20 transition-colors cursor-pointer"
+                      >
+                        <Trash2 size={12} />
+                        Clear Text
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Drop zone wrapper for textarea */}
+                  <div 
+                    onDragOver={handleDrag}
+                    onDragEnter={handleDrag}
+                    onDragLeave={handleDrag}
+                    onDrop={handleContentFileDrop}
+                    className={`flex-1 flex flex-col min-h-[300px] rounded-xl border relative overflow-hidden transition-all duration-300 ${
+                      dragActive ? "border-[#E8001A] bg-[#E8001A]/5" : "border-white/10 bg-white/[0.02]"
+                    }`}
+                  >
+                    <textarea
+                      value={contentText}
+                      onChange={(e) => setContentText(e.target.value)}
+                      placeholder="Type, paste, or drag-and-drop a text file (.txt) here to start counting..."
+                      data-lenis-prevent
+                      className="w-full h-full p-4 text-sm bg-transparent border-0 text-white placeholder-white/20 focus:outline-none resize-none leading-relaxed overflow-y-auto custom-scrollbar"
+                    />
+                    
+                    {dragActive && (
+                      <div className="absolute inset-0 bg-[#0A0A0A]/85 backdrop-blur-sm flex flex-col items-center justify-center pointer-events-none border-2 border-dashed border-[#E8001A] rounded-xl">
+                        <Upload size={32} className="text-[#E8001A] mb-2 animate-bounce" />
+                        <p className="text-sm font-bold text-white uppercase tracking-wider">Drop TXT file here</p>
+                        <p className="text-[10px] text-white/50 mt-1">To extract all text content automatically</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center mt-3 shrink-0">
+                  <p className="text-[10px] text-white/40">
+                    💡 Statistics calculate automatically as you type.
+                  </p>
+                  {contentText && (
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(contentText);
+                        toast.success("Text copied to clipboard!");
+                      }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-[#E8001A] hover:bg-[#E8001A]/90 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider transition-colors cursor-pointer"
+                    >
+                      <Copy size={12} />
+                      Copy Text
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Right Side: Statistics Grid */}
+              <div className="md:col-span-4 border-l border-white/10 md:pl-6 flex flex-col justify-between shrink-0">
+                <div className="space-y-4">
+                  <h3 className="text-xs font-bold text-white/70 tracking-wider uppercase">
+                    Text Metrics
+                  </h3>
+                  
+                  {/* Grid layout */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {/* Words */}
+                    <div className="bg-white/[0.02] border border-white/5 p-3 rounded-xl flex flex-col">
+                      <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider mb-1">Words</span>
+                      <span className="text-xl font-mono font-black text-white">{contentText.trim() === "" ? 0 : contentText.trim().split(/\s+/).length}</span>
+                    </div>
+                    {/* Characters with spaces */}
+                    <div className="bg-white/[0.02] border border-white/5 p-3 rounded-xl flex flex-col">
+                      <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider mb-1">Characters</span>
+                      <span className="text-xl font-mono font-black text-white">{contentText.length}</span>
+                    </div>
+                    {/* Characters without spaces */}
+                    <div className="bg-white/[0.02] border border-white/5 p-3 rounded-xl flex flex-col">
+                      <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider mb-1">Chars (no spaces)</span>
+                      <span className="text-xl font-mono font-black text-white">{contentText.replace(/\s/g, "").length}</span>
+                    </div>
+                    {/* Sentences */}
+                    <div className="bg-white/[0.02] border border-white/5 p-3 rounded-xl flex flex-col">
+                      <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider mb-1">Sentences</span>
+                      <span className="text-xl font-mono font-black text-white">{contentText.trim() === "" ? 0 : contentText.split(/[.!?]+/).filter(s => s.trim().length > 0).length}</span>
+                    </div>
+                    {/* Paragraphs */}
+                    <div className="bg-white/[0.02] border border-white/5 p-3 rounded-xl flex flex-col">
+                      <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider mb-1">Paragraphs</span>
+                      <span className="text-xl font-mono font-black text-white">{contentText.trim() === "" ? 0 : contentText.split(/\n+/).filter(p => p.trim().length > 0).length}</span>
+                    </div>
+                    {/* Reading Time */}
+                    <div className="bg-white/[0.02] border border-white/5 p-3 rounded-xl flex flex-col col-span-2">
+                      <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider mb-1">Estimated Reading Time</span>
+                      <span className="text-sm font-bold text-emerald-400">
+                        ~{Math.ceil((contentText.trim() === "" ? 0 : contentText.trim().split(/\s+/).length) / 200)} min <span className="text-white/40 text-[10px] font-normal font-sans">(avg. 200 WPM)</span>
+                      </span>
+                    </div>
+                    {/* Speaking Time */}
+                    <div className="bg-white/[0.02] border border-white/5 p-3 rounded-xl flex flex-col col-span-2">
+                      <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider mb-1">Estimated Speaking Time</span>
+                      <span className="text-sm font-bold text-violet-400">
+                        ~{Math.ceil((contentText.trim() === "" ? 0 : contentText.trim().split(/\s+/).length) / 130)} min <span className="text-white/40 text-[10px] font-normal font-sans">(avg. 130 WPM)</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : currentTool.isCustomGenerator ? (
+            /* CONTENT GENERATORS LAYOUT */
+            <div className="flex-1 min-h-0 grid md:grid-cols-12 gap-6 overflow-hidden">
+              {/* Left Side: Inputs */}
+              <div className="md:col-span-5 flex flex-col justify-between overflow-y-auto pr-1 pb-1 custom-scrollbar" data-lenis-prevent>
+                <div className="space-y-4">
+                  {/* Topic / Prompt */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
+                      {currentTool.slug === "hashtag" ? "Hashtag Topic / Niche" : "Topic / Post Idea"}
+                    </label>
+                    <textarea
+                      value={genTopic}
+                      onChange={(e) => setGenTopic(e.target.value)}
+                      rows={3}
+                      className="w-full bg-white/[0.03] border border-white/10 rounded-xl p-3 text-sm text-white placeholder-white/30 focus:border-[#E8001A] focus:bg-white/[0.05] focus:outline-none leading-relaxed transition-all"
+                      placeholder={
+                        currentTool.slug === "blog-title"
+                          ? "Enter what your blog post is about (e.g., remote team productivity tools)..."
+                          : currentTool.slug === "meta-desc"
+                          ? "Enter the page topic or summary (e.g., free PDF converter suite)..."
+                          : currentTool.slug === "caption"
+                          ? "Enter the caption subject (e.g., launching our new design system)..."
+                          : "Enter keywords or niche topic (e.g., mechanical engineering, automation)..."
+                      }
+                    />
+                  </div>
+
+                  {/* Target Keywords */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
+                      Target Keywords (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      value={genKeywords}
+                      onChange={(e) => setGenKeywords(e.target.value)}
+                      className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2 text-xs font-semibold text-white placeholder-white/30 focus:border-[#E8001A] focus:outline-none"
+                      placeholder="e.g., productivity, remote work, pdf merger"
+                    />
+                  </div>
+
+                  {/* Platform selection (only for caption-generator) */}
+                  {currentTool.slug === "caption" && (
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
+                        Social Platform
+                      </label>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        {["generic", "linkedin", "twitter", "instagram"].map((p) => (
+                          <button
+                            key={p}
+                            type="button"
+                            onClick={() => setGenPlatform(p)}
+                            className={`py-1.5 text-[10px] font-bold uppercase rounded-lg border transition-all cursor-pointer ${
+                              genPlatform === p
+                                ? "border-[#E8001A] text-[#E8001A] bg-[#E8001A]/20"
+                                : "border-white/10 text-white/60 bg-white/[0.03] hover:bg-white/[0.08]"
+                            }`}
+                          >
+                            {p === "generic" && "Generic"}
+                            {p === "linkedin" && "LinkedIn"}
+                            {p === "twitter" && "Twitter/X"}
+                            {p === "instagram" && "Instagram"}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Tone selection */}
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-white/80 tracking-wider uppercase block">
+                      Writing Tone
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {["professional", "creative", "persuasive", "casual", "technical"].map((t) => (
+                        <button
+                          key={t}
+                          type="button"
+                          onClick={() => setGenTone(t)}
+                          className={`px-3 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-lg border transition-all cursor-pointer ${
+                            genTone === t
+                              ? "border-[#E8001A] text-[#E8001A] bg-[#E8001A]/20"
+                              : "border-white/10 text-white/60 bg-white/[0.03] hover:bg-white/[0.08]"
+                          }`}
+                        >
+                          {t}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleRun}
+                  disabled={busy}
+                  className="w-full flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-[#E8001A] to-[#FF3333] hover:from-[#E8001A]/90 hover:to-[#FF3333]/90 text-white rounded-xl font-bold text-xs uppercase tracking-wider disabled:opacity-50 transition-all shadow-lg shadow-[#E8001A]/30 cursor-pointer mt-4"
+                >
+                  {busy ? (
+                    <Loader2 size={14} className="animate-spin" />
+                  ) : (
+                    <Sparkles size={14} />
+                  )}
+                  {busy ? "Generating Content..." : "Generate with AI"}
+                </button>
+              </div>
+
+              {/* Right Side: Output Results */}
+              <div className="md:col-span-7 border-l border-white/10 md:pl-6 flex flex-col justify-between overflow-hidden">
+                <div className="flex items-center justify-between mb-3 shrink-0">
+                  <span className="text-xs font-bold text-white/70 tracking-wider uppercase">
+                    AI Output Preview
+                  </span>
+                  {genOutput && (
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(genOutput);
+                        toast.success("Output copied to clipboard!");
+                      }}
+                      className="flex items-center gap-1 text-xs text-[#E8001A] font-bold uppercase hover:text-[#FF3333] transition-colors cursor-pointer"
+                    >
+                      <Copy size={14} />
+                      Copy Output
+                    </button>
+                  )}
+                </div>
+
+                <div className={`flex-1 bg-white/[0.02] rounded-2xl border border-white/10 flex flex-col overflow-hidden p-4 relative min-h-0 ${
+                  (!busy && !genOutput) ? "justify-center items-center" : ""
+                }`}>
+                  {!busy && !genOutput && (
+                    <div className="text-center text-white/40">
+                      <div className="w-10 h-10 bg-white/[0.05] shadow-sm border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-3 text-white/30">
+                        <Sparkles size={20} />
+                      </div>
+                      <p className="text-xs font-bold uppercase tracking-wider">Awaiting AI Input Params</p>
+                    </div>
+                  )}
+
+                  {busy && (
+                    <div className="text-center text-white/60">
+                      <Loader2 size={32} className="animate-spin text-[#E8001A] mx-auto mb-3" />
+                      <p className="text-xs font-bold uppercase tracking-wider">Generating copy via neural network...</p>
+                    </div>
+                  )}
+
+                  {!busy && genOutput && (
+                    <div className="w-full h-full flex flex-col min-h-0">
+                      <pre 
+                        data-lenis-prevent
+                        className="flex-1 whitespace-pre-wrap font-mono text-xs sm:text-sm text-white/80 bg-white/[0.02] border border-white/10 rounded-xl p-3 overflow-y-auto leading-relaxed text-left custom-scrollbar"
+                      >
+                        {genOutput}
+                      </pre>
+                      <button
+                        onClick={() => triggerDownload(new Blob([genOutput], { type: "text/plain" }), `${currentTool.slug}-result.txt`)}
+                        className="mt-2.5 self-end flex items-center gap-1.5 text-xs text-emerald-500 font-bold uppercase hover:text-emerald-400 transition-colors cursor-pointer"
+                      >
+                        <Download size={14} />
+                        Download as TXT file
+                      </button>
                     </div>
                   )}
                 </div>
@@ -1696,7 +3038,7 @@ export default function Solutions() {
                                 className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:border-[#E8001A] focus:outline-none"
                               >
                                 {p.options.map((opt) => (
-                                  <option key={opt} value={opt}>
+                                  <option key={opt} value={opt} className="bg-[#1A1A1A] text-white">
                                     {opt.toUpperCase()}
                                   </option>
                                 ))}
@@ -1774,14 +3116,61 @@ export default function Solutions() {
                 </div>
 
                 {/* Processing Outputs */}
-                <div className="flex-1 min-h-0 border border-white/10 bg-white/[0.02] rounded-2xl p-4 flex flex-col justify-center items-center overflow-hidden relative">
+                <div className={`flex-1 min-h-[350px] border border-white/10 bg-white/[0.02] rounded-2xl p-4 flex flex-col overflow-hidden relative ${
+                  (!busy && !textResult && !doneFile && !previewUrl) ? "justify-center items-center" : ""
+                }`}>
                   {!busy && !textResult && !doneFile && (
-                    <div className="text-center text-white/40">
-                      <div className="w-10 h-10 bg-white/[0.05] shadow-sm border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-2.5">
-                        <FileCheck size={18} className="text-white/30" />
+                    files.length > 0 ? (
+                      (() => {
+                        const file = files[0];
+                        const isImage = file.type.startsWith("image/") || file.name.toLowerCase().match(/\.(jpe?g|png|gif|webp|bmp)$/i);
+                        const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+                        if (isImage && previewUrl) {
+                          return (
+                            <img
+                              src={previewUrl}
+                              className="max-h-full max-w-full object-contain rounded-lg shadow-sm border border-white/10"
+                              alt="Uploaded Preview"
+                            />
+                          );
+                        } else if (isPdf && previewUrl) {
+                          return currentTool.slug === "edit" ? (
+                            <InteractivePdfPreview
+                              previewUrl={previewUrl}
+                              onCoordsSelected={handleCoordsSelectedForEdit}
+                              selectedPage={params.page || 1}
+                              selectedX={params.x || 0}
+                              selectedY={params.y || 0}
+                              overlayText={params.text || ""}
+                              overlayColor={params.color || "black"}
+                              overlayFontSize={params.fontSize || 12}
+                            />
+                          ) : (
+                            <iframe
+                              src={`${previewUrl}#toolbar=0`}
+                              className="w-full h-full rounded-xl border-0 bg-white"
+                              title="PDF Preview"
+                            />
+                          );
+                        } else {
+                          const isWord = file.name.toLowerCase().match(/\.(docx?)$/i);
+                          return (
+                            <div className="text-center text-white/60 p-4 border border-dashed border-white/10 rounded-xl bg-white/[0.01]">
+                              <FileText size={48} className={isWord ? "text-blue-500 mx-auto mb-3" : "text-white/30 mx-auto mb-3"} />
+                              <p className="text-xs font-bold text-white/80 max-w-[200px] truncate mx-auto">{file.name}</p>
+                              <p className="text-[10px] text-white/40 mt-1 uppercase tracking-wider">Ready for Pipeline Execution</p>
+                            </div>
+                          );
+                        }
+                      })()
+                    ) : (
+                      <div className="text-center text-white/40">
+                        <div className="w-10 h-10 bg-white/[0.05] shadow-sm border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-2.5">
+                          <FileCheck size={18} className="text-white/30" />
+                        </div>
+                        <p className="text-xs font-bold uppercase tracking-wider">Awaiting pipeline run</p>
                       </div>
-                      <p className="text-xs font-bold uppercase tracking-wider">Awaiting pipeline run</p>
-                    </div>
+                    )
                   )}
 
                   {busy && (
@@ -1813,7 +3202,7 @@ export default function Solutions() {
                         </button>
                         <button
                           onClick={() => triggerDownload(new Blob([textResult], { type: "text/plain" }), "extracted-content.txt")}
-                          className="flex items-center gap-1 px-3 py-1.5 bg-[#E8001A] text-white rounded-lg text-xs font-bold uppercase hover:bg-[#FF3333] transition-all cursor-pointer"
+                          className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-bold uppercase hover:bg-emerald-700 transition-all cursor-pointer"
                         >
                           <Download size={10} />
                           Download
@@ -1822,33 +3211,103 @@ export default function Solutions() {
                     </div>
                   )}
 
-                  {!busy && doneFile && (
-                    <div className="w-full space-y-3 shrink-0">
-                      <div className="flex items-center gap-1.5 text-[#E8001A]">
-                        <CheckCircle size={16} />
-                        <span className="text-xs font-bold uppercase tracking-wider">Pipeline complete</span>
+                  {!busy && doneFile && donePreviewUrl && (
+                    <div className="w-full h-full flex flex-col min-h-0">
+                      {/* Top Bar with download button */}
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 bg-white/[0.03] border border-white/10 rounded-xl mb-3 shrink-0">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5 text-emerald-500 font-bold text-xs uppercase tracking-wider mb-1">
+                            <CheckCircle size={14} />
+                            <span>Pipeline Complete</span>
+                          </div>
+                          <p className="font-mono text-xs text-white/80 truncate max-w-[180px] sm:max-w-[250px]">
+                            {doneFile.filename} ({(doneFile.size / 1024).toFixed(1)} KB)
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => triggerDownload(doneFile.blob, doneFile.filename)}
+                          className="flex items-center justify-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold uppercase transition-colors shadow-md shadow-emerald-950/20 cursor-pointer shrink-0"
+                        >
+                          <Download size={14} /> Download Output File
+                        </button>
                       </div>
-                      <div className="bg-white/[0.03] p-3 border border-white/10 rounded-xl">
-                        <p className="font-mono text-xs text-white/80 break-all leading-normal">
-                          {doneFile.filename}
-                        </p>
-                        <p className="font-mono text-[10px] text-white/40 mt-0.5">
-                          {(doneFile.size / 1024).toFixed(1)} KB
-                        </p>
+                      
+                      {/* Live Preview of the completed PDF / Image */}
+                      <div className={`flex-1 min-h-0 rounded-xl overflow-hidden shadow-inner ${
+                        (doneFile.blob.type.startsWith("image/") || 
+                         doneFile.filename.toLowerCase().match(/\.(jpe?g|png|gif|webp|bmp)$/i) || 
+                         doneFile.blob.type === "application/pdf" || 
+                         doneFile.filename.toLowerCase().endsWith(".pdf")) 
+                          ? "bg-white" 
+                          : "bg-white/[0.02] border border-white/5"
+                      }`}>
+                        {doneFile.blob.type.startsWith("image/") || doneFile.filename.toLowerCase().match(/\.(jpe?g|png|gif|webp|bmp)$/i) ? (
+                          <img
+                            src={donePreviewUrl}
+                            className="w-full h-full object-contain mx-auto"
+                            alt="Completed Preview"
+                          />
+                        ) : doneFile.blob.type === "application/pdf" || doneFile.filename.toLowerCase().endsWith(".pdf") ? (
+                          <iframe
+                            src={`${donePreviewUrl}#toolbar=0`}
+                            className="w-full h-full border-0"
+                            title="Completed PDF Preview"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex flex-col justify-center items-center text-white/40 p-6 text-center">
+                            <FileText size={44} className="mb-2.5 text-white/30 animate-pulse" />
+                            <p className="text-xs font-bold uppercase tracking-wider text-white/80 mb-1">
+                              {doneFile.filename.toLowerCase().endsWith(".docx") ? "Word Document Ready" : "Document Ready"}
+                            </p>
+                            <p className="text-[10px] text-white/50 max-w-[200px] leading-relaxed">
+                              Preview is not supported for this file format. Click download to access your file.
+                            </p>
+                          </div>
+                        )}
                       </div>
-                      <button
-                        onClick={() => triggerDownload(doneFile.blob, doneFile.filename)}
-                        className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-[#E8001A] text-white rounded-lg text-xs font-bold uppercase hover:bg-[#FF3333] transition-colors shadow-lg shadow-[#E8001A]/30 cursor-pointer"
-                      >
-                        <Download size={14} /> Download Output File
-                      </button>
                     </div>
                   )}
                 </div>
               </div>
             </div>
           )}
-        </div>
+          </div>
+        ) : (
+          /* DIRECTORY CARD GRID */
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
+            {filteredTools.map((tool) => {
+              const ToolIcon = tool.icon;
+              const badgeStyle = getBadgeStyle(tool.category);
+              return (
+                <div
+                  key={`${tool.category}-${tool.slug}`}
+                  onClick={() => navigate(`/${tool.urlPrefix}/${tool.urlSlug}`)}
+                  className="group relative flex flex-col justify-between p-6 bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/10 hover:border-[#E8001A]/30 rounded-2xl transition-all duration-300 cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-[#E8001A]/5 hover:-translate-y-1 backdrop-blur-md"
+                >
+                  <div className="flex flex-col items-start text-left">
+                    {/* Badge Icon */}
+                    <div className={`p-3 rounded-xl mb-4 ${badgeStyle.bg} ${badgeStyle.text} group-hover:scale-110 transition-transform duration-300`}>
+                      <ToolIcon size={20} />
+                    </div>
+                    {/* Title */}
+                    <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#E8001A] transition-colors uppercase tracking-tight">
+                      {tool.name}
+                    </h3>
+                    {/* Description */}
+                    <p className="text-xs text-white/50 leading-relaxed font-medium">
+                      {tool.desc}
+                    </p>
+                  </div>
+                  
+                  {/* Subtle indicator arrow */}
+                  <div className="mt-5 flex items-center text-[10px] font-bold text-[#E8001A] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    Open Tool <span className="ml-1">→</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         {/* SEO Content: Description & FAQs */}
         {seo.body && (

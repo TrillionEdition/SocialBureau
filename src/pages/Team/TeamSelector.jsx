@@ -15,8 +15,7 @@ export const TeamSelector = () => {
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        const response = await fetch(`${apiUrl}/team-v2`);
+        const response = await fetch(`${BASE_URL}/team-v2`);
         const data = await response.json();
         if (data.success && data.data.length > 0) {
           setMembers(data.data);

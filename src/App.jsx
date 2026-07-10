@@ -30,6 +30,7 @@ import ClientPayments from "./pages/ClientPayments";
 import ApiMarketingDashboard from "./pages/ApiMarketingDashboard";
 import MediaDashboard from "./pages/MediaDashboard";
 import PartnershipChatbot from "./components/PartnershipChatbot";
+import WebsiteAIAssistant from "./components/WebsiteAIAssistant";
 import AjnoraDashboard from "./pages/AjnoraDashboard";
 import AjinorahForm from "./components/ClientFormaji";
 import CDashboard from "./components/ClickupDash/CDashboard";
@@ -452,6 +453,7 @@ function App() {
         <ConditionalNavbar />
         <RobotsControl />
         <ConditionalChatbot />
+        <WebsiteAIAssistant />
         <ScrollTop />
         <FloatingTreasureHuntClue />
         <TreasureHuntTimer />
@@ -461,9 +463,14 @@ function App() {
             <Route path="/" element={<HomeWrapper />} />
             <Route path="/home" element={<Home />} />
             <Route path="/about" element={<About />} />
-            <Route path="/solutions" element={<Navigate to="/pdf-tools/merge-pdf" replace />} />
+            <Route path="/solutions" element={<Solutions />} />
+            <Route path="/pdf-tools" element={<Solutions />} />
             <Route path="/pdf-tools/:toolUrl" element={<Solutions />} />
+            <Route path="/image-tools" element={<Solutions />} />
             <Route path="/image-tools/:toolUrl" element={<Solutions />} />
+            <Route path="/content-tools" element={<Solutions />} />
+            <Route path="/content-tools/:toolUrl" element={<Solutions />} />
+            <Route path="/ai-studio" element={<Solutions />} />
             <Route path="/ai-studio/:toolUrl" element={<Solutions />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/clickup" element={<Clickup />} />
