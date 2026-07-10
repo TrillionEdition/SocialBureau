@@ -23,6 +23,10 @@ import { ToastContainer } from "react-toastify";
 import Partner1 from "./pages/Partnerships/johnsamuel";
 import { Clickup } from "./pages/Clickup";
 import ClientDashboard from "./pages/ClientDashboard";
+import AdminBillingDashboard from "./pages/admin/AdminBillingDashboard";
+import AdminPaymentsList from "./pages/admin/AdminPaymentsList";
+import AdminPaymentDetail from "./pages/admin/AdminPaymentDetail";
+import ClientPayments from "./pages/ClientPayments";
 import ApiMarketingDashboard from "./pages/ApiMarketingDashboard";
 import MediaDashboard from "./pages/MediaDashboard";
 import PartnershipChatbot from "./components/PartnershipChatbot";
@@ -598,6 +602,38 @@ function App() {
               }
             />
             <Route
+              path="/admin/billing"
+              element={
+                <AdminRoute>
+                  <AdminBillingDashboard />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/billing/list"
+              element={
+                <AdminRoute>
+                  <AdminPaymentsList />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/billing/create"
+              element={
+                <AdminRoute>
+                  <AdminPaymentDetail />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/billing/:id"
+              element={
+                <AdminRoute>
+                  <AdminPaymentDetail />
+                </AdminRoute>
+              }
+            />
+            <Route
               path="/jobs/create"
               element={
                 <AdminRoute>
@@ -638,6 +674,11 @@ function App() {
 
             <Route path="/client-form" element={<AjinorahForm />} />
             <Route path="/client-dashboard" element={<ClientDashboard />} />
+            <Route path="/dashboard/payments" element={
+              <ProtectedRoute>
+                <ClientPayments />
+              </ProtectedRoute>
+            } />
             <Route path="/client-portal" element={<CDashboard />} />
             <Route path="/client-login" element={<CLogin />} />
             <Route path="/admin/clickup-clients" element={<AdminRoute><AdminClickupClients /></AdminRoute>} />
