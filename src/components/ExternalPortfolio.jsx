@@ -493,12 +493,13 @@ const blogs = [
     link: "https://looplogik.wordpress.com/2026/05/23/the-old-harbour-hotel-better-interiors/",
   },
   {
-    id: 14,
-    title: "BKayaloram Lake Resort -The Mir Group",
-    category: "Travel marketing collateral",
-    image: "https://looplogik.wordpress.com/wp-content/uploads/2026/05/mg_4564-edit-x.jpg?w=1024",
-    link: "https://looplogik.wordpress.com/2026/05/23/kayaloram-lake-resort-the-mir-group/",
+    id: 16,
+    title: "Visual Branding -Learning to see",
+    category: "Uncategorized",
+    image: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT%20Image%20Jul%2013%2C%202026%2C%2010_00_09%20AM.png",
+    link: "https://looplogik.wordpress.com/2026/07/11/visual-branding-learning-to-see",
   },
+
 ];
 
 function LatestBlogs() {
