@@ -859,7 +859,7 @@ export const Home = () => {
           />
         </a>
       </section> */}
-       <section className="w-full px-0">
+       {/* <section className="w-full px-0">
       <a href="/fifa-world-cup" target="_blank" rel="noopener noreferrer">
         <img
           src={heroImages.desktop[desktopIndex]}
@@ -874,7 +874,7 @@ export const Home = () => {
           }`}
         />
       </a>
-    </section>
+    </section> */}
       {/* <section className="w-full px-0"> <a href='https://www.instagram.com/reel/DXV3lbVCb77' target="_blank" rel="noopener noreferrer">
   <video
   className="block w-full h-auto object-cover"
