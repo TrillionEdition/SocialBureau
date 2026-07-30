@@ -13,6 +13,7 @@ import Popup from '@/components/Popup';
 import HintCard from './TreasureHunt/HintCard';
 import { startTreasureHunt, startTreasureHuntTimer } from "../utils/treasureHunt";
 import LogoMarquee from '@/components/LogoMarquee';
+import { CHANNEL_LOGOS } from '@/utils/channelLogos';
 
 const handleJoinWaitingList = async ({ onResult } = {}) => {
   let email = null;
@@ -705,6 +706,40 @@ const InstagramReelsSection = () => {
     </section>
   );
 };
+
+// --- TV CHANNELS DATA FOR MARQUEE ---
+const TV_CHANNELS = [
+  "BBC News", "CNN International", "Al Jazeera English", "Sky News", "France 24",
+  "Deutsche Welle (DW)", "Euronews", "CGTN", "TRT World", "NHK World-Japan",
+  "CNA (Channel NewsAsia)", "Bloomberg Television", "CNBC International", "Fox News", "MSNBC",
+  "Newsmax", "ABC News Live", "CBS News", "NBC News", "VOA (Voice of America)",
+  "CBS", "NBC", "PBS", "The CW", "MyNetworkTV",
+  "CNN", "CNBC", "ESPN", "Discovery Channel", "National Geographic",
+  "History Channel", "HGTV", "TLC", "Animal Planet", "Disney Channel", "Nickelodeon",
+  "Cartoon Network", "BBC One", "BBC Two", "ITV", "Channel 4", "Channel 5",
+  "Sky Sports", "GB News", "TalkTV", "DD News", "Aaj Tak", "India Today TV",
+  "NDTV 24x7", "Republic TV", "Times Now", "Mirror Now", "News18 India",
+  "CNN-News18", "India TV", "Zee News", "ABP News", "TV9 Bharatvarsh", "News24",
+  "DD India", "Reporter TV", "MediaOne TV", "Kairali News", "Jaihind TV", "News18 Kerala",
+  "Kaumudy TV", "Janam TV", "NewsMalayalam24x7", "Bigtv", "Sun News",
+  "News18 Tamil Nadu", "Thanthi TV", "Puthiya Thalaimurai", "Polimer News", "Kalaignar News",
+  "Captain News", "News7 Tamil", "NewsTamil24x7", "TV9 Kannada", "Public TV",
+  "Suvarna News", "News18 Kannada", "Power TV", "TV9 Telugu", "NTV", "TV5 News",
+  "Sakshi TV", "ETV Andhra Pradesh", "ABN Andhra Jyothi", "CBC Television", "CTV",
+  "Global Television", "Citytv", "CP24", "ABC Australia", "SBS", "Seven Network",
+  "Nine Network", "Network 10", "Sky News Australia", "NTV", "TBS",
+  "TV Asahi", "KBS", "MBC", "SBS", "YTN",
+  "Arirang TV", "JTBC", "CCTV", "CGTN", "Dragon TV", "Hunan TV", "Beijing TV",
+  "Phoenix TV", "France 2", "France 3", "TF1", "M6", "BFM TV",
+  "Das Erste", "ZDF", "RTL", "ProSieben", "Sat.1", "RAI 1",
+  "RAI News 24", "Canale 5", "Italia 1", "Sky TG24", "RTVE", "Antena 3",
+  "Telecinco", "La Sexta", "Canal 24 Horas", "Al Jazeera", "Al Arabiya",
+  "Sky News Arabia", "Abu Dhabi TV", "Dubai TV", "Asharq News"
+];
+
+const row1 = TV_CHANNELS.filter((_, i) => i % 3 === 0);
+const row2 = TV_CHANNELS.filter((_, i) => i % 3 === 1);
+const row3 = TV_CHANNELS.filter((_, i) => i % 3 === 2);
 
 // --- Main Home Component ---
 
@@ -1409,49 +1444,124 @@ export const Home = () => {
         <div className="flex flex-col items-center text-center mb-12 sm:mb-20">
           <FadeUp>
             <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.2em] sm:tracking-[0.4em] mb-4 sm:mb-6 block opacity-70 italic">Industry Leaders</span>
-            <h2 className="text-4xl sm:text-6xl lg:text-[clamp(60px,10vw,140px)] font-black tracking-tighter text-[#0A0A0A] leading-none mb-6 sm:mb-10 italic antialiased px-2">Trusted by Kerala's<br /><span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent">Media Giants.</span></h2>
-            <p className="text-base sm:text-lg lg:text-3xl font-light text-[#6E6E73] leading-relaxed italic antialiased font-serif px-2">Powering the digital strategy of India's most-watched news networks.</p>
+            <h2 className="text-4xl sm:text-6xl lg:text-[clamp(60px,10vw,140px)] font-black tracking-tighter text-[#0A0A0A] leading-none mb-6 sm:mb-10 italic antialiased px-2">Trusted by<br /><span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent">Media Giants.</span></h2>
+            <p className="text-base sm:text-lg lg:text-3xl font-light text-[#6E6E73] leading-relaxed italic antialiased font-serif px-2 font-bold">Powering the digital strategy of the world's most-watched news and entertainment networks.</p>
           </FadeUp>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0.5 bg-[#D2D2D7] border border-[#D2D2D7] rounded-[28px] sm:rounded-[44px] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.15)] bg-white">
-          {/* {[
-            {
-              name: 'Big TV',
-              img: 'https://images.bigtvlive.com/2026/03/BigTvLive-Telugu-Logo-1.png',
-              href: 'https://www.bigtvlive.com',
-              accent: 'bg-[#E8001A]'
-            },
-            {
-              name: 'Reporter Tv',
-              img: 'assets/home/reporter.png',
-              href: 'https://www.reporterlive.com',
-              accent: 'bg-[#FFA500]'
-            },
-            {
-              name: 'News Tamil',
-              img: 'assets/home/newstam.webp',
-              href: 'https://newstamil.tv/',
-              accent: 'bg-[#E5001A]'
+        <div className="relative w-full overflow-hidden py-6">
+          <style dangerouslySetInnerHTML={{ __html: `
+            @keyframes marquee-left {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
             }
-          ].map((client) => (
-            <motion.div key={client.name} whileHover={{ backgroundColor: '#FAFAFA' }} className="bg-white relative group border-transparent transition-all duration-300">
-              <a href={client.href} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center gap-3 sm:gap-6 p-4 sm:p-10 min-h-[160px] sm:min-h-[220px] w-full h-full block">
-                <img src={client.img} alt={client.name} className="w-20 sm:w-28 object-contain" />
-                <div className="text-[10px] sm:text-[12px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased text-center">{client.name}</div>
-                <div className={`absolute bottom-0 inset-x-0 h-1.5 ${client.accent} origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700`} />
-              </a>
-            </motion.div>
-          ))} */}
+            @keyframes marquee-right {
+              0% { transform: translateX(-50%); }
+              100% { transform: translateX(0); }
+            }
+            .animate-marquee-left-1 {
+              animation: marquee-left 90s linear infinite;
+            }
+            .animate-marquee-right-2 {
+              animation: marquee-right 100s linear infinite;
+            }
+            .animate-marquee-left-3 {
+              animation: marquee-left 110s linear infinite;
+            }
+            .marquee-row:hover .marquee-inner {
+              animation-play-state: paused;
+            }
+          `}} />
 
-          {/* Confidential Clients Message */}
-          <motion.div whileHover={{ backgroundColor: '#FAFAFA' }} className="bg-white relative group border-transparent transition-all duration-300 p-6 sm:p-10 flex flex-col items-center justify-center text-center">
-            <h4 className="text-[14px] sm:text-[18px] font-black text-[#0A0A0A] tracking-tighter mb-2 italic">Most of our clients<br />are confidential.</h4>
-            <a href="/contact" className="text-[10px] sm:text-[12px] font-black text-[#E8001A] uppercase tracking-widest hover:underline decoration-2 underline-offset-4 mt-2 transition-all block">
-              Contact us to know more →
-            </a>
-            <div className="absolute bottom-0 inset-x-0 h-1.5 bg-[#4285F4] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
-          </motion.div>
+          {/* Fade gradients at the edges */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 sm:w-48 bg-gradient-to-r from-[#F5F5F7] to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 sm:w-48 bg-gradient-to-l from-[#F5F5F7] to-transparent" />
+
+          <div className="space-y-6 sm:space-y-8">
+            {/* Row 1 */}
+            <div className="marquee-row overflow-hidden">
+              <div className="marquee-inner animate-marquee-left-1 flex w-max items-center gap-4 sm:gap-6">
+                {[...row1, ...row1].map((channel, i) => (
+                  <div
+                    key={`r1-${i}`}
+                    className="flex h-14 sm:h-16 shrink-0 items-center justify-center rounded-2xl border border-black/5 bg-white/80 px-5 sm:px-6 shadow-sm backdrop-blur-md hover:border-[#E8001A]/30 hover:shadow-md hover:scale-[1.03] transition-all duration-300 cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3">
+                      {CHANNEL_LOGOS[channel] && (
+                        <img
+                          src={CHANNEL_LOGOS[channel]}
+                          alt={`${channel} logo`}
+                          className="h-6 sm:h-7 w-auto object-contain max-w-[80px] select-none pointer-events-none brightness-95 contrast-105"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
+                        />
+                      )}
+                      <span className="text-[11px] sm:text-[13px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased font-sans whitespace-nowrap">
+                        {channel}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Row 2 */}
+            <div className="marquee-row overflow-hidden">
+              <div className="marquee-inner animate-marquee-right-2 flex w-max items-center gap-4 sm:gap-6">
+                {[...row2, ...row2].map((channel, i) => (
+                  <div
+                    key={`r2-${i}`}
+                    className="flex h-14 sm:h-16 shrink-0 items-center justify-center rounded-2xl border border-black/5 bg-white/80 px-5 sm:px-6 shadow-sm backdrop-blur-md hover:border-[#FF5C35]/30 hover:shadow-md hover:scale-[1.03] transition-all duration-300 cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3">
+                      {CHANNEL_LOGOS[channel] && (
+                        <img
+                          src={CHANNEL_LOGOS[channel]}
+                          alt={`${channel} logo`}
+                          className="h-6 sm:h-7 w-auto object-contain max-w-[80px] select-none pointer-events-none brightness-95 contrast-105"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
+                        />
+                      )}
+                      <span className="text-[11px] sm:text-[13px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased font-sans whitespace-nowrap">
+                        {channel}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Row 3 */}
+            <div className="marquee-row overflow-hidden">
+              <div className="marquee-inner animate-marquee-left-3 flex w-max items-center gap-4 sm:gap-6">
+                {[...row3, ...row3].map((channel, i) => (
+                  <div
+                    key={`r3-${i}`}
+                    className="flex h-14 sm:h-16 shrink-0 items-center justify-center rounded-2xl border border-black/5 bg-white/80 px-5 sm:px-6 shadow-sm backdrop-blur-md hover:border-[#FF1493]/30 hover:shadow-md hover:scale-[1.03] transition-all duration-300 cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3">
+                      {CHANNEL_LOGOS[channel] && (
+                        <img
+                          src={CHANNEL_LOGOS[channel]}
+                          alt={`${channel} logo`}
+                          className="h-6 sm:h-7 w-auto object-contain max-w-[80px] select-none pointer-events-none brightness-95 contrast-105"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
+                        />
+                      )}
+                      <span className="text-[11px] sm:text-[13px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased font-sans whitespace-nowrap">
+                        {channel}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </Section>
 
