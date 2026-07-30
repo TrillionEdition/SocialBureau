@@ -977,7 +977,7 @@ Submitted via: Website Contact Form
           <span>POWERED BY</span>
           <a href="https://www.socialbureau.in/enquiry-form" target="_blank" rel="noopener noreferrer" className="flex justify-start items-center">
             <img
-              src="https://www.socialbureau.in/assets/logo.webp"
+              src="https://www.socialbureau.in"
               alt="SocialBureau"
               className="h-5 md:h-8 w-auto"
             />

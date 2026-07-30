@@ -206,64 +206,64 @@ const PlatformDetailSection = () => (
   </Section>
 );
 
-const GallerySection = () => (
-  <Section id="gallery" className="bg-[#F5F5F7]">
-    <FadeUp>
-      <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-4 sm:mb-6 block opacity-70 italic text-center underline underline-offset-8 decoration-2">Our Work</span>
-      <h2 className="text-[clamp(1.75rem,8vw,7rem)] font-black tracking-tighter text-[#0A0A0A] text-center leading-[0.9] mb-10 sm:mb-16 lg:mb-20 italic antialiased px-2">Growing brands,<br /><span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent italic">one campaign at a time.</span></h2>
-    </FadeUp>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
-      <FadeUp className="lg:col-span-2 lg:row-span-2 rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl relative">
-        <a href="https://www.instagram.com/socialbureau.in/">
-          <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/1000094772.jpg_cpm1zi.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Strategy" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-10">
-            <span className="text-white font-black text-lg sm:text-2xl tracking-tighter">SunTips</span>
-          </div>
-        </a>
-      </FadeUp>
-      <FadeUp delay={0.1} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-square relative">
-        <a href="https://www.instagram.com/socialbureau.in/">
-          <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/1000094774.jpg_tvc7le.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Social" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
-            <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
-          </div>
-        </a>
-      </FadeUp>
-      <FadeUp delay={0.2} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-square relative">
-        <a href="https://www.instagram.com/socialbureau.in/">
-          <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/sb_dd4gwn.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Performance" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
-            <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
-          </div>
-        </a>
-      </FadeUp>
-      <FadeUp delay={0.3} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-video lg:aspect-auto relative min-h-[180px] sm:min-h-[240px]">
-        <a href="https://www.instagram.com/socialbureau.in/">
-          <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/1000094773.jpg_lbz6ws.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Brand" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
-            <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
-          </div>
-        </a>
-      </FadeUp>
-      <FadeUp delay={0.4} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-video lg:aspect-auto relative min-h-[180px] sm:min-h-[240px]">
-        <a href="https://www.instagram.com/socialbureau.in/">
-          <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/1000094771.jpg_hom8pa.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Collaboration" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
-            <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
-          </div>
-        </a>
-      </FadeUp>
-      <FadeUp delay={0.4} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-video lg:aspect-auto relative min-h-[180px] sm:min-h-[240px]">
-        <a href="https://www.instagram.com/socialbureau.in/">
-          <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/1000094775.jpg_dxbmyx.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Collaboration" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
-            <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
-          </div>
-        </a>
-      </FadeUp>
-    </div>
-  </Section>
-);
+// const GallerySection = () => (
+//   <Section id="gallery" className="bg-[#F5F5F7]">
+//     <FadeUp>
+//       <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-4 sm:mb-6 block opacity-70 italic text-center underline underline-offset-8 decoration-2">Our Work</span>
+//       <h2 className="text-[clamp(1.75rem,8vw,7rem)] font-black tracking-tighter text-[#0A0A0A] text-center leading-[0.9] mb-10 sm:mb-16 lg:mb-20 italic antialiased px-2">Growing brands,<br /><span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent italic">one campaign at a time.</span></h2>
+//     </FadeUp>
+//     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+//       <FadeUp className="lg:col-span-2 lg:row-span-2 rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl relative">
+//         <a href="https://www.instagram.com/socialbureau.in/">
+//           <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/1000094772.jpg_cpm1zi.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Strategy" />
+//           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-10">
+//             <span className="text-white font-black text-lg sm:text-2xl tracking-tighter">SunTips</span>
+//           </div>
+//         </a>
+//       </FadeUp>
+//       <FadeUp delay={0.1} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-square relative">
+//         <a href="https://www.instagram.com/socialbureau.in/">
+//           <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/1000094774.jpg_tvc7le.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Social" />
+//           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
+//             <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
+//           </div>
+//         </a>
+//       </FadeUp>
+//       <FadeUp delay={0.2} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-square relative">
+//         <a href="https://www.instagram.com/socialbureau.in/">
+//           <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/sb_dd4gwn.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Performance" />
+//           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
+//             <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
+//           </div>
+//         </a>
+//       </FadeUp>
+//       <FadeUp delay={0.3} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-video lg:aspect-auto relative min-h-[180px] sm:min-h-[240px]">
+//         <a href="https://www.instagram.com/socialbureau.in/">
+//           <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/1000094773.jpg_lbz6ws.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Brand" />
+//           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
+//             <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
+//           </div>
+//         </a>
+//       </FadeUp>
+//       <FadeUp delay={0.4} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-video lg:aspect-auto relative min-h-[180px] sm:min-h-[240px]">
+//         <a href="https://www.instagram.com/socialbureau.in/">
+//           <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/1000094771.jpg_hom8pa.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Collaboration" />
+//           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
+//             <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
+//           </div>
+//         </a>
+//       </FadeUp>
+//       <FadeUp delay={0.4} className="rounded-[24px] sm:rounded-[40px] overflow-hidden group shadow-2xl aspect-video lg:aspect-auto relative min-h-[180px] sm:min-h-[240px]">
+//         <a href="https://www.instagram.com/socialbureau.in/">
+//           <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/1000094775.jpg_dxbmyx.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Collaboration" />
+//           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 sm:p-6">
+//             <span className="text-white font-black text-base sm:text-xl tracking-tighter">SocialBureau</span>
+//           </div>
+//         </a>
+//       </FadeUp>
+//     </div>
+//   </Section>
+// );
 
 const FounderSection = () => (
   <Section id="founder" className="bg-[#F5F5F7] border-y border-[#D2D2D7]">
@@ -1402,7 +1402,7 @@ export const Home = () => {
       </Section>
 
       {/* --- GALLERY SECTION --- */}
-      <GallerySection />
+      {/* <GallerySection /> */}
 
       {/* --- CLIENTS SECTION --- */}
       <Section id="clients" className="bg-[#F5F5F7]">

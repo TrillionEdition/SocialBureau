@@ -2,374 +2,40 @@ import React, { useState, useEffect, useRef } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, X, Send, Sparkles, Navigation2, ArrowRight, Volume2, VolumeX } from "lucide-react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import * as THREE from "three";
-
-// RelizaFace Component: Draws Reliza's face dynamically using vector inline SVGs.
-// Supports custom expressions (idle, greeting, thinking, helpful).
-// Reliza is dressed in a black shirt, black pants, and a black blazer with sleek contrasts.
+// RelizaFace Component: Displays Reliza's face using an image.
 export function RelizaFace({ expression, size = "md" }) {
   const dimensions = size === "sm" ? "w-10 h-10" : size === "lg" ? "w-20 h-20" : "w-12 h-12";
   
   return (
-    <div className={`${dimensions} shrink-0 bg-slate-950 rounded-full border border-slate-800 flex items-center justify-center overflow-hidden shadow-inner relative select-none`}>
-      {/* Glow pulse behind Reliza */}
-      <div className="absolute inset-0 bg-blue-500/5 animate-pulse" />
-      
-      <svg viewBox="0 0 100 100" className="w-full h-full select-none pointer-events-none">
-        {/* Antennas */}
-        <path d="M 50,16 L 50,4" stroke="#3b82f6" strokeWidth="3.5" strokeLinecap="round" className={expression === "thinking" ? "animate-bounce" : ""} />
-        <circle cx="50" cy="4" r="3.5" fill={expression === "thinking" ? "#f59e0b" : expression === "helpful" ? "#10b981" : "#3b82f6"} />
-
-        {/* Neck */}
-        <rect x="46" y="52" width="8" height="12" rx="2" fill="#475569" />
-
-        {/* Torso & Suit (Dressed in: Black Blazer, Black Shirt, Black Pants/Belt area) */}
-        {/* Torso Base / Blazer */}
-        <path d="M 20,70 L 80,70 L 85,100 L 15,100 Z" fill="#111827" />
-        
-        {/* Black Shirt V-neck collar */}
-        <path d="M 40,65 L 50,82 L 60,65 Z" fill="#030712" />
-        
-        {/* Sleek charcoal tie */}
-        <path d="M 48,80 L 52,80 L 53,100 L 47,100 Z" fill="#1f2937" stroke="#374151" strokeWidth="0.5" />
-        
-        {/* Blazer Lapels */}
-        <path d="M 20,70 C 25,64 35,64 42,75 L 48,92 L 15,100 Z" fill="#0b0f19" stroke="#1f2937" strokeWidth="1" />
-        <path d="M 80,70 C 75,64 65,64 58,75 L 52,92 L 85,100 Z" fill="#0b0f19" stroke="#1f2937" strokeWidth="1" />
-
-        {/* Pants seam/waistline boundary */}
-        <line x1="15" y1="96" x2="85" y2="96" stroke="#030712" strokeWidth="3" />
-
-        {/* Head Shell */}
-        <rect x="22" y="14" width="56" height="42" rx="16" fill="#1e293b" stroke="#334155" strokeWidth="2.5" />
-
-        {/* Screen/Faceplate */}
-        <rect x="29" y="21" width="42" height="28" rx="8" fill="#0b0f19" stroke="#1e293b" strokeWidth="1.5" />
-
-        {/* Eyes */}
-        {expression === "greeting" && (
-          <>
-            <path d="M 36,36 Q 41,30 46,36" fill="none" stroke="#10b981" strokeWidth="3.5" strokeLinecap="round" />
-            <path d="M 54,36 Q 59,30 64,36" fill="none" stroke="#10b981" strokeWidth="3.5" strokeLinecap="round" />
-          </>
-        )}
-        
-        {expression === "idle" && (
-          <>
-            <circle cx="41" cy="34" r="3.5" fill="#3b82f6" className="animate-[pulse_1.5s_infinite]" />
-            <circle cx="59" cy="34" r="3.5" fill="#3b82f6" className="animate-[pulse_1.5s_infinite]" />
-          </>
-        )}
-
-        {expression === "thinking" && (
-          <>
-            <line x1="36" y1="34" x2="45" y2="34" stroke="#f59e0b" strokeWidth="3.5" strokeLinecap="round" />
-            <line x1="55" y1="34" x2="64" y2="34" stroke="#f59e0b" strokeWidth="3.5" strokeLinecap="round" />
-          </>
-        )}
-
-        {expression === "helpful" && (
-          <>
-            <circle cx="41" cy="32" r="3.5" fill="#10b981" />
-            <circle cx="59" cy="32" r="3.5" fill="#10b981" />
-            <circle cx="34" cy="38" r="2" fill="#f43f5e" opacity="0.6" />
-            <circle cx="66" cy="38" r="2" fill="#f43f5e" opacity="0.6" />
-          </>
-        )}
-
-        {/* Mouth */}
-        {expression === "greeting" && (
-          <path d="M 46,42 Q 50,47 54,42" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" />
-        )}
-        {expression === "idle" && (
-          <line x1="46" y1="42" x2="54" y2="42" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" />
-        )}
-        {expression === "thinking" && (
-          <path d="M 46,41 Q 50,40 54,41" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" />
-        )}
-        {expression === "helpful" && (
-          <path d="M 45,40 Q 50,47 55,40" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" />
-        )}
-      </svg>
+    <div className={`${dimensions} shrink-0 bg-slate-950 rounded-full border border-slate-800 flex items-center justify-center overflow-hidden relative select-none`}>
+      <img
+        src="https://img.magnific.com/free-vector/friendly-robot-floating-space_1308-161934.jpg?semt=ais_test_b&w=740&q=80"
+        className="w-full h-full object-cover"
+        alt="Reliza"
+        onError={(e) => {
+          // If the incomplete URL fails to load, fall back to a cute default robot avatar
+          e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png";
+        }}
+      />
     </div>
   );
 }
 
-// HumanHead3D: 3D Human model utilizing standard shapes with realistic facial features.
-function HumanHead3D({ expression, isSpeaking, isScrolled }) {
-  const headGroupRef = useRef();
-  const leftEyeGroupRef = useRef();
-  const rightEyeGroupRef = useRef();
-  const leftPupilRef = useRef();
-  const rightPupilRef = useRef();
-  const mouthRef = useRef();
-
-  // Store raw mouse screen coords
-  const rawMouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
-
-  // Track whether user is idle (no mouse movement for 2 seconds)
-  const isIdle = useRef(false);
-  const lastMouseMoveTime = useRef(Date.now());
-
-  // Listen for mouse movement — store raw clientX/Y and reset idle timer
-  useEffect(() => {
-    const handleMouseMove = (event) => {
-      rawMouse.current = { x: event.clientX, y: event.clientY };
-      lastMouseMoveTime.current = Date.now();
-      isIdle.current = false;
-    };
-
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  useFrame((state) => {
-    const elapsedTime = state.clock.getElapsedTime();
-
-    // Check if mouse has been still for 2 seconds
-    isIdle.current = (Date.now() - lastMouseMoveTime.current) > 2000;
-
-    // Compute Reliza widget center in screen pixels based on its CSS position
-    const isMobile = window.innerWidth < 640;
-    const btnSize = isMobile ? 80 : 96;
-    const rightGap = isMobile ? 16 : 24;
-
-    const widgetCenterX = window.innerWidth - rightGap - btnSize / 2;
-    const widgetCenterY = isScrolled
-      ? (isMobile ? 80 : 96) + btnSize / 2
-      : window.innerHeight - rightGap - btnSize / 2;
-
-    // Direction from widget center to mouse cursor, normalised roughly -1..1
-    const dx = (rawMouse.current.x - widgetCenterX) / (window.innerWidth  * 0.5);
-    const dy = (rawMouse.current.y - widgetCenterY) / (window.innerHeight * 0.5);
-
-    // 1. Head always faces straight forward — only breathing float, no rotation
-    if (headGroupRef.current) {
-      headGroupRef.current.rotation.y = THREE.MathUtils.lerp(headGroupRef.current.rotation.y, 0, 0.08);
-      headGroupRef.current.rotation.x = THREE.MathUtils.lerp(headGroupRef.current.rotation.x, 0, 0.08);
-      headGroupRef.current.position.y = 0.4 + Math.sin(elapsedTime * 1.8) * 0.03;
-    }
-
-    // 2. Pupil tracking — follows mouse relative to widget position
-    if (leftPupilRef.current && rightPupilRef.current) {
-      const targetPupilX = (isSpeaking || isIdle.current) ? 0 : dx * 0.015;
-      const targetPupilY = (isSpeaking || isIdle.current) ? 0 : -dy * 0.012;
-
-      leftPupilRef.current.position.x  = THREE.MathUtils.lerp(leftPupilRef.current.position.x,  targetPupilX, 0.1);
-      leftPupilRef.current.position.y  = THREE.MathUtils.lerp(leftPupilRef.current.position.y,  targetPupilY, 0.1);
-      rightPupilRef.current.position.x = THREE.MathUtils.lerp(rightPupilRef.current.position.x, targetPupilX, 0.1);
-      rightPupilRef.current.position.y = THREE.MathUtils.lerp(rightPupilRef.current.position.y, targetPupilY, 0.1);
-    }
-
-    // 3. Eye blinking cycle
-    const blinkCycle = elapsedTime % 5.2;
-    if (leftEyeGroupRef.current && rightEyeGroupRef.current) {
-      if (blinkCycle > 4.95) {
-        leftEyeGroupRef.current.scale.y = THREE.MathUtils.lerp(leftEyeGroupRef.current.scale.y, 0.02, 0.5);
-        rightEyeGroupRef.current.scale.y = THREE.MathUtils.lerp(rightEyeGroupRef.current.scale.y, 0.02, 0.5);
-      } else {
-        leftEyeGroupRef.current.scale.y = THREE.MathUtils.lerp(leftEyeGroupRef.current.scale.y, 1.0, 0.15);
-        rightEyeGroupRef.current.scale.y = THREE.MathUtils.lerp(rightEyeGroupRef.current.scale.y, 1.0, 0.15);
-      }
-    }
-
-    // 4. Mouth animation:
-    //    - Speaking  → speech wave
-    //    - Idle 2s+  → gentle wide smile
-    //    - Normal    → neutral closed
-    if (mouthRef.current) {
-      if (isSpeaking) {
-        mouthRef.current.scale.y = 1.0 + Math.sin(elapsedTime * 28) * 1.2;
-        mouthRef.current.scale.x = 1.0 + Math.cos(elapsedTime * 14) * 0.2;
-      } else if (isIdle.current) {
-        mouthRef.current.scale.x = THREE.MathUtils.lerp(mouthRef.current.scale.x, 2.2, 0.06);
-        mouthRef.current.scale.y = THREE.MathUtils.lerp(mouthRef.current.scale.y, 0.9, 0.06);
-      } else {
-        mouthRef.current.scale.y = THREE.MathUtils.lerp(mouthRef.current.scale.y, 0.25, 0.12);
-        mouthRef.current.scale.x = THREE.MathUtils.lerp(mouthRef.current.scale.x, 1.0, 0.12);
-      }
-    }
-  });
-
-  return (
-    <group>
-      {/* 1. HEAD GROUP (Tilts, rotates, and floats independently) */}
-      <group ref={headGroupRef} position={[0, 0.4, 0]}>
-        {/* Head Shell (Face) */}
-        <mesh>
-          <sphereGeometry args={[0.32, 32, 32]} scale={[1, 1.15, 1]} />
-          <meshStandardMaterial color="#fdeb8a" roughness={0.4} metalness={0.1} />
-        </mesh>
-
-        {/* Bob Hair shape (Back & Top) */}
-        <mesh position={[0, 0.08, -0.05]}>
-          <sphereGeometry args={[0.34, 32, 32]} scale={[1.04, 1.1, 1.02]} />
-          <meshStandardMaterial color="#1b1c22" roughness={0.8} />
-        </mesh>
-        
-        {/* Hair Bangs */}
-        <mesh position={[-0.14, 0.22, 0.2]} rotation={[0.2, 0.4, -0.2]}>
-          <boxGeometry args={[0.22, 0.1, 0.1]} />
-          <meshStandardMaterial color="#1b1c22" roughness={0.8} />
-        </mesh>
-        <mesh position={[0.14, 0.22, 0.2]} rotation={[0.2, -0.4, 0.2]}>
-          <boxGeometry args={[0.22, 0.1, 0.1]} />
-          <meshStandardMaterial color="#1b1c22" roughness={0.8} />
-        </mesh>
-
-        {/* Blush Cheeks */}
-        <mesh position={[-0.2, -0.06, 0.24]}>
-          <sphereGeometry args={[0.035, 16, 16]} scale={[1, 0.6, 0.2]} />
-          <meshBasicMaterial color="#fda4af" opacity={0.6} transparent />
-        </mesh>
-        <mesh position={[0.2, -0.06, 0.24]}>
-          <sphereGeometry args={[0.035, 16, 16]} scale={[1, 0.6, 0.2]} />
-          <meshBasicMaterial color="#fda4af" opacity={0.6} transparent />
-        </mesh>
-
-        {/* Eyes Group (Left) */}
-        <group ref={leftEyeGroupRef} position={[-0.14, 0.06, 0.28]}>
-          <mesh>
-            <sphereGeometry args={[0.045, 16, 16]} scale={[1.1, 1, 0.5]} />
-            <meshBasicMaterial color="#ffffff" />
-          </mesh>
-          <mesh ref={leftPupilRef} position={[0, 0, 0.025]}>
-            <sphereGeometry args={[0.024, 16, 16]} scale={[1, 1, 0.5]} />
-            <meshBasicMaterial color="#111827" />
-          </mesh>
-        </group>
-
-        {/* Eyes Group (Right) */}
-        <group ref={rightEyeGroupRef} position={[0.14, 0.06, 0.28]}>
-          <mesh>
-            <sphereGeometry args={[0.045, 16, 16]} scale={[1.1, 1, 0.5]} />
-            <meshBasicMaterial color="#ffffff" />
-          </mesh>
-          <mesh ref={rightPupilRef} position={[0, 0, 0.025]}>
-            <sphereGeometry args={[0.024, 16, 16]} scale={[1, 1, 0.5]} />
-            <meshBasicMaterial color="#111827" />
-          </mesh>
-        </group>
-
-        {/* Nose */}
-        <mesh position={[0, -0.02, 0.32]}>
-          <sphereGeometry args={[0.022, 16, 16]} scale={[1, 1.4, 0.8]} />
-          <meshStandardMaterial color="#fcd34d" roughness={0.4} />
-        </mesh>
-
-        {/* Eyebrows */}
-        <mesh position={[-0.14, 0.16, 0.27]} rotation={[0, 0, 0.05]}>
-          <boxGeometry args={[0.09, 0.012, 0.02]} />
-          <meshBasicMaterial color="#27272a" />
-        </mesh>
-        <mesh position={[0.14, 0.16, 0.27]} rotation={[0, 0, -0.05]}>
-          <boxGeometry args={[0.09, 0.012, 0.02]} />
-          <meshBasicMaterial color="#27272a" />
-        </mesh>
-
-        {/* Mouth */}
-        <mesh ref={mouthRef} position={[0, -0.12, 0.3]}>
-          <sphereGeometry args={[0.045, 16, 16]} scale={[1, 0.25, 0.2]} />
-          <meshBasicMaterial color="#be123c" />
-        </mesh>
-      </group>
-
-      {/* 2. BASE BODY (Stationary) */}
-      {/* Neck */}
-      <mesh position={[0, -0.02, -0.04]}>
-        <cylinderGeometry args={[0.07, 0.08, 0.15, 16]} />
-        <meshStandardMaterial color="#fcd34d" roughness={0.5} />
-      </mesh>
-
-      {/* Corporate Blazer Torso (Black) */}
-      <mesh position={[0, -0.38, -0.08]}>
-        <boxGeometry args={[0.9, 0.6, 0.38]} />
-        <meshStandardMaterial color="#111827" roughness={0.7} metalness={0.1} />
-      </mesh>
-      
-      {/* Blazer Sleeves / Arms */}
-      {/* Left Arm */}
-      <mesh position={[-0.52, -0.4, -0.08]} rotation={[0, 0, 0.1]}>
-        <cylinderGeometry args={[0.08, 0.07, 0.5, 16]} />
-        <meshStandardMaterial color="#111827" roughness={0.7} />
-      </mesh>
-      {/* Right Arm */}
-      <mesh position={[0.52, -0.4, -0.08]} rotation={[0, 0, -0.1]}>
-        <cylinderGeometry args={[0.08, 0.07, 0.5, 16]} />
-        <meshStandardMaterial color="#111827" roughness={0.7} />
-      </mesh>
-
-      {/* Hands */}
-      <mesh position={[-0.56, -0.68, -0.04]}>
-        <sphereGeometry args={[0.06, 16, 16]} />
-        <meshStandardMaterial color="#fcd34d" roughness={0.5} />
-      </mesh>
-      <mesh position={[0.56, -0.68, -0.04]}>
-        <sphereGeometry args={[0.06, 16, 16]} />
-        <meshStandardMaterial color="#fcd34d" roughness={0.5} />
-      </mesh>
-
-      {/* Black V-neck Shirt inside */}
-      <mesh position={[0, -0.22, 0.12]}>
-        <boxGeometry args={[0.22, 0.22, 0.02]} />
-        <meshStandardMaterial color="#030712" roughness={0.9} />
-      </mesh>
-      
-      {/* V-neck skin collar extension */}
-      <mesh position={[0, -0.12, 0.11]}>
-        <boxGeometry args={[0.15, 0.15, 0.02]} />
-        <meshStandardMaterial color="#fcd34d" roughness={0.5} />
-      </mesh>
-
-      {/* Corporate Black Pants / Hips & Legs */}
-      {/* Hips connector */}
-      <mesh position={[0, -0.72, -0.08]}>
-        <boxGeometry args={[0.8, 0.12, 0.36]} />
-        <meshStandardMaterial color="#030712" roughness={0.8} />
-      </mesh>
-      
-      {/* Left leg (black trousers) */}
-      <mesh position={[-0.18, -1.05, -0.08]}>
-        <cylinderGeometry args={[0.08, 0.08, 0.6, 12]} />
-        <meshStandardMaterial color="#030712" roughness={0.8} />
-      </mesh>
-      
-      {/* Right leg (black trousers) */}
-      <mesh position={[0.18, -1.05, -0.08]}>
-        <cylinderGeometry args={[0.08, 0.08, 0.6, 12]} />
-        <meshStandardMaterial color="#030712" roughness={0.8} />
-      </mesh>
-
-      {/* Shoes (Sleek black shoes) */}
-      <mesh position={[-0.18, -1.37, -0.02]}>
-        <boxGeometry args={[0.12, 0.08, 0.18]} />
-        <meshStandardMaterial color="#000000" roughness={0.2} metalness={0.9} />
-      </mesh>
-      <mesh position={[0.18, -1.37, -0.02]}>
-        <boxGeometry args={[0.12, 0.08, 0.18]} />
-        <meshStandardMaterial color="#000000" roughness={0.2} metalness={0.9} />
-      </mesh>
-    </group>
-  );
-}
-
-// RelizaFace3D: Standard wrapper mapping size configurations to canvas sizing parameters.
+// RelizaFace3D Component: Simple wrapper rendering the image avatar in place of the 3D canvas.
 export function RelizaFace3D({ expression, isSpeaking, isScrolled = false, size = "md" }) {
-  const dimensions = size === "sm" ? "w-10 h-10" : size === "lg" ? "w-20 h-20 sm:w-24 sm:h-24" : "w-12 h-12";
+  const dimensions = size === "sm" ? "w-10 h-10" : size === "lg" ? "w-20 h-20 sm:w-14 sm:h-14" : "w-12 h-12";
 
   return (
-    <div className={`${dimensions} shrink-0 bg-slate-950 rounded-full border border-slate-800 overflow-hidden relative select-none flex items-center justify-center`}>
-      <Canvas
-        camera={{ position: [0, -0.3, 2.3], fov: 48 }}
-        style={{ width: "100%", height: "100%" }}
-        gl={{ antialias: true, alpha: true }}
-      >
-        <ambientLight intensity={1.5} />
-        <directionalLight position={[1.5, 2.5, 1.5]} intensity={2.0} />
-        <pointLight position={[-1.5, -1.0, 1.0]} intensity={0.6} />
-        <HumanHead3D expression={expression} isSpeaking={isSpeaking} isScrolled={isScrolled} />
-      </Canvas>
+    <div className={`${dimensions} shrink-0 bg-slate-950 rounded-full overflow-hidden relative select-none flex items-center justify-center`}>
+      <img
+        src="https://img.magnific.com/free-vector/friendly-robot-floating-space_1308-161934.jpg?semt=ais_test_b&w=740&q=80"
+        className="w-auto h-full"
+        alt="Reliza"
+        onError={(e) => {
+          // If the incomplete URL fails to load, fall back to a cute default robot avatar
+          e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png";
+        }}
+      />
     </div>
   );
 }
@@ -1054,7 +720,7 @@ export default function WebsiteAIAssistant() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-slate-950 border-2 border-[#ff0000] flex items-center justify-center shadow-2xl hover:shadow-[0_0_20px_rgba(255,0,0,0.3)] transition-all cursor-pointer overflow-hidden z-20 relative"
+        className="w-20 h-20 sm:w-15 sm:h-15 rounded-full bg-slate-950 flex items-center justify-center shadow-2xl hover:shadow-[0_0_20px_rgba(255,0,0,0.3)] transition-all cursor-pointer overflow-hidden z-20 relative"
       >
         <RelizaFace3D expression={expression} isSpeaking={isSpeaking} isScrolled={isScrolled} size="lg" />
       </motion.button>

@@ -204,6 +204,14 @@ export default function Footer() {
                 >
                   Youtube
                 </a>
+                <a
+                  href="https://lovable.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[12px] text-blue-600 hover:text-blue-700 transition-colors"
+                >
+                  Lovable
+                </a>
               </div>
             </div>
           </div>
