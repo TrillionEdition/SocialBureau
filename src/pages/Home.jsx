@@ -1415,7 +1415,7 @@ export const Home = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0.5 bg-[#D2D2D7] border border-[#D2D2D7] rounded-[28px] sm:rounded-[44px] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.15)] bg-white">
-          {[
+          {/* {[
             {
               name: 'Big TV',
               img: 'https://images.bigtvlive.com/2026/03/BigTvLive-Telugu-Logo-1.png',
@@ -1442,7 +1442,7 @@ export const Home = () => {
                 <div className={`absolute bottom-0 inset-x-0 h-1.5 ${client.accent} origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700`} />
               </a>
             </motion.div>
-          ))}
+          ))} */}
 
           {/* Confidential Clients Message */}
           <motion.div whileHover={{ backgroundColor: '#FAFAFA' }} className="bg-white relative group border-transparent transition-all duration-300 p-6 sm:p-10 flex flex-col items-center justify-center text-center">
