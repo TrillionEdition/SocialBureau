@@ -1310,6 +1310,131 @@ export const Home = () => {
         </div>
       </Section>
 
+ {/* --- CLIENTS SECTION --- */}
+      <Section id="clients" className="bg-[#F5F5F7]">
+        <div className="flex flex-col items-center text-center mb-12 sm:mb-20">
+          <FadeUp>
+            <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.2em] sm:tracking-[0.4em] mb-4 sm:mb-6 block opacity-70 italic">Industry Leaders</span>
+            <h2 className="text-4xl sm:text-6xl lg:text-[clamp(60px,10vw,140px)] font-black tracking-tighter text-[#0A0A0A] leading-none mb-6 sm:mb-10 italic antialiased px-2">Trusted by<br /><span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent">Media Giants.</span></h2>
+            <p className="text-base sm:text-lg lg:text-3xl font-light text-[#6E6E73] leading-relaxed italic antialiased font-serif px-2 font-bold">Powering the digital strategy of the world's most-watched news and entertainment networks.</p>
+          </FadeUp>
+        </div>
+
+        <div className="relative w-full overflow-hidden py-6">
+          <style dangerouslySetInnerHTML={{ __html: `
+            @keyframes marquee-left {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
+            }
+            @keyframes marquee-right {
+              0% { transform: translateX(-50%); }
+              100% { transform: translateX(0); }
+            }
+            .animate-marquee-left-1 {
+              animation: marquee-left 90s linear infinite;
+            }
+            .animate-marquee-right-2 {
+              animation: marquee-right 100s linear infinite;
+            }
+            .animate-marquee-left-3 {
+              animation: marquee-left 110s linear infinite;
+            }
+            .marquee-row:hover .marquee-inner {
+              animation-play-state: paused;
+            }
+          `}} />
+
+          {/* Fade gradients at the edges */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 sm:w-48 bg-gradient-to-r from-[#F5F5F7] to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 sm:w-48 bg-gradient-to-l from-[#F5F5F7] to-transparent" />
+
+          <div className="space-y-6 sm:space-y-8">
+            {/* Row 1 */}
+            <div className="marquee-row overflow-hidden">
+              <div className="marquee-inner animate-marquee-left-1 flex w-max items-center gap-4 sm:gap-6">
+                {[...row1, ...row1].map((channel, i) => (
+                  <div
+                    key={`r1-${i}`}
+                    className="flex h-14 sm:h-16 shrink-0 items-center justify-center rounded-2xl border border-black/5 bg-white/80 px-5 sm:px-6 shadow-sm backdrop-blur-md hover:border-[#E8001A]/30 hover:shadow-md hover:scale-[1.03] transition-all duration-300 cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3">
+                      {CHANNEL_LOGOS[channel] && (
+                        <img
+                          src={CHANNEL_LOGOS[channel]}
+                          alt={`${channel} logo`}
+                          className="h-6 sm:h-7 w-auto object-contain max-w-[80px] select-none pointer-events-none brightness-95 contrast-105"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
+                        />
+                      )}
+                      <span className="text-[11px] sm:text-[13px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased font-sans whitespace-nowrap">
+                        {channel}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Row 2 */}
+            <div className="marquee-row overflow-hidden">
+              <div className="marquee-inner animate-marquee-right-2 flex w-max items-center gap-4 sm:gap-6">
+                {[...row2, ...row2].map((channel, i) => (
+                  <div
+                    key={`r2-${i}`}
+                    className="flex h-14 sm:h-16 shrink-0 items-center justify-center rounded-2xl border border-black/5 bg-white/80 px-5 sm:px-6 shadow-sm backdrop-blur-md hover:border-[#FF5C35]/30 hover:shadow-md hover:scale-[1.03] transition-all duration-300 cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3">
+                      {CHANNEL_LOGOS[channel] && (
+                        <img
+                          src={CHANNEL_LOGOS[channel]}
+                          alt={`${channel} logo`}
+                          className="h-6 sm:h-7 w-auto object-contain max-w-[80px] select-none pointer-events-none brightness-95 contrast-105"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
+                        />
+                      )}
+                      <span className="text-[11px] sm:text-[13px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased font-sans whitespace-nowrap">
+                        {channel}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Row 3 */}
+            <div className="marquee-row overflow-hidden">
+              <div className="marquee-inner animate-marquee-left-3 flex w-max items-center gap-4 sm:gap-6">
+                {[...row3, ...row3].map((channel, i) => (
+                  <div
+                    key={`r3-${i}`}
+                    className="flex h-14 sm:h-16 shrink-0 items-center justify-center rounded-2xl border border-black/5 bg-white/80 px-5 sm:px-6 shadow-sm backdrop-blur-md hover:border-[#FF1493]/30 hover:shadow-md hover:scale-[1.03] transition-all duration-300 cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3">
+                      {CHANNEL_LOGOS[channel] && (
+                        <img
+                          src={CHANNEL_LOGOS[channel]}
+                          alt={`${channel} logo`}
+                          className="h-6 sm:h-7 w-auto object-contain max-w-[80px] select-none pointer-events-none brightness-95 contrast-105"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
+                        />
+                      )}
+                      <span className="text-[11px] sm:text-[13px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased font-sans whitespace-nowrap">
+                        {channel}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Section>
       {/* --- SERVICES SECTION --- */}
       <Section id="services" className="bg-[#F5F5F7]">
         <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-8 sm:gap-12 mb-16 sm:mb-20">          <FadeUp className="flex-1">
@@ -1439,131 +1564,7 @@ export const Home = () => {
       {/* --- GALLERY SECTION --- */}
       {/* <GallerySection /> */}
 
-      {/* --- CLIENTS SECTION --- */}
-      <Section id="clients" className="bg-[#F5F5F7]">
-        <div className="flex flex-col items-center text-center mb-12 sm:mb-20">
-          <FadeUp>
-            <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.2em] sm:tracking-[0.4em] mb-4 sm:mb-6 block opacity-70 italic">Industry Leaders</span>
-            <h2 className="text-4xl sm:text-6xl lg:text-[clamp(60px,10vw,140px)] font-black tracking-tighter text-[#0A0A0A] leading-none mb-6 sm:mb-10 italic antialiased px-2">Trusted by<br /><span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent">Media Giants.</span></h2>
-            <p className="text-base sm:text-lg lg:text-3xl font-light text-[#6E6E73] leading-relaxed italic antialiased font-serif px-2 font-bold">Powering the digital strategy of the world's most-watched news and entertainment networks.</p>
-          </FadeUp>
-        </div>
-
-        <div className="relative w-full overflow-hidden py-6">
-          <style dangerouslySetInnerHTML={{ __html: `
-            @keyframes marquee-left {
-              0% { transform: translateX(0); }
-              100% { transform: translateX(-50%); }
-            }
-            @keyframes marquee-right {
-              0% { transform: translateX(-50%); }
-              100% { transform: translateX(0); }
-            }
-            .animate-marquee-left-1 {
-              animation: marquee-left 90s linear infinite;
-            }
-            .animate-marquee-right-2 {
-              animation: marquee-right 100s linear infinite;
-            }
-            .animate-marquee-left-3 {
-              animation: marquee-left 110s linear infinite;
-            }
-            .marquee-row:hover .marquee-inner {
-              animation-play-state: paused;
-            }
-          `}} />
-
-          {/* Fade gradients at the edges */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 sm:w-48 bg-gradient-to-r from-[#F5F5F7] to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 sm:w-48 bg-gradient-to-l from-[#F5F5F7] to-transparent" />
-
-          <div className="space-y-6 sm:space-y-8">
-            {/* Row 1 */}
-            <div className="marquee-row overflow-hidden">
-              <div className="marquee-inner animate-marquee-left-1 flex w-max items-center gap-4 sm:gap-6">
-                {[...row1, ...row1].map((channel, i) => (
-                  <div
-                    key={`r1-${i}`}
-                    className="flex h-14 sm:h-16 shrink-0 items-center justify-center rounded-2xl border border-black/5 bg-white/80 px-5 sm:px-6 shadow-sm backdrop-blur-md hover:border-[#E8001A]/30 hover:shadow-md hover:scale-[1.03] transition-all duration-300 cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3">
-                      {CHANNEL_LOGOS[channel] && (
-                        <img
-                          src={CHANNEL_LOGOS[channel]}
-                          alt={`${channel} logo`}
-                          className="h-6 sm:h-7 w-auto object-contain max-w-[80px] select-none pointer-events-none brightness-95 contrast-105"
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                          }}
-                        />
-                      )}
-                      <span className="text-[11px] sm:text-[13px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased font-sans whitespace-nowrap">
-                        {channel}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Row 2 */}
-            <div className="marquee-row overflow-hidden">
-              <div className="marquee-inner animate-marquee-right-2 flex w-max items-center gap-4 sm:gap-6">
-                {[...row2, ...row2].map((channel, i) => (
-                  <div
-                    key={`r2-${i}`}
-                    className="flex h-14 sm:h-16 shrink-0 items-center justify-center rounded-2xl border border-black/5 bg-white/80 px-5 sm:px-6 shadow-sm backdrop-blur-md hover:border-[#FF5C35]/30 hover:shadow-md hover:scale-[1.03] transition-all duration-300 cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3">
-                      {CHANNEL_LOGOS[channel] && (
-                        <img
-                          src={CHANNEL_LOGOS[channel]}
-                          alt={`${channel} logo`}
-                          className="h-6 sm:h-7 w-auto object-contain max-w-[80px] select-none pointer-events-none brightness-95 contrast-105"
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                          }}
-                        />
-                      )}
-                      <span className="text-[11px] sm:text-[13px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased font-sans whitespace-nowrap">
-                        {channel}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Row 3 */}
-            <div className="marquee-row overflow-hidden">
-              <div className="marquee-inner animate-marquee-left-3 flex w-max items-center gap-4 sm:gap-6">
-                {[...row3, ...row3].map((channel, i) => (
-                  <div
-                    key={`r3-${i}`}
-                    className="flex h-14 sm:h-16 shrink-0 items-center justify-center rounded-2xl border border-black/5 bg-white/80 px-5 sm:px-6 shadow-sm backdrop-blur-md hover:border-[#FF1493]/30 hover:shadow-md hover:scale-[1.03] transition-all duration-300 cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3">
-                      {CHANNEL_LOGOS[channel] && (
-                        <img
-                          src={CHANNEL_LOGOS[channel]}
-                          alt={`${channel} logo`}
-                          className="h-6 sm:h-7 w-auto object-contain max-w-[80px] select-none pointer-events-none brightness-95 contrast-105"
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                          }}
-                        />
-                      )}
-                      <span className="text-[11px] sm:text-[13px] font-black text-[#0A0A0A] uppercase tracking-widest italic antialiased font-sans whitespace-nowrap">
-                        {channel}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </Section>
+     
 
       {/* --- FOUNDER SECTION --- */}
       <FounderSection />

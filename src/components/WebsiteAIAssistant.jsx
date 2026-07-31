@@ -195,15 +195,15 @@ export default function WebsiteAIAssistant() {
             sender: "bot",
             text: "Hi there! I'm Reliza, your digital helper. Here are some key areas on our website you can explore. Select any option to learn more:",
             options: [
-              { label: "🎓 Student Portfolio", value: "student portfolio" },
-              { label: "🛠 Utility Tools", value: "utility tools" },
-              { label: "📅 Book Sessions", value: "book sessions" },
-              { label: "👥 Team Page", value: "team page" },
-              { label: "📊 Website Audit Report", value: "website audit report" },
-              { label: "💼 Services We Provide", value: "services we provide" },
-              { label: "✍️ Write a Blog", value: "write a blog" },
-              { label: "🤝 Partnership Programs", value: "partnership programs" },
-              { label: "🚀 API Marketing", value: "api marketing" }
+              { label: "Student Portfolio", value: "student portfolio" },
+              { label: "Utility Tools", value: "utility tools" },
+              { label: "Book Sessions", value: "book sessions" },
+              { label: "Team Page", value: "team page" },
+              { label: "Website Audit Report", value: "website audit report" },
+              { label: "Services We Provide", value: "services we provide" },
+              { label: "Write a Blog", value: "write a blog" },
+              { label: "Partnership Programs", value: "partnership programs" },
+              { label: "API Marketing", value: "api marketing" }
             ]
           }
         ]);
@@ -300,31 +300,31 @@ export default function WebsiteAIAssistant() {
         responseText = "Explore the amazing portfolios and projects created by our student partners! Click below to view them.";
         linkPath = "/partners/students";
         linkLabel = "View Student Showcase";
-        nextOptions = [{ label: "🏠 Back to Main Menu", value: "main menu" }];
+        nextOptions = [{ label: "Back to Main Menu", value: "main menu" }];
       } else if (q === "utility tools") {
         setExpression("helpful");
         responseText = "We have an extensive suite of free utility tools! Check out our Solutions Hub for PDF converters, image editors, content generators, and our advanced AI Studio.";
         linkPath = "/solutions";
         linkLabel = "Go to Solutions Hub";
-        nextOptions = [{ label: "🏠 Back to Main Menu", value: "main menu" }];
+        nextOptions = [{ label: "Back to Main Menu", value: "main menu" }];
       } else if (q === "book sessions") {
         setExpression("helpful");
         responseText = "You can book a 1-on-1 strategic consultation with our team. Head over to our booking page, choose the 'Book Session' tab, and lock in your preferred slot!";
         linkPath = "/contact#meeting";
         linkLabel = "Book a Session Now";
-        nextOptions = [{ label: "🏠 Back to Main Menu", value: "main menu" }];
+        nextOptions = [{ label: "Back to Main Menu", value: "main menu" }];
       } else if (q === "team page") {
         setExpression("helpful");
         responseText = "Meet the developers, designers, and marketers behind SocialBureau! Explore their profiles, read client reviews, and connect.";
         linkPath = "/team";
         linkLabel = "Meet the Team";
-        nextOptions = [{ label: "🏠 Back to Main Menu", value: "main menu" }];
+        nextOptions = [{ label: "Back to Main Menu", value: "main menu" }];
       } else if (q === "website audit report") {
         setExpression("helpful");
         responseText = "Access our website audit reports to track performance, SEO status, and optimization recommendations.";
         linkPath = "/audit-reports";
         linkLabel = "View Audit Reports";
-        nextOptions = [{ label: "🏠 Back to Main Menu", value: "main menu" }];
+        nextOptions = [{ label: "Back to Main Menu", value: "main menu" }];
       } else if (q === "services we provide") {
         setExpression("helpful");
         responseText = "Here is a list of the premium digital services we offer to help grow your business. Select any service to explore further:";
@@ -337,28 +337,28 @@ export default function WebsiteAIAssistant() {
           { label: "Niche Marketing", value: "niche service" },
           { label: "AdTech Integration", value: "adtech service" },
           { label: "Content Marketing", value: "content service" },
-          { label: "🏠 Back to Main Menu", value: "main menu" }
+          { label: "Back to Main Menu", value: "main menu" }
         ];
       } else if (q === "write a blog") {
         setExpression("helpful");
         responseText = "Share your insights and write for the SocialBureau community! Submit your blog post through our submission portal.";
         linkPath = "/blog/submit";
         linkLabel = "Submit a Blog Post";
-        nextOptions = [{ label: "🏠 Back to Main Menu", value: "main menu" }];
+        nextOptions = [{ label: "Back to Main Menu", value: "main menu" }];
       } else if (q === "partnership programs") {
         setExpression("helpful");
         responseText = "Join our network! Learn about our student and influencer partnership opportunities, manage your portfolio, or register.";
         linkPath = "/partners";
         linkLabel = "Explore Partnerships";
-        nextOptions = [{ label: "🏠 Back to Main Menu", value: "main menu" }];
+        nextOptions = [{ label: "Back to Main Menu", value: "main menu" }];
       } else if (q === "api marketing") {
         setExpression("helpful");
         responseText = "Grow your platform with next-gen API marketing strategies. Learn how we optimize and position developer APIs in the market.";
         linkPath = "/api-marketing-agency-in-kochi";
         linkLabel = "API Marketing Service";
         nextOptions = [
-          { label: "💼 View Services List", value: "services we provide" },
-          { label: "🏠 Back to Main Menu", value: "main menu" }
+          { label: "View Services List", value: "services we provide" },
+          { label: "Back to Main Menu", value: "main menu" }
         ];
       }
       
@@ -369,8 +369,8 @@ export default function WebsiteAIAssistant() {
         linkPath = "/performance-marketing-agency-in-kochi";
         linkLabel = "Learn More";
         nextOptions = [
-          { label: "💼 View Services List", value: "services we provide" },
-          { label: "🏠 Back to Main Menu", value: "main menu" }
+          { label: "View Services List", value: "services we provide" },
+          { label: "Back to Main Menu", value: "main menu" }
         ];
       } else if (q === "webdev service") {
         setExpression("helpful");
@@ -378,8 +378,8 @@ export default function WebsiteAIAssistant() {
         linkPath = "/web-development-agency-in-kochi";
         linkLabel = "Learn More";
         nextOptions = [
-          { label: "💼 View Services List", value: "services we provide" },
-          { label: "🏠 Back to Main Menu", value: "main menu" }
+          { label: "View Services List", value: "services we provide" },
+          { label: "Back to Main Menu", value: "main menu" }
         ];
       } else if (q === "seo service") {
         setExpression("helpful");
@@ -387,8 +387,8 @@ export default function WebsiteAIAssistant() {
         linkPath = "/performance-marketing-agency-in-kochi";
         linkLabel = "Learn More";
         nextOptions = [
-          { label: "💼 View Services List", value: "services we provide" },
-          { label: "🏠 Back to Main Menu", value: "main menu" }
+          { label: "View Services List", value: "services we provide" },
+          { label: "Back to Main Menu", value: "main menu" }
         ];
       } else if (q === "performance service") {
         setExpression("helpful");
@@ -396,8 +396,8 @@ export default function WebsiteAIAssistant() {
         linkPath = "/performance-marketing-agency-in-kochi";
         linkLabel = "Learn More";
         nextOptions = [
-          { label: "💼 View Services List", value: "services we provide" },
-          { label: "🏠 Back to Main Menu", value: "main menu" }
+          { label: "View Services List", value: "services we provide" },
+          { label: "Back to Main Menu", value: "main menu" }
         ];
       } else if (q === "niche service") {
         setExpression("helpful");
@@ -405,8 +405,8 @@ export default function WebsiteAIAssistant() {
         linkPath = "/niche-marketing-agency-in-kochi";
         linkLabel = "Learn More";
         nextOptions = [
-          { label: "💼 View Services List", value: "services we provide" },
-          { label: "🏠 Back to Main Menu", value: "main menu" }
+          { label: "View Services List", value: "services we provide" },
+          { label: "Back to Main Menu", value: "main menu" }
         ];
       } else if (q === "adtech service") {
         setExpression("helpful");
@@ -414,8 +414,8 @@ export default function WebsiteAIAssistant() {
         linkPath = "/adTech-marketing-agency-in-kochi";
         linkLabel = "Learn More";
         nextOptions = [
-          { label: "💼 View Services List", value: "services we provide" },
-          { label: "🏠 Back to Main Menu", value: "main menu" }
+          { label: "View Services List", value: "services we provide" },
+          { label: "Back to Main Menu", value: "main menu" }
         ];
       } else if (q === "content service") {
         setExpression("helpful");
@@ -423,22 +423,22 @@ export default function WebsiteAIAssistant() {
         linkPath = "/content-marketing-agency-in-kochi";
         linkLabel = "Learn More";
         nextOptions = [
-          { label: "💼 View Services List", value: "services we provide" },
-          { label: "🏠 Back to Main Menu", value: "main menu" }
+          { label: "View Services List", value: "services we provide" },
+          { label: "Back to Main Menu", value: "main menu" }
         ];
       } else if (q === "main menu") {
         setExpression("greeting");
         responseText = "Here is our main menu. Select an option to explore:";
         nextOptions = [
-          { label: "🎓 Student Portfolio", value: "student portfolio" },
-          { label: "🛠 Utility Tools", value: "utility tools" },
-          { label: "📅 Book Sessions", value: "book sessions" },
-          { label: "👥 Team Page", value: "team page" },
-          { label: "📊 Website Audit Report", value: "website audit report" },
-          { label: "💼 Services We Provide", value: "services we provide" },
-          { label: "✍️ Write a Blog", value: "write a blog" },
-          { label: "🤝 Partnership Programs", value: "partnership programs" },
-          { label: "🚀 API Marketing", value: "api marketing" }
+          { label: "Student Portfolio", value: "student portfolio" },
+          { label: "Utility Tools", value: "utility tools" },
+          { label: "Book Sessions", value: "book sessions" },
+          { label: "Team Page", value: "team page" },
+          { label: "Website Audit Report", value: "website audit report" },
+          { label: "Services We Provide", value: "services we provide" },
+          { label: "Write a Blog", value: "write a blog" },
+          { label: "Partnership Programs", value: "partnership programs" },
+          { label: "API Marketing", value: "api marketing" }
         ];
       }
       
@@ -497,10 +497,10 @@ export default function WebsiteAIAssistant() {
         setExpression("idle");
         responseText = "I'm still learning! You can ask about 'explore tools', 'careers', 'schedule a meeting', or select one of the guide shortcuts below.";
         nextOptions = [
-          { label: "🎓 Student Portfolio", value: "student portfolio" },
-          { label: "🛠 Utility Tools", value: "utility tools" },
-          { label: "📅 Book Sessions", value: "book sessions" },
-          { label: "💼 Services We Provide", value: "services we provide" }
+          { label: "Student Portfolio", value: "student portfolio" },
+          { label: "Utility Tools", value: "utility tools" },
+          { label: "Book Sessions", value: "book sessions" },
+          { label: "Services We Provide", value: "services we provide" }
         ];
       }
 
@@ -552,9 +552,9 @@ export default function WebsiteAIAssistant() {
             initial={{ opacity: 0, scale: 0.8, y: isScrolled ? -10 : 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: isScrolled ? -10 : 10 }}
-            className={`absolute right-2 w-[calc(100vw-48px)] sm:w-64 bg-white/95 text-slate-800 border border-slate-200/80 p-3 rounded-2xl shadow-xl flex items-start gap-2.5 z-10 select-none cursor-pointer hover:bg-white transition-all ${
-              isScrolled ? "top-22 sm:top-26" : "bottom-22 sm:bottom-26"
-            }`}
+            className={`absolute right-2 w-72 sm:w-64 bg-white/95 text-slate-800 border border-slate-200/80 p-3 rounded-2xl shadow-xl flex items-start gap-2.5 z-10 select-none cursor-pointer hover:bg-white transition-all ${
+  isScrolled ? "top-22 sm:top-26" : "bottom-22 sm:bottom-26"
+}`}
             onClick={() => setIsOpen(true)}
           >
             <Sparkles className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
