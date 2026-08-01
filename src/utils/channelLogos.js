@@ -62,7 +62,7 @@ export const CHANNEL_LOGOS = {
   "Manorama News": "https://dtil.tmsimg.com/assets/s159016_ld_h15_aa.png?lock=720x540",
   "Mathrubhumi News": "https://dtil.tmsimg.com/assets/s143309_ld_h15_aa.png?lock=720x540",
   "Reporter TV": "https://dtil.tmsimg.com/assets/s85096_ld_h15_aa.png?lock=720x540",
-  "MediaOne TV": "https://i.imgur.com/TWFDkap.png",
+  "MediaOne TV": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTz6d6_ZJqZmIVtfqSOMPc1bYjjXqu47vK4My_em-RXA&s=10",
   "Kairali News": "https://dtil.tmsimg.com/assets/s143246_ld_h15_aa.png?lock=720x540",
   "Jaihind TV": "https://dtil.tmsimg.com/assets/s143217_ld_h15_aa.png?lock=720x540",
   "News18 Kerala": "https://dtil.tmsimg.com/assets/s143613_ld_h15_aa.png?lock=720x540",

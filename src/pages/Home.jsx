@@ -294,7 +294,9 @@ const FounderSection = () => (
 
       <div className="space-y-8 sm:space-y-16">
         <FadeUp delay={0.2} className="text-center lg:text-left">
-          <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-3 sm:mb-6 block opacity-80 underline underline-offset-8 decoration-2">The Visionary</span>
+          <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-3 sm:mb-6 block underline underline-offset-8 decoration-2">
+            The Visionary
+          </span>
           <h2 className="text-[clamp(2rem,8vw,6.5rem)] font-black tracking-tighter leading-[0.85] text-[#0A0A0A] italic antialiased px-2 sm:px-0">
             Meet<br /><span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent">Sham SK.</span>
           </h2>
@@ -310,7 +312,9 @@ const FounderSection = () => (
             { n: '03', t: '50+ Scale Operations', d: 'Engineered growth for fifty+ niche brands across Kerala and India through clinical precision.' }
           ].map((ach, i) => (
             <FadeUp key={ach.n} delay={0.1 * i + 0.3} className="flex gap-4 sm:gap-10 p-4 sm:p-10 bg-white border border-[#D2D2D7] rounded-[20px] sm:rounded-[36px] border-l-[4px] sm:border-l-[8px] border-l-[#E8001A] hover:shadow-2xl hover:translate-x-2 transition-all duration-700 shadow-lg">
-              <div className="text-4xl sm:text-6xl font-black text-[#E8001A] leading-none opacity-20 italic flex-shrink-0">{ach.n}</div>
+              <div className="text-4xl sm:text-6xl font-black text-[#E8001A] opacity-60 leading-none italic flex-shrink-0">
+                {ach.n}
+              </div>
               <div className="pt-1 sm:pt-2">
                 <h4 className="text-lg sm:text-2xl font-black text-[#0A0A0A] mb-2 sm:mb-3 tracking-tighter">{ach.t}</h4>
                 <p className="text-[13px] sm:text-[16px] font-light text-[#6E6E73] leading-relaxed italic">{ach.d}</p>
@@ -352,8 +356,9 @@ const SoftwareSection = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-14 grid lg:grid-cols-2 gap-8 sm:gap-16 lg:gap-20 xl:gap-32 items-center relative z-10">
-        <FadeUp className="text-center lg:text-left">
-          <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-6 sm:mb-8 block opacity-80 decoration-2 underline underline-offset-8 italic">Engineering the Future</span>
+        <FadeUp className="text-center lg:text-left"><span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-6 sm:mb-8 block decoration-2 underline underline-offset-8 italic">
+          Engineering the Future
+        </span>
           <h2 className="text-[clamp(2.5rem,10vw,8.5rem)] font-black tracking-tighter leading-[0.9] mb-8 sm:mb-12 italic antialiased overflow-visible">          The<br />
             <span className="relative inline-block px-[6px] overflow-visible">
               <span className="bg-gradient-to-tr from-[#FF8A80] via-[#FF5C35] to-[#FF6FCF] bg-clip-text text-transparent">
@@ -602,11 +607,28 @@ const InstagramReelsSection = () => {
                           <span className="text-[8px] font-bold text-white/30 uppercase tracking-widest mt-0.5 block leading-none">Official Reel</span>
                         </div>
                       </div>
-                      <a href={reel.url} target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-full hover:bg-white/10 transition-colors text-white/50 hover:text-white">
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                          <path d="M7 17L17 7M17 7H7M17 7v10" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </a>
+                      <a
+                      href={reel.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Open reel in a new tab"
+                      className="p-1.5 rounded-full hover:bg-white/10 transition-colors text-white/50 hover:text-white"
+                    >
+                      <svg
+                        className="w-3.5 h-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M7 17L17 7M17 7H7M17 7v10"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </a>
                     </div>
 
                     {/* Instagram embed iframe */}
@@ -646,17 +668,20 @@ const InstagramReelsSection = () => {
           <div className="flex justify-center gap-2 mt-6">
             {reels.map((_, i) => (
               <button
-                key={i}
-                onClick={() => scrollTo(i)}
-                className="transition-all duration-300 rounded-full"
-                style={{
-                  width: activeIdx === i ? '28px' : '8px',
-                  height: '8px',
-                  background: activeIdx === i
-                    ? 'linear-gradient(to right, #f9ce34, #ee2a7b, #6228d7)'
-                    : 'rgba(255,255,255,0.2)',
-                }}
-              />
+              key={i}
+              onClick={() => scrollTo(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              aria-current={activeIdx === i ? "true" : undefined}
+              className="transition-all duration-300 rounded-full"
+              style={{
+                width: activeIdx === i ? "28px" : "8px",
+                height: "8px",
+                background:
+                  activeIdx === i
+                    ? "linear-gradient(to right, #f9ce34, #ee2a7b, #6228d7)"
+                    : "rgba(255,255,255,0.2)",
+              }}
+            />
             ))}
           </div>
         )}
@@ -713,10 +738,10 @@ const TV_CHANNELS = [
   "Deutsche Welle (DW)", "Euronews", "CGTN", "TRT World", "NHK World-Japan",
   "CNA (Channel NewsAsia)", "Bloomberg Television", "CNBC International", "Fox News", "MSNBC",
   "Newsmax", "ABC News Live", "CBS News", "NBC News", "VOA (Voice of America)",
-  "CBS", "NBC", "PBS", "The CW", "MyNetworkTV",
+  "NBC", "PBS", "The CW", "MyNetworkTV",
   "CNN", "CNBC", "ESPN", "Discovery Channel", "National Geographic",
   "History Channel", "HGTV", "TLC", "Animal Planet", "Disney Channel", "Nickelodeon",
-  "Cartoon Network", "BBC One", "BBC Two", "ITV", "Channel 4", "Channel 5",
+  "Cartoon Network", "BBC One", "ITV", "Channel 4", "Channel 5",
   "Sky Sports", "GB News", "TalkTV", "DD News", "Aaj Tak", "India Today TV",
   "NDTV 24x7", "Republic TV", "Times Now", "Mirror Now", "News18 India",
   "CNN-News18", "India TV", "Zee News", "ABP News", "TV9 Bharatvarsh", "News24",
@@ -1058,7 +1083,9 @@ export const Home = () => {
       <Section id="partners" className="bg-[#F5F5F7]">
         <FadeUp>
           <div className="text-center mb-12 sm:mb-16">
-            <h3 className="text-[10px] sm:text-[12px] font-black text-[#6E6E73] uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-3 sm:mb-4 opacity-70">Global Partnerships</h3>
+            <h3 className="text-[10px] sm:text-[12px] font-black text-[#4A4A4A] uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-3 sm:mb-4">
+              Global Partnerships
+            </h3>
             <p className="text-lg sm:text-2xl font-light text-[#1D1D1F] max-w-2xl mx-auto px-2">Official Partner of the World's Leading Platforms</p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6">
@@ -1271,7 +1298,9 @@ export const Home = () => {
           {/* section parallel (right column) */}
           <div>
             <FadeUp>
-              <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-4 sm:mb-6 block opacity-80">Scientific Growth Framework</span>
+              <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-4 sm:mb-6 block">
+                Scientific Growth Framework
+              </span>
               <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter leading-[0.9] mb-6 sm:mb-10 text-[#0A0A0A]">
                 The World's First<br />
                 <span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent italic py-3 inline-block">
@@ -1314,7 +1343,9 @@ export const Home = () => {
       <Section id="clients" className="bg-[#F5F5F7]">
         <div className="flex flex-col items-center text-center mb-12 sm:mb-20">
           <FadeUp>
-            <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.2em] sm:tracking-[0.4em] mb-4 sm:mb-6 block opacity-70 italic">Industry Leaders</span>
+            <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.2em] sm:tracking-[0.4em] mb-4 sm:mb-6 block italic">
+              Industry Leaders
+            </span>
             <h2 className="text-4xl sm:text-6xl lg:text-[clamp(60px,10vw,140px)] font-black tracking-tighter text-[#0A0A0A] leading-none mb-6 sm:mb-10 italic antialiased px-2">Trusted by<br /><span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent">Media Giants.</span></h2>
             <p className="text-base sm:text-lg lg:text-3xl font-light text-[#6E6E73] leading-relaxed italic antialiased font-serif px-2 font-bold">Powering the digital strategy of the world's most-watched news and entertainment networks.</p>
           </FadeUp>
@@ -1438,7 +1469,9 @@ export const Home = () => {
       {/* --- SERVICES SECTION --- */}
       <Section id="services" className="bg-[#F5F5F7]">
         <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-8 sm:gap-12 mb-16 sm:mb-20">          <FadeUp className="flex-1">
-          <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-3 sm:mb-4 block underline decoration-2 underline-offset-8">Capabilities</span>
+          <span className="text-[11px] sm:text-[13px] font-black text-[#D00018] uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-3 sm:mb-4 block underline decoration-2 underline-offset-8">
+            Capabilities
+          </span>
           <h2 className="text-center text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-[#0A0A0A]">
             Our <span className="text-[#E8001A] italic">Services</span>
           </h2>          </FadeUp>
@@ -1464,7 +1497,9 @@ export const Home = () => {
               className={`bg-white p-6 sm:p-10 lg:p-14 relative group ${s.s || ''}`}
             >
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#E8001A] via-[#FF5C35] to-[#FF1493] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
-              <div className="text-[12px] sm:text-[14px] font-black text-[#6E6E73] mb-6 sm:mb-8 opacity-40">0{i + 1}</div>
+              <div className="text-[12px] sm:text-[14px] font-black text-[#4A4A4A] mb-6 sm:mb-8">
+                0{i + 1}
+              </div>
               <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-[#0A0A0A] mb-3 sm:mb-5 tracking-tighter flex items-center gap-2 sm:gap-4">
                 {s.t}
                 {s.b && <span className="text-[8px] sm:text-[10px] font-black px-2 sm:px-3 py-0.5 sm:py-1 rounded bg-[#E8001A] text-white uppercase tracking-widest">{s.b}</span>}
@@ -1525,15 +1560,19 @@ export const Home = () => {
                       </div>
                     ))}
                   </div>
-
-                  <div className="mt-8 sm:mt-10 flex items-center justify-center gap-3 text-[#7B68EE] font-black uppercase text-[10px] sm:text-[12px] tracking-widest pt-6 sm:pt-8 border-t border-black/5 opacity-60">
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M8 12l3 3 5-5" />
-                    </svg>
-                    Official India Reseller
-                  </div>
-
+                <div className="mt-8 sm:mt-10 flex items-center justify-center gap-3 text-[#5B21B6] font-black uppercase text-[10px] sm:text-[12px] tracking-widest pt-6 sm:pt-8 border-t border-black/10">
+                  <svg
+                    className="w-4 h-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M8 12l3 3 5-5" />
+                  </svg>
+                  Official India Reseller
+                </div>
                 </div>
               </div>
             </div>
@@ -1541,9 +1580,16 @@ export const Home = () => {
 
           <div className="order-1 lg:order-2">
             <FadeUp>
-              <span className="text-[13px] font-black text-[#7B68EE] uppercase tracking-[0.4em] mb-4 sm:mb-6 block opacity-80 decoration-2 underline underline-offset-8">Licensed Solutions</span>
+              <span className="text-[13px] font-black text-violet-700 uppercase tracking-[0.4em] mb-4 sm:mb-6 block decoration-2 underline underline-offset-8">
+                Licensed Solutions
+              </span>
               <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter leading-[0.9] mb-8 sm:mb-10 text-[#0A0A0A]">
-                Work<br /><span className="text-[#E8001A] italic">Smarter.</span><br /><span className="text-transparent italic" style={{ WebkitTextStroke: '1.5px #D2D2D7' }}>Not Harder.</span>
+                Work<br /><span className="text-[#E8001A] italic">Smarter.</span><br /><span
+                  className="italic text-gray-300"
+                  style={{ WebkitTextStroke: '1px #D2D2D7' }}
+                >
+                  Not Harder.
+                </span>
               </h2>
               <p className="text-lg lg:text-3xl font-light text-[#6E6E73] mb-10 sm:mb-12 leading-relaxed italic antialiased font-serif">
                 SocialBureau brings the world's most powerful productivity platform to your team with full local support and INR pricing.
@@ -1585,7 +1631,9 @@ export const Home = () => {
         </div>
         <div className="max-w-5xl mx-auto px-4 sm:px-14">
           <FadeUp>
-            <span className="text-[13px] font-black text-[#E8001A] uppercase tracking-[0.3em] mb-8 block opacity-80">Launch Your Growth Engine</span>
+            <span className="text-[13px] font-black text-[#E8001A] uppercase tracking-[0.3em] mb-8 block">
+              Launch Your Growth Engine
+            </span>
             <h2 className="text-[clamp(3.5rem,9vw,8rem)] font-black tracking-tighter leading-[0.85] mb-12 text-[#0A0A0A] italic antialiased">
               Ready to <span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent pr-8">Win?</span>
             </h2>

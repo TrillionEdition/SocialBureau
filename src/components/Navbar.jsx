@@ -430,7 +430,7 @@ export default function Navbar() {
               href={homeLink}
               className="text-white text-[17px] font-bold tracking-tight shrink-0 mr-10"
             >
-              <img src="/assets/logo.webp" className="h-7 w-40" />
+              <img src="/assets/logo.webp" className="h-7 w-40" alt="SocialBureau"/>
             </a>
             {navItems.map((item) => (
               <div
