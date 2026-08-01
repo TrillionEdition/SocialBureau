@@ -294,7 +294,7 @@ const FounderSection = () => (
 
       <div className="space-y-8 sm:space-y-16">
         <FadeUp delay={0.2} className="text-center lg:text-left">
-          <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-3 sm:mb-6 block underline underline-offset-8 decoration-2">
+          <span className="text-[11px] sm:text-[13px] font-black text-[#C1121F] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-3 sm:mb-6 block underline underline-offset-8 decoration-2">
             The Visionary
           </span>
           <h2 className="text-[clamp(2rem,8vw,6.5rem)] font-black tracking-tighter leading-[0.85] text-[#0A0A0A] italic antialiased px-2 sm:px-0">
@@ -356,9 +356,10 @@ const SoftwareSection = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-14 grid lg:grid-cols-2 gap-8 sm:gap-16 lg:gap-20 xl:gap-32 items-center relative z-10">
-        <FadeUp className="text-center lg:text-left"><span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-6 sm:mb-8 block decoration-2 underline underline-offset-8 italic">
-          Engineering the Future
-        </span>
+        <FadeUp className="text-center lg:text-left">
+          <span className="text-[11px] sm:text-[13px] font-black text-red-700 uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-6 sm:mb-8 block underline underline-offset-8 decoration-2 italic">
+            Engineering the Future
+          </span>
           <h2 className="text-[clamp(2.5rem,10vw,8.5rem)] font-black tracking-tighter leading-[0.9] mb-8 sm:mb-12 italic antialiased overflow-visible">          The<br />
             <span className="relative inline-block px-[6px] overflow-visible">
               <span className="bg-gradient-to-tr from-[#FF8A80] via-[#FF5C35] to-[#FF6FCF] bg-clip-text text-transparent">
@@ -1343,7 +1344,7 @@ export const Home = () => {
       <Section id="clients" className="bg-[#F5F5F7]">
         <div className="flex flex-col items-center text-center mb-12 sm:mb-20">
           <FadeUp>
-            <span className="text-[11px] sm:text-[13px] font-black text-[#E8001A] uppercase tracking-[0.2em] sm:tracking-[0.4em] mb-4 sm:mb-6 block italic">
+            <span className="text-[11px] sm:text-[13px] font-black text-[#C1121F] uppercase tracking-[0.2em] sm:tracking-[0.4em] mb-4 sm:mb-6 block italic">
               Industry Leaders
             </span>
             <h2 className="text-4xl sm:text-6xl lg:text-[clamp(60px,10vw,140px)] font-black tracking-tighter text-[#0A0A0A] leading-none mb-6 sm:mb-10 italic antialiased px-2">Trusted by<br /><span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent">Media Giants.</span></h2>
