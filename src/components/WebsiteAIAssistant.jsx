@@ -568,9 +568,11 @@ export default function WebsiteAIAssistant() {
                 e.stopPropagation();
                 setShowPrompt(false);
               }}
+              aria-label="Close chat prompt"
+              title="Close"
               className="p-1 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 shrink-0"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="w-3.5 h-3.5" aria-hidden="true" />
             </button>
           </motion.div>
         )}
