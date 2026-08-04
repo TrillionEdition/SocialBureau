@@ -837,9 +837,9 @@ export const Home = () => {
 
   // Static Hero for Social Bureau
   const currentHero = {
-    desktop: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT%20Image%20Jun%2011%2C%202026%2C%2006_27_01%20PM.png",
-    mobile: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/ChatGPT%20Image%20Jun%2011%2C%202026%2C%2006_27_01%20PM.png",
-    alt: "Social Bureau"
+    desktop: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Untitled%20design%20(72).png",
+    mobile: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Untitled%20design%20(72).png",
+    alt: "Buymor"
   };
 
   const [desktopIndex, setDesktopIndex] = useState(0);
@@ -906,8 +906,8 @@ export const Home = () => {
       )}
 
       
-      {/* <section className="w-full px-0">
-        <a href='/' target="_blank" rel="noopener noreferrer">
+      <section className="w-full px-0">
+        <a href='https://buymor.in' target="_blank" rel="noopener noreferrer">
           <img
             src={currentHero.desktop}
             alt={currentHero.alt}
@@ -919,7 +919,7 @@ export const Home = () => {
             className={`block sm:hidden w-full object-contain ${currentHero.mobile ? 'h-full' : 'h-auto'}`}
           />
         </a>
-      </section> */}
+      </section>
        {/* <section className="w-full px-0">
       <a href="/fifa-world-cup" target="_blank" rel="noopener noreferrer">
         <img
