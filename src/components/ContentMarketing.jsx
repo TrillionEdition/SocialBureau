@@ -290,7 +290,7 @@ const ContentMarketing = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a
-                href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more."
+                href="https://api.whatsapp.com/send/?phone=918921840486&text=Hello%2C+I+would+like+to+learn+more."
                 className="bg-[#920F17] text-white py-3 px-8 rounded-[980px] text-base font-medium transition-all duration-300 inline-flex items-center gap-2 hover:bg-[#6B080E] hover:scale-[1.02]"
               >
                 Book a Strategy Call

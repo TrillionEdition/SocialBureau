@@ -30,9 +30,26 @@ export default function AdminPaymentDetail() {
     if (!isNew) {
       fetchPaymentDetails();
     }
-    // TODO: Fetch clients from API
-    // For now, we'll rely on the form to have the client ID input
+    // Fetch clients from API for the client select dropdown
+    fetchClients();
   }, [id, isNew]);
+
+  const fetchClients = async () => {
+    try {
+      // attempt to call an existing clients API route
+      const res = await fetch("/clients", {
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!res.ok) throw new Error("Failed to fetch clients");
+      const data = await res.json();
+      // expect data to be array of clients or { data: [...] }
+      const list = Array.isArray(data) ? data : data.data || [];
+      setClients(list);
+    } catch (err) {
+      console.error("Error fetching clients:", err);
+      setClients([]);
+    }
+  };
 
   const fetchPaymentDetails = async () => {
     try {
@@ -154,18 +171,23 @@ export default function AdminPaymentDetail() {
           {/* Client ID */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Client ID <span className="text-red-500">*</span>
+              Client <span className="text-red-500">*</span>
             </label>
-            <input
-              type="text"
+            <select
               name="clientId"
               value={formData.clientId}
               onChange={handleChange}
-              placeholder="Paste client ID"
               disabled={isEditing}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
               required
-            />
+            >
+              <option value="">Select client</option>
+              {clients.map((c) => (
+                <option key={c._id || c.id} value={c._id || c.id}>
+                  {c.name || c.companyName || (c.email ? `${c.email}` : c._id || c.id)}
+                </option>
+              ))}
+            </select>
             <p className="text-xs text-gray-500 mt-1">Cannot be changed after creation</p>
           </div>
 

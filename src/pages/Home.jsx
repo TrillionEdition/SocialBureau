@@ -837,8 +837,8 @@ export const Home = () => {
 
   // Static Hero for Social Bureau
   const currentHero = {
-    desktop: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Untitled%20design%20(72).png",
-    mobile: "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Untitled%20design%20(72).png",
+    desktop: "#",
+    mobile: "#",
     alt: "Buymor"
   };
 

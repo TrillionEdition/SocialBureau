@@ -160,7 +160,7 @@ Submitted via: Sivaprasad portfolio
 
     // URL encode and open WhatsApp
     const encodedMessage = encodeURIComponent(whatsappMessage);
-    window.open(`https://wa.me/918714952665?text=${encodedMessage}`, "_blank");
+    window.open(`https://wa.me/918921840486?text=${encodedMessage}`, "_blank");
 
     // Reset form
     setForm({

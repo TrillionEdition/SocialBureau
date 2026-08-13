@@ -42,7 +42,7 @@ export function generateHomepageSchemas({
   image: logo,
   "@id": url,
   url,
-  telephone: "+918714952665",
+  telephone: "+918921840486",
   priceRange: "$$",
 
   address: {
@@ -57,7 +57,7 @@ export function generateHomepageSchemas({
   contactPoint: [
     {
       "@type": "ContactPoint",
-      telephone: "+918714952665",
+      telephone: "+918921840486",
       contactType: "customer support",
     },
   ],

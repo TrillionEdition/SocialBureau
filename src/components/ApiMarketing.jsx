@@ -1286,7 +1286,7 @@ const ApiMarketing = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    placeholder="+91 8714952665"
+                    placeholder="+91 8921840486"
                     className="w-full bg-white/5 border border-white/10 p-4 text-white text-sm outline-none focus:border-[#C8102E] transition-colors"
                   />
                 </div>
@@ -1358,7 +1358,7 @@ const ApiMarketing = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 md:gap-6">
                 {[
                   { lbl: "Email", val: "info@socialbureau.in", icon: "✉" },
-                  { lbl: "WhatsApp Direct", val: "+91 8714952665", icon: "◎" },
+                  { lbl: "WhatsApp Direct", val: "+91 8921840486", icon: "◎" },
                   { lbl: "Response Time", val: "Within 12 hours", icon: "⊙" },
                   { lbl: "Free Audit", val: "30-min strategy call", icon: "▣" }
                 ].map((item, i) => (

@@ -330,7 +330,7 @@ Connect platforms, track ads, and boost ROI with data-driven solutions"
                             <motion.a
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                href="https://api.whatsapp.com/send/?phone=918714952665&text=Hello%2C+I+would+like+to+learn+more+about+AdTech+Integration."
+                                href="https://api.whatsapp.com/send/?phone=918921840486&text=Hello%2C+I+would+like+to+learn+more+about+AdTech+Integration."
                                 className="bg-[#7E0A11] text-white px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg inline-flex items-center gap-2 transition-all duration-300 hover:bg-[#63080d] transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl whitespace-nowrap"
                             >
                                 Book a Strategy Call

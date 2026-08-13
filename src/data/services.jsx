@@ -84,7 +84,7 @@ const servicesData = {
     cta: {
       headline: "Ready to automate your campaigns?",
       button: "Automate Growth",
-      link: "tel:+918714952665",
+      link: "tel:+918921840486",
     },
   },
 
@@ -144,7 +144,7 @@ const servicesData = {
     cta: {
       headline: "Ready to unlock full-funnel ROI?",
       button: "Talk to Growth Team",
-      link: "tel:+918714952665",
+      link: "tel:+918921840486",
     },
   },
 
@@ -201,7 +201,7 @@ const servicesData = {
     cta: {
       headline: "Want platforms to recognize your brand?",
       button: "Train Algorithms",
-      link: "tel:+918714952665",
+      link: "tel:+918921840486",
     },
   },
 
@@ -255,7 +255,7 @@ const servicesData = {
     cta: {
       headline: "Ready to unify ad management?",
       button: "Unify Platforms",
-      link: "tel:+918714952665",
+      link: "tel:+918921840486",
     },
   },
 
@@ -310,7 +310,7 @@ const servicesData = {
     cta: {
       headline: "Ready for niche domination?",
       button: "Talk Strategy",
-      link: "tel:+918714952665",
+      link: "tel:+918921840486",
     },
   },
 
@@ -365,7 +365,7 @@ const servicesData = {
     cta: {
       headline: "Ready to rank & influence?",
       button: "Grow Brand",
-      link: "tel:+918714952665",
+      link: "tel:+918921840486",
     },
   },
 
@@ -419,7 +419,7 @@ const servicesData = {
     cta: {
       headline: "Want dashboard clarity?",
       button: "See Demo",
-      link: "tel:+918714952665",
+      link: "tel:+918921840486",
     },
   },
 
@@ -475,7 +475,7 @@ const servicesData = {
     cta: {
       headline: "Want automation without chaos?",
       button: "Integrate System",
-      link: "tel:+918714952665",
+      link: "tel:+918921840486",
     },
   },
 
@@ -530,7 +530,7 @@ const servicesData = {
     cta: {
       headline: "Ready to enter new markets?",
       button: "Start Global",
-      link: "tel:+918714952665",
+      link: "tel:+918921840486",
     },
   },
 
@@ -585,7 +585,7 @@ const servicesData = {
     cta: {
       headline: "Ready to break platform dependency?",
       button: "Open New Channels",
-      link: "tel:+918714952665",
+      link: "tel:+918921840486",
     },
   },
 
@@ -640,7 +640,7 @@ const servicesData = {
     cta: {
       headline: "Want an unfair advantage?",
       button: "Start Experimenting",
-      link: "tel:+918714952665",
+      link: "tel:+918921840486",
     },
   },
 };
