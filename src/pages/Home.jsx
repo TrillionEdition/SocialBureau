@@ -746,8 +746,8 @@ const TV_CHANNELS = [
   "Sky Sports", "GB News", "TalkTV", "DD News", "Aaj Tak", "India Today TV",
   "NDTV 24x7", "Republic TV", "Times Now", "Mirror Now", "News18 India",
   "CNN-News18", "India TV", "Zee News", "ABP News", "TV9 Bharatvarsh", "News24",
-  "DD India", "Reporter TV", "MediaOne TV", "Kairali News", "Jaihind TV", "News18 Kerala",
-  "Kaumudy TV", "Janam TV", "NewsMalayalam24x7", "Bigtv", "Sun News",
+  "DD India", "Reporter TV", 
+  "NewsMalayalam24x7", "Bigtv", "Sun News",
   "News18 Tamil Nadu", "Thanthi TV", "Puthiya Thalaimurai", "Polimer News", "Kalaignar News",
   "Captain News", "News7 Tamil", "NewsTamil24x7", "TV9 Kannada", "Public TV",
   "Suvarna News", "News18 Kannada", "Power TV", "TV9 Telugu", "NTV", "TV5 News",
@@ -1341,14 +1341,14 @@ export const Home = () => {
       </Section>
 
  {/* --- CLIENTS SECTION --- */}
-      <Section id="clients" className="bg-[#F5F5F7]">
+      {/* <Section id="clients" className="bg-[#F5F5F7]">
         <div className="flex flex-col items-center text-center mb-12 sm:mb-20">
           <FadeUp>
             <span className="text-[11px] sm:text-[13px] font-black text-[#C1121F] uppercase tracking-[0.2em] sm:tracking-[0.4em] mb-4 sm:mb-6 block italic">
               Industry Leaders
             </span>
             <h2 className="text-4xl sm:text-6xl lg:text-[clamp(60px,10vw,140px)] font-black tracking-tighter text-[#0A0A0A] leading-none mb-6 sm:mb-10 italic antialiased px-2">Trusted by<br /><span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent">Media Giants.</span></h2>
-            <p className="text-base sm:text-lg lg:text-3xl font-light text-[#6E6E73] leading-relaxed italic antialiased font-serif px-2 font-bold">Powering the digital strategy of the world's most-watched news and entertainment networks.</p>
+            <p className="text-base sm:text-lg lg:text-3xl font-light text-[#6E6E73] leading-relaxed italic antialiased font-serif px-2 font-bold">Targeting the digital strategy of the world's most-watched news and entertainment networks.</p>
           </FadeUp>
         </div>
 
@@ -1377,11 +1377,10 @@ export const Home = () => {
           `}} />
 
           {/* Fade gradients at the edges */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 sm:w-48 bg-gradient-to-r from-[#F5F5F7] to-transparent" />
+          {/* <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 sm:w-48 bg-gradient-to-r from-[#F5F5F7] to-transparent" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 sm:w-48 bg-gradient-to-l from-[#F5F5F7] to-transparent" />
 
           <div className="space-y-6 sm:space-y-8">
-            {/* Row 1 */}
             <div className="marquee-row overflow-hidden">
               <div className="marquee-inner animate-marquee-left-1 flex w-max items-center gap-4 sm:gap-6">
                 {[...row1, ...row1].map((channel, i) => (
@@ -1409,7 +1408,6 @@ export const Home = () => {
               </div>
             </div>
 
-            {/* Row 2 */}
             <div className="marquee-row overflow-hidden">
               <div className="marquee-inner animate-marquee-right-2 flex w-max items-center gap-4 sm:gap-6">
                 {[...row2, ...row2].map((channel, i) => (
@@ -1437,7 +1435,6 @@ export const Home = () => {
               </div>
             </div>
 
-            {/* Row 3 */}
             <div className="marquee-row overflow-hidden">
               <div className="marquee-inner animate-marquee-left-3 flex w-max items-center gap-4 sm:gap-6">
                 {[...row3, ...row3].map((channel, i) => (
@@ -1466,7 +1463,7 @@ export const Home = () => {
             </div>
           </div>
         </div>
-      </Section>
+      </Section> */} 
       {/* --- SERVICES SECTION --- */}
       <Section id="services" className="bg-[#F5F5F7]">
         <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-8 sm:gap-12 mb-16 sm:mb-20">          <FadeUp className="flex-1">
