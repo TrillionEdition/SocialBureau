@@ -176,6 +176,7 @@ import {
   CLUES 
 } from "./utils/treasureHunt";
 import TermsOfService from "./components/TermsOfService";
+import Pooja from "./pages/Partnerships/Pooja";
 
 function ConditionalFooter() {
   const location = useLocation();
@@ -728,6 +729,7 @@ function App() {
             <Route path="/partnership/alen-jacob" element={<AlenJacob />} />
             <Route path="/partnership/cheriyan" element={<CheriyanPage />} />
             <Route path="/partnership/sakilan" element={<Sakilan />} />
+            <Route path="/team/pooja" element={<Pooja />} />
             <Route path="/partnership/:slug" element={<DynamicPartnershipPage />} />
             <Route path="/partners/select-template" element={<PartnershipTemplateSelector />} />
             <Route path="/partners/create-portfolio" element={<PartnershipDataForm />} />
