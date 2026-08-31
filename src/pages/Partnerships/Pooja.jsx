@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence, useReducedMotion } from "framer-motion";
+import PortfolioSubscriptionGate from "../../components/PortfolioSubscriptionGate";
 import {
   Scale,
   FileText,
@@ -959,7 +960,7 @@ function FinalCTA() {
    ROOT PAGE
 ============================================================ */
 
-export default function Pooja() {
+function PoojaContent() {
   // Inject keyframes for the ember drift animation and set the
   // page font-family once, without requiring a separate CSS file.
   useEffect(() => {
@@ -996,5 +997,17 @@ export default function Pooja() {
         <FinalCTA />
       </main>
     </div>
+  );
+}
+
+export default function Pooja() {
+  return (
+    <PortfolioSubscriptionGate
+      portfolioSlug="pooja"
+      customerName="Pooja"
+      customerEmail="pooja.sathishkn@gmail.com"
+    >
+      <PoojaContent />
+    </PortfolioSubscriptionGate>
   );
 }
