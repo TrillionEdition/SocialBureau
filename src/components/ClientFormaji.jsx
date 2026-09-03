@@ -1407,7 +1407,7 @@ const ClientFormaji = () => {
                                     <textarea id="mktFocus" value={formData.mktFocus} onChange={handleInputChange} className={`bg-[#111] border rounded px-4 py-2 text-sm focus:outline-none transition-all min-h-[80px] ${(!formData.mktFocus && touchedSteps.includes(currentStep)) ? 'border-red-600/30' : 'border-white/10 focus:border-red-600'}`} placeholder="Tell us which 2–3 services you want to promote most aggressively." />
                                     {!formData.mktFocus && touchedSteps.includes(currentStep) && <span className="text-[9px] text-red-600 font-bold uppercase tracking-tighter mt-1">Required</span>}
                                 </div>
-                                <div className="flex flex-col gap-2">
+                                {/* <div className="flex flex-col gap-2">
                                     <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Key Competitive Advantage</label>
                                     <textarea id="usp" value={formData.usp} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all min-h-[80px]" placeholder="What makes your company/brand different from other education consultancies?" />
                                 </div>
@@ -1420,7 +1420,7 @@ const ClientFormaji = () => {
                                         <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Success Rate / Key Metric</label>
                                         <input id="successRate" value={formData.successRate} onChange={handleInputChange} className="bg-[#111] border border-white/10 rounded px-4 py-2 text-sm focus:outline-none focus:border-red-600 transition-all" placeholder="e.g. 95% visa success, 200+ students abroad" />
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     )}
@@ -1635,7 +1635,7 @@ const ClientFormaji = () => {
                                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                                     {[
                                         'Walk-in / Referral', 'Meta Ads', 'Google Ads', 'Organic Social', 'WhatsApp',
-                                        'Website Forms', 'Educational Fairs', 'Influencer / KOL', 'Email Campaigns', 'YouTube'
+                                        'Website Forms', 'Fairs', 'Influencer / KOL', 'Email Campaigns', 'YouTube'
                                     ].map(item => {
                                         const selected = formData.leadSources.find(s => s.label === item);
                                         return (
