@@ -18,7 +18,9 @@ function formatDate(d) {
 
 export default async function handler(req, res) {
   try {
-    const BACKEND = process.env.API_URL || process.env.VITE_API_URL || 'http://localhost:5000';
+    // Note: vercel.json's VITE_API_URL points at a suspended onrender backend;
+    // the live site actually calls this nip.io backend, so don't fall back to VITE_API_URL.
+    const BACKEND = process.env.API_URL || 'https://13.207.200.198.nip.io/socialbureau';
 
     // Fetch all published blogs live from the backend (no rebuild needed)
     const listUrl = `${BACKEND.replace(/\/$/, '')}/blog?limit=5000&published=true`;
@@ -37,8 +39,9 @@ export default async function handler(req, res) {
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
     for (const post of items) {
-      const slugPart = (post.customUrl && post.customUrl.trim().length) ? post.customUrl.replace(/^\//, '') : post.slug;
-      if (!slugPart) continue;
+      const rawSlug = (post.customUrl && post.customUrl.trim().length) ? post.customUrl.trim().replace(/^\//, '') : post.slug;
+      if (!rawSlug) continue;
+      const slugPart = encodeURI(rawSlug.replace(/\s+/g, '-'));
       const loc = `${SITE}/blogs/${slugPart}`;
       const lastmod = formatDate(post.updatedAt || post.publishedAt || post.createdAt);
 
