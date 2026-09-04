@@ -17,6 +17,10 @@
       "destination": "/api/sitemap-news.xml"
     },
     {
+      "source": "/sitemap-blog.xml",
+      "destination": "/api/sitemap-blog.xml"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "https://13.207.200.198.nip.io/socialbureau/api/$1"
     },
