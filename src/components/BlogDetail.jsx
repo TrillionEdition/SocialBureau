@@ -211,6 +211,39 @@ export default function BlogDetail() {
     refetchOnWindowFocus: false,
   });
 
+  useEffect(() => {
+    if (!slug || !error) return;
+
+    const runRedirectLookup = async () => {
+      try {
+        const redirect = await blogAPI.getBlogRedirect(slug);
+        if (redirect?.data?.targetSlug) {
+          navigate(`/blogs/${redirect.data.targetSlug}`, { replace: true });
+        }
+      } catch (redirectError) {
+        console.warn('No redirect found for legacy blog slug:', slug, redirectError);
+      }
+    };
+
+    runRedirectLookup();
+  }, [slug, error, navigate]);
+
+  const { data: relatedBlogsData } = useQuery({
+    queryKey: ["related-blogs", post?.category, post?.slug],
+    queryFn: async () => {
+      if (!post?.category) return [];
+      const response = await blogAPI.getBlogs({
+        category: post.category,
+        limit: 12,
+        published: true,
+      });
+      return Array.isArray(response?.data) ? response.data : [];
+    },
+    enabled: !!post?.category && !!post?.slug,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
   //FIX #5: Better like handling with proper state sync
   useEffect(() => {
     if (!backendData) return;
@@ -511,6 +544,33 @@ if (error || !post) {
   return <Navigate to="/404" replace />;
 }
 
+  const breadcrumbItems = [
+    { name: 'Home', url: 'https://www.socialbureau.in/' },
+    { name: 'Blog', url: 'https://www.socialbureau.in/blog' },
+    { name: post.title, url: `https://www.socialbureau.in/blogs/${post.slug}` },
+  ];
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbItems.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+
+  const relatedPosts = (Array.isArray(post.childBlogs) ? post.childBlogs : [])
+    .filter((childBlog) => childBlog && childBlog.slug && childBlog.slug !== post.slug)
+    .slice(0, 3);
+
+  const fallbackRelatedPosts = (Array.isArray(relatedBlogsData) ? relatedBlogsData : [])
+    .filter((blog) => blog && blog.slug && blog.slug !== post.slug && !relatedPosts.some((item) => item.slug === blog.slug))
+    .slice(0, Math.max(0, 3 - relatedPosts.length));
+
+  const finalRelatedPosts = [...relatedPosts, ...fallbackRelatedPosts].slice(0, 3);
+
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
       <Suspense fallback={null}>
@@ -523,16 +583,24 @@ if (error || !post) {
           canonicalUrl={`https://www.socialbureau.in/blogs/${post.slug}`}
         />
         <SchemaMarkup data={generateBlogPostingSchema(post)} />
-        <NewsArticleJsonLd post={post} />
-      </Suspense>
-
-      {toast && (
-        <Suspense fallback={null}>
+        <SchemaMarkup data={breadcrumbSchema} />
           <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />
         </Suspense>
-      )}
-
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24">
+        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-gray-500">
+          <ol className="flex flex-wrap items-center gap-2">
+            <li>
+              <Link to="/" className="hover:text-red-600 transition-colors">Home</Link>
+            </li>
+            <li className="text-gray-400">/</li>
+            <li>
+              <Link to="/blog" className="hover:text-red-600 transition-colors">Blog</Link>
+            </li>
+            <li className="text-gray-400">/</li>
+            <li className="text-gray-700 font-medium truncate max-w-[220px]">{post.title}</li>
+          </ol>
+        </nav>
+
         <Link
           to="/blog"
           state={{
@@ -686,12 +754,12 @@ if (error || !post) {
             <div className="sticky top-24">
               <TableOfContents headings={headings} />
 
-              {post.childBlogs && Array.isArray(post.childBlogs) && post.childBlogs.length > 0 && (
+              {finalRelatedPosts.length > 0 && (
                 <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
                   <h3 className="text-xl font-bold text-gray-900 mb-4 border-b border-gray-100 pb-2">Related Articles</h3>
                   <div className="space-y-4">
-                    {post.childBlogs.slice(0, 3).map((childBlog, idx) => (
-                      <Link key={idx} to={`/blogs/${childBlog.slug}`} className="group block">
+                    {finalRelatedPosts.map((childBlog, idx) => (
+                      <Link key={childBlog.slug || idx} to={`/blogs/${childBlog.slug}`} className="group block">
                         <div className="flex gap-4 items-start">
                           <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
                             <img src={childBlog.image} alt={childBlog.title} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />

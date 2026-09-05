@@ -37,6 +37,14 @@ export const blogAPI = {
     return response.data;
   },
 
+  // Get a redirect target for a legacy blog slug
+  getBlogRedirect: async (slug) => {
+    const response = await axios.get(`${BASE_URL}/blog/redirect/${slug}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  },
+
   // Get single blog by slug
   // Endpoint: GET /api/blogs/:slug
   getBlogBySlug: async (slug) => {
