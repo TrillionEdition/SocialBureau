@@ -46,11 +46,11 @@ const perf = channels.map((name, i) => ({
 }));
 
 const activities = [
-  { color: "bg-emerald-500", title: "New user access requested", time: "2 minutes ago" },
-  { color: "bg-[--red]", title: "Video published — Reporter News", time: "12 minutes ago" },
-  { color: "bg-sky-500", title: "Channel settings updated", time: "1 hour ago" },
-  { color: "bg-amber-500", title: "Permission modified", time: "3 hours ago" },
-  { color: "bg-violet-500", title: "Security check completed", time: "5 hours ago" },
+  { color: "bg-emerald-500", title: "Locked", time: "2 minutes ago" },
+  { color: "bg-[--red]", title: "Locked", time: "12 minutes ago" },
+  { color: "bg-sky-500", title: "Locked", time: "1 hour ago" },
+  { color: "bg-amber-500", title: "Locked", time: "3 hours ago" },
+  { color: "bg-violet-500", title: "Locked", time: "5 hours ago" },
 ];
 
 const coreScope = [
@@ -260,11 +260,11 @@ function DashboardMock() {
           <div className="mb-4 grid grid-cols-2 gap-2.5 sm:mb-5 sm:grid-cols-4 sm:gap-3">
             {[
               { icon: Youtube, val: "10", label: "Total Channels", color: RED },
-              { icon: Users, val: "42", label: "Active Users", color: "#3b82f6" },
-              { icon: Clock, val: "7", label: "Pending Requests", color: "#f59e0b" },
+              { icon: Users, val: "0", label: "Active Users", color: "#3b82f6" },
+              { icon: Clock, val: "0", label: "Pending Requests", color: "#f59e0b" },
               {
                 icon: ShieldCheck,
-                val: "100%",
+                val: "0%",
                 label: "2FA Enabled",
                 color: "#10b981",
               },
@@ -380,6 +380,9 @@ function DashboardMock() {
                   </li>
                 ))}
               </ul>
+              <p className="mt-3 text-[10.5px] leading-relaxed text-white/50 sm:text-[10.5px]">
+                All recent activities are locked for security reasons.
+              </p>
             </div>
           </div>
         </div>
