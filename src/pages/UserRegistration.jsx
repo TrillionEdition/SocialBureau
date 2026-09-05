@@ -151,29 +151,29 @@ export default function AuthPage() {
     }
   };
 
-  const handleGoogleLogin = async (idToken) => {
-    setLoading(true); setError("");
-    try {
-      const res  = await fetch(`${BASE_URL}/user/google-login`, {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idToken }), credentials: "include",
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Google login failed");
-      if (data.user) {
-        setUserData(data.user);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        if (data.token) localStorage.setItem("token", data.token);
-      }
-      setSuccess(data.message || "Welcome back");
-      window.dispatchEvent(new Event("authChange"));
-      const redirect = new URLSearchParams(location.search).get("redirect");
-      const from = location.state?.from?.pathname || redirect
-        || (data.user.role === "admin" ? "/admin" : data.user.isEmployee ? "/team/dashboard" : "/");
-      setTimeout(() => navigate(from, { replace: true }), 1500);
-    } catch (e) { setError(e.message); }
-    finally     { setLoading(false); }
-  };
+  // const handleGoogleLogin = async (idToken) => {
+  //   setLoading(true); setError("");
+  //   try {
+  //     const res  = await fetch(`${BASE_URL}/user/google-login`, {
+  //       method: "POST", headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ idToken }), credentials: "include",
+  //     });
+  //     const data = await res.json();
+  //     if (!res.ok) throw new Error(data.message || "Google login failed");
+  //     if (data.user) {
+  //       setUserData(data.user);
+  //       localStorage.setItem("user", JSON.stringify(data.user));
+  //       if (data.token) localStorage.setItem("token", data.token);
+  //     }
+  //     setSuccess(data.message || "Welcome back");
+  //     window.dispatchEvent(new Event("authChange"));
+  //     const redirect = new URLSearchParams(location.search).get("redirect");
+  //     const from = location.state?.from?.pathname || redirect
+  //       || (data.user.role === "admin" ? "/admin" : data.user.isEmployee ? "/team/dashboard" : "/");
+  //     setTimeout(() => navigate(from, { replace: true }), 1500);
+  //   } catch (e) { setError(e.message); }
+  //   finally     { setLoading(false); }
+  // };
 
   const toggleMode = () => {
     setIsLogin((v) => !v); setStep(0);
@@ -249,39 +249,39 @@ export default function AuthPage() {
     };
   }, [step, isLogin]);
 
-  useEffect(() => {
-    if (step !== 0) return;
-    const init = () => {
-      if (!window.google) return;
-      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-      window.google.accounts.id.initialize({
-        client_id: clientId || "YOUR_CLIENT_ID.apps.googleusercontent.com",
-        callback: (r) => { if (r.credential) handleGoogleLogin(r.credential); },
-      });
-      const btn = document.getElementById("google-signin-button");
-      if (btn) {
-        window.google.accounts.id.renderButton(btn, {
-          theme: "outline", size: "large",
-          text: isLogin ? "signin_with" : "signup_with",
-          shape: "pill", width: "300",
-        });
-      }
-    };
-    const existing = document.getElementById("google-gsi-script");
-    const timer = setTimeout(init, 50);
-    if (!existing) {
-      const s = document.createElement("script");
-      s.id = "google-gsi-script"; s.src = "https://accounts.google.com/gsi/client";
-      s.async = s.defer = true; s.onload = init;
-      document.body.appendChild(s);
-    } else {
-      window.google ? init() : existing.addEventListener("load", init);
-    }
-    return () => {
-      clearTimeout(timer);
-      document.getElementById("google-gsi-script")?.removeEventListener("load", init);
-    };
-  }, [step, isLogin]);
+  // useEffect(() => {
+  //   if (step !== 0) return;
+  //   const init = () => {
+  //     if (!window.google) return;
+  //     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  //     window.google.accounts.id.initialize({
+  //       client_id: clientId || "YOUR_CLIENT_ID.apps.googleusercontent.com",
+  //       callback: (r) => { if (r.credential) handleGoogleLogin(r.credential); },
+  //     });
+  //     const btn = document.getElementById("google-signin-button");
+  //     if (btn) {
+  //       window.google.accounts.id.renderButton(btn, {
+  //         theme: "outline", size: "large",
+  //         text: isLogin ? "signin_with" : "signup_with",
+  //         shape: "pill", width: "300",
+  //       });
+  //     }
+  //   };
+  //   const existing = document.getElementById("google-gsi-script");
+  //   const timer = setTimeout(init, 50);
+  //   if (!existing) {
+  //     const s = document.createElement("script");
+  //     s.id = "google-gsi-script"; s.src = "https://accounts.google.com/gsi/client";
+  //     s.async = s.defer = true; s.onload = init;
+  //     document.body.appendChild(s);
+  //   } else {
+  //     window.google ? init() : existing.addEventListener("load", init);
+  //   }
+  //   return () => {
+  //     clearTimeout(timer);
+  //     document.getElementById("google-gsi-script")?.removeEventListener("load", init);
+  //   };
+  // }, [step, isLogin]);
 
   return (
     <div className="min-h-screen w-full bg-black flex overflow-hidden">
@@ -404,7 +404,7 @@ export default function AuthPage() {
                   )
                 )}
 
-                {step === 0 && (
+                {/* {step === 0 && (
                   <div className="flex flex-col items-center gap-4">
                     <div className="flex items-center gap-3 w-full">
                       <div className="flex-1 h-px bg-white/8" />
@@ -413,7 +413,7 @@ export default function AuthPage() {
                     </div>
                     <div id="google-signin-button" className="w-full flex justify-center" />
                   </div>
-                )}
+                )} */}
 
                 <AnimatePresence>
                   {error && (
