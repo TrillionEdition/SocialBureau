@@ -139,6 +139,7 @@ const sidebarItems = [
   "Settings",
 ];
 
+
 /* ---------- small building blocks ---------- */
 
 function StatBlock({ value, label }) {
@@ -186,21 +187,19 @@ function Hero() {
             <span style={{ color: RED }}>YouTube Infrastructure.</span>
           </h1>
           <p className="mt-5 max-w-md text-sm leading-relaxed text-white/60 sm:mt-6 sm:text-[15px]">
-            We design, secure and manage Reporter TV&rsquo;s YouTube ecosystem
+            We design, secure and manage YouTube ecosystem
             with centralized ownership, verified identity, controlled access
             and scalable governance.
           </p>
 
           <div className="mt-7 flex flex-col gap-3 xs:flex-row xs:flex-wrap xs:items-center sm:mt-8 sm:gap-3">
-            <button
-              className="flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90 xs:w-auto"
-              style={{ backgroundColor: RED }}
-            >
+            <a
+  href="#core-scope"
+  className="flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90 xs:w-auto"
+  style={{ backgroundColor: RED }}
+>
               Explore the Architecture <ArrowRight className="h-4 w-4 shrink-0" />
-            </button>
-            <button className="flex w-full items-center justify-center gap-2 rounded-full border border-white/15 px-5 py-3 text-sm text-white/80 transition-colors hover:border-white/30 hover:text-white xs:w-auto">
-              <Download className="h-4 w-4 shrink-0" /> Download Overview
-            </button>
+            </a>
           </div>
 
           <div className="mt-9 grid grid-cols-3 gap-3 border-t border-white/10 pt-6 sm:mt-10 sm:max-w-md sm:gap-6 sm:pt-8">
@@ -234,15 +233,25 @@ function DashboardMock() {
           </div>
           <ul className="space-y-1 text-[13px]">
             {sidebarItems.map((item, i) => (
-              <li
+            <li
                 key={item}
-                className={`rounded-md px-2.5 py-1.5 ${
-                  i === 0 ? "text-white" : "text-white/45 hover:text-white/70"
+                className={`group relative rounded-md px-2.5 py-1.5 ${
+                i === 0
+                    ? "text-white"
+                    : "cursor-not-allowed text-white/45 hover:text-white/70"
                 }`}
                 style={i === 0 ? { backgroundColor: `${RED}26` } : {}}
-              >
+            >
                 {item}
-              </li>
+
+                {i !== 0 && (
+                <span
+                    className="pointer-events-none absolute left-full top-1/2 z-50 ml-2 -translate-y-1/2 whitespace-nowrap rounded-md bg-black px-2 py-1 text-[10px] font-medium text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100"
+                >
+                    Locked
+                </span>
+                )}
+            </li>
             ))}
           </ul>
         </aside>
@@ -416,9 +425,9 @@ function BigPicture() {
               YouTube channels under one unified architecture — without
               compromising editorial freedom.
             </p>
-            <button className="inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-white/15 px-5 py-2.5 text-sm text-white/80 transition-colors hover:border-white/30 hover:text-white sm:w-auto">
+            <a className="inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-white/15 px-5 py-2.5 text-sm text-white/80 transition-colors hover:border-white/30 hover:text-white sm:w-auto" href="#core-scope">
               See the Complete Architecture <ArrowRight className="h-3.5 w-3.5 shrink-0" />
-            </button>
+            </a>
           </div>
         </div>
 
@@ -432,7 +441,7 @@ function BigPicture() {
 
 function CoreScope() {
   return (
-    <section className="border-t border-white/5">
+    <section className="border-t border-white/5" id="core-scope">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
         <div className="mb-3 flex items-center gap-2 text-[11px] font-medium text-white/40 sm:text-xs">
           <span className="h-px w-6 shrink-0" style={{ backgroundColor: RED }} />
@@ -521,28 +530,6 @@ function FutureSection() {
               </li>
             ))}
           </ul>
-        </div>
-
-        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
-          <div className="flex h-40 items-center justify-center border-b border-white/10 bg-gradient-to-br from-white/[0.06] to-transparent sm:h-48">
-            <button
-              className="flex h-12 w-12 items-center justify-center rounded-full text-white sm:h-14 sm:w-14"
-              style={{ backgroundColor: RED }}
-            >
-              <Play className="h-4 w-4 translate-x-0.5 fill-white sm:h-5 sm:w-5" />
-            </button>
-          </div>
-          <div className="p-4">
-            <div className="flex flex-col gap-1 text-sm text-white xs:flex-row xs:items-center xs:justify-between xs:gap-2">
-              <span className="font-medium">
-                Building the Future of Media on YouTube
-              </span>
-              <span className="text-white/40">02:35</span>
-            </div>
-            <button className="mt-2 flex items-center gap-1.5 text-xs text-white/50 hover:text-white/70">
-              <Play className="h-3 w-3 shrink-0 fill-current" /> Watch Our Approach
-            </button>
-          </div>
         </div>
 
         <div className="flex flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
