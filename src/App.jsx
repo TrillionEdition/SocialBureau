@@ -177,6 +177,7 @@ import {
 } from "./utils/treasureHunt";
 import TermsOfService from "./components/TermsOfService";
 import Pooja from "./pages/Partnerships/Pooja";
+import ReporterAssetArchitecture from "./pages/static_pages/ReporterAssetArchitecture";
 
 function ConditionalFooter() {
   const location = useLocation();
@@ -687,6 +688,7 @@ function App() {
                 <ClientPayments />
               </ProtectedRoute>
             } />
+            <Route path="/youtube-architecture" element={<ReporterAssetArchitecture />} />
             <Route path="/client-portal" element={<CDashboard />} />
             <Route path="/client-login" element={<CLogin />} />
             <Route path="/admin/clickup-clients" element={<AdminRoute><AdminClickupClients /></AdminRoute>} />
