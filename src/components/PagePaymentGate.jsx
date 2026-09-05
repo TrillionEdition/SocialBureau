@@ -77,11 +77,16 @@ export default function PagePaymentGate({ pageSlug, amount, title, description, 
         theme: { color: "#E31E24" },
         handler: async (response) => {
           try {
+            const token = localStorage.getItem("token");
+
             const verifyRes = await fetch(`${BASE_URL}/payment/verify-page`, {
-              method: "POST",
-              credentials: "include",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ ...response, pageSlug }),
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+            body: JSON.stringify({ ...response, pageSlug }),
             });
             const verifyData = await verifyRes.json().catch(() => ({}));
             if (verifyRes.ok && verifyData.success) {
