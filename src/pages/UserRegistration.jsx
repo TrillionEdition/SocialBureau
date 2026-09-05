@@ -22,7 +22,7 @@ const SIGNUP_FIELDS = [
   { name: "confirmPassword", label: "Confirm password", placeholder: "••••••••",          icon: Lock,  type: "password" },
 ];
 
-const EMPTY_SIGNUP = { name: "", email: "", phone: "", password: "", confirmPassword: "", emailOtp: "" };
+const EMPTY_SIGNUP = { name: "", email: "", phone: "", password: "", confirmPassword: "" };
 const EMPTY_LOGIN  = { email: "", password: "" };
 
 function ProgressDots({ total, current }) {
@@ -63,11 +63,7 @@ export default function AuthPage() {
   const isTransitioning = useRef(false);
   const turnstileId     = useRef(null);
 
-  const gmailOtpField = signupForm.email.toLowerCase().includes("gmail.com")
-    ? [{ name: "emailOtp", label: "Email verification code", placeholder: "6-digit code", icon: Mail, type: "text" }]
-    : [];
-
-  const fields      = isLogin ? LOGIN_FIELDS : [...SIGNUP_FIELDS, ...gmailOtpField];
+  const fields      = isLogin ? LOGIN_FIELDS : SIGNUP_FIELDS;
   const currentF    = fields[step];
   const isLastStep  = step === fields.length - 1;
   const isPassField = currentF.name === "password" || currentF.name === "confirmPassword";
@@ -101,33 +97,7 @@ export default function AuthPage() {
 
     isTransitioning.current = true;
     try {
-      if (!isLogin && step === 4 && signupForm.email.toLowerCase().includes("gmail.com")) {
-        setLoading(true);
-        try {
-          const res  = await fetch(`${BASE_URL}/user/send-signup-email-otp`, {
-            method: "POST", headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: signupForm.email }),
-          });
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.message || "Failed to send OTP");
-          setDirection(1); setStep(5);
-        } catch (e) { setError(e.message); }
-        finally     { setLoading(false); }
-        return;
-      }
-      if (!isLogin && step === 5) {
-        setLoading(true);
-        try {
-          const res  = await fetch(`${BASE_URL}/user/verify-signup-email-otp`, {
-            method: "POST", headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: signupForm.email, otp: signupForm.emailOtp }),
-          });
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.message || "Invalid OTP");
-          await handleSignup();
-        } catch (e) { setError(e.message); setLoading(false); }
-        return;
-      }
+      // Proceed through steps or submit normally
       if (!isLastStep) {
         setDirection(1); setStep((s) => s + 1); setError("");
       } else {

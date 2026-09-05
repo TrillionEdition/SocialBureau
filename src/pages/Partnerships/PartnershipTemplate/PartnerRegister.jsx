@@ -26,11 +26,7 @@ const PartnerRegister = () => {
   const [turnstileAvailable, setTurnstileAvailable] = useState(true);
   const turnstileWidgetId = useRef(null);
 
-  // OTP Verification States
-  const [emailOtp, setEmailOtp] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpVerified, setOtpVerified] = useState(false);
-  const [otpLoading, setOtpLoading] = useState(false);
+  // OTP verification removed — email verification not required
 
   const handleGoogleLogin = async (idToken) => {
     setLoading(true);
@@ -238,65 +234,7 @@ const PartnerRegister = () => {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setError("");
-    if (e.target.name === "email") {
-      setOtpSent(false);
-      setOtpVerified(false);
-      setEmailOtp("");
-    }
-  };
-
-  const handleSendOtp = async () => {
-    if (!form.email || !/\S+@\S+\.\S+/.test(form.email)) {
-      setError("Please enter a valid email address first");
-      return;
-    }
-    setOtpLoading(true);
-    setError("");
-    setSuccess("");
-    try {
-      const response = await fetch(`${BASE_URL}/user/send-signup-email-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: form.email }),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Failed to send verification OTP");
-
-      setOtpSent(true);
-      setSuccess("Verification code sent to " + form.email);
-      setTimeout(() => setSuccess(""), 4000);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setOtpLoading(false);
-    }
-  };
-
-  const handleVerifyOtp = async () => {
-    if (!emailOtp || emailOtp.length !== 6) {
-      setError("Please enter a 6-digit code");
-      return;
-    }
-    setOtpLoading(true);
-    setError("");
-    setSuccess("");
-    try {
-      const response = await fetch(`${BASE_URL}/user/verify-signup-email-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: form.email, otp: emailOtp }),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Invalid verification code");
-
-      setOtpVerified(true);
-      setSuccess("Email verification successful!");
-      setTimeout(() => setSuccess(""), 4000);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setOtpLoading(false);
-    }
+    // no-op
   };
 
   const validate = () => {
@@ -308,10 +246,7 @@ const PartnerRegister = () => {
       setError("Password must be at least 6 characters");
       return false;
     }
-    if (!otpVerified) {
-      setError("Please verify your email address with the OTP code first");
-      return false;
-    }
+    // Email verification not required
     const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
     if (siteKey && turnstileAvailable && !captchaToken) {
       setError("Please complete the captcha verification");
@@ -420,62 +355,7 @@ const PartnerRegister = () => {
                 />
               </div>
 
-              {/* Email OTP Verification */}
-              {form.email && /\S+@\S+\.\S+/.test(form.email) && (
-                <div className="mt-2 p-3 bg-zinc-900 border border-zinc-800 rounded-xl space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Email Verification</span>
-                    {otpVerified ? (
-                      <span className="text-[10px] font-black text-lime-400 uppercase tracking-widest flex items-center gap-1">
-                        <CheckCircle2 size={12} /> Verified
-                      </span>
-                    ) : (
-                      <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest">
-                        Required
-                      </span>
-                    )}
-                  </div>
-                  
-                  {!otpVerified && (
-                    <div className="space-y-2">
-                      <div className="flex gap-2">
-                        <button
-                          type="button"
-                          disabled={otpLoading || loading}
-                          onClick={handleSendOtp}
-                          className="px-4 py-2 bg-lime-400/10 hover:bg-lime-400/20 text-lime-400 font-bold text-xs rounded-lg transition-all border border-lime-400/20 active:scale-95 disabled:opacity-50 disabled:scale-100"
-                        >
-                          {otpLoading ? "Sending..." : otpSent ? "Resend Verification Code" : "Send Verification Code"}
-                        </button>
-                      </div>
-                      
-                      {otpSent && (
-                        <div className="flex gap-2">
-                          <input
-                            type="text"
-                            placeholder="6-digit OTP code"
-                            maxLength={6}
-                            value={emailOtp}
-                            onChange={(e) => {
-                              setEmailOtp(e.target.value);
-                              setError("");
-                            }}
-                            className="bg-black border border-zinc-800 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-lime-400/50 w-32 tracking-widest text-center font-bold"
-                          />
-                          <button
-                            type="button"
-                            disabled={otpLoading || emailOtp.length !== 6}
-                            onClick={handleVerifyOtp}
-                            className="flex-grow bg-lime-400 hover:bg-white text-black font-black text-xs rounded-lg transition-all active:scale-95 disabled:opacity-50 disabled:scale-100 uppercase tracking-wider"
-                          >
-                            Verify Code
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
+              {/* Email verification removed */}
             </div>
 
             <div>
