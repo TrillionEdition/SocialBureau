@@ -1,4 +1,5 @@
 import React from "react";
+import PagePaymentGate from "../../components/PagePaymentGate";
 import {
   Play,
   ArrowRight,
@@ -590,7 +591,7 @@ function FinalCTA() {
 
 /* ---------- page ---------- */
 
-export default function ReporterAssetArchitecture() {
+function ReporterAssetArchitectureContent() {
   return (
     <div
       className="min-h-screen w-full overflow-x-hidden bg-[#08080c] font-sans antialiased"
@@ -602,5 +603,18 @@ export default function ReporterAssetArchitecture() {
       <FutureSection />
       <FinalCTA />
     </div>
+  );
+}
+
+export default function ReporterAssetArchitecture() {
+  return (
+    <PagePaymentGate
+      pageSlug="youtube-architecture"
+      amount={299}
+      title="Unlock YouTube Asset Architecture"
+      description="Log in and pay ₹299 once to unlock permanent access to this page."
+    >
+      <ReporterAssetArchitectureContent />
+    </PagePaymentGate>
   );
 }
