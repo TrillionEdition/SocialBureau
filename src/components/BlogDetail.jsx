@@ -584,7 +584,9 @@ if (error || !post) {
         />
         <SchemaMarkup data={generateBlogPostingSchema(post)} />
         <SchemaMarkup data={breadcrumbSchema} />
+        {toast && (
           <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />
+        )}
         </Suspense>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24">
         <nav aria-label="Breadcrumb" className="mb-6 text-sm text-gray-500">
