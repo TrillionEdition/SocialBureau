@@ -66,7 +66,7 @@ export const TeamSelector = () => {
   const finalMembers = [...orderedMembers, ...otherMembers].filter(m => {
     const email = m.email || (m.user && m.user.email);
     const id = m.id || m._id;
-    return email !== "ui.socialbureau@gmail.com" && email !== "pmo.socialbureau@gmail.com" && id !== "emil" && id !== "athira";
+    return email !== "ui.socialbureau@gmail.com" && id !== "emil" && id !== "athira";
   });
 
   // Auto-rotation logic for mobile
