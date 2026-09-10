@@ -201,7 +201,14 @@ export default function PartnershipChatbot({ partnerName, partnerEmail, isOpen: 
             partnerName: currentPartner.name,
           })
         })
-        .then(res => res.json())
+        .then(async (res) => {
+          const ct = res.headers.get("content-type") || "";
+          if (ct.includes("application/json")) {
+            return res.json();
+          }
+          const text = await res.text();
+          throw new Error(`Non-JSON response from server: ${text.slice(0,200)}`);
+        })
         .then(data => {
           if (data.alreadyScheduled) {
             setMessages((prev) => [

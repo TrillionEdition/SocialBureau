@@ -59,9 +59,27 @@ export default function BookSessionModal({ onClose, partnerName, partnerEmail })
         })
       });
 
-      const data = await response.json();
+      const contentType = response.headers.get("content-type") || "";
+      let data = null;
 
-      if (data.alreadyScheduled) {
+      if (contentType.includes("application/json")) {
+        try {
+          data = await response.json();
+        } catch (parseErr) {
+          console.error("Failed to parse JSON response:", parseErr);
+          setError("Server returned an unexpected response. Please try again later.");
+          setLoading(false);
+          return;
+        }
+      } else {
+        const text = await response.text();
+        console.error("Non-JSON response from /partners/schedule-meeting:", text);
+        setError("Server error. Please try again later.");
+        setLoading(false);
+        return;
+      }
+
+      if (data && data.alreadyScheduled) {
         setSuccessData({
           alreadyScheduled: true,
           userDate: data.data.userDate,

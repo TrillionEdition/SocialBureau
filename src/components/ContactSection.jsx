@@ -126,9 +126,26 @@ export default function ContactSection() {
         })
       });
 
-      const data = await response.json();
+      const contentType = response.headers.get("content-type") || "";
+      let data = null;
 
-      if (data.alreadyScheduled) {
+      if (contentType.includes("application/json")) {
+        try {
+          data = await response.json();
+        } catch (parseErr) {
+          console.error("Failed to parse JSON response:", parseErr);
+          setMeetingError("Server returned an unexpected response. Please try again later.");
+          return;
+        }
+      } else {
+        // Defensive: server returned HTML or text (caused earlier 'Unexpected token <' error)
+        const text = await response.text();
+        console.error("Non-JSON response from /partners/schedule-meeting:", text);
+        setMeetingError("Server error. Please try again later.");
+        return;
+      }
+
+      if (data && data.alreadyScheduled) {
         setMeetingSuccess({
           alreadyScheduled: true,
           userDate: data.data.userDate,
@@ -147,7 +164,7 @@ export default function ContactSection() {
       }
     } catch (err) {
       console.error("Error booking session:", err);
-      setMeetingError("Network error. Please check your connection and try again.");
+      setMeetingError(`Network error. Please check your connection and try again. ${err.message}`);
     } finally {
       setMeetingLoading(false);
     }
@@ -255,14 +272,21 @@ export default function ContactSection() {
                 {/* Notification Banner / Direct Action */}
                 {meetingSuccess.gmeetLink ? (
                   <div className="max-w-md mx-auto mb-6 flex flex-col gap-2">
-                    <a
-                      href={meetingSuccess.gmeetLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-600/10 no-underline cursor-pointer"
-                    >
-                      <Sparkles className="w-4 h-4 animate-pulse text-white" /> Join Session Now
-                    </a>
+                    <button
+  type="button"
+  onClick={async () => {
+    try {
+      await navigator.clipboard.writeText(meetingSuccess.gmeetLink);
+      alert("Google Meet link copied. Please save it somewhere safe.");
+    } catch (err) {
+      console.error("Failed to copy link:", err);
+    }
+  }}
+  className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-600/10 cursor-pointer"
+>
+  <Sparkles className="w-4 h-4 animate-pulse text-white" />
+  Copy & Save Link
+</button>
                     <p className="text-[10px] text-gray-400 uppercase tracking-widest">
                       You can join the room early or at the scheduled time!
                     </p>
