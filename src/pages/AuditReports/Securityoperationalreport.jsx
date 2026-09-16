@@ -32,7 +32,7 @@ const teluguIssues = [
     text: (
       <>
         BIG TV (ID: 108765325249473 | Instagram ID: 17841460058016114) remains
-        restricted in India. Existing escalation{" "}
+        restricted in India. Email escalation returned unresolved ticket{" "}
         <span className="text-white font-medium">#4570535869896631</span>{" "}
         remains unresolved.
       </>
@@ -44,8 +44,7 @@ const teluguIssues = [
     title: "Unlinked Facebook Page",
     text: (
       <>
-        BIGTV Live (ID: 439181849518005) has ~66K followers and operates
-        outside the Business Portfolio without a connected Instagram account.
+        BIGTV Live (ID: 439181849518005) operates outside the Business Portfolio with 66K followers and no connected Instagram account.
       </>
     ),
   },
@@ -55,8 +54,7 @@ const teluguIssues = [
     title: "Secondary Facebook Page",
     text: (
       <>
-        BIG TV LIVE (ID: 105800395771634) is inside the Business Portfolio but
-        lacks a connected Instagram account.
+        BIG TV LIVE (ID: 105800395771634) is inside the BigTv Telugu Asset Group with 12K followers but lacks a connected Instagram account.
       </>
     ),
   },
@@ -64,13 +62,13 @@ const teluguIssues = [
     icon: Instagram,
     iconColor: "text-pink-500",
     title: "Instagram Access",
-    text: "BIG TV LIVE, Srikakulam, Kurnool and Maya require active Instagram access.",
+    text: "BIG TV LIVE, BIG TV Srikakulam, BIG TV Kurnool and BIG TV Maya lack active cross-platform Instagram login access.",
   },
   {
     icon: Youtube,
     iconColor: "text-red-500",
     title: "YouTube Publishing",
-    text: "Long-form publishing is inactive, affecting watch-time and monetization opportunities.",
+    text: "Inactive long-form YouTube publishing is affecting watch-time consistency and ad-revenue opportunities.",
   },
 ];
 
@@ -79,37 +77,37 @@ const malayalamIssues = [
     icon: Youtube,
     iconColor: "text-red-500",
     title: "YouTube ID Verification",
-    text: "Two verification attempts have been unsuccessful. A 30-day waiting period is required before the next attempt using valid organization documents.",
+    text: "Two ID verification attempts have been unsuccessful. Verification is required for continued access to relevant YouTube features.",
   },
   {
     icon: Youtube,
     iconColor: "text-red-500",
     title: "YouTube Upload Limit",
-    text: "A large number of videos were previously deleted, changing the channel's historical content and performance history. This may be contributing to the current upload-limit issue, subject to confirmation by YouTube.",
+    text: "A large number of videos were previously deleted from the BIG TV Malayalam channel, changing its historical content and performance history. The changes in channel history may be contributing to the current upload-limit issue, although the exact cause requires confirmation from YouTube.",
   },
   {
     icon: Youtube,
     iconColor: "text-red-500",
     title: "Backup YouTube Channel",
-    text: "An official backup channel needs to be created and verified for business continuity.",
+    text: "No official backup channel currently exists. A separate verified channel is required for business continuity and protection against account, copyright or channel-access issues.",
   },
   {
     icon: null,
     dual: [Facebook, Instagram],
     title: "Cliff House Meta Setup",
-    text: "Facebook and Instagram setup is pending.",
+    text: "The Cliff House Facebook Page and Instagram account have not been finalized or claimed under the BIG TV Malayalam asset group.",
   },
   {
     icon: Globe,
     iconColor: "text-slate-300",
     title: "Website Publishing",
-    text: "BIG TV Malayalam article publishing has stopped.",
+    text: "Article publishing on the BIG TV Malayalam website has stopped, affecting web traffic and search visibility.",
   },
   {
     icon: Linkedin,
     iconColor: "text-blue-400",
     title: "LinkedIn Newsletter",
-    text: "Newsletter publishing is currently inactive.",
+    text: "LinkedIn Newsletter publishing is inactive, limiting professional reach.",
   },
 ];
 
@@ -121,8 +119,8 @@ const phases = [
     num: "01",
     title: "Credential Centralization & Recovery",
     items: [
-      "Update eligible 2FA and recovery information across Google Workspace, Meta, YouTube and LinkedIn to +91 91333 18779.",
-      "Secure credentials on authorized company-controlled devices.",
+      "Update all 2FA recovery numbers and security contacts across Google Workspace, Meta, YouTube and LinkedIn to Pravasa Media’s dedicated management number: +91 91333 18779.",
+      "Store credentials securely on the dedicated company laptop and phone provided for media management.",
     ],
   },
   {
@@ -130,10 +128,10 @@ const phases = [
     phase: "PHASE 2",
     tag: "TRANSFER CONTROL",
     num: "02",
-    title: "Portfolio Admin Transfer",
+    title: "Admin Transfer to Shilpa Profile",
     items: [
-      "Add Shilpa with appropriate Full Control/Admin access.",
-      "Transfer primary administrative control of Business Portfolio 758420025212666.",
+      "Create and add Shilpa’s profile with Full Control / Admin Access under Meta Business Settings > Users > People.",
+      "Transfer primary admin control of Business Portfolio 758420025212666 to Shilpa’s profile.",
     ],
   },
   {
@@ -141,11 +139,11 @@ const phases = [
     phase: "PHASE 3",
     tag: "RESTRUCTURE",
     num: "03",
-    title: "BIG TV Telugu Restructuring",
+    title: "BIG TV Telugu Restructuring & Escalation",
     items: [
-      "Verify and add Page 439181849518005 to the Business Portfolio where permitted.",
-      "Connect appropriate Instagram accounts to Pages 439181849518005 and 105800395771634.",
-      "Continue Meta escalation using #4570535869896631 and evaluate applicable GAC/legal escalation options.",
+      "Add Page 439181849518005 to Business Portfolio 758420025212666 and make it the backup posting channel, where permitted.",
+      "Link dedicated Instagram accounts to Pages 439181849518005 and 105800395771634.",
+      "Continue escalation using ticket #4570535869896631 and submit an appeal through the applicable Government of India Grievance Appellate Committee (GAC) process. Evaluate issuance of a legal notice to Meta Platforms India Pvt. Ltd.",
     ],
   },
   {
@@ -155,11 +153,9 @@ const phases = [
     num: "04",
     title: "BIG TV Malayalam Setup & Verification",
     items: [
-      "YouTube ID verification with valid organization documents.",
-      "Escalate the YouTube upload-limit issue to YouTube with the relevant channel history.",
-      "Create and verify the official backup YouTube channel with proper 2FA and authorized access.",
-      "Complete Cliff House Facebook/Instagram setup.",
-      "Resume website article publishing and LinkedIn Newsletter activity.",
+      "Create and verify an official BIG TV Malayalam backup YouTube channel with proper organization ownership, 2FA and authorized access.",
+      "Finalize and create/claim the Cliff House Facebook Page and Instagram account under the BIG TV Malayalam asset group.",
+      "Resume daily website article publishing and weekly LinkedIn Newsletter editions.",
     ],
   },
   {
@@ -167,12 +163,11 @@ const phases = [
     phase: "PHASE 5",
     tag: "SUSTAIN & GROW",
     num: "05",
-    title: "Brand Protection & Content Recovery",
+    title: "Content Distribution & Brand Protection",
     items: [
-      "Evaluate eligible Meta Brand Rights Protection and Rights Manager tools.",
-      "Resume consistent long-form YouTube publishing.",
-      "Monitor account security, copyright, platform restrictions, website traffic, social performance and digital revenue.",
-    ],
+      "Apply eligible registered trademarks to Meta Brand Rights Protection and Meta Rights Manager for protection against fake/unauthorized accounts and content.",
+      "Resume daily long-form YouTube publishing across both Telugu channel.",
+      ],
   },
 ];
 
