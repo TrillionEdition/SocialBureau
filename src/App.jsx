@@ -179,6 +179,7 @@ import TermsOfService from "./components/TermsOfService";
 import Pooja from "./pages/Partnerships/Pooja";
 import ReporterAssetArchitecture from "./pages/static_pages/ReporterAssetArchitecture";
 import Securityoperationalreport from "./pages/AuditReports/Securityoperationalreport";
+import AshasharathReport from "./pages/AuditReports/AshasharatReport";
 
 function ConditionalFooter() {
   const location = useLocation();
@@ -715,6 +716,7 @@ function App() {
             />
             <Route path="/cm-dashboard" element={<IntakeDashboard />} />
             <Route path="/security-operational-report" element={<Securityoperationalreport />} />
+            <Route path="/ashasharath-report" element={<AshasharathReport />} />
             <Route path="/analytics" element={<AnalyticsWidget />} />
             <Route
               path="/achievements-form" element={
