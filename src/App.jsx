@@ -84,6 +84,10 @@ const AdminTeamDashboard = lazy(() => import("./pages/AdminTeamDashboard"));
 const AllApplications = lazy(() => import("./pages/AllApplications"));
 const AdminPostersDashboard = lazy(() => import("./pages/AdminPostersDashboard"));
 const AdminReelsDashboard = lazy(() => import("./pages/AdminReelsDashboard"));
+const ResumeMarketplacePage = lazy(() => import("./pages/ResumeMarketplace/ResumeMarketplacePage"));
+const ResumeDetailPage = lazy(() => import("./pages/ResumeMarketplace/ResumeDetailPage"));
+const MyResumePurchasesPage = lazy(() => import("./pages/ResumeMarketplace/MyPurchasesPage"));
+const ResumeMarketplaceAdmin = lazy(() => import("./pages/admin/ResumeMarketplaceAdmin"));
 const ResetPassword = lazy(() =>
 
   import("./pages/ForgetPassword").then((module) => ({
@@ -209,6 +213,7 @@ function ConditionalFooter() {
     "/chocochi-spin",
     "/admin/suntips-claims",
     "/admin/posters",
+    "/admin/resume-marketplace",
     "/treasure-hunt",
     "/leaderboard",
     "/chocochi",
@@ -252,6 +257,7 @@ function ConditionalNavbar() {
     "/chocochi-spin",
     "/admin/suntips-claims",
     "/admin/posters",
+    "/admin/resume-marketplace",
     "/treasure-hunt",
     "/chocochi",
     "/chocochi-form",
@@ -801,6 +807,40 @@ function App() {
               element={
                 <AdminRoute>
                   <AuditUploadReport />
+                </AdminRoute>
+              }
+            />
+
+            {/* ── Resume Marketplace ─────────────────────── */}
+            <Route
+              path="/resume-marketplace"
+              element={
+                <ProtectedRoute>
+                  <ResumeMarketplacePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/resume-marketplace/my-purchases"
+              element={
+                <ProtectedRoute>
+                  <MyResumePurchasesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/resume-marketplace/:id"
+              element={
+                <ProtectedRoute>
+                  <ResumeDetailPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/resume-marketplace"
+              element={
+                <AdminRoute>
+                  <ResumeMarketplaceAdmin />
                 </AdminRoute>
               }
             />

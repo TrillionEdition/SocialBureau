@@ -23,6 +23,7 @@ const AdminPanel = () => {
         { title: "Posters", desc: "Manage Special Days Posters", link: "/admin/posters" },
         { title: "Reels", desc: "Manage Instagram Reels on the homepage", link: "/admin/reels" },
         { title: "Audit Reports", desc: "Manage client audit reports and releases", link: "/admin/audit-reports" },
+        { title: "Resume Marketplace", desc: "Upload, publish and manage candidate resumes for sale", link: "/admin/resume-marketplace" },
         { title: "Predictions", desc: "View tournament prediction forecasts ledger", link: "/fifa-predictions" },
     ];
 
