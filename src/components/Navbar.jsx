@@ -4,7 +4,6 @@ import { Menu, X, ChevronRight, Trophy, User, FileText, BarChart3 } from "lucide
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import Logout from "./Logout";
-import { BASE_URL } from "@/utils/urls";
 
 const useAuth = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -63,28 +62,8 @@ export default function Navbar() {
   const [lastScrollY, setLastScrollY] = useState(0); 
   const isTeamPage = location.pathname.startsWith('/team');
 
-  const [homeLink, setHomeLink] = useState("/");
-  useEffect(() => {
-    const checkLotteryRedirect = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}/lottery/settings`);
-        const data = await response.json();
-        if (data && data.isActive && data.showLotteryOnHomeStart && data.showLotteryOnHomeEnd) {
-          const now = new Date();
-          const start = new Date(data.showLotteryOnHomeStart);
-          const end = new Date(data.showLotteryOnHomeEnd);
-          if (now >= start && now <= end) {
-            setHomeLink("/home");
-          }
-        }
-      } catch (err) {
-        console.error("Failed to fetch lottery settings for Navbar:", err);
-      }
-    };
-    checkLotteryRedirect();
-  }, []);
   const navItems = [
-    { label: "Home", href: homeLink },
+    { label: "Home", href: "/" },
     {
   label: "Solutions",
   href: "/solutions",
@@ -427,7 +406,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center justify-center flex-1 min-w-0">
             <a
               style={{ fontFamily: "MyFont, sans-serif" }}
-              href={homeLink}
+              href="/"
               className="text-white text-[17px] font-bold tracking-tight shrink-0 mr-10"
             >
               <img src="/assets/logo.webp" className="h-7 w-40" alt="SocialBureau"/>
@@ -619,7 +598,7 @@ export default function Navbar() {
           {/* Mobile Logo */}
           <a
             style={{ fontFamily: "MyFont, sans-serif" }}
-            href={homeLink}
+            href="/"
             className="md:hidden text-white text-[17px] font-bold tracking-tight shrink-0"
           >
             <img src="/assets/logo.webp" className="h-7 w-40" />

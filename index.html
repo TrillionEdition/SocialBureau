@@ -61,25 +61,35 @@
   crossorigin="anonymous">
 </script>
 <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-TGR67C2R');</script>
+<script>
+  if (!['localhost', '127.0.0.1'].includes(window.location.hostname)) {
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TGR67C2R');
+  }
+</script>
 <!-- End Google Tag Manager -->
  <meta name="p:domain_verify" content="2c2ea5cfbe94505b0bf7d53280547c76" />
  <!-- Publisher Center -->
- <script async type="application/javascript"
-        src="https://news.google.com/swg/js/v1/swg-basic.js"></script>
 <script>
-  (self.SWG_BASIC = self.SWG_BASIC || []).push( basicSubscriptions => {
-    basicSubscriptions.init({
-      type: "NewsArticle",
-      isPartOfType: ["Product"],
-      isPartOfProductId: "CAow2Y3HDA:openaccess",
-      clientOptions: { theme: "light", lang: "en-GB" },
+  if (!['localhost', '127.0.0.1'].includes(window.location.hostname)) {
+    const swgScript = document.createElement('script');
+    swgScript.async = true;
+    swgScript.type = 'application/javascript';
+    swgScript.src = 'https://news.google.com/swg/js/v1/swg-basic.js';
+    document.head.appendChild(swgScript);
+
+    (self.SWG_BASIC = self.SWG_BASIC || []).push(basicSubscriptions => {
+      basicSubscriptions.init({
+        type: "NewsArticle",
+        isPartOfType: ["Product"],
+        isPartOfProductId: "CAow2Y3HDA:openaccess",
+        clientOptions: { theme: "light", lang: "en-GB" },
+      });
     });
-  });
+  }
 </script>
 <!-- Taboola Pixel Code -->
 <script type='text/javascript'>
