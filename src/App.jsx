@@ -26,7 +26,10 @@ import ClientDashboard from "./pages/ClientDashboard";
 import AdminBillingDashboard from "./pages/admin/AdminBillingDashboard";
 import AdminPaymentsList from "./pages/admin/AdminPaymentsList";
 import AdminPaymentDetail from "./pages/admin/AdminPaymentDetail";
+import AdminSubscriptionManagement from "./pages/admin/AdminSubscriptionManagement";
+import AdminSubscriptionDetail from "./pages/admin/AdminSubscriptionDetail";
 import ClientPayments from "./pages/ClientPayments";
+import MySubscription from "./pages/MySubscription";
 import ApiMarketingDashboard from "./pages/ApiMarketingDashboard";
 import MediaDashboard from "./pages/MediaDashboard";
 import PartnershipChatbot from "./components/PartnershipChatbot";
@@ -651,6 +654,26 @@ function App() {
               }
             />
             <Route
+              path="/admin/subscriptions"
+              element={
+                <AdminRoute>
+                  <Navbar />
+                  <AdminSubscriptionManagement />
+                  <Footer />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/subscriptions/:id"
+              element={
+                <AdminRoute>
+                  <Navbar />
+                  <AdminSubscriptionDetail />
+                  <Footer />
+                </AdminRoute>
+              }
+            />
+            <Route
               path="/jobs/create"
               element={
                 <AdminRoute>
@@ -694,6 +717,11 @@ function App() {
             <Route path="/dashboard/payments" element={
               <ProtectedRoute>
                 <ClientPayments />
+              </ProtectedRoute>
+            } />
+            <Route path="/my-subscription" element={
+              <ProtectedRoute>
+                <MySubscription />
               </ProtectedRoute>
             } />
             <Route path="/youtube-architecture" element={<ReporterAssetArchitecture />} />
@@ -816,7 +844,9 @@ function App() {
               path="/resume-marketplace"
               element={
                 <ProtectedRoute>
+                  <Navbar />
                   <ResumeMarketplacePage />
+                  <Footer />
                 </ProtectedRoute>
               }
             />

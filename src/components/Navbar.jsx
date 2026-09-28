@@ -570,7 +570,16 @@ export default function Navbar() {
                           <User size={14} />
                           Profile
                         </button>
-
+                        <button
+                          onClick={() => {
+                            handleNavClick("/my-subscription");
+                            setActiveDropdown(null);
+                          }}
+                          className="text-[13px] font-medium text-[#f5f5f7]/80 hover:text-white hover:bg-white/10 px-4 py-3 text-left transition-colors flex items-center gap-2"
+                        >
+                          <User size={14} />
+                          My subscriptions
+                        </button>
                         <div className="h-px bg-white/10" />
                         <div className="px-4 py-3">
                           <Logout />
