@@ -1899,41 +1899,15 @@ const EmployeePage = () => {
         } else {
           setAttendanceLoading(true);
         }
-        const isAlenOrSham = [
-          "alen-jacob",
-          "alen",
-          "shamsk",
-          "sham-sk",
-        ].includes((slug || "").toLowerCase());
-        console.log(isAlenOrSham, slug);
-        // 1) Try the authenticated endpoint first (include credentials so cookies are sent).
-        // If the user is logged in and cookies are present, backend will return ClickUp metrics.
-        try {
-          const authResp = await fetch(
-            `${BASE_URL}/clickup/member-details?slug=${slug}&month=${selectedMonth}&year=${selectedYear}`,
-            {
-              credentials: "include",
-              headers: { Accept: "application/json" },
-            },
-          );
-          const authJson = await authResp.json().catch(() => ({}));
-          if (authResp.ok && authJson.member) {
-            setData(authJson);
-            setIsDemoMode(false);
-            return;
-          }
-          // If 401 or other failure, we'll fall back to public endpoint below
-        } catch (e) {
-          console.warn(
-            "Authenticated member-details fetch failed:",
-            e?.message || e,
-          );
-        }
-
-        // 2) Try the public endpoint (no auth) to get DB member info for visitors
+        const memberQuery = new URLSearchParams({
+          slug: slug || "",
+          month: String(selectedMonth + 1),
+          year: String(selectedYear),
+        });
+        // Public employee profiles do not request private ClickUp task metrics.
         try {
           const publicResp = await fetch(
-            `${BASE_URL}/clickup/public-member-details?slug=${slug}&month=${selectedMonth}&year=${selectedYear}`,
+            `${BASE_URL}/clickup/public-member-details?${memberQuery}`,
           );
           const publicJson = await publicResp.json().catch(() => ({}));
           if (publicResp.ok && publicJson.member) {
@@ -1945,7 +1919,7 @@ const EmployeePage = () => {
           console.warn("Public member-details fetch failed:", e?.message || e);
         }
 
-        // 3) Final fallback to visual mock
+        // Final fallback to visual mock
         setData(fallbackData);
         setIsDemoMode(true);
       } catch (err) {
@@ -4327,7 +4301,7 @@ const EmployeePage = () => {
             </GlassCard>
           )}
 
-          {!isAlenOrSham && (
+          {/* {!isAlenOrSham && (
             <GlassCard variant="purple" className="!p-4">
               <SectionTitle title="Live Projects" />
               <div className="space-y-4">
@@ -4365,7 +4339,7 @@ const EmployeePage = () => {
                 ))}
               </div>
             </GlassCard>
-          )}
+          )} */}
 
           {!isAlenOrSham && (
             <GlassCard
@@ -4550,7 +4524,7 @@ const EmployeePage = () => {
             </GlassCard>
           )}
 
-          {!isAlenOrSham && (
+          {/* {!isAlenOrSham && (
             <GlassCard variant="purple">
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-1 h-6 rounded-full bg-yellow-500" />
@@ -4580,7 +4554,7 @@ const EmployeePage = () => {
                 ))}
               </div>
             </GlassCard>
-          )}
+          )} */}
 
           {!isAlenOrSham && (
             <button
