@@ -4,10 +4,25 @@ import { useState, useEffect } from "react";
 // 🔐 USER DATA MANAGEMENT (Token is in HttpOnly Cookie)
 // ============================================
 
+const withoutClickUpCredentials = (user) => {
+  if (!user || typeof user !== "object") return user;
+  const safeUser = { ...user };
+  delete safeUser.clickupToken;
+  delete safeUser.clickupId;
+  delete safeUser.clickupListId;
+  delete safeUser.clickupChatViewId;
+  return safeUser;
+};
+
 export const getUserData = () => {
   try {
     const userData = localStorage.getItem("userData") || localStorage.getItem("user");
-    return userData ? JSON.parse(userData) : null;
+    if (!userData) return null;
+    const user = withoutClickUpCredentials(JSON.parse(userData));
+    if (!user) return null;
+    localStorage.setItem("userData", JSON.stringify(user));
+    localStorage.removeItem("user");
+    return user;
   } catch (error) {
     console.error("Error parsing user data:", error);
     return null;
@@ -16,7 +31,7 @@ export const getUserData = () => {
 
 export const setUserData = (user) => {
   if (user) {
-    localStorage.setItem("userData", JSON.stringify(user));
+    localStorage.setItem("userData", JSON.stringify(withoutClickUpCredentials(user)));
   } else {
     localStorage.removeItem("userData");
   }

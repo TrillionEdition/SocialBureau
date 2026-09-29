@@ -4,7 +4,7 @@ axios.defaults.withCredentials = true
 // import { getToken } from "@/utils/storageHandler";
 
 export const usersAPI = async (data) => {
-  const response = await axios.get(`${BASE_URL}/user/team`)
+  const response = await axios.get(`${BASE_URL}/user/admin/team`)
   return response.data
 }
 

@@ -12,7 +12,6 @@ import {
   X,
   Check,
   Mail,
-  Lock,
   Hash,
   MessageSquare,
   List,
@@ -43,14 +42,13 @@ const AdminClickupClients = () => {
     clickupId: '',
     clickupListId: '',
     clickupChatViewId: '',
-    clickupToken: '',
     role: 'client'
   });
 
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${BASE_URL}/user/team`);
+      const response = await axios.get(`${BASE_URL}/user/admin/team`);
       // Filter for users who have clickup fields or are 'client' role
       const clickupUsers = response.data.filter(u => u.clickupListId || u.role === 'client');
       setUsers(clickupUsers);
@@ -75,7 +73,6 @@ const AdminClickupClients = () => {
         clickupId: user.clickupId || '',
         clickupListId: user.clickupListId || '',
         clickupChatViewId: user.clickupChatViewId || '',
-        clickupToken: user.clickupToken || '',
         role: user.role || 'client'
       });
     } else {
@@ -87,7 +84,6 @@ const AdminClickupClients = () => {
         clickupId: '',
         clickupListId: '',
         clickupChatViewId: '',
-        clickupToken: '',
         role: 'client'
       });
     }
@@ -400,19 +396,6 @@ const AdminClickupClients = () => {
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">Personal Token (Optional Identity)</label>
-                      <div className="relative">
-                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" size={16} />
-                        <input
-                          type="password"
-                          value={formData.clickupToken}
-                          onChange={(e) => setFormData({ ...formData, clickupToken: e.target.value })}
-                          className="w-full bg-black/40 border border-white/5 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-indigo-500/50 transition-all"
-                          placeholder="pk_8848..."
-                        />
-                      </div>
-                    </div>
                   </div>
 
                   <button

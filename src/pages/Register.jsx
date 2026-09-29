@@ -12,7 +12,6 @@ export const Register = () => {
   const [uploadingTools, setUploadingTools] = useState(false);
 
   const [form, setForm] = useState({
-    clickupId: "",
     name: "",
     email: "",
     password: "",
@@ -100,7 +99,7 @@ export const Register = () => {
   };
 
   const validateForm = () => {
-    const requiredFields = ["clickupId", "name", "email", "password", "role", "doj"];
+    const requiredFields = ["name", "email", "password", "role", "doj"];
     for (const field of requiredFields) {
       if (!form[field]?.trim()) {
         throw new Error(`${field.charAt(0).toUpperCase() + field.slice(1)} is required`);
@@ -109,10 +108,6 @@ export const Register = () => {
 
     if (!files.coverImage || !files.idCard) {
       throw new Error("Cover image and ID card are required");
-    }
-
-    if (form.clickupId.length !== 8) {
-      throw new Error("ClickUp ID must be exactly 8 characters");
     }
 
     if (form.emp_id && (form.emp_id.length < 10 || form.emp_id.length > 12)) {
@@ -154,7 +149,6 @@ export const Register = () => {
 
       const formData = new FormData();
 
-      formData.append("clickupId", form.clickupId);
       formData.append("name", form.name);
       formData.append("email", form.email);
       formData.append("password", form.password);
@@ -209,7 +203,6 @@ export const Register = () => {
 
       // Reset form
       setForm({
-        clickupId: "",
         name: "",
         email: "",
         password: "",
@@ -330,17 +323,6 @@ export const Register = () => {
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <Input
-                    name="clickupId"
-                    label="ClickUp ID"
-                    type="number"
-                    required
-                    onChange={handleChange}
-                    value={form.clickupId}
-                    maxLength={8}
-                    minLength={8}
-                    placeholder="Exactly 8 characters"
-                  />
                   <Input
                     name="emp_id"
                     label="Employee ID"

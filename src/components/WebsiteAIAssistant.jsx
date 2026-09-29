@@ -542,7 +542,7 @@ export default function WebsiteAIAssistant() {
     <motion.div
       layout
       transition={{ type: "spring", stiffness: 100, damping: 15 }}
-      className={`fixed right-4 sm:right-6 z-[9999] font-sans ${isScrolled ? "top-20 sm:top-24" : "bottom-4 sm:bottom-6"}`}
+      className={`hidden sm:block fixed right-4 sm:right-6 z-[9999] font-sans ${isScrolled ? "top-20 sm:top-24" : "bottom-4 sm:bottom-6"}`}
     >
       
       {/* FLOATING PROMPT BUBBLE (Greeting & Idle Nudges) */}

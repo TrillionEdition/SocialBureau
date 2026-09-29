@@ -539,7 +539,7 @@ const DashboardX = () => {
                         <option value="">None (Public Partner)</option>
                         {teamData?.map((u) => (
                           <option key={u._id} value={u._id}>
-                            {u.name} ({u.email})
+                            {u.name}
                           </option>
                         ))}
                       </select>

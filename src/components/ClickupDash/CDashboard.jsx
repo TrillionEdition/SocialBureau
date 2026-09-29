@@ -105,7 +105,7 @@ const CDashboard = () => {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [newMessage, setNewMessage] = useState('');
   const [sendingMessage, setSendingMessage] = useState(false);
-  const CHAT_VIEW_ID = currentUser?.clickupChatViewId || "current";
+  const CHAT_VIEW_ID = "current";
   const [generalActivity, setGeneralActivity] = useState([]);
   const [loadingGeneralActivity, setLoadingGeneralActivity] = useState(true);
   const [stats, setStats] = useState({
@@ -148,11 +148,9 @@ const CDashboard = () => {
     try {
       setLoadingGeneralActivity(true);
       const response = await getClickUpActivity();
-      if (response.success) {
-        setGeneralActivity(response.activity);
-      }
+      if (response.success) setGeneralActivity(response.activity);
     } catch (error) {
-      console.error("Failed to fetch general activity:", error);
+      console.error("Failed to fetch activity:", error);
     } finally {
       setLoadingGeneralActivity(false);
     }
@@ -161,13 +159,16 @@ const CDashboard = () => {
   useEffect(() => {
     fetchTasks();
     fetchMessages();
-    fetchGeneralActivity();
   }, []);
 
   useEffect(() => {
     if (activeTab === 'Channels') {
       fetchMessages();
     }
+  }, [activeTab]);
+
+  useEffect(() => {
+    if (activeTab === 'Activity') fetchGeneralActivity();
   }, [activeTab]);
 
   const fetchMessages = async () => {
@@ -279,11 +280,6 @@ const CDashboard = () => {
       const response = await getClickUpTask(taskId);
       if (response.success) {
         setSelectedTask(response.task);
-        // Also fetch activity for this task
-        const activityResponse = await getTaskActivity(taskId);
-        if (activityResponse.success) {
-          setTaskActivity(activityResponse.activity);
-        }
       }
     } catch (error) {
       console.error("Failed to open task from chat:", error);
@@ -296,7 +292,7 @@ const CDashboard = () => {
     try {
       console.log("📤 Starting file upload:", file.name);
       setLoadingMessages(true);
-      const response = await uploadClickUpAttachment(CHAT_VIEW_ID, file, currentUser?.clickupToken || null);
+      const response = await uploadClickUpAttachment(CHAT_VIEW_ID, file);
       console.log("✅ Upload response:", response);
       if (response.success) {
         fetchMessages();
@@ -313,7 +309,7 @@ const CDashboard = () => {
     if (!newMessage.trim() || sendingMessage) return;
     try {
       setSendingMessage(true);
-      const response = await postClickUpChat(CHAT_VIEW_ID, newMessage, currentUser?.clickupToken || null);
+      const response = await postClickUpChat(CHAT_VIEW_ID, newMessage);
       if (response.success) {
         setNewMessage('');
         fetchMessages();
@@ -332,6 +328,7 @@ const CDashboard = () => {
       const response = await getClickUpTasks();
       if (response.success) {
         setTasks(response.tasks);
+        setGeneralActivity(response.activity || []);
         if (response.stats) {
           setStats(response.stats);
         }
@@ -341,6 +338,7 @@ const CDashboard = () => {
       console.error("Failed to fetch tasks:", error);
     } finally {
       setLoadingTasks(false);
+      setLoadingGeneralActivity(false);
     }
   };
 
@@ -465,7 +463,7 @@ const CDashboard = () => {
                     onFileUpload={handleFileUpload}
                   />
                 )}
-                {activeTab === 'Activity' && <ActivityTab activity={generalActivity} loading={loadingGeneralActivity} onRefresh={fetchGeneralActivity} />}
+                {activeTab === 'Activity' && <ActivityTab activity={generalActivity} loading={loadingGeneralActivity} onRefresh={fetchTasks} />}
 
               </motion.div>
 
@@ -565,7 +563,7 @@ const CDashboard = () => {
                           <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Work Completed / Description</p>
                           <div className="bg-white/5 border border-white/5 rounded-2xl p-6 text-gray-300 text-sm leading-relaxed max-h-60 overflow-y-auto custom-scrollbar">
                             {selectedTask.description ? (
-                              <div dangerouslySetInnerHTML={{ __html: selectedTask.description.replace(/\n/g, '<br />') }} />
+                              <div className="whitespace-pre-wrap">{selectedTask.description}</div>
                             ) : (
                               "No detailed breakdown provided for this task yet."
                             )}
@@ -1218,7 +1216,7 @@ const ChannelsTab = ({ messages, loading, newMessage, setNewMessage, onSendMessa
             <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
           </button>
           <button
-            onClick={() => window.open(`https://app.clickup.com/9014733918/chat/r/${currentUser?.clickupChatViewId || '8cn3v2y-28474'}`, '_blank')}
+            onClick={() => window.open('https://app.clickup.com/', '_blank', 'noopener,noreferrer')}
             className="flex items-center gap-2 px-4 py-2 bg-[#7B68EE]/20 text-[#7B68EE] border border-[#7B68EE]/30 rounded-xl text-sm font-bold hover:bg-[#7B68EE]/30 transition-all"
           >
             <ExternalLink size={16} /> Open in ClickUp

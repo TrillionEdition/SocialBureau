@@ -2589,7 +2589,6 @@ const EmployeePage = () => {
                 <img
                   src={
                     member.idCard ||
-                    member.user?.idCard ||
                     member.cardImage ||
                     member.image ||
                     "https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/Team/cfg8edyz3kmmxjhqt98y.webp"
