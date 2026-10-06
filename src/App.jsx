@@ -12,7 +12,6 @@ import { BASE_URL } from "./utils/urls";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollTop from "./components/ScrollTop";
-import LoadingSpinner from "./components/LoadingSpinner";
 import AdminRoute from "./components/AdminRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CodeProtectedRoute from "./components/CodeProtectedRoute";
@@ -39,8 +38,6 @@ import AjinorahForm from "./components/ClientFormaji";
 import CDashboard from "./components/ClickupDash/CDashboard";
 import CLogin from "./components/ClickupDash/CLogin";
 import AdminClickupClients from "./components/ClickupDash/AdminClickupClients";
-import SpinWheel from "./components/Lottery/LotterySpinner";
-import LotteryClaims from "./pages/LotteryClaims";
 import Revanth from "./pages/Revanth";
 import IntakeDashboard from "./pages/IntakeDashboard";
 import ClientEnquiry from "./pages/ClientEnquiry";
@@ -91,6 +88,8 @@ const ResumeMarketplacePage = lazy(() => import("./pages/ResumeMarketplace/Resum
 const ResumeDetailPage = lazy(() => import("./pages/ResumeMarketplace/ResumeDetailPage"));
 const MyResumePurchasesPage = lazy(() => import("./pages/ResumeMarketplace/MyPurchasesPage"));
 const ResumeMarketplaceAdmin = lazy(() => import("./pages/admin/ResumeMarketplaceAdmin"));
+const DynamicReportsAdmin = lazy(() => import("./pages/admin/DynamicReportsAdmin"));
+const DynamicReportPage = lazy(() => import("./pages/DynamicReportPage"));
 const ResetPassword = lazy(() =>
 
   import("./pages/ForgetPassword").then((module) => ({
@@ -156,9 +155,7 @@ const PartnerLogin = lazy(() => import("./pages/Partnerships/PartnershipTemplate
 const PartnerDashboard = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboard"));
 const PartnerDashboardHub = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboardHub"));
 const StudentShowcase = lazy(() => import("./pages/Partnerships/StudentShowcase"));
-const SpinningResults = lazy(() => import("./pages/SpinningResults/SpinningResults"));
 const TreasureHunt = lazy(() => import("./pages/TreasureHunt/TreasureHunt"));
-const SuntipsSpinner = lazy(() => import("./components/Lottery/SuntipsSpinner"));
 const SuntipsClaims = lazy(() => import("./pages/SuntipsClaims"));
 const ChocochiForm = lazy(() => import("./pages/ChocochiForm"));
 const FifaWorldcup = lazy(() => import("./pages/Fifa World Cup/FifaWorldcup"));
@@ -212,11 +209,12 @@ function ConditionalFooter() {
     "/client-dashboard",
     "/admin",
     "/ajnoradashboard",
-    "/lottery",
     "/chocochi-spin",
     "/admin/suntips-claims",
     "/admin/posters",
     "/admin/resume-marketplace",
+    "/admin/dynamic-reports",
+    "/reports",
     "/treasure-hunt",
     "/leaderboard",
     "/chocochi",
@@ -256,11 +254,12 @@ function ConditionalNavbar() {
     "/client-dashboard",
     "/admin",
     "/ajnoradashboard",
-    "/lottery",
     "/chocochi-spin",
     "/admin/suntips-claims",
     "/admin/posters",
     "/admin/resume-marketplace",
+    "/admin/dynamic-reports",
+    "/reports",
     "/treasure-hunt",
     "/chocochi",
     "/chocochi-form",
@@ -325,38 +324,7 @@ const lenisOptions = {
   }
 };
 
-const HomeWrapper = () => {
-  const [showLottery, setShowLottery] = useState(false);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const checkLotteryRedirect = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}/lottery/settings`);
-        const data = await response.json();
-        if (data && data.isActive && data.showLotteryOnHomeStart && data.showLotteryOnHomeEnd) {
-          const now = new Date();
-          const start = new Date(data.showLotteryOnHomeStart);
-          const end = new Date(data.showLotteryOnHomeEnd);
-          if (now >= start && now <= end) {
-            setShowLottery(true);
-          }
-        }
-      } catch (err) {
-        console.error("Failed to check lottery redirect:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    checkLotteryRedirect();
-  }, []);
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
-  return showLottery ? <SpinWheel /> : <Home />;
-};
 
 
 
@@ -471,9 +439,9 @@ function App() {
         <FloatingTreasureHuntClue />
         <TreasureHuntTimer />
         {/* <AdsContainer /> */}
-        <Suspense fallback={<LoadingSpinner />}>
+        <Suspense>
           <Routes>
-            <Route path="/" element={<HomeWrapper />} />
+            <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/solutions" element={<Solutions />} />
@@ -728,11 +696,8 @@ function App() {
             <Route path="/client-portal" element={<CDashboard />} />
             <Route path="/client-login" element={<CLogin />} />
             <Route path="/admin/clickup-clients" element={<AdminRoute><AdminClickupClients /></AdminRoute>} />
-            <Route path="/lottery" element={<SpinWheel />} />
-            <Route path="/chocochi-spin" element={<SuntipsSpinner />} />
             <Route path="/api-marketing-dashboard" element={<AdminRoute><ApiMarketingDashboard /></AdminRoute>} />
             <Route path="/media-dashboard" element={<AdminRoute><MediaDashboard /></AdminRoute>} />
-            <Route path="/admin/lottery-claims" element={<AdminRoute><LotteryClaims /></AdminRoute>} />
             <Route path="/admin/suntips-claims" element={<AdminRoute><SuntipsClaims /></AdminRoute>} />
             <Route path="/ajnoradashboard" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
             <Route path="/ajnoradashboard/:id" element={<AdminRoute><AjnoraDashboard /></AdminRoute>} />
@@ -782,7 +747,6 @@ function App() {
             <Route path="/partnership/Partner2" element={<Partner2 />} />
             <Route path="/chocochi" element={<Chocochi />} />
             <Route path="/chocochi-form" element={<ChocochiForm />} />
-            <Route path="/spinning-results" element={<SpinningResults />} />
             <Route path="/treasure-hunt" element={<TreasureHunt />} />
             <Route path="/fifa-world-cup" element={<FifaWorldcup />} />
             <Route path="/fifa-predictions" element={<FifaPredictionsList />} />
@@ -822,6 +786,8 @@ function App() {
                 </AdminRoute>
               }
             />
+            <Route path="/admin/dynamic-reports" element={<AdminRoute><DynamicReportsAdmin /></AdminRoute>} />
+            <Route path="/reports/:slug" element={<DynamicReportPage />} />
             <Route
               path="/admin/audit-reports/client/:clientId"
               element={
