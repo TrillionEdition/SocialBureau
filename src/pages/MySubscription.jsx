@@ -12,6 +12,7 @@ import {
 import {
   getMySubscription,
   getMyPaymentHistory,
+  getMyPaymentLinkTransactions,
   verifyMySubscription,
 } from "@/services/clientSubscriptionApi";
 import loadRazorpay from "@/utils/loadRazorpay";
@@ -219,8 +220,14 @@ function SubscriptionCard({ subscription, history, onChanged }) {
 export default function MySubscription() {
   const [subscriptions, setSubscriptions] = useState([]);
   const [history, setHistory] = useState([]);
+  const [paymentLinkTransactions, setPaymentLinkTransactions] = useState([]);
+  const [paymentLinkTotal, setPaymentLinkTotal] = useState(0);
+  const [paymentLinkSkip, setPaymentLinkSkip] = useState(0);
+  const [paymentLinkLoading, setPaymentLinkLoading] = useState(true);
+  const [paymentLinkError, setPaymentLinkError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const paymentLinkLimit = 20;
 
   const fetchData = async () => {
     try {
@@ -247,6 +254,33 @@ export default function MySubscription() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchPaymentLinks = async () => {
+      try {
+        setPaymentLinkLoading(true);
+        const result = await getMyPaymentLinkTransactions({
+          skip: paymentLinkSkip,
+          limit: paymentLinkLimit,
+        });
+        if (!cancelled) {
+          setPaymentLinkTransactions(result.data || []);
+          setPaymentLinkTotal(result.total || 0);
+          setPaymentLinkError(null);
+        }
+      } catch (err) {
+        console.error("Error fetching Payment Link transactions:", err);
+        if (!cancelled) setPaymentLinkError("Could not load your Payment Link transactions");
+      } finally {
+        if (!cancelled) setPaymentLinkLoading(false);
+      }
+    };
+    fetchPaymentLinks();
+    return () => {
+      cancelled = true;
+    };
+  }, [paymentLinkSkip]);
 
   if (loading) {
     return (
@@ -288,6 +322,121 @@ export default function MySubscription() {
             />
           ))
         )}
+
+        <section className="mt-8" aria-labelledby="my-payment-links-heading">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-4">
+            <div>
+              <h2 id="my-payment-links-heading" className="text-xl font-bold text-gray-900">One-Time Payments</h2>
+              <p className="text-sm text-gray-600 mt-1">Payments made through Razorpay Payment Links</p>
+            </div>
+            {!paymentLinkError && <p className="text-sm text-gray-500">{paymentLinkTotal} transactions</p>}
+          </div>
+
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            {paymentLinkLoading ? (
+              <div className="flex items-center justify-center h-36">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+              </div>
+            ) : paymentLinkError ? (
+              <div role="alert" className="p-5 text-sm text-red-700 bg-red-50">{paymentLinkError}</div>
+            ) : paymentLinkTransactions.length === 0 ? (
+              <div className="p-8 text-center">
+                <CreditCard className="w-9 h-9 text-gray-400 mx-auto mb-2" />
+                <p className="text-gray-600">No Payment Link transactions found</p>
+              </div>
+            ) : (
+              <>
+                <div className="hidden md:block overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Date</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Payment</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Amount</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Method</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Status</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Razorpay IDs</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {paymentLinkTransactions.map((transaction) => (
+                        <tr key={transaction._id} className="border-b border-gray-100 last:border-0">
+                          <td className="px-4 py-3 text-sm text-gray-600">
+                            {transaction.occurredAt ? new Date(transaction.occurredAt).toLocaleString("en-IN") : "—"}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-gray-700">{transaction.description || "One-time payment"}</td>
+                          <td className="px-4 py-3 text-sm font-semibold text-gray-900">
+                            {transaction.currency || "INR"} {Number(transaction.amount).toLocaleString("en-IN")}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-gray-700 capitalize">{transaction.method || "—"}</td>
+                          <td className="px-4 py-3 text-sm">
+                            <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold capitalize ${transaction.status === "captured" ? "bg-green-100 text-green-800" : transaction.status === "failed" ? "bg-red-100 text-red-800" : "bg-gray-100 text-gray-700"}`}>
+                              {transaction.status}
+                            </span>
+                            {transaction.failureReason && <div className="mt-1 max-w-48 text-xs text-red-700">{transaction.failureReason}</div>}
+                          </td>
+                          <td className="px-4 py-3 text-xs text-gray-600">
+                            <div className="font-mono break-all">{transaction.razorpayPaymentId}</div>
+                            <div className="mt-1 font-mono break-all text-gray-400">{transaction.razorpayPaymentLinkId}</div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="md:hidden divide-y divide-gray-100">
+                  {paymentLinkTransactions.map((transaction) => (
+                    <article key={transaction._id} className="p-4">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="font-semibold text-gray-900">{transaction.description || "One-time payment"}</p>
+                          <p className="text-xs text-gray-500">{transaction.occurredAt ? new Date(transaction.occurredAt).toLocaleString("en-IN") : "—"}</p>
+                        </div>
+                        <span className={`shrink-0 inline-flex px-2 py-1 rounded-full text-xs font-semibold capitalize ${transaction.status === "captured" ? "bg-green-100 text-green-800" : transaction.status === "failed" ? "bg-red-100 text-red-800" : "bg-gray-100 text-gray-700"}`}>
+                          {transaction.status}
+                        </span>
+                      </div>
+                      <p className="mt-3 text-lg font-bold text-gray-900">{transaction.currency || "INR"} {Number(transaction.amount).toLocaleString("en-IN")}</p>
+                      <p className="mt-1 text-sm text-gray-600 capitalize">{transaction.method || "Payment method unavailable"}</p>
+                      <p className="mt-2 text-xs text-gray-500 break-all">Payment ID: {transaction.razorpayPaymentId}</p>
+                      <p className="text-xs text-gray-500 break-all">Payment Link ID: {transaction.razorpayPaymentLinkId}</p>
+                      {transaction.failureReason && <p className="mt-1 text-xs text-red-700">{transaction.failureReason}</p>}
+                    </article>
+                  ))}
+                </div>
+
+                {paymentLinkTotal > paymentLinkLimit && (
+                  <div className="px-4 py-3 border-t border-gray-200 flex items-center justify-between gap-3">
+                    <p className="text-xs sm:text-sm text-gray-600">
+                      {paymentLinkSkip + 1}–{Math.min(paymentLinkSkip + paymentLinkLimit, paymentLinkTotal)} of {paymentLinkTotal}
+                    </p>
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        aria-label="Previous Payment Link transactions"
+                        onClick={() => setPaymentLinkSkip((skip) => Math.max(0, skip - paymentLinkLimit))}
+                        disabled={paymentLinkSkip === 0}
+                        className="p-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-40"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Next Payment Link transactions"
+                        onClick={() => setPaymentLinkSkip((skip) => skip + paymentLinkLimit)}
+                        disabled={paymentLinkSkip + paymentLinkLimit >= paymentLinkTotal}
+                        className="p-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-40"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </section>
       </div>
     </div>
   );

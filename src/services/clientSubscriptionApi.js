@@ -57,6 +57,7 @@ export const cancelSubscription = async (id, cancelAtCycleEnd = false) => {
 
 export const getAllPaymentHistory = async (filters = {}) => {
   const params = new URLSearchParams();
+  if (filters.search) params.append("search", filters.search);
   if (filters.subscriptionId) params.append("subscriptionId", filters.subscriptionId);
   if (filters.clientId) params.append("clientId", filters.clientId);
   if (filters.status) params.append("status", filters.status);
@@ -64,6 +65,16 @@ export const getAllPaymentHistory = async (filters = {}) => {
   if (filters.limit) params.append("limit", filters.limit);
 
   const response = await axios.get(`${API_BASE}/admin/history?${params.toString()}`);
+  return response.data;
+};
+
+export const getPaymentLinkTransactions = async (filters = {}) => {
+  const params = new URLSearchParams();
+  if (filters.search) params.append("search", filters.search);
+  if (filters.skip) params.append("skip", filters.skip);
+  if (filters.limit) params.append("limit", filters.limit);
+
+  const response = await axios.get(`${API_BASE}/admin/payment-links?${params.toString()}`);
   return response.data;
 };
 
@@ -79,6 +90,15 @@ export const getMyPaymentHistory = async (filters = {}) => {
   if (filters.limit) params.append("limit", filters.limit);
 
   const response = await axios.get(`${API_BASE}/me/history?${params.toString()}`);
+  return response.data;
+};
+
+export const getMyPaymentLinkTransactions = async (filters = {}) => {
+  const params = new URLSearchParams();
+  if (filters.skip) params.append("skip", filters.skip);
+  if (filters.limit) params.append("limit", filters.limit);
+
+  const response = await axios.get(`${API_BASE}/me/payment-links?${params.toString()}`);
   return response.data;
 };
 

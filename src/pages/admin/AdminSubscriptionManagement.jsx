@@ -11,9 +11,14 @@ import {
   X,
   UserPlus,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  CreditCard,
 } from "lucide-react";
 import {
   getAllSubscriptions,
+  getAllPaymentHistory,
+  getPaymentLinkTransactions,
   createSubscription,
   getClientUsers,
   createClientUser,
@@ -394,6 +399,16 @@ export default function AdminSubscriptionManagement() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [transactions, setTransactions] = useState([]);
+  const [transactionsTotal, setTransactionsTotal] = useState(0);
+  const [transactionsSkip, setTransactionsSkip] = useState(0);
+  const [transactionsLoading, setTransactionsLoading] = useState(true);
+  const [paymentLinkTransactions, setPaymentLinkTransactions] = useState([]);
+  const [paymentLinkTotal, setPaymentLinkTotal] = useState(0);
+  const [paymentLinkSkip, setPaymentLinkSkip] = useState(0);
+  const [paymentLinkLoading, setPaymentLinkLoading] = useState(true);
+  const [paymentLinkError, setPaymentLinkError] = useState(null);
+  const transactionLimit = 20;
 
   const fetchSubscriptions = async () => {
     try {
@@ -418,6 +433,73 @@ export default function AdminSubscriptionManagement() {
     return () => clearTimeout(timeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, statusFilter]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchTransactions = async () => {
+      try {
+        setTransactionsLoading(true);
+        const res = await getAllPaymentHistory({
+          search: search || undefined,
+          skip: transactionsSkip,
+          limit: transactionLimit,
+        });
+        if (!cancelled) {
+          setTransactions(res.data || []);
+          setTransactionsTotal(res.total || 0);
+        }
+      } catch (err) {
+        console.error("Error fetching Razorpay transactions:", err);
+        if (!cancelled) {
+          setTransactions([]);
+          setTransactionsTotal(0);
+        }
+      } finally {
+        if (!cancelled) setTransactionsLoading(false);
+      }
+    };
+    fetchTransactions();
+    return () => {
+      cancelled = true;
+    };
+  }, [search, transactionsSkip]);
+
+  useEffect(() => {
+    setTransactionsSkip(0);
+    setPaymentLinkSkip(0);
+  }, [search]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchLinkTransactions = async () => {
+      try {
+        setPaymentLinkLoading(true);
+        const res = await getPaymentLinkTransactions({
+          search: search || undefined,
+          skip: paymentLinkSkip,
+          limit: transactionLimit,
+        });
+        if (!cancelled) {
+          setPaymentLinkTransactions(res.data || []);
+          setPaymentLinkTotal(res.total || 0);
+          setPaymentLinkError(null);
+        }
+      } catch (err) {
+        console.error("Error fetching Razorpay Payment Link transactions:", err);
+        if (!cancelled) {
+          setPaymentLinkTransactions([]);
+          setPaymentLinkTotal(0);
+          setPaymentLinkError("Could not load Payment Link transactions from Razorpay");
+        }
+      } finally {
+        if (!cancelled) setPaymentLinkLoading(false);
+      }
+    };
+    fetchLinkTransactions();
+    return () => {
+      cancelled = true;
+    };
+  }, [search, paymentLinkSkip]);
 
   const stats = {
     active: subscriptions.filter((s) => s.status === "active").length,
@@ -567,6 +649,250 @@ export default function AdminSubscriptionManagement() {
             </div>
           )}
         </div>
+
+        <section className="mt-8" aria-labelledby="razorpay-transactions-heading">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-4">
+            <div>
+              <h2 id="razorpay-transactions-heading" className="text-xl font-bold text-gray-900">Razorpay Transactions</h2>
+              <p className="text-sm text-gray-600 mt-1">Payments and billing attempts across client subscriptions</p>
+            </div>
+            <p className="text-sm text-gray-500">{transactionsTotal} transactions</p>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            {transactionsLoading ? (
+              <div className="flex items-center justify-center h-40">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+              </div>
+            ) : transactions.length === 0 ? (
+              <div className="p-8 text-center">
+                <CreditCard className="w-9 h-9 text-gray-400 mx-auto mb-2" />
+                <p className="text-gray-600">No Razorpay transactions found</p>
+              </div>
+            ) : (
+              <>
+                <div className="hidden md:block overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Client</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Date</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Amount</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Method</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Status</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Razorpay IDs</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {transactions.map((transaction) => (
+                        <tr key={transaction._id} className="border-b border-gray-100 last:border-0">
+                          <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                            {transaction.clientId?.name || "Unknown client"}
+                            <div className="text-xs font-normal text-gray-500">{transaction.clientId?.email}</div>
+                            <div className="text-xs text-gray-500">{transaction.subscriptionId?.planName}</div>
+                          </td>
+                          <td className="px-4 py-3 text-sm text-gray-600">
+                            {transaction.occurredAt ? new Date(transaction.occurredAt).toLocaleString("en-IN") : "—"}
+                          </td>
+                          <td className="px-4 py-3 text-sm font-semibold text-gray-900">
+                            {transaction.currency || "INR"} {Number(transaction.amount).toLocaleString("en-IN")}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-gray-700 capitalize">{transaction.method || "—"}</td>
+                          <td className="px-4 py-3 text-sm">
+                            <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold capitalize ${transaction.status === "captured" ? "bg-green-100 text-green-800" : transaction.status === "failed" ? "bg-red-100 text-red-800" : "bg-gray-100 text-gray-700"}`}>
+                              {transaction.status}
+                            </span>
+                            {transaction.failureReason && <div className="mt-1 max-w-48 text-xs text-red-700">{transaction.failureReason}</div>}
+                          </td>
+                          <td className="px-4 py-3 text-xs text-gray-600">
+                            <div className="font-mono break-all">{transaction.razorpayPaymentId || "—"}</div>
+                            {transaction.razorpayInvoiceId && <div className="mt-1 font-mono break-all text-gray-400">{transaction.razorpayInvoiceId}</div>}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="md:hidden divide-y divide-gray-100">
+                  {transactions.map((transaction) => (
+                    <article key={transaction._id} className="p-4">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="font-semibold text-gray-900 truncate">{transaction.clientId?.name || "Unknown client"}</p>
+                          <p className="text-xs text-gray-500 break-all">{transaction.clientId?.email}</p>
+                        </div>
+                        <span className={`shrink-0 inline-flex px-2 py-1 rounded-full text-xs font-semibold capitalize ${transaction.status === "captured" ? "bg-green-100 text-green-800" : transaction.status === "failed" ? "bg-red-100 text-red-800" : "bg-gray-100 text-gray-700"}`}>
+                          {transaction.status}
+                        </span>
+                      </div>
+                      <div className="mt-3 flex items-baseline justify-between gap-3">
+                        <p className="text-lg font-bold text-gray-900">{transaction.currency || "INR"} {Number(transaction.amount).toLocaleString("en-IN")}</p>
+                        <p className="text-xs text-gray-500 text-right">{transaction.occurredAt ? new Date(transaction.occurredAt).toLocaleString("en-IN") : "—"}</p>
+                      </div>
+                      <p className="mt-1 text-sm text-gray-600">
+                        {transaction.subscriptionId?.planName || "Subscription"} · <span className="capitalize">{transaction.method || "method unavailable"}</span>
+                      </p>
+                      <p className="mt-2 text-xs text-gray-500 break-all">Payment ID: {transaction.razorpayPaymentId || "—"}</p>
+                      {transaction.razorpayInvoiceId && <p className="text-xs text-gray-500 break-all">Invoice ID: {transaction.razorpayInvoiceId}</p>}
+                      {transaction.failureReason && <p className="mt-1 text-xs text-red-700">{transaction.failureReason}</p>}
+                    </article>
+                  ))}
+                </div>
+
+                {transactionsTotal > transactionLimit && (
+                  <div className="px-4 py-3 border-t border-gray-200 flex items-center justify-between gap-3">
+                    <p className="text-xs sm:text-sm text-gray-600">
+                      {transactionsSkip + 1}–{Math.min(transactionsSkip + transactionLimit, transactionsTotal)} of {transactionsTotal}
+                    </p>
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        aria-label="Previous transactions"
+                        onClick={() => setTransactionsSkip((skip) => Math.max(0, skip - transactionLimit))}
+                        disabled={transactionsSkip === 0}
+                        className="p-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-40"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Next transactions"
+                        onClick={() => setTransactionsSkip((skip) => skip + transactionLimit)}
+                        disabled={transactionsSkip + transactionLimit >= transactionsTotal}
+                        className="p-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-40"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </section>
+
+        <section className="mt-8" aria-labelledby="payment-link-transactions-heading">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-4">
+            <div>
+              <h2 id="payment-link-transactions-heading" className="text-xl font-bold text-gray-900">One-Time Payment Links</h2>
+              <p className="text-sm text-gray-600 mt-1">Transactions collected through Razorpay Payment Links</p>
+            </div>
+            {!paymentLinkError && <p className="text-sm text-gray-500">{paymentLinkTotal} transactions</p>}
+          </div>
+
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            {paymentLinkLoading ? (
+              <div className="flex items-center justify-center h-40">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+              </div>
+            ) : paymentLinkError ? (
+              <div role="alert" className="p-5 text-sm text-red-700 bg-red-50">{paymentLinkError}</div>
+            ) : paymentLinkTransactions.length === 0 ? (
+              <div className="p-8 text-center">
+                <CreditCard className="w-9 h-9 text-gray-400 mx-auto mb-2" />
+                <p className="text-gray-600">No one-time Payment Link transactions found</p>
+              </div>
+            ) : (
+              <>
+                <div className="hidden md:block overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Client</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Date</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Amount</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Method</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Status</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Payment / Link ID</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {paymentLinkTransactions.map((transaction) => (
+                        <tr key={transaction._id} className="border-b border-gray-100 last:border-0">
+                          <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                            {transaction.clientId?.name}
+                            <div className="text-xs font-normal text-gray-500">{transaction.clientId?.email}</div>
+                            <div className="text-xs text-gray-500">{transaction.description || "One-time payment"}</div>
+                          </td>
+                          <td className="px-4 py-3 text-sm text-gray-600">
+                            {transaction.occurredAt ? new Date(transaction.occurredAt).toLocaleString("en-IN") : "—"}
+                          </td>
+                          <td className="px-4 py-3 text-sm font-semibold text-gray-900">
+                            {transaction.currency || "INR"} {Number(transaction.amount).toLocaleString("en-IN")}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-gray-700 capitalize">{transaction.method || "—"}</td>
+                          <td className="px-4 py-3 text-sm">
+                            <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold capitalize ${transaction.status === "captured" ? "bg-green-100 text-green-800" : transaction.status === "failed" ? "bg-red-100 text-red-800" : "bg-gray-100 text-gray-700"}`}>
+                              {transaction.status}
+                            </span>
+                            {transaction.failureReason && <div className="mt-1 max-w-48 text-xs text-red-700">{transaction.failureReason}</div>}
+                          </td>
+                          <td className="px-4 py-3 text-xs text-gray-600">
+                            <div className="font-mono break-all">{transaction.razorpayPaymentId}</div>
+                            <div className="mt-1 font-mono break-all text-gray-400">{transaction.razorpayPaymentLinkId}</div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="md:hidden divide-y divide-gray-100">
+                  {paymentLinkTransactions.map((transaction) => (
+                    <article key={transaction._id} className="p-4">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="font-semibold text-gray-900 truncate">{transaction.clientId?.name}</p>
+                          <p className="text-xs text-gray-500 break-all">{transaction.clientId?.email}</p>
+                        </div>
+                        <span className={`shrink-0 inline-flex px-2 py-1 rounded-full text-xs font-semibold capitalize ${transaction.status === "captured" ? "bg-green-100 text-green-800" : transaction.status === "failed" ? "bg-red-100 text-red-800" : "bg-gray-100 text-gray-700"}`}>
+                          {transaction.status}
+                        </span>
+                      </div>
+                      <div className="mt-3 flex items-baseline justify-between gap-3">
+                        <p className="text-lg font-bold text-gray-900">{transaction.currency || "INR"} {Number(transaction.amount).toLocaleString("en-IN")}</p>
+                        <p className="text-xs text-gray-500 text-right">{transaction.occurredAt ? new Date(transaction.occurredAt).toLocaleString("en-IN") : "—"}</p>
+                      </div>
+                      <p className="mt-1 text-sm text-gray-600">{transaction.description || "One-time payment"} · <span className="capitalize">{transaction.method || "method unavailable"}</span></p>
+                      <p className="mt-2 text-xs text-gray-500 break-all">Payment ID: {transaction.razorpayPaymentId}</p>
+                      <p className="text-xs text-gray-500 break-all">Payment Link ID: {transaction.razorpayPaymentLinkId}</p>
+                      {transaction.failureReason && <p className="mt-1 text-xs text-red-700">{transaction.failureReason}</p>}
+                    </article>
+                  ))}
+                </div>
+
+                {paymentLinkTotal > transactionLimit && (
+                  <div className="px-4 py-3 border-t border-gray-200 flex items-center justify-between gap-3">
+                    <p className="text-xs sm:text-sm text-gray-600">
+                      {paymentLinkSkip + 1}–{Math.min(paymentLinkSkip + transactionLimit, paymentLinkTotal)} of {paymentLinkTotal}
+                    </p>
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        aria-label="Previous Payment Link transactions"
+                        onClick={() => setPaymentLinkSkip((skip) => Math.max(0, skip - transactionLimit))}
+                        disabled={paymentLinkSkip === 0}
+                        className="p-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-40"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Next Payment Link transactions"
+                        onClick={() => setPaymentLinkSkip((skip) => skip + transactionLimit)}
+                        disabled={paymentLinkSkip + transactionLimit >= paymentLinkTotal}
+                        className="p-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-40"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </section>
       </div>
 
       {showCreateModal && (
