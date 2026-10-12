@@ -827,6 +827,10 @@ const getStaticEnrichedData = (slug, originalData) => {
           originalData?.user?.location ||
           originalData?.member?.user?.location ||
           "Kochi, Kerala",
+        education:
+          originalData?.user?.education ||
+          originalData?.member?.user?.education ||
+          "Not Specified",
         department:
           originalData?.user?.department ||
           originalData?.member?.user?.department ||
@@ -2039,7 +2043,7 @@ const EmployeePage = () => {
 
   const user = {
     ...rawUser,
-    department: dbDepartment || rawUser?.department || "Leadership & Strategy",
+    department: dbDepartment || "Leadership & Strategy",
   };
 
   const milestones =
