@@ -176,8 +176,8 @@ const PlatformDetailSection = () => (
       ].map((plat, i) => (
         <FadeUp key={plat.t} delay={i * 0.1} className="rounded-[40px] overflow-hidden border border-[#D2D2D7] group hover:shadow-2xl transition-all duration-700 bg-white">
           <a href={plat.href} target="_blank" rel="noopener noreferrer" className="block w-full h-full">
-            <div className={`h-64 bg-gradient-to-br ${plat.g} flex flex-col items-center justify-center relative overflow-hidden`}>
-              <div className="absolute inset-0 bg-white/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className={`h-50 bg-gradient-to-br ${plat.g} flex flex-col items-center justify-center relative overflow-hidden`}>
+              <div className="absolute inset-0 bg-black backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative z-10 transform group-hover:scale-110 transition-transform duration-700 flex flex-col items-center gap-4">
                 {plat.icon === 'google' && (
                   <img src="assets/home/google.png" alt="Google" className="w-60 h-auto" />
@@ -193,7 +193,7 @@ const PlatformDetailSection = () => (
                 )}
               </div>
             </div>
-            <div className="p-12">
+            <div className="px-12 pb-12">
               <h4 className="text-2xl font-black text-[#0A0A0A] mb-3 tracking-tighter">{plat.t}</h4>
               <p className="text-[16px] font-light text-[#6E6E73] leading-relaxed mb-8">{plat.d}</p>
               <div className="inline-flex items-center gap-3 text-[11px] font-black text-[#E8001A] bg-[#E8001A]/[0.08] px-5 py-2 rounded-full uppercase tracking-widest border border-[#E8001A]/20">
@@ -285,7 +285,7 @@ const FounderSection = () => (
         <motion.div
           animate={{ y: [0, -10, 0] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-4 sm:-top-8 -right-4 sm:-right-8 bg-gradient-to-br from-[#E8001A] to-[#FF4444] rounded-lg sm:rounded-2xl p-3 sm:p-6 text-center shadow-2xl border border-white/20 z-[10]"
+          className="absolute -top-4 sm:-top-8 sm:-right-8 bg-gradient-to-br from-[#E8001A] to-[#FF4444] rounded-lg sm:rounded-2xl p-3 sm:p-6 text-center shadow-2xl border border-white/20 z-[10]"
         >
           <div className="text-2xl sm:text-4xl font-black text-white leading-none tracking-tighter italic">#1</div>
           <div className="text-[8px] sm:text-[10px] font-bold text-white/80 uppercase tracking-widest mt-1">World First</div>
@@ -580,7 +580,7 @@ const InstagramReelsSection = () => {
             return (
               <div
                 key={reel._id}
-                className="flex-shrink-0 snap-center w-[230px] sm:w-[320px] lg:w-[calc((100%-3*1.75rem)/4)]"
+                className="flex-shrink-0 snap-center h-full"
               >
                 {/* Gradient border frame */}
                 <div
@@ -637,7 +637,7 @@ const InstagramReelsSection = () => {
                       {shortcode ? (
                         <iframe
                           src={`https://www.instagram.com/reel/${shortcode}/embed`}
-                          className="absolute inset-0 w-full h-full border-0 rounded-none"
+                          className="absolute inset-0 h-full border-0 rounded-none"
                           scrolling="no"
                           allowFullScreen
                           allowtransparency="true"
@@ -1316,7 +1316,7 @@ export const Home = () => {
                 Pioneered by Sham SK — a systematic engine that warms audiences before scaling ad spend, ensuring maximum ROAS.
               </p>
 
-              <div className="space-y-2 sm:space-y-3">
+              <div className="space-y-2 sm:space-y-3 sm:mx-4 mx-5">
                 {[
                   { l: 'A', t: 'Attract', d: 'Draw in your exact audience through high-intent content and discovery.' },
                   { l: 'P', t: 'Pull', d: 'Engage prospects deeply within a curated brand ecosystem.' },
@@ -1525,7 +1525,7 @@ export const Home = () => {
                 <img
                   src="assets/home/clickup.jpg"
                   alt="ClickUp"
-                  className="w-full max-w-[320px] object-contain mb-6"
+                  className="h-full max-w-[320px] object-contain"
                 />
 
                 {/* CONTENT */}
