@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Search, X } from "lucide-react";
+import { BASE_URL } from "@/utils/urls";
 
 const Partnership = () => {
   // Sample portfolio data

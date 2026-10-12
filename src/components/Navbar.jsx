@@ -128,27 +128,27 @@ export default function Navbar() {
       items: [
         {
           label: "Google Ads Management",
-          href: "/google-ads-agency-in-kochi",
+          href: "https://admanager.google.com/home",
         },
         {
           label: "Meta Ads Management",
-          href: "/meta-ads-agency-in-kochi",
+          href: "https://www.facebook.com/business/tools/ads-manager",
         },
         {
           label: "LinkedIn Ads",
-          href: "/linkedin-ads-agency-in-kochi",
+          href: "https://business.linkedin.com/advertise/ads-i",
         },
         {
           label: "YouTube Advertising",
-          href: "/youtube-ads-agency-in-kochi",
+          href: "https://business.google.com/in/ad-solutions/youtube-ads",
         },
         {
           label: "Amazon Ads",
-          href: "/amazon-ads-agency-in-kochi",
+          href: "https://advertising.amazon.com",
         },
         {
           label: "Programmatic Advertising",
-          href: "/programmatic-advertising-agency-in-kochi",
+          href: "https://advertising.amazon.com/blog/programmatic-advertising",
         },
       ],
     },
@@ -162,19 +162,19 @@ export default function Navbar() {
         },
         {
           label: "Marketing Automation",
-          href: "/marketing-automation-agency-in-kochi",
+          href: "/",
         },
         {
           label: "Conversion Rate Optimization (CRO)",
-          href: "/cro-agency-in-kochi",
+          href: "/",
         },
         {
           label: "Landing Page Optimization",
-          href: "/landing-page-optimization",
+          href: "/",
         },
         {
           label: "Analytics & Reporting",
-          href: "/marketing-analytics-dashboard",
+          href: "/",
         },
       ],
     },
