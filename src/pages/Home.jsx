@@ -462,12 +462,9 @@ const InstagramReelsSection = () => {
     const container = scrollRef.current;
     const card = container.children[idx];
     if (card) {
-      const cardOffsetLeft = card.offsetLeft;
-      const cardWidth = card.clientWidth;
-      const containerWidth = container.clientWidth;
-      
-      // Calculate target scrollLeft to center the card horizontally
-      const targetScrollLeft = cardOffsetLeft - (containerWidth / 2) + (cardWidth / 2);
+      const cardCenter = card.getBoundingClientRect().left + card.clientWidth / 2;
+      const containerCenter = container.getBoundingClientRect().left + container.clientWidth / 2;
+      const targetScrollLeft = container.scrollLeft + cardCenter - containerCenter;
       
       container.scrollTo({
         left: targetScrollLeft,
@@ -493,11 +490,14 @@ const InstagramReelsSection = () => {
   }, [reels, isHovered]);
   const handleScroll = () => {
     if (!scrollRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-    const maxScroll = scrollWidth - clientWidth;
-    if (maxScroll <= 0) return;
-    const idx = Math.round((scrollLeft / maxScroll) * (reels.length - 1));
-    setActiveIdx(Math.max(0, Math.min(idx, reels.length - 1)));
+    const container = scrollRef.current;
+    const containerCenter = container.getBoundingClientRect().left + container.clientWidth / 2;
+    const nearestIndex = Array.from(container.children).reduce((nearest, card, index) => {
+      const cardCenter = card.getBoundingClientRect().left + card.clientWidth / 2;
+      const nearestCenter = container.children[nearest].getBoundingClientRect().left + container.children[nearest].clientWidth / 2;
+      return Math.abs(cardCenter - containerCenter) < Math.abs(nearestCenter - containerCenter) ? index : nearest;
+    }, 0);
+    setActiveIdx(nearestIndex);
   };
 
   if (reels.length === 0) return null;
@@ -573,14 +573,14 @@ const InstagramReelsSection = () => {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           className="flex gap-5 sm:gap-7 overflow-x-auto pb-6 snap-x snap-mandatory"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch', paddingInline: 'max(0px, calc((100% - min(78vw, 300px)) / 2))' }}
         >
           {reels.map((reel, i) => {
             const shortcode = getReelShortcode(reel.url);
             return (
               <div
                 key={reel._id}
-                className="flex-shrink-0 snap-center h-full"
+                className="w-[min(78vw,300px)] flex-shrink-0 snap-center"
               >
                 {/* Gradient border frame */}
                 <div
@@ -633,11 +633,11 @@ const InstagramReelsSection = () => {
                     </div>
 
                     {/* Instagram embed iframe */}
-                    <div className="relative aspect-[9/16] bg-black overflow-hidden flex items-center justify-center">
+                    <div className="relative aspect-[9/16] w-full bg-black overflow-hidden flex items-center justify-center">
                       {shortcode ? (
                         <iframe
                           src={`https://www.instagram.com/reel/${shortcode}/embed`}
-                          className="absolute inset-0 h-full border-0 rounded-none"
+                          className="absolute inset-0 w-full h-full border-0 rounded-none"
                           scrolling="no"
                           allowFullScreen
                           allowtransparency="true"
