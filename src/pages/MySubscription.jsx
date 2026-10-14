@@ -25,6 +25,7 @@ const STATUS_META = {
   halted: { label: "Failed", color: "#EF4444", bg: "bg-red-100", text: "text-red-800", icon: AlertTriangle },
   paused: { label: "Paused", color: "#6B7280", bg: "bg-gray-200", text: "text-gray-800", icon: PauseCircle },
   cancelled: { label: "Cancelled", color: "#EF4444", bg: "bg-red-100", text: "text-red-800", icon: XCircle },
+  canceled: { label: "Canceled", color: "#EF4444", bg: "bg-red-100", text: "text-red-800", icon: XCircle },
   completed: { label: "Completed", color: "#3B82F6", bg: "bg-blue-100", text: "text-blue-800", icon: CheckCircle2 },
   expired: { label: "Expired", color: "#6B7280", bg: "bg-gray-200", text: "text-gray-800", icon: XCircle },
 };
@@ -130,7 +131,7 @@ function SubscriptionCard({ subscription, history, onChanged }) {
           </div>
         </div>
 
-        {["created", "authenticated", "pending"].includes(subscription.status) && (
+        {!subscription.isExternal && ["created", "authenticated", "pending"].includes(subscription.status) && (
           <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <p className="text-sm text-yellow-800">
               Your card mandate isn't authorized yet. Complete setup to activate automatic monthly billing.
@@ -326,8 +327,8 @@ export default function MySubscription() {
         <section className="mt-8" aria-labelledby="my-payment-links-heading">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-4">
             <div>
-              <h2 id="my-payment-links-heading" className="text-xl font-bold text-gray-900">One-Time Payments</h2>
-              <p className="text-sm text-gray-600 mt-1">Payments made through Razorpay Payment Links</p>
+              <h2 id="my-payment-links-heading" className="text-xl font-bold text-gray-900">Payment Links & Transactions</h2>
+              <p className="text-sm text-gray-600 mt-1">Payment link status and associated payments</p>
             </div>
             {!paymentLinkError && <p className="text-sm text-gray-500">{paymentLinkTotal} transactions</p>}
           </div>
@@ -370,13 +371,13 @@ export default function MySubscription() {
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-700 capitalize">{transaction.method || "—"}</td>
                           <td className="px-4 py-3 text-sm">
-                            <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold capitalize ${transaction.status === "captured" ? "bg-green-100 text-green-800" : transaction.status === "failed" ? "bg-red-100 text-red-800" : "bg-gray-100 text-gray-700"}`}>
+                            <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold capitalize ${transaction.status === "captured" ? "bg-green-100 text-green-800" : transaction.status === "cancelled" ? "bg-red-100 text-red-800" : "bg-gray-100 text-gray-700"}`}>
                               {transaction.status}
                             </span>
                             {transaction.failureReason && <div className="mt-1 max-w-48 text-xs text-red-700">{transaction.failureReason}</div>}
                           </td>
                           <td className="px-4 py-3 text-xs text-gray-600">
-                            <div className="font-mono break-all">{transaction.razorpayPaymentId}</div>
+                            <div className="font-mono break-all">{transaction.razorpayPaymentId || "—"}</div>
                             <div className="mt-1 font-mono break-all text-gray-400">{transaction.razorpayPaymentLinkId}</div>
                           </td>
                         </tr>
@@ -399,7 +400,7 @@ export default function MySubscription() {
                       </div>
                       <p className="mt-3 text-lg font-bold text-gray-900">{transaction.currency || "INR"} {Number(transaction.amount).toLocaleString("en-IN")}</p>
                       <p className="mt-1 text-sm text-gray-600 capitalize">{transaction.method || "Payment method unavailable"}</p>
-                      <p className="mt-2 text-xs text-gray-500 break-all">Payment ID: {transaction.razorpayPaymentId}</p>
+                      <p className="mt-2 text-xs text-gray-500 break-all">Payment ID: {transaction.razorpayPaymentId || "—"}</p>
                       <p className="text-xs text-gray-500 break-all">Payment Link ID: {transaction.razorpayPaymentLinkId}</p>
                       {transaction.failureReason && <p className="mt-1 text-xs text-red-700">{transaction.failureReason}</p>}
                     </article>
