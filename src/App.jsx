@@ -90,6 +90,8 @@ const MyResumePurchasesPage = lazy(() => import("./pages/ResumeMarketplace/MyPur
 const ResumeMarketplaceAdmin = lazy(() => import("./pages/admin/ResumeMarketplaceAdmin"));
 const DynamicReportsAdmin = lazy(() => import("./pages/admin/DynamicReportsAdmin"));
 const DynamicReportPage = lazy(() => import("./pages/DynamicReportPage"));
+const CampaignBooking = lazy(() => import("./pages/CampaignBooking"));
+const CampaignAdmin = lazy(() => import("./pages/CampaignAdmin"));
 const ResetPassword = lazy(() =>
 
   import("./pages/ForgetPassword").then((module) => ({
@@ -468,6 +470,7 @@ function App() {
               }
             />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/youtube-campaign" element={<CampaignBooking />} />
             <Route path="/events" element={<Events />} />
             <Route
               path="/events/manage"
@@ -573,6 +576,7 @@ function App() {
                 </AdminRoute>
               }
             />
+            <Route path="/admin/youtube-campaigns" element={<AdminRoute><CampaignAdmin /></AdminRoute>} />
             <Route
               path="/admin/posters"
               element={
