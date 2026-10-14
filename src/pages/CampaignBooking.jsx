@@ -4,18 +4,21 @@ import { ArrowLeft, ArrowRight, Check, CircleAlert, Clock3, CreditCard, LoaderCi
 import "../styles/campaigns.css";
 
 const initialForm = {
-  channelName: "", channelId: "", channelUrl: "", campaignStartAt: "", durationHours: "1", durationMinutes: "0",
-  requestedViews: "10000", campaignType: "Basic", videoTitle: "", seoKeywords: "", videoTags: "", videoDescription: "", t1: "", t2: "", t3: "", clientNotes: "",
+  clientName: "", clientEmail: "", channelName: "", channelId: "", channelUrl: "", campaignStartAt: "", durationHours: "1", durationMinutes: "0",
+  requestedViews: "10000", customViews: "", campaignType: "Basic", videoTitle: "", seoKeywords: "", videoTags: "", videoDescription: "", t1: "", t2: "", t3: "", clientNotes: "",
 };
 const money = (value) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(value);
+const viewsOf = (form) => Number(form.requestedViews === "custom" ? form.customViews : form.requestedViews);
+const durationOf = (form) => Number(form.durationHours) * 60 + Number(form.durationMinutes);
 
-function getEstimate(views, type, config) {
-  const baseAmount = Number(views) / 1000 * config.rates[type];
-  const campaignGst = Math.round(baseAmount * config.gstRate) / 100;
-  const subtotal = baseAmount + campaignGst;
-  const estimatedRazorpayFee = Math.round(subtotal * config.razorpayFeeRate) / 100;
-  const estimatedRazorpayFeeGst = Math.round(estimatedRazorpayFee * config.gstRate) / 100;
-  return { baseAmount, campaignGst, subtotal, estimatedRazorpayFee, estimatedRazorpayFeeGst, total: subtotal + estimatedRazorpayFee + estimatedRazorpayFeeGst };
+function getEstimate(views, durationMinutes, type, config) {
+  const cents = (value) => Math.round(value * 100) / 100;
+  const baseAmount = cents(config.rates[type] * (views / 1000) * durationMinutes / 60);
+  const campaignGst = cents(baseAmount * config.gstRate / 100);
+  const subtotal = cents(baseAmount + campaignGst);
+  const estimatedRazorpayFee = cents(subtotal * config.razorpayFeeRate / 100);
+  const estimatedRazorpayFeeGst = cents(estimatedRazorpayFee * config.gstRate / 100);
+  return { baseAmount, campaignGst, subtotal, estimatedRazorpayFee, estimatedRazorpayFeeGst, total: cents(subtotal + estimatedRazorpayFee + estimatedRazorpayFeeGst) };
 }
 
 async function loadCheckout() {
@@ -50,19 +53,27 @@ export default function CampaignBooking() {
       setPricingConfig(config);
     }).catch((error) => setPricingError(error.message));
   }, []);
-  const pricing = pricingConfig ? getEstimate(form.requestedViews, form.campaignType, pricingConfig) : null;
+  const duration = durationOf(form);
+  const durationValid = Number.isInteger(duration) && duration >= 1 && duration <= 1440 && Number(form.durationMinutes) >= 0 && Number(form.durationMinutes) <= 59;
+  const pricing = pricingConfig && durationValid && Number.isInteger(viewsOf(form)) && viewsOf(form) >= 1000 ? getEstimate(viewsOf(form), duration, form.campaignType, pricingConfig) : null;
   const minStart = new Date(Date.now() + 30 * 60 * 1000);
   minStart.setMinutes(minStart.getMinutes() - minStart.getTimezoneOffset());
   const localStart = form.campaignStartAt ? new Date(form.campaignStartAt).toLocaleString() : "Not selected";
+  const endAt = form.campaignStartAt && durationValid ? new Date(new Date(form.campaignStartAt).getTime() + duration * 60 * 1000) : null;
+  const localEnd = endAt && Number.isFinite(endAt.getTime()) ? endAt.toLocaleString() : "Select start time and duration";
 
   const update = (event) => setForm((previous) => ({ ...previous, [event.target.name]: event.target.value }));
   const validate = () => {
     const channelUrl = /^https?:\/\/(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?v=|live\/|shorts\/|embed\/)|youtu\.be\/)[\w-]{6,}/i;
+    if (!form.clientName.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.clientEmail.trim())) return "Enter your name and a valid email.";
     if (!form.channelName.trim() || !form.channelId.trim() || !form.channelUrl.trim() || !form.campaignStartAt) return "Complete each required campaign detail.";
     if (!channelUrl.test(form.channelUrl.trim())) return "Enter a valid YouTube video or live URL.";
     if (new Date(form.campaignStartAt).getTime() < Date.now() + 30 * 60 * 1000) return "Choose a start time at least 30 minutes from now.";
-    const duration = Number(form.durationHours) * 60 + Number(form.durationMinutes);
-    if (duration < 1 || duration > 1440 || Number(form.durationMinutes) > 59) return "Campaign duration must be between one minute and 24 hours.";
+    if (!durationValid) return "Campaign duration must be between one minute and 24 hours.";
+    const views = viewsOf(form);
+    const maxViews = pricingConfig?.maxViews?.[form.campaignType] || 20000;
+    if (!Number.isInteger(views) || views < 1000) return "Requested views must be at least 1,000.";
+    if (views > maxViews) return `Above ${maxViews.toLocaleString("en-IN")} views for ${form.campaignType} needs a custom rate. Please contact SocialBureau.`;
     return "";
   };
 
@@ -125,10 +136,11 @@ export default function CampaignBooking() {
       const payload = {
         ...form,
         campaignStartAt: new Date(form.campaignStartAt).toISOString(),
-        durationMinutes: Number(form.durationHours) * 60 + Number(form.durationMinutes),
-        requestedViews: Number(form.requestedViews),
+        durationMinutes: duration,
+        requestedViews: viewsOf(form),
       };
       delete payload.durationHours;
+      delete payload.customViews;
       const response = await fetch(`${BASE_URL}/api/campaigns`, {
         method: "POST", credentials: "include", headers: { "Content-Type": "application/json", "Idempotency-Key": idempotencyKey.current },
         body: JSON.stringify(payload),
@@ -147,7 +159,19 @@ export default function CampaignBooking() {
   if (result?.kind === "success") return <main className="campaign-shell"><section className="campaign-result campaign-success"><Check /><p className="campaign-kicker">PAYMENT VERIFIED</p><h1>Your campaign is booked.</h1><p>Booking {result.campaign?.bookingId} is paid and awaiting SocialBureau's campaign review before scheduling.</p><span className="campaign-status">Paid · Pending review</span></section></main>;
 
   return <main className="campaign-shell">
-    <header className="campaign-masthead"><div><p className="campaign-kicker">SOCIALBUREAU / YOUTUBE</p><h1>Campaign booking</h1><p>Plan a paid YouTube promotion campaign. All bookings are reviewed before scheduling.</p></div><div className="campaign-secure"><ShieldCheck size={18} /> Secure checkout <span>INR</span></div></header>
+    <header className="campaign-masthead"><div><p className="campaign-kicker flex items-center whitespace-nowrap">
+  SOCIALBUREAU / YOUTUBE
+  <img
+    src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-ads-icon.png"
+    alt="Google Ads Logo"
+    className="h-6 w-auto px-1"
+  />
+  <img
+    src="https://static.vecteezy.com/system/resources/previews/023/986/704/non_2x/youtube-logo-youtube-logo-transparent-youtube-icon-transparent-free-free-png.png"
+    alt="YouTube Logo"
+    className="h-10 w-10"
+  />
+</p><h1>Campaign booking</h1><p>Plan a paid YouTube promotion campaign. All bookings are reviewed before scheduling.</p></div><div className="campaign-secure"><ShieldCheck size={18} /> Secure checkout <span>INR</span></div></header>
     {result && <section className={`campaign-notice ${result.kind}`} role="status"><CircleAlert size={18} /><div><strong>{result.kind === "pending" ? "Payment verification pending" : "Payment not completed"}</strong><p>{message || (result.kind === "pending" ? "Your booking is saved. Check again or retry payment." : "Your booking is saved and no payment was recorded.")}</p>{booking && <button type="button" className="campaign-button campaign-button-primary" onClick={() => openPayment()} disabled={busy}>{busy ? <LoaderCircle className="spin" /> : <CreditCard size={16} />} Retry payment</button>}</div></section>}
     <div className="campaign-layout">
       <form className="campaign-form" onSubmit={submitBooking}>
@@ -155,13 +179,16 @@ export default function CampaignBooking() {
         <fieldset disabled={review || busy || Boolean(booking)}>
           <section className="campaign-section"><div className="campaign-section-title"><span>01</span><div><h2>Campaign details</h2><p>Tell us what to promote and when.</p></div></div>
             <div className="campaign-grid">
+              <Field label="Client name" required><input name="clientName" value={form.clientName} onChange={update} required maxLength={160} /></Field>
+              <Field label="Client email" required><input name="clientEmail" type="email" value={form.clientEmail} onChange={update} required maxLength={254} /></Field>
               <Field label="YouTube channel name" required><input name="channelName" value={form.channelName} onChange={update} required maxLength={160} /></Field>
               <Field label="YouTube channel ID" required><input name="channelId" value={form.channelId} onChange={update} required maxLength={100} /></Field>
               <Field label="Channel live or video URL" required><input name="channelUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." value={form.channelUrl} onChange={update} required /></Field>
               <Field label="Campaign start (your local time)" required hint={<>Times are saved in UTC. Earliest start: {minStart.toLocaleString()}</>}><input type="datetime-local" name="campaignStartAt" min={minStart.toISOString().slice(0, 16)} value={form.campaignStartAt} onChange={update} required /></Field>
               <Field label="Duration"><div className="campaign-duration"><input aria-label="Hours" type="number" min="0" max="24" value={form.durationHours} onChange={(event) => setForm({ ...form, durationHours: event.target.value })} /><span>hours</span><input aria-label="Minutes" type="number" min="0" max="59" value={form.durationMinutes} onChange={(event) => setForm({ ...form, durationMinutes: event.target.value })} /><span>minutes</span></div></Field>
-              <Field label="Requested views"><select name="requestedViews" value={form.requestedViews} onChange={update}>{Array.from({ length: 10 }, (_, index) => (index + 1) * 10000).map((views) => <option key={views} value={views}>{views.toLocaleString("en-IN")} views</option>)}</select></Field>
+              <Field label="Requested views" hint="Price = rate × views/1,000 × hours."><select name="requestedViews" value={form.requestedViews} onChange={update}>{Array.from({ length: 10 }, (_, index) => (index + 1) * 10000).filter((views) => views <= (pricingConfig?.maxViews?.[form.campaignType] || 20000)).map((views) => <option key={views} value={views}>{views.toLocaleString("en-IN")} views</option>)}<option value="custom">Custom</option></select>{form.requestedViews === "custom" && <input name="customViews" type="number" min="1000" max={pricingConfig?.maxViews?.[form.campaignType]} step="1" placeholder="Enter views" value={form.customViews} onChange={update} required />}</Field>
               <Field label="Campaign type"><select name="campaignType" value={form.campaignType} onChange={update}><option>Basic</option><option>Age-Restricted</option></select></Field>
+              <div className="campaign-endtime"><Clock3 size={17} /><span>Expected end: <b>{localEnd}</b> (local time)</span></div>
               <div className="campaign-policy"><Clock3 size={17} /><span>Bookings require at least 30 minutes' notice. Campaigns are subject to policy review; views and rankings are not guaranteed.</span></div>
             </div>
           </section>
@@ -171,18 +198,22 @@ export default function CampaignBooking() {
               <Field label="SEO keywords"><textarea name="seoKeywords" value={form.seoKeywords} onChange={update} rows="3" maxLength={5000} placeholder="Enter keywords as you want them preserved" /></Field>
               <Field label="Video tags"><textarea name="videoTags" value={form.videoTags} onChange={update} rows="3" maxLength={5000} /></Field>
               <Field label="Video description"><textarea name="videoDescription" value={form.videoDescription} onChange={update} rows="4" maxLength={10000} /></Field>
+            <div className="campaign-grid campaign-grid-t">
               <Field label="T1"><input name="t1" value={form.t1} onChange={update} maxLength={2000} /></Field>
               <Field label="T2"><input name="t2" value={form.t2} onChange={update} maxLength={2000} /></Field>
               <Field label="T3"><input name="t3" value={form.t3} onChange={update} maxLength={2000} /></Field>
+            </div>
+            <div className="campaign-grid">
               <Field label="Additional campaign notes"><textarea name="clientNotes" value={form.clientNotes} onChange={update} rows="4" maxLength={5000} /></Field>
+            </div>
             </div>
           </section>
         </fieldset>
-        {review && <section className="campaign-review-details"><h2>Booking review</h2><dl><dt>Channel</dt><dd>{form.channelName} · {form.channelId}</dd><dt>Video / live URL</dt><dd>{form.channelUrl}</dd><dt>Start</dt><dd>{localStart} (local time)</dd><dt>Duration</dt><dd>{form.durationHours}h {form.durationMinutes}m</dd><dt>Views / type</dt><dd>{Number(form.requestedViews).toLocaleString("en-IN")} · {form.campaignType}</dd></dl></section>}
+        {review && <section className="campaign-review-details"><h2>Booking review</h2><dl><dt>Client</dt><dd>{form.clientName} · {form.clientEmail}</dd><dt>Channel</dt><dd>{form.channelName} · {form.channelId}</dd><dt>Video / live URL</dt><dd>{form.channelUrl}</dd><dt>Start</dt><dd>{localStart} (local time)</dd><dt>Duration</dt><dd>{form.durationHours}h {form.durationMinutes}m</dd><dt>Expected end</dt><dd>{localEnd} (local time)</dd><dt>Views / type</dt><dd>{viewsOf(form).toLocaleString("en-IN")} · {form.campaignType}</dd></dl></section>}
         {message && !result && <p className="campaign-error" role="alert"><CircleAlert size={16} /> {message}</p>}
         <div className="campaign-submit-row"><span><CreditCard size={16} /> Full payment upfront · no partial payments</span><button className="campaign-button campaign-button-primary" type="submit" disabled={busy || !pricing}>{busy ? <LoaderCircle className="spin" /> : review || booking ? <><CreditCard size={16} /> Proceed to payment</> : <>Review booking <ArrowRight size={16} /></>}</button></div>
       </form>
-      <aside className="campaign-price-panel"><div className="price-panel-heading"><span>ESTIMATED TOTAL</span><b>{pricing ? money(pricing.total) : "Loading"}</b><p>INR · full payment upfront</p></div>{pricing ? <div className="price-panel-body"><div><span>{Number(form.requestedViews).toLocaleString("en-IN")} views × {money(pricingConfig.rates[form.campaignType])} / 1,000</span><b>{money(pricing.baseAmount)}</b></div><div><span>Campaign GST ({pricingConfig.gstRate}%)</span><b>{money(pricing.campaignGst)}</b></div><div className="price-subtotal"><span>Subtotal</span><b>{money(pricing.subtotal)}</b></div><div><span>Estimated payment processing ({pricingConfig.razorpayFeeRate}%)</span><b>{money(pricing.estimatedRazorpayFee)}</b></div><div><span>GST on processing fee ({pricingConfig.gstRate}%)</span><b>{money(pricing.estimatedRazorpayFeeGst)}</b></div></div> : <div className="price-panel-body">{pricingError || "Loading current campaign rates..."}</div>}<div className="price-panel-foot"><ShieldCheck size={17} /><p>Processing charges are estimated. Final order amount is calculated and confirmed by our server.</p></div></aside>
+      <aside className="campaign-price-panel"><div className="price-panel-heading"><span>ESTIMATED TOTAL</span><b>{pricing ? money(pricing.total) : pricingConfig ? "—" : "Loading"}</b><p>INR · full payment upfront</p></div>{pricing ? <div className="price-panel-body"><div><span>{(viewsOf(form) / 1000).toLocaleString("en-IN")}k views × {(duration / 60).toFixed(2)} h × {money(pricingConfig.rates[form.campaignType])} / 1,000 views / hour</span><b>{money(pricing.baseAmount)}</b></div><div><span>Campaign GST ({pricingConfig.gstRate}%)</span><b>{money(pricing.campaignGst)}</b></div><div className="price-subtotal"><span>Subtotal</span><b>{money(pricing.subtotal)}</b></div><div><span>Estimated payment processing ({pricingConfig.razorpayFeeRate}%)</span><b>{money(pricing.estimatedRazorpayFee)}</b></div><div><span>GST on processing fee ({pricingConfig.gstRate}%)</span><b>{money(pricing.estimatedRazorpayFeeGst)}</b></div></div> : <div className="price-panel-body">{pricingError || (pricingConfig ? "Enter valid views (1,000 or more) and a duration to see the price." : "Loading current campaign rates...")}</div>}<div className="price-panel-foot"><ShieldCheck size={17} /><p>Processing charges are estimated. Final order amount is calculated and confirmed by our server.</p></div></aside>
     </div>
     <footer className="campaign-footer-note">Age-Restricted is an internal campaign category and does not imply YouTube advertising policy approval.</footer>
   </main>;
