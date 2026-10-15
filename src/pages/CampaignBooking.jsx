@@ -10,6 +10,10 @@ const initialForm = {
 const money = (value) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(value);
 const viewsOf = (form) => Number(form.requestedViews === "custom" ? form.customViews : form.requestedViews);
 const durationOf = (form) => Number(form.durationHours) * 60 + Number(form.durationMinutes);
+const IST_OFFSET = "+05:30";
+const parseIST = (value) => new Date(`${value}${IST_OFFSET}`);
+const formatIST = (value) => new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
+const toISTInputValue = (value) => new Date(new Date(value).getTime() + 330 * 60 * 1000).toISOString().slice(0, 16);
 
 function getEstimate(views, durationMinutes, type, config) {
   const cents = (value) => Math.round(value * 100) / 100;
@@ -18,7 +22,9 @@ function getEstimate(views, durationMinutes, type, config) {
   const subtotal = cents(baseAmount + campaignGst);
   const estimatedRazorpayFee = cents(subtotal * config.razorpayFeeRate / 100);
   const estimatedRazorpayFeeGst = cents(estimatedRazorpayFee * config.gstRate / 100);
-  return { baseAmount, campaignGst, subtotal, estimatedRazorpayFee, estimatedRazorpayFeeGst, total: cents(subtotal + estimatedRazorpayFee + estimatedRazorpayFeeGst) };
+  // TEST OVERRIDE (revert after testing): restore the commented total and delete the TEST line.
+  // return { baseAmount, campaignGst, subtotal, estimatedRazorpayFee, estimatedRazorpayFeeGst, total: cents(subtotal + estimatedRazorpayFee + estimatedRazorpayFeeGst) };
+  return { baseAmount, campaignGst, subtotal, estimatedRazorpayFee, estimatedRazorpayFeeGst, total: 2 }; // TEST
 }
 
 async function loadCheckout() {
@@ -56,11 +62,11 @@ export default function CampaignBooking() {
   const duration = durationOf(form);
   const durationValid = Number.isInteger(duration) && duration >= 1 && duration <= 1440 && Number(form.durationMinutes) >= 0 && Number(form.durationMinutes) <= 59;
   const pricing = pricingConfig && durationValid && Number.isInteger(viewsOf(form)) && viewsOf(form) >= 1000 ? getEstimate(viewsOf(form), duration, form.campaignType, pricingConfig) : null;
-  const minStart = new Date(Date.now() + 30 * 60 * 1000);
-  minStart.setMinutes(minStart.getMinutes() - minStart.getTimezoneOffset());
-  const localStart = form.campaignStartAt ? new Date(form.campaignStartAt).toLocaleString() : "Not selected";
-  const endAt = form.campaignStartAt && durationValid ? new Date(new Date(form.campaignStartAt).getTime() + duration * 60 * 1000) : null;
-  const localEnd = endAt && Number.isFinite(endAt.getTime()) ? endAt.toLocaleString() : "Select start time and duration";
+  const minStart = toISTInputValue(Date.now() + 30 * 60 * 1000);
+  const startAt = form.campaignStartAt ? parseIST(form.campaignStartAt) : null;
+  const localStart = startAt ? formatIST(startAt) : "Not selected";
+  const endAt = startAt && durationValid ? new Date(startAt.getTime() + duration * 60 * 1000) : null;
+  const localEnd = endAt && Number.isFinite(endAt.getTime()) ? formatIST(endAt) : "Select start time and duration";
 
   const update = (event) => setForm((previous) => ({ ...previous, [event.target.name]: event.target.value }));
   const validate = () => {
@@ -68,7 +74,7 @@ export default function CampaignBooking() {
     if (!form.clientName.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.clientEmail.trim())) return "Enter your name and a valid email.";
     if (!form.channelName.trim() || !form.channelId.trim() || !form.channelUrl.trim() || !form.campaignStartAt) return "Complete each required campaign detail.";
     if (!channelUrl.test(form.channelUrl.trim())) return "Enter a valid YouTube video or live URL.";
-    if (new Date(form.campaignStartAt).getTime() < Date.now() + 30 * 60 * 1000) return "Choose a start time at least 30 minutes from now.";
+    if (parseIST(form.campaignStartAt).getTime() < Date.now() + 30 * 60 * 1000) return "Choose a start time at least 30 minutes from now (IST).";
     if (!durationValid) return "Campaign duration must be between one minute and 24 hours.";
     const views = viewsOf(form);
     const maxViews = pricingConfig?.maxViews?.[form.campaignType] || 20000;
@@ -135,7 +141,7 @@ export default function CampaignBooking() {
     try {
       const payload = {
         ...form,
-        campaignStartAt: new Date(form.campaignStartAt).toISOString(),
+        campaignStartAt: parseIST(form.campaignStartAt).toISOString(),
         durationMinutes: duration,
         requestedViews: viewsOf(form),
       };
@@ -156,7 +162,7 @@ export default function CampaignBooking() {
     }
   };
 
-  if (result?.kind === "success") return <main className="campaign-shell"><section className="campaign-result campaign-success"><Check /><p className="campaign-kicker">PAYMENT VERIFIED</p><h1>Your campaign is booked.</h1><p>Booking {result.campaign?.bookingId} is paid and awaiting SocialBureau's campaign review before scheduling.</p><span className="campaign-status">Paid · Pending review</span></section></main>;
+  if (result?.kind === "success") return <main className="campaign-shell"><section className="campaign-result campaign-success"><Check /><p className="campaign-kicker">PAYMENT VERIFIED</p><h1>Your campaign is booked.</h1><p>Booking {result.campaign?.bookingId} is paid and awaiting SocialBureau's campaign review before scheduling.</p><span className="campaign-status">Paid · Pending review</span><p>Your invoice is being emailed. Logged-in clients can also find it under <a href="/my-invoices">My Invoices</a>.</p></section></main>;
 
   return <main className="campaign-shell">
     <header className="campaign-masthead"><div><p className="campaign-kicker flex items-center whitespace-nowrap">
@@ -179,16 +185,16 @@ export default function CampaignBooking() {
         <fieldset disabled={review || busy || Boolean(booking)}>
           <section className="campaign-section"><div className="campaign-section-title"><span>01</span><div><h2>Campaign details</h2><p>Tell us what to promote and when.</p></div></div>
             <div className="campaign-grid">
-              <Field label="Client name" required><input name="clientName" value={form.clientName} onChange={update} required maxLength={160} /></Field>
-              <Field label="Client email" required><input name="clientEmail" type="email" value={form.clientEmail} onChange={update} required maxLength={254} /></Field>
+              <Field label="Name" required><input name="clientName" value={form.clientName} onChange={update} required maxLength={160} /></Field>
+              <Field label="Email" required><input name="clientEmail" type="email" value={form.clientEmail} onChange={update} required maxLength={254} /></Field>
               <Field label="YouTube channel name" required><input name="channelName" value={form.channelName} onChange={update} required maxLength={160} /></Field>
               <Field label="YouTube channel ID" required><input name="channelId" value={form.channelId} onChange={update} required maxLength={100} /></Field>
               <Field label="Channel live or video URL" required><input name="channelUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." value={form.channelUrl} onChange={update} required /></Field>
-              <Field label="Campaign start (your local time)" required hint={<>Times are saved in UTC. Earliest start: {minStart.toLocaleString()}</>}><input type="datetime-local" name="campaignStartAt" min={minStart.toISOString().slice(0, 16)} value={form.campaignStartAt} onChange={update} required /></Field>
+              <Field label="Campaign start (IST)" required hint={<>Times are displayed in IST (UTC+05:30). Earliest start: {minStart.replace("T", " ")} IST</>}><input type="datetime-local" name="campaignStartAt" min={minStart} value={form.campaignStartAt} onChange={update} required /></Field>
               <Field label="Duration"><div className="campaign-duration"><input aria-label="Hours" type="number" min="0" max="24" value={form.durationHours} onChange={(event) => setForm({ ...form, durationHours: event.target.value })} /><span>hours</span><input aria-label="Minutes" type="number" min="0" max="59" value={form.durationMinutes} onChange={(event) => setForm({ ...form, durationMinutes: event.target.value })} /><span>minutes</span></div></Field>
               <Field label="Requested views" hint="Price = rate × views/1,000 × hours."><select name="requestedViews" value={form.requestedViews} onChange={update}>{Array.from({ length: 10 }, (_, index) => (index + 1) * 10000).filter((views) => views <= (pricingConfig?.maxViews?.[form.campaignType] || 20000)).map((views) => <option key={views} value={views}>{views.toLocaleString("en-IN")} views</option>)}<option value="custom">Custom</option></select>{form.requestedViews === "custom" && <input name="customViews" type="number" min="1000" max={pricingConfig?.maxViews?.[form.campaignType]} step="1" placeholder="Enter views" value={form.customViews} onChange={update} required />}</Field>
               <Field label="Campaign type"><select name="campaignType" value={form.campaignType} onChange={update}><option>Basic</option><option>Age-Restricted</option></select></Field>
-              <div className="campaign-endtime"><Clock3 size={17} /><span>Expected end: <b>{localEnd}</b> (local time)</span></div>
+              <div className="campaign-endtime"><Clock3 size={17} /><span>Expected end: <b>{localEnd}</b> IST</span></div>
               <div className="campaign-policy"><Clock3 size={17} /><span>Bookings require at least 30 minutes' notice. Campaigns are subject to policy review; views and rankings are not guaranteed.</span></div>
             </div>
           </section>
@@ -209,7 +215,7 @@ export default function CampaignBooking() {
             </div>
           </section>
         </fieldset>
-        {review && <section className="campaign-review-details"><h2>Booking review</h2><dl><dt>Client</dt><dd>{form.clientName} · {form.clientEmail}</dd><dt>Channel</dt><dd>{form.channelName} · {form.channelId}</dd><dt>Video / live URL</dt><dd>{form.channelUrl}</dd><dt>Start</dt><dd>{localStart} (local time)</dd><dt>Duration</dt><dd>{form.durationHours}h {form.durationMinutes}m</dd><dt>Expected end</dt><dd>{localEnd} (local time)</dd><dt>Views / type</dt><dd>{viewsOf(form).toLocaleString("en-IN")} · {form.campaignType}</dd></dl></section>}
+        {review && <section className="campaign-review-details"><h2>Booking review</h2><dl><dt>Client</dt><dd>{form.clientName} · {form.clientEmail}</dd><dt>Channel</dt><dd>{form.channelName} · {form.channelId}</dd><dt>Video / live URL</dt><dd>{form.channelUrl}</dd><dt>Start</dt><dd>{localStart} IST</dd><dt>Duration</dt><dd>{form.durationHours}h {form.durationMinutes}m</dd><dt>Expected end</dt><dd>{localEnd} IST</dd><dt>Views / type</dt><dd>{viewsOf(form).toLocaleString("en-IN")} · {form.campaignType}</dd></dl></section>}
         {message && !result && <p className="campaign-error" role="alert"><CircleAlert size={16} /> {message}</p>}
         <div className="campaign-submit-row"><span><CreditCard size={16} /> Full payment upfront · no partial payments</span><button className="campaign-button campaign-button-primary" type="submit" disabled={busy || !pricing}>{busy ? <LoaderCircle className="spin" /> : review || booking ? <><CreditCard size={16} /> Proceed to payment</> : <>Review booking <ArrowRight size={16} /></>}</button></div>
       </form>

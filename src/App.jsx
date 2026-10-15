@@ -92,6 +92,7 @@ const DynamicReportsAdmin = lazy(() => import("./pages/admin/DynamicReportsAdmin
 const DynamicReportPage = lazy(() => import("./pages/DynamicReportPage"));
 const CampaignBooking = lazy(() => import("./pages/CampaignBooking"));
 const CampaignAdmin = lazy(() => import("./pages/CampaignAdmin"));
+const MyInvoices = lazy(() => import("./pages/MyInvoices"));
 const ResetPassword = lazy(() =>
 
   import("./pages/ForgetPassword").then((module) => ({
@@ -471,6 +472,7 @@ function App() {
             />
             <Route path="/contact" element={<Contact />} />
             <Route path="/youtube-campaign" element={<CampaignBooking />} />
+            <Route path="/my-invoices" element={<ProtectedRoute><MyInvoices /></ProtectedRoute>} />
             <Route path="/events" element={<Events />} />
             <Route
               path="/events/manage"
@@ -576,7 +578,7 @@ function App() {
                 </AdminRoute>
               }
             />
-            <Route path="/admin/youtube-campaigns" element={<AdminRoute><CampaignAdmin /></AdminRoute>} />
+            <Route path="/admin/youtube-campaigns" element={<AdminRoute><Navbar /><CampaignAdmin /><Footer /></AdminRoute>} />
             <Route
               path="/admin/posters"
               element={
