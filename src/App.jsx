@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes, useLocation, Link, Navigate } from "react-router-dom";
 import { ReactLenis } from "lenis/react";
@@ -28,6 +28,8 @@ import AdminPaymentDetail from "./pages/admin/AdminPaymentDetail";
 import AdminSubscriptionManagement from "./pages/admin/AdminSubscriptionManagement";
 import AdminSubscriptionDetail from "./pages/admin/AdminSubscriptionDetail";
 import ClientPayments from "./pages/ClientPayments";
+import ClientCampaignAnalytics from "./pages/ClientCampaignAnalytics";
+import ClientCampaigns from "./pages/ClientCampaigns";
 import MySubscription from "./pages/MySubscription";
 import ApiMarketingDashboard from "./pages/ApiMarketingDashboard";
 import MediaDashboard from "./pages/MediaDashboard";
@@ -472,6 +474,8 @@ function App() {
             />
             <Route path="/contact" element={<Contact />} />
             <Route path="/youtube-campaign" element={<CampaignBooking />} />
+            <Route path="/client/campaigns" element={<ProtectedRoute><ClientCampaigns /></ProtectedRoute>} />
+            <Route path="/client/campaigns/:campaignId/analytics" element={<ProtectedRoute><ClientCampaignAnalytics /></ProtectedRoute>} />
             <Route path="/my-invoices" element={<ProtectedRoute><MyInvoices /></ProtectedRoute>} />
             <Route path="/events" element={<Events />} />
             <Route

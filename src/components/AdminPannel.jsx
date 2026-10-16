@@ -17,6 +17,7 @@ const AdminPanel = () => {
         { title: "Client Dashboard", desc: "Manage client data", link: "/client-dashboard" },
         { title: "Media", desc: "Future of Media waitlist entries", link: "/media-dashboard" },
         { title: "Applications", desc: "Review candidate resumes and profiles", link: "/admin/applications" },
+        { title: "YouTube Campaigns", desc: "Review campaign bookings, payments and delivery status", link: "/admin/youtube-campaigns" },
         { title: "ClickUp Clients", desc: "Provision and manage client portals", link: "/admin/clickup-clients" },
         { title: "Lottery Claims", desc: "Process payments and cash wins for lottery spinners", link: "/admin/lottery-claims" },
         { title: "Suntips Claims", desc: "Fulfill premium tea pack prizes and shipping updates", link: "/admin/suntips-claims" },

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, ChevronRight, Trophy, User, FileText, BarChart3 } from "lucide-react";
 // eslint-disable-next-line no-unused-vars
@@ -501,6 +501,16 @@ export default function Navbar() {
                       onMouseLeave={() => setActiveDropdown(null)}
                     >
                       <div className="flex flex-col">
+                        <button
+                          onClick={() => {
+                            handleNavClick("/client/campaigns");
+                            setActiveDropdown(null);
+                          }}
+                          className="text-[13px] font-medium text-[#f5f5f7]/80 hover:text-white hover:bg-white/10 px-4 py-3 text-left transition-colors flex items-center gap-2"
+                        >
+                          <BarChart3 size={14} />
+                          My YouTube Campaigns
+                        </button>
                         {isEmployee && (
                           <button
                             onClick={() => {
@@ -533,6 +543,18 @@ export default function Navbar() {
                           >
                             <BarChart3 size={14} />
                             Manage Applications
+                          </button>
+                        )}
+                        {isAdmin && (
+                          <button
+                            onClick={() => {
+                              handleNavClick("/admin/youtube-campaigns");
+                              setActiveDropdown(null);
+                            }}
+                            className="text-[13px] font-medium text-red-500 hover:text-white hover:bg-red-600 px-4 py-3 text-left transition-colors flex items-center gap-2"
+                          >
+                            <BarChart3 size={14} />
+                            Manage YouTube Campaigns
                           </button>
                         )}
                         <div className="h-px bg-white/10" />

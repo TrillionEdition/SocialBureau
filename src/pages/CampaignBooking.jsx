@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 import { BASE_URL } from "../utils/urls";
+import { useAuth } from "../utils/authUtils";
 import { ArrowLeft, ArrowRight, Check, CircleAlert, Clock3, CreditCard, LoaderCircle, ShieldCheck } from "lucide-react";
 import "../styles/campaigns.css";
 
@@ -43,6 +45,8 @@ function Field({ label, children, hint, required }) {
 }
 
 export default function CampaignBooking() {
+  const { isAuthenticated, loading: authLoading } = useAuth();
+  const location = useLocation();
   const idempotencyKey = useRef(crypto.randomUUID());
   const [form, setForm] = useState(initialForm);
   const [review, setReview] = useState(false);
@@ -53,12 +57,13 @@ export default function CampaignBooking() {
   const [pricingConfig, setPricingConfig] = useState(null);
   const [pricingError, setPricingError] = useState("");
   useEffect(() => {
+    if (authLoading || !isAuthenticated) return;
     fetch(`${BASE_URL}/api/campaigns/pricing`).then(async (response) => {
       const config = await response.json();
       if (!response.ok) throw new Error(config.message || "Pricing is unavailable.");
       setPricingConfig(config);
     }).catch((error) => setPricingError(error.message));
-  }, []);
+  }, [authLoading, isAuthenticated]);
   const duration = durationOf(form);
   const durationValid = Number.isInteger(duration) && duration >= 1 && duration <= 1440 && Number(form.durationMinutes) >= 0 && Number(form.durationMinutes) <= 59;
   const pricing = pricingConfig && durationValid && Number.isInteger(viewsOf(form)) && viewsOf(form) >= 1000 ? getEstimate(viewsOf(form), duration, form.campaignType, pricingConfig) : null;
@@ -162,6 +167,8 @@ export default function CampaignBooking() {
     }
   };
 
+  if (authLoading) return <main className="campaign-shell" aria-live="polite"><p>Checking your session…</p></main>;
+  if (!isAuthenticated) return <Navigate to="/login" state={{ from: location }} replace />;
   if (result?.kind === "success") return <main className="campaign-shell"><section className="campaign-result campaign-success"><Check /><p className="campaign-kicker">PAYMENT VERIFIED</p><h1>Your campaign is booked.</h1><p>Booking {result.campaign?.bookingId} is paid and awaiting SocialBureau's campaign review before scheduling.</p><span className="campaign-status">Paid · Pending review</span><p>Your invoice is being emailed. Logged-in clients can also find it under <a href="/my-invoices">My Invoices</a>.</p></section></main>;
 
   return <main className="campaign-shell">
