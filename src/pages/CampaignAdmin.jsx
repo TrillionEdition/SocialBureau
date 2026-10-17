@@ -18,6 +18,10 @@ export default function CampaignAdmin() {
   const [selected, setSelected] = useState(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [rates, setRates] = useState({ Basic: "", "Age-Restricted": "" });
+  const [ratesLoading, setRatesLoading] = useState(true);
+  const [ratesSaving, setRatesSaving] = useState(false);
+  const [ratesMessage, setRatesMessage] = useState("");
 
   const load = useCallback(async () => {
     setBusy(true);
@@ -33,6 +37,39 @@ export default function CampaignAdmin() {
   }, [filters, page]);
 
   useEffect(() => { load(); }, [load]);
+
+  useEffect(() => {
+    fetch(`${BASE_URL}/api/campaigns/admin/pricing`, { credentials: "include" })
+      .then(async (response) => {
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.message || "Could not load campaign rates.");
+        setRates({ Basic: result.rates.Basic, "Age-Restricted": result.rates["Age-Restricted"] });
+      })
+      .catch((loadError) => setRatesMessage(loadError.message))
+      .finally(() => setRatesLoading(false));
+  }, []);
+
+  const updateRates = async (event) => {
+    event.preventDefault();
+    setRatesSaving(true);
+    setRatesMessage("");
+    try {
+      const response = await fetch(`${BASE_URL}/api/campaigns/admin/pricing`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rates: { Basic: Number(rates.Basic), "Age-Restricted": Number(rates["Age-Restricted"]) } }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message || "Could not update campaign rates.");
+      setRates(result.rates);
+      setRatesMessage("Campaign rates saved.");
+    } catch (updateError) {
+      setRatesMessage(updateError.message);
+    } finally {
+      setRatesSaving(false);
+    }
+  };
 
   const updateCampaign = async (bookingId, update) => {
     const response = await fetch(`${BASE_URL}/api/campaigns/admin/${encodeURIComponent(bookingId)}`, {
@@ -54,6 +91,16 @@ export default function CampaignAdmin() {
   return <main className="campaign-admin">
     <header className="campaign-admin-head"><div><p className="campaign-kicker">SOCIALBUREAU / OPERATIONS</p><h1>YouTube campaigns</h1><p>Review payments, approve eligible bookings, and manage delivery status.</p></div><button type="button" className="campaign-button campaign-button-light" onClick={exportCsv}><Download size={16} /> Export CSV</button></header>
     <section className="campaign-metrics">{summaryLabels.map(([key, label]) => <div className="campaign-metric" key={key}><span>{label}</span><strong>{key === "totalRevenue" ? money(data.summary[key]) : (data.summary[key] || 0).toLocaleString("en-IN")}</strong></div>)}</section>
+    <section className="campaign-section" aria-labelledby="campaign-rates-title">
+      <div className="campaign-section-title"><span>RATES</span><div><h2 id="campaign-rates-title">Campaign hourly rates</h2><p>Rate per 1,000 views. Updates apply to new bookings.</p></div></div>
+      <form onSubmit={updateRates}>
+        <div className="campaign-grid">
+          <label className="campaign-field">Basic (INR / hour)<input aria-label="Basic campaign hourly rate" type="number" min="0" step="0.01" required disabled={ratesLoading || ratesSaving} value={rates.Basic} onChange={(event) => setRates({ ...rates, Basic: event.target.value })} /></label>
+          <label className="campaign-field">Age-Restricted (INR / hour)<input aria-label="Age-Restricted campaign hourly rate" type="number" min="0" step="0.01" required disabled={ratesLoading || ratesSaving} value={rates["Age-Restricted"]} onChange={(event) => setRates({ ...rates, "Age-Restricted": event.target.value })} /></label>
+        </div>
+        <div className="campaign-submit-row"><span role="status">{ratesMessage}</span><button type="submit" className="campaign-button campaign-button-primary" disabled={ratesLoading || ratesSaving}>{ratesSaving ? "Saving..." : "Save rates"}</button></div>
+      </form>
+    </section>
     <section className="campaign-admin-workspace">
       <div className="campaign-list-pane">
         <div className="campaign-filters">

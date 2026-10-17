@@ -17,18 +17,6 @@ const parseIST = (value) => new Date(`${value}${IST_OFFSET}`);
 const formatIST = (value) => new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
 const toISTInputValue = (value) => new Date(new Date(value).getTime() + 330 * 60 * 1000).toISOString().slice(0, 16);
 
-function getEstimate(views, durationMinutes, type, config) {
-  const cents = (value) => Math.round(value * 100) / 100;
-  const baseAmount = cents(config.rates[type] * (views / 1000) * durationMinutes / 60);
-  const campaignGst = cents(baseAmount * config.gstRate / 100);
-  const subtotal = cents(baseAmount + campaignGst);
-  const estimatedRazorpayFee = cents(subtotal * config.razorpayFeeRate / 100);
-  const estimatedRazorpayFeeGst = cents(estimatedRazorpayFee * config.gstRate / 100);
-  // TEST OVERRIDE (revert after testing): restore the commented total and delete the TEST line.
-  // return { baseAmount, campaignGst, subtotal, estimatedRazorpayFee, estimatedRazorpayFeeGst, total: cents(subtotal + estimatedRazorpayFee + estimatedRazorpayFeeGst) };
-  return { baseAmount, campaignGst, subtotal, estimatedRazorpayFee, estimatedRazorpayFeeGst, total: 2 }; // TEST
-}
-
 async function loadCheckout() {
   if (window.Razorpay) return;
   await new Promise((resolve, reject) => {
@@ -55,6 +43,7 @@ export default function CampaignBooking() {
   const [result, setResult] = useState(null);
   const [booking, setBooking] = useState(null);
   const [pricingConfig, setPricingConfig] = useState(null);
+  const [pricing, setPricing] = useState(null);
   const [pricingError, setPricingError] = useState("");
   useEffect(() => {
     if (authLoading || !isAuthenticated) return;
@@ -66,7 +55,31 @@ export default function CampaignBooking() {
   }, [authLoading, isAuthenticated]);
   const duration = durationOf(form);
   const durationValid = Number.isInteger(duration) && duration >= 1 && duration <= 1440 && Number(form.durationMinutes) >= 0 && Number(form.durationMinutes) <= 59;
-  const pricing = pricingConfig && durationValid && Number.isInteger(viewsOf(form)) && viewsOf(form) >= 1000 ? getEstimate(viewsOf(form), duration, form.campaignType, pricingConfig) : null;
+  useEffect(() => {
+    if (!pricingConfig || !durationValid || !Number.isInteger(viewsOf(form)) || viewsOf(form) < 1000) {
+      setPricing(null);
+      return;
+    }
+    const controller = new AbortController();
+    setPricing(null);
+    fetch(`${BASE_URL}/api/campaigns/quote`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      signal: controller.signal,
+      body: JSON.stringify({ requestedViews: viewsOf(form), durationMinutes: duration, campaignType: form.campaignType }),
+    }).then(async (response) => {
+      const quote = await response.json();
+      if (!response.ok) throw new Error(quote.message || "Price is unavailable.");
+      setPricing(quote.pricingBreakdown);
+      setPricingError("");
+    }).catch((error) => {
+      if (error.name !== "AbortError") {
+        setPricing(null);
+        setPricingError(error.message);
+      }
+    });
+    return () => controller.abort();
+  }, [duration, durationValid, form.campaignType, form.requestedViews, form.customViews, pricingConfig]);
   const minStart = toISTInputValue(Date.now() + 30 * 60 * 1000);
   const startAt = form.campaignStartAt ? parseIST(form.campaignStartAt) : null;
   const localStart = startAt ? formatIST(startAt) : "Not selected";
@@ -158,6 +171,7 @@ export default function CampaignBooking() {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Could not create your booking.");
+      setPricing(data.campaign.pricingBreakdown);
       const nextBooking = { bookingId: data.campaign.bookingId, accessToken: data.accessToken, campaign: data.campaign };
       setBooking(nextBooking);
       await openPayment(nextBooking);
@@ -226,7 +240,7 @@ export default function CampaignBooking() {
         {message && !result && <p className="campaign-error" role="alert"><CircleAlert size={16} /> {message}</p>}
         <div className="campaign-submit-row"><span><CreditCard size={16} /> Full payment upfront · no partial payments</span><button className="campaign-button campaign-button-primary" type="submit" disabled={busy || !pricing}>{busy ? <LoaderCircle className="spin" /> : review || booking ? <><CreditCard size={16} /> Proceed to payment</> : <>Review booking <ArrowRight size={16} /></>}</button></div>
       </form>
-      <aside className="campaign-price-panel"><div className="price-panel-heading"><span>ESTIMATED TOTAL</span><b>{pricing ? money(pricing.total) : pricingConfig ? "—" : "Loading"}</b><p>INR · full payment upfront</p></div>{pricing ? <div className="price-panel-body"><div><span>{(viewsOf(form) / 1000).toLocaleString("en-IN")}k views × {(duration / 60).toFixed(2)} h × {money(pricingConfig.rates[form.campaignType])} / 1,000 views / hour</span><b>{money(pricing.baseAmount)}</b></div><div><span>Campaign GST ({pricingConfig.gstRate}%)</span><b>{money(pricing.campaignGst)}</b></div><div className="price-subtotal"><span>Subtotal</span><b>{money(pricing.subtotal)}</b></div><div><span>Estimated payment processing ({pricingConfig.razorpayFeeRate}%)</span><b>{money(pricing.estimatedRazorpayFee)}</b></div><div><span>GST on processing fee ({pricingConfig.gstRate}%)</span><b>{money(pricing.estimatedRazorpayFeeGst)}</b></div></div> : <div className="price-panel-body">{pricingError || (pricingConfig ? "Enter valid views (1,000 or more) and a duration to see the price." : "Loading current campaign rates...")}</div>}<div className="price-panel-foot"><ShieldCheck size={17} /><p>Processing charges are estimated. Final order amount is calculated and confirmed by our server.</p></div></aside>
+      <aside className="campaign-price-panel"><div className="price-panel-heading"><span>ESTIMATED TOTAL</span><b>{pricing ? money(pricing.total) : pricingConfig ? "—" : "Loading"}</b><p>INR · full payment upfront</p></div>{pricing ? <div className="price-panel-body"><div><span>{(viewsOf(form) / 1000).toLocaleString("en-IN")}k views × {(duration / 60).toFixed(2)} h · {form.campaignType}</span><b>{money(pricing.baseAmount)}</b></div><div><span>Campaign GST ({pricingConfig.gstRate}%)</span><b>{money(pricing.campaignGst)}</b></div><div className="price-subtotal"><span>Subtotal</span><b>{money(pricing.subtotal)}</b></div><div><span>Estimated payment processing ({pricingConfig.razorpayFeeRate}%)</span><b>{money(pricing.estimatedRazorpayFee)}</b></div><div><span>GST on processing fee ({pricingConfig.gstRate}%)</span><b>{money(pricing.estimatedRazorpayFeeGst)}</b></div></div> : <div className="price-panel-body">{pricingError || (pricingConfig ? "Enter valid views (1,000 or more) and a duration to see the price." : "Loading current campaign pricing...")}</div>}<div className="price-panel-foot"><ShieldCheck size={17} /><p>Processing charges are estimated. Final order amount is calculated and confirmed by our server.</p></div></aside>
     </div>
     <footer className="campaign-footer-note">Age-Restricted is an internal campaign category and does not imply YouTube advertising policy approval.</footer>
   </main>;
