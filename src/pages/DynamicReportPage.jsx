@@ -19,6 +19,6 @@ export default function DynamicReportPage() {
   }, [slug]);
 
   if (loading) return <div className="report-state">Loading report…</div>;
-  if (notFound || !report) return <div className="report-state"><FileQuestion size={30} /><h1>Report unavailable</h1><p>This report may be unpublished or the link may have changed.</p><Link to="/">Return to Social Bureau</Link></div>;
-  return <><Link className="report-floating-back" to="/" aria-label="Return to Social Bureau"><ArrowLeft size={17} /><span>Social Bureau</span></Link><ReportRenderer report={report} /></>;
+  if (notFound || !report) return <div className="report-state"><FileQuestion size={30} /><h1>Report unavailable</h1><p>This report may be unpublished or the link may have changed.</p><Link to="/">Return to SocialBureau</Link></div>;
+  return <><Link className="report-floating-back" to="/" aria-label="Return to Social Bureau"><ArrowLeft size={17} /></Link><ReportRenderer report={report} /></>;
 }

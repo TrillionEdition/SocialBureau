@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import ReportRenderer from "@/components/DynamicReports/ReportRenderer";
 import dynamicReportService from "@/services/dynamicReportService";
 import "./dynamic-reports.css";
+import "./dynamic-table-editor.css";
 
 const createEmptyReport = () => ({ title: "", subtitle: "", coverImageUrl: "", sections: [], status: "draft" });
 const BLOCKS = [
@@ -30,12 +31,62 @@ function SectionDataEditor({ section, onChange }) {
   useEffect(() => setValue(JSON.stringify(section.data || {}, null, 2)), [section.data]);
   return (
     <label className="dynamic-field">
-      <span>{section.type === "kpi" ? "Metrics JSON" : section.type === "table" ? "Table JSON" : "Chart data JSON"}</span>
+      <span>{section.type === "kpi" ? "Metrics JSON" : "Chart data JSON"}</span>
       <textarea rows={7} value={value} onChange={(event) => setValue(event.target.value)} onBlur={() => {
         try { onChange(JSON.parse(value)); setInvalidJson(false); } catch { setInvalidJson(true); }
       }} spellCheck="false" />
       {invalidJson && <small className="dynamic-error">Enter valid JSON before saving.</small>}
     </label>
+  );
+}
+
+function TableDataEditor({ section, onChange }) {
+  const data = section.data || {};
+  const columns = Array.isArray(data.columns) && data.columns.length ? data.columns : ["Column 1"];
+  const rows = Array.isArray(data.rows)
+    ? data.rows.map((row) => {
+      const cells = Array.isArray(row) ? row : Object.values(row || {});
+      return columns.map((_, index) => String(cells[index] ?? ""));
+    })
+    : [];
+  const backgroundColor = /^#[\da-f]{6}$/i.test(data.backgroundColor || "") ? data.backgroundColor : "#ffffff";
+  const textColor = /^#[\da-f]{6}$/i.test(data.textColor || "") ? data.textColor : "#202b2a";
+  const updateData = (patch) => onChange({ ...data, ...patch });
+  const updateColumn = (columnIndex, value) => updateData({ columns: columns.map((column, index) => index === columnIndex ? value : column) });
+  const updateCell = (rowIndex, columnIndex, value) => updateData({
+    rows: rows.map((row, index) => index === rowIndex ? row.map((cell, cellIndex) => cellIndex === columnIndex ? value : cell) : row),
+  });
+
+  return (
+    <div className="dynamic-table-editor">
+      <div className="dynamic-table-toolbar">
+        <div className="dynamic-table-colors">
+          <label className="dynamic-table-color-control"><span>Background</span><input type="color" value={backgroundColor} onChange={(event) => updateData({ backgroundColor: event.target.value })} /></label>
+          <label className="dynamic-table-color-control"><span>Text</span><input type="color" value={textColor} onChange={(event) => updateData({ textColor: event.target.value })} /></label>
+        </div>
+        <div className="dynamic-table-actions">
+          <button className="dynamic-button dynamic-button-quiet" onClick={() => updateData({ columns: [...columns, `Column ${columns.length + 1}`], rows: rows.map((row) => [...row, ""]) })}><Plus size={15} /> Add column</button>
+          <button className="dynamic-button dynamic-button-quiet" onClick={() => updateData({ rows: [...rows, columns.map(() => "")] })}><Plus size={15} /> Add row</button>
+        </div>
+      </div>
+      <div className="dynamic-table-editor-scroll">
+        <table className="dynamic-table-editor-grid">
+          <thead><tr>{columns.map((column, columnIndex) => (
+            <th key={columnIndex} style={{ backgroundColor: data.backgroundColor || undefined, color: data.textColor || undefined }}>
+              <div className="dynamic-table-column-heading">
+                <input aria-label={`Column ${columnIndex + 1} heading`} value={column} onChange={(event) => updateColumn(columnIndex, event.target.value)} />
+                <button className="dynamic-table-remove" type="button" title="Remove column" aria-label={`Remove column ${columnIndex + 1}`} disabled={columns.length === 1} onClick={() => updateData({ columns: columns.filter((_, index) => index !== columnIndex), rows: rows.map((row) => row.filter((_, index) => index !== columnIndex)) })}><Trash2 size={14} /></button>
+              </div>
+            </th>
+          ))}<th className="dynamic-table-action-heading" aria-hidden="true" /></tr></thead>
+          <tbody>{rows.length ? rows.map((row, rowIndex) => (
+            <tr key={rowIndex}>{columns.map((_, columnIndex) => (
+              <td key={columnIndex}><input aria-label={`Row ${rowIndex + 1}, column ${columnIndex + 1}`} value={row[columnIndex]} onChange={(event) => updateCell(rowIndex, columnIndex, event.target.value)} /></td>
+            ))}<td className="dynamic-table-row-action"><button className="dynamic-table-remove" type="button" title="Remove row" aria-label={`Remove row ${rowIndex + 1}`} onClick={() => updateData({ rows: rows.filter((_, index) => index !== rowIndex) })}><Trash2 size={14} /></button></td></tr>
+          )) : <tr><td className="dynamic-table-empty" colSpan={columns.length + 1}>No rows yet. Add a row to start filling in the table.</td></tr>}</tbody>
+        </table>
+      </div>
+    </div>
   );
 }
 
@@ -136,7 +187,8 @@ export default function DynamicReportsAdmin() {
                 <div className="dynamic-section-heading"><div><span className="dynamic-section-index">{String(index + 1).padStart(2, "0")}</span><span className="dynamic-block-type">{BLOCKS.find(([type]) => type === section.type)?.[1]}</span></div><div className="dynamic-row-actions"><button disabled={index === 0} title="Move up" onClick={() => { const sections = [...report.sections]; [sections[index - 1], sections[index]] = [sections[index], sections[index - 1]]; patchReport({ sections }); }}><ArrowUp size={16} /></button><button disabled={index === report.sections.length - 1} title="Move down" onClick={() => { const sections = [...report.sections]; [sections[index + 1], sections[index]] = [sections[index], sections[index + 1]]; patchReport({ sections }); }}><ArrowDown size={16} /></button><button title="Remove section" onClick={() => patchReport({ sections: report.sections.filter((_, sectionIndex) => sectionIndex !== index) })}><Trash2 size={16} /></button></div></div>
                 <label className="dynamic-field"><span>Section heading</span><input value={section.title || ""} onChange={(event) => patchSection(index, { title: event.target.value })} placeholder="Section title" maxLength={160} /></label>
                 {section.type === "text" && <label className="dynamic-field"><span>Rich text</span><JoditEditor value={section.content || ""} onBlur={(content) => patchSection(index, { content })} config={{ height: 250, toolbarAdaptive: false, buttons: ["bold", "italic", "underline", "|", "ul", "ol", "|", "paragraph", "|", "link", "|", "undo", "redo"], askBeforePasteHTML: false, askBeforePasteFromWord: false }} /></label>}
-                {["kpi", "table", "chart"].includes(section.type) && <SectionDataEditor key={section._id || section.clientKey || index} section={section} onChange={(data) => patchSection(index, { data })} />}
+                {section.type === "table" && <TableDataEditor section={section} onChange={(data) => patchSection(index, { data })} />}
+                {["kpi", "chart"].includes(section.type) && <SectionDataEditor key={section._id || section.clientKey || index} section={section} onChange={(data) => patchSection(index, { data })} />}
                 {["image", "pdf"].includes(section.type) && <div className="dynamic-file-block"><button className="dynamic-button dynamic-button-quiet" disabled={uploading} onClick={() => document.getElementById(`report-file-${index}`)?.click()}><Upload size={16} /> {section.data?.url ? "Replace file" : `Upload ${section.type}`}</button><input id={`report-file-${index}`} hidden type="file" accept={section.type === "pdf" ? "application/pdf" : "image/jpeg,image/png,image/webp"} onChange={(event) => uploadFile(event.target.files?.[0], (file) => patchSection(index, { data: { ...section.data, url: file.url, fileName: file.fileName } }))} />{section.data?.url && <span>{section.data.fileName || "File uploaded"}</span>}{section.type === "image" && <><label className="dynamic-field"><span>Alt text</span><input value={section.data?.alt || ""} onChange={(event) => patchSection(index, { data: { ...section.data, alt: event.target.value } })} /></label><label className="dynamic-field"><span>Caption</span><input value={section.data?.caption || ""} onChange={(event) => patchSection(index, { data: { ...section.data, caption: event.target.value } })} /></label></>}</div>}
               </article>)}
               <div className="dynamic-add-section"><span>Add a section</span><div>{BLOCKS.map(([type, label]) => <button key={type} onClick={() => patchReport({ sections: [...report.sections, defaultSection(type)] })}><Plus size={14} /> {label}</button>)}</div></div>

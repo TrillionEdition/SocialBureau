@@ -797,7 +797,7 @@ function App() {
               }
             />
             <Route path="/admin/dynamic-reports" element={<AdminRoute><Navbar /><DynamicReportsAdmin /><Footer /></AdminRoute>} />
-            <Route path="/reports/:slug" element={<DynamicReportPage />} />
+            <Route path="/reports/:slug" element={<><Navbar /><DynamicReportPage /><Footer /></>} />
             <Route
               path="/admin/audit-reports/client/:clientId"
               element={

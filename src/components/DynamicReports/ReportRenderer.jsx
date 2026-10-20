@@ -67,7 +67,7 @@ function ReportSection({ section }) {
       {section.type === "table" && (
         <div className="report-table-wrap">
           <table className="report-table">
-            <thead><tr>{(Array.isArray(data.columns) ? data.columns : []).map((column, index) => <th key={`${column}-${index}`}>{column}</th>)}</tr></thead>
+            <thead><tr>{(Array.isArray(data.columns) ? data.columns : []).map((column, index) => <th key={`${column}-${index}`} style={{ backgroundColor: data.backgroundColor || undefined, color: data.textColor || undefined }}>{column}</th>)}</tr></thead>
             <tbody>
               {(Array.isArray(data.rows) ? data.rows : []).map((row, rowIndex) => (
                 <tr key={rowIndex}>{(Array.isArray(row) ? row : Object.values(row || {})).map((cell, cellIndex) => <td key={cellIndex}>{String(cell ?? "")}</td>)}</tr>
@@ -96,7 +96,7 @@ export default function ReportRenderer({ report, preview = false }) {
     <div className="dynamic-report">
       <header className={`report-cover ${report.coverImageUrl ? "has-cover-image" : ""}`} style={report.coverImageUrl ? { "--report-cover": `url("${report.coverImageUrl}")` } : undefined}>
         <div className="report-cover-inner">
-          <div className="report-brand"><span className="report-brand-mark">SB</span><span>SOCIAL BUREAU <i>/</i> INSIGHTS</span></div>
+          <div className="report-brand"><span>SOCIALBUREAU <i>/</i> INSIGHTS</span></div>
           {preview && <span className="report-preview-label">PREVIEW</span>}
           <div className="report-cover-copy">
             <p className="report-eyebrow">{date || "STRATEGY & PERFORMANCE"}</p>
@@ -110,8 +110,7 @@ export default function ReportRenderer({ report, preview = false }) {
         {titledSections.length > 0 && <aside className="report-toc"><p>IN THIS REPORT</p><nav>{titledSections.map((section) => <a key={section._id || section.order} href={`#${section._id || `section-${section.order}`}`}>{section.title}</a>)}</nav></aside>}
         <main className="report-content">
           {sections.length ? sections.map((section) => <ReportSection key={section._id || section.order} section={section} />) : <p className="report-empty">This report has no sections yet.</p>}
-          <footer className="report-footer"><span>Social Bureau</span><span>Confidential · Prepared for your team</span></footer>
-        </main>
+           </main>
       </div>
     </div>
   );
