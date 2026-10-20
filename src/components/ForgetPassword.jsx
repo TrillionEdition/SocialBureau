@@ -12,7 +12,7 @@ export const ForgotPassword = () => {
   const [success, setSuccess] = useState("");
 
   const [step, setStep] = useState(1); // 1: Email, 2: OTP, 3: New Password, 4: Success
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(location.state?.email || "");
   const [otp, setOtp] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

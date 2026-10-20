@@ -381,7 +381,9 @@ export default function AuthPage() {
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-end">
                       <button
                         type="button"
-                        onClick={() => navigate("/forgot-password?from=user")}
+                        onClick={() => navigate("/forgot-password?from=user", {
+                          state: { ...location.state, email: loginForm.email },
+                        })}
                         className="text-xs text-white/30 hover:text-white/70 transition-colors"
                       >
                         Forgot password?
