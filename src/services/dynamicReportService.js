@@ -14,7 +14,7 @@ const dynamicReportService = {
     body.append("file", file);
     return (await axios.post(`${API_URL}/admin/upload`, body, { withCredentials: true })).data;
   },
-  getPublic: async (slug) => (await axios.get(`${API_URL}/${encodeURIComponent(slug)}`)).data,
+  getPublic: async (slug) => (await axios.get(`${API_URL}/${encodeURIComponent(slug)}`, { withCredentials: true })).data,
 };
 
 export default dynamicReportService;

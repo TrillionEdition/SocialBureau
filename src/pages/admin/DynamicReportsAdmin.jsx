@@ -7,7 +7,7 @@ import dynamicReportService from "@/services/dynamicReportService";
 import "./dynamic-reports.css";
 import "./dynamic-table-editor.css";
 
-const createEmptyReport = () => ({ title: "", subtitle: "", coverImageUrl: "", sections: [], status: "draft" });
+const createEmptyReport = () => ({ title: "", subtitle: "", coverImageUrl: "", viewingPrice: 2, sections: [], status: "draft" });
 const BLOCKS = [
   ["text", "Rich text"], ["kpi", "KPI metrics"], ["table", "Data table"],
   ["chart", "Chart"], ["image", "Image"], ["pdf", "PDF document"],
@@ -115,7 +115,7 @@ export default function DynamicReportsAdmin() {
     if (!item) { setReport(createEmptyReport()); return; }
     try {
       const response = await dynamicReportService.get(item._id);
-      setReport(response.data);
+      setReport({ ...response.data, viewingPrice: response.data.viewingPrice ?? 2 });
     } catch (error) { toast.error(error.response?.data?.message || "Could not open report."); }
   };
 
@@ -137,9 +137,11 @@ export default function DynamicReportsAdmin() {
 
   const saveReport = async (status = report.status) => {
     if (!report.title.trim()) { toast.error("Add a report title first."); return null; }
+    const viewingPrice = Number(report.viewingPrice);
+    if (!Number.isFinite(viewingPrice) || viewingPrice < 0 || viewingPrice > 100000) { toast.error("Viewing price must be between ₹0 and ₹100,000."); return null; }
     try {
       setSaving(true);
-      const payload = { title: report.title, subtitle: report.subtitle, coverImageUrl: report.coverImageUrl, sections: report.sections, status };
+      const payload = { title: report.title, subtitle: report.subtitle, coverImageUrl: report.coverImageUrl, viewingPrice, sections: report.sections, status };
       const response = report._id ? await dynamicReportService.update(report._id, payload) : await dynamicReportService.create(payload);
       setReport(response.data);
       await loadReports();
@@ -182,6 +184,7 @@ export default function DynamicReportsAdmin() {
             <div className="dynamic-editor-fields">
               <label className="dynamic-field"><span>Report title</span><input value={report.title} onChange={(event) => patchReport({ title: event.target.value })} placeholder="Q3 growth and performance" maxLength={180} /></label>
               <label className="dynamic-field"><span>Subtitle</span><input value={report.subtitle || ""} onChange={(event) => patchReport({ subtitle: event.target.value })} placeholder="A concise description for your client" maxLength={300} /></label>
+              <label className="dynamic-field"><span>Viewing price (INR, enter 0 for free)</span><input type="number" min="0" max="100000" step="0.01" value={report.viewingPrice ?? 2} onChange={(event) => patchReport({ viewingPrice: event.target.value === "" ? "" : Number(event.target.value) })} /></label>
               <div className="dynamic-cover-control"><div><strong>Cover image</strong><small>Landscape image · up to 10 MB</small></div><button className="dynamic-button dynamic-button-quiet" disabled={uploading} onClick={() => coverInput.current?.click()}><ImagePlus size={16} /> {report.coverImageUrl ? "Replace image" : "Upload image"}</button><input ref={coverInput} type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(event) => uploadFile(event.target.files?.[0], (file) => patchReport({ coverImageUrl: file.url }))} />{report.coverImageUrl && <button className="dynamic-icon-button" title="Remove cover" onClick={() => patchReport({ coverImageUrl: "" })}><Trash2 size={16} /></button>}</div>
               {report.sections.map((section, index) => <article className="dynamic-section-editor" key={section._id || section.clientKey || index}>
                 <div className="dynamic-section-heading"><div><span className="dynamic-section-index">{String(index + 1).padStart(2, "0")}</span><span className="dynamic-block-type">{BLOCKS.find(([type]) => type === section.type)?.[1]}</span></div><div className="dynamic-row-actions"><button disabled={index === 0} title="Move up" onClick={() => { const sections = [...report.sections]; [sections[index - 1], sections[index]] = [sections[index], sections[index - 1]]; patchReport({ sections }); }}><ArrowUp size={16} /></button><button disabled={index === report.sections.length - 1} title="Move down" onClick={() => { const sections = [...report.sections]; [sections[index + 1], sections[index]] = [sections[index], sections[index + 1]]; patchReport({ sections }); }}><ArrowDown size={16} /></button><button title="Remove section" onClick={() => patchReport({ sections: report.sections.filter((_, sectionIndex) => sectionIndex !== index) })}><Trash2 size={16} /></button></div></div>

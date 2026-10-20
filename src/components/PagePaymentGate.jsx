@@ -10,7 +10,7 @@ import { useAuth } from "@/utils/authUtils";
  * `children`. Access is persisted per user (via `paidPages` on the account),
  * so once paid the page stays unlocked on future logins.
  */
-export default function PagePaymentGate({ pageSlug, amount, title, description, children }) {
+export default function PagePaymentGate({ pageSlug, amount, title, description, children, orderEndpoint, verificationEndpoint, verificationData, onAccessGranted }) {
   const { currentUser, isAuthenticated, loading: authLoading } = useAuth();
   const location = useLocation();
 
@@ -33,7 +33,10 @@ export default function PagePaymentGate({ pageSlug, amount, title, description, 
           credentials: "include",
         });
         const data = await res.json().catch(() => ({}));
-        if (!cancelled) setHasAccess(!!data.hasAccess);
+        if (!cancelled) {
+          setHasAccess(!!data.hasAccess);
+          if (data.hasAccess) onAccessGranted?.();
+        }
       } catch (err) {
         console.error("Error checking page access:", err);
         if (!cancelled) setHasAccess(false);
@@ -45,7 +48,7 @@ export default function PagePaymentGate({ pageSlug, amount, title, description, 
     return () => {
       cancelled = true;
     };
-  }, [pageSlug, isAuthenticated, authLoading]);
+  }, [pageSlug, isAuthenticated, authLoading, onAccessGranted]);
 
   const handlePay = async () => {
     try {
@@ -55,11 +58,11 @@ export default function PagePaymentGate({ pageSlug, amount, title, description, 
       const loaded = await loadRazorpay();
       if (!loaded) throw new Error("Failed to load Razorpay checkout");
 
-      const orderRes = await fetch(`${BASE_URL}/payment/create-order`, {
+      const orderRes = await fetch(orderEndpoint || `${BASE_URL}/payment/create-order`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount, currency: "INR" }),
+        body: JSON.stringify(orderEndpoint ? {} : { amount, currency: "INR" }),
       });
       const orderData = await orderRes.json().catch(() => ({}));
       if (!orderRes.ok || !orderData.success || !orderData.order) {
@@ -79,17 +82,18 @@ export default function PagePaymentGate({ pageSlug, amount, title, description, 
           try {
             const token = localStorage.getItem("token");
 
-            const verifyRes = await fetch(`${BASE_URL}/payment/verify-page`, {
+            const verifyRes = await fetch(verificationEndpoint || `${BASE_URL}/payment/verify-page`, {
             method: "POST",
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",
                 ...(token ? { Authorization: `Bearer ${token}` } : {}),
             },
-            body: JSON.stringify({ ...response, pageSlug }),
+            body: JSON.stringify({ ...response, ...(verificationData || { pageSlug }) }),
             });
             const verifyData = await verifyRes.json().catch(() => ({}));
             if (verifyRes.ok && verifyData.success) {
+              await onAccessGranted?.();
               setHasAccess(true);
             } else {
               toast.error(verifyData.message || "Payment verification failed");
