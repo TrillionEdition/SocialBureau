@@ -8,7 +8,7 @@ import "../styles/campaigns.css";
 const PLAN_OPTIONS = {
   A: { label: "Plan A", tag: "Daily / Monthly", headline: "6,000 views", sub: "over 18 hours", price: "₹5,700", unit: "+ tax / day", perks: ["Or ₹1,71,000 + tax / month", "Steady all-day delivery"], views: 6000, minutes: 18 * 60 },
   B: { label: "Plan B", tag: "Most powerful", headline: "1 Lakh views", sub: "in 60 minutes", price: "₹21,200", unit: "+ tax", perks: ["Fast one-hour burst", "Fixed price, no surprises"], views: 100000, minutes: 60 },
-  C: { label: "Plan C", tag: "Custom", headline: "Your own views", sub: "default 1,000 views", price: "₹250", unit: "/ hr per 1,000 views", perks: ["Choose views & duration", "Pay only for what you need"] },
+  C: { label: "Plan C", tag: "Most Common", headline: "Your own views", sub: "default 1,000 views", price: "₹250", unit: "/ hr per 1,000 views", perks: ["Choose views & duration", "Pay only for what you need"] },
 };
 const initialForm = {
   clientName: "", clientEmail: "", channelName: "", channelId: "", channelUrl: "", campaignStartAt: "", durationHours: "1", durationMinutes: "0",
