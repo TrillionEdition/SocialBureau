@@ -72,3 +72,34 @@
 .client-campaign-facts span { display:flex; align-items:center; gap:6px; }.client-campaign-facts svg { flex:none; color:var(--campaign-lime); }
 .client-campaign-state { max-width:1440px; min-height:170px; margin:auto; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; color:var(--campaign-muted); text-align:center; }
 @media (max-width:760px) { .client-campaigns-list { grid-template-columns:1fr; }.client-campaign-card-title { flex-direction:column; }.client-campaign-status { max-width:100%; } }
+
+/* Plan picker */
+.campaign-plans-wrap { grid-column:1/-1; display:flex; flex-direction:column; gap:12px; }
+.campaign-plans-title { font-size:13px; font-weight:600; color:#dfe4db; }
+.campaign-plans { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.plan-card { position:relative; display:flex; flex-direction:column; gap:6px; padding:20px 16px 16px; cursor:pointer; background:#141a14; border:1px solid #343e33; border-radius:10px; transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease; overflow:hidden; }
+.plan-card input { position:absolute; opacity:0; pointer-events:none; }
+.plan-card:hover { transform:translateY(-4px); border-color:rgba(216,251,86,.55); box-shadow:0 10px 24px rgba(0,0,0,.35); }
+.plan-card:focus-within { outline:2px solid var(--campaign-lime); outline-offset:2px; }
+.plan-card.is-active { border-color:var(--campaign-lime); background:linear-gradient(160deg, rgba(216,251,86,.13), #141a14 60%); box-shadow:0 0 0 1px var(--campaign-lime), 0 12px 28px rgba(216,251,86,.12); transform:translateY(-4px); }
+.plan-tag { align-self:flex-start; font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:3px 8px; border-radius:999px; color:var(--campaign-lime); background:rgba(216,251,86,.1); }
+.plan-card.is-featured .plan-tag { color:#1b1f10; background:var(--campaign-orange); }
+.plan-check { position:absolute; top:14px; right:14px; width:22px; height:22px; display:grid; place-items:center; border-radius:50%; border:1px solid #475244; color:transparent; transition:all .2s ease; }
+.plan-card.is-active .plan-check { background:var(--campaign-lime); border-color:var(--campaign-lime); color:#10140b; transform:scale(1.1); }
+.plan-name { color:var(--campaign-muted) !important; font-size:12px; margin-top:6px; }
+.plan-headline { font-size:20px; line-height:1.2; color:var(--campaign-ink); }
+.plan-sub { font-size:12px; color:var(--campaign-muted); }
+.plan-price { margin-top:8px; font-size:24px; font-weight:800; color:var(--campaign-lime); }
+.plan-price small { font-size:11px; font-weight:500; color:var(--campaign-muted); }
+.plan-card ul { list-style:none; margin:8px 0 0; padding:10px 0 0; border-top:1px dashed #343e33; display:flex; flex-direction:column; gap:6px; font-size:12px; color:#cdd3c9; }
+.plan-card li { display:flex; align-items:center; gap:6px; }
+.plan-card li svg { color:var(--campaign-lime); flex:none; }
+.plan-billing { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; animation:plan-in .25s ease; }
+.plan-billing label { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:12px 14px; border:1px solid #343e33; border-radius:8px; cursor:pointer; font-size:13px; background:#171d17; transition:border-color .2s, background .2s; }
+.plan-billing label:hover { border-color:rgba(216,251,86,.55); }
+.plan-billing label.is-active { border-color:var(--campaign-lime); background:rgba(216,251,86,.1); }
+.plan-billing input { position:absolute; opacity:0; pointer-events:none; }
+.plan-billing b { color:var(--campaign-lime); font-size:13px; }
+@keyframes plan-in { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+@media (max-width:900px) { .campaign-plans { grid-template-columns:1fr; } .plan-billing { grid-template-columns:1fr; } }
+@media (prefers-reduced-motion:reduce) { .plan-card,.plan-billing { transition:none; animation:none; } .plan-card:hover,.plan-card.is-active { transform:none; } }

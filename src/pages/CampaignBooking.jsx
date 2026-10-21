@@ -5,13 +5,18 @@ import { useAuth } from "../utils/authUtils";
 import { ArrowLeft, ArrowRight, Check, CircleAlert, Clock3, CreditCard, LoaderCircle, ShieldCheck } from "lucide-react";
 import "../styles/campaigns.css";
 
+const PLAN_OPTIONS = {
+  A: { label: "Plan A", tag: "Daily / Monthly", headline: "6,000 views", sub: "over 18 hours", price: "₹5,700", unit: "+ tax / day", perks: ["Or ₹1,71,000 + tax / month", "Steady all-day delivery"], views: 6000, minutes: 18 * 60 },
+  B: { label: "Plan B", tag: "Most powerful", headline: "1 Lakh views", sub: "in 60 minutes", price: "₹21,200", unit: "+ tax", perks: ["Fast one-hour burst", "Fixed price, no surprises"], views: 100000, minutes: 60 },
+  C: { label: "Plan C", tag: "Custom", headline: "Your own views", sub: "default 1,000 views", price: "₹250", unit: "/ hr per 1,000 views", perks: ["Choose views & duration", "Pay only for what you need"] },
+};
 const initialForm = {
   clientName: "", clientEmail: "", channelName: "", channelId: "", channelUrl: "", campaignStartAt: "", durationHours: "1", durationMinutes: "0",
-  requestedViews: "10000", customViews: "", campaignType: "Basic", videoTitle: "", seoKeywords: "", videoTags: "", videoDescription: "", t1: "", t2: "", t3: "", clientNotes: "",
+  plan: "C", billing: "daily", requestedViews: "custom", customViews: "1000", campaignType: "Basic", videoTitle: "", seoKeywords: "", videoTags: "", videoDescription: "", t1: "", t2: "", t3: "", clientNotes: "",
 };
 const money = (value) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(value);
-const viewsOf = (form) => Number(form.requestedViews === "custom" ? form.customViews : form.requestedViews);
-const durationOf = (form) => Number(form.durationHours) * 60 + Number(form.durationMinutes);
+const viewsOf = (form) => form.plan === "C" ? Number(form.requestedViews === "custom" ? form.customViews : form.requestedViews) : PLAN_OPTIONS[form.plan].views;
+const durationOf = (form) => form.plan === "C" ? Number(form.durationHours) * 60 + Number(form.durationMinutes) : PLAN_OPTIONS[form.plan].minutes;
 const IST_OFFSET = "+05:30";
 const parseIST = (value) => new Date(`${value}${IST_OFFSET}`);
 const formatIST = (value) => new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
@@ -66,7 +71,7 @@ export default function CampaignBooking() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       signal: controller.signal,
-      body: JSON.stringify({ requestedViews: viewsOf(form), durationMinutes: duration, campaignType: form.campaignType }),
+      body: JSON.stringify({ requestedViews: viewsOf(form), durationMinutes: duration, campaignType: form.campaignType, plan: form.plan, billing: form.billing }),
     }).then(async (response) => {
       const quote = await response.json();
       if (!response.ok) throw new Error(quote.message || "Price is unavailable.");
@@ -79,11 +84,11 @@ export default function CampaignBooking() {
       }
     });
     return () => controller.abort();
-  }, [duration, durationValid, form.campaignType, form.requestedViews, form.customViews, pricingConfig]);
+  }, [duration, durationValid, form.campaignType, form.plan, form.billing, form.requestedViews, form.customViews, pricingConfig]);
   const minStart = toISTInputValue(Date.now() + 30 * 60 * 1000);
   const startAt = form.campaignStartAt ? parseIST(form.campaignStartAt) : null;
   const localStart = startAt ? formatIST(startAt) : "Not selected";
-  const endAt = startAt && durationValid ? new Date(startAt.getTime() + duration * 60 * 1000) : null;
+  const endAt = startAt && durationValid ? new Date(startAt.getTime() + ((form.plan === "A" && form.billing === "monthly" ? 29 * 24 * 60 : 0) + duration) * 60 * 1000) : null;
   const localEnd = endAt && Number.isFinite(endAt.getTime()) ? formatIST(endAt) : "Select start time and duration";
 
   const update = (event) => setForm((previous) => ({ ...previous, [event.target.name]: event.target.value }));
@@ -95,9 +100,8 @@ export default function CampaignBooking() {
     if (parseIST(form.campaignStartAt).getTime() < Date.now() + 30 * 60 * 1000) return "Choose a start time at least 30 minutes from now (IST).";
     if (!durationValid) return "Campaign duration must be between one minute and 24 hours.";
     const views = viewsOf(form);
-    const maxViews = pricingConfig?.maxViews?.[form.campaignType] || 20000;
     if (!Number.isInteger(views) || views < 1000) return "Requested views must be at least 1,000.";
-    if (views > maxViews) return `Above ${maxViews.toLocaleString("en-IN")} views for ${form.campaignType} needs a custom rate. Please contact SocialBureau.`;
+    if (views > 10000000) return "Requested views cannot exceed 1,00,00,000.";
     return "";
   };
 
@@ -212,9 +216,22 @@ export default function CampaignBooking() {
               <Field label="YouTube channel ID" required><input name="channelId" value={form.channelId} onChange={update} required maxLength={100} /></Field>
               <Field label="Channel live or video URL" required><input name="channelUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." value={form.channelUrl} onChange={update} required /></Field>
               <Field label="Campaign start (IST)" required hint={<>Times are displayed in IST (UTC+05:30). Earliest start: {minStart.replace("T", " ")} IST</>}><input type="datetime-local" name="campaignStartAt" min={minStart} value={form.campaignStartAt} onChange={update} required /></Field>
-              <Field label="Duration"><div className="campaign-duration"><input aria-label="Hours" type="number" min="0" max="24" value={form.durationHours} onChange={(event) => setForm({ ...form, durationHours: event.target.value })} /><span>hours</span><input aria-label="Minutes" type="number" min="0" max="59" value={form.durationMinutes} onChange={(event) => setForm({ ...form, durationMinutes: event.target.value })} /><span>minutes</span></div></Field>
-              <Field label="Requested views" hint="Price = rate × views/1,000 × hours."><select name="requestedViews" value={form.requestedViews} onChange={update}>{Array.from({ length: 10 }, (_, index) => (index + 1) * 10000).filter((views) => views <= (pricingConfig?.maxViews?.[form.campaignType] || 20000)).map((views) => <option key={views} value={views}>{views.toLocaleString("en-IN")} views</option>)}<option value="custom">Custom</option></select>{form.requestedViews === "custom" && <input name="customViews" type="number" min="1000" max={pricingConfig?.maxViews?.[form.campaignType]} step="1" placeholder="Enter views" value={form.customViews} onChange={update} required />}</Field>
-              <Field label="Campaign type"><select name="campaignType" value={form.campaignType} onChange={update}><option>Basic</option><option>Age-Restricted</option></select></Field>
+              <div className="campaign-plans-wrap"><span className="campaign-plans-title">Choose your plan</span>
+                <div className="campaign-plans" role="radiogroup" aria-label="Campaign plan">{Object.entries(PLAN_OPTIONS).map(([key, plan]) => <label key={key} className={`plan-card${form.plan === key ? " is-active" : ""}${key === "B" ? " is-featured" : ""}`}>
+                  <input type="radio" name="plan" value={key} checked={form.plan === key} onChange={update} />
+                  <span className="plan-tag">{plan.tag}</span>
+                  <span className="plan-check"><Check size={14} /></span>
+                  <b className="plan-name">{plan.label}</b>
+                  <strong className="plan-headline">{plan.headline}</strong>
+                  <span className="plan-sub">{plan.sub}</span>
+                  <span className="plan-price">{plan.price} <small>{plan.unit}</small></span>
+                  <ul>{plan.perks.map((perk) => <li key={perk}><Check size={12} /> {perk}</li>)}</ul>
+                </label>)}</div>
+                {form.plan === "A" && <div className="plan-billing" role="radiogroup" aria-label="Plan A billing">{[["daily", "Per day", "₹5,700 + tax"], ["monthly", "Per month (30 days)", "₹1,71,000 + tax"]].map(([value, label, price]) => <label key={value} className={form.billing === value ? "is-active" : ""}><input type="radio" name="billing" value={value} checked={form.billing === value} onChange={update} /><span>{label}</span><b>{price}</b></label>)}</div>}
+              </div>
+              {form.plan === "C" && <><Field label="Duration"><div className="campaign-duration"><input aria-label="Hours" type="number" min="0" max="24" value={form.durationHours} onChange={(event) => setForm({ ...form, durationHours: event.target.value })} /><span>hours</span><input aria-label="Minutes" type="number" min="0" max="59" value={form.durationMinutes} onChange={(event) => setForm({ ...form, durationMinutes: event.target.value })} /><span>minutes</span></div></Field>
+              <Field label="Requested views" hint="Price = ₹250 × views/1,000 × hours."><input name="customViews" type="number" min="1000" max="10000000" step="1" value={form.customViews} onChange={update} required /></Field></>}
+              <Field label="Campaign type"><select name="campaignType" value={form.campaignType} onChange={update}><option>Concurrent views plan</option><option>Age-Restricted</option></select></Field>
               <div className="campaign-endtime"><Clock3 size={17} /><span>Expected end: <b>{localEnd}</b> IST</span></div>
               <div className="campaign-policy"><Clock3 size={17} /><span>Bookings require at least 30 minutes' notice. Campaigns are subject to policy review; views and rankings are not guaranteed.</span></div>
             </div>
