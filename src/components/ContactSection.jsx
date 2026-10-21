@@ -28,7 +28,6 @@ export default function ContactSection() {
 
   const GOOGLE_FORM_ACTION =
     "https://docs.google.com/forms/d/e/1FAIpQLSem38gCoLarmSS2YgVSnOjB1yP6fuK69E4q51Fu1zljWqbZkg/formResponse";
-
   const FORM_FIELDS = {
     name: "entry.1424283838",
     company: "entry.1363722063",
@@ -56,22 +55,32 @@ export default function ContactSection() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setToast(null);
 
     try {
       const googleFormData = new FormData();
-
-      googleFormData.append(FORM_FIELDS.name, formData.name);
-      googleFormData.append(FORM_FIELDS.company, formData.company);
-      googleFormData.append(FORM_FIELDS.role, formData.role);
-      googleFormData.append(FORM_FIELDS.email, formData.email);
-      googleFormData.append(FORM_FIELDS.website, formData.website);
-      googleFormData.append(FORM_FIELDS.message, formData.message);
-
-      await fetch(GOOGLE_FORM_ACTION, {
+      Object.entries(FORM_FIELDS).forEach(([field, entry]) => {
+        googleFormData.append(entry, formData[field]);
+      });
+      fetch(GOOGLE_FORM_ACTION, {
         method: "POST",
         mode: "no-cors",
         body: googleFormData
+      }).catch((error) => {
+        console.error("Failed to archive contact form submission:", error);
       });
+
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+      const response = await fetch(`${apiUrl}/support/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Please try again.");
+      }
 
       setShowBubble(true);
 
@@ -86,8 +95,8 @@ export default function ContactSection() {
 
       setTimeout(() => setShowBubble(false), 5000);
     } catch (error) {
-      console.error("Error submitting form:", error);
-      setToast({ type: "error", message: "Please try again." });
+      console.error("Error submitting contact message:", error);
+      setToast({ type: "error", message: error.message || "Please try again." });
     } finally {
       setIsSubmitting(false);
     }
@@ -554,6 +563,7 @@ export default function ContactSection() {
                     !formData.email ||
                     !formData.company ||
                     !formData.role ||
+                    !formData.website ||
                     !formData.message
                   }
                   className="w-full border border-[#ff0000] text-white bg-[#ff0000] transition-all duration-300 font-medium py-3 rounded-md flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
@@ -603,6 +613,14 @@ export default function ContactSection() {
 
         </div>
       </div>
+
+      {toast && (
+        <Toast
+          type={toast.type}
+          message={toast.message}
+          onClose={() => setToast(null)}
+        />
+      )}
 
     </section>
   );
