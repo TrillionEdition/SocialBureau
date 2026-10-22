@@ -4,6 +4,8 @@ import { BASE_URL } from "../utils/urls";
 import { useAuth } from "../utils/authUtils";
 import { ArrowLeft, ArrowRight, Check, CircleAlert, Clock3, CreditCard, LoaderCircle, ShieldCheck } from "lucide-react";
 import "../styles/campaigns.css";
+import WalletPanel from "../components/WalletPanel";
+import { formatPaise } from "../utils/formatPaise";
 
 const PLAN_OPTIONS = {
   A: { label: "Plan A", tag: "Daily / Monthly", headline: "6,000 views", sub: "over 18 hours", price: "₹5,700", unit: "+ tax / day", perks: ["Or ₹1,71,000 + tax / month", "Steady all-day delivery"], views: 6000, minutes: 18 * 60 },
@@ -50,6 +52,18 @@ export default function CampaignBooking() {
   const [pricingConfig, setPricingConfig] = useState(null);
   const [pricing, setPricing] = useState(null);
   const [pricingError, setPricingError] = useState("");
+  const [saveCard, setSaveCard] = useState(false);
+  const [wallet, setWallet] = useState(null);
+  const [payMethod, setPayMethod] = useState("razorpay");
+  const loadWallet = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/wallet`, { credentials: "include" });
+      if (response.ok) setWallet(await response.json());
+    } catch { setWallet(null); }
+  };
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) loadWallet();
+  }, [authLoading, isAuthenticated]);
   useEffect(() => {
     if (authLoading || !isAuthenticated) return;
     fetch(`${BASE_URL}/api/campaigns/pricing`).then(async (response) => {
@@ -105,20 +119,43 @@ export default function CampaignBooking() {
     return "";
   };
 
+  const payFromWallet = async (existingBooking) => {
+    setBusy(true);
+    setMessage("");
+    try {
+      const response = await fetch(`${BASE_URL}/api/payments/wallet-pay`, {
+        method: "POST", credentials: "include", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bookingId: existingBooking.bookingId }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Wallet payment failed.");
+      setResult({ kind: "success", campaign: data.campaign });
+      setBooking(null);
+    } catch (error) {
+      setMessage(error.message);
+      setResult({ kind: "failure", campaign: existingBooking.campaign });
+    } finally {
+      setBusy(false);
+      loadWallet();
+    }
+  };
+
   const openPayment = async (existingBooking = booking) => {
     if (!existingBooking) return;
+    if (payMethod === "wallet") { await payFromWallet(existingBooking); return; }
     setBusy(true);
     setMessage("");
     try {
       const orderResponse = await fetch(`${BASE_URL}/api/payments/create-order`, {
         method: "POST", credentials: "include", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ bookingId: existingBooking.bookingId, accessToken: existingBooking.accessToken }),
+        body: JSON.stringify({ bookingId: existingBooking.bookingId, accessToken: existingBooking.accessToken, saveCard }),
       });
       const order = await orderResponse.json();
       if (!orderResponse.ok) throw new Error(order.message || "Unable to start payment.");
       await loadCheckout();
       const checkout = new window.Razorpay({
         key: order.keyId, amount: order.amount, currency: order.currency, order_id: order.orderId,
+        ...(order.customerId ? { customer_id: order.customerId } : {}),
         name: "SocialBureau", description: `YouTube campaign ${existingBooking.bookingId}`,
         prefill: {}, theme: { color: "#d8fb56" },
         handler: async (paymentResponse) => {
@@ -215,7 +252,45 @@ export default function CampaignBooking() {
               <Field label="YouTube channel name" required><input name="channelName" value={form.channelName} onChange={update} required maxLength={160} /></Field>
               <Field label="YouTube channel ID" required><input name="channelId" value={form.channelId} onChange={update} required maxLength={100} /></Field>
               <Field label="Channel live or video URL" required><input name="channelUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." value={form.channelUrl} onChange={update} required /></Field>
-              <Field label="Campaign start (IST)" required hint={<>Times are displayed in IST (UTC+05:30). Earliest start: {minStart.replace("T", " ")} IST</>}><input type="datetime-local" name="campaignStartAt" min={minStart} value={form.campaignStartAt} onChange={update} required /></Field>
+              
+<Field
+  label="Campaign start (IST)"
+  required
+  hint={
+    <>
+      Times are displayed in IST (UTC+05:30). Earliest start:{" "}
+      {minStart.replace("T", " ")} IST
+    </>
+  }
+>
+  <div className="relative">
+    <input
+      type="datetime-local"
+      name="campaignStartAt"
+      min={minStart}
+      value={form.campaignStartAt}
+      onChange={update}
+      required
+      className="w-full rounded-lg border border-white/15 bg-transparent px-4 py-4 pr-12 text-white [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-4 [&::-webkit-calendar-picker-indicator]:h-5 [&::-webkit-calendar-picker-indicator]:w-5 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0"
+    />
+
+    <svg
+      className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-white"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="3" y="5" width="18" height="16" rx="2" />
+      <path d="M16 3v4M8 3v4M3 11h18" />
+    </svg>
+  </div>
+</Field>
+
               <div className="campaign-plans-wrap"><span className="campaign-plans-title">Choose your plan</span>
                 <div className="campaign-plans" role="radiogroup" aria-label="Campaign plan">{Object.entries(PLAN_OPTIONS).map(([key, plan]) => <label key={key} className={`plan-card${form.plan === key ? " is-active" : ""}${key === "B" ? " is-featured" : ""}`}>
                   <input type="radio" name="plan" value={key} checked={form.plan === key} onChange={update} />
@@ -254,10 +329,20 @@ export default function CampaignBooking() {
           </section>
         </fieldset>
         {review && <section className="campaign-review-details"><h2>Booking review</h2><dl><dt>Client</dt><dd>{form.clientName} · {form.clientEmail}</dd><dt>Channel</dt><dd>{form.channelName} · {form.channelId}</dd><dt>Video / live URL</dt><dd>{form.channelUrl}</dd><dt>Start</dt><dd>{localStart} IST</dd><dt>Duration</dt><dd>{form.durationHours}h {form.durationMinutes}m</dd><dt>Expected end</dt><dd>{localEnd} IST</dd><dt>Views / type</dt><dd>{viewsOf(form).toLocaleString("en-IN")} · {form.campaignType}</dd></dl></section>}
+        {review && <section className="campaign-pay-method" aria-label="Payment method">
+          <h2>Payment method</h2>
+          <label className={payMethod === "razorpay" ? "is-active" : ""}><input type="radio" name="payMethod" checked={payMethod === "razorpay"} onChange={() => setPayMethod("razorpay")} disabled={busy} /><span>Card, UPI or netbanking</span></label>
+          {wallet && <label className={payMethod === "wallet" ? "is-active" : ""}><input type="radio" name="payMethod" checked={payMethod === "wallet"} onChange={() => setPayMethod("wallet")} disabled={busy} /><span>Wallet <small>Balance {formatPaise(wallet.balancePaise)}</small></span></label>}
+          {payMethod === "wallet" && wallet && pricing && wallet.balancePaise < pricing.totalPaise && <p className="campaign-error" role="alert"><CircleAlert size={16} /> Wallet balance is {formatPaise(pricing.totalPaise - wallet.balancePaise)} short of the total. Add money below or choose another method.</p>}
+        </section>}
+        {review && payMethod === "razorpay" && <label className="campaign-save-card">
+          <input type="checkbox" checked={saveCard} onChange={(event) => setSaveCard(event.target.checked)} disabled={busy} />
+          <span><strong>Save card with Razorpay for future checkouts</strong><small>Optional. Razorpay securely tokenizes cards and will ask you to confirm during checkout. We never store your card number or CVV.</small></span>
+        </label>}
         {message && !result && <p className="campaign-error" role="alert"><CircleAlert size={16} /> {message}</p>}
         <div className="campaign-submit-row"><span><CreditCard size={16} /> Full payment upfront · no partial payments</span><button className="campaign-button campaign-button-primary" type="submit" disabled={busy || !pricing}>{busy ? <LoaderCircle className="spin" /> : review || booking ? <><CreditCard size={16} /> Proceed to payment</> : <>Review booking <ArrowRight size={16} /></>}</button></div>
       </form>
-      <aside className="campaign-price-panel"><div className="price-panel-heading"><span>ESTIMATED TOTAL</span><b>{pricing ? money(pricing.total) : pricingConfig ? "—" : "Loading"}</b><p>INR · full payment upfront</p></div>{pricing ? <div className="price-panel-body"><div><span>{(viewsOf(form) / 1000).toLocaleString("en-IN")}k views × {(duration / 60).toFixed(2)} h · {form.campaignType}</span><b>{money(pricing.baseAmount)}</b></div><div><span>Campaign GST ({pricingConfig.gstRate}%)</span><b>{money(pricing.campaignGst)}</b></div><div className="price-subtotal"><span>Subtotal</span><b>{money(pricing.subtotal)}</b></div><div><span>Estimated payment processing ({pricingConfig.razorpayFeeRate}%)</span><b>{money(pricing.estimatedRazorpayFee)}</b></div><div><span>GST on processing fee ({pricingConfig.gstRate}%)</span><b>{money(pricing.estimatedRazorpayFeeGst)}</b></div></div> : <div className="price-panel-body">{pricingError || (pricingConfig ? "Enter valid views (1,000 or more) and a duration to see the price." : "Loading current campaign pricing...")}</div>}<div className="price-panel-foot"><ShieldCheck size={17} /><p>Processing charges are estimated. Final order amount is calculated and confirmed by our server. All the amounts are non-refundable.</p></div></aside>
+      <aside className="campaign-price-panel"><WalletPanel wallet={wallet} onChanged={loadWallet} disabled={busy} /><div className="price-panel-heading"><span>ESTIMATED TOTAL</span><b>{pricing ? money(pricing.total) : pricingConfig ? "—" : "Loading"}</b><p>INR · full payment upfront</p></div>{pricing ? <div className="price-panel-body"><div><span>{(viewsOf(form) / 1000).toLocaleString("en-IN")}k views × {(duration / 60).toFixed(2)} h · {form.campaignType}</span><b>{money(pricing.baseAmount)}</b></div><div><span>Campaign GST ({pricingConfig.gstRate}%)</span><b>{money(pricing.campaignGst)}</b></div><div className="price-subtotal"><span>Subtotal</span><b>{money(pricing.subtotal)}</b></div><div><span>Estimated payment processing ({pricingConfig.razorpayFeeRate}%)</span><b>{money(pricing.estimatedRazorpayFee)}</b></div><div><span>GST on processing fee ({pricingConfig.gstRate}%)</span><b>{money(pricing.estimatedRazorpayFeeGst)}</b></div></div> : <div className="price-panel-body">{pricingError || (pricingConfig ? "Enter valid views (1,000 or more) and a duration to see the price." : "Loading current campaign pricing...")}</div>}<div className="price-panel-foot"><ShieldCheck size={17} /><p>Processing charges are estimated. Final order amount is calculated and confirmed by our server. All the amounts are non-refundable.</p></div></aside>
     </div>
     <footer className="campaign-footer-note">Age-Restricted is an internal campaign category and does not imply YouTube advertising policy approval.</footer>
   </main>;
