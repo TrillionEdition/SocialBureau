@@ -6,6 +6,7 @@ import Navbar from './Navbar';
 const AdminPanel = () => {
     const adminTools = [
         { title: "Journal", desc: "Write and publish new articles", link: "/blog/submit" },
+        { title: "Leads", desc: "Capture and manage potential client leads", link: "/admin/lead-capture" },
         { title: "Events", desc: "Manage global company activations", link: "/events/manage" },
         { title: "Manage Employees", desc: "Manage company roster and employee profiles", link: "/team/admin" },
         { title: "Directory", desc: "Permissions and staff management", link: "/user-management" },

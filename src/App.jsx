@@ -105,6 +105,8 @@ const Sakilan = lazy(() => import("./pages/Partnerships/sakilan"));
 const Partner2 = lazy(() => import("./pages/Partnerships/Partner2"));
 const Chocochi = lazy(() => import("./pages/Chocochi"));
 const Solutions = lazy(() => import("./pages/Solutions/Solutions"));
+const DigitalBusinessCard = lazy(() => import("./pages/DigitalBusinessCard"));
+const DigitalCardLeadsDashboard = lazy(() => import("./pages/DigitalCardLeadsDashboard"));
 
 // Lazy-loaded Components
 const AddAchievementForm = lazy(
@@ -193,6 +195,9 @@ import AshasharathReport from "./pages/AuditReports/AshasharatReport";
 function ConditionalFooter() {
   const location = useLocation();
   const hideFooterRoutes = [
+    "/sham-sk",
+    "/digital-business-card",
+    "/admin/lead-capture",
     "/partnership",
     "/dashboard",
     "/user-management",
@@ -240,6 +245,9 @@ function ConditionalFooter() {
 function ConditionalNavbar() {
   const location = useLocation();
   const hideNavbarRoutes = [
+    "/sham-sk",
+    "/digital-business-card",
+    "/admin/lead-capture",
     "/partnership",
     "/dashboard",
     "/user-management",
@@ -446,6 +454,9 @@ function App() {
         {/* <AdsContainer /> */}
         <Suspense>
           <Routes>
+            <Route path="/sham-sk" element={<DigitalBusinessCard />} />
+            <Route path="/digital-business-card" element={<DigitalBusinessCard />} />
+            <Route path="/admin/lead-capture" element={<AdminRoute><Navbar /><DigitalCardLeadsDashboard /><Footer /></AdminRoute>} />
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
             <Route path="/about" element={<About />} />
@@ -862,4 +873,3 @@ function App() {
 }
 
 export default App;
-
