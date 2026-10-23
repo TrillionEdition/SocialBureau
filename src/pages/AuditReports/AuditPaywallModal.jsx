@@ -57,7 +57,7 @@ export default function AuditPaywallModal({ isOpen, onClose, report, onPaymentSu
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ amount: amountNum, currency: "INR" }),
+        body: JSON.stringify({ reportId: report._id }),
       });
 
       const data = await resp.json().catch(() => ({}));
