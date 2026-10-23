@@ -77,8 +77,11 @@ export default function DigitalBusinessCard() {
     <main className="sb-card-page">
       <section className="sb-card-shell" aria-label="Sham SK digital business card">
         <div className="sb-card-welcome">
-          <img src="https://www.socialbureau.in/assets/socialbureau.png" alt="SocialBureau" className="sb-card-mark" />
-          <p>Welcome to SocialBureau</p>
+  <img
+  src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/Untitled%20design.gif"
+  alt="Socialbureau animation"
+  className="w-full h-auto"
+/>
         </div>
         <div className="sb-card-profile"><div className="flex items-center justify-center">
   <img
@@ -175,6 +178,7 @@ export default function DigitalBusinessCard() {
             </>
           )}
         </section>
+        <img src="https://pub-dbc24446d37a40aeb1dfdd10992cd2d9.r2.dev/socialbureau-media/images/qrcode_418113021_51421b350f0057277450e1e6f089524b.png" alt="QR code" className="w-full p-10" />
         <footer className="sb-card-footer">Marketing. Technology. Growth. · <a href="/privacy-policy">Privacy</a></footer>
       </section>
     </main>
