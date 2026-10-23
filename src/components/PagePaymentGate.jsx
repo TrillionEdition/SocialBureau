@@ -62,7 +62,7 @@ export default function PagePaymentGate({ pageSlug, amount, title, description, 
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(orderEndpoint ? {} : { amount, currency: "INR", pageSlug }),
+        body: JSON.stringify(orderEndpoint ? {} : { amount, currency: "INR" }),
       });
       const orderData = await orderRes.json().catch(() => ({}));
       if (!orderRes.ok || !orderData.success || !orderData.order) {
