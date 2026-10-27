@@ -4,7 +4,9 @@ import App from './App.jsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HelmetProvider } from 'react-helmet-async'
 import axios from 'axios'
+import { installAdminCsrf, setCsrfToken } from '@/utils/adminCsrf'
 
+installAdminCsrf()
 // Set global axios defaults
 axios.defaults.withCredentials = true
 
@@ -32,6 +34,7 @@ axios.interceptors.response.use(
       // Clear localStorage credentials
       localStorage.removeItem("userData");
       localStorage.removeItem("token");
+      setCsrfToken(null);
       
       // Determine redirection path
       const currentPath = window.location.pathname + window.location.search;
