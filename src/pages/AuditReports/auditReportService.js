@@ -12,10 +12,11 @@ const auditReportService = {
     return response.data;
   },
 
-  // Get secure PDF URL - authenticated request
+  // Get protected PDF bytes - authenticated request
   downloadReport: async (reportId) => {
     const response = await axios.get(`${API_URL}/download/${reportId}`, {
       withCredentials: true,
+      responseType: "blob",
     });
     return response.data;
   },
@@ -71,15 +72,16 @@ const auditReportService = {
     return response.data;
   },
 
-  // Get secure PDF URL for viewing inside the website
-  getViewerUrl: async (reportId) => {
+  // Get protected PDF bytes for the authenticated viewer
+  getViewerPdf: async (reportId) => {
     const response = await axios.get(`${API_URL}/viewer/${reportId}`, {
       withCredentials: true,
+      responseType: "blob",
     });
     return response.data;
   },
 
-  // Get download URL directly
+  // Direct navigations remain protected by the server's cookie authorization.
   downloadReportUrl: (reportId) => {
     return `${API_URL}/download/${reportId}`;
   },

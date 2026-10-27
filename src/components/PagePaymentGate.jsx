@@ -58,11 +58,11 @@ export default function PagePaymentGate({ pageSlug, amount, title, description, 
       const loaded = await loadRazorpay();
       if (!loaded) throw new Error("Failed to load Razorpay checkout");
 
-      const orderRes = await fetch(orderEndpoint || `${BASE_URL}/payment/create-order`, {
+      const orderRes = await fetch(orderEndpoint || `${BASE_URL}/payment/page-order`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(orderEndpoint ? {} : { amount, currency: "INR" }),
+        body: JSON.stringify(orderEndpoint ? {} : { pageSlug }),
       });
       const orderData = await orderRes.json().catch(() => ({}));
       if (!orderRes.ok || !orderData.success || !orderData.order) {

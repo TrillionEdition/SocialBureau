@@ -325,16 +325,12 @@ const InfluencerDataForm = () => {
     setLoading(true);
     try {
       // 1. Create order on backend
-      const response = await fetch(`${BASE_URL}/payment/create-order`, {
+      const response = await fetch(`${BASE_URL}/payment/influencer/create-order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({
-          amount: 99, // Live Price ₹299 to test card limits
-          currency: "INR",
-        }),
       });
 
       const data = await response.json();
@@ -356,7 +352,7 @@ const InfluencerDataForm = () => {
           // 3. Verify payment on backend
           setLoading(true);
           try {
-            const verifyRes = await fetch(`${BASE_URL}/payment/verify`, {
+            const verifyRes = await fetch(`${BASE_URL}/payment/influencer/verify`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

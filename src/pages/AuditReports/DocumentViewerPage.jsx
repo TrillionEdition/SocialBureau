@@ -18,6 +18,8 @@ export default function DocumentViewerPage() {
   const [zoom, setZoom] = useState(100);
 
   useEffect(() => {
+    let cancelled = false;
+    let objectUrl;
     const fetchDocument = async () => {
       try {
         setLoading(true);
@@ -29,23 +31,30 @@ export default function DocumentViewerPage() {
           setReport(reportData);
         }
 
-        // Fetch the secure PDF URL
-        const res = await auditReportService.downloadReport(reportId);
-        if (res.success && res.url) {
-          setPdfUrl(res.url);
+        const pdf = await auditReportService.getViewerPdf(reportId);
+        if (!cancelled) {
+          objectUrl = window.URL.createObjectURL(pdf);
+          setPdfUrl(objectUrl);
         }
       } catch (err) {
         const errorMsg = err.response?.data?.message || err.message || "Failed to load document";
-        setError(errorMsg);
-        toast.error(errorMsg);
+        if (!cancelled) {
+          setError(errorMsg);
+          toast.error(errorMsg);
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
 
     if (reportId) {
       fetchDocument();
     }
+
+    return () => {
+      cancelled = true;
+      if (objectUrl) window.URL.revokeObjectURL(objectUrl);
+    };
   }, [reportId, location.state]);
 
   const handleDownload = () => {
