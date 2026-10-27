@@ -7,18 +7,16 @@ import "../styles/campaigns.css";
 import WalletPanel from "../components/WalletPanel";
 import { formatPaise } from "../utils/formatPaise";
 
-const PLAN_OPTIONS = {
-  A: { label: "Plan A", tag: "Daily / Monthly", headline: "6,000 views", sub: "over 18 hours", price: "₹5,700", unit: "+ tax / day", perks: ["Or ₹1,71,000 + tax / month", "Steady all-day delivery"], views: 6000, minutes: 18 * 60 },
-  B: { label: "Plan B", tag: "Most powerful", headline: "1 Lakh views", sub: "in 60 minutes", price: "₹21,200", unit: "+ tax", perks: ["Fast one-hour burst", "Fixed price, no surprises"], views: 100000, minutes: 60 },
-  C: { label: "Plan C", tag: "Most Common", headline: "Your own views", sub: "default 1,000 views", price: "₹250", unit: "/ hr per 1,000 views", perks: ["Choose views & duration", "Pay only for what you need"] },
-};
 const initialForm = {
   clientName: "", clientEmail: "", channelName: "", channelId: "", channelUrl: "", campaignStartAt: "", durationHours: "1", durationMinutes: "0",
   plan: "C", billing: "daily", requestedViews: "custom", customViews: "1000", campaignType: "Basic", videoTitle: "", seoKeywords: "", videoTags: "", videoDescription: "", t1: "", t2: "", t3: "", clientNotes: "",
 };
 const money = (value) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(value);
-const viewsOf = (form) => form.plan === "C" ? Number(form.requestedViews === "custom" ? form.customViews : form.requestedViews) : PLAN_OPTIONS[form.plan].views;
-const durationOf = (form) => form.plan === "C" ? Number(form.durationHours) * 60 + Number(form.durationMinutes) : PLAN_OPTIONS[form.plan].minutes;
+const isHourly = (plan) => plan?.pricingType === "hourly";
+const viewsOf = (form, plan) => !plan ? NaN : isHourly(plan) ? Number(form.requestedViews === "custom" ? form.customViews : form.requestedViews) : plan.views;
+const durationOf = (form, plan) => !plan ? NaN : isHourly(plan) ? Number(form.durationHours) * 60 + Number(form.durationMinutes) : plan.durationMinutes;
+const planHeadline = (plan) => isHourly(plan) ? "Your own views" : `${plan.views.toLocaleString("en-IN")} views`;
+const planPrice = (plan) => isHourly(plan) ? [money(plan.ratePer1000ViewsPerHour), "/ hr per 1,000 views"] : [money(plan.price), plan.monthlyPrice ? "+ tax / day" : "+ tax"];
 const IST_OFFSET = "+05:30";
 const parseIST = (value) => new Date(`${value}${IST_OFFSET}`);
 const formatIST = (value) => new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
@@ -72,10 +70,19 @@ export default function CampaignBooking() {
       setPricingConfig(config);
     }).catch((error) => setPricingError(error.message));
   }, [authLoading, isAuthenticated]);
-  const duration = durationOf(form);
+  const plan = pricingConfig?.plans.find((item) => item.key === form.plan) || null;
+  const hourly = isHourly(plan);
+  const views = viewsOf(form, plan);
+  const duration = durationOf(form, plan);
+  useEffect(() => {
+    if (pricingConfig && !plan && pricingConfig.plans.length) {
+      const fallback = pricingConfig.plans.find((item) => item.key === pricingConfig.defaultPlan) || pricingConfig.plans[0];
+      setForm((previous) => ({ ...previous, plan: fallback.key, billing: "daily", customViews: String(fallback.defaultViews || fallback.minViews || 1000) }));
+    }
+  }, [pricingConfig, plan]);
   const durationValid = Number.isInteger(duration) && duration >= 1 && duration <= 1440 && Number(form.durationMinutes) >= 0 && Number(form.durationMinutes) <= 59;
   useEffect(() => {
-    if (!pricingConfig || !durationValid || !Number.isInteger(viewsOf(form)) || viewsOf(form) < 1000) {
+    if (!pricingConfig || !durationValid || !Number.isInteger(views) || views < 1000) {
       setPricing(null);
       return;
     }
@@ -85,7 +92,7 @@ export default function CampaignBooking() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       signal: controller.signal,
-      body: JSON.stringify({ requestedViews: viewsOf(form), durationMinutes: duration, campaignType: form.campaignType, plan: form.plan, billing: form.billing }),
+      body: JSON.stringify({ requestedViews: views, durationMinutes: duration, campaignType: form.campaignType, plan: form.plan, billing: form.billing }),
     }).then(async (response) => {
       const quote = await response.json();
       if (!response.ok) throw new Error(quote.message || "Price is unavailable.");
@@ -98,11 +105,11 @@ export default function CampaignBooking() {
       }
     });
     return () => controller.abort();
-  }, [duration, durationValid, form.campaignType, form.plan, form.billing, form.requestedViews, form.customViews, pricingConfig]);
+  }, [duration, durationValid, form.campaignType, form.plan, form.billing, form.requestedViews, form.customViews, pricingConfig, views]);
   const minStart = toISTInputValue(Date.now() + 30 * 60 * 1000);
   const startAt = form.campaignStartAt ? parseIST(form.campaignStartAt) : null;
   const localStart = startAt ? formatIST(startAt) : "Not selected";
-  const endAt = startAt && durationValid ? new Date(startAt.getTime() + ((form.plan === "A" && form.billing === "monthly" ? 29 * 24 * 60 : 0) + duration) * 60 * 1000) : null;
+  const endAt = startAt && durationValid ? new Date(startAt.getTime() + ((form.billing === "monthly" && plan?.monthlyPrice ? ((plan.monthlyDays || 30) - 1) * 24 * 60 : 0) + duration) * 60 * 1000) : null;
   const localEnd = endAt && Number.isFinite(endAt.getTime()) ? formatIST(endAt) : "Select start time and duration";
 
   const update = (event) => setForm((previous) => ({ ...previous, [event.target.name]: event.target.value }));
@@ -113,7 +120,6 @@ export default function CampaignBooking() {
     if (!channelUrl.test(form.channelUrl.trim())) return "Enter a valid YouTube video or live URL.";
     if (parseIST(form.campaignStartAt).getTime() < Date.now() + 30 * 60 * 1000) return "Choose a start time at least 30 minutes from now (IST).";
     if (!durationValid) return "Campaign duration must be between one minute and 24 hours.";
-    const views = viewsOf(form);
     if (!Number.isInteger(views) || views < 1000) return "Requested views must be at least 1,000.";
     if (views > 10000000) return "Requested views cannot exceed 1,00,00,000.";
     return "";
@@ -202,7 +208,7 @@ export default function CampaignBooking() {
         ...form,
         campaignStartAt: parseIST(form.campaignStartAt).toISOString(),
         durationMinutes: duration,
-        requestedViews: viewsOf(form),
+        requestedViews: views,
       };
       delete payload.durationHours;
       delete payload.customViews;
@@ -292,20 +298,20 @@ export default function CampaignBooking() {
 </Field>
 
               <div className="campaign-plans-wrap"><span className="campaign-plans-title">Choose your plan</span>
-                <div className="campaign-plans" role="radiogroup" aria-label="Campaign plan">{Object.entries(PLAN_OPTIONS).map(([key, plan]) => <label key={key} className={`plan-card${form.plan === key ? " is-active" : ""}${key === "B" ? " is-featured" : ""}`}>
-                  <input type="radio" name="plan" value={key} checked={form.plan === key} onChange={update} />
-                  <span className="plan-tag">{plan.tag}</span>
+                <div className="campaign-plans" role="radiogroup" aria-label="Campaign plan">{pricingConfig?.plans.map((item) => { const [price, unit] = planPrice(item); return <label key={item.key} className={`plan-card${form.plan === item.key ? " is-active" : ""}${item.badge ? " is-featured" : ""}`}>
+                  <input type="radio" name="plan" value={item.key} checked={form.plan === item.key} onChange={(event) => setForm((previous) => ({ ...previous, plan: event.target.value, billing: "daily", customViews: String(item.defaultViews || item.minViews || 1000) }))} />
+                  {item.badge && <span className="plan-tag">{item.badge}</span>}
                   <span className="plan-check"><Check size={14} /></span>
-                  <b className="plan-name">{plan.label}</b>
-                  <strong className="plan-headline">{plan.headline}</strong>
-                  <span className="plan-sub">{plan.sub}</span>
-                  <span className="plan-price">{plan.price} <small>{plan.unit}</small></span>
-                  <ul>{plan.perks.map((perk) => <li key={perk}><Check size={12} /> {perk}</li>)}</ul>
-                </label>)}</div>
-                {form.plan === "A" && <div className="plan-billing" role="radiogroup" aria-label="Plan A billing">{[["daily", "Per day", "₹5,700 + tax"], ["monthly", "Per month (30 days)", "₹1,71,000 + tax"]].map(([value, label, price]) => <label key={value} className={form.billing === value ? "is-active" : ""}><input type="radio" name="billing" value={value} checked={form.billing === value} onChange={update} /><span>{label}</span><b>{price}</b></label>)}</div>}
-              </div>
-              {form.plan === "C" && <><Field label="Duration"><div className="campaign-duration"><input aria-label="Hours" type="number" min="0" max="24" value={form.durationHours} onChange={(event) => setForm({ ...form, durationHours: event.target.value })} /><span>hours</span><input aria-label="Minutes" type="number" min="0" max="59" value={form.durationMinutes} onChange={(event) => setForm({ ...form, durationMinutes: event.target.value })} /><span>minutes</span></div></Field>
-              <Field label="Requested views" hint="Price = ₹250 × views/1,000 × hours."><input name="customViews" type="number" min="1000" max="10000000" step="1" value={form.customViews} onChange={update} required /></Field></>}
+                  <b className="plan-name">{item.name}</b>
+                  <strong className="plan-headline">{planHeadline(item)}</strong>
+                  <span className="plan-sub">{item.deliveryTime}</span>
+                  <span className="plan-price">{price} <small>{unit}</small></span>
+                  {item.description && <ul><li><Check size={12} /> {item.description}</li></ul>}
+                </label>; })}</div>
+                {plan?.monthlyPrice > 0 && <div className="plan-billing" role="radiogroup" aria-label={`${plan.name} billing`}>{[["daily", "Per day", money(plan.price)], ["monthly", `Per month (${plan.monthlyDays || 30} days)`, money(plan.monthlyPrice)]].map(([value, label, price]) => <label key={value} className={form.billing === value ? "is-active" : ""}><input type="radio" name="billing" value={value} checked={form.billing === value} onChange={update} /><span>{label}</span><b>{price} + tax</b></label>)}</div>}
+                              </div>
+                              {hourly && <><Field label="Duration"><div className="campaign-duration"><input aria-label="Hours" type="number" min="0" max="24" value={form.durationHours} onChange={(event) => setForm({ ...form, durationHours: event.target.value })} /><span>hours</span><input aria-label="Minutes" type="number" min="0" max="59" value={form.durationMinutes} onChange={(event) => setForm({ ...form, durationMinutes: event.target.value })} /><span>minutes</span></div></Field>
+              <Field label="Requested views" hint={`Price = ${money(plan?.ratePer1000ViewsPerHour || 0)} × views/1,000 × hours.`}><input name="customViews" type="number" min="1000" max="10000000" step="1" value={form.customViews} onChange={update} required /></Field></>}
               <Field label="Campaign type"><select name="campaignType" value={form.campaignType} onChange={update}><option>Concurrent views plan</option><option>Age-Restricted</option></select></Field>
               <div className="campaign-endtime"><Clock3 size={17} /><span>Expected end: <b>{localEnd}</b> IST</span></div>
               <div className="campaign-policy"><Clock3 size={17} /><span>Bookings require at least 30 minutes' notice. Campaigns are subject to policy review; views and rankings are not guaranteed.</span></div>
@@ -342,7 +348,7 @@ export default function CampaignBooking() {
         {message && !result && <p className="campaign-error" role="alert"><CircleAlert size={16} /> {message}</p>}
         <div className="campaign-submit-row"><span><CreditCard size={16} /> Full payment upfront · no partial payments</span><button className="campaign-button campaign-button-primary" type="submit" disabled={busy || !pricing}>{busy ? <LoaderCircle className="spin" /> : review || booking ? <><CreditCard size={16} /> Proceed to payment</> : <>Review booking <ArrowRight size={16} /></>}</button></div>
       </form>
-      <aside className="campaign-price-panel"><WalletPanel wallet={wallet} onChanged={loadWallet} disabled={busy} /><div className="price-panel-heading"><span>ESTIMATED TOTAL</span><b>{pricing ? money(pricing.total) : pricingConfig ? "—" : "Loading"}</b><p>INR · full payment upfront</p></div>{pricing ? <div className="price-panel-body"><div><span>{(viewsOf(form) / 1000).toLocaleString("en-IN")}k views × {(duration / 60).toFixed(2)} h · {form.campaignType}</span><b>{money(pricing.baseAmount)}</b></div><div><span>Campaign GST ({pricingConfig.gstRate}%)</span><b>{money(pricing.campaignGst)}</b></div><div className="price-subtotal"><span>Subtotal</span><b>{money(pricing.subtotal)}</b></div><div><span>Estimated payment processing ({pricingConfig.razorpayFeeRate}%)</span><b>{money(pricing.estimatedRazorpayFee)}</b></div><div><span>GST on processing fee ({pricingConfig.gstRate}%)</span><b>{money(pricing.estimatedRazorpayFeeGst)}</b></div></div> : <div className="price-panel-body">{pricingError || (pricingConfig ? "Enter valid views (1,000 or more) and a duration to see the price." : "Loading current campaign pricing...")}</div>}<div className="price-panel-foot"><ShieldCheck size={17} /><p>Processing charges are estimated. Final order amount is calculated and confirmed by our server. All the amounts are non-refundable.</p></div></aside>
+      <aside className="campaign-price-panel"><WalletPanel wallet={wallet} onChanged={loadWallet} disabled={busy} /><div className="price-panel-heading"><span>ESTIMATED TOTAL</span><b>{pricing ? money(pricing.total) : pricingConfig ? "—" : "Loading"}</b><p>INR · full payment upfront</p></div>{pricing ? <div className="price-panel-body"><div><span>{(viewsOf(form) / 1000).toLocaleString("en-IN")}k views × {(duration / 60).toFixed(2)} h · {form.campaignType}</span><b>{money(pricing.baseAmount)}</b></div><div><span>Campaign GST ({pricing.gstRate ?? pricingConfig.gstRate}%)</span><b>{money(pricing.campaignGst)}</b></div><div className="price-subtotal"><span>Subtotal</span><b>{money(pricing.subtotal)}</b></div><div><span>Estimated payment processing ({pricing.processingFeeRate ?? pricingConfig.razorpayFeeRate}%)</span><b>{money(pricing.estimatedRazorpayFee)}</b></div><div><span>GST on processing fee ({pricing.gstRate ?? pricingConfig.gstRate}%)</span><b>{money(pricing.estimatedRazorpayFeeGst)}</b></div></div> : <div className="price-panel-body">{pricingError || (pricingConfig ? "Enter valid views (1,000 or more) and a duration to see the price." : "Loading current campaign pricing...")}</div>}<div className="price-panel-foot"><ShieldCheck size={17} /><p>Processing charges are estimated. Final order amount is calculated and confirmed by our server. All the amounts are non-refundable.</p></div></aside>
     </div>
     <footer className="campaign-footer-note">Age-Restricted is an internal campaign category and does not imply YouTube advertising policy approval.</footer>
   </main>;

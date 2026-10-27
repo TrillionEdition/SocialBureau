@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { BASE_URL } from "../utils/urls";
 import { Download, ExternalLink, Search, X } from "lucide-react";
 import "../styles/campaigns.css";
+import CampaignPlansAdmin from "./CampaignPlansAdmin";
 
 const money = (value) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(value || 0);
 const formatIST = (value) => new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
@@ -101,6 +102,7 @@ export default function CampaignAdmin() {
         <div className="campaign-submit-row"><span role="status">{ratesMessage}</span><button type="submit" className="campaign-button campaign-button-primary" disabled={ratesLoading || ratesSaving}>{ratesSaving ? "Saving..." : "Save rates"}</button></div>
       </form>
     </section>
+    <CampaignPlansAdmin />
     <section className="campaign-admin-workspace">
       <div className="campaign-list-pane">
         <div className="campaign-filters">
