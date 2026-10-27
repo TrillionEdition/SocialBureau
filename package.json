@@ -33,6 +33,7 @@
     "cors": "^2.8.5",
     "dom-to-image": "^2.6.0",
     "dom-to-image-more": "^3.7.1",
+    "dompurify": "^3.4.17",
     "dotenv": "^17.2.3",
     "emailjs-com": "^3.2.0",
     "express": "^5.2.1",

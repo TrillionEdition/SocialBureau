@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, lazy, Suspense } from "react";
 import { useParams, Link, useNavigate, useLocation, Navigate } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import DOMPurify from "dompurify";
 import { blogAPI } from "@/services/blogServices";
 import { FaHeart, FaCalendarAlt, FaUser, FaTag, FaTrashAlt, FaEdit } from "react-icons/fa";
 
@@ -525,7 +526,7 @@ export default function BlogDetail() {
       }
       return (
         <div key={index} className="mb-8">
-          {section.text && <div className="text-xl text-gray-700 mb-8 leading-relaxed max-w-3xl" dangerouslySetInnerHTML={{ __html: processContentWithIds(section.text, index) }} />}
+          {section.text && <div className="text-xl text-gray-700 mb-8 leading-relaxed max-w-3xl" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(processContentWithIds(section.text, index)) }} />}
           {section.image && <img src={section.image} alt={`Section ${index + 1}`} loading="lazy" decoding="async" className="w-full rounded-xl my-6 shadow-md shadow-gray-200/50" />}
         </div>
       );
