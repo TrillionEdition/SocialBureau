@@ -46,11 +46,13 @@ export const clearAuthData = async () => {
     // Call backend logout endpoint to clear cookie
     const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
     await fetch(`${baseUrl}/user/logout`, {
-      method: "GET",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       credentials: "include", // Include cookies
+      body: JSON.stringify({}),
     });
   } catch (error) {
-    console.error("Error calling logout endpoint:", error);
+    console.error("Error calling logout endpoint:", error.message);
   }
 
   // Clear localStorage

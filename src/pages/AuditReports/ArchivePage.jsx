@@ -40,11 +40,11 @@ export default function ArchivePage() {
     } else {
       try {
         setLoading(true);
-        const res = await auditReportService.downloadReport(report._id);
-        if (res.success && res.url) {
-          window.open(res.url, "_blank");
-          toast.success("PDF opened successfully!");
-        }
+        const pdf = await auditReportService.downloadReport(report._id);
+        const pdfUrl = window.URL.createObjectURL(pdf);
+        window.open(pdfUrl, "_blank");
+        window.setTimeout(() => window.URL.revokeObjectURL(pdfUrl), 60_000);
+        toast.success("PDF opened successfully!");
       } catch (err) {
         const errorMsg = err.response?.data?.message || err.message || "Failed to download PDF";
         toast.error(errorMsg);

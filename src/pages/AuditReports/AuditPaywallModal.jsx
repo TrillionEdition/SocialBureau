@@ -12,17 +12,12 @@ export default function AuditPaywallModal({ isOpen, onClose, report, onPaymentSu
   const handlePayment = async () => {
     setLoading(true);
     try {
-      // Determine amount first
-      const amountNum = typeof report.amt === "number" && !isNaN(report.amt) ? report.amt : 1500;
-
-      // If amount is zero, skip payment gateway and mark as paid via backend
-      if (amountNum === 0) {
+      if (Number(report.amt) === 0) {
         try {
-          const verifyRes = await fetch(`${BASE_URL}/payment/verify`, {
+          const verifyRes = await fetch(`${BASE_URL}/api/audit-reports/${report._id}/free-unlock`, {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ reportId: report._id, free: true, amt: 0 }),
           });
           const verifyData = await verifyRes.json().catch(() => ({}));
           if (verifyRes.ok && verifyData.success) {
@@ -51,13 +46,12 @@ export default function AuditPaywallModal({ isOpen, onClose, report, onPaymentSu
       }
 
       // 2. Create Razorpay order on backend (amount in rupees)
-      const resp = await fetch(`${BASE_URL}/payment/create-order`, {
+      const resp = await fetch(`${BASE_URL}/api/audit-reports/${report._id}/payment-order`, {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ amount: amountNum, currency: "INR" }),
       });
 
       const data = await resp.json().catch(() => ({}));
@@ -78,16 +72,13 @@ export default function AuditPaywallModal({ isOpen, onClose, report, onPaymentSu
           setLoading(true);
           try {
             // 4. Verify payment on backend, passing reportId
-            const verifyRes = await fetch(`${BASE_URL}/payment/verify`, {
+            const verifyRes = await fetch(`${BASE_URL}/api/audit-reports/${report._id}/payment-verify`, {
               method: "POST",
               credentials: "include",
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({
-                ...response,
-                reportId: report._id,
-              }),
+              body: JSON.stringify(response),
             });
 
             const verifyData = await verifyRes.json().catch(() => ({}));
