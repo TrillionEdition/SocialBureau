@@ -8,6 +8,8 @@ import {
 import { BASE_URL } from "@/utils/urls";
 import { setUserData } from "@/utils/authUtils";
 import { registerUserAPI } from "@/services/userServices";
+import { setCsrfToken } from "@/utils/adminCsrf";
+import AdminMfaStep from "@/components/AdminMfaStep";
 
 const LOGIN_FIELDS = [
   { name: "email",    label: "Email address", placeholder: "name@example.com", icon: Mail,  type: "email"    },
@@ -59,6 +61,7 @@ export default function AuthPage() {
   const [turnstileAvailable, setTurnstileAvailable] = useState(true);
   const [loginForm,    setLoginForm]    = useState(EMPTY_LOGIN);
   const [signupForm,   setSignupForm]   = useState(EMPTY_SIGNUP);
+  const [mfa,          setMfa]          = useState(null);
 
   const isTransitioning = useRef(false);
   const turnstileId     = useRef(null);
@@ -119,20 +122,42 @@ export default function AuthPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Login failed");
-      if (data.user) {
-        setUserData(data.user);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        if (data.token) localStorage.setItem("token", data.token);
+      if (data.mfaRequired) {
+        // Administrators: no session exists yet; the server drives the remaining steps.
+        setMfa({
+          mfaToken: data.mfaToken,
+          enrollmentRequired: !!data.enrollmentRequired,
+          emailOtpRequired: !!data.emailOtpRequired,
+          sentTo: data.sentTo,
+          resendAfterSec: data.resendAfterSec,
+        });
+        setLoginForm(EMPTY_LOGIN);
+        return;
       }
-      setSuccess("Welcome back");
-      window.dispatchEvent(new Event("authChange"));
-      const redirect = new URLSearchParams(location.search).get("redirect");
-      const from = location.state?.from?.pathname || redirect
-        || (data.user.role === "admin" ? "/admin" : data.user.isEmployee ? "/team/dashboard" : "/");
-      setTimeout(() => navigate(from, { replace: true }), 1500);
+      finishLogin(data);
     } catch (e) {
       setError(e.message); setDirection(-1); setStep(0); setCaptchaToken(null);
     } finally { setLoading(false); }
+  };
+
+  const finishLogin = (data) => {
+    if (data.user) {
+      setUserData(data.user);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      if (data.token) localStorage.setItem("token", data.token);
+    }
+    setSuccess("Welcome back");
+    window.dispatchEvent(new Event("authChange"));
+    const redirect = new URLSearchParams(location.search).get("redirect");
+    const from = location.state?.from?.pathname || redirect
+      || (data.user?.role === "admin" ? "/admin" : data.user?.isEmployee ? "/team/dashboard" : "/");
+    setTimeout(() => navigate(from, { replace: true }), 1500);
+  };
+
+  const handleMfaComplete = (data) => {
+    setCsrfToken(data.csrfToken);
+    setMfa(null);
+    finishLogin(data);
   };
 
   const handleSignup = async () => {
@@ -317,6 +342,15 @@ export default function AuthPage() {
             })}
           </div>
 
+          {mfa ? (
+            <div className="text-white [&_p]:text-white/60 [&_input]:bg-white/10 [&_input]:text-white [&_pre]:text-black">
+              <AdminMfaStep
+                {...mfa}
+                onComplete={handleMfaComplete}
+                onCancel={(msg) => { setMfa(null); setStep(0); setError(typeof msg === "string" ? msg : ""); setCaptchaToken(null); }}
+              />
+            </div>
+          ) : (
           <AnimatePresence mode="wait">
             {success ? (
               <motion.div
@@ -457,6 +491,7 @@ export default function AuthPage() {
               </motion.div>
             )}
           </AnimatePresence>
+          )}
         </motion.div>
 
         {/* Toggle */}
