@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { BASE_URL } from "../utils/urls";
 
-const EMPTY = { name: "", description: "", badge: "", deliveryTime: "", displayOrder: "0", active: true, pricingType: "fixed", views: "", durationMinutes: "", price: "", monthlyPrice: "", monthlyDays: "30", ratePer1000ViewsPerHour: "", defaultViews: "", minViews: "", maxViews: "", gstRate: "", processingFeeRate: "" };
+const EMPTY = { name: "", description: "", badge: "", deliveryTime: "", rateNote: "", displayOrder: "0", active: true, pricingType: "fixed", views: "", durationMinutes: "", price: "", monthlyPrice: "", monthlyDays: "30", ratePer1000ViewsPerHour: "", defaultViews: "", minViews: "", maxViews: "", gstRate: "", processingFeeRate: "" };
 const NUMERIC = ["displayOrder", "views", "durationMinutes", "price", "monthlyPrice", "monthlyDays", "ratePer1000ViewsPerHour", "defaultViews", "minViews", "maxViews", "gstRate", "processingFeeRate"];
 const NULLABLE = ["views", "durationMinutes", "price", "monthlyPrice", "ratePer1000ViewsPerHour", "defaultViews", "minViews", "maxViews", "gstRate", "processingFeeRate"];
 
@@ -58,12 +58,13 @@ export default function CampaignPlansAdmin() {
   const set = (name) => (event) => setForm({ ...form, [name]: event.target.type === "checkbox" ? event.target.checked : event.target.value });
   const num = (name, label, step = "1") => <label className="campaign-field">{label}<input type="number" min="0" step={step} value={form[name]} onChange={set(name)} /></label>;
   const fixed = form?.pricingType === "fixed";
+  const custom = form?.pricingType === "custom";
 
   return <section className="campaign-section" aria-labelledby="campaign-plans-title">
     <div className="campaign-section-title"><span>PLANS</span><div><h2 id="campaign-plans-title">Campaign plans</h2><p>Plans shown on the booking page. Edits apply to new bookings only; existing bookings keep their snapshot.</p></div></div>
     <div className="campaign-table-wrap"><table className="campaign-table"><thead><tr><th>Order</th><th>Plan</th><th>Type</th><th>Price</th><th>Status</th><th /></tr></thead><tbody>{plans.map((plan) => <tr key={plan.key}>
       <td>{plan.displayOrder}</td><td><strong>{plan.name}</strong><small>{plan.badge}</small></td><td>{plan.pricingType}</td>
-      <td>{plan.pricingType === "fixed" ? `₹${plan.price}${plan.monthlyPrice ? ` / ₹${plan.monthlyPrice} monthly` : ""}` : `₹${plan.ratePer1000ViewsPerHour} / 1,000 views / hr`}</td>
+      <td>{plan.pricingType === "fixed" ? `₹${plan.price}${plan.monthlyPrice ? ` / ₹${plan.monthlyPrice} monthly` : ""}` : plan.pricingType === "custom" ? `₹${plan.price} flat` : `₹${plan.ratePer1000ViewsPerHour} / 1,000 views / hr`}</td>
       <td><span className={`campaign-pill ${plan.active ? "paid" : "failed"}`}>{plan.active ? "active" : "disabled"}</span></td>
       <td><button type="button" className="campaign-button campaign-button-light" onClick={() => { setForm(toForm(plan)); setEditingKey(plan.key); setMessage(""); }}>Edit</button>{" "}<button type="button" className="campaign-button campaign-button-light" onClick={() => toggle(plan)}>{plan.active ? "Disable" : "Enable"}</button></td>
     </tr>)}</tbody></table></div>
@@ -75,8 +76,11 @@ export default function CampaignPlansAdmin() {
         <label className="campaign-field">Description<input maxLength={500} value={form.description} onChange={set("description")} /></label>
         <label className="campaign-field">Delivery time<input maxLength={100} value={form.deliveryTime} onChange={set("deliveryTime")} /></label>
         {num("displayOrder", "Display order")}
-        <label className="campaign-field">Pricing type<select value={form.pricingType} onChange={set("pricingType")}><option value="fixed">Fixed price (daily / monthly)</option><option value="hourly">Custom views × hours × rate</option></select></label>
-        {fixed ? <>
+        <label className="campaign-field">Pricing type<select value={form.pricingType} onChange={set("pricingType")}><option value="fixed">Fixed price (daily / monthly)</option><option value="hourly">Custom views × hours × rate</option><option value="custom">Custom (flat price, no views)</option></select></label>
+        <label className="campaign-field">Rate note (shown on plan card)<input maxLength={200} value={form.rateNote} onChange={set("rateNote")} /></label>
+        {custom ? <>
+          {num("price", "Flat price (INR, pre-tax)", "0.01")}
+        </> : fixed ? <>
           {num("views", "Views")}{num("durationMinutes", "Duration (minutes, max 1440)")}{num("price", "Daily / one-time price (INR, pre-tax)", "0.01")}{num("monthlyPrice", "Monthly price (optional)", "0.01")}{num("monthlyDays", "Monthly days")}
         </> : <>
           {num("ratePer1000ViewsPerHour", "Rate per 1,000 views / hour (INR)", "0.01")}{num("defaultViews", "Default views")}{num("minViews", "Min views")}{num("maxViews", "Max views")}

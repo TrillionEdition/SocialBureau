@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '@/utils/urls';
 import { useAuth } from '@/utils/authUtils';
 import Navbar from '../Navbar';
+import LoginOtpStep from '@/components/LoginOtpStep';
 
 const CLogin = () => {
   const [email, setEmail] = useState('');
@@ -13,8 +14,17 @@ const CLogin = () => {
   const [loading, setLoading] = useState(false);
 const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [otp, setOtp] = useState(null);
   const navigate = useNavigate();
   const { login } = useAuth();
+
+  const completeLogin = (data) => {
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+      login(data.user);
+      navigate('/client-portal');
+    }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -23,11 +33,12 @@ const [showPassword, setShowPassword] = useState(false);
 
     try {
       const response = await axios.post(`${BASE_URL}/user/login`, { email, password }, { withCredentials: true });
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        login(response.data.user);
-        navigate('/client-portal');
+      if (response.data.otpRequired) {
+        setOtp({ otpToken: response.data.otpToken, sentTo: response.data.sentTo });
+        setPassword('');
+        return;
       }
+      completeLogin(response.data);
     } catch (err) {
       console.error("Login failed:", err);
       setError(err.response?.data?.message || 'Authentication failed. Please check your credentials.');
@@ -68,6 +79,14 @@ const [showPassword, setShowPassword] = useState(false);
         <div className="bg-[#0a0a0c] border border-white/5 rounded-[32px] p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-purple-500/5 pointer-events-none" />
 
+          {otp ? (
+            <LoginOtpStep
+              otpToken={otp.otpToken}
+              sentTo={otp.sentTo}
+              onComplete={(data) => { setOtp(null); completeLogin(data); }}
+              onCancel={() => setOtp(null)}
+            />
+          ) : (
           <form onSubmit={handleLogin} className="space-y-6 relative">
             {error && (
               <motion.div
@@ -126,6 +145,7 @@ const [showPassword, setShowPassword] = useState(false);
               )}
             </button>
           </form>
+          )}
         </div>
 
         {/* Feature Highlights */}

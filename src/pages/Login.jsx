@@ -4,6 +4,7 @@ import { BASE_URL } from "@/utils/urls";
 import { setUserData } from "@/utils/authUtils";
 import { setCsrfToken } from "@/utils/adminCsrf";
 import AdminMfaStep from "@/components/AdminMfaStep";
+import LoginOtpStep from "@/components/LoginOtpStep";
 import { Mail, Lock, ArrowRight } from "lucide-react";
 
 export const Login = () => {
@@ -15,6 +16,7 @@ export const Login = () => {
   const [step, setStep] = useState("email"); // "email" or "password"
   const passwordInputRef = useRef(null);
   const [mfa, setMfa] = useState(null);
+  const [otp, setOtp] = useState(null);
 
   const [form, setForm] = useState({
     email: "",
@@ -74,6 +76,11 @@ export const Login = () => {
         setForm((prev) => ({ ...prev, password: "" }));
         return;
       }
+      if (data.otpRequired) {
+        setOtp({ otpToken: data.otpToken, sentTo: data.sentTo });
+        setForm((prev) => ({ ...prev, password: "" }));
+        return;
+      }
       await finishLogin(data);
     } catch (err) {
       setError(err.message || "Something went wrong");
@@ -87,6 +94,15 @@ export const Login = () => {
   const handleMfaComplete = async (data) => {
     setCsrfToken(data.csrfToken);
     setMfa(null);
+    try {
+      await finishLogin(data);
+    } catch (err) {
+      setError(err.message || "Something went wrong");
+    }
+  };
+
+  const handleOtpComplete = async (data) => {
+    setOtp(null);
     try {
       await finishLogin(data);
     } catch (err) {
@@ -190,7 +206,14 @@ export const Login = () => {
           </div>
 
           {/* Form Container */}
-          {mfa ? (
+          {otp ? (
+            <LoginOtpStep
+              otpToken={otp.otpToken}
+              sentTo={otp.sentTo}
+              onComplete={handleOtpComplete}
+              onCancel={() => setOtp(null)}
+            />
+          ) : mfa ? (
             <AdminMfaStep
               mfaToken={mfa.mfaToken}
               enrollmentRequired={mfa.enrollmentRequired}

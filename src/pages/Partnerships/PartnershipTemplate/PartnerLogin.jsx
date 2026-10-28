@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Mail, Lock, LogIn, Eye, EyeOff, CheckCircle2, AlertCircle, ArrowRight, Loader2 } from "lucide-react";
 import { BASE_URL } from "@/utils/urls";
 import { setUserData } from "@/utils/authUtils";
+import LoginOtpStep from "@/components/LoginOtpStep";
 
 const PartnerLogin = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const PartnerLogin = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [otp, setOtp] = useState(null);
 
   const [form, setForm] = useState({
     email: "",
@@ -253,6 +255,11 @@ const PartnerLogin = () => {
     setError("");
   };
 
+  const handleOtpComplete = (data) => {
+    setOtp(null);
+    finishLogin(data);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
@@ -277,6 +284,28 @@ const PartnerLogin = () => {
         throw new Error(data.message || "Login failed");
       }
 
+      if (data.otpRequired) {
+        setOtp({ otpToken: data.otpToken, sentTo: data.sentTo });
+        setForm((prev) => ({ ...prev, password: "" }));
+        return;
+      }
+      await finishLogin(data);
+    } catch (err) {
+      setError(err.message || "Invalid credentials");
+      setCaptchaToken(null);
+      if (window.turnstile && turnstileWidgetId.current !== null) {
+        try {
+          window.turnstile.reset(turnstileWidgetId.current);
+        } catch (e) {
+          // ignore
+        }
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const finishLogin = async (data) => {
       if (data.user) {
         setUserData(data.user);
         localStorage.setItem('user', JSON.stringify(data.user));
@@ -316,19 +345,6 @@ const PartnerLogin = () => {
       setTimeout(() => {
         navigate(destination, { replace: true });
       }, 1000);
-    } catch (err) {
-      setError(err.message || "Invalid credentials");
-      setCaptchaToken(null);
-      if (window.turnstile && turnstileWidgetId.current !== null) {
-        try {
-          window.turnstile.reset(turnstileWidgetId.current);
-        } catch (e) {
-          // ignore
-        }
-      }
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
@@ -347,6 +363,14 @@ const PartnerLogin = () => {
           <p className="text-zinc-500 font-medium text-xs md:text-sm">Sign in to continue your portfolio</p>
         </div>
 
+        {otp ? (
+          <LoginOtpStep
+            otpToken={otp.otpToken}
+            sentTo={otp.sentTo}
+            onComplete={handleOtpComplete}
+            onCancel={() => { setOtp(null); setCaptchaToken(null); }}
+          />
+        ) : (
         <form onSubmit={handleSubmit} className="space-y-2 md:space-y-3 bg-zinc-900/50 backdrop-blur-xl p-5 md:p-8 rounded-[24px] md:rounded-[32px] border border-zinc-800 shadow-2xl">
           {error && (
             <motion.div 
@@ -449,6 +473,7 @@ const PartnerLogin = () => {
             </Link>
           </p>
         </form>
+        )}
 
         <div className="mt-6 md:mt-8 text-center">
           <a href="/" className="text-[10px] uppercase tracking-[0.2em] text-zinc-600 hover:text-white transition-colors">

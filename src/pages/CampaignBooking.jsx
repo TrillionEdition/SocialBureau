@@ -13,10 +13,11 @@ const initialForm = {
 };
 const money = (value) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(value);
 const isHourly = (plan) => plan?.pricingType === "hourly";
-const viewsOf = (form, plan) => !plan ? NaN : isHourly(plan) ? Number(form.requestedViews === "custom" ? form.customViews : form.requestedViews) : plan.views;
-const durationOf = (form, plan) => !plan ? NaN : isHourly(plan) ? Number(form.durationHours) * 60 + Number(form.durationMinutes) : plan.durationMinutes;
-const planHeadline = (plan) => isHourly(plan) ? "Your own views" : `${plan.views.toLocaleString("en-IN")} views`;
-const planPrice = (plan) => isHourly(plan) ? [money(plan.ratePer1000ViewsPerHour), "/ hr per 1,000 views"] : [money(plan.price), plan.monthlyPrice ? "+ tax / day" : "+ tax"];
+const isCustom = (plan) => plan?.pricingType === "custom";
+const viewsOf = (form, plan) => !plan ? NaN : isCustom(plan) ? null : isHourly(plan) ? Number(form.requestedViews === "custom" ? form.customViews : form.requestedViews) : plan.views;
+const durationOf = (form, plan) => !plan ? NaN : isHourly(plan) || isCustom(plan) ? Number(form.durationHours) * 60 + Number(form.durationMinutes) : plan.durationMinutes;
+const planHeadline = (plan) => isCustom(plan) ? "Flexible views" : isHourly(plan) ? "Your own views" : `${plan.views.toLocaleString("en-IN")} views`;
+const planPrice = (plan) => isCustom(plan) ? [money(plan.price), "+ tax"] : isHourly(plan) ? [money(plan.ratePer1000ViewsPerHour), "/ hr per 1,000 views"] : [money(plan.price), plan.monthlyPrice ? "+ tax / day" : "+ tax"];
 const IST_OFFSET = "+05:30";
 const parseIST = (value) => new Date(`${value}${IST_OFFSET}`);
 const formatIST = (value) => new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
@@ -72,6 +73,7 @@ export default function CampaignBooking() {
   }, [authLoading, isAuthenticated]);
   const plan = pricingConfig?.plans.find((item) => item.key === form.plan) || null;
   const hourly = isHourly(plan);
+  const custom = isCustom(plan);
   const views = viewsOf(form, plan);
   const duration = durationOf(form, plan);
   useEffect(() => {
@@ -82,7 +84,7 @@ export default function CampaignBooking() {
   }, [pricingConfig, plan]);
   const durationValid = Number.isInteger(duration) && duration >= 1 && duration <= 1440 && Number(form.durationMinutes) >= 0 && Number(form.durationMinutes) <= 59;
   useEffect(() => {
-    if (!pricingConfig || !durationValid || !Number.isInteger(views) || views < 1000) {
+    if (!pricingConfig || !durationValid || (!custom && (!Number.isInteger(views) || views < 1000))) {
       setPricing(null);
       return;
     }
@@ -92,7 +94,7 @@ export default function CampaignBooking() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       signal: controller.signal,
-      body: JSON.stringify({ requestedViews: views, durationMinutes: duration, campaignType: form.campaignType, plan: form.plan, billing: form.billing }),
+      body: JSON.stringify({ requestedViews: custom ? undefined : views, durationMinutes: duration, campaignType: form.campaignType, plan: form.plan, billing: form.billing }),
     }).then(async (response) => {
       const quote = await response.json();
       if (!response.ok) throw new Error(quote.message || "Price is unavailable.");
@@ -105,7 +107,7 @@ export default function CampaignBooking() {
       }
     });
     return () => controller.abort();
-  }, [duration, durationValid, form.campaignType, form.plan, form.billing, form.requestedViews, form.customViews, pricingConfig, views]);
+  }, [custom, duration, durationValid, form.campaignType, form.plan, form.billing, form.requestedViews, form.customViews, pricingConfig, views]);
   const minStart = toISTInputValue(Date.now() + 30 * 60 * 1000);
   const startAt = form.campaignStartAt ? parseIST(form.campaignStartAt) : null;
   const localStart = startAt ? formatIST(startAt) : "Not selected";
@@ -120,7 +122,7 @@ export default function CampaignBooking() {
     if (!channelUrl.test(form.channelUrl.trim())) return "Enter a valid YouTube video or live URL.";
     if (parseIST(form.campaignStartAt).getTime() < Date.now() + 30 * 60 * 1000) return "Choose a start time at least 30 minutes from now (IST).";
     if (!durationValid) return "Campaign duration must be between one minute and 24 hours.";
-    if (!Number.isInteger(views) || views < 1000) return "Requested views must be at least 1,000.";
+    if (!custom && (!Number.isInteger(views) || views < 1000)) return "Requested views must be at least 1,000.";
     if (views > 10000000) return "Requested views cannot exceed 1,00,00,000.";
     return "";
   };
@@ -208,7 +210,7 @@ export default function CampaignBooking() {
         ...form,
         campaignStartAt: parseIST(form.campaignStartAt).toISOString(),
         durationMinutes: duration,
-        requestedViews: views,
+        requestedViews: custom ? null : views,
       };
       delete payload.durationHours;
       delete payload.customViews;
@@ -305,13 +307,14 @@ export default function CampaignBooking() {
                   <b className="plan-name">{item.name}</b>
                   <strong className="plan-headline">{planHeadline(item)}</strong>
                   <span className="plan-sub">{item.deliveryTime}</span>
+                  {item.rateNote && <span className="plan-sub">{item.rateNote}</span>}
                   <span className="plan-price">{price} <small>{unit}</small></span>
                   {item.description && <ul><li><Check size={12} /> {item.description}</li></ul>}
                 </label>; })}</div>
                 {plan?.monthlyPrice > 0 && <div className="plan-billing" role="radiogroup" aria-label={`${plan.name} billing`}>{[["daily", "Per day", money(plan.price)], ["monthly", `Per month (${plan.monthlyDays || 30} days)`, money(plan.monthlyPrice)]].map(([value, label, price]) => <label key={value} className={form.billing === value ? "is-active" : ""}><input type="radio" name="billing" value={value} checked={form.billing === value} onChange={update} /><span>{label}</span><b>{price} + tax</b></label>)}</div>}
                               </div>
-                              {hourly && <><Field label="Duration"><div className="campaign-duration"><input aria-label="Hours" type="number" min="0" max="24" value={form.durationHours} onChange={(event) => setForm({ ...form, durationHours: event.target.value })} /><span>hours</span><input aria-label="Minutes" type="number" min="0" max="59" value={form.durationMinutes} onChange={(event) => setForm({ ...form, durationMinutes: event.target.value })} /><span>minutes</span></div></Field>
-              <Field label="Requested views" hint={`Price = ${money(plan?.ratePer1000ViewsPerHour || 0)} × views/1,000 × hours.`}><input name="customViews" type="number" min="1000" max="10000000" step="1" value={form.customViews} onChange={update} required /></Field></>}
+                              {(hourly || custom) && <><Field label="Duration"><div className="campaign-duration"><input aria-label="Hours" type="number" min="0" max="24" value={form.durationHours} onChange={(event) => setForm({ ...form, durationHours: event.target.value })} /><span>hours</span><input aria-label="Minutes" type="number" min="0" max="59" value={form.durationMinutes} onChange={(event) => setForm({ ...form, durationMinutes: event.target.value })} /><span>minutes</span></div></Field>
+              {hourly && <Field label="Requested views" hint={`Price = ${money(plan?.ratePer1000ViewsPerHour || 0)} × views/1,000 × hours.`}><input name="customViews" type="number" min="1000" max="10000000" step="1" value={form.customViews} onChange={update} required /></Field>}</>}
               <Field label="Campaign type"><select name="campaignType" value={form.campaignType} onChange={update}><option>Concurrent views plan</option><option>Age-Restricted</option></select></Field>
               <div className="campaign-endtime"><Clock3 size={17} /><span>Expected end: <b>{localEnd}</b> IST</span></div>
               <div className="campaign-policy"><Clock3 size={17} /><span>Bookings require at least 30 minutes' notice. Campaigns are subject to policy review; views and rankings are not guaranteed.</span></div>

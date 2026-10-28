@@ -10,6 +10,7 @@ import { setUserData } from "@/utils/authUtils";
 import { registerUserAPI } from "@/services/userServices";
 import { setCsrfToken } from "@/utils/adminCsrf";
 import AdminMfaStep from "@/components/AdminMfaStep";
+import LoginOtpStep from "@/components/LoginOtpStep";
 
 const LOGIN_FIELDS = [
   { name: "email",    label: "Email address", placeholder: "name@example.com", icon: Mail,  type: "email"    },
@@ -62,6 +63,7 @@ export default function AuthPage() {
   const [loginForm,    setLoginForm]    = useState(EMPTY_LOGIN);
   const [signupForm,   setSignupForm]   = useState(EMPTY_SIGNUP);
   const [mfa,          setMfa]          = useState(null);
+  const [otp,          setOtp]          = useState(null);
 
   const isTransitioning = useRef(false);
   const turnstileId     = useRef(null);
@@ -134,6 +136,11 @@ export default function AuthPage() {
         setLoginForm(EMPTY_LOGIN);
         return;
       }
+      if (data.otpRequired) {
+        setOtp({ otpToken: data.otpToken, sentTo: data.sentTo });
+        setLoginForm(EMPTY_LOGIN);
+        return;
+      }
       finishLogin(data);
     } catch (e) {
       setError(e.message); setDirection(-1); setStep(0); setCaptchaToken(null);
@@ -157,6 +164,11 @@ export default function AuthPage() {
   const handleMfaComplete = (data) => {
     setCsrfToken(data.csrfToken);
     setMfa(null);
+    finishLogin(data);
+  };
+
+  const handleOtpComplete = (data) => {
+    setOtp(null);
     finishLogin(data);
   };
 
@@ -342,7 +354,16 @@ export default function AuthPage() {
             })}
           </div>
 
-          {mfa ? (
+          {otp ? (
+            <div className="text-white [&_p]:text-white/60 [&_input]:bg-white/10 [&_input]:text-white">
+              <LoginOtpStep
+                otpToken={otp.otpToken}
+                sentTo={otp.sentTo}
+                onComplete={handleOtpComplete}
+                onCancel={() => { setOtp(null); setStep(0); setCaptchaToken(null); }}
+              />
+            </div>
+          ) : mfa ? (
             <div className="text-white [&_p]:text-white/60 [&_input]:bg-white/10 [&_input]:text-white [&_pre]:text-black">
               <AdminMfaStep
                 {...mfa}
