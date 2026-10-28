@@ -40,8 +40,6 @@ export default function FifaPredictionsList() {
 
   return (
     <div className="fifa-body font-sans overflow-x-hidden relative bg-[#111415] text-[#e1e3e4] min-h-screen pb-20">
-      
-      {/* Stitch Design styles inject */}
       <style dangerouslySetInnerHTML={{__html: `
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
