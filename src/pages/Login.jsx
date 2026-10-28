@@ -2,6 +2,8 @@ import React, { useState, useRef } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { BASE_URL } from "@/utils/urls";
 import { setUserData } from "@/utils/authUtils";
+import { setCsrfToken } from "@/utils/adminCsrf";
+import AdminMfaStep from "@/components/AdminMfaStep";
 import { Mail, Lock, ArrowRight } from "lucide-react";
 
 export const Login = () => {
@@ -12,6 +14,7 @@ export const Login = () => {
   const [success, setSuccess] = useState("");
   const [step, setStep] = useState("email"); // "email" or "password"
   const passwordInputRef = useRef(null);
+  const [mfa, setMfa] = useState(null);
 
   const [form, setForm] = useState({
     email: "",
@@ -66,9 +69,33 @@ export const Login = () => {
         throw new Error(data.message || "Login failed");
       }
 
-      console.log("Response from backend:", data);
-      console.log("User object:", data.user);
+      if (data.mfaRequired) {
+        setMfa({ mfaToken: data.mfaToken, enrollmentRequired: !!data.enrollmentRequired });
+        setForm((prev) => ({ ...prev, password: "" }));
+        return;
+      }
+      await finishLogin(data);
+    } catch (err) {
+      setError(err.message || "Something went wrong");
+      setForm((prev) => ({ ...prev, password: "" }));
+      setStep("email");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const handleMfaComplete = async (data) => {
+    setCsrfToken(data.csrfToken);
+    setMfa(null);
+    try {
+      await finishLogin(data);
+    } catch (err) {
+      setError(err.message || "Something went wrong");
+    }
+  };
+
+  const finishLogin = async (data) => {
+    try {
       if (data.user) {
         setUserData(data.user);
         localStorage.setItem('user', JSON.stringify(data.user));
@@ -163,6 +190,14 @@ export const Login = () => {
           </div>
 
           {/* Form Container */}
+          {mfa ? (
+            <AdminMfaStep
+              mfaToken={mfa.mfaToken}
+              enrollmentRequired={mfa.enrollmentRequired}
+              onComplete={handleMfaComplete}
+              onCancel={() => setMfa(null)}
+            />
+          ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
               <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded text-red-700 text-sm animate-pulse">
@@ -296,6 +331,7 @@ export const Login = () => {
               </>
             )}
           </form>
+          )}
         </div>
       </div>
 

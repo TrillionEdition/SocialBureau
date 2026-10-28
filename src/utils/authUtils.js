@@ -57,6 +57,7 @@ export const clearAuthData = async () => {
 
   // Clear localStorage
   localStorage.removeItem("userData");
+  sessionStorage.removeItem("adminCsrf");
 
   // Notify other components
   window.dispatchEvent(new Event("authChange"));
