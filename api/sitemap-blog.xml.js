@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   try {
     // Note: vercel.json's VITE_API_URL points at a suspended onrender backend;
     // the live site actually calls this nip.io backend, so don't fall back to VITE_API_URL.
-    const BACKEND = process.env.API_URL || 'https://13.207.200.198.nip.io/socialbureau';
+    const BACKEND = process.env.VITE_API_URL;
 
     // Fetch all published blogs live from the backend (no rebuild needed)
     const listUrl = `${BACKEND.replace(/\/$/, '')}/blog?limit=5000&published=true`;
