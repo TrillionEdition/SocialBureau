@@ -221,6 +221,7 @@ export default function Footer() {
   {/* Left */}
   <div className="text-center md:text-left">
     <p>Copyright © 2026 SocialBureau. All rights reserved.</p>
+<p className="mt-1">A Venture of Trillion Edition LLP</p>
   </div>
 
   {/* Center */}
