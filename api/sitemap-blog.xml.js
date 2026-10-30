@@ -1,5 +1,3 @@
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
-
 function escapeXml(str) {
   if (!str && str !== 0) return '';
   return String(str)
@@ -17,21 +15,23 @@ function formatDate(d) {
 }
 
 export default async function handler(req, res) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 8000);
   try {
-    // Note: vercel.json's VITE_API_URL points at a suspended onrender backend;
-    // the live site actually calls this nip.io backend, so don't fall back to VITE_API_URL.
-    const BACKEND = process.env.VITE_API_URL;
-
-    // Fetch all published blogs live from the backend (no rebuild needed)
-    const listUrl = `${BACKEND.replace(/\/$/, '')}/blog?limit=5000&published=true`;
-    const response = await fetch(listUrl, { method: 'GET' });
+    const BACKEND = (process.env.API_URL || 'https://api.socialbureau.in').replace(/\/$/, '');
+    const response = await fetch(`${BACKEND}/socialbureau/blog/sitemap-data`, {
+      method: 'GET',
+      signal: controller.signal,
+    });
     if (!response.ok) {
-      console.error('Failed to fetch blogs for sitemap-blog:', response.statusText);
-      return res.status(502).send('Bad Gateway');
+      throw new Error(`Upstream responded ${response.status}`);
     }
 
     const payload = await response.json();
-    const items = Array.isArray(payload?.data) ? payload.data : (Array.isArray(payload) ? payload : []);
+    if (!payload?.success || !Array.isArray(payload.data)) {
+      throw new Error('Unexpected sitemap-data response shape');
+    }
+    const items = payload.data;
 
     const SITE = 'https://www.socialbureau.in';
 
@@ -55,12 +55,14 @@ export default async function handler(req, res) {
 
     xml += '</urlset>';
 
-    // Cache briefly at CDN so new blogs show up quickly without hammering the backend
-    res.setHeader('Content-Type', 'application/xml; charset=utf-8');
-    res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
+    res.setHeader('Content-Type', 'application/xml');
+    res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
     return res.status(200).send(xml);
   } catch (err) {
     console.error('sitemap-blog error', err);
-    return res.status(500).send('Internal Server Error');
+    res.setHeader('Retry-After', '3600');
+    return res.status(503).send('Service Unavailable');
+  } finally {
+    clearTimeout(timer);
   }
 }
