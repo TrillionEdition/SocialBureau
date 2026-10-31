@@ -225,22 +225,7 @@ export default function Navbar() {
   ],
 },
     {
-      label: "Company",
-      columns: [
-        {
-          title: "About",
-          items: [
-            { label: "About Us", href: "/about" },
-            { label: "Our Team", href: "/team" },
-          ],
-        },
-        {
-          title: "Community",
-          items: [
-            { label: "Blog", href: "/blog" },
-          ],
-        },
-      ],
+      label: "About Us", href: "/about"
     },
     {
       label: "Careers",
@@ -288,14 +273,14 @@ export default function Navbar() {
         },
       ],
     },
+    { label: "Team", href: "/team" },
+    { label: "Blogs", href: "/blog" },
     {
       label: "Partnership",
       href: "/partners",
     },
-
-    { label: "Team", href: "/team" },
-    { label: "Enquiry", href: "/enquiry-form" },
-    { label: "Work Architect", href: "/work-architect", live: true },
+    // { label: "Enquiry", href: "/enquiry-form" },
+    { label: "Work Architect", href: "/work-architect" },
     { label: "Support", href: "/contact" },
     // { label: "FIFA 2026", href: "/fifa-world-cup", live: true },
   ];
