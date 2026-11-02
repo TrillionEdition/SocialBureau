@@ -28,6 +28,7 @@
     "autoprefixer": "^10.4.14",
     "axios": "^1.12.2",
     "bcryptjs": "^3.0.3",
+    "botid": "^1.5.12",
     "canvas-confetti": "^1.9.3",
     "chart.js": "^4.5.0",
     "clsx": "^2.1.1",

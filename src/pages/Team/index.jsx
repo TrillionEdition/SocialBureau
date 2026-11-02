@@ -3,7 +3,7 @@ import { TeamSelector } from "./TeamSelector";
 import { FullRoster } from "./FullRoster";
 import { Podcast } from "./Podcast";
 import { CTA } from "./CTA";
-import TreasureHuntDiamond from "../../components/TreasureHuntDiamond";
+// TREASURE HUNT DISABLED: import TreasureHuntDiamond from "../../components/TreasureHuntDiamond";
 
 export const Team = () => {
   return (
@@ -12,10 +12,12 @@ export const Team = () => {
         <Hero />
         <TeamSelector />
         <FullRoster />
+        {/* TREASURE HUNT DISABLED
         <TreasureHuntDiamond 
           stepRequired={2} 
           clueText="Head to our Partnership page. Seek the partner whose name begins with the letters 'R' and ends with 'T' to uncover the next hint."
         />
+        */}
         <Podcast />
         <CTA />
         

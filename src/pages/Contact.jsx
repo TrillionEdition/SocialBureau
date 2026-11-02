@@ -1,7 +1,7 @@
 import React from 'react'
 import Seo from '../components/Seo'
 import ContactSection from '../components/ContactSection'
-import TreasureHuntDiamond from '../components/TreasureHuntDiamond'
+// TREASURE HUNT DISABLED: import TreasureHuntDiamond from '../components/TreasureHuntDiamond'
 
 export const Contact = () => {
   return (
@@ -16,10 +16,12 @@ export const Contact = () => {
       />
       <div className='bg-black'>
         <ContactSection />
+        {/* TREASURE HUNT DISABLED
         <TreasureHuntDiamond
           stepRequired={6}
           clueText="Great content tells great stories. One of them holds your next clue."
         />
+        */}
       </div>
     </>
   )

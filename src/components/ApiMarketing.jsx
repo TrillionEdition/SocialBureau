@@ -16,7 +16,7 @@ import {
 import { Bar, Line, Doughnut } from 'react-chartjs-2';
 import AdChart from './AdChart';
 import apiLeadService from '@/services/apiLeadService';
-import TreasureHuntDiamond from './TreasureHuntDiamond';
+// TREASURE HUNT DISABLED: import TreasureHuntDiamond from './TreasureHuntDiamond';
 
 // Register ChartJS components
 ChartJS.register(
@@ -536,10 +536,12 @@ const ApiMarketing = () => {
           </div>
         </div>
       </section>
+      {/* TREASURE HUNT DISABLED
       <TreasureHuntDiamond 
         stepRequired={5} 
         clueText="Need a helping hand? Your next clue is waiting there."
       />
+      */}
 
       {/* SUB-SERVICES & DEFINITIONS */}
       <section className="bg-[#080808] py-12 sm:py-16 md:py-20 px-4 sm:px-8 lg:px-14 overflow-hidden">

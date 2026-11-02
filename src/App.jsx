@@ -162,7 +162,7 @@ const PartnerLogin = lazy(() => import("./pages/Partnerships/PartnershipTemplate
 const PartnerDashboard = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboard"));
 const PartnerDashboardHub = lazy(() => import("./pages/Partnerships/PartnershipTemplate/PartnerDashboardHub"));
 const StudentShowcase = lazy(() => import("./pages/Partnerships/StudentShowcase"));
-const TreasureHunt = lazy(() => import("./pages/TreasureHunt/TreasureHunt"));
+// TREASURE HUNT DISABLED: const TreasureHunt = lazy(() => import("./pages/TreasureHunt/TreasureHunt"));
 const SuntipsClaims = lazy(() => import("./pages/SuntipsClaims"));
 const ChocochiForm = lazy(() => import("./pages/ChocochiForm"));
 const FifaWorldcup = lazy(() => import("./pages/Fifa World Cup/FifaWorldcup"));
@@ -176,16 +176,17 @@ const AuditClientProfile = lazy(() => import("./pages/AuditReports/ClientProfile
 const AuditUploadReport = lazy(() => import("./pages/AuditReports/UploadReport"));
 const DocumentViewerPage = lazy(() => import("./pages/AuditReports/DocumentViewerPage"));
 
-import FloatingTreasureHuntClue from "./components/FloatingTreasureHuntClue";
-import TreasureHuntTimer from "./components/TreasureHuntTimer";
-import { toast } from "react-toastify";
-import { 
-  updateTreasureHuntActivity, 
-  checkTreasureHuntInactivity, 
-  checkTreasureHuntTimeout,
-  getTreasureHuntStep, 
-  CLUES 
-} from "./utils/treasureHunt";
+// TREASURE HUNT DISABLED:
+// import FloatingTreasureHuntClue from "./components/FloatingTreasureHuntClue";
+// import TreasureHuntTimer from "./components/TreasureHuntTimer";
+// import { toast } from "react-toastify";
+// import { 
+//   updateTreasureHuntActivity, 
+//   checkTreasureHuntInactivity, 
+//   checkTreasureHuntTimeout,
+//   getTreasureHuntStep, 
+//   CLUES 
+// } from "./utils/treasureHunt";
 import TermsOfService from "./components/TermsOfService";
 import Pooja from "./pages/Partnerships/Pooja";
 import ReporterAssetArchitecture from "./pages/static_pages/ReporterAssetArchitecture";
@@ -342,6 +343,7 @@ const lenisOptions = {
 
 
 function App() {
+  /* TREASURE HUNT DISABLED
   useEffect(() => {
     let activityInterval = null;
     let isTracking = false;
@@ -428,6 +430,7 @@ function App() {
       window.removeEventListener("treasure_hunt_update", setupInactivityTracking);
     };
   }, []);
+  */
 
   return (
     <ReactLenis root options={lenisOptions}>
@@ -449,8 +452,8 @@ function App() {
         <ConditionalChatbot />
         <WebsiteAIAssistant />
         <ScrollTop />
-        <FloatingTreasureHuntClue />
-        <TreasureHuntTimer />
+        {/* TREASURE HUNT DISABLED: <FloatingTreasureHuntClue /> */}
+        {/* TREASURE HUNT DISABLED: <TreasureHuntTimer /> */}
         {/* <AdsContainer /> */}
         <Suspense>
           <Routes>
@@ -768,7 +771,7 @@ function App() {
             <Route path="/partnership/Partner2" element={<Partner2 />} />
             <Route path="/chocochi" element={<Chocochi />} />
             <Route path="/chocochi-form" element={<ChocochiForm />} />
-            <Route path="/treasure-hunt" element={<TreasureHunt />} />
+            {/* TREASURE HUNT DISABLED: <Route path="/treasure-hunt" element={<TreasureHunt />} /> */}
             <Route path="/fifa-world-cup" element={<FifaWorldcup />} />
             <Route path="/fifa-predictions" element={<FifaPredictionsList />} />
 

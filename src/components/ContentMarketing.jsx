@@ -17,7 +17,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import Seo from "./Seo";
-import TreasureHuntDiamond from "./TreasureHuntDiamond";
+// TREASURE HUNT DISABLED: import TreasureHuntDiamond from "./TreasureHuntDiamond";
 
 const ContentMarketing = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -514,10 +514,12 @@ const ContentMarketing = () => {
           </div>
         </div>
       </section>
+       {/* TREASURE HUNT DISABLED
        <TreasureHuntDiamond 
         stepRequired={7} 
         clueText="Not all treasures are discovered—some are developed."
       />
+      */}
 
       {/* Why Choose Us */}
       <section

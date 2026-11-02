@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Footer from '../components/Footer'
-import TreasureHuntDiamond from '../components/TreasureHuntDiamond'
+// TREASURE HUNT DISABLED: import TreasureHuntDiamond from '../components/TreasureHuntDiamond'
 import { Mail, User, MessageSquare, Send, Linkedin, Instagram, Play } from "lucide-react";
 export default function Landing() {
   return (
@@ -10,10 +10,12 @@ export default function Landing() {
       {/* <SplitFeature /> */}
       <MobileCard />
       <LatestBlogs />
+      {/* TREASURE HUNT DISABLED
       <TreasureHuntDiamond 
           stepRequired={3} 
           clueText="The next piece of the puzzle may be hiding among our latest thoughts." 
         />
+      */}
       {/* <GradientFeatures /> */}
       <LatestWebsite />
       <YoutubeVideoSection />

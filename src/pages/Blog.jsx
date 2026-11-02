@@ -3,7 +3,7 @@ import Footer from '../components/Footer'
 import BlogHeader from '../components/BlogHeader'
 import BlogPosts from '../components/BlogPosts'
 import Seo from '../components/Seo'
-import TreasureHuntDiamond from '../components/TreasureHuntDiamond'
+// TREASURE HUNT DISABLED: import TreasureHuntDiamond from '../components/TreasureHuntDiamond'
 // import { BlogFooter } from '../components/BlogFooter'
 
 export const Blog = () => {
@@ -19,10 +19,12 @@ export const Blog = () => {
       />
       <BlogHeader />
       <BlogPosts />
+      {/* TREASURE HUNT DISABLED
       <TreasureHuntDiamond 
         stepRequired={4} 
         clueText="Every digital treasure needs a gateway. Explore our API solutions to continue."
       />
+      */}
       {/* <BlogFooter/> */}
     </div>
   )
