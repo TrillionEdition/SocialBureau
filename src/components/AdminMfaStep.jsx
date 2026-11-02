@@ -21,7 +21,7 @@ const post = async (path, body) => {
 export const AdminMfaStep = ({ mfaToken, enrollmentRequired, onComplete, onCancel }) => {
   const [code, setCode] = useState("");
   const [authorized, setAuthorized] = useState(!enrollmentRequired ? null : false);
-  const [useRecovery, setUseRecovery] = useState(false);
+  const [codeType, setCodeType] = useState("enrollment");
   const [codes, setCodes] = useState(null);
   const [pending, setPending] = useState(null);
   const [busy, setBusy] = useState(false);
@@ -47,7 +47,7 @@ export const AdminMfaStep = ({ mfaToken, enrollmentRequired, onComplete, onCance
   });
 
   const authorize = () => run(async () => {
-    await post("/enroll/authorize", { mfaToken, [useRecovery ? "recoveryCode" : "enrollmentCode"]: code.trim() });
+    await post("/enroll/authorize", { mfaToken, [codeType === "recovery" ? "recoveryCode" : "enrollmentCode"]: code.trim() });
     setCode("");
     setAuthorized(true);
   });
@@ -83,7 +83,7 @@ export const AdminMfaStep = ({ mfaToken, enrollmentRequired, onComplete, onCance
       ) : (
         <>
           <p className="text-sm text-gray-600">
-            {useRecovery
+            {codeType === "recovery"
               ? "Enter one of your single-use recovery codes to register a new security key."
               : "Enter the one-time enrollment code issued to you by the site operator."}
           </p>
@@ -91,13 +91,29 @@ export const AdminMfaStep = ({ mfaToken, enrollmentRequired, onComplete, onCance
           <button disabled={busy || !code.trim()} onClick={authorize} className="w-full bg-red-500 text-white py-3 rounded">
             Continue
           </button>
+          {enrollmentRequired !== true && (
+            <button
+              className="text-sm underline block"
+              onClick={() => {
+                setCode("");
+                setCodeType(codeType === "recovery" ? "enrollment" : "recovery");
+              }}
+            >
+              Use a {codeType === "recovery" ? "site-operator enrollment" : "recovery"} code instead
+            </button>
+          )}
         </>
       )}
       {error && <p className="text-sm text-red-600">{error}</p>}
       {enrollmentRequired !== true && authorized === null && (
-        <button className="text-sm underline" onClick={() => { setUseRecovery(true); setAuthorized(false); }}>
-          Lost your key? Use a recovery code
-        </button>
+        <>
+          <button className="text-sm underline block" onClick={() => { setCodeType("recovery"); setAuthorized(false); }}>
+            Lost your key? Use a recovery code
+          </button>
+          <button className="text-sm underline block" onClick={() => { setCodeType("enrollment"); setAuthorized(false); }}>
+            Have an enrollment code from the site operator?
+          </button>
+        </>
       )}
       <button className="text-sm underline block" onClick={onCancel}>Cancel</button>
     </div>
