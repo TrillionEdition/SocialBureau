@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Toast from "./Toast";
 import Footer from "./Footer";
 import { Calendar, User, Mail, Sparkles, Clock, Check, AlertCircle, ArrowRight, MessageSquare } from "lucide-react";
@@ -18,6 +18,50 @@ export default function ContactSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [toast, setToast] = useState(null);
   const [showBubble, setShowBubble] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const [honeypot, setHoneypot] = useState("");
+  const turnstileWidgetId = useRef(null);
+  const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+
+  useEffect(() => {
+    if (activeTab !== "message" || !turnstileSiteKey) return undefined;
+    let alive = true;
+    let retries = 0;
+
+    const renderWidget = () => {
+      if (!alive) return;
+      const container = document.getElementById("cf-turnstile-contact");
+      if (!window.turnstile || !container) {
+        if (++retries <= 50) setTimeout(renderWidget, 100);
+        return;
+      }
+      if (container.children.length === 0) {
+        turnstileWidgetId.current = window.turnstile.render(container, {
+          sitekey: turnstileSiteKey,
+          callback: (token) => alive && setCaptchaToken(token),
+          "expired-callback": () => alive && setCaptchaToken(null),
+          "error-callback": () => alive && setCaptchaToken(null),
+        });
+      }
+    };
+
+    if (!document.getElementById("cf-turnstile-script")) {
+      const script = document.createElement("script");
+      script.id = "cf-turnstile-script";
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      script.async = script.defer = true;
+      document.head.appendChild(script);
+    }
+    renderWidget();
+
+    return () => {
+      alive = false;
+      if (turnstileWidgetId.current !== null && window.turnstile) {
+        try { window.turnstile.remove(turnstileWidgetId.current); } catch { /* widget already gone */ }
+      }
+      turnstileWidgetId.current = null;
+    };
+  }, [activeTab, turnstileSiteKey]);
 
   // Meeting states
   const [meetingService, setMeetingService] = useState("Social Media Marketing");
@@ -74,7 +118,7 @@ export default function ContactSection() {
       const response = await fetch(`${apiUrl}/support/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ ...formData, captchaToken, contactFax: honeypot })
       });
 
       const data = await response.json();
@@ -98,6 +142,10 @@ export default function ContactSection() {
       console.error("Error submitting contact message:", error);
       setToast({ type: "error", message: error.message || "Please try again." });
     } finally {
+      setCaptchaToken(null);
+      if (turnstileWidgetId.current !== null && window.turnstile) {
+        try { window.turnstile.reset(turnstileWidgetId.current); } catch { /* widget already gone */ }
+      }
       setIsSubmitting(false);
     }
   };
@@ -555,10 +603,22 @@ export default function ContactSection() {
                 </div>
 
                 {/* SUBMIT */}
+                <input
+                  type="text"
+                  name="contactFax"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  style={{ position: "absolute", left: "-10000px", width: 1, height: 1, opacity: 0 }}
+                />
+                {turnstileSiteKey && <div id="cf-turnstile-contact" className="flex justify-center" />}
                 <button
                   type="submit"
                   disabled={
                     isSubmitting ||
+                    (turnstileSiteKey && !captchaToken) ||
                     !formData.name ||
                     !formData.email ||
                     !formData.company ||
