@@ -192,19 +192,112 @@ const PrivacyPolicy = () => {
                 completed.
               </p>
             </section>
-
             <section>
-              <h2 className="text-2xl font-semibold text-[#ff0000] mb-4">8. Cookies and Technical Logs</h2>
+              <h2 className="text-2xl font-semibold text-[#ff0000] mb-4">
+                8. Cookies, Advertising, Analytics, and Technical Logs
+              </h2>
+
               <p>
-                The Services may use essential cookies, session storage, or similar
-                technologies to support authentication, security, preferences, and
-                core functionality. Server and security logs may be used to detect
-                abuse, diagnose errors, and protect the Services. If analytics or
-                optional tracking technologies are added, this policy and any required
-                consent controls should be updated to describe them accurately.
+                SocialBureau and certain third-party service providers may use
+                cookies, web beacons, pixels, local storage, and similar
+                technologies when you visit our website. These technologies
+                help support website functionality, security, analytics,
+                advertising, performance measurement, and user experience.
+              </p>
+
+              <p className="mt-4">
+                <strong>Google AdSense and Advertising Cookies:</strong>{" "}
+                Where Google AdSense or other Google advertising services
+                are enabled on our website, Google and its advertising
+                partners may use cookies and similar technologies to serve,
+                measure, and improve advertisements. These technologies
+                may collect or process information such as IP addresses,
+                browser type, device information, pages visited, interactions
+                with advertisements, and other identifiers.
+              </p>
+
+              <p className="mt-4">
+                Third-party vendors, including Google, may place and read
+                cookies on your browser or use web beacons and IP addresses
+                to collect information as a result of advertisements served
+                on our website. Depending on your advertising settings and
+                applicable preferences, these technologies may be used to
+                provide personalized or non-personalized advertisements,
+                measure advertising performance, prevent fraud, and limit
+                repeated advertisements.
+              </p>
+
+              <p className="mt-4">
+                Google explains how it uses information collected through
+                websites and applications that use its services here:
+                {" "}
+                <a
+                  className="text-[#ff0000] underline"
+                  href="https://policies.google.com/technologies/partner-sites"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  How Google uses information from sites or apps that use
+                  its services
+                </a>.
+              </p>
+
+              <p className="mt-4">
+                <strong>Advertising Preferences:</strong>{" "}
+                Users can manage or opt out of personalized advertising
+                through Google's advertising settings:
+                {" "}
+                <a
+                  className="text-[#ff0000] underline"
+                  href="https://adssettings.google.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Google Ads Settings
+                </a>.
+                Users may also visit
+                {" "}
+                <a
+                  className="text-[#ff0000] underline"
+                  href="https://www.aboutads.info/choices/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  AboutAds.info
+                </a>
+                to learn about available choices for certain third-party
+                advertising cookies.
+              </p>
+
+              <p className="mt-4">
+                <strong>Analytics and Website Performance:</strong>{" "}
+                Where analytics services are enabled, we and our service
+                providers may collect information about website visits,
+                page interactions, device and browser information, and
+                technical events to understand website performance,
+                troubleshoot issues, and improve our Services. The
+                information collected depends on the analytics tools
+                actually enabled on our website.
+              </p>
+
+              <p className="mt-4">
+                <strong>Cookie Management:</strong>{" "}
+                You can manage or delete cookies through your browser
+                settings. Disabling certain cookies may affect website
+                functionality or advertising preferences. Where required
+                by applicable law, we will provide appropriate consent
+                mechanisms for non-essential cookies and advertising
+                technologies.
+              </p>
+
+              <p className="mt-4">
+                Server and security logs may also contain IP addresses,
+                timestamps, browser information, and diagnostic details.
+                These records are used for security monitoring, fraud
+                prevention, troubleshooting, and maintaining the
+                reliability of our Services.
               </p>
             </section>
-
             <section>
               <h2 className="text-2xl font-semibold text-[#ff0000] mb-4">9. Your Choices and Privacy Rights</h2>
               <p>

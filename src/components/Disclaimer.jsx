@@ -39,24 +39,151 @@ const Disclaimer = () => {
             </a>, accessible from <span className="text-[#ff0000]" onClick={()=>navigate('/')}>socialbureau.in</span></li>
           </ul>
 
-          <h2 className="text-xl font-semibold text-[#ff0000] mt-6">Disclaimer</h2>
-          <p>The information contained on the Service is for general information purposes only.</p>
-          <p>The Company assumes no responsibility for errors or omissions in the contents of the Service.</p>
-          <p>In no event shall the Company be liable for any special, direct, indirect, consequential, or incidental damages...</p>
-          <p>The Company does not warrant that the Service is free of viruses or other harmful components.</p>
+ 
+<h2 className="text-xl font-semibold text-[#ff0000] mt-6">
+  Disclaimer
+</h2>
+<p>
+  The information contained on this Service is provided for general
+  informational purposes only. While we make reasonable efforts to
+  keep the information accurate and up to date, we make no guarantees
+  or warranties, express or implied, regarding its accuracy,
+  completeness, reliability, suitability, or availability.
+</p>
+<p>
+  The Company assumes no responsibility for errors or omissions in
+  the contents of the Service. Your use of the Service and reliance
+  on any information provided is solely at your own risk.
+</p>
+<p>
+  To the maximum extent permitted by applicable law, the Company
+  shall not be liable for any direct, indirect, incidental, special,
+  consequential, or punitive damages, including loss of data, profits,
+  business opportunities, or goodwill, arising out of or in connection
+  with your use of, or inability to use, the Service.
+</p>
+<p>
+  The Company does not warrant that the Service will be uninterrupted,
+  error-free, secure, or free from viruses, malware, or other harmful
+  components. Users are responsible for maintaining appropriate
+  security measures on their own devices.
+</p>
 
-          <h2 className="text-xl font-semibold  mt-6">External Links Disclaimer</h2>
-          <p>The Service may contain links to external websites that are not provided or maintained by or in any way affiliated with the Company.</p>
-          <p>Please note that the Company does not guarantee the accuracy, relevance, timeliness, or completeness of any information on these external websites.</p>
+<h2 className="text-xl font-semibold text-[#ff0000] mt-6">
+  External Links Disclaimer
+</h2>
+<p>
+  The Service may contain links to third-party websites, applications,
+  or resources that are not owned, operated, maintained, or controlled
+  by the Company. Such links are provided solely for convenience and
+  informational purposes.
+</p>
+<p>
+  The inclusion of any external link does not imply endorsement,
+  sponsorship, approval, or affiliation with the linked website or
+  its operators.
+</p>
+<p>
+  The Company does not guarantee the accuracy, relevance, timeliness,
+  availability, security, or completeness of information provided
+  by external websites. We are not responsible for their content,
+  privacy practices, terms, products, or services.
+</p>
+<p>
+  Accessing third-party websites through links on our Service is
+  entirely at your own discretion and subject to the applicable
+  terms and privacy policies of those websites.
+</p>
 
-          <h2 className="text-xl font-semibold  mt-6">Errors and Omissions Disclaimer</h2>
-          <p>Even if the Company takes every precaution to ensure that the content of the Service is accurate, errors can occur...</p>
+<h2 className="text-xl font-semibold text-[#ff0000] mt-6">
+  Errors and Omissions Disclaimer
+</h2>
+<p>
+  Although the Company takes reasonable precautions to ensure that
+  the information published on the Service is accurate and current,
+  errors, omissions, or outdated information may occasionally occur.
+</p>
+<p>
+  Information may be updated, modified, or removed at any time
+  without prior notice. The Company does not undertake an obligation
+  to update every item of information unless required by applicable
+  law.
+</p>
+<p>
+  If you identify an error or omission, you may contact us at
+  info@socialbureau.in so that we can review it and make corrections
+  where appropriate.
+</p>
 
-          <h2 className="text-xl font-semibold mt-6">Fair Use Disclaimer</h2>
-          <p>The Company may use copyrighted material under "fair use" for criticism, comment, news reporting, teaching, etc...</p>
+<h2 className="text-xl font-semibold text-[#ff0000] mt-6">
+  Fair Use Disclaimer
+</h2>
+<p>
+  The Service may contain certain copyrighted materials, including
+  text, images, videos, graphics, or other content, which may be
+  used for purposes such as criticism, comment, news reporting,
+  research, teaching, education, or review, where permitted by
+  applicable copyright law.
+</p>
+<p>
+  Any such use is intended to comply with applicable copyright
+  exceptions and limitations, including fair use where applicable.
+  The Company does not claim ownership of third-party copyrighted
+  materials unless expressly stated.
+</p>
+<p>
+  All trademarks, copyrights, logos, and other intellectual property
+  appearing on the Service remain the property of their respective
+  owners. If you believe that material on our Service infringes
+  your intellectual property rights, please contact us at
+  info@socialbureau.in with relevant details for review.
+</p>
+<p>
+  Nothing in this section guarantees that a particular use qualifies
+  as fair use or another copyright exception. This determination
+  depends on the facts and applicable law.
+</p>
 
-          <h2 className="text-xl font-semibold mt-6">Views Expressed Disclaimer</h2>
-          <p>The Service may contain views and opinions which are those of the authors and do not necessarily reflect the official policy...</p>
+<h2 className="text-xl font-semibold text-[#ff0000] mt-6">
+  Views Expressed Disclaimer
+</h2>
+<p>
+  The Service may contain articles, opinions, commentary, reviews,
+  contributions, or other materials expressing the views of
+  individual authors, contributors, clients, or third parties.
+  Such views are those of their respective authors and do not
+  necessarily represent the official policies, positions, or
+  opinions of the Company.
+</p>
+<p>
+  The Company does not necessarily endorse or adopt every opinion
+  or statement published by contributors or third parties. Content
+  is provided for informational purposes and should not be treated
+  as an official statement or professional advice unless expressly
+  identified as such.
+</p>
+
+<h2 className="text-xl font-semibold text-[#ff0000] mt-6">
+  No Professional Advice Disclaimer
+</h2>
+<p>
+  Information available through the Service is not intended to
+  constitute legal, financial, tax, medical, investment, or other
+  professional advice. You should consult an appropriately qualified
+  professional before making decisions based on such information.
+</p>
+
+<h2 className="text-xl font-semibold text-[#ff0000] mt-6">
+  Changes to This Disclaimer
+</h2>
+<p>
+  The Company reserves the right to modify, update, or replace
+  any part of this Disclaimer at any time. Changes will become
+  effective when published on this page. Your continued use of
+  the Service following publication of changes constitutes
+  acknowledgment of the updated Disclaimer, to the extent
+  permitted by applicable law.
+</p>
 
           <h2 className="text-xl font-semibold  mt-6">No Responsibility Disclaimer</h2>
           <p>The Company is not engaged in rendering legal, accounting, or other professional advice. Please consult a professional.</p>

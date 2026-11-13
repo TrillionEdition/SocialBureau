@@ -9,7 +9,7 @@ export default function Footer() {
   {
     title: "Services",
     items: [
-      { label: "Web Development", href: "http://localhost:5173/web-development-agency-in-kochi" },
+      { label: "Web Development", href: "/web-development-agency-in-kochi" },
       { label: "API Marketing", href: "/api-marketing-agency-in-kochi" },
       { label: "Performance Marketing", href: "/performance-marketing-agency-in-kochi" },
       { label: "Niche Marketing", href: "/niche-marketing-agency-in-kochi" },
