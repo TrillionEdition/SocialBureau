@@ -1531,6 +1531,9 @@ export default function Solutions() {
   };
 
   const addFiles = (newFiles) => {
+    if (currentCategory.key === "image" && ["resize", "rotate", "grayscale"].includes(currentTool.slug)) {
+      setDoneFile(null);
+    }
     const accept = currentTool.accept || "*";
     let filtered = newFiles;
     if (accept !== "*") {
@@ -1559,6 +1562,9 @@ export default function Solutions() {
   };
 
   const removeFile = (index) => {
+    if (currentCategory.key === "image" && ["resize", "rotate", "grayscale"].includes(currentTool.slug)) {
+      setDoneFile(null);
+    }
     setFiles(prev => prev.filter((_, i) => i !== index));
   };
 
@@ -3025,6 +3031,31 @@ export default function Solutions() {
                           A4 standard height is 842 points, width is 595. Letter standard height is 792, width is 612.
                         </p>
                       )}
+                      {currentCategory.key === "image" && currentTool.slug === "rotate" && (
+                        <div className="space-y-2">
+                          <span className="text-[11px] font-bold text-white/60 tracking-wider uppercase block">Preset Angles</span>
+                          <div className="flex flex-wrap gap-2" role="group" aria-label="Preset angles">
+                            {[0, 90, 180, 270].map((angle) => (
+                              <button
+                                key={angle}
+                                type="button"
+                                aria-pressed={params.angle === angle}
+                                onClick={() => {
+                                  setDoneFile(null);
+                                  setParams((previous) => ({ ...previous, angle }));
+                                }}
+                                className={`px-3 py-1.5 text-xs font-bold rounded-lg border transition-colors cursor-pointer ${
+                                  params.angle === angle
+                                    ? "border-[#E8001A] text-white bg-[#E8001A]/20"
+                                    : "border-white/10 text-white/60 bg-white/[0.03] hover:bg-white/[0.08] hover:text-white"
+                                }`}
+                              >
+                                {angle}°
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                       <div className="grid sm:grid-cols-2 gap-3">
                         {currentTool.params.map((p) => (
                           <div key={p.key} className="space-y-1">
@@ -3048,10 +3079,15 @@ export default function Solutions() {
                                 type={p.type}
                                 value={params[p.key] ?? ""}
                                 placeholder={p.placeholder || ""}
-                                onChange={(e) => setParams({
-                                  ...params,
-                                  [p.key]: p.type === "number" ? (e.target.value === "" ? "" : Number(e.target.value)) : e.target.value
-                                })}
+                                onChange={(e) => {
+                                  if (currentCategory.key === "image" && ["resize", "rotate"].includes(currentTool.slug)) {
+                                    setDoneFile(null);
+                                  }
+                                  setParams({
+                                    ...params,
+                                    [p.key]: p.type === "number" ? (e.target.value === "" ? "" : Number(e.target.value)) : e.target.value
+                                  });
+                                }}
                                 className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2 text-xs text-white font-mono focus:border-[#E8001A] focus:outline-none"
                               />
                             )}
@@ -3126,6 +3162,62 @@ export default function Solutions() {
                         const isImage = file.type.startsWith("image/") || file.name.toLowerCase().match(/\.(jpe?g|png|gif|webp|bmp)$/i);
                         const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
                         if (isImage && previewUrl) {
+                          if (currentCategory.key === "image" && currentTool.slug === "grayscale") {
+                            return (
+                              <div className="w-full flex flex-col items-center gap-3">
+                                <span className="text-xs font-bold uppercase text-white/60">Live Grayscale Preview</span>
+                                <img
+                                  src={previewUrl}
+                                  className="max-h-[300px] max-w-full object-contain grayscale"
+                                  alt="Live grayscale preview"
+                                />
+                              </div>
+                            );
+                          }
+                          if (currentCategory.key === "image" && currentTool.slug === "rotate") {
+                            const angle = Number(params.angle);
+                            const validAngle = params.angle !== "" && params.angle != null && Number.isFinite(angle);
+                            return (
+                              <div className="w-full flex flex-col items-center gap-3">
+                                <span className="text-xs font-bold uppercase text-white/60">Live Rotate Preview</span>
+                                {validAngle ? (
+                                  <div className="w-full max-w-[300px] aspect-square flex items-center justify-center overflow-hidden border border-white/10 bg-white/5">
+                                    <img
+                                      src={previewUrl}
+                                      className="max-w-[70%] max-h-[70%] object-contain"
+                                      style={{ transform: `rotate(${angle}deg)` }}
+                                      alt="Live rotated preview"
+                                    />
+                                  </div>
+                                ) : (
+                                  <p className="text-xs text-white/50">Enter an angle to preview.</p>
+                                )}
+                                {validAngle && <span className="text-xs text-white/50">{angle}°</span>}
+                              </div>
+                            );
+                          }
+                          if (currentCategory.key === "image" && currentTool.slug === "resize") {
+                            const width = Number(params.width);
+                            const height = Number(params.height);
+                            const validDimensions = Number.isFinite(width) && Number.isFinite(height) && width > 0 && height > 0;
+                            const aspectRatio = validDimensions ? width / height : 1;
+                            return (
+                              <div className="w-full flex flex-col items-center gap-3">
+                                <span className="text-xs font-bold uppercase text-white/60">Live Resize Preview</span>
+                                {validDimensions ? (
+                                  <div
+                                    className="overflow-hidden border border-white/10 bg-white/5"
+                                    style={{ width: `min(100%, ${Math.min(300 * aspectRatio, 100000)}px)`, aspectRatio: `${width} / ${height}` }}
+                                  >
+                                    <img src={previewUrl} className="w-full h-full object-fill" alt="Live resized preview" />
+                                  </div>
+                                ) : (
+                                  <p className="text-xs text-white/50">Enter a positive width and height to preview.</p>
+                                )}
+                                {validDimensions && <span className="text-xs text-white/50">{width} x {height} px</span>}
+                              </div>
+                            );
+                          }
                           return (
                             <img
                               src={previewUrl}
