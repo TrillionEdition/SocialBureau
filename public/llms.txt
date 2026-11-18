@@ -1,0 +1,196 @@
+# SocialBureau
+
+> SocialBureau is a digital marketing and web development agency based in Kochi, Kerala, India. It offers API marketing, performance marketing, content marketing, web development, and online productivity tools.
+
+SocialBureau is a venture of Trillion Edition LLP. Its website provides information about agency services, company news, careers, partnerships, and document and image tools.
+
+## Company
+
+- [Home](https://www.socialbureau.in/): Overview of SocialBureau and its services.
+- [About](https://www.socialbureau.in/about): Information about the company.
+- [Team](https://www.socialbureau.in/team): Meet the SocialBureau team.
+- [Our Work](https://www.socialbureau.in/our-works): Explore the company's work.
+- [Contact](https://www.socialbureau.in/contact): Contact the team about services.
+- [Partnerships](https://www.socialbureau.in/partners): Explore partnership opportunities.
+
+## Digital Marketing and Development Services
+
+- [API Marketing](https://www.socialbureau.in/api-marketing-agency-in-kochi): API-driven marketing and automation services.
+- [Performance Marketing](https://www.socialbureau.in/performance-marketing-agency-in-kochi): Performance-focused digital marketing services.
+- [Content Marketing](https://www.socialbureau.in/content-marketing-agency-in-kochi): Content marketing services.
+- [Niche Marketing](https://www.socialbureau.in/niche-marketing-agency-in-kochi): Marketing services for niche audiences.
+- [AdTech Marketing](https://www.socialbureau.in/adTech-marketing-agency-in-kochi): Advertising technology and marketing services.
+- [Web Development](https://www.socialbureau.in/web-development-agency-in-kochi): Website development services.
+- [ClickUp](https://www.socialbureau.in/clickup): ClickUp consulting and implementation information.
+- [YouTube Campaigns](https://www.socialbureau.in/youtube-campaign): YouTube campaign booking information.
+
+## PDF Tools
+
+- [PDF Toolkit](https://www.socialbureau.in/pdf-tools): Browse PDF tools.
+- [Merge PDF](https://www.socialbureau.in/pdf-tools/merge-pdf): Combine PDF files.
+- [Split PDF](https://www.socialbureau.in/pdf-tools/split-pdf): Extract pages or page ranges.
+- [Compress PDF](https://www.socialbureau.in/pdf-tools/compress-pdf): Reduce PDF file size.
+- [PDF to Images](https://www.socialbureau.in/pdf-tools/pdf-to-images): Convert PDF pages to images.
+- [Images to PDF](https://www.socialbureau.in/pdf-tools/images-to-pdf): Combine images into a PDF.
+- [PDF to Word](https://www.socialbureau.in/pdf-tools/pdf-to-word): Convert PDF to an editable Word document.
+- [Word to PDF](https://www.socialbureau.in/pdf-tools/word-to-pdf): Convert a DOCX document to PDF.
+- [PDF to Text](https://www.socialbureau.in/pdf-tools/pdf-to-text): Extract text from a PDF.
+- [Edit PDF](https://www.socialbureau.in/pdf-tools/edit-pdf): Add a text annotation to a PDF.
+- [Sign PDF](https://www.socialbureau.in/pdf-tools/sign-pdf): Add a drawn, typed, or image signature to a PDF.
+
+## Image and Content Tools
+
+- [Image Toolkit](https://www.socialbureau.in/image-tools): Browse image tools.
+- [Resize Image](https://www.socialbureau.in/image-tools/resize-image): Resize an image to specified dimensions.
+- [Compress Image](https://www.socialbureau.in/image-tools/compress-image): Reduce image file size.
+- [Convert Image Format](https://www.socialbureau.in/image-tools/convert-image-format): Convert between supported image formats.
+- [Rotate Image](https://www.socialbureau.in/image-tools/rotate-image): Rotate an image.
+- [Grayscale Image](https://www.socialbureau.in/image-tools/grayscale-image): Convert an image to grayscale.
+- [Favicon Generator](https://www.socialbureau.in/image-tools/favicon-generator): Create a multi-resolution favicon.
+- [Background Remover](https://www.socialbureau.in/image-tools/background-remover): Remove an image background in the browser.
+- [Word Counter](https://www.socialbureau.in/content-tools/word-counter): Count words, characters, sentences, and paragraphs.
+- [All Solutions](https://www.socialbureau.in/solutions): Browse the available tools.
+
+## Resources and Careers
+
+- [Blog](https://www.socialbureau.in/blog): Articles and updates from SocialBureau.
+- [Careers](https://www.socialbureau.in/careers): Career opportunities.
+- [Job Listings](https://www.socialbureau.in/job-listing): Browse available jobs.
+- [ATS Checker](https://www.socialbureau.in/ats-checker): Review a resume for applicant tracking systems.
+- [Resume Generator](https://www.socialbureau.in/resume-generator): Create a resume.
+- [Events](https://www.socialbureau.in/events): Explore events.
+
+## Blog Articles
+
+- [How High-End Brands Win by Saying Less](https://www.socialbureau.in/blogs/how-high-end-brands-win-by-saying-less)
+- [Where ROI Meets Creative Flow](https://www.socialbureau.in/blogs/where-roi-meets-creative-flow)
+- [Digital Marketing Belongs to Bold Ideas](https://www.socialbureau.in/blogs/digital-marketing-belongs-to-bold-ideas)
+- [Niche Marketing for Startups](https://www.socialbureau.in/blogs/niche-marketing-for-startups)
+- [The Hidden Power of Dark Social](https://www.socialbureau.in/blogs/the-hidden-power-of-dark-social-in-digital)
+- [Niche Brands and Build](https://www.socialbureau.in/blogs/niche-brands-and-build)
+- [The Significance of Children's Day Worldwide](https://www.socialbureau.in/blogs/beyond-festivities-the-evolution-and-significance-of-childrens-day-worldwide)
+- [Content Marketing and SEO in 2026](https://www.socialbureau.in/blogs/why-content-marketing-is-essential-for-seo-success-in-2026)
+- [Conversion Sales Campaigns](https://www.socialbureau.in/blogs/conversion-sales-campaigns)
+- [Retargeting and Remarketing](https://www.socialbureau.in/blogs/retargeting-remarketing-the-complete-guide-to-recover-los)
+- [Affiliate Marketing Guide](https://www.socialbureau.in/blogs/affiliate-marketing-the-ultimate-guide-to-building-passive-)
+- [Landing Page Funnel Optimization](https://www.socialbureau.in/blogs/landing-page-funnel-optimization-the-ultimate-guide-to-in)
+- [Conversion Rate Optimization](https://www.socialbureau.in/blogs/conversion-rate-optimization-cro-the-complete-guide-to-in)
+- [Marketing Automation](https://www.socialbureau.in/blogs/marketing-automation)
+- [The Rise of API Marketing](https://www.socialbureau.in/blogs/the-rise-of-api-marketing)
+- [The Future of Real Estate Development](https://www.socialbureau.in/blogs/the-future-of-real-estate-development-building-value-beyond)
+- [Leadership in Business](https://www.socialbureau.in/blogs/leadership-in-business)
+- [Why Brand Architecture Matters](https://www.socialbureau.in/blogs/why-brand-architecture-matters-more-than-marketing)
+- [API Marketing for Developers and Marketers](https://www.socialbureau.in/blogs/api-marketing-future-developers-marketers)
+- [The Secret Language of Logos](https://www.socialbureau.in/blogs/the-secret-language-of-logos-how-branding-websites-and-marketing-build-recognition)
+- [SocialBureau's Online Toolkit](https://www.socialbureau.in/blogs/socialbureau-toolkit-free-online-pdf-image-ai-tools)
+- [WhatsApp 2026 Business Updates](https://www.socialbureau.in/blogs/whatsapp-2026-updates-business-customer-engagement)
+- [How to Merge PDF Files Online](https://www.socialbureau.in/blogs/how-to-merge-pdf-files-online-free-no-sign-up-no-watermark)
+- [PDF to Word Converter](https://www.socialbureau.in/blogs/free-pdf-to-word-converter-convert-pdf-to-editable-document-without-losing-formatting)
+- [Split a PDF Online](https://www.socialbureau.in/blogs/split-pdf-online-free-india)
+- [PDF to Word Converter for India](https://www.socialbureau.in/blogs/pdf-to-word-converter-free-india)
+- [Word to PDF Converter](https://www.socialbureau.in/blogs/word-to-pdf-converter-free-india)
+- [Convert PDF to JPG or PNG](https://www.socialbureau.in/blogs/convert-pdf-to-jpg-png-online-free)
+- [Images to PDF Converter](https://www.socialbureau.in/blogs/images-to-pdf-converter-free-india)
+- [PDF to Text Extractor](https://www.socialbureau.in/blogs/pdf-to-text-extractor-free-online)
+- [Resize an Image Online](https://www.socialbureau.in/blogs/resize-image-online-free-india)
+- [Compress an Image Online](https://www.socialbureau.in/blogs/compress-image-online-free-india)
+- [Convert Image Formats Online](https://www.socialbureau.in/blogs/convert-image-format-online-free-india)
+- [Rotate an Image Online](https://www.socialbureau.in/blogs/rotate-image-online-free-india)
+- [Rotate Scanned Documents](https://www.socialbureau.in/blogs/how-to-rotate-an-image-online-free-fix-sideways-scanned-documents-instantly-1785409406660)
+- [Convert an Image to Grayscale](https://www.socialbureau.in/blogs/grayscale-image-online-free-india)
+- [PDF and Image Tools Guide](https://www.socialbureau.in/blogs/free-pdf-image-tools-india-complete-guide)
+- [Scaling a B2B SaaS Brand with AI Content Funnels](https://www.socialbureau.in/blogs/how-we-scaled-a-b2b-saas-brand-using-ai-driven-content-funnels)
+- [Canva's Product-Led Marketing](https://www.socialbureau.in/blogs/how-canva-became-a-global-brand-through-product-led-marketing)
+- [Zomato's Real-Time Marketing](https://www.socialbureau.in/blogs/zomato-real-time-marketing)
+- [How Zoom Became a Household Name](https://www.socialbureau.in/blogs/how-zoom-became-a-household-name)
+- [How Spotify Uses Data in Marketing](https://www.socialbureau.in/blogs/how-spotify-turned-data-into-marketing)
+- [Amul's Social Media Strategy](https://www.socialbureau.in/blogs/amul-social-media-marketing-strategy)
+- [Asian Paints' Brand Building](https://www.socialbureau.in/blogs/how-asian-paints-built-a-market-leading-brand)
+- [LEGO's Brand Community](https://www.socialbureau.in/blogs/lego-brand-community)
+- [Mamaearth's Influencer Marketing](https://www.socialbureau.in/blogs/mamaearth-influencer-marketing-d2c-brand)
+- [Duolingo's Marketing](https://www.socialbureau.in/blogs/duolingo-green-owl-marketing-machine)
+- [GitHub's Developer Community](https://www.socialbureau.in/blogs/github-how-developers-became-the-community)
+- [Mastercard's Brand Evolution](https://www.socialbureau.in/blogs/mastercard-from-payment-company-to-lifestyle-brand)
+- [Google Pay and Digital Payments](https://www.socialbureau.in/blogs/google-pay-how-simplicity-turned-digital-payments-into-a-habit)
+- [Cloudflare and Edge Computing](https://www.socialbureau.in/blogs/cloudflare-edge-computing)
+- [Privacy-First Marketing Strategies](https://www.socialbureau.in/blogs/the-death-of-third-party-cookies-5-privacy-first-marketing-strategies-that-actually-work)
+- [Figma's Multiplayer Editing](https://www.socialbureau.in/blogs/figma-multiplayer-editing-browser)
+- [Your Website Is No Longer Just for Humans](https://www.socialbureau.in/blogs/your-website-is-no-longer-just-for-humans)
+- [Website Speed and Customer Experience](https://www.socialbureau.in/blogs/your-website-is-slow-and-your-customers-are-already-leaving)
+- [Uber's Real-Time Platform](https://www.socialbureau.in/blogs/uber-real-time-global-platform)
+- [Discord's Real-Time Connections](https://www.socialbureau.in/blogs/discord-scaling-real-time-connections-seo-title)
+- [How Shopify Changed E-Commerce](https://www.socialbureau.in/blogs/shopify-how-a-simple-platform-changed-ecommerce)
+- [Website Redesign](https://www.socialbureau.in/blogs/your-website-redesign-should-do-more-than-look-better)
+- [Giving Access to a Meta Business Portfolio](https://www.socialbureau.in/blogs/how-to-give-someone-access-to-meta-business-portfolio-without-sharing-your-password)
+- [The Future of Web Development](https://www.socialbureau.in/blogs/the-future-of-web-development-stop-building-websites-that-depend-on-one-technology)
+- [AI and the Future of Hiring](https://www.socialbureau.in/blogs/future-of-hiring-ai-recruitment)
+- [Digital Asset Management](https://www.socialbureau.in/blogs/-why-digital-asset-management-is-a-marketing-necessity)
+- [Workplace Communication Skills](https://www.socialbureau.in/blogs/workplace-communication-skills)
+- [Meta Pages, Ad Accounts, and Pixels](https://www.socialbureau.in/blogs/meta-page-ad-account-and-pixel-what-each-asset-actually-does)
+- [Website First Impressions and Architecture](https://www.socialbureau.in/blogs/your-website-has-3-seconds-to-make-an-impression-your-architecture-has-years-to-prove-it)
+- [Headless Web Development](https://www.socialbureau.in/blogs/headless-web-development-why-your-website-doesnt-have-to-depend-on-one-frontend)
+- [Marketing Team Access Control](https://www.socialbureau.in/blogs/-how-to-build-an-access-control-system-for-your-marketing-team)
+- [KPI vs KRA](https://www.socialbureau.in/blogs/kpi-vs-kra)
+- [Why Exit Interviews Matter](https://www.socialbureau.in/blogs/why-exit-interviews-matter)
+- [Two-Way Feedback](https://www.socialbureau.in/blogs/why-feedback-should-be-a-two-way-process)
+- [Mobile-First Websites](https://www.socialbureau.in/blogs/is-your-website-ready-for-mobile-first-users)
+- [Website UX Problems](https://www.socialbureau.in/blogs/your-website-has-a-ux-problem-not-a-design-problem)
+- [YouTube Channel Permissions](https://www.socialbureau.in/blogs/youtube-channel-permissions-how-to-give-team-access-safely)
+- [Why Good Employees Leave](https://www.socialbureau.in/blogs/why-good-employees-leave-companies)
+- [Why Brands Should Not Share YouTube Passwords](https://www.socialbureau.in/blogs/why-brands-should-stop-sharing-youtube-passwords)
+- [How AI Is Changing HR](https://www.socialbureau.in/blogs/how-ai-is-changing-hr)
+- [How to Conduct an Effective Interview](https://www.socialbureau.in/blogs/how-to-conduct-an-effective-interview)
+- [Organizing YouTube Brand Assets](https://www.socialbureau.in/blogs/how-to-organize-youtube-brand-assets)
+- [Why Employee Onboarding Matters](https://www.socialbureau.in/blogs/why-employee-onboarding-matters)
+- [Giving LinkedIn Page Posting Access](https://www.socialbureau.in/blogs/how-to-give-posting-access-to-a-linkedin-page)
+- [Meta Ad Performance](https://www.socialbureau.in/blogs/why-more-ads-dont-always-mean-better-meta-performance)
+- [Identifying High-Performance Employees](https://www.socialbureau.in/blogs/identify-high-performance-employee)
+- [Meta Campaigns, Ad Sets, and Ads](https://www.socialbureau.in/blogs/campaign-vs-ad-set-vs-ad-understanding-metas-structure)
+- [Handling Underperformance Professionally](https://www.socialbureau.in/blogs/how-to-handle-underperformance-professionally)
+- [Building a Meta Retargeting Campaign](https://www.socialbureau.in/blogs/how-to-build-a-meta-retargeting-campaign)
+- [Reading Meta Ads Manager](https://www.socialbureau.in/blogs/how-to-read-meta-ads-manager-without-getting-lost)
+- [CTR, CPC, CPM, CPA, and ROAS](https://www.socialbureau.in/blogs/ctr-cpc-cpm-cpa-and-roas-which-metric-actually-matters)
+- [Why Ads Get Clicks but No Customers](https://www.socialbureau.in/blogs/7-reasons-your-ads-get-clicks-but-no-customers)
+- [Technical vs Cultural Fit](https://www.socialbureau.in/blogs/technical-vs-cultural-fit)
+- [The Future of HR and Human Skills](https://www.socialbureau.in/blogs/future-of-hr-human-skills-ai)
+- [LinkedIn Beyond Recruitment](https://www.socialbureau.in/blogs/why-linkedin-is-more-than-a-recruitment-platform)
+- [What Employees Want from HR](https://www.socialbureau.in/blogs/what-employees-actually-want-from-hr)
+- [High-Performing B2B LinkedIn Posts](https://www.socialbureau.in/blogs/the-anatomy-of-a-high-performing-b2b-linkedin-post)
+- [Employee Engagement vs Employee Experience](https://www.socialbureau.in/blogs/employee-engagement-vs-employee-experience)
+- [Creating a LinkedIn Newsletter](https://www.socialbureau.in/blogs/how-to-create-and-schedule-a-linkedin-newsletter)
+- [Are Annual Appraisals Enough?](https://www.socialbureau.in/blogs/are-annual-appraisals-still-enough)
+- [LinkedIn Newsletters for Businesses](https://www.socialbureau.in/blogs/why-businesses-should-use-linkedin-newsletters)
+- [When to Stop Running an Ad](https://www.socialbureau.in/blogs/why-your-best-performing-ad-should-not-run-forever)
+- [Why Employees Miss Deadlines](https://www.socialbureau.in/blogs/the-real-reason-employees-miss-deadlines)
+- [Meta Pixel vs Conversions API](https://www.socialbureau.in/blogs/meta-pixel-vs-conversions-api-what-marketers-need-to-know)
+- [Creative for AI Advertising](https://www.socialbureau.in/blogs/how-to-write-better-creative-for-ai-advertising)
+- [What Makes an Employee Feel Valued](https://www.socialbureau.in/blogs/what-makes-an-employee-feel-valued)
+- [WhatsApp Ads and Conversion Funnels](https://www.socialbureau.in/blogs/whatsapp-ads-why-messaging-is-becoming-part-of-the-conversion-funnel)
+- [Clear Expectations and Performance](https://www.socialbureau.in/blogs/why-clear-expectations-improve-performance)
+- [LinkedIn Metrics](https://www.socialbureau.in/blogs/which-linkedin-metrics-actually-matter)
+- [Managing People vs Leading People](https://www.socialbureau.in/blogs/difference-between-managing-people-and-leading-people)
+- [Building a WhatsApp Lead Funnel](https://www.socialbureau.in/blogs/how-to-build-a-whatsapp-lead-funnel)
+- [B2B Buyer Conversion](https://www.socialbureau.in/blogs/why-b2b-buyers-dont-convert-after-seeing-one-post)
+- [Analyzing LinkedIn Content Patterns](https://www.socialbureau.in/blogs/how-to-analyze-a-linkedin-page-and-find-content-patterns)
+- [AI Tools for Performance Marketers](https://www.socialbureau.in/blogs/ai-tools-every-performance-marketer-should-know)
+- [From Landing Pages to Conversations](https://www.socialbureau.in/blogs/why-brands-are-moving-from-landing-pages-to-conversations)
+- [AI and Performance Marketers](https://www.socialbureau.in/blogs/will-ai-replace-performance-marketers-or-make-them-better)
+- [Repurposing Blog Content](https://www.socialbureau.in/blogs/how-to-turn-one-blog-article-into-10-pieces-of-content)
+- [How SEO Is Changing](https://www.socialbureau.in/blogs/seo-is-changing-why-ranking-on-google-is-no-longer-the-whole-game)
+- [ChatGPT Ads and Performance Marketing](https://www.socialbureau.in/blogs/chatgpt-ads-are-here-what-performance-marketers-need-to-know)
+- [2026 Digital Marketing Trends](https://www.socialbureau.in/blogs/2026-digital-marketing-trends-every-brand-should-watch)
+- [Agency Offboarding Checklist](https://www.socialbureau.in/blogs/why-every-agency-should-have-an-offboarding-checklist)
+- [Meta Naming Conventions](https://www.socialbureau.in/blogs/how-to-create-a-simple-meta-naming-convention)
+
+## Contact
+
+- Email: info@socialbureau.in
+- Phone: +91 8921840486
+- Location: Kochi, Kerala, India
+
+## Optional
+
+- [Privacy Policy](https://www.socialbureau.in/privacy-policy)
+- [Terms of Service](https://www.socialbureau.in/terms-of-service)
+- [Editorial Standards](https://www.socialbureau.in/editorial-standards)
+- [Sitemap](https://www.socialbureau.in/sitemap.xml)
