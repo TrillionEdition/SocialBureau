@@ -834,13 +834,13 @@ export default function Navbar() {
 
                       </>
                     )}
-                    <button
+                    {/* <button
                       onClick={() => handleNavClick("/leaderboard")}
                       className="flex items-center gap-2 text-[22px] font-semibold text-[#f5f5f7] active:text-[#ff0000] text-left transition-colors"
                     >
                       <Trophy size={20} />
                       Leaderboard
-                    </button>
+                    </button> */}
                     <Logout />
                   </>
                 )}
