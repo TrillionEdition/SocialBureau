@@ -19,7 +19,7 @@ const useAuth = () => {
       setIsLoggedIn(!!userData);
       setIsAdmin(userData?.role?.toLowerCase() === "admin");
       setIsPartnership(userData?.role?.toLowerCase() === "partnership" || userData?.role?.toLowerCase() === "partner");
-      setIsEmployee(userData?.isEmployee === true || (!!userData && userData.role?.toLowerCase() !== "partnership" && userData.role?.toLowerCase() !== "partner"));
+      setIsEmployee(userData?.isEmployee === true);
     };
 
     checkAuth();
@@ -496,7 +496,7 @@ export default function Navbar() {
                           <BarChart3 size={14} />
                           My YouTube Campaigns
                         </button>
-                        {isEmployee && (
+                        {(isEmployee || isAdmin || isPartnership) && (
                           <button
                             onClick={() => {
                               handleNavClick("/team/dashboard");
@@ -508,7 +508,7 @@ export default function Navbar() {
                             Team Dashboard
                           </button>
                         )}
-                        <button
+                        {/* <button
                           onClick={() => {
                             handleNavClick("/blog/dashboard");
                             setActiveDropdown(null);
@@ -517,7 +517,7 @@ export default function Navbar() {
                         >
                           <BarChart3 size={14} />
                           Manage Blogs
-                        </button>
+                        </button> */}
                         {isAdmin && (
                           <button
                             onClick={() => {
@@ -813,7 +813,7 @@ export default function Navbar() {
               <div className="mt-6 pt-6 border-t border-white/10 flex flex-col gap-3">
                 {isLoggedIn && (
                   <>
-                    {isEmployee && (
+                    {(isEmployee || isAdmin || isPartnership) && (
                       <button
                         onClick={() => handleNavClick("/team/dashboard")}
                         className="flex items-center gap-2 text-[22px] font-semibold text-brand-pink active:text-white text-left transition-colors"
