@@ -637,7 +637,7 @@
 
 .careers-job-card {
   position: relative;
-  min-height: 145px;
+  min-height: 175px;
   overflow: hidden;
   border: 1px solid #e8e9eb;
   border-radius: 7px;
@@ -657,7 +657,7 @@
 
 .careers-job-link {
   display: flex;
-  min-height: 145px;
+  min-height: 175px;
   flex-direction: column;
   align-items: flex-start;
   padding: 13px 14px 12px 58px;
@@ -708,6 +708,16 @@
   margin-top: 8px;
   color: #6d7278;
   font-size: 9px;
+}
+
+.careers-job-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 7px;
+  color: #6d7278;
+  font-size: 9px;
+  line-height: 1.35;
 }
 
 .careers-job-apply {
