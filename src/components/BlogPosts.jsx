@@ -30,6 +30,7 @@ export default function BlogPosts() {
         category: selectedCategory !== "All Posts" ? selectedCategory : undefined,
         limit: 100,
         published: true,
+        summary: true,
       });
       return response;
     },
