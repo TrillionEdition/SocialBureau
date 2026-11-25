@@ -28,6 +28,8 @@ export default function AdminCreateJob() {
     salary: "",
     nextSteps: "",
     link: "",
+    postDate: new Date().toISOString().split('T')[0],
+    expireDate: "",
     img: [""],
     roleSummary: [""],
     responsibilities: [""],
@@ -299,6 +301,29 @@ export default function AdminCreateJob() {
                   placeholder="e.g. 10L - 15L PA"
                   onChange={handleChange}
                   className="w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-white focus:border-red-600/50 outline-none transition-colors"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Post Date</label>
+                <input
+                  type="date"
+                  name="postDate"
+                  value={form.postDate}
+                  onChange={handleChange}
+                  className="w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-white focus:border-red-600/50 outline-none transition-colors"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Expire Date</label>
+                <input
+                  type="date"
+                  name="expireDate"
+                  value={form.expireDate}
+                  onChange={handleChange}
+                  className="w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-white focus:border-red-600/50 outline-none transition-colors"
+                  placeholder="Optional - leave blank for no expiration"
                 />
               </div>
             </div>

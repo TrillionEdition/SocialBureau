@@ -29,9 +29,9 @@
 }
 
 .careers-hero {
-  height: 100vh;
+  height: auto;
   overflow: hidden;
-  padding: 48px 0 0;
+  padding: 48px 0 100px;
   background:
     radial-gradient(ellipse at 68% 50%, rgba(245, 245, 245, .72), transparent 38%),
     linear-gradient(110deg, #fff 30%, #fafafa 100%);
@@ -43,6 +43,16 @@
   grid-template-columns: 1fr 1fr;
   align-items: center;
   gap: 30px;
+}
+
+@media (min-width: 1440px) {
+  .careers-hero .careers-container {
+    width: min(1280px, calc(100% - 96px));
+  }
+
+  .careers-hero-grid {
+    gap: 56px;
+  }
 }
 
 .careers-eyebrow {
