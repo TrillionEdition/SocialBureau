@@ -742,6 +742,79 @@
   font-size: 9px;
 }
 
+.careers-trending-banner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  border: 1px solid #ffc0c5;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #fff1f2, #fff);
+}
+
+.careers-trending-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: #e11d2e;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  animation: careers-trending-pulse 2s ease-in-out infinite;
+}
+
+.careers-trending-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.careers-trending-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border: 1px solid #ffc0c5;
+  border-radius: 999px;
+  background: #fff;
+  color: #18191c;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.careers-trending-list a:hover {
+  border-color: #e11d2e;
+  color: #e11d2e;
+}
+
+.careers-trending-badge {
+  position: absolute;
+  top: 10px;
+  right: 35px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: #e11d2e;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+@keyframes careers-trending-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(225, 29, 46, .4); }
+  50% { box-shadow: 0 0 0 6px rgba(225, 29, 46, 0); }
+}
+
 .careers-job-admin {
   position: absolute;
   right: 8px;

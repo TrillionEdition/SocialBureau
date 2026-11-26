@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, ArrowUpRight, BriefcaseBusiness, Eye, EyeOff, Loader2, MapPin, Pencil, Plus, Search, Trash2 } from "lucide-react";
+import { ArrowRight, ArrowUpRight, BriefcaseBusiness, Eye, EyeOff, Flame, Loader2, MapPin, Pencil, Plus, Search, Trash2 } from "lucide-react";
 import { toast } from "react-toastify";
 import { jobService } from "@/services/jobService";
 import { canManageJobs } from "@/utils/authUtils";
@@ -57,8 +57,13 @@ export default function CareersPost() {
       const matchesDepartment = department === "All Roles" || job.department === department;
       const searchableText = `${job.title || ""} ${job.department || ""} ${job.location || ""}`.toLowerCase();
       return matchesDepartment && (!query || searchableText.includes(query));
-    });
+    }).sort((a, b) => Number(!!b.isTrending) - Number(!!a.isTrending));
   }, [department, jobs, search]);
+
+  const trendingJobs = useMemo(
+    () => jobs.filter((job) => job?.isTrending && job.isActive !== false && job.title),
+    [jobs],
+  );
 
   const handleDelete = async (event, id) => {
     event.preventDefault();
@@ -135,6 +140,19 @@ export default function CareersPost() {
           ))}
         </div>
 
+        {trendingJobs.length > 0 && (
+          <div className="careers-trending-banner" role="region" aria-label="Currently hiring">
+            <span className="careers-trending-label"><Flame size={15} /> Currently Hiring</span>
+            <div className="careers-trending-list">
+              {trendingJobs.map((job) => (
+                <Link key={job._id} to={`/careers/${job.slug}`}>
+                  {job.title} <ArrowRight size={12} />
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
         {canManageJobs() && (
           <Link className="careers-admin-add" to="/jobs/create">
             <Plus size={15} /> Post a New Job
@@ -164,6 +182,7 @@ export default function CareersPost() {
                 </Link>
 
                 {!job.isActive && <span className="careers-hidden-badge">Hidden</span>}
+                {job.isTrending && <span className="careers-trending-badge"><Flame size={10} /> Trending</span>}
                 {canManageJobs() && (
                   <div className="careers-job-admin">
                     <button aria-label={`Edit ${job.title}`} disabled={processingId === job._id} onClick={(event) => handleEdit(event, job)} type="button"><Pencil size={14} /></button>
