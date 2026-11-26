@@ -60,11 +60,6 @@ export default function CareersPost() {
     }).sort((a, b) => Number(!!b.isTrending) - Number(!!a.isTrending));
   }, [department, jobs, search]);
 
-  const trendingJobs = useMemo(
-    () => jobs.filter((job) => job?.isTrending && job.isActive !== false && job.title),
-    [jobs],
-  );
-
   const handleDelete = async (event, id) => {
     event.preventDefault();
     event.stopPropagation();
@@ -139,19 +134,6 @@ export default function CareersPost() {
             </button>
           ))}
         </div>
-
-        {trendingJobs.length > 0 && (
-          <div className="careers-trending-banner" role="region" aria-label="Currently hiring">
-            <span className="careers-trending-label"><Flame size={15} /> Currently Hiring</span>
-            <div className="careers-trending-list">
-              {trendingJobs.map((job) => (
-                <Link key={job._id} to={`/careers/${job.slug}`}>
-                  {job.title} <ArrowRight size={12} />
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
 
         {canManageJobs() && (
           <Link className="careers-admin-add" to="/jobs/create">
