@@ -66,6 +66,25 @@ const processContentWithIds = (html, sectionIndex) => {
   return processedHtml;
 };
 
+const normalizeArticleHtml = (html) => DOMPurify.sanitize(html || '').replace(
+  /<p\b([^>]*)>([\s\S]*?)<\/p>/gi,
+  (paragraph, attributes, content) => {
+    const text = content.replace(/<[^>]*>/g, '').trim();
+    const containsOnlyBoldText = /^\s*(?:<strong\b[^>]*>|<b\b[^>]*>)[\s\S]*?<\/(?:strong|b)>\s*$/i.test(content);
+    const hasBoldStyle = /font-weight\s*:\s*(?:bold|[6-9]00)/i.test(attributes);
+
+    return text && text.length <= 120 && (containsOnlyBoldText || hasBoldStyle)
+      ? `<h2>${content}</h2>`
+      : paragraph;
+  }
+);
+
+const getReadableText = (html) => String(html || '')
+  .replace(/<!--[\s\S]*?-->/g, ' ')
+  .replace(/<[^>]*>/g, ' ')
+  .replace(/&nbsp;|&#160;|&#xA0;/gi, ' ')
+  .trim();
+
 // Table of Contents Component
 function TableOfContents({ headings }) {
   const scrollToHeading = (id) => {
@@ -78,14 +97,7 @@ function TableOfContents({ headings }) {
     }
   };
 
-  if (!headings || headings.length === 0) {
-    return (
-      <div className="bg-white rounded-2xl p-6 mb-8 border border-gray-200 shadow-sm">
-        <h3 className="text-xl font-bold text-gray-900 mb-4">Table of Contents</h3>
-        <p className="text-gray-500 text-sm">No headings available</p>
-      </div>
-    );
-  }
+  if (!headings || headings.length === 0) return null;
 
   return (
     <div className="bg-white rounded-2xl p-6 mb-8 border border-gray-200 shadow-sm">
@@ -287,14 +299,15 @@ export default function BlogDetail() {
 
     const h = [];
     post.content.forEach((section, sectionIndex) => {
-      const textToProcess = typeof section === 'string' ? section : section.text;
+      const textToProcess = typeof section === 'string' ? section : section?.text;
       if (textToProcess && typeof textToProcess === 'string') {
+        const safeContent = normalizeArticleHtml(textToProcess);
         const headingRegex = /<h([1-6])(?:\s+[^>]*)?>(.*?)<\/h\1>/gi;
         let match;
-        while ((match = headingRegex.exec(textToProcess)) !== null) {
+        while ((match = headingRegex.exec(safeContent)) !== null) {
           const level = parseInt(match[1]);
           const content = match[2].replace(/<[^>]*>/g, '').trim();
-          if (content) {
+          if (content && content.toLowerCase() !== post.title?.trim().toLowerCase()) {
             const headingSlug = content.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/--+/g, '-');
             h.push({ id: `section-${sectionIndex}-${headingSlug}`, text: content, level });
           }
@@ -302,7 +315,7 @@ export default function BlogDetail() {
       }
     });
     return h;
-  }, [post?.content]);
+  }, [post?.content, post?.title]);
 
   // Sync headings with legacy state if needed (or just use extractedHeadings directly)
   // For safety with other components, we'll keep the state updated
@@ -521,17 +534,34 @@ export default function BlogDetail() {
   const processedRenderedContent = useMemo(() => {
     if (!post?.content || !Array.isArray(post.content)) return null;
     return post.content.map((section, index) => {
+      const sectionText = typeof section === "string" ? section : section?.text;
+      const safeHtml = normalizeArticleHtml(sectionText).replace(
+        /<(h[1-6])(?:\s+[^>]*)?>(.*?)<\/\1>/gi,
+        (heading, tag, content) => content.replace(/<[^>]*>/g, '').trim().toLowerCase() === post.title?.trim().toLowerCase()
+          ? ''
+          : heading
+      );
+
       if (typeof section === "string") {
-        return <div key={index} className="mb-6" dangerouslySetInnerHTML={{ __html: processContentWithIds(section, index) }} />;
+        return <div key={index} className="mb-6" dangerouslySetInnerHTML={{ __html: processContentWithIds(safeHtml, index) }} />;
       }
+
       return (
         <div key={index} className="mb-8">
-          {section.text && <div className="text-xl text-gray-700 mb-8 leading-relaxed max-w-3xl" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(processContentWithIds(section.text, index)) }} />}
-          {section.image && <img src={section.image} alt={`Section ${index + 1}`} loading="lazy" decoding="async" className="w-full rounded-xl my-6 shadow-md shadow-gray-200/50" />}
+          {sectionText && <div className="text-xl text-gray-700 mb-8 leading-relaxed max-w-3xl" dangerouslySetInnerHTML={{ __html: processContentWithIds(safeHtml, index) }} />}
+          {section?.image && <img src={section.image} alt={`Section ${index + 1}`} loading="lazy" decoding="async" className="w-full rounded-xl my-6 shadow-md shadow-gray-200/50" />}
         </div>
       );
     });
-  }, [post?.content]);
+  }, [post?.content, post?.title]);
+
+  const hasReadableBody = useMemo(
+    () => Array.isArray(post?.content) && post.content.some((section) => {
+      const text = typeof section === 'string' ? section : section?.text;
+      return typeof text === 'string' && getReadableText(text).length > 0;
+    }),
+    [post?.content]
+  );
 
   if (isLoading || (!post && !error)) {
   return (
@@ -543,6 +573,27 @@ export default function BlogDetail() {
 
 if (error || !post) {
   return <Navigate to="/404" replace />;
+}
+
+if (!hasReadableBody) {
+  return (
+    <div className="min-h-screen bg-gray-50 font-sans">
+      <Suspense fallback={null}>
+        <Seo
+          title={post.title}
+          description={post.excerpt}
+          url={`https://www.socialbureau.in/blogs/${post.slug}`}
+          canonicalUrl={`https://www.socialbureau.in/blogs/${post.slug}`}
+          noindex
+        />
+      </Suspense>
+      <main className="max-w-3xl mx-auto px-4 py-32 text-center">
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">{post.title}</h1>
+        <p className="text-gray-600 mb-8">The article body is currently unavailable.</p>
+        <Link to="/blog" className="text-red-600 hover:text-red-700 font-medium">Return to the blog</Link>
+      </main>
+    </div>
+  );
 }
 
   const breadcrumbItems = [
@@ -622,8 +673,8 @@ if (error || !post) {
           <div className="flex items-center gap-3 mb-4">
             <span className="text-xs font-semibold uppercase tracking-wider text-red-600 bg-red-50 px-3 py-1.5 rounded-full border border-red-100">{post.category}</span>
             <div className="flex items-center gap-6 text-sm text-gray-500">
-              <span className="flex items-center gap-1.5"><FaCalendarAlt className="w-3.5 h-3.5" />{post.time || (post.createdAt && new Date(post.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }))}</span>
-              <span className="flex items-center gap-1.5"><FaUser className="w-3.5 h-3.5" />{post.author || post.authorName}</span>
+              {(post.time || post.createdAt) && <span className="flex items-center gap-1.5"><FaCalendarAlt className="w-3.5 h-3.5" />{post.time || new Date(post.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</span>}
+              {(post.author || post.authorName) && <span className="flex items-center gap-1.5"><FaUser className="w-3.5 h-3.5" />{post.author || post.authorName}</span>}
             </div>
           </div>
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6">
@@ -642,9 +693,11 @@ if (error || !post) {
           <p className="text-xl text-gray-700 mb-8 leading-relaxed max-w-3xl">{post.excerpt}</p>
         </div>
 
-        <div className="mb-10 rounded-2xl overflow-hidden shadow-xl shadow-gray-200/50">
-          <img src={post.image} alt={post.title} fetchPriority="high" decoding="async" className="w-full h-auto aspect-video object-cover" />
+        {post.image && (
+          <div className="mb-10 rounded-2xl overflow-hidden shadow-xl shadow-gray-200/50">
+            <img src={post.image} alt={post.title} fetchPriority="high" decoding="async" className="w-full h-auto aspect-video object-cover" />
           </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8">
@@ -700,15 +753,15 @@ if (error || !post) {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 mb-12 border border-gray-200 shadow-sm">
+            {(post.author || post.authorName || post.createdAt) && <div className="bg-white rounded-2xl p-6 mb-12 border border-gray-200 shadow-sm">
               <div className="flex items-start gap-4">
-                <div className="w-16 h-16 bg-gray-100 border border-gray-200 rounded-full flex items-center justify-center text-2xl font-bold text-gray-700 shadow-sm">{(post.author || post.authorName || "A")[0]}</div>
+                {(post.author || post.authorName) && <div className="w-16 h-16 bg-gray-100 border border-gray-200 rounded-full flex items-center justify-center text-2xl font-bold text-gray-700 shadow-sm">{(post.author || post.authorName)[0]}</div>}
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-1">{post.author || post.authorName}</h3>
-                  <p className="text-gray-500 text-sm">Published on {new Date(post.createdAt || Date.now()).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
+                  {(post.author || post.authorName) && <h3 className="text-xl font-bold text-gray-900 mb-1">{post.author || post.authorName}</h3>}
+                  {post.createdAt && <p className="text-gray-500 text-sm">Published on {new Date(post.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>}
                 </div>
               </div>
-            </div>
+            </div>}
 
             <div className="mb-12">
               <h3 className="text-2xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-2 inline-block">Comments ({comments.length})</h3>
@@ -765,7 +818,7 @@ if (error || !post) {
                       <Link key={childBlog.slug || idx} to={`/blogs/${childBlog.slug}`} className="group block">
                         <div className="flex gap-4 items-start">
                           <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
-                            <img src={childBlog.image} alt={childBlog.title} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            {childBlog.image && <img src={childBlog.image} alt={childBlog.title} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />}
                           </div>
                           <div>
                             <h4 className="font-semibold text-gray-900 group-hover:text-red-600 transition-colors line-clamp-2">{childBlog.title}</h4>

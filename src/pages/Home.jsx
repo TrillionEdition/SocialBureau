@@ -1636,12 +1636,12 @@ export const Home = () => {
               Ready to <span className="bg-gradient-to-tr from-[#E8001A] via-[#FF5C35] to-[#FF1493] bg-clip-text text-transparent pr-8">Win?</span>
             </h2>
             <p className="text-xl md:text-2xl lg:text-3xl font-light text-[#6E6E73] mb-16 md:mb-20 leading-tight max-w-3xl mx-auto italic">
-              Tell us your ambitions. Sham's team responds within 24 hours with a ruthless growth strategy.
+              Share your objective, audience, and project constraints so we can discuss whether our services are a fit.
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-6 group">
-              <a href="mailto:admin@socialbureau.in" className="w-full sm:w-auto px-10 md:px-16 py-5 md:py-6 bg-[#0A0A0A] text-white rounded-full font-black text-xl md:text-2xl hover:bg-[#E8001A] transition-all duration-500 shadow-2xl shadow-black/20">
+              <Link to="/contact" className="w-full sm:w-auto px-10 md:px-16 py-5 md:py-6 bg-[#0A0A0A] text-white rounded-full font-black text-xl md:text-2xl hover:bg-[#E8001A] transition-all duration-500 shadow-2xl shadow-black/20">
                 Propose A Project
-              </a>
+              </Link>
               <a href="/client-form" className="w-full sm:w-auto px-10 md:px-16 py-5 md:py-6 border-b-4 border-[#0A0A0A] text-[#1D1D1F] font-black text-xl md:text-2xl hover:text-[#E8001A] transition-all duration-300 transform active:translate-y-1">
                 CSM Integration <span className="text-[#E8001A]">→</span>
               </a>

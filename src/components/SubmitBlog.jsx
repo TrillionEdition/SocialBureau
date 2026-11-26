@@ -904,6 +904,10 @@ export default function SubmitBlog() {
     if (e) e.preventDefault();
 
     if (!formData.title.trim()) { setToast({ type: "error", message: "Title is required" }); return; }
+    if (!formData.author.trim()) {
+      setToast({ type: "error", message: "Add the article's actual author or editorial byline" });
+      return;
+    }
     if (!formData.excerpt.trim()) { setToast({ type: "error", message: "Excerpt is required" }); return; }
     if (!imageFile && !imagePreview) { setToast({ type: "error", message: "Featured image is required" }); return; }
     if (imageFile && imageFile.size > 5 * 1024 * 1024) {
@@ -936,7 +940,7 @@ export default function SubmitBlog() {
         content: [{ type: "text", text: currentContent, heading: "none" }],
         keywords,
         childBlogs: selectedChildBlogs,
-        author: formData.author.trim() || currentUser?.name || "SocialBureau Team",
+        author: formData.author.trim(),
         seoTitle: formData.seoTitle,
         seoDescription: formData.seoDescription,
       };
@@ -1038,7 +1042,7 @@ export default function SubmitBlog() {
                 <span className="text-xs font-semibold uppercase tracking-wider text-red-600 bg-red-50 px-3 py-1.5 rounded-full border border-red-100">{formData.category}</span>
                 <div className="flex items-center gap-6 text-sm text-gray-500">
                   <span className="flex items-center gap-1.5"><FaCalendarAlt className="w-3.5 h-3.5" /> {new Date().toLocaleDateString()}</span>
-                  <span className="flex items-center gap-1.5"><FaUser className="w-3.5 h-3.5" /> {formData.author || "SocialBureau Team"}</span>
+                  <span className="flex items-center gap-1.5"><FaUser className="w-3.5 h-3.5" /> {formData.author || "Add author byline"}</span>
                 </div>
               </div>
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">{formData.title || "Your Blog Title"}</h1>
@@ -1192,9 +1196,10 @@ export default function SubmitBlog() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">Author Name</label>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">Author or Editorial Byline <span className="text-red-500">*</span></label>
                   <input type="text" name="author" value={formData.author} onChange={handleInputChange}
-                    placeholder="Your name (optional)"
+                    placeholder="Enter the article's actual author or byline"
+                    required
                     className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-lg focus:outline-none focus:border-red-600 text-white placeholder-gray-500" />
                 </div>
               </div>

@@ -1,10 +1,17 @@
 import React from "react";
-import Footer from "./Footer";
 import { Link } from "react-router-dom";
+import Seo from "./Seo";
 
 export default function CookiePolicy() {
   return (
-    <div className="min-h-screen bg-black">
+    <>
+      <Seo
+        title="Cookie Policy | SocialBureau"
+        description="Learn about cookies and similar technologies used on SocialBureau.in and how to manage them."
+        canonicalUrl="https://www.socialbureau.in/cookie-policy"
+        url="https://www.socialbureau.in/cookie-policy"
+      />
+      <div className="min-h-screen bg-black">
       <div className="max-w-4xl mx-auto px-4 py-16 text-gray-300">
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-8">Cookie Policy</h1>
         
@@ -189,7 +196,8 @@ export default function CookiePolicy() {
           </section>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 

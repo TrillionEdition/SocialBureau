@@ -16,17 +16,40 @@ export default function EditorialStandards() {
 
         <div className="prose max-w-none text-gray-800">
           <p>
-            Welcome to <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
-              Social<span className="text-[#ff0000]">B</span>ureau
-            </a> (socialbureau.in). We are committed to delivering accurate, unbiased, and timely news, analysis, and insights. Our editorial process is governed by strict professional journalistic standards. All articles published on <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
-              Social<span className="text-[#ff0000]">B</span>ureau
-            </a> are rigorously fact-checked prior to publication.
+            SocialBureau publishes articles and practical information about marketing,
+            technology, and related business topics. This page explains the standards
+            readers can expect; it is not a claim that every article has been
+            independently fact-checked or reviewed by a named specialist.
           </p>
+
+          <h2 className="text-2xl font-semibold mt-8 mb-3">Authorship and sources</h2>
           <p>
-            We rely primarily on original sources, primary public data, official press announcements, and direct statements from verified industry experts. Secondary sources are always cited and clearly hyperlinked. We utilize advanced technological tools, including AI-assisted workflows, to streamline data gathering, research, and initial drafting. However, no article is published purely through automation.
+            Article pages may show an author, publication date, category, and links
+            to supporting material. Check the article itself for those details.
+            Where an article makes a claim that needs context or a source, readers
+            should be able to identify that source from the article rather than
+            relying on an unsupported assertion.
           </p>
+
+          <h2 className="text-2xl font-semibold mt-8 mb-3">Corrections and updates</h2>
           <p>
-            Every story undergoes thorough human oversight, substantive expert editing, and fact-checked by a named editorial professional before release. We strive for absolute accuracy. When a factual error occurs, we correct it promptly and transparently. A 'Correction Note' is appended to the article explicitly explaining what was changed. Readers can report errors directly to <a href="mailto:info@socialbureau.in" className="text-blue-600">info@socialbureau.in</a>.
+            If you find a factual error, outdated information, or a broken source
+            link, email{" "}
+            <a href="mailto:info@socialbureau.in" className="text-blue-600 underline">
+              info@socialbureau.in
+            </a>{" "}
+            and include the article URL and the relevant passage. We will review
+            the report and, if a correction is made, explain the material change
+            on the article where appropriate.
+          </p>
+
+          <h2 className="text-2xl font-semibold mt-8 mb-3">Opinions and assistance tools</h2>
+          <p>
+            Commentary and opinion should be understood as the view expressed by
+            its author, not as a guarantee of results or professional advice.
+            Automated tools may assist research or drafting, but tool output is
+            not itself evidence. Readers should verify time-sensitive claims
+            against the original sources linked in the article.
           </p>
         </div>
       </div>

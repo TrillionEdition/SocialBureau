@@ -42,7 +42,7 @@ export function generateHomepageSchemas({
   image: logo,
   "@id": url,
   url,
-  telephone: "+918921840486",
+  telephone: "+918714952665",
   priceRange: "$$",
 
   address: {
@@ -57,7 +57,7 @@ export function generateHomepageSchemas({
   contactPoint: [
     {
       "@type": "ContactPoint",
-      telephone: "+918921840486",
+      telephone: "+918714952665",
       contactType: "customer support",
     },
   ],
@@ -84,12 +84,14 @@ export function generateBlogPostingSchema(post = {}) {
   const image = post.image || post.featuredImage || undefined;
   const datePublished = post.publishedAt || post.createdAt ? new Date(post.publishedAt || post.createdAt).toISOString() : undefined;
   const dateModified = post.updatedAt ? new Date(post.updatedAt).toISOString() : datePublished;
-  const authorName = post.authorName || (post.author && post.author.name) || (post.authorObj && post.authorObj.name) || 'Social Bureau';
+  const authorName = post.authorName
+    || (typeof post.author === 'string' ? post.author : post.author?.name)
+    || post.authorObj?.name;
   const headline = (post.seo && post.seo.title) || post.title || undefined;
   const description = (post.seo && post.seo.description) || post.excerpt || post.description || undefined;
 
   const articleBody = (Array.isArray(post.content)
-    ? post.content.map((s) => (typeof s === 'string' ? s : s.text || '')).join('\n')
+    ? post.content.map((s) => (typeof s === 'string' ? s : s?.text || '')).join('\n')
     : post.content || post.body || '')
     .replace(/<[^>]*>/g, '')
     .trim();
@@ -104,10 +106,10 @@ export function generateBlogPostingSchema(post = {}) {
     headline,
     description,
     image: image ? [image] : undefined,
-    author: {
+    author: authorName ? {
       '@type': 'Person',
       name: authorName,
-    },
+    } : undefined,
     publisher: {
       '@type': 'Organization',
       name: 'Social Bureau',

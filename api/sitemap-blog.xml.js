@@ -39,7 +39,7 @@ export default async function handler(req, res) {
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
     for (const post of items) {
-      const rawSlug = (post.customUrl && post.customUrl.trim().length) ? post.customUrl.trim().replace(/^\//, '') : post.slug;
+      const rawSlug = post.slug;
       if (!rawSlug) continue;
       const slugPart = encodeURI(rawSlug.replace(/\s+/g, '-'));
       const loc = `${SITE}/blogs/${slugPart}`;

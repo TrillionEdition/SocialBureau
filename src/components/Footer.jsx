@@ -114,18 +114,20 @@ export default function Footer() {
         <motion.div variants={itemVariants} className="flex flex-col gap-6">
           {/* Description Text */}
           <div className="text-[12px] text-gray-600 leading-relaxed">
-            <p className="mb-4">
-              We are a full-service digital marketing and web development agency dedicated to helping businesses grow through innovative strategies, cutting-edge technology, and creative excellence. Our team specializes in performance marketing, brand development, and digital transformation for companies of all sizes.
-            </p>
-            <p className="mb-4">
-              From API-driven growth systems to niche market penetration, we deliver measurable results. Our services span across web development, branding, SEO, content marketing, and advanced marketing automation.
-            </p>
             <p>
-              Learn more about our services and how we can help your business at{" "}
-              <Link to="/" className="text-blue-600 hover:text-blue-700">
-                SocialBureau.in
+              SocialBureau provides marketing and web development services. Explore our{" "}
+              <Link to="/about" className="text-blue-600 hover:text-blue-700">
+                company and approach
               </Link>
-              .
+              , read our{" "}
+              <Link to="/blog" className="text-blue-600 hover:text-blue-700">
+                articles
+              </Link>
+              , or{" "}
+              <Link to="/contact" className="text-blue-600 hover:text-blue-700">
+                contact us
+              </Link>
+              {" "}to discuss a project.
             </p>
           </div>
 
@@ -148,10 +150,10 @@ export default function Footer() {
                 <li>
                   <strong>Phone:</strong>{" "}
                   <a
-                    href="tel:+918921840486"
+                    href="tel:+918714952665"
                     className="text-blue-600 hover:text-blue-700"
                   >
-                    +91 8921840486
+                    +91 8714952665
                   </a>
                 </li>
                 <li>
@@ -203,14 +205,6 @@ export default function Footer() {
                   className="text-[12px] text-blue-600 hover:text-blue-700 transition-colors"
                 >
                   Youtube
-                </a>
-                <a
-                  href="https://lovable.dev"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[12px] text-blue-600 hover:text-blue-700 transition-colors"
-                >
-                  Lovable
                 </a>
               </div>
             </div>

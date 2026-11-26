@@ -496,18 +496,7 @@ export default function Navbar() {
                           <BarChart3 size={14} />
                           My YouTube Campaigns
                         </button>
-                        {(isEmployee || isAdmin || isPartnership) && (
-                          <button
-                            onClick={() => {
-                              handleNavClick("/team/dashboard");
-                              setActiveDropdown(null);
-                            }}
-                            className="text-[13px] font-medium text-brand-pink hover:text-white hover:bg-brand-pink px-4 py-3 text-left transition-colors flex items-center gap-2"
-                          >
-                            <BarChart3 size={14} />
-                            Team Dashboard
-                          </button>
-                        )}
+                      
                         {/* <button
                           onClick={() => {
                             handleNavClick("/blog/dashboard");
@@ -813,7 +802,7 @@ export default function Navbar() {
               <div className="mt-6 pt-6 border-t border-white/10 flex flex-col gap-3">
                 {isLoggedIn && (
                   <>
-                    {(isEmployee || isAdmin || isPartnership) && (
+                    {/* {(isEmployee || isAdmin || isPartnership) && (
                       <button
                         onClick={() => handleNavClick("/team/dashboard")}
                         className="flex items-center gap-2 text-[22px] font-semibold text-brand-pink active:text-white text-left transition-colors"
@@ -821,7 +810,7 @@ export default function Navbar() {
                         <BarChart3 size={20} />
                         Team Dashboard
                       </button>
-                    )}
+                    )} */}
                     {(isAdmin || isPartnership) && (
                       <>
                         <button

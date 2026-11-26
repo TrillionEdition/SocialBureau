@@ -1,11 +1,19 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Seo from './Seo';
 
 const Disclaimer = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-black py-20 px-4 md:px-12 flex justify-center items-start">
+    <>
+      <Seo
+        title="Disclaimer | SocialBureau"
+        description="Read the limits and intended use of information published on SocialBureau.in."
+        canonicalUrl="https://www.socialbureau.in/disclaimer"
+        url="https://www.socialbureau.in/disclaimer"
+      />
+      <div className="min-h-screen bg-black py-20 px-4 md:px-12 flex justify-center items-start">
         <button name='back'
           onClick={() => navigate('/')}
           className="absolute top-5 left-10 text-[#ff0000] px-4 py-2 rounded-lg hover:bg-[#ff0000] hover:text-white transition"
@@ -29,14 +37,10 @@ const Disclaimer = () => {
           <h3 className="text-lg font-medium text-white mt-4">Definitions</h3>
           <p>For the purposes of this Disclaimer:</p>
           <ul className="list-disc list-inside ml-4 space-y-2">
-            <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our") refers to <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
-              Social<span className="text-[#ff0000]">B</span>ureau
-            </a>, Business Bureau, Main Avenue, Panampilly Nagar, Kochi, Ernakulam, Kerala 682036.</li>
+            <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our") refers to SocialBureau, the publisher of this website.</li>
             <li><strong>Service</strong> refers to the Website.</li>
             <li><strong>You</strong> means the individual accessing the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service.</li>
-            <li><strong>Website</strong> refers to <a style={{ fontFamily: "MyFont, sans-serif" }} href='https://socialbureau.in'>
-              Social<span className="text-[#ff0000]">B</span>ureau
-            </a>, accessible from <span className="text-[#ff0000]" onClick={()=>navigate('/')}>socialbureau.in</span></li>
+            <li><strong>Website</strong> refers to SocialBureau.in.</li>
           </ul>
 
  
@@ -185,18 +189,19 @@ const Disclaimer = () => {
   permitted by applicable law.
 </p>
 
-          <h2 className="text-xl font-semibold  mt-6">No Responsibility Disclaimer</h2>
+          <h2 className="text-xl font-semibold mt-6">No Responsibility Disclaimer</h2>
           <p>The Company is not engaged in rendering legal, accounting, or other professional advice. Please consult a professional.</p>
 
-          <h2 className="text-xl font-semibold t-6">"Use at Your Own Risk" Disclaimer</h2>
+          <h2 className="text-xl font-semibold mt-6">"Use at Your Own Risk" Disclaimer</h2>
           <p>All information is provided "as is", without warranty of any kind. The Company is not liable for any reliance on the Service's information.</p>
 
           <h2 className="text-xl font-semibold mt-6">Contact Us</h2>
           <p>If you have any questions about this Disclaimer, You can contact Us:</p>
-          <p><strong>Email:</strong> info@socialbureau.in</p>
+          <p><strong>Email:</strong> <a className="text-[#ff0000] underline" href="mailto:info@socialbureau.in">info@socialbureau.in</a></p>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

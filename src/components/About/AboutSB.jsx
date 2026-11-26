@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 // TREASURE HUNT DISABLED: import TreasureHuntDiamond from '../../components/TreasureHuntDiamond'
 const WhoWeAre = () => {
   const [expanded, setExpanded] = useState(false);
@@ -81,23 +82,23 @@ const WhoWeAre = () => {
                     {/* Block 2 */}
                     <div className="p-6 rounded-[2rem] bg-[#f5f5f7] border border-gray-100 space-y-4 shadow-md">
                       <p className="text-[15px] text-gray-800 leading-[1.6]">
-                        With over <span className="text-[#8D0F16] font-bold">2+ years</span> of hands-on online marketing experience, our
-                        team brings deep expertise in API marketing, niche marketing,
-                        content marketing, AdTech integration, and performance marketing.
+                        SocialBureau offers API marketing, niche marketing, content
+                        marketing, AdTech integration, and performance marketing
+                        services. The right mix depends on your objectives and the
+                        information available for the project.
                       </p>
                       <p className="text-[15px] text-gray-500 leading-[1.6] italic border-l-4 border-[#8D0F16] pl-4">
-                        "We don't rely on one-size-fits-all tactics—instead, every strategy
-                        is engineered around business objectives, audience intent, and
-                        measurable outcomes."
+                        Before work begins, clarify the intended audience, desired
+                        outcome, project constraints, and how progress will be assessed.
                       </p>
                     </div>
 
                     {/* Block 3 */}
                     <div className="space-y-4 border-t border-gray-100 pt-5">
                       <p className="text-[14px] text-gray-600 leading-[1.6] font-medium">
-                        Our strength lies in <span className="text-black font-bold">specialization</span>. Each marketing strategy is
-                        led by an industry expert with proven experience in their domain,
-                        ensuring precision execution and consistent performance.
+                        Share your objective, target audience, timeline, and any
+                        existing campaign or analytics information when you enquire.
+                        These details help establish whether our services fit your needs.
                       </p>
                       <p className="text-[14px] text-gray-600 leading-[1.6] font-medium">
                         By combining advanced technology, strategic insights, and
@@ -136,9 +137,12 @@ const WhoWeAre = () => {
               viewport={{ once: true }}
               className="pt-4 pb-8 flex lg:block justify-center"
             >
-              <button className="bg-[#8D0F16] text-white px-10 py-4 rounded-full text-[14px] sm:text-[16px] md:text-[18px] font-bold hover:bg-[#6c0b11] transition-all hover:scale-105 shadow-[0_0_20px_rgba(141,15,22,0.3)] uppercase tracking-widest">
-                Connect us
-              </button>
+              <Link
+                to="/contact"
+                className="bg-[#8D0F16] text-white px-10 py-4 rounded-full text-[14px] sm:text-[16px] md:text-[18px] font-bold hover:bg-[#6c0b11] transition-all hover:scale-105 shadow-[0_0_20px_rgba(141,15,22,0.3)] uppercase tracking-widest"
+              >
+                Contact us
+              </Link>
             </motion.div>
 
           </div>

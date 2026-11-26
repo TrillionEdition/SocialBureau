@@ -14,7 +14,7 @@ const TermsOfService = () => {
           content="Terms governing SocialBureau's campaign services and YouTube channel analytics portal."
         />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://socialbureau.in/terms-of-service" />
+        <link rel="canonical" href="https://www.socialbureau.in/terms-of-service" />
       </Helmet>
 
       <main className="min-h-screen bg-black py-20 px-4 md:px-12 flex justify-center">
