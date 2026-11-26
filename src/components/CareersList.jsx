@@ -157,7 +157,7 @@ export default function CareersPost() {
                   <span className="careers-job-department">{job.department || "Opportunities"}</span>
                   <span className="careers-job-meta"><MapPin size={14} />{job.location || "Kochi / Remote"}</span>
                   <span className="careers-job-dates">
-                    <span>Post Date: {formatJobDate(job.postDate)}</span>
+                    {job.postDate && <span>Post Date: {formatJobDate(job.postDate)}</span>}
                     <span>Expire Date: {job.expireDate ? formatJobDate(job.expireDate) : "No expiry"}</span>
                   </span>
                   <span className="careers-job-apply">Explore Role <ArrowRight size={14} /></span>
