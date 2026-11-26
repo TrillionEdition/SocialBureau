@@ -5,6 +5,20 @@ import { toast } from "react-toastify";
 import { jobService } from "@/services/jobService";
 import { canManageJobs } from "@/utils/authUtils";
 
+const formatJobDate = (value) => {
+  if (!value) return "Not specified";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Not specified";
+
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+};
+
 export default function CareersPost() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -142,6 +156,10 @@ export default function CareersPost() {
                   <h3>{job.title}</h3>
                   <span className="careers-job-department">{job.department || "Opportunities"}</span>
                   <span className="careers-job-meta"><MapPin size={14} />{job.location || "Kochi / Remote"}</span>
+                  <span className="careers-job-dates">
+                    <span>Post Date: {formatJobDate(job.postDate)}</span>
+                    <span>Expire Date: {job.expireDate ? formatJobDate(job.expireDate) : "No expiry"}</span>
+                  </span>
                   <span className="careers-job-apply">Explore Role <ArrowRight size={14} /></span>
                 </Link>
 

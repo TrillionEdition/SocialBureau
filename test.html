@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDF & Word Converter</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f5f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 480px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    h2 { text-align: center; margin-top: 0; }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin: 25px 0;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background: #2563eb;
+      color: white;
+      border-color: #2563eb;
+    }
+
+    .upload-area {
+      border: 2px dashed #ccc;
+      border-radius: 8px;
+      padding: 25px 15px;
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    button.convert {
+      width: 100%;
+      padding: 14px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+
+    button:disabled {
+      background: #999;
+      cursor: not-allowed;
+    }
+
+    #status {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <h2>Document Converter</h2>
+
+    <div class="tabs">
+      <button class="tab active" id="pdfTab" type="button">
+        PDF to Word
+      </button>
+
+      <button class="tab" id="wordTab" type="button">
+        Word to PDF
+      </button>
+    </div>
+
+    <form id="convertForm">
+
+      <div class="upload-area">
+        <h3 id="heading">PDF to Word</h3>
+        <p id="description">Upload a PDF file to convert into Word.</p>
+
+        <input
+          type="file"
+          id="fileInput"
+          accept=".pdf,application/pdf"
+          required
+        />
+      </div>
+
+      <button class="convert" type="submit" id="convertBtn">
+        Convert to Word
+      </button>
+
+    </form>
+
+    <div id="status"></div>
+
+  </div>
+
+  <script>
+    const API_BASE = "http://localhost:5001/api/pdf";
+
+    const form = document.getElementById("convertForm");
+    const fileInput = document.getElementById("fileInput");
+    const button = document.getElementById("convertBtn");
+    const status = document.getElementById("status");
+
+    const pdfTab = document.getElementById("pdfTab");
+    const wordTab = document.getElementById("wordTab");
+
+    let conversionType = "pdf-to-word";
+
+    function setMode(mode) {
+      conversionType = mode;
+      fileInput.value = "";
+      status.textContent = "";
+
+      if (mode === "pdf-to-word") {
+        pdfTab.classList.add("active");
+        wordTab.classList.remove("active");
+
+        document.getElementById("heading").textContent = "PDF to Word";
+        document.getElementById("description").textContent =
+          "Upload a PDF file to convert into Word.";
+
+        fileInput.accept = ".pdf,application/pdf";
+        button.textContent = "Convert to Word";
+      } else {
+        wordTab.classList.add("active");
+        pdfTab.classList.remove("active");
+
+        document.getElementById("heading").textContent = "Word to PDF";
+        document.getElementById("description").textContent =
+          "Upload a Word document to convert into PDF.";
+
+        fileInput.accept =
+          ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+        button.textContent = "Convert to PDF";
+      }
+    }
+
+    pdfTab.addEventListener("click", () => setMode("pdf-to-word"));
+    wordTab.addEventListener("click", () => setMode("word-to-pdf"));
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const file = fileInput.files[0];
+
+      if (!file) {
+        status.textContent = "Please select a file.";
+        return;
+      }
+
+      const isPDF = file.name.toLowerCase().endsWith(".pdf");
+      const isWord = /\.(doc|docx)$/i.test(file.name);
+
+      if (conversionType === "pdf-to-word" && !isPDF) {
+        status.textContent = "Please upload a PDF file.";
+        return;
+      }
+
+      if (conversionType === "word-to-pdf" && !isWord) {
+        status.textContent = "Please upload a DOC or DOCX file.";
+        return;
+      }
+
+      const endpoint = conversionType === "pdf-to-word"
+        ? `${API_BASE}/to-word`
+        : `${API_BASE}/from-word`;
+
+      const outputName = conversionType === "pdf-to-word"
+        ? "converted.docx"
+        : "converted.pdf";
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      button.disabled = true;
+      button.textContent = "Converting...";
+      status.textContent = "Uploading and converting...";
+
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          body: formData
+        });
+
+        if (!response.ok) {
+          const error = await response.json().catch(() => ({}));
+          throw new Error(error.message || "Conversion failed.");
+        }
+
+        const blob = await response.blob();
+
+        const downloadUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = downloadUrl;
+        link.download = outputName;
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+
+        status.textContent = "Conversion successful! Download started.";
+
+      } catch (error) {
+        console.error(error);
+        status.textContent = "Error: " + error.message;
+      } finally {
+        button.disabled = false;
+        button.textContent =
+          conversionType === "pdf-to-word"
+            ? "Convert to Word"
+            : "Convert to PDF";
+      }
+    });
+  </script>
+</body>
+</html>

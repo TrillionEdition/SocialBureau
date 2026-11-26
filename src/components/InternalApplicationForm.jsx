@@ -4,6 +4,13 @@ import axios from "axios";
 import { BASE_URL } from "@/utils/urls";
 import { toast } from "react-toastify";
 
+const isValidPhoneNumber = (phone) => {
+  const trimmedPhone = phone.trim();
+  const digitCount = trimmedPhone.replace(/\D/g, "").length;
+
+  return /^\+?[0-9\s()-]+$/.test(trimmedPhone) && digitCount >= 10 && digitCount <= 15;
+};
+
 const InternalApplicationForm = ({ jobId, jobTitle }) => {
   const [formData, setFormData] = useState({
     candidateName: "",
@@ -30,6 +37,11 @@ const InternalApplicationForm = ({ jobId, jobTitle }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isValidPhoneNumber(formData.candidatePhone)) {
+      toast.error("Please enter a valid phone number with 10 to 15 digits");
+      return;
+    }
+
     if (!resume) {
       toast.error("Please upload your resume");
       return;
@@ -125,6 +137,8 @@ const InternalApplicationForm = ({ jobId, jobTitle }) => {
                 required
                 value={formData.candidatePhone}
                 onChange={handleChange}
+                autoComplete="tel"
+                inputMode="tel"
                 placeholder="+91 ..."
                 className="w-full bg-gray-50 text-black border border-gray-100 rounded-xl px-5 py-3 text-sm outline-none focus:border-red-500/50 transition-colors"
               />

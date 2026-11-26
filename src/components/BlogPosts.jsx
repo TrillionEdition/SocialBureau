@@ -28,6 +28,7 @@ export default function BlogPosts() {
       const response = await blogAPI.getBlogs({
         limit: 100,
         published: true,
+        summary: true,
       });
       return response;
     },

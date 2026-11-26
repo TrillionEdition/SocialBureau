@@ -249,6 +249,7 @@ export default function BlogDetail() {
         category: post.category,
         limit: 12,
         published: true,
+        summary: true,
       });
       return Array.isArray(response?.data) ? response.data : [];
     },
