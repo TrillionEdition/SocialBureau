@@ -65,10 +65,15 @@ const AllApplications = () => {
   };
 
   const filteredApps = applications.filter((app) => {
-    const matchesSearch =
-      app.candidateName?.toLowerCase().includes(search.toLowerCase()) ||
-      app.candidateEmail?.toLowerCase().includes(search.toLowerCase()) ||
-      app.jobId?.title?.toLowerCase().includes(search.toLowerCase());
+  
+    const query = search.trim().toLowerCase();
+    const matchesSearch = !query || [
+      app.candidateName,
+      app.candidateEmail,
+      app.jobId?.title,
+      app.jobId?.jobTitle,
+    ].some(value => typeof value === "string" && value.toLowerCase().includes(query));
+
 
     const matchesStatus = statusFilter === "all" || app.status === statusFilter;
 
