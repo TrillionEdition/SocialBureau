@@ -55,7 +55,7 @@ export default function AdminCreateJob() {
     salary: "",
     nextSteps: "",
     link: "",
-    postDate: new Date().toISOString().split('T')[0],
+    postDate: "",
     expireDate: "",
     isActive: true,
     isTrending: false,
@@ -70,6 +70,8 @@ export default function AdminCreateJob() {
     if (editJob) {
       setForm({
         ...editJob,
+        postDate: editJob.postDate ? String(editJob.postDate).slice(0, 10) : "",
+        expireDate: editJob.expireDate ? String(editJob.expireDate).slice(0, 10) : "",
         img: editJob.img?.length ? editJob.img : [""],
         roleSummary: editJob.roleSummary?.length ? editJob.roleSummary : [""],
         responsibilities: editJob.responsibilities?.length ? editJob.responsibilities : [""],
