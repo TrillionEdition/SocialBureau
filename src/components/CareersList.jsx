@@ -167,7 +167,7 @@ export default function CareersPost() {
         ) : filteredJobs.length ? (
           <div className="careers-job-grid">
             {filteredJobs.map((job) => (
-              <article className={`careers-job-card${job.isActive ? "" : " is-hidden"}`} key={job.slug || job._id}>
+              <article className={`careers-job-card${job.isActive ? "" : " is-hidden"}${job.isTrending ? " is-trending" : ""}`} key={job.slug || job._id}>
                 <Link className="careers-job-link" to={`/careers/${job.slug}`}>
                   <span className="careers-job-icon"><BriefcaseBusiness size={19} /></span>
                   <ArrowUpRight className="careers-job-arrow" size={17} />
