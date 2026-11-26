@@ -184,7 +184,7 @@ const AllApplications = () => {
                           </span>
                           <span className="flex items-center gap-2">
                             <Calendar size={16} className="text-gray-300" />
-                            {new Date(app.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                            {new Date(app.appliedAt || app.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                           </span>
                         </div>
                       </div>

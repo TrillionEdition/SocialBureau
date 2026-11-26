@@ -4,6 +4,32 @@ import { jobService } from "@/services/jobService";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaCloudUploadAlt, FaTimes, FaBriefcase, FaImage } from "react-icons/fa";
 
+function ArrayInput({ label, field, values, onChange, onAdd }) {
+  return (
+    <div className="space-y-2">
+      <p className="text-sm font-semibold uppercase tracking-wide text-gray-300">
+        {label}
+      </p>
+      {values.map((val, i) => (
+        <input
+          key={i}
+          value={val}
+          onChange={(e) => onChange(field, i, e.target.value)}
+          className="w-full rounded-xl border border-gray-700 bg-black px-4 py-2 text-white focus:ring-1 focus:ring-red-600"
+          placeholder={`${label} ${i + 1}`}
+        />
+      ))}
+      <button
+        type="button"
+        onClick={() => onAdd(field)}
+        className="text-xs text-red-500 hover:underline"
+      >
+        + Add another
+      </button>
+    </div>
+  );
+}
+
 export default function AdminCreateJob() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -132,30 +158,6 @@ export default function AdminCreateJob() {
       setLoading(false);
     }
   };
-
-  const ArrayInput = ({ label, field }) => (
-    <div className="space-y-2">
-      <p className="text-sm font-semibold uppercase tracking-wide text-gray-300">
-        {label}
-      </p>
-      {form[field].map((val, i) => (
-        <input
-          key={i}
-          value={val}
-          onChange={(e) => handleArrayChange(field, i, e.target.value)}
-          className="w-full rounded-xl border border-gray-700 bg-black px-4 py-2 text-white focus:ring-1 focus:ring-red-600"
-          placeholder={`${label} ${i + 1}`}
-        />
-      ))}
-      <button
-        type="button"
-        onClick={() => addField(field)}
-        className="text-xs text-red-500 hover:underline"
-      >
-        + Add another
-      </button>
-    </div>
-  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black to-[#1a0000] text-white">
@@ -357,10 +359,10 @@ export default function AdminCreateJob() {
             <div className="space-y-8 pt-6 border-t border-white/5">
               <h3 className="text-xl font-bold text-white uppercase tracking-tight">Structured Details</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <ArrayInput label="Responsibilities" field="responsibilities" />
-                <ArrayInput label="Qualifications" field="qualifications" />
-                <ArrayInput label="Experience" field="experience" />
-                <ArrayInput label="Role Summary" field="roleSummary" />
+                <ArrayInput label="Responsibilities" field="responsibilities" values={form.responsibilities} onChange={handleArrayChange} onAdd={addField} />
+                <ArrayInput label="Qualifications" field="qualifications" values={form.qualifications} onChange={handleArrayChange} onAdd={addField} />
+                <ArrayInput label="Experience" field="experience" values={form.experience} onChange={handleArrayChange} onAdd={addField} />
+                <ArrayInput label="Role Summary" field="roleSummary" values={form.roleSummary} onChange={handleArrayChange} onAdd={addField} />
               </div>
             </div>
 
