@@ -8,9 +8,14 @@ export const blogAPI = {
   // Endpoint: GET /api/blogs
   getBlogs: async (params = {}) => {
     try {
-      console.log('📚 Fetching blogs from:', `${BASE_URL}/blog`, 'with params:', params);
+      const isPublishedList = params.published === undefined || params.published === true || params.published === 'true';
+      const requestParams = isPublishedList && params.summary === undefined
+        ? { ...params, summary: true }
+        : params;
+
+      console.log('📚 Fetching blogs from:', `${BASE_URL}/blog`, 'with params:', requestParams);
       const response = await axios.get(`${BASE_URL}/blog`, { 
-        params,
+        params: requestParams,
         withCredentials: true 
       });
       console.log('✅ Blogs fetched successfully:', response.data);

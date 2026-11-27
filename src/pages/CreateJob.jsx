@@ -4,6 +4,32 @@ import { jobService } from "@/services/jobService";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaCloudUploadAlt, FaTimes, FaBriefcase, FaImage } from "react-icons/fa";
 
+function ArrayInput({ label, field, values, onChange, onAdd }) {
+  return (
+    <div className="space-y-2">
+      <p className="text-sm font-semibold uppercase tracking-wide text-gray-300">
+        {label}
+      </p>
+      {values.map((val, i) => (
+        <input
+          key={i}
+          value={val}
+          onChange={(e) => onChange(field, i, e.target.value)}
+          className="w-full rounded-xl border border-gray-700 bg-black px-4 py-2 text-white focus:ring-1 focus:ring-red-600"
+          placeholder={`${label} ${i + 1}`}
+        />
+      ))}
+      <button
+        type="button"
+        onClick={() => onAdd(field)}
+        className="text-xs text-red-500 hover:underline"
+      >
+        + Add another
+      </button>
+    </div>
+  );
+}
+
 export default function AdminCreateJob() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -11,6 +37,7 @@ export default function AdminCreateJob() {
   const fileInputRef = useRef(null);
 
   const [loading, setLoading] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [imagePreview, setImagePreview] = useState("");
@@ -28,8 +55,10 @@ export default function AdminCreateJob() {
     salary: "",
     nextSteps: "",
     link: "",
-    postDate: new Date().toISOString().split('T')[0],
+    postDate: "",
     expireDate: "",
+    isActive: true,
+    isTrending: false,
     img: [""],
     roleSummary: [""],
     responsibilities: [""],
@@ -41,6 +70,8 @@ export default function AdminCreateJob() {
     if (editJob) {
       setForm({
         ...editJob,
+        postDate: editJob.postDate ? String(editJob.postDate).slice(0, 10) : "",
+        expireDate: editJob.expireDate ? String(editJob.expireDate).slice(0, 10) : "",
         img: editJob.img?.length ? editJob.img : [""],
         roleSummary: editJob.roleSummary?.length ? editJob.roleSummary : [""],
         responsibilities: editJob.responsibilities?.length ? editJob.responsibilities : [""],
@@ -53,8 +84,10 @@ export default function AdminCreateJob() {
     }
   }, [editJob]);
 
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, type, checked, value } = e.target;
+    setForm({ ...form, [name]: type === "checkbox" ? checked : value });
+  };
 
   const handleArrayChange = (field, index, value) => {
     const updated = [...form[field]];
@@ -118,7 +151,8 @@ export default function AdminCreateJob() {
         await jobService.createJob(formData);
         setSuccess("✅ Job created successfully");
       }
-      setTimeout(() => navigate("/careers"), 1500);
+      setSaved(true);
+      setTimeout(() => navigate("/careers"), 2000);
     } catch (err) {
       console.error("❌ FULL ERROR OBJECT:", err);
       if (err.response) {
@@ -133,32 +167,9 @@ export default function AdminCreateJob() {
     }
   };
 
-  const ArrayInput = ({ label, field }) => (
-    <div className="space-y-2">
-      <p className="text-sm font-semibold uppercase tracking-wide text-gray-300">
-        {label}
-      </p>
-      {form[field].map((val, i) => (
-        <input
-          key={i}
-          value={val}
-          onChange={(e) => handleArrayChange(field, i, e.target.value)}
-          className="w-full rounded-xl border border-gray-700 bg-black px-4 py-2 text-white focus:ring-1 focus:ring-red-600"
-          placeholder={`${label} ${i + 1}`}
-        />
-      ))}
-      <button
-        type="button"
-        onClick={() => addField(field)}
-        className="text-xs text-red-500 hover:underline"
-      >
-        + Add another
-      </button>
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-black to-[#1a0000] text-white">
+      <style>{`@keyframes job-check-draw { to { stroke-dashoffset: 0; } }`}</style>
       <div className="mx-auto max-w-4xl px-6 py-20">
         {/* HEADER */}
         <div className="mb-12 text-center">
@@ -328,6 +339,36 @@ export default function AdminCreateJob() {
               </div>
             </div>
 
+            {/* VISIBILITY */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <label className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 px-6 py-4 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="isTrending"
+                  checked={!!form.isTrending}
+                  onChange={handleChange}
+                  className="h-5 w-5 accent-red-600"
+                />
+                <span>
+                  <span className="block font-semibold text-white">Trending / Currently hiring</span>
+                  <span className="block text-xs text-gray-400">Highlight this role on the Careers page</span>
+                </span>
+              </label>
+              <label className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 px-6 py-4 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="isActive"
+                  checked={form.isActive === false}
+                  onChange={(e) => setForm({ ...form, isActive: !e.target.checked })}
+                  className="h-5 w-5 accent-red-600"
+                />
+                <span>
+                  <span className="block font-semibold text-white">Hide this job post</span>
+                  <span className="block text-xs text-gray-400">Hidden posts are not visible to the public</span>
+                </span>
+              </label>
+            </div>
+
             {/* CONTENT */}
             <div className="space-y-6">
               <div className="space-y-2">
@@ -357,10 +398,10 @@ export default function AdminCreateJob() {
             <div className="space-y-8 pt-6 border-t border-white/5">
               <h3 className="text-xl font-bold text-white uppercase tracking-tight">Structured Details</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <ArrayInput label="Responsibilities" field="responsibilities" />
-                <ArrayInput label="Qualifications" field="qualifications" />
-                <ArrayInput label="Experience" field="experience" />
-                <ArrayInput label="Role Summary" field="roleSummary" />
+                <ArrayInput label="Responsibilities" field="responsibilities" values={form.responsibilities} onChange={handleArrayChange} onAdd={addField} />
+                <ArrayInput label="Qualifications" field="qualifications" values={form.qualifications} onChange={handleArrayChange} onAdd={addField} />
+                <ArrayInput label="Experience" field="experience" values={form.experience} onChange={handleArrayChange} onAdd={addField} />
+                <ArrayInput label="Role Summary" field="roleSummary" values={form.roleSummary} onChange={handleArrayChange} onAdd={addField} />
               </div>
             </div>
 
@@ -368,10 +409,25 @@ export default function AdminCreateJob() {
             <div className="pt-8">
               <button
                 type="submit"
-                disabled={loading}
-                className="w-full h-16 rounded-2xl bg-red-600 text-white font-bold text-lg uppercase tracking-widest hover:bg-red-700 transition-all shadow-xl shadow-red-600/20 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={loading || saved}
+                className={`w-full h-16 rounded-2xl text-white font-bold text-lg uppercase tracking-widest transition-all duration-500 shadow-xl active:scale-[0.98] disabled:cursor-not-allowed ${
+                  saved ? "bg-green-600 shadow-green-600/30 scale-[1.02]" : "bg-red-600 hover:bg-red-700 shadow-red-600/20 disabled:opacity-50"
+                }`}
               >
-                {loading ? (
+                {saved ? (
+                  <span className="flex items-center justify-center gap-3">
+                    <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10" className="opacity-40" />
+                      <path
+                        d="M7 12.5l3.5 3.5L17 9"
+                        strokeDasharray="24"
+                        strokeDashoffset="24"
+                        style={{ animation: "job-check-draw .6s ease forwards" }}
+                      />
+                    </svg>
+                    {editJob ? "Updated!" : "Published!"}
+                  </span>
+                ) : loading ? (
                   <span className="flex items-center justify-center gap-2">
                     <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />

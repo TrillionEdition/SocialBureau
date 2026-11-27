@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, ChevronRight, Trophy, User, FileText, BarChart3 } from "lucide-react";
+import { Menu, X, ChevronRight, User, FileText, BarChart3 } from "lucide-react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import Logout from "./Logout";
@@ -510,6 +510,18 @@ export default function Navbar() {
                         {isAdmin && (
                           <button
                             onClick={() => {
+                              handleNavClick("/admin");
+                              setActiveDropdown(null);
+                            }}
+                            className="text-[13px] font-medium text-red-500 hover:text-white hover:bg-red-600 px-4 py-3 text-left transition-colors flex items-center gap-2"
+                          >
+                            <BarChart3 size={14} />
+                            Admin Panel
+                          </button>
+                        )}
+                        {isAdmin && (
+                          <button
+                            onClick={() => {
                               handleNavClick("/admin/applications");
                               setActiveDropdown(null);
                             }}
@@ -544,7 +556,7 @@ export default function Navbar() {
                         </button>
 
 
-                        <button
+                        {/* <button
                           onClick={() => {
                             handleNavClick("/leaderboard");
                             setActiveDropdown(null);
@@ -553,7 +565,7 @@ export default function Navbar() {
                         >
                           <Trophy size={14} />
                           Leaderboard
-                        </button>
+                        </button> */}
                         <div className="h-px bg-white/10" />
 
                         <button
@@ -802,6 +814,15 @@ export default function Navbar() {
               <div className="mt-6 pt-6 border-t border-white/10 flex flex-col gap-3">
                 {isLoggedIn && (
                   <>
+                    {isAdmin && (
+                      <button
+                        onClick={() => handleNavClick("/admin")}
+                        className="flex items-center gap-2 text-[22px] font-semibold text-brand-pink active:text-white text-left transition-colors"
+                      >
+                        <BarChart3 size={20} />
+                        Admin Panel
+                      </button>
+                    )}
                     {/* {(isEmployee || isAdmin || isPartnership) && (
                       <button
                         onClick={() => handleNavClick("/team/dashboard")}

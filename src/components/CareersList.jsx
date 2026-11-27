@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, ArrowUpRight, BriefcaseBusiness, Eye, EyeOff, Loader2, MapPin, Pencil, Plus, Search, Trash2 } from "lucide-react";
+import { ArrowRight, ArrowUpRight, BriefcaseBusiness, Eye, EyeOff, Flame, Loader2, MapPin, Pencil, Plus, Search, Trash2 } from "lucide-react";
 import { toast } from "react-toastify";
 import { jobService } from "@/services/jobService";
 import { canManageJobs } from "@/utils/authUtils";
@@ -57,7 +57,7 @@ export default function CareersPost() {
       const matchesDepartment = department === "All Roles" || job.department === department;
       const searchableText = `${job.title || ""} ${job.department || ""} ${job.location || ""}`.toLowerCase();
       return matchesDepartment && (!query || searchableText.includes(query));
-    });
+    }).sort((a, b) => Number(!!b.isTrending) - Number(!!a.isTrending));
   }, [department, jobs, search]);
 
   const handleDelete = async (event, id) => {
@@ -149,7 +149,7 @@ export default function CareersPost() {
         ) : filteredJobs.length ? (
           <div className="careers-job-grid">
             {filteredJobs.map((job) => (
-              <article className={`careers-job-card${job.isActive ? "" : " is-hidden"}`} key={job.slug || job._id}>
+              <article className={`careers-job-card${job.isActive ? "" : " is-hidden"}${job.isTrending ? " is-trending" : ""}`} key={job.slug || job._id}>
                 <Link className="careers-job-link" to={`/careers/${job.slug}`}>
                   <span className="careers-job-icon"><BriefcaseBusiness size={19} /></span>
                   <ArrowUpRight className="careers-job-arrow" size={17} />
@@ -157,13 +157,14 @@ export default function CareersPost() {
                   <span className="careers-job-department">{job.department || "Opportunities"}</span>
                   <span className="careers-job-meta"><MapPin size={14} />{job.location || "Kochi / Remote"}</span>
                   <span className="careers-job-dates">
-                    <span>Post Date: {formatJobDate(job.postDate)}</span>
+                    {job.postDate && <span>Post Date: {formatJobDate(job.postDate)}</span>}
                     <span>Expire Date: {job.expireDate ? formatJobDate(job.expireDate) : "No expiry"}</span>
                   </span>
                   <span className="careers-job-apply">Explore Role <ArrowRight size={14} /></span>
                 </Link>
 
                 {!job.isActive && <span className="careers-hidden-badge">Hidden</span>}
+                {job.isTrending && <span className="careers-trending-badge"><Flame size={10} /> Trending</span>}
                 {canManageJobs() && (
                   <div className="careers-job-admin">
                     <button aria-label={`Edit ${job.title}`} disabled={processingId === job._id} onClick={(event) => handleEdit(event, job)} type="button"><Pencil size={14} /></button>

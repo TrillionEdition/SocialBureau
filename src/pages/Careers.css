@@ -742,6 +742,26 @@
   font-size: 9px;
 }
 
+.careers-job-card.is-trending .careers-job-link {
+  padding-top: 34px;
+}
+
+.careers-trending-badge {
+  position: absolute;
+  top: 10px;
+  left: 58px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: #e11d2e;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
 .careers-job-admin {
   position: absolute;
   right: 8px;
