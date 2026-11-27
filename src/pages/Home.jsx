@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useSpring, useInView, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { useLenis } from 'lenis/react';
 import Seo from "../components/Seo";
 import SchemaMarkup from "../components/SchemaMarkup";
 import AnniversaryCountdown from '../components/AnniversaryCountdown/AnniversaryCountdown';
@@ -770,11 +771,25 @@ const row3 = TV_CHANNELS.filter((_, i) => i % 3 === 2);
 // --- Main Home Component ---
 
 export const Home = () => {
+  const { hash, key } = useLocation();
+  const lenis = useLenis();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activePoster, setActivePoster] = useState(null);
   const homepageSchemas = generateHomepageSchemas();
   const [showHintPopup, setShowHintPopup] = useState(false);
   const [showChocochiCard, setShowChocochiCard] = useState(true);
+
+  useEffect(() => {
+    if (hash !== "#services") return undefined;
+    const frame = requestAnimationFrame(() => {
+      const target = document.getElementById("services");
+      if (target) {
+        if (lenis) lenis.scrollTo(target, { immediate: true });
+        else target.scrollIntoView();
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [hash, key, lenis]);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);

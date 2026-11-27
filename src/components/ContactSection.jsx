@@ -3,6 +3,7 @@ import Toast from "./Toast";
 import Footer from "./Footer";
 import { Calendar, User, Mail, Sparkles, Clock, Check, AlertCircle, ArrowRight, MessageSquare } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { notifyBuddyFormResult } from "./BureauBuddy/BuddyTriggerManager";
 
 export default function ContactSection() {
   const [activeTab, setActiveTab] = useState("meeting"); // "message" | "meeting"
@@ -126,6 +127,7 @@ export default function ContactSection() {
         throw new Error(data.message || "Please try again.");
       }
 
+      if (data.success === true && !honeypot.trim()) notifyBuddyFormResult("success");
       setShowBubble(true);
 
       setFormData({
@@ -141,6 +143,7 @@ export default function ContactSection() {
     } catch (error) {
       console.error("Error submitting contact message:", error);
       setToast({ type: "error", message: error.message || "Please try again." });
+      notifyBuddyFormResult("error");
     } finally {
       setCaptchaToken(null);
       if (turnstileWidgetId.current !== null && window.turnstile) {

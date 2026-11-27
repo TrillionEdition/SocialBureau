@@ -34,7 +34,7 @@ import MySubscription from "./pages/MySubscription";
 import ApiMarketingDashboard from "./pages/ApiMarketingDashboard";
 import MediaDashboard from "./pages/MediaDashboard";
 import PartnershipChatbot from "./components/PartnershipChatbot";
-import WebsiteAIAssistant from "./components/WebsiteAIAssistant";
+import BureauBuddy from "./components/BureauBuddy/BureauBuddy";
 import AjnoraDashboard from "./pages/AjnoraDashboard";
 import AjinorahForm from "./components/ClientFormaji";
 import CDashboard from "./components/ClickupDash/CDashboard";
@@ -450,7 +450,7 @@ function App() {
         <ConditionalNavbar />
         <RobotsControl />
         <ConditionalChatbot />
-        <WebsiteAIAssistant />
+        <BureauBuddy />
         <ScrollTop />
         {/* TREASURE HUNT DISABLED: <FloatingTreasureHuntClue /> */}
         {/* TREASURE HUNT DISABLED: <TreasureHuntTimer /> */}
